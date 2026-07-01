@@ -4,7 +4,7 @@
   "description": "AI Memory Cloud - Second brain for AI coding assistants powered by Cloudflare D1",
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "tsx watch src/index.ts",
