@@ -1,21 +1,24 @@
-import type { IncomingMessage, ServerResponse } from 'node:http';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { buildApp } from '../src/server.js';
 import type { FastifyInstance } from 'fastify';
 
-let app: FastifyInstance | null = null;
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+let app: FastifyInstance | undefined;
 
 async function getApp(): Promise<FastifyInstance> {
   if (!app) {
-    app = await buildApp({ logger: true });
+    app = await buildApp({ logger: !process.env.VERCEL });
     await app.ready();
   }
   return app;
 }
 
-export default async function handler(
-  req: IncomingMessage,
-  res: ServerResponse,
-): Promise<void> {
+export default async function handler(req: VercelRequest, res: VercelResponse): Promise<void> {
   const fastify = await getApp();
   fastify.server.emit('request', req, res);
 }

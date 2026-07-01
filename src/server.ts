@@ -23,14 +23,13 @@ export async function buildApp(options?: {
   const env = getEnv();
   const enableLogger = options?.logger ?? env.NODE_ENV !== 'test';
 
+  const isDev = env.NODE_ENV === 'development' && !process.env.VERCEL;
+
   const fastify = Fastify({
     logger: enableLogger
       ? {
           level: env.LOG_LEVEL,
-          transport:
-            env.NODE_ENV === 'development'
-              ? { target: 'pino-pretty', options: { colorize: true } }
-              : undefined,
+          transport: isDev ? { target: 'pino-pretty', options: { colorize: true } } : undefined,
         }
       : false,
     genReqId: () => crypto.randomUUID(),
