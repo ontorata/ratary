@@ -1,6 +1,5 @@
 import 'dotenv/config';
-import { readFile, stat } from 'node:fs/promises';
-import { relative, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { MemoryService } from '../src/services/memory.service.js';
 import { getD1Client } from '../src/db/index.js';

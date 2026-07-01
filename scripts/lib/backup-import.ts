@@ -1,5 +1,5 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
-import { join, basename, dirname, relative } from 'node:path';
+import { join, basename, dirname, relative, resolve } from 'node:path';
 import { parseTranscriptFile, isMainTranscript } from './transcript-parser.js';
 
 export interface BackupCandidate {

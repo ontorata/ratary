@@ -1,4 +1,4 @@
-import type { AuthContext, ResolvedIdentity } from './auth.types.js';
+import type { AuthContext, ResolvedIdentity } from '../auth.types.js';
 
 export interface IdentityProvider {
   readonly name: string;

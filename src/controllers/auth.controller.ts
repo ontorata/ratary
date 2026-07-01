@@ -1,5 +1,4 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { AuthService } from '../auth/auth.service.js';
 import type { IdentityService } from '../auth/identity.service.js';
 import type { BootstrapBody, CreateIdentityBody } from '../auth/auth.types.js';
 import { sendSuccess } from '../utils/response.js';
@@ -24,10 +23,7 @@ function toPublicIdentity(identity: import('../auth/auth.types.js').Identity) {
 }
 
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly identityService: IdentityService,
-  ) {}
+  constructor(private readonly identityService: IdentityService) {}
 
   async bootstrap(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
@@ -137,9 +133,6 @@ export class AuthController {
   }
 }
 
-export function createAuthController(
-  authService: AuthService,
-  identityService: IdentityService,
-): AuthController {
-  return new AuthController(authService, identityService);
+export function createAuthController(identityService: IdentityService): AuthController {
+  return new AuthController(identityService);
 }

@@ -1,6 +1,5 @@
 import type { D1Client } from '../db/d1-client.js';
 import type { IdentityRepository } from './identity.repository.js';
-import type { ClientRepository } from './client.repository.js';
 import type { SettingsRepository } from './settings.repository.js';
 import { executeTransaction } from '../db/migrations.js';
 import { generateId, nowISO } from '../utils/memory-mapper.js';
@@ -29,7 +28,6 @@ export class IdentityService {
   constructor(
     private readonly db: D1Client,
     private readonly identityRepository: IdentityRepository,
-    private readonly clientRepository: ClientRepository,
     private readonly settingsRepository: SettingsRepository,
   ) {}
 

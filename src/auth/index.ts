@@ -1,6 +1,5 @@
 import type { D1Client } from '../db/d1-client.js';
 import { IdentityRepository } from './identity.repository.js';
-import { ClientRepository } from './client.repository.js';
 import { AuditRepository } from './audit.repository.js';
 import { SettingsRepository } from './settings.repository.js';
 import { AuditService } from './audit.service.js';
@@ -18,7 +17,6 @@ export interface AuthLayer {
 
 export function createAuthLayer(db: D1Client): AuthLayer {
   const identityRepository = new IdentityRepository(db);
-  const clientRepository = new ClientRepository(db);
   const auditRepository = new AuditRepository(db);
   const settingsRepository = new SettingsRepository(db);
 
@@ -27,7 +25,6 @@ export function createAuthLayer(db: D1Client): AuthLayer {
   const identityService = new IdentityService(
     db,
     identityRepository,
-    clientRepository,
     settingsRepository,
   );
 

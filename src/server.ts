@@ -70,7 +70,7 @@ export async function buildApp(options?: {
   const healthController = createHealthController();
   const memoryController = createMemoryController(memoryService);
   const backupController = createBackupController(memoryService);
-  const authController = createAuthController(authLayer.authService, authLayer.identityService);
+  const authController = createAuthController(authLayer.identityService);
 
   const controllers = {
     health: healthController,

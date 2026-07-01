@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { watch } from 'node:fs';
-import { readdir, stat } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { MemoryService } from '../src/services/memory.service.js';
@@ -103,7 +103,7 @@ async function syncOneFile(
         contentHash,
         memoryIds: existingIds,
         syncedAt: new Date().toISOString(),
-        title: memories[0]!.title,
+        title: relPath.split('/').pop() ?? relPath,
       });
       log(`↻ ${relPath} sudah ada di D1 (${existingIds.length} memory), state di-bootstrap`);
       return 'unchanged';
