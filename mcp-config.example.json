@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ai-memory-cloud": {
+      "command": "npx",
+      "args": ["tsx", "d:/Apps/ai-brain/src/mcp/stdio.ts"],
+      "env": {
+        "CLOUDFLARE_ACCOUNT_ID": "your_cloudflare_account_id",
+        "D1_DATABASE_ID": "your_d1_database_id",
+        "D1_API_TOKEN": "your_cloudflare_api_token"
+      }
+    }
+  }
+}
