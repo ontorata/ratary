@@ -2,6 +2,7 @@ node_modules/
 dist/
 .env
 .env.local
+.cursor/mcp.json
 *.log
 coverage/
 .vercel
