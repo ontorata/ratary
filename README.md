@@ -159,11 +159,12 @@ Set environment variables di Vercel Dashboard:
 - `API_KEY` (opsional, untuk proteksi REST API)
 
 **Penting — Vercel Build Settings:**
-- **Framework Preset:** Other (bukan Node.js standalone)
+- **Framework Preset:** Other
 - **Install Command:** `npm install` (jangan tambahkan `db:migrate`)
-- **Build Command:** `npm run typecheck`
+- **Build Command:** kosong / override dengan `vercel.json` (`buildCommand: null`)
+- **Output Directory:** kosong / override dengan `vercel.json` (`outputDirectory: null`)
 
-Entrypoint Vercel: `src/index.ts` (default export handler).
+Entrypoint Vercel: `src/index.ts` (default export handler). Proyek ini **API-only**, tanpa static site.
 
 Migrasi database cukup dijalankan **sekali secara lokal** sebelum deploy pertama:
 ```bash
