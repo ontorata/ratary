@@ -158,6 +158,15 @@ Set environment variables di Vercel Dashboard:
 - `D1_API_TOKEN`
 - `API_KEY` (opsional, untuk proteksi REST API)
 
+**Penting — Vercel Build Settings:**
+- **Install Command:** `npm install` (jangan tambahkan `db:migrate`)
+- **Build Command:** `npm run build`
+
+Migrasi database cukup dijalankan **sekali secara lokal** sebelum deploy pertama:
+```bash
+npm run db:migrate
+```
+
 ## Backup & Restore
 
 ```bash
