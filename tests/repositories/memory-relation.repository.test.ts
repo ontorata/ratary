@@ -1,0 +1,30 @@
+import { describe, it, expect, beforeEach } from 'vitest';
+import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
+import { MockD1Client } from '../helpers/mock-d1.js';
+
+describe('MemoryRelationRepository', () => {
+  let repository: MemoryRelationRepository;
+  let mockDb: MockD1Client;
+  const ownerId = 'rel-owner';
+
+  beforeEach(() => {
+    mockDb = new MockD1Client();
+    repository = new MemoryRelationRepository(mockDb);
+  });
+
+  it('should insert and find relation scoped to owner', async () => {
+    const relation = await repository.insert({
+      sourceMemoryId: '00000000-0000-0000-0000-000000000001',
+      targetMemoryId: '00000000-0000-0000-0000-000000000002',
+      relation: 'related',
+      ownerId,
+    });
+
+    expect(relation.id).toBeDefined();
+    const found = await repository.findById(relation.id, ownerId);
+    expect(found?.relation).toBe('related');
+
+    const other = await repository.findById(relation.id, 'other-owner');
+    expect(other).toBeNull();
+  });
+});

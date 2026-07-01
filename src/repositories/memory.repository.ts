@@ -1,7 +1,19 @@
 import type { D1Client } from '../db/d1-client.js';
 import type { MemoryRow } from '../types/memory.js';
-import { generateId, nowISO, rowToMemory, tagsToJson } from '../utils/memory-mapper.js';
+import {
+  generateId,
+  nowISO,
+  rowToMemory,
+  tagsToJson,
+  keywordsToJson,
+} from '../utils/memory-mapper.js';
 import type { Memory } from '../types/memory.js';
+import {
+  formatCodename,
+  parseCodenameSequence,
+  resolveCodenamePrefix,
+} from '../knowledge/codename.generator.js';
+import type { MemoryType } from '../types/knowledge.js';
 
 export interface InsertMemoryData {
   title: string;
@@ -9,6 +21,14 @@ export interface InsertMemoryData {
   content: string;
   summary: string;
   tags: string[];
+  keywords: string[];
+  category: string;
+  memoryType: string;
+  importance: number;
+  language: string;
+  notes: string;
+  codename: string;
+  slug: string;
   favorite: boolean;
   archived?: boolean;
   ownerId?: string;
@@ -23,6 +43,13 @@ export interface UpdateMemoryData {
   content?: string;
   summary?: string;
   tags?: string[];
+  keywords?: string[];
+  category?: string;
+  memoryType?: string;
+  importance?: number;
+  language?: string;
+  notes?: string;
+  slug?: string;
   favorite?: boolean;
   archived?: boolean;
 }
@@ -41,14 +68,44 @@ export interface SearchFilters {
   query?: string;
   tag?: string;
   project?: string;
+  category?: string;
+  memoryType?: MemoryType;
+  importanceMin?: number;
   favorite?: boolean;
   archived?: boolean;
   limit: number;
   offset: number;
 }
 
+const CODENAME_MAX_RETRIES = 3;
+
 export class MemoryRepository {
   constructor(private readonly db: D1Client) {}
+
+  async allocateCodename(ownerId: string, prefix: string): Promise<string> {
+    const pattern = `${prefix.toUpperCase()}-%`;
+    const rows = await this.db.query<{ codename: string }>(
+      `SELECT codename FROM memories
+       WHERE owner_id = ? AND codename LIKE ?
+       ORDER BY codename DESC LIMIT 1`,
+      [ownerId, pattern],
+    );
+
+    const last = rows[0]?.codename;
+    const lastSeq = last ? parseCodenameSequence(last, prefix) : 0;
+    return formatCodename(prefix, lastSeq + 1);
+  }
+
+  async slugExists(ownerId: string, slug: string, excludeSlug?: string): Promise<boolean> {
+    if (excludeSlug && slug === excludeSlug) return false;
+
+    const rows = await this.db.query<{ count: number }>(
+      `SELECT COUNT(*) as count FROM memories
+       WHERE owner_id = ? AND slug = ?`,
+      [ownerId, slug],
+    );
+    return (rows[0]?.count ?? 0) > 0;
+  }
 
   async insert(data: InsertMemoryData): Promise<Memory> {
     const id = data.id ?? generateId();
@@ -56,29 +113,64 @@ export class MemoryRepository {
     const updatedAt = data.updatedAt ?? now;
     const ownerId = data.ownerId ?? '';
 
-    await this.db.execute(
-      `INSERT INTO memories (id, title, project, content, summary, tags, favorite, archived, owner_id, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        id,
-        data.title,
-        data.project,
-        data.content,
-        data.summary,
-        tagsToJson(data.tags),
-        data.favorite ? 1 : 0,
-        data.archived ? 1 : 0,
-        ownerId,
-        now,
-        updatedAt,
-      ],
-    );
+    for (let attempt = 0; attempt < CODENAME_MAX_RETRIES; attempt++) {
+      const codename =
+        attempt === 0
+          ? data.codename
+          : await this.allocateCodename(
+              ownerId,
+              resolveCodenamePrefix({
+                memoryType: data.memoryType as MemoryType,
+                category: data.category,
+                project: data.project,
+              }),
+            );
 
-    const memory = await this.findById(id, ownerId);
-    if (!memory) {
-      throw new Error('Failed to retrieve inserted memory');
+      try {
+        await this.db.execute(
+          `INSERT INTO memories (
+            id, title, project, content, summary, tags, favorite, archived,
+            owner_id, created_at, updated_at,
+            codename, slug, keywords, category, memory_type, importance, language, notes
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            id,
+            data.title,
+            data.project,
+            data.content,
+            data.summary,
+            tagsToJson(data.tags),
+            data.favorite ? 1 : 0,
+            data.archived ? 1 : 0,
+            ownerId,
+            now,
+            updatedAt,
+            codename,
+            data.slug,
+            keywordsToJson(data.keywords),
+            data.category,
+            data.memoryType,
+            data.importance,
+            data.language,
+            data.notes,
+          ],
+        );
+
+        const memory = await this.findById(id, ownerId);
+        if (!memory) {
+          throw new Error('Failed to retrieve inserted memory');
+        }
+        return memory;
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        if (message.includes('UNIQUE') && attempt < CODENAME_MAX_RETRIES - 1) {
+          continue;
+        }
+        throw error;
+      }
     }
-    return memory;
+
+    throw new Error('Failed to insert memory after codename retries');
   }
 
   async update(id: string, ownerId: string, data: UpdateMemoryData): Promise<Memory | null> {
@@ -92,6 +184,13 @@ export class MemoryRepository {
       content: data.content ?? existing.content,
       summary: data.summary ?? existing.summary,
       tags: data.tags ?? existing.tags,
+      keywords: data.keywords ?? existing.keywords,
+      category: data.category ?? existing.category,
+      memoryType: data.memoryType ?? existing.memoryType,
+      importance: data.importance ?? existing.importance,
+      language: data.language ?? existing.language,
+      notes: data.notes ?? existing.notes,
+      slug: data.slug ?? existing.slug,
       favorite: data.favorite ?? existing.favorite,
       archived: data.archived ?? existing.archived,
       updatedAt: nowISO(),
@@ -100,6 +199,8 @@ export class MemoryRepository {
     await this.db.execute(
       `UPDATE memories
        SET title = ?, project = ?, content = ?, summary = ?, tags = ?,
+           keywords = ?, category = ?, memory_type = ?, importance = ?,
+           language = ?, notes = ?, slug = ?,
            favorite = ?, archived = ?, updated_at = ?
        WHERE id = ? AND owner_id = ?`,
       [
@@ -108,6 +209,13 @@ export class MemoryRepository {
         updated.content,
         updated.summary,
         tagsToJson(updated.tags),
+        keywordsToJson(updated.keywords),
+        updated.category,
+        updated.memoryType,
+        updated.importance,
+        updated.language,
+        updated.notes,
+        updated.slug,
         updated.favorite ? 1 : 0,
         updated.archived ? 1 : 0,
         updated.updatedAt,
@@ -131,6 +239,24 @@ export class MemoryRepository {
     const rows = await this.db.query<MemoryRow>(
       'SELECT * FROM memories WHERE id = ? AND owner_id = ?',
       [id, ownerId],
+    );
+    if (rows.length === 0) return null;
+    return rowToMemory(rows[0]);
+  }
+
+  async findByCodename(ownerId: string, codename: string): Promise<Memory | null> {
+    const rows = await this.db.query<MemoryRow>(
+      'SELECT * FROM memories WHERE owner_id = ? AND codename = ?',
+      [ownerId, codename],
+    );
+    if (rows.length === 0) return null;
+    return rowToMemory(rows[0]);
+  }
+
+  async findBySlug(ownerId: string, slug: string): Promise<Memory | null> {
+    const rows = await this.db.query<MemoryRow>(
+      'SELECT * FROM memories WHERE owner_id = ? AND slug = ?',
+      [ownerId, slug],
     );
     if (rows.length === 0) return null;
     return rowToMemory(rows[0]);
@@ -176,7 +302,9 @@ export class MemoryRepository {
     };
   }
 
-  async search(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }> {
+  async findSearchCandidates(
+    filters: SearchFilters,
+  ): Promise<{ memories: Memory[]; total: number }> {
     if (filters.tag) {
       return this.searchByTag(filters.tag, filters);
     }
@@ -186,7 +314,7 @@ export class MemoryRepository {
     if (filters.query) {
       const conditions: string[] = [
         'owner_id = ?',
-        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ?)',
+        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ?)',
       ];
       const likePattern = `%${filters.query}%`;
       const params: unknown[] = [
@@ -195,14 +323,11 @@ export class MemoryRepository {
         likePattern,
         likePattern,
         likePattern,
+        likePattern,
+        likePattern,
       ];
 
-      if (filters.project) {
-        conditions.push('project = ?');
-        params.push(filters.project);
-      }
-
-      this.applySearchFilters(conditions, params, filters);
+      this.applyExtendedFilters(conditions, params, filters);
 
       return this.executeSearch(conditions, params, filters.limit, filters.offset);
     }
@@ -215,6 +340,20 @@ export class MemoryRepository {
       limit: filters.limit,
       offset: filters.offset,
     });
+  }
+
+  async search(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }> {
+    return this.findSearchCandidates(filters);
+  }
+
+  async listDistinctCategories(ownerId: string): Promise<string[]> {
+    const rows = await this.db.query<{ category: string }>(
+      `SELECT DISTINCT category FROM memories
+       WHERE owner_id = ? AND category != '' AND archived = 0
+       ORDER BY category ASC`,
+      [ownerId],
+    );
+    return rows.map((r) => r.category);
   }
 
   async toggleFavorite(id: string, ownerId: string): Promise<Memory | null> {
@@ -283,6 +422,54 @@ export class MemoryRepository {
     return rows.map(rowToMemory);
   }
 
+  async findWithoutCodename(ownerId: string, limit: number): Promise<Memory[]> {
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT * FROM memories
+       WHERE owner_id = ? AND (codename IS NULL OR codename = '')
+       ORDER BY created_at ASC
+       LIMIT ?`,
+      [ownerId, limit],
+    );
+    return rows.map(rowToMemory);
+  }
+
+  async applyKnowledgeBackfill(
+    id: string,
+    ownerId: string,
+    data: {
+      codename: string;
+      slug: string;
+      summary: string;
+      keywords: string[];
+      category: string;
+      memoryType: string;
+      importance: number;
+      language: string;
+      notes: string;
+    },
+  ): Promise<void> {
+    await this.db.execute(
+      `UPDATE memories
+       SET codename = ?, slug = ?, summary = ?, keywords = ?, category = ?,
+           memory_type = ?, importance = ?, language = ?, notes = ?, updated_at = ?
+       WHERE id = ? AND owner_id = ?`,
+      [
+        data.codename,
+        data.slug,
+        data.summary,
+        keywordsToJson(data.keywords),
+        data.category,
+        data.memoryType,
+        data.importance,
+        data.language,
+        data.notes,
+        nowISO(),
+        id,
+        ownerId,
+      ],
+    );
+  }
+
   async deleteAllByOwner(ownerId: string): Promise<void> {
     await this.db.execute('DELETE FROM memories WHERE owner_id = ?', [ownerId]);
   }
@@ -291,10 +478,10 @@ export class MemoryRepository {
     tag: string,
     filters: SearchFilters,
   ): Promise<{ memories: Memory[]; total: number }> {
-    const conditions: string[] = ['owner_id = ?', 'tags LIKE ?'];
-    const params: unknown[] = [filters.ownerId, `%"${tag}"%`];
+    const conditions: string[] = ['owner_id = ?', '(tags LIKE ? OR keywords LIKE ?)'];
+    const params: unknown[] = [filters.ownerId, `%"${tag}"%`, `%"${tag}"%`];
 
-    this.applySearchFilters(conditions, params, filters);
+    this.applyExtendedFilters(conditions, params, filters);
 
     return this.executeSearch(conditions, params, filters.limit, filters.offset);
   }
@@ -306,16 +493,32 @@ export class MemoryRepository {
     const conditions: string[] = ['owner_id = ?', 'project = ?'];
     const params: unknown[] = [filters.ownerId, project];
 
-    this.applySearchFilters(conditions, params, filters);
+    this.applyExtendedFilters(conditions, params, filters);
 
     return this.executeSearch(conditions, params, filters.limit, filters.offset);
   }
 
-  private applySearchFilters(
+  private applyExtendedFilters(
     conditions: string[],
     params: unknown[],
-    filters: Pick<SearchFilters, 'favorite' | 'archived' | 'project'>,
+    filters: SearchFilters,
   ): void {
+    if (filters.project) {
+      conditions.push('project = ?');
+      params.push(filters.project);
+    }
+    if (filters.category) {
+      conditions.push('category = ?');
+      params.push(filters.category);
+    }
+    if (filters.memoryType) {
+      conditions.push('memory_type = ?');
+      params.push(filters.memoryType);
+    }
+    if (filters.importanceMin !== undefined) {
+      conditions.push('importance >= ?');
+      params.push(filters.importanceMin);
+    }
     if (filters.favorite !== undefined) {
       conditions.push('favorite = ?');
       params.push(filters.favorite ? 1 : 0);

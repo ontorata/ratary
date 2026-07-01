@@ -19,7 +19,8 @@ export async function swaggerPlugin(fastify: FastifyInstance): Promise<void> {
         { name: 'Health', description: 'Health check endpoints' },
         { name: 'Auth', description: 'Identity, API keys, clients, bootstrap' },
         { name: 'Memory', description: 'Memory CRUD operations' },
-        { name: 'Search', description: 'Search operations' },
+        { name: 'Knowledge', description: 'Categories, memory types, relations' },
+        { name: 'Search', description: 'Search operations with relevance ranking' },
         { name: 'Backup', description: 'Backup and restore' },
       ],
       components: {

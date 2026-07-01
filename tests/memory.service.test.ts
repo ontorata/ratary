@@ -1,18 +1,16 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryRepository } from '../src/repositories/memory.repository.js';
-import { MemoryService } from '../src/services/memory.service.js';
-import { MockD1Client } from './helpers/mock-d1.js';
 import { NotFoundError } from '../src/types/errors.js';
+import { MockD1Client } from './helpers/mock-d1.js';
+import { createTestMemoryStack } from './helpers/test-stack.js';
 
 describe('MemoryService', () => {
-  let service: MemoryService;
+  let service: ReturnType<typeof createTestMemoryStack>['memoryService'];
   let mockDb: MockD1Client;
   const scope = { ownerId: 'test-owner' };
 
   beforeEach(() => {
     mockDb = new MockD1Client();
-    const repository = new MemoryRepository(mockDb);
-    service = new MemoryService(repository);
+    ({ memoryService: service } = createTestMemoryStack(mockDb));
   });
 
   describe('createMemory', () => {
@@ -33,6 +31,8 @@ describe('MemoryService', () => {
       expect(memory.tags).toEqual(['auth', 'jwt']);
       expect(memory.favorite).toBe(true);
       expect(memory.archived).toBe(false);
+      expect(memory.codename).toMatch(/^[A-Z]+-\d{4}$/);
+      expect(memory.slug).toBeTruthy();
       expect(memory.createdAt).toBeDefined();
       expect(memory.updatedAt).toBeDefined();
     });

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { knowledgeMetadataSchema, memoryTypeSchema } from './knowledge.js';
 
 export const memoryRowSchema = z.object({
   id: z.string().uuid(),
@@ -12,16 +13,32 @@ export const memoryRowSchema = z.object({
   owner_id: z.string().default(''),
   created_at: z.string(),
   updated_at: z.string(),
+  codename: z.string().nullable().optional(),
+  slug: z.string().nullable().optional(),
+  keywords: z.string().optional(),
+  category: z.string().optional(),
+  memory_type: z.string().optional(),
+  importance: z.number().int().optional(),
+  language: z.string().optional(),
+  notes: z.string().optional(),
 });
 
 export type MemoryRow = z.infer<typeof memoryRowSchema>;
 
 export interface Memory {
   id: string;
+  codename: string | null;
+  slug: string | null;
   title: string;
   project: string;
   content: string;
   summary: string;
+  keywords: string[];
+  category: string;
+  memoryType: string;
+  importance: number;
+  language: string;
+  notes: string;
   tags: string[];
   favorite: boolean;
   archived: boolean;
@@ -30,14 +47,18 @@ export interface Memory {
   updatedAt: string;
 }
 
-export const createMemorySchema = z.object({
-  title: z.string().min(1, 'Title is required').max(500),
-  project: z.string().max(200).default(''),
-  content: z.string().min(1, 'Content is required'),
-  summary: z.string().max(2000).default(''),
-  tags: z.array(z.string().max(100)).max(50).default([]),
-  favorite: z.boolean().default(false),
-});
+const SUMMARY_MAX = 300;
+
+export const createMemorySchema = z
+  .object({
+    title: z.string().min(1, 'Title is required').max(500),
+    project: z.string().max(200).default(''),
+    content: z.string().min(1, 'Content is required'),
+    summary: z.string().max(SUMMARY_MAX).default(''),
+    tags: z.array(z.string().max(100)).max(50).default([]),
+    favorite: z.boolean().default(false),
+  })
+  .merge(knowledgeMetadataSchema);
 
 export const updateMemorySchema = createMemorySchema.partial();
 
@@ -59,6 +80,9 @@ export const searchQuerySchema = z.object({
   q: z.string().optional(),
   tag: z.string().optional(),
   project: z.string().optional(),
+  category: z.string().optional(),
+  memory_type: memoryTypeSchema.optional(),
+  importance_min: z.coerce.number().int().min(0).max(100).optional(),
   favorite: z
     .enum(['true', 'false'])
     .optional()

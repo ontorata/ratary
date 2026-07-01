@@ -2,8 +2,8 @@ import 'dotenv/config';
 import { watch } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { MemoryRepository } from '../src/repositories/memory.repository.js';
-import { MemoryService } from '../src/services/memory.service.js';
+import { createMemoryService } from '../src/services/create-memory-service.js';
+import type { MemoryService } from '../src/services/memory.service.js';
 import { getMcpMemoryScope } from '../src/types/memory-scope.js';
 import { getD1Client } from '../src/db/index.js';
 import {
@@ -158,7 +158,7 @@ async function runSync(files?: string[]): Promise<void> {
     const state = await loadSyncState();
     state.backupRoot = BACKUP_ROOT;
 
-    const service = DRY_RUN ? null : new MemoryService(new MemoryRepository(getD1Client()));
+    const service = DRY_RUN ? null : createMemoryService(getD1Client());
     let synced = 0;
     let skipped = 0;
     let unchanged = 0;

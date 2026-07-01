@@ -20,6 +20,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.build.json",
     "mcp": "tsx src/mcp/stdio.ts",
     "db:migrate": "tsx scripts/migrate.ts",
+    "db:backfill-knowledge": "tsx scripts/backfill-knowledge.ts",
     "test:integration": "tsx scripts/test-integration.ts",
     "import:backups": "tsx scripts/import-backups.ts",
     "import:backups:dry": "tsx scripts/import-backups.ts --dry-run",

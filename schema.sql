@@ -1,4 +1,4 @@
--- memories (existing + multi-user readiness)
+-- memories (existing + knowledge foundation Phase 2.6)
 CREATE TABLE IF NOT EXISTS memories (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
@@ -9,6 +9,14 @@ CREATE TABLE IF NOT EXISTS memories (
   favorite INTEGER NOT NULL DEFAULT 0,
   archived INTEGER NOT NULL DEFAULT 0,
   owner_id TEXT NOT NULL DEFAULT '',
+  codename TEXT,
+  slug TEXT,
+  keywords TEXT NOT NULL DEFAULT '[]',
+  category TEXT NOT NULL DEFAULT '',
+  memory_type TEXT NOT NULL DEFAULT 'note',
+  importance INTEGER NOT NULL DEFAULT 50,
+  language TEXT NOT NULL DEFAULT 'id',
+  notes TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -17,6 +25,16 @@ CREATE INDEX IF NOT EXISTS idx_memories_project ON memories(project);
 CREATE INDEX IF NOT EXISTS idx_memories_favorite ON memories(favorite);
 CREATE INDEX IF NOT EXISTS idx_memories_archived ON memories(archived);
 CREATE INDEX IF NOT EXISTS idx_memories_created_at ON memories(created_at);
+CREATE INDEX IF NOT EXISTS idx_memories_owner_id ON memories(owner_id);
+CREATE INDEX IF NOT EXISTS idx_memories_owner_category ON memories(owner_id, category);
+CREATE INDEX IF NOT EXISTS idx_memories_memory_type ON memories(memory_type);
+CREATE INDEX IF NOT EXISTS idx_memories_importance ON memories(importance);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_codename
+  ON memories(owner_id, codename) WHERE codename IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_slug
+  ON memories(owner_id, slug) WHERE slug IS NOT NULL;
 
 -- identities: api_key, jwt, oauth, service_account, mcp_token, ...
 CREATE TABLE IF NOT EXISTS identities (
@@ -60,6 +78,30 @@ CREATE TABLE IF NOT EXISTS clients (
 CREATE INDEX IF NOT EXISTS idx_clients_type ON clients(type);
 CREATE INDEX IF NOT EXISTS idx_clients_owner_id ON clients(owner_id);
 CREATE INDEX IF NOT EXISTS idx_clients_active ON clients(active);
+
+-- memory_relations: knowledge graph foundation
+CREATE TABLE IF NOT EXISTS memory_relations (
+  id TEXT PRIMARY KEY,
+  source_memory_id TEXT NOT NULL,
+  target_memory_id TEXT NOT NULL,
+  relation TEXT NOT NULL,
+  owner_id TEXT NOT NULL DEFAULT '',
+  weight REAL NOT NULL DEFAULT 1.0,
+  confidence REAL NOT NULL DEFAULT 1.0,
+  created_by TEXT,
+  source_type TEXT NOT NULL DEFAULT 'manual',
+  metadata TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (source_memory_id) REFERENCES memories(id) ON DELETE CASCADE,
+  FOREIGN KEY (target_memory_id) REFERENCES memories(id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_relations_unique
+  ON memory_relations(source_memory_id, target_memory_id, relation);
+
+CREATE INDEX IF NOT EXISTS idx_relations_source ON memory_relations(source_memory_id);
+CREATE INDEX IF NOT EXISTS idx_relations_target ON memory_relations(target_memory_id);
+CREATE INDEX IF NOT EXISTS idx_relations_owner ON memory_relations(owner_id);
 
 -- audit_logs: append-only activity trail
 CREATE TABLE IF NOT EXISTS audit_logs (

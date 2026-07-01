@@ -2,11 +2,28 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 import { getD1Client } from '../db/index.js';
-import { MemoryRepository } from '../repositories/index.js';
-import { MemoryService } from '../services/index.js';
+import { MemoryRepository } from '../repositories/memory.repository.js';
+import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
+import { KnowledgeService } from '../knowledge/knowledge.service.js';
+import { SearchService } from '../search/search.service.js';
+import { MemoryService } from '../services/memory.service.js';
+import { MemoryRelationService } from '../services/memory-relation.service.js';
 import { getMcpMemoryScope } from '../types/memory-scope.js';
+import { memoryTypeSchema, categorySchema } from '../types/knowledge.js';
 
-function createMcpServer(memoryService: MemoryService): McpServer {
+const metadataSchema = z.object({
+  category: categorySchema.optional(),
+  memoryType: memoryTypeSchema.optional(),
+  keywords: z.array(z.string()).optional(),
+  importance: z.number().int().min(0).max(100).optional(),
+  language: z.string().optional(),
+  notes: z.string().optional(),
+});
+
+function createMcpServer(
+  memoryService: MemoryService,
+  relationService: MemoryRelationService,
+): McpServer {
   const scope = getMcpMemoryScope();
   const server = new McpServer({
     name: 'ai-memory-cloud',
@@ -23,8 +40,10 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       summary: z.string().optional().describe('Short summary of the memory'),
       tags: z.array(z.string()).optional().describe('Tags for categorization'),
       favorite: z.boolean().optional().describe('Mark as favorite'),
+      metadata: metadataSchema.optional().describe('Knowledge metadata'),
     },
     async (params) => {
+      const meta = params.metadata ?? {};
       const memory = await memoryService.createMemory(scope, {
         title: params.title,
         content: params.content,
@@ -32,6 +51,12 @@ function createMcpServer(memoryService: MemoryService): McpServer {
         summary: params.summary ?? '',
         tags: params.tags ?? [],
         favorite: params.favorite ?? false,
+        category: meta.category,
+        memoryType: meta.memoryType,
+        keywords: meta.keywords,
+        importance: meta.importance,
+        language: meta.language,
+        notes: meta.notes,
       });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
@@ -50,10 +75,19 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       summary: z.string().optional(),
       tags: z.array(z.string()).optional(),
       favorite: z.boolean().optional(),
+      metadata: metadataSchema.optional(),
     },
     async (params) => {
-      const { id, ...updateData } = params;
-      const memory = await memoryService.updateMemory(scope, id, updateData);
+      const { id, metadata, ...rest } = params;
+      const memory = await memoryService.updateMemory(scope, id, {
+        ...rest,
+        category: metadata?.category,
+        memoryType: metadata?.memoryType,
+        keywords: metadata?.keywords,
+        importance: metadata?.importance,
+        language: metadata?.language,
+        notes: metadata?.notes,
+      });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -89,12 +123,29 @@ function createMcpServer(memoryService: MemoryService): McpServer {
   );
 
   server.tool(
+    'get_memory_by_codename',
+    'Get a memory by codename (e.g. AUTH-0001)',
+    {
+      codename: z.string().describe('Memory codename'),
+    },
+    async (params) => {
+      const memory = await memoryService.getMemoryByCodename(scope, params.codename);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
+      };
+    },
+  );
+
+  server.tool(
     'search_memory',
-    'Search memories by keyword, tag, or project',
+    'Search memories by keyword, tag, or project with relevance ranking',
     {
       q: z.string().optional().describe('Full-text search keyword'),
       tag: z.string().optional().describe('Filter by tag'),
       project: z.string().optional().describe('Filter by project'),
+      category: z.string().optional(),
+      memory_type: memoryTypeSchema.optional(),
+      importance_min: z.number().int().min(0).max(100).optional(),
       favorite: z.boolean().optional().describe('Filter favorites only'),
       archived: z.boolean().optional().describe('Include archived memories'),
       limit: z.number().int().min(1).max(100).optional().describe('Max results'),
@@ -105,6 +156,9 @@ function createMcpServer(memoryService: MemoryService): McpServer {
         q: params.q,
         tag: params.tag,
         project: params.project,
+        category: params.category,
+        memory_type: params.memory_type,
+        importance_min: params.importance_min,
         favorite: params.favorite,
         archived: params.archived ?? false,
         limit: params.limit ?? 50,
@@ -129,6 +183,40 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       content: [{ type: 'text', text: JSON.stringify({ tags }, null, 2) }],
     };
   });
+
+  server.tool(
+    'link_memories',
+    'Create a relation between two memories',
+    {
+      sourceId: z.string().uuid(),
+      targetId: z.string().uuid(),
+      relation: z.enum(['related', 'depends_on', 'parent', 'child', 'duplicate', 'reference']),
+    },
+    async (params) => {
+      const relation = await relationService.createRelation(scope, params.sourceId, {
+        targetMemoryId: params.targetId,
+        relation: params.relation,
+        sourceType: 'mcp',
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(relation, null, 2) }],
+      };
+    },
+  );
+
+  server.tool(
+    'list_relations',
+    'List relations for a memory',
+    {
+      id: z.string().uuid(),
+    },
+    async (params) => {
+      const relations = await relationService.listRelations(scope, params.id);
+      return {
+        content: [{ type: 'text', text: JSON.stringify({ relations }, null, 2) }],
+      };
+    },
+  );
 
   server.tool(
     'toggle_favorite',
@@ -164,9 +252,13 @@ function createMcpServer(memoryService: MemoryService): McpServer {
 export async function startMcpStdioServer(): Promise<void> {
   const db = getD1Client();
   const repository = new MemoryRepository(db);
-  const memoryService = new MemoryService(repository);
+  const relationRepository = new MemoryRelationRepository(db);
+  const knowledge = new KnowledgeService(repository);
+  const search = new SearchService(repository);
+  const memoryService = new MemoryService(repository, knowledge, search);
+  const relationService = new MemoryRelationService(relationRepository, repository);
 
-  const server = createMcpServer(memoryService);
+  const server = createMcpServer(memoryService, relationService);
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }

@@ -15,6 +15,7 @@ interface ClientRow {
 
 export class MockD1Client implements D1Client {
   private memories: Map<string, MemoryRow> = new Map();
+  private relations: Map<string, Record<string, unknown>> = new Map();
   private identities: Map<string, IdentityRow> = new Map();
   private identityByHash: Map<string, string> = new Map();
   private clients: Map<string, ClientRow> = new Map();
@@ -46,6 +47,14 @@ export class MockD1Client implements D1Client {
         { name: 'owner_id' },
         { name: 'created_at' },
         { name: 'updated_at' },
+        { name: 'codename' },
+        { name: 'slug' },
+        { name: 'keywords' },
+        { name: 'category' },
+        { name: 'memory_type' },
+        { name: 'importance' },
+        { name: 'language' },
+        { name: 'notes' },
       ];
       return { results: columns, success: true };
     }
@@ -230,8 +239,34 @@ export class MockD1Client implements D1Client {
         owner_id: (params[8] as string) ?? '',
         created_at: params[9] as string,
         updated_at: params[10] as string,
+        codename: (params[11] as string | null | undefined) ?? null,
+        slug: (params[12] as string | null | undefined) ?? null,
+        keywords: (params[13] as string | undefined) ?? '[]',
+        category: (params[14] as string | undefined) ?? '',
+        memory_type: (params[15] as string | undefined) ?? 'note',
+        importance: (params[16] as number | undefined) ?? 50,
+        language: (params[17] as string | undefined) ?? 'id',
+        notes: (params[18] as string | undefined) ?? '',
       };
       this.memories.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO MEMORY_RELATIONS')) {
+      const id = params[0] as string;
+      this.relations.set(id, {
+        id,
+        source_memory_id: params[1],
+        target_memory_id: params[2],
+        relation: params[3],
+        owner_id: params[4],
+        weight: params[5],
+        confidence: params[6],
+        created_by: params[7],
+        source_type: params[8],
+        metadata: params[9],
+        created_at: params[10],
+      });
       return { results: [], success: true, meta: { changes: 1 } };
     }
 
@@ -255,6 +290,32 @@ export class MockD1Client implements D1Client {
           existing.archived = params[0] as number;
         }
         existing.updated_at = params[1] as string;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
+      if (params.length >= 17) {
+        id = params[15] as string;
+        ownerId = params[16] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.title = params[0] as string;
+        existing.project = params[1] as string;
+        existing.content = params[2] as string;
+        existing.summary = params[3] as string;
+        existing.tags = params[4] as string;
+        existing.keywords = params[5] as string;
+        existing.category = params[6] as string;
+        existing.memory_type = params[7] as string;
+        existing.importance = params[8] as number;
+        existing.language = params[9] as string;
+        existing.notes = params[10] as string;
+        existing.slug = params[11] as string | null;
+        existing.favorite = params[12] as number;
+        existing.archived = params[13] as number;
+        existing.updated_at = params[14] as string;
         this.memories.set(id, existing);
         return { results: [], success: true, meta: { changes: 1 } };
       }
@@ -313,6 +374,108 @@ export class MockD1Client implements D1Client {
       const count = this.memories.size;
       this.memories.clear();
       return { results: [], success: true, meta: { changes: count } };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? AND CODENAME = ?')) {
+      const ownerId = params[0] as string;
+      const codename = params[1] as string;
+      const row = [...this.memories.values()].find(
+        (m) => m.owner_id === ownerId && m.codename === codename,
+      );
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? AND SLUG = ?')) {
+      const ownerId = params[0] as string;
+      const slug = params[1] as string;
+      const row = [...this.memories.values()].find(
+        (m) => m.owner_id === ownerId && m.slug === slug,
+      );
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('SELECT CODENAME FROM MEMORIES') &&
+      normalizedSql.includes('CODENAME LIKE ?')
+    ) {
+      const ownerId = params[0] as string;
+      const pattern = (params[1] as string).replace(/%/g, '');
+      const prefix = pattern.replace(/-$/, '');
+      const rows = [...this.memories.values()]
+        .filter((m) => m.owner_id === ownerId && (m.codename ?? '').startsWith(prefix))
+        .sort((a, b) => (b.codename ?? '').localeCompare(a.codename ?? ''))
+        .slice(0, 1)
+        .map((m) => ({ codename: m.codename }));
+      return { results: rows, success: true };
+    }
+
+    if (
+      normalizedSql.includes('SELECT COUNT(*) AS COUNT FROM MEMORIES') &&
+      normalizedSql.includes('SLUG = ?')
+    ) {
+      const ownerId = params[0] as string;
+      const slug = params[1] as string;
+      const count = [...this.memories.values()].filter(
+        (m) => m.owner_id === ownerId && m.slug === slug,
+      ).length;
+      return { results: [{ count }], success: true };
+    }
+
+    if (normalizedSql.includes('SELECT DISTINCT CATEGORY')) {
+      const ownerId = params[0] as string;
+      const categories = [
+        ...new Set(
+          [...this.memories.values()]
+            .filter((m) => m.owner_id === ownerId && m.category !== '' && m.archived === 0)
+            .map((m) => m.category ?? ''),
+        ),
+      ].sort();
+      return { results: categories.map((c) => ({ category: c })), success: true };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM MEMORY_RELATIONS WHERE ID = ? AND OWNER_ID = ?')) {
+      const id = params[0] as string;
+      const ownerId = params[1] as string;
+      const row = this.relations.get(id);
+      return {
+        results: row && row.owner_id === ownerId ? [row] : [],
+        success: true,
+      };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM MEMORY_RELATIONS')) {
+      const ownerId = params[0] as string;
+      const memoryId = params[1] as string;
+      const rows = [...this.relations.values()].filter(
+        (r) =>
+          r.owner_id === ownerId &&
+          (r.source_memory_id === memoryId || r.target_memory_id === memoryId),
+      );
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('FROM MEMORY_RELATIONS') && normalizedSql.includes('COUNT(*)')) {
+      const ownerId = params[0] as string;
+      const sourceId = params[1] as string;
+      const targetId = params[2] as string;
+      const relation = params[3] as string;
+      const count = [...this.relations.values()].filter(
+        (r) =>
+          r.owner_id === ownerId &&
+          r.source_memory_id === sourceId &&
+          r.target_memory_id === targetId &&
+          r.relation === relation,
+      ).length;
+      return { results: [{ count }], success: true };
+    }
+
+    if (normalizedSql.startsWith('DELETE FROM MEMORY_RELATIONS')) {
+      const id = params[0] as string;
+      const ownerId = params[1] as string;
+      const row = this.relations.get(id);
+      const existed = row?.owner_id === ownerId;
+      if (existed) this.relations.delete(id);
+      return { results: [], success: true, meta: { changes: existed ? 1 : 0 } };
     }
 
     if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE ID = ? AND OWNER_ID = ?')) {
@@ -399,19 +562,48 @@ export class MockD1Client implements D1Client {
       nextParam();
       nextParam();
       nextParam();
+      nextParam();
+      nextParam();
       results = results.filter(
         (m) =>
           m.title.toLowerCase().includes(keyword) ||
           m.content.toLowerCase().includes(keyword) ||
           m.summary.toLowerCase().includes(keyword) ||
-          m.project.toLowerCase().includes(keyword),
+          m.project.toLowerCase().includes(keyword) ||
+          (m.codename ?? '').toLowerCase().includes(keyword) ||
+          (m.keywords ?? '').toLowerCase().includes(keyword),
       );
     }
 
-    if (upperSql.includes('TAGS LIKE ?')) {
+    if (upperSql.includes('(TAGS LIKE ? OR KEYWORDS LIKE ?)')) {
+      const tagPattern = nextParam() as string;
+      nextParam();
+      const tag = tagPattern.slice(2, -2);
+      results = results.filter(
+        (m) =>
+          m.tags.includes(`"${tag}"`) ||
+          m.tags.includes(tag) ||
+          (m.keywords ?? '').includes(`"${tag}"`),
+      );
+    } else if (upperSql.includes('TAGS LIKE ?')) {
       const tagPattern = nextParam() as string;
       const tag = tagPattern.slice(2, -2);
       results = results.filter((m) => m.tags.includes(`"${tag}"`) || m.tags.includes(tag));
+    }
+
+    if (upperSql.includes('CATEGORY = ?')) {
+      const category = nextParam() as string;
+      results = results.filter((m) => (m.category ?? '') === category);
+    }
+
+    if (upperSql.includes('MEMORY_TYPE = ?')) {
+      const memoryType = nextParam() as string;
+      results = results.filter((m) => (m.memory_type ?? 'note') === memoryType);
+    }
+
+    if (upperSql.includes('IMPORTANCE >= ?')) {
+      const importanceMin = nextParam() as number;
+      results = results.filter((m) => (m.importance ?? 50) >= importanceMin);
     }
 
     if (upperSql.includes('PROJECT = ?') && !upperSql.includes('LIKE')) {
@@ -442,6 +634,7 @@ export class MockD1Client implements D1Client {
 
   clear(): void {
     this.memories.clear();
+    this.relations.clear();
     this.identities.clear();
     this.identityByHash.clear();
     this.clients.clear();

@@ -91,6 +91,48 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 `;
 
+const KNOWLEDGE_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
+  { name: 'codename', ddl: 'ALTER TABLE memories ADD COLUMN codename TEXT' },
+  { name: 'slug', ddl: 'ALTER TABLE memories ADD COLUMN slug TEXT' },
+  { name: 'keywords', ddl: "ALTER TABLE memories ADD COLUMN keywords TEXT NOT NULL DEFAULT '[]'" },
+  { name: 'category', ddl: "ALTER TABLE memories ADD COLUMN category TEXT NOT NULL DEFAULT ''" },
+  {
+    name: 'memory_type',
+    ddl: "ALTER TABLE memories ADD COLUMN memory_type TEXT NOT NULL DEFAULT 'note'",
+  },
+  {
+    name: 'importance',
+    ddl: 'ALTER TABLE memories ADD COLUMN importance INTEGER NOT NULL DEFAULT 50',
+  },
+  { name: 'language', ddl: "ALTER TABLE memories ADD COLUMN language TEXT NOT NULL DEFAULT 'id'" },
+  { name: 'notes', ddl: "ALTER TABLE memories ADD COLUMN notes TEXT NOT NULL DEFAULT ''" },
+];
+
+const MEMORY_RELATIONS_SQL = `
+CREATE TABLE IF NOT EXISTS memory_relations (
+  id TEXT PRIMARY KEY,
+  source_memory_id TEXT NOT NULL,
+  target_memory_id TEXT NOT NULL,
+  relation TEXT NOT NULL,
+  owner_id TEXT NOT NULL DEFAULT '',
+  weight REAL NOT NULL DEFAULT 1.0,
+  confidence REAL NOT NULL DEFAULT 1.0,
+  created_by TEXT,
+  source_type TEXT NOT NULL DEFAULT 'manual',
+  metadata TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (source_memory_id) REFERENCES memories(id) ON DELETE CASCADE,
+  FOREIGN KEY (target_memory_id) REFERENCES memories(id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_relations_unique
+  ON memory_relations(source_memory_id, target_memory_id, relation);
+
+CREATE INDEX IF NOT EXISTS idx_relations_source ON memory_relations(source_memory_id);
+CREATE INDEX IF NOT EXISTS idx_relations_target ON memory_relations(target_memory_id);
+CREATE INDEX IF NOT EXISTS idx_relations_owner ON memory_relations(owner_id);
+`;
+
 function splitStatements(sql: string): string[] {
   return sql
     .split(';')
@@ -103,10 +145,6 @@ async function tableHasColumn(client: D1Client, table: string, column: string): 
   return rows.some((row) => row.name === column);
 }
 
-/**
- * Add owner_id to memories when upgrading an existing database
- * created before Phase 2 identity layer.
- */
 async function migrateMemoriesOwnerId(client: D1Client): Promise<void> {
   const hasOwnerId = await tableHasColumn(client, 'memories', 'owner_id');
   if (!hasOwnerId) {
@@ -125,6 +163,42 @@ async function migrateClientsOwnerId(client: D1Client): Promise<void> {
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_clients_owner_id ON clients(owner_id)`);
 }
 
+/** Phase 2.6 M1a — knowledge columns + relations table (no unique indexes yet). */
+export async function migrateKnowledgeFoundationPhase1(client: D1Client): Promise<void> {
+  for (const column of KNOWLEDGE_MEMORY_COLUMNS) {
+    const hasColumn = await tableHasColumn(client, 'memories', column.name);
+    if (!hasColumn) {
+      await client.execute(column.ddl);
+    }
+  }
+
+  for (const sql of splitStatements(MEMORY_RELATIONS_SQL)) {
+    await client.execute(sql);
+  }
+
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_memories_owner_category ON memories(owner_id, category)`,
+  );
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_memories_memory_type ON memories(memory_type)`,
+  );
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_memories_importance ON memories(importance)`,
+  );
+}
+
+/** Phase 2.6 M3 — unique indexes after backfill. */
+export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promise<void> {
+  await client.execute(
+    `CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_codename
+     ON memories(owner_id, codename) WHERE codename IS NOT NULL`,
+  );
+  await client.execute(
+    `CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_slug
+     ON memories(owner_id, slug) WHERE slug IS NOT NULL`,
+  );
+}
+
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
   for (const sql of splitStatements(MIGRATION_SQL)) {
     await client.execute(sql);
@@ -132,6 +206,8 @@ export async function runMigrations(client: D1Client = getD1Client()): Promise<v
 
   await migrateMemoriesOwnerId(client);
   await migrateClientsOwnerId(client);
+  await migrateKnowledgeFoundationPhase1(client);
+  await migrateKnowledgeFoundationPhase3(client);
 }
 
 export interface D1Statement {
@@ -139,10 +215,6 @@ export interface D1Statement {
   params?: unknown[];
 }
 
-/**
- * Run multiple statements in a single SQLite transaction.
- * Used by bootstrap to atomically create the first identity + client + settings lock.
- */
 export async function executeTransaction(
   client: D1Client,
   statements: D1Statement[],

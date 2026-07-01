@@ -7,11 +7,18 @@ import {
   searchQuerySchema,
   backupImportSchema,
 } from '../types/memory.js';
+import { createRelationBodySchema } from '../types/knowledge.js';
 import type { MemoryController } from '../controllers/index.js';
+import type { MemoryRelationController } from '../controllers/knowledge.controller.js';
 import { ValidationError } from '../types/errors.js';
 
 const idParamSchema = z.object({
   id: z.string().uuid(),
+});
+
+const relationIdParamSchema = z.object({
+  id: z.string().uuid(),
+  relationId: z.string().uuid(),
 });
 
 function validateBody<T extends z.ZodType>(schema: T) {
@@ -47,7 +54,53 @@ function validateParams<T extends z.ZodType>(schema: T) {
 export async function memoryRoutes(
   fastify: FastifyInstance,
   controller: MemoryController,
+  relationController?: MemoryRelationController,
 ): Promise<void> {
+  fastify.get(
+    '/memory/by-codename/:codename',
+    {
+      schema: { tags: ['Knowledge'], summary: 'Get memory by codename' },
+    },
+    controller.getByCodename.bind(controller),
+  );
+
+  fastify.get(
+    '/memory/by-slug/:slug',
+    {
+      schema: { tags: ['Knowledge'], summary: 'Get memory by slug' },
+    },
+    controller.getBySlug.bind(controller),
+  );
+
+  if (relationController) {
+    fastify.get(
+      '/memory/:id/relations',
+      {
+        preValidation: [validateParams(idParamSchema)],
+        schema: { tags: ['Knowledge'], summary: 'List memory relations' },
+      },
+      relationController.list.bind(relationController),
+    );
+
+    fastify.post(
+      '/memory/:id/relations',
+      {
+        preValidation: [validateParams(idParamSchema), validateBody(createRelationBodySchema)],
+        schema: { tags: ['Knowledge'], summary: 'Create memory relation' },
+      },
+      relationController.create.bind(relationController),
+    );
+
+    fastify.delete(
+      '/memory/:id/relations/:relationId',
+      {
+        preValidation: [validateParams(relationIdParamSchema)],
+        schema: { tags: ['Knowledge'], summary: 'Delete memory relation' },
+      },
+      relationController.delete.bind(relationController),
+    );
+  }
+
   fastify.post(
     '/memory',
     {
@@ -118,7 +171,7 @@ export async function memoryRoutes(
       preValidation: [validateQuery(searchQuerySchema)],
       schema: {
         tags: ['Search'],
-        summary: 'Search memories',
+        summary: 'Search memories with relevance ranking',
       },
     },
     controller.search.bind(controller),

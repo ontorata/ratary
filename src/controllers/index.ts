@@ -64,6 +64,28 @@ export class MemoryController {
     reply.send(memory);
   }
 
+  async getByCodename(
+    request: FastifyRequest<{ Params: { codename: string } }>,
+    reply: FastifyReply,
+  ): Promise<void> {
+    const memory = await this.memoryService.getMemoryByCodename(
+      memoryScopeFromRequest(request),
+      request.params.codename,
+    );
+    reply.send(memory);
+  }
+
+  async getBySlug(
+    request: FastifyRequest<{ Params: { slug: string } }>,
+    reply: FastifyReply,
+  ): Promise<void> {
+    const memory = await this.memoryService.getMemoryBySlug(
+      memoryScopeFromRequest(request),
+      request.params.slug,
+    );
+    reply.send(memory);
+  }
+
   async update(
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,

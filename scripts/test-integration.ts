@@ -1,12 +1,11 @@
 import 'dotenv/config';
 import { getD1Client } from '../src/db/index.js';
-import { MemoryRepository } from '../src/repositories/memory.repository.js';
-import { MemoryService } from '../src/services/memory.service.js';
+import { createMemoryService } from '../src/services/create-memory-service.js';
 import { getMcpMemoryScope } from '../src/types/memory-scope.js';
 
 async function main(): Promise<void> {
   const db = getD1Client();
-  const service = new MemoryService(new MemoryRepository(db));
+  const service = createMemoryService(db);
   const scope = getMcpMemoryScope();
 
   console.log('1. Create memory...');
