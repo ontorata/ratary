@@ -6,5 +6,6 @@ dist/
 *.log
 coverage/
 .vercel
+.backup-sync-state.json
 .DS_Store
 Thumbs.db

@@ -20,7 +20,14 @@
     "typecheck": "tsc --noEmit -p tsconfig.build.json",
     "mcp": "tsx src/mcp/stdio.ts",
     "db:migrate": "tsx scripts/migrate.ts",
-    "test:integration": "tsx scripts/test-integration.ts"
+    "test:integration": "tsx scripts/test-integration.ts",
+    "import:backups": "tsx scripts/import-backups.ts",
+    "import:backups:dry": "tsx scripts/import-backups.ts --dry-run",
+    "import:transcript": "tsx scripts/import-backups.ts --file",
+    "sync:backups": "tsx scripts/sync-backups.ts --once",
+    "sync:backups:watch": "tsx scripts/sync-backups.ts --watch",
+    "sync:backups:poll": "tsx scripts/sync-backups.ts --poll",
+    "sync:file": "tsx scripts/sync-backups.ts --file"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",
