@@ -5,14 +5,15 @@
   "buildCommand": null,
   "outputDirectory": null,
   "functions": {
-    "src/index.ts": {
+    "api/index.ts": {
+      "includeFiles": "src/**",
       "maxDuration": 30
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/"
+      "destination": "/api"
     }
   ]
 }
