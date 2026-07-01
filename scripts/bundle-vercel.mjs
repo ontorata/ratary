@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild';
 import { statSync } from 'node:fs';
 
 await esbuild.build({
-  entryPoints: ['api/handler.ts'],
+  entryPoints: ['vercel/handler.ts'],
   outfile: 'api/index.js',
   bundle: true,
   platform: 'node',
