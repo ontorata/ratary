@@ -1,6 +1,6 @@
 import { config as loadDotenv } from 'dotenv';
 
-loadDotenv();
+loadDotenv({ quiet: true });
 
 import { z } from 'zod';
 
