@@ -27,11 +27,7 @@ export function createAuthLayer(db: D1Client): AuthLayer {
   const auditService = new AuditService(auditRepository);
   const clientService = new ClientService(clientRepository);
 
-  const identityService = new IdentityService(
-    db,
-    identityRepository,
-    settingsRepository,
-  );
+  const identityService = new IdentityService(db, identityRepository, settingsRepository);
 
   const providers = [
     new ApiKeyProvider(identityRepository),

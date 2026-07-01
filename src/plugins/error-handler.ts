@@ -19,9 +19,7 @@ export async function errorHandlerPlugin(fastify: FastifyInstance): Promise<void
         return reply.status(error.statusCode).send({
           error: error.code,
           message: error.message,
-          ...(error instanceof ValidationError && error.details
-            ? { details: error.details }
-            : {}),
+          ...(error instanceof ValidationError && error.details ? { details: error.details } : {}),
         });
       }
 

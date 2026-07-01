@@ -10,7 +10,10 @@ export class AppError extends Error {
 }
 
 export class ValidationError extends AppError {
-  constructor(message: string, public readonly details?: unknown) {
+  constructor(
+    message: string,
+    public readonly details?: unknown,
+  ) {
     super(message, 400, 'VALIDATION_ERROR');
   }
 }
@@ -23,7 +26,10 @@ export class NotFoundError extends AppError {
 }
 
 export class DatabaseError extends AppError {
-  constructor(message: string, public readonly cause?: unknown) {
+  constructor(
+    message: string,
+    public readonly cause?: unknown,
+  ) {
     super(message, 500, 'DATABASE_ERROR');
   }
 }

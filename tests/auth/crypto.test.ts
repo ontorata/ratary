@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { hashSecret, generateApiKeyPlaintext, isApiKeyFormat, timingSafeCompareHash } from '../../src/auth/crypto.js';
+import {
+  hashSecret,
+  generateApiKeyPlaintext,
+  isApiKeyFormat,
+  timingSafeCompareHash,
+} from '../../src/auth/crypto.js';
 
 describe('auth crypto', () => {
   it('should generate api key with aic_ prefix', () => {

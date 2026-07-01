@@ -26,11 +26,7 @@ export class MemoryService {
     });
   }
 
-  async updateMemory(
-    scope: MemoryScope,
-    id: string,
-    input: UpdateMemoryInput,
-  ): Promise<Memory> {
+  async updateMemory(scope: MemoryScope, id: string, input: UpdateMemoryInput): Promise<Memory> {
     const updated = await this.repository.update(id, scope.ownerId, input);
     if (!updated) {
       throw new NotFoundError('Memory', id);
@@ -112,10 +108,7 @@ export class MemoryService {
     return { memories };
   }
 
-  async importBackup(
-    scope: MemoryScope,
-    input: BackupImportInput,
-  ): Promise<{ imported: number }> {
+  async importBackup(scope: MemoryScope, input: BackupImportInput): Promise<{ imported: number }> {
     let imported = 0;
 
     for (const item of input.memories) {
@@ -138,10 +131,7 @@ export class MemoryService {
     return { imported };
   }
 
-  async replaceBackup(
-    scope: MemoryScope,
-    input: BackupImportInput,
-  ): Promise<{ imported: number }> {
+  async replaceBackup(scope: MemoryScope, input: BackupImportInput): Promise<{ imported: number }> {
     await this.repository.deleteAllByOwner(scope.ownerId);
 
     let imported = 0;

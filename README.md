@@ -18,6 +18,8 @@ Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemin
 
 ## Arsitektur
 
+Detail lengkap: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+
 ```
 src/
   routes/         → HTTP routing (no business logic)
@@ -32,6 +34,15 @@ src/
 ```
 
 REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
+
+## Roadmap
+
+| Fase | Status | Dokumen |
+|------|--------|---------|
+| Phase 1 — Foundation | ✅ | README Quick Start |
+| Phase 2 — Identity & Auth | ✅ | README Auth endpoints |
+| **Phase 2.5 — Stabilization** | ✅ | **[docs/PHASE-2.5.md](docs/PHASE-2.5.md)** |
+| Phase 3 — JWT/OAuth & Permissions | 🔜 | — |
 
 ## Quick Start
 
@@ -568,15 +579,22 @@ Lihat [Langkah 6 — Folder backup chat](#langkah-6--folder-backup-chat-opsional
 ## Development
 
 ```bash
-npm run dev          # Start dev server (disarankan)
+npm run dev          # Start dev server (disarankan, graceful shutdown)
 npm run build:local  # Compile TypeScript → dist/
 npm start            # Jalankan dist/ (butuh build:local dulu)
-npm run test         # Run tests
+npm run test         # Run tests (unit + API E2E)
 npm run lint         # ESLint
 npm run format       # Prettier
+npm run format:check # CI format gate
 npm run typecheck    # TypeScript check
 npm run db:migrate   # Run D1 migrations
 ```
+
+**CI:** GitHub Actions menjalankan `lint`, `format:check`, `typecheck`, `test` pada setiap push/PR ke `main`.
+
+**Health:** `GET /health` memeriksa koneksi D1 — mengembalikan `503` jika database tidak dapat dijangkau.
+
+Lihat **[docs/PHASE-2.5.md](docs/PHASE-2.5.md)** untuk checklist stabilisasi lengkap.
 
 ## Environment Variables
 

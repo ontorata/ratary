@@ -2,7 +2,8 @@ import Fastify, { type FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import { getD1Client } from './db/index.js';
 import { MemoryRepository } from './repositories/index.js';
-import { MemoryService } from './services/index.js';
+import { MemoryService } from './services/memory.service.js';
+import { HealthService } from './services/health.service.js';
 import {
   createHealthController,
   createMemoryController,
@@ -11,7 +12,7 @@ import {
 } from './controllers/index.js';
 import { registerV1Routes } from './routes/v1/index.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from './routes/index.js';
-import { errorHandlerPlugin } from './plugins/index.js';
+import { errorHandlerPlugin, observabilityPlugin } from './plugins/index.js';
 import { getEnv } from './config/index.js';
 import { createAuthLayer } from './auth/index.js';
 
@@ -49,6 +50,10 @@ export async function buildApp(options?: {
 
   await fastify.register(errorHandlerPlugin);
 
+  if (enableLogger) {
+    await fastify.register(observabilityPlugin);
+  }
+
   const db = getD1Client();
   const authLayer = createAuthLayer(db);
 
@@ -64,16 +69,14 @@ export async function buildApp(options?: {
 
   const repository = new MemoryRepository(db);
   const memoryService = new MemoryService(repository);
+  const healthService = new HealthService(db);
 
   fastify.decorate('memoryService', memoryService);
 
-  const healthController = createHealthController();
+  const healthController = createHealthController(healthService);
   const memoryController = createMemoryController(memoryService);
   const backupController = createBackupController(memoryService);
-  const authController = createAuthController(
-    authLayer.identityService,
-    authLayer.clientService,
-  );
+  const authController = createAuthController(authLayer.identityService, authLayer.clientService);
 
   const controllers = {
     health: healthController,
@@ -82,9 +85,12 @@ export async function buildApp(options?: {
     auth: authController,
   };
 
-  await fastify.register(async (instance) => {
-    await registerV1Routes(instance, controllers);
-  }, { prefix: '/api/v1' });
+  await fastify.register(
+    async (instance) => {
+      await registerV1Routes(instance, controllers);
+    },
+    { prefix: '/api/v1' },
+  );
 
   // Legacy routes (backward compatible dual mount)
   await fastify.register(async (instance) => {

@@ -1,12 +1,6 @@
 import { z } from 'zod';
 
-export const IDENTITY_TYPES = [
-  'api_key',
-  'jwt',
-  'oauth',
-  'service_account',
-  'mcp_token',
-] as const;
+export const IDENTITY_TYPES = ['api_key', 'jwt', 'oauth', 'service_account', 'mcp_token'] as const;
 
 export type IdentityType = (typeof IDENTITY_TYPES)[number];
 

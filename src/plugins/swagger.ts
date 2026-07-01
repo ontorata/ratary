@@ -13,10 +13,11 @@ export async function swaggerPlugin(fastify: FastifyInstance): Promise<void> {
       },
       servers: [
         { url: 'http://localhost:3000', description: 'Local development' },
-        { url: 'https://your-app.vercel.app', description: 'Production' },
+        { url: 'https://ai-brain-beryl.vercel.app', description: 'Production' },
       ],
       tags: [
         { name: 'Health', description: 'Health check endpoints' },
+        { name: 'Auth', description: 'Identity, API keys, clients, bootstrap' },
         { name: 'Memory', description: 'Memory CRUD operations' },
         { name: 'Search', description: 'Search operations' },
         { name: 'Backup', description: 'Backup and restore' },
@@ -27,10 +28,12 @@ export async function swaggerPlugin(fastify: FastifyInstance): Promise<void> {
             type: 'apiKey',
             in: 'header',
             name: 'X-API-Key',
+            description: 'API key with aic_ prefix from bootstrap or POST /auth/identities',
           },
           BearerAuth: {
             type: 'http',
             scheme: 'bearer',
+            description: 'Bearer aic_... (same as X-API-Key)',
           },
         },
       },

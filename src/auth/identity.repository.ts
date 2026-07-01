@@ -53,10 +53,7 @@ export class IdentityRepository {
   }
 
   async findById(id: string): Promise<Identity | null> {
-    const rows = await this.db.query<IdentityRow>(
-      'SELECT * FROM identities WHERE id = ?',
-      [id],
-    );
+    const rows = await this.db.query<IdentityRow>('SELECT * FROM identities WHERE id = ?', [id]);
     return rows[0] ? rowToIdentity(rows[0]) : null;
   }
 
@@ -69,9 +66,7 @@ export class IdentityRepository {
   }
 
   async countAll(): Promise<number> {
-    const rows = await this.db.query<{ count: number }>(
-      'SELECT COUNT(*) as count FROM identities',
-    );
+    const rows = await this.db.query<{ count: number }>('SELECT COUNT(*) as count FROM identities');
     return rows[0]?.count ?? 0;
   }
 
@@ -91,18 +86,15 @@ export class IdentityRepository {
   }
 
   async updateLastUsed(id: string): Promise<void> {
-    await this.db.execute('UPDATE identities SET last_used_at = ? WHERE id = ?', [
-      nowISO(),
-      id,
-    ]);
+    await this.db.execute('UPDATE identities SET last_used_at = ? WHERE id = ?', [nowISO(), id]);
   }
 
   async revoke(id: string): Promise<Identity | null> {
     const now = nowISO();
-    await this.db.execute(
-      'UPDATE identities SET active = 0, revoked_at = ? WHERE id = ?',
-      [now, id],
-    );
+    await this.db.execute('UPDATE identities SET active = 0, revoked_at = ? WHERE id = ?', [
+      now,
+      id,
+    ]);
     return this.findById(id);
   }
 

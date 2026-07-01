@@ -21,9 +21,10 @@ export function createAuthenticateMiddleware(authService: AuthService) {
     const user = await authService.authenticate({
       headers: request.headers,
       ip: request.ip,
-      userAgent: typeof request.headers['user-agent'] === 'string'
-        ? request.headers['user-agent']
-        : undefined,
+      userAgent:
+        typeof request.headers['user-agent'] === 'string'
+          ? request.headers['user-agent']
+          : undefined,
       requestId: request.id,
     });
 

@@ -7,6 +7,7 @@ import {
   updateClientBodySchema,
 } from '../../auth/auth.types.js';
 import type { AuthController } from '../../controllers/auth.controller.js';
+import { AUTH_RATE_LIMITS, registerAuthRateLimit } from '../../plugins/rate-limit.js';
 import { ValidationError } from '../../types/errors.js';
 
 const idParamSchema = z.object({
@@ -37,9 +38,12 @@ export async function authRoutes(
   fastify: FastifyInstance,
   controller: AuthController,
 ): Promise<void> {
+  await registerAuthRateLimit(fastify);
+
   fastify.post(
     '/auth/bootstrap',
     {
+      config: { rateLimit: AUTH_RATE_LIMITS.bootstrap },
       preValidation: [validateBody(bootstrapBodySchema)],
       schema: { tags: ['Auth'], summary: 'One-time bootstrap (only when no identities exist)' },
     },
@@ -49,6 +53,7 @@ export async function authRoutes(
   fastify.post(
     '/auth/identities',
     {
+      config: { rateLimit: AUTH_RATE_LIMITS.identities },
       preValidation: [validateBody(createIdentityBodySchema)],
       schema: { tags: ['Auth'], summary: 'Create API key identity' },
     },
@@ -75,6 +80,7 @@ export async function authRoutes(
   fastify.post(
     '/auth/identities/:id/rotate',
     {
+      config: { rateLimit: AUTH_RATE_LIMITS.rotate },
       preValidation: [validateParams(idParamSchema)],
       schema: { tags: ['Auth'], summary: 'Rotate API key secret' },
     },

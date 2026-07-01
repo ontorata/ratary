@@ -54,10 +54,18 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: 0 } };
     }
 
-    if (normalizedSql === 'BEGIN IMMEDIATE' || normalizedSql === 'COMMIT' || normalizedSql === 'ROLLBACK') {
+    if (
+      normalizedSql === 'BEGIN IMMEDIATE' ||
+      normalizedSql === 'COMMIT' ||
+      normalizedSql === 'ROLLBACK'
+    ) {
       if (normalizedSql === 'BEGIN IMMEDIATE') this.inTransaction = true;
       if (normalizedSql === 'COMMIT' || normalizedSql === 'ROLLBACK') this.inTransaction = false;
       return { results: [], success: true, meta: { changes: 0 } };
+    }
+
+    if (normalizedSql.includes('SELECT 1 AS OK')) {
+      return { results: [{ ok: 1 }], success: true };
     }
 
     if (normalizedSql.startsWith('INSERT INTO IDENTITIES')) {
@@ -327,7 +335,9 @@ export class MockD1Client implements D1Client {
       const filtered = this.filterMemories(sql, params);
       return { results: [{ count: filtered.length }], success: true };
     }
-    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? ORDER BY CREATED_AT ASC')) {
+    if (
+      normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? ORDER BY CREATED_AT ASC')
+    ) {
       const ownerId = params[0] as string;
       const rows = [...this.memories.values()]
         .filter((m) => m.owner_id === ownerId)

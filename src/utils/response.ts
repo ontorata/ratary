@@ -1,4 +1,8 @@
-export function sendSuccess<T>(reply: import('fastify').FastifyReply, data: T, statusCode = 200): void {
+export function sendSuccess<T>(
+  reply: import('fastify').FastifyReply,
+  data: T,
+  statusCode = 200,
+): void {
   reply.status(statusCode).send({ success: true, data });
 }
 

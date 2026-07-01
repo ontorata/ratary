@@ -1,4 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { HealthService } from '../services/health.service.js';
 import type { MemoryService } from '../services/memory.service.js';
 import type { MemoryScope } from '../types/memory.js';
 import { createAuthController, AuthController } from './auth.controller.js';
@@ -10,6 +11,8 @@ function memoryScopeFromRequest(request: FastifyRequest): MemoryScope {
 }
 
 export class HealthController {
+  constructor(private readonly healthService: HealthService) {}
+
   async root(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
     reply.send({
       service: 'ai-memory-cloud',
@@ -29,16 +32,14 @@ export class HealthController {
   }
 
   async check(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    reply.send({
-      status: 'ok',
-      service: 'ai-memory-cloud',
-      timestamp: new Date().toISOString(),
-    });
+    const status = await this.healthService.check();
+    const code = status.status === 'ok' ? 200 : 503;
+    reply.status(code).send(status);
   }
 }
 
-export function createHealthController(): HealthController {
-  return new HealthController();
+export function createHealthController(healthService: HealthService): HealthController {
+  return new HealthController(healthService);
 }
 
 export class MemoryController {
@@ -79,10 +80,7 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    await this.memoryService.deleteMemory(
-      memoryScopeFromRequest(request),
-      request.params.id,
-    );
+    await this.memoryService.deleteMemory(memoryScopeFromRequest(request), request.params.id);
     reply.status(204).send();
   }
 

@@ -98,11 +98,7 @@ function splitStatements(sql: string): string[] {
     .filter((s) => s.length > 0);
 }
 
-async function tableHasColumn(
-  client: D1Client,
-  table: string,
-  column: string,
-): Promise<boolean> {
+async function tableHasColumn(client: D1Client, table: string, column: string): Promise<boolean> {
   const rows = await client.query<{ name: string }>(`PRAGMA table_info(${table})`);
   return rows.some((row) => row.name === column);
 }
@@ -114,27 +110,19 @@ async function tableHasColumn(
 async function migrateMemoriesOwnerId(client: D1Client): Promise<void> {
   const hasOwnerId = await tableHasColumn(client, 'memories', 'owner_id');
   if (!hasOwnerId) {
-    await client.execute(
-      `ALTER TABLE memories ADD COLUMN owner_id TEXT NOT NULL DEFAULT ''`,
-    );
+    await client.execute(`ALTER TABLE memories ADD COLUMN owner_id TEXT NOT NULL DEFAULT ''`);
   }
 
-  await client.execute(
-    `CREATE INDEX IF NOT EXISTS idx_memories_owner_id ON memories(owner_id)`,
-  );
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_memories_owner_id ON memories(owner_id)`);
 }
 
 async function migrateClientsOwnerId(client: D1Client): Promise<void> {
   const hasOwnerId = await tableHasColumn(client, 'clients', 'owner_id');
   if (!hasOwnerId) {
-    await client.execute(
-      `ALTER TABLE clients ADD COLUMN owner_id TEXT NOT NULL DEFAULT ''`,
-    );
+    await client.execute(`ALTER TABLE clients ADD COLUMN owner_id TEXT NOT NULL DEFAULT ''`);
   }
 
-  await client.execute(
-    `CREATE INDEX IF NOT EXISTS idx_clients_owner_id ON clients(owner_id)`,
-  );
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_clients_owner_id ON clients(owner_id)`);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

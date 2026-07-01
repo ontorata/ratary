@@ -116,29 +116,19 @@ function createMcpServer(memoryService: MemoryService): McpServer {
     },
   );
 
-  server.tool(
-    'list_projects',
-    'List all unique project names',
-    {},
-    async () => {
-      const projects = await memoryService.listProjects(scope);
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ projects }, null, 2) }],
-      };
-    },
-  );
+  server.tool('list_projects', 'List all unique project names', {}, async () => {
+    const projects = await memoryService.listProjects(scope);
+    return {
+      content: [{ type: 'text', text: JSON.stringify({ projects }, null, 2) }],
+    };
+  });
 
-  server.tool(
-    'list_tags',
-    'List all unique tags',
-    {},
-    async () => {
-      const tags = await memoryService.listTags(scope);
-      return {
-        content: [{ type: 'text', text: JSON.stringify({ tags }, null, 2) }],
-      };
-    },
-  );
+  server.tool('list_tags', 'List all unique tags', {}, async () => {
+    const tags = await memoryService.listTags(scope);
+    return {
+      content: [{ type: 'text', text: JSON.stringify({ tags }, null, 2) }],
+    };
+  });
 
   server.tool(
     'toggle_favorite',

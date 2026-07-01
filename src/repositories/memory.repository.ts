@@ -120,10 +120,10 @@ export class MemoryRepository {
   }
 
   async delete(id: string, ownerId: string): Promise<boolean> {
-    const result = await this.db.execute(
-      'DELETE FROM memories WHERE id = ? AND owner_id = ?',
-      [id, ownerId],
-    );
+    const result = await this.db.execute('DELETE FROM memories WHERE id = ? AND owner_id = ?', [
+      id,
+      ownerId,
+    ]);
     return (result.meta?.changes ?? 0) > 0;
   }
 

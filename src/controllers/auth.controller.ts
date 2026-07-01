@@ -91,10 +91,7 @@ export class AuthController {
     try {
       const user = request.user!;
       const identities = await this.identityService.list(user.ownerId);
-      sendSuccess(
-        reply,
-        identities.map(toPublicIdentity),
-      );
+      sendSuccess(reply, identities.map(toPublicIdentity));
     } catch (error) {
       this.handleError(error, reply);
     }

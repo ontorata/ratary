@@ -39,6 +39,7 @@ describe('REST API', () => {
       const body = response.json();
       expect(body.status).toBe('ok');
       expect(body.service).toBe('ai-memory-cloud');
+      expect(body.checks.database).toBe('ok');
     });
   });
 
