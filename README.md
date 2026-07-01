@@ -162,7 +162,7 @@ Set environment variables di Vercel Dashboard:
 - **Framework Preset:** Other
 - **Install Command:** `npm install` (jangan tambahkan `db:migrate`)
 - **Build Command:** kosong / override dengan `vercel.json` (`buildCommand: null`)
-- **Output Directory:** kosong / override dengan `vercel.json` (`outputDirectory: null`)
+- **Output Directory:** `public` (folder static minimal, API di `/api` via rewrite)
 
 Entrypoint Vercel: `api/index.ts` (default export handler). Proyek ini **API-only**, tanpa static site.
 
