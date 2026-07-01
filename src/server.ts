@@ -9,7 +9,7 @@ import {
   createBackupController,
 } from './controllers/index.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from './routes/index.js';
-import { errorHandlerPlugin, authPlugin, swaggerPlugin } from './plugins/index.js';
+import { errorHandlerPlugin, authPlugin } from './plugins/index.js';
 import { getEnv } from './config/index.js';
 
 export interface AppDependencies {
@@ -52,6 +52,7 @@ export async function buildApp(options?: {
 
   const skipSwagger = options?.skipSwagger ?? Boolean(process.env.VERCEL);
   if (!skipSwagger) {
+    const { swaggerPlugin } = await import('./plugins/swagger.js');
     await fastify.register(swaggerPlugin);
   }
 
