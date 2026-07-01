@@ -63,8 +63,10 @@ src/
 tests/            Vitest (unit + API E2E)
 scripts/          migrate, integration, backup sync
 api/              Vercel serverless entry
-docs/             Panduan (MCP, Phase 2.5, arsitektur)
+docs/             Panduan (MCP, Phase 2.5/2.6, arsitektur)
 ```
+
+**Roadmap berikutnya:** [PHASE-2.6-DESIGN.md](PHASE-2.6-DESIGN.md) — Knowledge Foundation (metadata, relasi, ranking).
 
 ## Layer rules
 

@@ -42,6 +42,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | Phase 1 — Foundation | ✅ | README Quick Start |
 | Phase 2 — Identity & Auth | ✅ | README Auth endpoints |
 | **Phase 2.5 — Stabilization** | ✅ | **[docs/PHASE-2.5.md](docs/PHASE-2.5.md)** |
+| **Phase 2.6 — Knowledge Foundation** | 🚧 Design approved | **[docs/PHASE-2.6-DESIGN.md](docs/PHASE-2.6-DESIGN.md)** |
 | Phase 3 — JWT/OAuth & Permissions | 🔜 | — |
 
 ## Quick Start
