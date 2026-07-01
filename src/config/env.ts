@@ -14,9 +14,24 @@ const envSchema = z.object({
   D1_DATABASE_ID: z.string().min(1, 'D1_DATABASE_ID is required'),
   D1_API_TOKEN: z.string().min(1, 'D1_API_TOKEN is required'),
 
-  // Optional API key for REST authentication
+  // Identity layer — HMAC secret for hashing API keys (min 32 chars)
+  AUTH_SECRET: z
+    .string()
+    .min(32, 'AUTH_SECRET must be at least 32 characters')
+    .optional(),
+
+  // Deprecated: replaced by identities table (removed in Phase 2.1)
   API_KEY: z.string().optional(),
-});
+})
+  .superRefine((env, ctx) => {
+    if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['AUTH_SECRET'],
+        message: 'AUTH_SECRET is required in production',
+      });
+    }
+  });
 
 export type Env = z.infer<typeof envSchema>;
 

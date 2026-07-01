@@ -1,9 +1,25 @@
 import type { D1Client, D1QueryResult } from '../../src/db/d1-client.js';
 import type { MemoryRow } from '../../src/types/memory.js';
+import type { IdentityRow } from '../../src/auth/auth.types.js';
+
+interface ClientRow {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  metadata: string;
+  created_at: string;
+  active: number;
+}
 
 export class MockD1Client implements D1Client {
   private memories: Map<string, MemoryRow> = new Map();
-
+  private identities: Map<string, IdentityRow> = new Map();
+  private identityByHash: Map<string, string> = new Map();
+  private clients: Map<string, ClientRow> = new Map();
+  private settings: Map<string, string> = new Map();
+  private auditLogs: unknown[] = [];
+  private inTransaction = false;
   async query<T = Record<string, unknown>>(sql: string, params: unknown[] = []): Promise<T[]> {
     const result = await this.execute(sql, params);
     return result.results as T[];
@@ -16,8 +32,153 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: 0 } };
     }
 
-    if (normalizedSql.startsWith('INSERT INTO MEMORIES')) {
-      const row: MemoryRow = {
+    if (normalizedSql.startsWith('PRAGMA TABLE_INFO')) {
+      const columns = [
+        { name: 'id' },
+        { name: 'title' },
+        { name: 'project' },
+        { name: 'content' },
+        { name: 'summary' },
+        { name: 'tags' },
+        { name: 'favorite' },
+        { name: 'archived' },
+        { name: 'owner_id' },
+        { name: 'created_at' },
+        { name: 'updated_at' },
+      ];
+      return { results: columns, success: true };
+    }
+
+    if (normalizedSql.startsWith('ALTER TABLE')) {
+      return { results: [], success: true, meta: { changes: 0 } };
+    }
+
+    if (normalizedSql === 'BEGIN IMMEDIATE' || normalizedSql === 'COMMIT' || normalizedSql === 'ROLLBACK') {
+      if (normalizedSql === 'BEGIN IMMEDIATE') this.inTransaction = true;
+      if (normalizedSql === 'COMMIT' || normalizedSql === 'ROLLBACK') this.inTransaction = false;
+      return { results: [], success: true, meta: { changes: 0 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO IDENTITIES')) {
+      const expiresAt = params.length >= 11 ? (params[10] as string | null) : null;
+      const createdAt = params[9] as string;
+      const row: IdentityRow = {
+        id: params[0] as string,
+        type: params[1] as string,
+        name: params[2] as string,
+        secret_hash: params[3] as string | null,
+        owner_id: params[4] as string,
+        description: params[5] as string,
+        metadata: params[6] as string,
+        client_id: params[7] as string | null,
+        created_by: params[8] as string | null,
+        created_at: createdAt,
+        last_used_at: null,
+        expires_at: expiresAt,
+        revoked_at: null,
+        active: 1,
+      };
+      this.identities.set(row.id, row);
+      if (row.secret_hash) this.identityByHash.set(row.secret_hash, row.id);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO CLIENTS')) {
+      const row: ClientRow = {
+        id: params[0] as string,
+        name: params[1] as string,
+        type: params[2] as string,
+        description: params[3] as string,
+        metadata: params[4] as string,
+        created_at: params[5] as string,
+        active: (params[6] as number | undefined) ?? 1,
+      };
+      this.clients.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO SETTINGS')) {
+      const key = params[0] as string;
+      const value = params[1] as string;
+      this.settings.set(key, value);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO AUDIT_LOGS')) {
+      this.auditLogs.push(params);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE ID = ?')) {
+      const id = params[0] as string;
+      const row = this.identities.get(id);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE SECRET_HASH = ?')) {
+      const hash = params[0] as string;
+      const id = this.identityByHash.get(hash);
+      const row = id ? this.identities.get(id) : undefined;
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE OWNER_ID = ?')) {
+      const ownerId = params[0] as string;
+      const rows = [...this.identities.values()].filter((i) => i.owner_id === ownerId);
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM IDENTITIES ORDER BY')) {
+      const rows = [...this.identities.values()].sort((a, b) =>
+        b.created_at.localeCompare(a.created_at),
+      );
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('SELECT COUNT(*) AS COUNT FROM IDENTITIES')) {
+      return { results: [{ count: this.identities.size }], success: true };
+    }
+
+    if (normalizedSql.includes('UPDATE IDENTITIES SET LAST_USED_AT')) {
+      const id = params[1] as string;
+      const row = this.identities.get(id);
+      if (row) {
+        row.last_used_at = params[0] as string;
+        this.identities.set(id, row);
+      }
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('UPDATE IDENTITIES SET ACTIVE = 0')) {
+      const id = params[1] as string;
+      const row = this.identities.get(id);
+      if (row) {
+        row.active = 0;
+        row.revoked_at = params[0] as string;
+        this.identities.set(id, row);
+      }
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('UPDATE IDENTITIES SET SECRET_HASH = ?')) {
+      const id = params[1] as string;
+      const row = this.identities.get(id);
+      if (row) {
+        if (row.secret_hash) this.identityByHash.delete(row.secret_hash);
+        row.secret_hash = params[0] as string;
+        row.last_used_at = null;
+        this.identities.set(id, row);
+        if (row.secret_hash) this.identityByHash.set(row.secret_hash, id);
+      }
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('SELECT VALUE FROM SETTINGS WHERE KEY = ?')) {
+      const value = this.settings.get(params[0] as string);
+      return { results: value !== undefined ? [{ value }] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO MEMORIES')) {      const row: MemoryRow = {
         id: params[0] as string,
         title: params[1] as string,
         project: params[2] as string,
@@ -81,10 +242,12 @@ export class MockD1Client implements D1Client {
     }
 
     if (normalizedSql.includes('SELECT COUNT(*)')) {
+      if (normalizedSql.includes('FROM IDENTITIES')) {
+        return { results: [{ count: this.identities.size }], success: true };
+      }
       const filtered = this.filterMemories(sql, params);
       return { results: [{ count: filtered.length }], success: true };
     }
-
     if (normalizedSql.includes('SELECT DISTINCT PROJECT')) {
       const projects = [
         ...new Set(
@@ -184,5 +347,14 @@ export class MockD1Client implements D1Client {
 
   clear(): void {
     this.memories.clear();
+    this.identities.clear();
+    this.identityByHash.clear();
+    this.clients.clear();
+    this.settings.clear();
+    this.auditLogs = [];
+  }
+
+  getAuditLogCount(): number {
+    return this.auditLogs.length;
   }
 }

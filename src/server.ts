@@ -7,10 +7,13 @@ import {
   createHealthController,
   createMemoryController,
   createBackupController,
+  createAuthController,
 } from './controllers/index.js';
+import { registerV1Routes } from './routes/v1/index.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from './routes/index.js';
-import { errorHandlerPlugin, authPlugin } from './plugins/index.js';
+import { errorHandlerPlugin } from './plugins/index.js';
 import { getEnv } from './config/index.js';
+import { createAuthLayer } from './auth/index.js';
 
 export interface AppDependencies {
   memoryService: MemoryService;
@@ -41,13 +44,16 @@ export async function buildApp(options?: {
   await fastify.register(cors, {
     origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'X-Request-Id'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'X-Request-Id', 'X-Client-Id'],
   });
 
   await fastify.register(errorHandlerPlugin);
 
+  const db = getD1Client();
+  const authLayer = createAuthLayer(db);
+
   if (!options?.skipAuth) {
-    await fastify.register(authPlugin);
+    fastify.addHook('onRequest', authLayer.authenticate);
   }
 
   const skipSwagger = options?.skipSwagger ?? Boolean(process.env.VERCEL);
@@ -56,7 +62,6 @@ export async function buildApp(options?: {
     await fastify.register(swaggerPlugin);
   }
 
-  const db = getD1Client();
   const repository = new MemoryRepository(db);
   const memoryService = new MemoryService(repository);
 
@@ -65,27 +70,25 @@ export async function buildApp(options?: {
   const healthController = createHealthController();
   const memoryController = createMemoryController(memoryService);
   const backupController = createBackupController(memoryService);
+  const authController = createAuthController(authLayer.authService, authLayer.identityService);
 
-  await fastify.register(
-    async (instance) => {
-      await healthRoutes(instance, healthController);
-    },
-    { prefix: '' },
-  );
+  const controllers = {
+    health: healthController,
+    memory: memoryController,
+    backup: backupController,
+    auth: authController,
+  };
 
-  await fastify.register(
-    async (instance) => {
-      await memoryRoutes(instance, memoryController);
-    },
-    { prefix: '' },
-  );
+  await fastify.register(async (instance) => {
+    await registerV1Routes(instance, controllers);
+  }, { prefix: '/api/v1' });
 
-  await fastify.register(
-    async (instance) => {
-      await backupRoutes(instance, backupController);
-    },
-    { prefix: '' },
-  );
+  // Legacy routes (backward compatible dual mount)
+  await fastify.register(async (instance) => {
+    await healthRoutes(instance, healthController);
+    await memoryRoutes(instance, memoryController);
+    await backupRoutes(instance, backupController);
+  });
 
   return fastify;
 }

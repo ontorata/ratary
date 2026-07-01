@@ -340,21 +340,49 @@ npm run sync:file -- "path/to/README.md"
 
 ## REST API Endpoints
 
+### Auth (`/api/v1/auth/*`) — response format `{ success, data }`
+
+| Method | Endpoint | Auth | Deskripsi |
+|--------|----------|------|-----------|
+| POST | `/api/v1/auth/bootstrap` | Tidak* | One-time setup (hanya jika DB kosong) |
+| POST | `/api/v1/auth/identities` | Ya | Buat API key baru |
+| GET | `/api/v1/auth/identities` | Ya | List identities (tanpa secret) |
+| DELETE | `/api/v1/auth/identities/:id` | Ya | Revoke (soft) |
+| POST | `/api/v1/auth/identities/:id/rotate` | Ya | Rotate secret |
+| POST | `/api/v1/auth/verify` | Ya | Cek credential aktif |
+
+\*Bootstrap hanya aktif sekali selamanya.
+
+**Header auth:** `Authorization: Bearer aic_...` atau `X-API-Key: aic_...`
+
+```bash
+# Bootstrap (sekali, setelah db:migrate)
+curl -X POST http://localhost:3001/api/v1/auth/bootstrap \
+  -H "Content-Type: application/json" \
+  -d '{"name":"cursor","client":{"name":"cursor","type":"mcp"}}'
+
+# Pakai API key
+curl http://localhost:3001/api/v1/memory \
+  -H "Authorization: Bearer aic_xxxx..."
+```
+
+### Memory & backup (dual mount: `/api/v1/*` + legacy `/*`)
+
 | Method | Endpoint | Deskripsi |
 |--------|----------|-----------|
 | GET | `/health` | Health check |
-| POST | `/memory` | Buat memory |
-| GET | `/memory/:id` | Get by ID |
-| PUT | `/memory/:id` | Update |
-| DELETE | `/memory/:id` | Delete |
-| GET | `/memory` | List (filter: project, favorite, archived) |
-| GET | `/search` | Search (q, tag, project, favorite) |
-| GET | `/projects` | List projects |
-| GET | `/tags` | List tags |
-| POST | `/memory/:id/favorite` | Toggle favorite |
-| POST | `/memory/:id/archive` | Archive |
-| GET | `/backup/export` | Export JSON backup |
-| POST | `/backup/import` | Import JSON backup |
+| POST | `/api/v1/memory` atau `/memory` | Buat memory |
+| GET | `/api/v1/memory/:id` | Get by ID |
+| PUT | `/api/v1/memory/:id` | Update |
+| DELETE | `/api/v1/memory/:id` | Delete |
+| GET | `/api/v1/memory` | List |
+| GET | `/api/v1/search` atau `/search` | Search |
+| GET | `/api/v1/projects` | List projects |
+| GET | `/api/v1/tags` | List tags |
+| POST | `/api/v1/memory/:id/favorite` | Toggle favorite |
+| POST | `/api/v1/memory/:id/archive` | Archive |
+| GET | `/api/v1/backup/export` | Export JSON |
+| POST | `/api/v1/backup/import` | Import JSON |
 
 ## Data Model
 
@@ -449,7 +477,8 @@ npm run db:migrate   # Run D1 migrations
 | `CLOUDFLARE_ACCOUNT_ID` | Yes | Cloudflare account ID (hex 32 karakter) |
 | `D1_DATABASE_ID` | Yes | D1 database ID |
 | `D1_API_TOKEN` | Yes | Cloudflare API token dengan D1 permission |
-| `API_KEY` | No | API key untuk proteksi REST endpoints |
+| `AUTH_SECRET` | Yes (prod) | HMAC secret min 32 char (`openssl rand -hex 32`) |
+| `API_KEY` | No | **Deprecated** — gunakan identities |
 | `PORT` | No | Server port (default: 3000) |
 | `LOG_LEVEL` | No | Pino log level (default: info) |
 | `BACKUP_ROOT` | No | Path folder backup chat (default: `D:/Apps/_backups`) |

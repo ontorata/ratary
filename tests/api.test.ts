@@ -8,6 +8,7 @@ import { MockD1Client } from './helpers/mock-d1.js';
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
 vi.stubEnv('D1_DATABASE_ID', 'test-database');
 vi.stubEnv('D1_API_TOKEN', 'test-token');
+vi.stubEnv('AUTH_SECRET', 'test-auth-secret-minimum-32-characters!!');
 vi.stubEnv('NODE_ENV', 'test');
 
 describe('REST API', () => {

@@ -1,5 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { MemoryService } from '../services/memory.service.js';
+import { createAuthController, AuthController } from './auth.controller.js';
+
+export { createAuthController, AuthController };
 
 export class HealthController {
   async root(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -8,11 +11,14 @@ export class HealthController {
       status: 'ok',
       endpoints: {
         health: '/health',
-        memory: '/memory',
-        search: '/search',
-        projects: '/projects',
-        tags: '/tags',
-        backup: '/backup/export',
+        api_v1: '/api/v1',
+        memory: '/api/v1/memory',
+        search: '/api/v1/search',
+        projects: '/api/v1/projects',
+        tags: '/api/v1/tags',
+        backup: '/api/v1/backup/export',
+        auth_bootstrap: '/api/v1/auth/bootstrap',
+        legacy_memory: '/memory',
       },
     });
   }
