@@ -200,12 +200,21 @@ export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promis
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
-  for (const sql of splitStatements(MIGRATION_SQL)) {
+  const statements = splitStatements(MIGRATION_SQL);
+  const createTables = statements.filter((sql) => /^\s*CREATE\s+TABLE/i.test(sql));
+  const createIndexes = statements.filter((sql) => !/^\s*CREATE\s+TABLE/i.test(sql));
+
+  for (const sql of createTables) {
     await client.execute(sql);
   }
 
   await migrateMemoriesOwnerId(client);
   await migrateClientsOwnerId(client);
+
+  for (const sql of createIndexes) {
+    await client.execute(sql);
+  }
+
   await migrateKnowledgeFoundationPhase1(client);
   await migrateKnowledgeFoundationPhase3(client);
 }
