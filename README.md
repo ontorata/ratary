@@ -2,7 +2,8 @@
 
 Second brain untuk AI coding assistant — simpan, cari, dan akses seluruh knowledge coding Anda dari berbagai perangkat.
 
-Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemini CLI**, **ChatGPT (via MCP)**, dan AI lain yang mendukung MCP.
+Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemini CLI**, **ChatGPT (REST API)**, dan AI lain yang mendukung MCP stdio.  
+→ Panduan lengkap: **[docs/MCP-SETUP.md](docs/MCP-SETUP.md)**
 
 ## Tech Stack
 
@@ -72,16 +73,29 @@ npm run dev
 API tersedia di `http://localhost:3000` (atau port di `.env`, mis. `3001`)  
 Dokumentasi Swagger di `http://localhost:3000/docs`
 
-### 5. MCP Server (untuk Cursor / Claude Code)
+### 5. MCP Server (semua AI client)
 
-Salin template project MCP:
+Server MCP stdio — koneksi langsung ke D1, **tanpa** API key `aic_...`.
+
+**Panduan lengkap per client:** [docs/MCP-SETUP.md](docs/MCP-SETUP.md)  
+(Cursor, Claude Code, Roo Code, Cline, Gemini CLI, ChatGPT, Claude Desktop, Windsurf, VS Code, dll.)
+
+#### Cursor (cepat)
 
 ```bash
 cp .cursor/mcp.json.example .cursor/mcp.json
-# Edit path absolut ke repo Anda + isi credential D1
+# Edit path absolut repo + credential D1
 ```
 
-Contoh `.cursor/mcp.json` (sesuaikan path laptop Anda):
+| Client | File config | Template |
+|--------|-------------|----------|
+| Cursor | `.cursor/mcp.json` | `.cursor/mcp.json.example` |
+| Claude Code | `.mcp.json` | `mcp.json.example` |
+| Roo Code | `.roo/mcp.json` | `.roo/mcp.json.example` |
+| Gemini CLI | `.gemini/settings.json` | `docs/examples/gemini-settings.json.example` |
+| Cline | via UI → MCP settings JSON | lihat panduan |
+
+Contoh konfigurasi (sesuaikan path):
 
 ```json
 {
@@ -101,11 +115,14 @@ Contoh `.cursor/mcp.json` (sesuaikan path laptop Anda):
 }
 ```
 
-**Global MCP** (opsional, semua workspace): edit `%USERPROFILE%\.cursor\mcp.json` dengan format yang sama.
+**Windows:** jika MCP gagal connect, pakai `"command": "cmd"` + `"/c", "npx", ...` — detail di [MCP-SETUP.md](docs/MCP-SETUP.md#windows--jika-npx-gagal--connection-closed).
 
-Setelah simpan:
-1. **Cursor → Settings → MCP** → pastikan `ai-memory-cloud` hijau/aktif
-2. **Reload Window** jika perlu
+**ChatGPT:** MCP stdio tidak didukung langsung — gunakan **REST API** + API key. Lihat [ChatGPT di MCP-SETUP.md](docs/MCP-SETUP.md#chatgpt-developer-mode).
+
+Setelah simpan config:
+1. Reload / restart client AI
+2. Pastikan server `ai-memory-cloud` connected (hijau / tools ter-list)
+3. Uji: `search_memory` dengan query apa saja
 
 Atau jalankan MCP standalone:
 
@@ -290,38 +307,17 @@ curl -X POST http://localhost:3001/api/v1/auth/identities \
 
 ---
 
-### Langkah 6 — Setup MCP di Cursor
+### Langkah 6 — Setup MCP
+
+Ikuti **[docs/MCP-SETUP.md](docs/MCP-SETUP.md)** untuk client Anda (Cursor, Claude Code, Roo, Cline, Gemini CLI, dll.).
+
+Ringkas Cursor:
 
 ```bash
 cp .cursor/mcp.json.example .cursor/mcp.json
 ```
 
-Edit path absolut + credential D1:
-
-```json
-{
-  "mcpServers": {
-    "ai-memory-cloud": {
-      "command": "npx",
-      "args": ["-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"],
-      "env": {
-        "CLOUDFLARE_ACCOUNT_ID": "...",
-        "D1_DATABASE_ID": "...",
-        "D1_API_TOKEN": "...",
-        "NODE_ENV": "production",
-        "LOG_LEVEL": "info"
-      }
-    }
-  }
-}
-```
-
-> MCP mengakses D1 **langsung** — tidak perlu API key `aic_` untuk MCP stdio.
-
-Langkah setelah simpan:
-1. Cursor → **Settings → MCP** → `ai-memory-cloud` hijau
-2. **Reload Window**
-3. Uji: `search_memory` dengan query `mangrove`
+Edit path absolut + credential D1 → **Settings → MCP** → `ai-memory-cloud` hijau → uji `search_memory`.
 
 ---
 
@@ -431,6 +427,8 @@ Laptop Baru
 ---
 
 ## MCP Tools
+
+Panduan setup per client: **[docs/MCP-SETUP.md](docs/MCP-SETUP.md)**
 
 | Tool | Deskripsi |
 |------|-----------|
