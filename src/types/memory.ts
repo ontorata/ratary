@@ -9,6 +9,7 @@ export const memoryRowSchema = z.object({
   tags: z.string(),
   favorite: z.number().int().min(0).max(1),
   archived: z.number().int().min(0).max(1),
+  owner_id: z.string().default(''),
   created_at: z.string(),
   updated_at: z.string(),
 });
@@ -24,6 +25,7 @@ export interface Memory {
   tags: string[];
   favorite: boolean;
   archived: boolean;
+  ownerId: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -91,3 +93,5 @@ export type UpdateMemoryInput = z.infer<typeof updateMemorySchema>;
 export type ListMemoriesQuery = z.infer<typeof listMemoriesQuerySchema>;
 export type SearchQuery = z.infer<typeof searchQuerySchema>;
 export type BackupImportInput = z.infer<typeof backupImportSchema>;
+
+export type { MemoryScope } from './memory-scope.js';

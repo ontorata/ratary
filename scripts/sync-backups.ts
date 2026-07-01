@@ -4,6 +4,7 @@ import { stat } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { MemoryService } from '../src/services/memory.service.js';
+import { getMcpMemoryScope } from '../src/types/memory-scope.js';
 import { getD1Client } from '../src/db/index.js';
 import {
   collectSyncCandidates,
@@ -49,8 +50,10 @@ function log(message: string): void {
   console.log(`[${time}] ${message}`);
 }
 
+const MEMORY_SCOPE = getMcpMemoryScope();
+
 async function findExistingMemoryIds(service: MemoryService, relPath: string): Promise<string[]> {
-  const { memories } = await service.listMemories({ limit: 100, offset: 0 });
+  const { memories } = await service.listMemories(MEMORY_SCOPE, { limit: 100, offset: 0 });
 
   return memories
     .filter(
@@ -64,7 +67,7 @@ async function findExistingMemoryIds(service: MemoryService, relPath: string): P
 async function deleteOldMemories(service: MemoryService, memoryIds: string[]): Promise<void> {
   for (const id of memoryIds) {
     try {
-      await service.deleteMemory(id);
+      await service.deleteMemory(MEMORY_SCOPE, id);
     } catch {
       // Memory mungkin sudah dihapus manual
     }
@@ -124,7 +127,7 @@ async function syncOneFile(
 
   const memoryIds: string[] = [];
   for (const draft of memories) {
-    const created = await service.createMemory({
+    const created = await service.createMemory(MEMORY_SCOPE, {
       title: draft.title,
       project: draft.project,
       content: draft.content,

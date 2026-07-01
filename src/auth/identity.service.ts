@@ -56,14 +56,15 @@ export class IdentityService {
     if (input.client) {
       clientId = generateId();
       statements.push({
-        sql: `INSERT INTO clients (id, name, type, description, metadata, created_at, active)
-              VALUES (?, ?, ?, ?, ?, ?, 1)`,
+        sql: `INSERT INTO clients (id, name, type, description, metadata, owner_id, created_at, active)
+              VALUES (?, ?, ?, ?, ?, ?, ?, 1)`,
         params: [
           clientId,
           input.client.name,
           input.client.type,
           input.client.description ?? '',
           '{}',
+          ownerId,
           now,
         ],
       });
@@ -110,6 +111,15 @@ export class IdentityService {
       clientId,
       metadata: { name: input.name },
     });
+
+    if (clientId) {
+      emitAuthEvent({
+        event: 'client.created',
+        ownerId,
+        clientId,
+        metadata: input.client ? { name: input.client.name, type: input.client.type } : {},
+      });
+    }
 
     emitAuthEvent({
       event: 'identity.created',

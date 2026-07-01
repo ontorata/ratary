@@ -454,6 +454,10 @@ Panduan setup per client: **[docs/MCP-SETUP.md](docs/MCP-SETUP.md)**
 | DELETE | `/api/v1/auth/identities/:id` | Ya | Revoke (soft) |
 | POST | `/api/v1/auth/identities/:id/rotate` | Ya | Rotate secret |
 | POST | `/api/v1/auth/verify` | Ya | Cek credential aktif |
+| POST | `/api/v1/auth/clients` | Ya | Daftarkan client app |
+| GET | `/api/v1/auth/clients` | Ya | List clients owner |
+| GET | `/api/v1/auth/clients/:id` | Ya | Detail client |
+| PATCH | `/api/v1/auth/clients/:id` | Ya | Update / deactivate client |
 
 \*Bootstrap hanya aktif sekali selamanya.
 
@@ -516,7 +520,7 @@ Set environment variables di Vercel Dashboard:
 - `CLOUDFLARE_ACCOUNT_ID`
 - `D1_DATABASE_ID`
 - `D1_API_TOKEN`
-- `API_KEY` (opsional, untuk proteksi REST API)
+- `AUTH_SECRET`
 
 **Penting — Vercel Build Settings:**
 - **Framework Preset:** Other
@@ -582,7 +586,7 @@ npm run db:migrate   # Run D1 migrations
 | `D1_DATABASE_ID` | Yes | D1 database ID |
 | `D1_API_TOKEN` | Yes | Cloudflare API token dengan D1 permission |
 | `AUTH_SECRET` | Yes (prod) | HMAC secret min 32 char (`openssl rand -hex 32`) |
-| `API_KEY` | No | **Deprecated** — gunakan identities |
+| `MCP_OWNER_ID` | No | Scope memory MCP (default: `''` = legacy shared pool) |
 | `PORT` | No | Server port (default: 3000) |
 | `LOG_LEVEL` | No | Pino log level (default: info) |
 | `BACKUP_ROOT` | No | Path folder backup chat (default: `D:/Apps/_backups`) |

@@ -4,8 +4,10 @@ import { z } from 'zod';
 import { getD1Client } from '../db/index.js';
 import { MemoryRepository } from '../repositories/index.js';
 import { MemoryService } from '../services/index.js';
+import { getMcpMemoryScope } from '../types/memory-scope.js';
 
 function createMcpServer(memoryService: MemoryService): McpServer {
+  const scope = getMcpMemoryScope();
   const server = new McpServer({
     name: 'ai-memory-cloud',
     version: '1.0.0',
@@ -23,7 +25,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       favorite: z.boolean().optional().describe('Mark as favorite'),
     },
     async (params) => {
-      const memory = await memoryService.createMemory({
+      const memory = await memoryService.createMemory(scope, {
         title: params.title,
         content: params.content,
         project: params.project ?? '',
@@ -51,7 +53,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
     },
     async (params) => {
       const { id, ...updateData } = params;
-      const memory = await memoryService.updateMemory(id, updateData);
+      const memory = await memoryService.updateMemory(scope, id, updateData);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -65,7 +67,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       id: z.string().uuid().describe('Memory UUID to delete'),
     },
     async (params) => {
-      await memoryService.deleteMemory(params.id);
+      await memoryService.deleteMemory(scope, params.id);
       return {
         content: [{ type: 'text', text: `Memory ${params.id} deleted successfully` }],
       };
@@ -79,7 +81,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       id: z.string().uuid().describe('Memory UUID'),
     },
     async (params) => {
-      const memory = await memoryService.getMemoryById(params.id);
+      const memory = await memoryService.getMemoryById(scope, params.id);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -99,7 +101,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       offset: z.number().int().min(0).optional().describe('Pagination offset'),
     },
     async (params) => {
-      const result = await memoryService.searchMemory({
+      const result = await memoryService.searchMemory(scope, {
         q: params.q,
         tag: params.tag,
         project: params.project,
@@ -119,7 +121,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
     'List all unique project names',
     {},
     async () => {
-      const projects = await memoryService.listProjects();
+      const projects = await memoryService.listProjects(scope);
       return {
         content: [{ type: 'text', text: JSON.stringify({ projects }, null, 2) }],
       };
@@ -131,7 +133,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
     'List all unique tags',
     {},
     async () => {
-      const tags = await memoryService.listTags();
+      const tags = await memoryService.listTags(scope);
       return {
         content: [{ type: 'text', text: JSON.stringify({ tags }, null, 2) }],
       };
@@ -145,7 +147,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       id: z.string().uuid().describe('Memory UUID'),
     },
     async (params) => {
-      const memory = await memoryService.toggleFavorite(params.id);
+      const memory = await memoryService.toggleFavorite(scope, params.id);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -159,7 +161,7 @@ function createMcpServer(memoryService: MemoryService): McpServer {
       id: z.string().uuid().describe('Memory UUID to archive'),
     },
     async (params) => {
-      const memory = await memoryService.archiveMemory(params.id, true);
+      const memory = await memoryService.archiveMemory(scope, params.id, true);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };

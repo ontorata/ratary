@@ -8,6 +8,7 @@ interface ClientRow {
   type: string;
   description: string;
   metadata: string;
+  owner_id: string;
   created_at: string;
   active: number;
 }
@@ -90,11 +91,41 @@ export class MockD1Client implements D1Client {
         type: params[2] as string,
         description: params[3] as string,
         metadata: params[4] as string,
-        created_at: params[5] as string,
-        active: (params[6] as number | undefined) ?? 1,
+        owner_id: (params[5] as string) ?? '',
+        created_at: params[6] as string,
+        active: 1,
       };
       this.clients.set(row.id, row);
       return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM CLIENTS WHERE OWNER_ID = ?')) {
+      const ownerId = params[0] as string;
+      const rows = [...this.clients.values()]
+        .filter((c) => c.owner_id === ownerId)
+        .sort((a, b) => b.created_at.localeCompare(a.created_at));
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM CLIENTS WHERE ID = ?')) {
+      const id = params[0] as string;
+      const row = this.clients.get(id);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('UPDATE CLIENTS')) {
+      const id = params[5] as string;
+      const ownerId = params[6] as string;
+      const row = this.clients.get(id);
+      if (row && row.owner_id === ownerId) {
+        row.name = params[0] as string;
+        row.type = params[1] as string;
+        row.description = params[2] as string;
+        row.metadata = params[3] as string;
+        row.active = params[4] as number;
+        this.clients.set(id, row);
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
     }
 
     if (normalizedSql.startsWith('INSERT INTO SETTINGS')) {
@@ -178,7 +209,8 @@ export class MockD1Client implements D1Client {
       return { results: value !== undefined ? [{ value }] : [], success: true };
     }
 
-    if (normalizedSql.startsWith('INSERT INTO MEMORIES')) {      const row: MemoryRow = {
+    if (normalizedSql.startsWith('INSERT INTO MEMORIES')) {
+      const row: MemoryRow = {
         id: params[0] as string,
         title: params[1] as string,
         project: params[2] as string,
@@ -187,27 +219,45 @@ export class MockD1Client implements D1Client {
         tags: params[5] as string,
         favorite: params[6] as number,
         archived: params[7] as number,
-        created_at: params[8] as string,
-        updated_at: params[9] as string,
+        owner_id: (params[8] as string) ?? '',
+        created_at: params[9] as string,
+        updated_at: params[10] as string,
       };
       this.memories.set(row.id, row);
       return { results: [], success: true, meta: { changes: 1 } };
     }
 
     if (normalizedSql.startsWith('UPDATE MEMORIES')) {
-      const id = params[params.length - 1] as string;
-      const existing = this.memories.get(id);
-      if (!existing) {
-        return { results: [], success: true, meta: { changes: 0 } };
+      let id: string;
+      let ownerId: string | undefined;
+
+      if (
+        params.length === 4 &&
+        (normalizedSql.includes('FAVORITE = ?') || normalizedSql.includes('ARCHIVED = ?'))
+      ) {
+        id = params[2] as string;
+        ownerId = params[3] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        if (normalizedSql.includes('FAVORITE = ?')) {
+          existing.favorite = params[0] as number;
+        } else {
+          existing.archived = params[0] as number;
+        }
+        existing.updated_at = params[1] as string;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
       }
 
-      if (params.length === 3 && normalizedSql.includes('FAVORITE = ?')) {
-        existing.favorite = params[0] as number;
-        existing.updated_at = params[1] as string;
-      } else if (params.length === 3 && normalizedSql.includes('ARCHIVED = ?')) {
-        existing.archived = params[0] as number;
-        existing.updated_at = params[1] as string;
-      } else if (params.length === 9) {
+      if (params.length === 10) {
+        id = params[8] as string;
+        ownerId = params[9] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
         existing.title = params[0] as string;
         existing.project = params[1] as string;
         existing.content = params[2] as string;
@@ -216,10 +266,20 @@ export class MockD1Client implements D1Client {
         existing.favorite = params[5] as number;
         existing.archived = params[6] as number;
         existing.updated_at = params[7] as string;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
       }
 
-      this.memories.set(id, existing);
-      return { results: [], success: true, meta: { changes: 1 } };
+      return { results: [], success: true, meta: { changes: 0 } };
+    }
+
+    if (normalizedSql.startsWith('DELETE FROM MEMORIES WHERE ID = ? AND OWNER_ID = ?')) {
+      const id = params[0] as string;
+      const ownerId = params[1] as string;
+      const row = this.memories.get(id);
+      const existed = row?.owner_id === ownerId;
+      if (existed) this.memories.delete(id);
+      return { results: [], success: true, meta: { changes: existed ? 1 : 0 } };
     }
 
     if (normalizedSql.startsWith('DELETE FROM MEMORIES WHERE ID')) {
@@ -229,10 +289,29 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: existed ? 1 : 0 } };
     }
 
+    if (normalizedSql.startsWith('DELETE FROM MEMORIES WHERE OWNER_ID = ?')) {
+      const ownerId = params[0] as string;
+      let count = 0;
+      for (const [id, row] of this.memories) {
+        if (row.owner_id === ownerId) {
+          this.memories.delete(id);
+          count++;
+        }
+      }
+      return { results: [], success: true, meta: { changes: count } };
+    }
+
     if (normalizedSql.startsWith('DELETE FROM MEMORIES')) {
       const count = this.memories.size;
       this.memories.clear();
       return { results: [], success: true, meta: { changes: count } };
+    }
+
+    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE ID = ? AND OWNER_ID = ?')) {
+      const id = params[0] as string;
+      const ownerId = params[1] as string;
+      const row = this.memories.get(id);
+      return { results: row && row.owner_id === ownerId ? [row] : [], success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE ID = ?')) {
@@ -248,20 +327,30 @@ export class MockD1Client implements D1Client {
       const filtered = this.filterMemories(sql, params);
       return { results: [{ count: filtered.length }], success: true };
     }
+    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? ORDER BY CREATED_AT ASC')) {
+      const ownerId = params[0] as string;
+      const rows = [...this.memories.values()]
+        .filter((m) => m.owner_id === ownerId)
+        .sort((a, b) => a.created_at.localeCompare(b.created_at));
+      return { results: rows, success: true };
+    }
+
     if (normalizedSql.includes('SELECT DISTINCT PROJECT')) {
+      const ownerId = params[0] as string;
       const projects = [
         ...new Set(
           [...this.memories.values()]
-            .filter((m) => m.project !== '' && m.archived === 0)
+            .filter((m) => m.owner_id === ownerId && m.project !== '' && m.archived === 0)
             .map((m) => m.project),
         ),
       ].sort();
       return { results: projects.map((p) => ({ project: p })), success: true };
     }
 
-    if (normalizedSql.includes('SELECT TAGS FROM MEMORIES')) {
+    if (normalizedSql.includes('SELECT TAGS FROM MEMORIES WHERE OWNER_ID = ?')) {
+      const ownerId = params[0] as string;
       const rows = [...this.memories.values()]
-        .filter((m) => m.archived === 0)
+        .filter((m) => m.owner_id === ownerId && m.archived === 0)
         .map((m) => ({ tags: m.tags }));
       return { results: rows, success: true };
     }
@@ -286,21 +375,20 @@ export class MockD1Client implements D1Client {
   private filterMemories(sql: string, params: unknown[]): MemoryRow[] {
     let results = [...this.memories.values()];
     const upperSql = sql.toUpperCase();
+    let paramIndex = 0;
 
-    const tagLikeParam = params.find(
-      (p): p is string => typeof p === 'string' && p.startsWith('%"') && p.endsWith('"%'),
-    );
-    if (tagLikeParam) {
-      const tag = tagLikeParam.slice(2, -2);
-      results = results.filter((m) => m.tags.includes(`"${tag}"`) || m.tags.includes(tag));
+    const nextParam = (): unknown => params[paramIndex++];
+
+    if (upperSql.includes('OWNER_ID = ?')) {
+      const ownerId = nextParam() as string;
+      results = results.filter((m) => m.owner_id === ownerId);
     }
 
-    const textLikePatterns = params.filter(
-      (p): p is string =>
-        typeof p === 'string' && p.startsWith('%') && p.endsWith('%') && !p.startsWith('%"'),
-    );
-    if (upperSql.includes('LIKE ?') && textLikePatterns.length > 0) {
-      const keyword = textLikePatterns[0].slice(1, -1).toLowerCase();
+    if (upperSql.includes('(TITLE LIKE ? OR CONTENT LIKE ?')) {
+      const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
+      nextParam();
+      nextParam();
+      nextParam();
       results = results.filter(
         (m) =>
           m.title.toLowerCase().includes(keyword) ||
@@ -310,29 +398,26 @@ export class MockD1Client implements D1Client {
       );
     }
 
-    const stringParams = params.filter(
-      (p): p is string => typeof p === 'string' && !p.startsWith('%'),
-    );
-    for (const value of stringParams) {
-      if (upperSql.includes('PROJECT = ?')) {
-        results = results.filter((m) => m.project === value);
-      }
+    if (upperSql.includes('TAGS LIKE ?')) {
+      const tagPattern = nextParam() as string;
+      const tag = tagPattern.slice(2, -2);
+      results = results.filter((m) => m.tags.includes(`"${tag}"`) || m.tags.includes(tag));
     }
 
-    const filterParams = params.slice(0, -2);
-    const numericParams = filterParams.filter(
-      (p): p is number => typeof p === 'number' && (p === 0 || p === 1),
-    );
-    for (const value of numericParams) {
-      if (upperSql.includes('FAVORITE = ?')) {
-        results = results.filter((m) => m.favorite === value);
-      }
-      if (upperSql.includes('ARCHIVED = ?')) {
-        results = results.filter((m) => m.archived === value);
-      }
+    if (upperSql.includes('PROJECT = ?') && !upperSql.includes('LIKE')) {
+      const project = nextParam() as string;
+      results = results.filter((m) => m.project === project);
     }
 
-    if (upperSql.includes('ARCHIVED = 0') && !upperSql.includes('ARCHIVED = ?')) {
+    if (upperSql.includes('FAVORITE = ?')) {
+      const favorite = nextParam() as number;
+      results = results.filter((m) => m.favorite === favorite);
+    }
+
+    if (upperSql.includes('ARCHIVED = ?')) {
+      const archived = nextParam() as number;
+      results = results.filter((m) => m.archived === archived);
+    } else if (upperSql.includes('ARCHIVED = 0')) {
       results = results.filter((m) => m.archived === 0);
     }
 

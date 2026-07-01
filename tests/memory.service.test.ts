@@ -7,6 +7,7 @@ import { NotFoundError } from '../src/types/errors.js';
 describe('MemoryService', () => {
   let service: MemoryService;
   let mockDb: MockD1Client;
+  const scope = { ownerId: 'test-owner' };
 
   beforeEach(() => {
     mockDb = new MockD1Client();
@@ -16,7 +17,7 @@ describe('MemoryService', () => {
 
   describe('createMemory', () => {
     it('should create a memory with all fields', async () => {
-      const memory = await service.createMemory({
+      const memory = await service.createMemory(scope, {
         title: 'Login JWT',
         project: 'auth-service',
         content: '# Login JWT\n\nMenggunakan JWT HS256',
@@ -39,7 +40,7 @@ describe('MemoryService', () => {
 
   describe('getMemoryById', () => {
     it('should return memory by id', async () => {
-      const created = await service.createMemory({
+      const created = await service.createMemory(scope, {
         title: 'Test',
         content: 'Content',
         project: '',
@@ -48,20 +49,20 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const found = await service.getMemoryById(created.id);
+      const found = await service.getMemoryById(scope, created.id);
       expect(found.id).toBe(created.id);
     });
 
     it('should throw NotFoundError for missing id', async () => {
       await expect(
-        service.getMemoryById('00000000-0000-0000-0000-000000000000'),
+        service.getMemoryById(scope, '00000000-0000-0000-0000-000000000000'),
       ).rejects.toThrow(NotFoundError);
     });
   });
 
   describe('updateMemory', () => {
     it('should update memory fields', async () => {
-      const created = await service.createMemory({
+      const created = await service.createMemory(scope, {
         title: 'Original',
         content: 'Original content',
         project: 'proj',
@@ -70,7 +71,7 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const updated = await service.updateMemory(created.id, {
+      const updated = await service.updateMemory(scope, created.id, {
         title: 'Updated',
         content: 'Updated content',
       });
@@ -83,7 +84,7 @@ describe('MemoryService', () => {
 
   describe('deleteMemory', () => {
     it('should delete memory', async () => {
-      const created = await service.createMemory({
+      const created = await service.createMemory(scope, {
         title: 'To Delete',
         content: 'Content',
         project: '',
@@ -92,16 +93,16 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      await service.deleteMemory(created.id);
+      await service.deleteMemory(scope, created.id);
 
-      await expect(service.getMemoryById(created.id)).rejects.toThrow(NotFoundError);
+      await expect(service.getMemoryById(scope, created.id)).rejects.toThrow(NotFoundError);
     });
   });
 
   describe('listMemories', () => {
     it('should list memories with pagination', async () => {
       for (let i = 0; i < 3; i++) {
-        await service.createMemory({
+        await service.createMemory(scope, {
           title: `Memory ${i}`,
           content: `Content ${i}`,
           project: 'test-project',
@@ -111,7 +112,7 @@ describe('MemoryService', () => {
         });
       }
 
-      const result = await service.listMemories({
+      const result = await service.listMemories(scope, {
         project: 'test-project',
         limit: 2,
         offset: 0,
@@ -124,7 +125,7 @@ describe('MemoryService', () => {
 
   describe('searchMemory', () => {
     it('should search by keyword', async () => {
-      await service.createMemory({
+      await service.createMemory(scope, {
         title: 'JWT Login',
         content: 'POST /login endpoint',
         project: 'auth',
@@ -133,7 +134,7 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      await service.createMemory({
+      await service.createMemory(scope, {
         title: 'Database Setup',
         content: 'PostgreSQL config',
         project: 'infra',
@@ -142,7 +143,7 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const result = await service.searchMemory({
+      const result = await service.searchMemory(scope, {
         q: 'JWT',
         limit: 50,
         offset: 0,
@@ -154,7 +155,7 @@ describe('MemoryService', () => {
     });
 
     it('should search by tag', async () => {
-      await service.createMemory({
+      await service.createMemory(scope, {
         title: 'Memory 1',
         content: 'Content',
         project: '',
@@ -163,7 +164,7 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const result = await service.searchMemory({
+      const result = await service.searchMemory(scope, {
         tag: 'typescript',
         limit: 50,
         offset: 0,
@@ -176,7 +177,7 @@ describe('MemoryService', () => {
 
   describe('toggleFavorite', () => {
     it('should toggle favorite status', async () => {
-      const created = await service.createMemory({
+      const created = await service.createMemory(scope, {
         title: 'Test',
         content: 'Content',
         project: '',
@@ -185,17 +186,17 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const toggled = await service.toggleFavorite(created.id);
+      const toggled = await service.toggleFavorite(scope, created.id);
       expect(toggled.favorite).toBe(true);
 
-      const toggledAgain = await service.toggleFavorite(created.id);
+      const toggledAgain = await service.toggleFavorite(scope, created.id);
       expect(toggledAgain.favorite).toBe(false);
     });
   });
 
   describe('archiveMemory', () => {
     it('should archive memory', async () => {
-      const created = await service.createMemory({
+      const created = await service.createMemory(scope, {
         title: 'Test',
         content: 'Content',
         project: '',
@@ -204,14 +205,14 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const archived = await service.archiveMemory(created.id);
+      const archived = await service.archiveMemory(scope, created.id);
       expect(archived.archived).toBe(true);
     });
   });
 
   describe('listProjects', () => {
     it('should list unique projects', async () => {
-      await service.createMemory({
+      await service.createMemory(scope, {
         title: 'M1',
         content: 'C1',
         project: 'project-a',
@@ -219,7 +220,7 @@ describe('MemoryService', () => {
         tags: [],
         favorite: false,
       });
-      await service.createMemory({
+      await service.createMemory(scope, {
         title: 'M2',
         content: 'C2',
         project: 'project-b',
@@ -228,7 +229,7 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const projects = await service.listProjects();
+      const projects = await service.listProjects(scope);
       expect(projects).toContain('project-a');
       expect(projects).toContain('project-b');
     });
@@ -236,7 +237,7 @@ describe('MemoryService', () => {
 
   describe('listTags', () => {
     it('should list unique tags', async () => {
-      await service.createMemory({
+      await service.createMemory(scope, {
         title: 'M1',
         content: 'C1',
         project: '',
@@ -245,7 +246,7 @@ describe('MemoryService', () => {
         favorite: false,
       });
 
-      const tags = await service.listTags();
+      const tags = await service.listTags(scope);
       expect(tags).toContain('react');
       expect(tags).toContain('typescript');
     });
@@ -253,7 +254,7 @@ describe('MemoryService', () => {
 
   describe('backup', () => {
     it('should export and import memories', async () => {
-      await service.createMemory({
+      await service.createMemory(scope, {
         title: 'Backup Test',
         content: 'Content for backup',
         project: 'backup-proj',
@@ -262,10 +263,10 @@ describe('MemoryService', () => {
         favorite: true,
       });
 
-      const exported = await service.exportBackup();
+      const exported = await service.exportBackup(scope);
       expect(exported.memories.length).toBe(1);
 
-      const result = await service.importBackup({
+      const result = await service.importBackup(scope, {
         memories: [
           {
             title: 'Imported',
@@ -281,7 +282,7 @@ describe('MemoryService', () => {
 
       expect(result.imported).toBe(1);
 
-      const searchResult = await service.searchMemory({
+      const searchResult = await service.searchMemory(scope, {
         q: 'Imported',
         limit: 50,
         offset: 0,

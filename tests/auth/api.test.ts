@@ -173,4 +173,96 @@ describe('Auth API E2E', () => {
     });
     expect(mockDb.getAuditLogCount()).toBeGreaterThan(0);
   });
+
+  it('should manage clients for current owner', async () => {
+    const bootstrap = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/bootstrap',
+      payload: { name: 'owner', client: { name: 'cursor', type: 'mcp' } },
+    });
+    const apiKey = bootstrap.json().data.apiKey as string;
+    const headers = { authorization: `Bearer ${apiKey}` };
+
+    const created = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/clients',
+      headers,
+      payload: { name: 'claude-code', type: 'mcp', description: 'CLI agent' },
+    });
+    expect(created.statusCode).toBe(201);
+    const clientId = created.json().data.client.id as string;
+
+    const list = await app.inject({
+      method: 'GET',
+      url: '/api/v1/auth/clients',
+      headers,
+    });
+    expect(list.statusCode).toBe(200);
+    expect(list.json().data.length).toBeGreaterThanOrEqual(2);
+
+    const getOne = await app.inject({
+      method: 'GET',
+      url: `/api/v1/auth/clients/${clientId}`,
+      headers,
+    });
+    expect(getOne.statusCode).toBe(200);
+    expect(getOne.json().data.client.name).toBe('claude-code');
+
+    const deactivated = await app.inject({
+      method: 'PATCH',
+      url: `/api/v1/auth/clients/${clientId}`,
+      headers,
+      payload: { active: false },
+    });
+    expect(deactivated.statusCode).toBe(200);
+    expect(deactivated.json().data.client.active).toBe(false);
+  });
+
+  it('should isolate memories by owner_id', async () => {
+    const bootstrap = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/bootstrap',
+      payload: { name: 'owner-a' },
+    });
+    const keyA = bootstrap.json().data.apiKey as string;
+    const ownerIdA = bootstrap.json().data.owner_id as string;
+
+    const created = await app.inject({
+      method: 'POST',
+      url: '/api/v1/memory',
+      headers: { authorization: `Bearer ${keyA}` },
+      payload: { title: 'Secret A', content: 'Only owner A' },
+    });
+    expect(created.statusCode).toBe(201);
+
+    const ownerB = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/identities',
+      headers: { authorization: `Bearer ${keyA}` },
+      payload: {
+        name: 'owner-b-key',
+        owner_id: '00000000-0000-4000-8000-000000000001',
+      },
+    });
+    expect(ownerB.statusCode).toBe(201);
+    const keyB = ownerB.json().data.apiKey as string;
+
+    const listB = await app.inject({
+      method: 'GET',
+      url: '/api/v1/memory',
+      headers: { authorization: `Bearer ${keyB}` },
+    });
+    const listBBody = listB.json();
+    expect(listBBody.total).toBe(0);
+
+    const listA = await app.inject({
+      method: 'GET',
+      url: '/api/v1/memory',
+      headers: { authorization: `Bearer ${keyA}` },
+    });
+    const listABody = listA.json();
+    expect(listABody.total).toBe(1);
+    expect(listABody.memories[0].title).toBe('Secret A');
+    expect(listABody.memories[0].ownerId).toBe(ownerIdA);
+  });
 });

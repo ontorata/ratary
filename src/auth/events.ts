@@ -6,7 +6,9 @@ export type AuthEventName =
   | 'identity.revoked'
   | 'identity.rotated'
   | 'auth.failed'
-  | 'bootstrap.completed';
+  | 'bootstrap.completed'
+  | 'client.created'
+  | 'client.deactivated';
 
 export interface AuthEventPayload {
   event: AuthEventName;

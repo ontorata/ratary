@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { resolve } from 'node:path';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { MemoryService } from '../src/services/memory.service.js';
+import { getMcpMemoryScope } from '../src/types/memory-scope.js';
 import { getD1Client } from '../src/db/index.js';
 import { parseTranscriptFile } from './lib/transcript-parser.js';
 import {
@@ -26,6 +27,8 @@ function getArgValue(flag: string): string | undefined {
 
 const FILE_ARG = getArgValue('--file');
 
+const MEMORY_SCOPE = getMcpMemoryScope();
+
 async function importMemories(memories: MemoryDraft[]): Promise<number> {
   if (DRY_RUN) return memories.length;
 
@@ -34,7 +37,7 @@ async function importMemories(memories: MemoryDraft[]): Promise<number> {
 
   for (let i = 0; i < memories.length; i += BATCH_SIZE) {
     const batch = memories.slice(i, i + BATCH_SIZE);
-    const result = await service.importBackup({
+    const result = await service.importBackup(MEMORY_SCOPE, {
       memories: batch.map((m) => ({
         title: m.title,
         project: m.project,

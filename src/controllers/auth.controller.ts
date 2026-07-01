@@ -1,6 +1,12 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { IdentityService } from '../auth/identity.service.js';
-import type { BootstrapBody, CreateIdentityBody } from '../auth/auth.types.js';
+import type { ClientService } from '../auth/client.service.js';
+import type {
+  BootstrapBody,
+  CreateClientBody,
+  CreateIdentityBody,
+  UpdateClientBody,
+} from '../auth/auth.types.js';
 import { sendSuccess } from '../utils/response.js';
 import { AppError } from '../types/errors.js';
 
@@ -22,8 +28,24 @@ function toPublicIdentity(identity: import('../auth/auth.types.js').Identity) {
   };
 }
 
+function toPublicClient(client: import('../auth/auth.types.js').Client) {
+  return {
+    id: client.id,
+    name: client.name,
+    type: client.type,
+    description: client.description,
+    metadata: client.metadata,
+    owner_id: client.ownerId,
+    created_at: client.createdAt,
+    active: client.active,
+  };
+}
+
 export class AuthController {
-  constructor(private readonly identityService: IdentityService) {}
+  constructor(
+    private readonly identityService: IdentityService,
+    private readonly clientService: ClientService,
+  ) {}
 
   async bootstrap(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
@@ -118,6 +140,50 @@ export class AuthController {
     }
   }
 
+  async createClient(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      const user = request.user!;
+      const body = request.body as CreateClientBody;
+      const client = await this.clientService.create(body, user.ownerId);
+      sendSuccess(reply, { client: toPublicClient(client) }, 201);
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
+  async listClients(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      const user = request.user!;
+      const clients = await this.clientService.list(user.ownerId);
+      sendSuccess(reply, clients.map(toPublicClient));
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
+  async getClient(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      const user = request.user!;
+      const { id } = request.params as { id: string };
+      const client = await this.clientService.getById(id, user.ownerId);
+      sendSuccess(reply, { client: toPublicClient(client) });
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
+  async updateClient(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      const user = request.user!;
+      const { id } = request.params as { id: string };
+      const body = request.body as UpdateClientBody;
+      const client = await this.clientService.update(id, body, user.ownerId);
+      sendSuccess(reply, { client: toPublicClient(client) });
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
   private handleError(error: unknown, reply: FastifyReply): void {
     if (error instanceof AppError) {
       reply.status(error.statusCode).send({
@@ -133,6 +199,9 @@ export class AuthController {
   }
 }
 
-export function createAuthController(identityService: IdentityService): AuthController {
-  return new AuthController(identityService);
+export function createAuthController(
+  identityService: IdentityService,
+  clientService: ClientService,
+): AuthController {
+  return new AuthController(identityService, clientService);
 }

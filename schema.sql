@@ -52,11 +52,13 @@ CREATE TABLE IF NOT EXISTS clients (
   type TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
   metadata TEXT NOT NULL DEFAULT '{}',
+  owner_id TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL,
   active INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE INDEX IF NOT EXISTS idx_clients_type ON clients(type);
+CREATE INDEX IF NOT EXISTS idx_clients_owner_id ON clients(owner_id);
 CREATE INDEX IF NOT EXISTS idx_clients_active ON clients(active);
 
 -- audit_logs: append-only activity trail

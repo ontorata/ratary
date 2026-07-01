@@ -17,6 +17,7 @@ export function rowToMemory(row: {
   tags: string;
   favorite: number;
   archived: number;
+  owner_id: string;
   created_at: string;
   updated_at: string;
 }): import('../types/memory.js').Memory {
@@ -37,6 +38,7 @@ export function rowToMemory(row: {
     tags,
     favorite: row.favorite === 1,
     archived: row.archived === 1,
+    ownerId: row.owner_id ?? '',
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };

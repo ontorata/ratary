@@ -56,11 +56,13 @@ CREATE TABLE IF NOT EXISTS clients (
   type TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
   metadata TEXT NOT NULL DEFAULT '{}',
+  owner_id TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL,
   active INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE INDEX IF NOT EXISTS idx_clients_type ON clients(type);
+CREATE INDEX IF NOT EXISTS idx_clients_owner_id ON clients(owner_id);
 CREATE INDEX IF NOT EXISTS idx_clients_active ON clients(active);
 
 CREATE TABLE IF NOT EXISTS audit_logs (
@@ -122,12 +124,26 @@ async function migrateMemoriesOwnerId(client: D1Client): Promise<void> {
   );
 }
 
+async function migrateClientsOwnerId(client: D1Client): Promise<void> {
+  const hasOwnerId = await tableHasColumn(client, 'clients', 'owner_id');
+  if (!hasOwnerId) {
+    await client.execute(
+      `ALTER TABLE clients ADD COLUMN owner_id TEXT NOT NULL DEFAULT ''`,
+    );
+  }
+
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_clients_owner_id ON clients(owner_id)`,
+  );
+}
+
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
   for (const sql of splitStatements(MIGRATION_SQL)) {
     await client.execute(sql);
   }
 
   await migrateMemoriesOwnerId(client);
+  await migrateClientsOwnerId(client);
 }
 
 export interface D1Statement {

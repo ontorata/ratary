@@ -59,6 +59,7 @@ export interface ClientRow {
   type: string;
   description: string;
   metadata: string;
+  owner_id: string;
   created_at: string;
   active: number;
 }
@@ -69,6 +70,7 @@ export interface Client {
   type: string;
   description: string;
   metadata: Record<string, unknown>;
+  ownerId: string;
   createdAt: string;
   active: boolean;
 }
@@ -135,3 +137,21 @@ export const createIdentityBodySchema = z.object({
 
 export type BootstrapBody = z.infer<typeof bootstrapBodySchema>;
 export type CreateIdentityBody = z.infer<typeof createIdentityBodySchema>;
+
+export const createClientBodySchema = z.object({
+  name: z.string().min(1).max(200),
+  type: z.string().min(1).max(100),
+  description: z.string().max(2000).default(''),
+  metadata: z.record(z.unknown()).optional(),
+});
+
+export const updateClientBodySchema = z.object({
+  name: z.string().min(1).max(200).optional(),
+  type: z.string().min(1).max(100).optional(),
+  description: z.string().max(2000).optional(),
+  metadata: z.record(z.unknown()).optional(),
+  active: z.boolean().optional(),
+});
+
+export type CreateClientBody = z.infer<typeof createClientBodySchema>;
+export type UpdateClientBody = z.infer<typeof updateClientBodySchema>;

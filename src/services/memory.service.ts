@@ -6,13 +6,14 @@ import type {
   ListMemoriesQuery,
   SearchQuery,
   BackupImportInput,
+  MemoryScope,
 } from '../types/memory.js';
 import { NotFoundError } from '../types/errors.js';
 
 export class MemoryService {
   constructor(private readonly repository: MemoryRepository) {}
 
-  async createMemory(input: CreateMemoryInput): Promise<Memory> {
+  async createMemory(scope: MemoryScope, input: CreateMemoryInput): Promise<Memory> {
     return this.repository.insert({
       title: input.title,
       project: input.project,
@@ -21,34 +22,43 @@ export class MemoryService {
       tags: input.tags,
       favorite: input.favorite,
       archived: false,
+      ownerId: scope.ownerId,
     });
   }
 
-  async updateMemory(id: string, input: UpdateMemoryInput): Promise<Memory> {
-    const updated = await this.repository.update(id, input);
+  async updateMemory(
+    scope: MemoryScope,
+    id: string,
+    input: UpdateMemoryInput,
+  ): Promise<Memory> {
+    const updated = await this.repository.update(id, scope.ownerId, input);
     if (!updated) {
       throw new NotFoundError('Memory', id);
     }
     return updated;
   }
 
-  async deleteMemory(id: string): Promise<void> {
-    const deleted = await this.repository.delete(id);
+  async deleteMemory(scope: MemoryScope, id: string): Promise<void> {
+    const deleted = await this.repository.delete(id, scope.ownerId);
     if (!deleted) {
       throw new NotFoundError('Memory', id);
     }
   }
 
-  async getMemoryById(id: string): Promise<Memory> {
-    const memory = await this.repository.findById(id);
+  async getMemoryById(scope: MemoryScope, id: string): Promise<Memory> {
+    const memory = await this.repository.findById(id, scope.ownerId);
     if (!memory) {
       throw new NotFoundError('Memory', id);
     }
     return memory;
   }
 
-  async listMemories(query: ListMemoriesQuery): Promise<{ memories: Memory[]; total: number }> {
+  async listMemories(
+    scope: MemoryScope,
+    query: ListMemoriesQuery,
+  ): Promise<{ memories: Memory[]; total: number }> {
     return this.repository.findAll({
+      ownerId: scope.ownerId,
       project: query.project,
       favorite: query.favorite,
       archived: query.archived,
@@ -57,8 +67,12 @@ export class MemoryService {
     });
   }
 
-  async searchMemory(query: SearchQuery): Promise<{ memories: Memory[]; total: number }> {
+  async searchMemory(
+    scope: MemoryScope,
+    query: SearchQuery,
+  ): Promise<{ memories: Memory[]; total: number }> {
     return this.repository.search({
+      ownerId: scope.ownerId,
       query: query.q,
       tag: query.tag,
       project: query.project,
@@ -69,36 +83,39 @@ export class MemoryService {
     });
   }
 
-  async toggleFavorite(id: string): Promise<Memory> {
-    const memory = await this.repository.toggleFavorite(id);
+  async toggleFavorite(scope: MemoryScope, id: string): Promise<Memory> {
+    const memory = await this.repository.toggleFavorite(id, scope.ownerId);
     if (!memory) {
       throw new NotFoundError('Memory', id);
     }
     return memory;
   }
 
-  async archiveMemory(id: string, archived = true): Promise<Memory> {
-    const memory = await this.repository.archive(id, archived);
+  async archiveMemory(scope: MemoryScope, id: string, archived = true): Promise<Memory> {
+    const memory = await this.repository.archive(id, scope.ownerId, archived);
     if (!memory) {
       throw new NotFoundError('Memory', id);
     }
     return memory;
   }
 
-  async listProjects(): Promise<string[]> {
-    return this.repository.listProjects();
+  async listProjects(scope: MemoryScope): Promise<string[]> {
+    return this.repository.listProjects(scope.ownerId);
   }
 
-  async listTags(): Promise<string[]> {
-    return this.repository.listTags();
+  async listTags(scope: MemoryScope): Promise<string[]> {
+    return this.repository.listTags(scope.ownerId);
   }
 
-  async exportBackup(): Promise<{ memories: Memory[] }> {
-    const memories = await this.repository.findAllRaw();
+  async exportBackup(scope: MemoryScope): Promise<{ memories: Memory[] }> {
+    const memories = await this.repository.findAllByOwner(scope.ownerId);
     return { memories };
   }
 
-  async importBackup(input: BackupImportInput): Promise<{ imported: number }> {
+  async importBackup(
+    scope: MemoryScope,
+    input: BackupImportInput,
+  ): Promise<{ imported: number }> {
     let imported = 0;
 
     for (const item of input.memories) {
@@ -111,6 +128,7 @@ export class MemoryService {
         tags: item.tags,
         favorite: item.favorite,
         archived: item.archived,
+        ownerId: scope.ownerId,
         createdAt: item.created_at,
         updatedAt: item.updated_at,
       });
@@ -120,8 +138,11 @@ export class MemoryService {
     return { imported };
   }
 
-  async replaceBackup(input: BackupImportInput): Promise<{ imported: number }> {
-    await this.repository.deleteAll();
+  async replaceBackup(
+    scope: MemoryScope,
+    input: BackupImportInput,
+  ): Promise<{ imported: number }> {
+    await this.repository.deleteAllByOwner(scope.ownerId);
 
     let imported = 0;
     for (const item of input.memories) {
@@ -134,6 +155,7 @@ export class MemoryService {
         tags: item.tags,
         favorite: item.favorite,
         archived: item.archived,
+        ownerId: scope.ownerId,
         createdAt: item.created_at,
         updatedAt: item.updated_at,
       });

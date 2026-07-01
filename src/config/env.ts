@@ -19,9 +19,6 @@ const envSchema = z.object({
     .string()
     .min(32, 'AUTH_SECRET must be at least 32 characters')
     .optional(),
-
-  // Deprecated: replaced by identities table (removed in Phase 2.1)
-  API_KEY: z.string().optional(),
 })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {

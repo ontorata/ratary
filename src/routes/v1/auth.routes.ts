@@ -2,7 +2,9 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import {
   bootstrapBodySchema,
+  createClientBodySchema,
   createIdentityBodySchema,
+  updateClientBodySchema,
 } from '../../auth/auth.types.js';
 import type { AuthController } from '../../controllers/auth.controller.js';
 import { ValidationError } from '../../types/errors.js';
@@ -85,5 +87,40 @@ export async function authRoutes(
       schema: { tags: ['Auth'], summary: 'Verify current credentials' },
     },
     controller.verify.bind(controller),
+  );
+
+  fastify.post(
+    '/auth/clients',
+    {
+      preValidation: [validateBody(createClientBodySchema)],
+      schema: { tags: ['Auth'], summary: 'Register a client application' },
+    },
+    controller.createClient.bind(controller),
+  );
+
+  fastify.get(
+    '/auth/clients',
+    {
+      schema: { tags: ['Auth'], summary: 'List clients for current owner' },
+    },
+    controller.listClients.bind(controller),
+  );
+
+  fastify.get(
+    '/auth/clients/:id',
+    {
+      preValidation: [validateParams(idParamSchema)],
+      schema: { tags: ['Auth'], summary: 'Get client by ID' },
+    },
+    controller.getClient.bind(controller),
+  );
+
+  fastify.patch(
+    '/auth/clients/:id',
+    {
+      preValidation: [validateParams(idParamSchema), validateBody(updateClientBodySchema)],
+      schema: { tags: ['Auth'], summary: 'Update client (e.g. deactivate)' },
+    },
+    controller.updateClient.bind(controller),
   );
 }

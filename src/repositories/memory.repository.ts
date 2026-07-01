@@ -11,6 +11,7 @@ export interface InsertMemoryData {
   tags: string[];
   favorite: boolean;
   archived?: boolean;
+  ownerId?: string;
   id?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -27,6 +28,7 @@ export interface UpdateMemoryData {
 }
 
 export interface ListFilters {
+  ownerId: string;
   project?: string;
   favorite?: boolean;
   archived?: boolean;
@@ -35,6 +37,7 @@ export interface ListFilters {
 }
 
 export interface SearchFilters {
+  ownerId: string;
   query?: string;
   tag?: string;
   project?: string;
@@ -51,10 +54,11 @@ export class MemoryRepository {
     const id = data.id ?? generateId();
     const now = data.createdAt ?? nowISO();
     const updatedAt = data.updatedAt ?? now;
+    const ownerId = data.ownerId ?? '';
 
     await this.db.execute(
-      `INSERT INTO memories (id, title, project, content, summary, tags, favorite, archived, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO memories (id, title, project, content, summary, tags, favorite, archived, owner_id, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         id,
         data.title,
@@ -64,20 +68,21 @@ export class MemoryRepository {
         tagsToJson(data.tags),
         data.favorite ? 1 : 0,
         data.archived ? 1 : 0,
+        ownerId,
         now,
         updatedAt,
       ],
     );
 
-    const memory = await this.findById(id);
+    const memory = await this.findById(id, ownerId);
     if (!memory) {
       throw new Error('Failed to retrieve inserted memory');
     }
     return memory;
   }
 
-  async update(id: string, data: UpdateMemoryData): Promise<Memory | null> {
-    const existing = await this.findById(id);
+  async update(id: string, ownerId: string, data: UpdateMemoryData): Promise<Memory | null> {
+    const existing = await this.findById(id, ownerId);
     if (!existing) return null;
 
     const updated: Memory = {
@@ -96,7 +101,7 @@ export class MemoryRepository {
       `UPDATE memories
        SET title = ?, project = ?, content = ?, summary = ?, tags = ?,
            favorite = ?, archived = ?, updated_at = ?
-       WHERE id = ?`,
+       WHERE id = ? AND owner_id = ?`,
       [
         updated.title,
         updated.project,
@@ -107,26 +112,33 @@ export class MemoryRepository {
         updated.archived ? 1 : 0,
         updated.updatedAt,
         id,
+        ownerId,
       ],
     );
 
     return updated;
   }
 
-  async delete(id: string): Promise<boolean> {
-    const result = await this.db.execute('DELETE FROM memories WHERE id = ?', [id]);
+  async delete(id: string, ownerId: string): Promise<boolean> {
+    const result = await this.db.execute(
+      'DELETE FROM memories WHERE id = ? AND owner_id = ?',
+      [id, ownerId],
+    );
     return (result.meta?.changes ?? 0) > 0;
   }
 
-  async findById(id: string): Promise<Memory | null> {
-    const rows = await this.db.query<MemoryRow>('SELECT * FROM memories WHERE id = ?', [id]);
+  async findById(id: string, ownerId: string): Promise<Memory | null> {
+    const rows = await this.db.query<MemoryRow>(
+      'SELECT * FROM memories WHERE id = ? AND owner_id = ?',
+      [id, ownerId],
+    );
     if (rows.length === 0) return null;
     return rowToMemory(rows[0]);
   }
 
   async findAll(filters: ListFilters): Promise<{ memories: Memory[]; total: number }> {
-    const conditions: string[] = [];
-    const params: unknown[] = [];
+    const conditions: string[] = ['owner_id = ?'];
+    const params: unknown[] = [filters.ownerId];
 
     if (filters.project !== undefined) {
       conditions.push('project = ?');
@@ -143,7 +155,7 @@ export class MemoryRepository {
       conditions.push('archived = 0');
     }
 
-    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    const whereClause = `WHERE ${conditions.join(' AND ')}`;
 
     const countRows = await this.db.query<{ count: number }>(
       `SELECT COUNT(*) as count FROM memories ${whereClause}`,
@@ -164,45 +176,6 @@ export class MemoryRepository {
     };
   }
 
-  async searchByText(
-    keyword: string,
-    filters: Omit<SearchFilters, 'query' | 'tag'>,
-  ): Promise<{ memories: Memory[]; total: number }> {
-    const conditions: string[] = [
-      '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ?)',
-    ];
-    const likePattern = `%${keyword}%`;
-    const params: unknown[] = [likePattern, likePattern, likePattern, likePattern];
-
-    this.applySearchFilters(conditions, params, filters);
-
-    return this.executeSearch(conditions, params, filters.limit, filters.offset);
-  }
-
-  async searchByTag(
-    tag: string,
-    filters: Omit<SearchFilters, 'query' | 'tag'>,
-  ): Promise<{ memories: Memory[]; total: number }> {
-    const conditions: string[] = ["tags LIKE ?"];
-    const params: unknown[] = [`%"${tag}"%`];
-
-    this.applySearchFilters(conditions, params, filters);
-
-    return this.executeSearch(conditions, params, filters.limit, filters.offset);
-  }
-
-  async searchByProject(
-    project: string,
-    filters: Omit<SearchFilters, 'query' | 'tag' | 'project'>,
-  ): Promise<{ memories: Memory[]; total: number }> {
-    const conditions: string[] = ['project = ?'];
-    const params: unknown[] = [project];
-
-    this.applySearchFilters(conditions, params, filters);
-
-    return this.executeSearch(conditions, params, filters.limit, filters.offset);
-  }
-
   async search(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }> {
     if (filters.tag) {
       return this.searchByTag(filters.tag, filters);
@@ -212,10 +185,17 @@ export class MemoryRepository {
     }
     if (filters.query) {
       const conditions: string[] = [
+        'owner_id = ?',
         '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ?)',
       ];
       const likePattern = `%${filters.query}%`;
-      const params: unknown[] = [likePattern, likePattern, likePattern, likePattern];
+      const params: unknown[] = [
+        filters.ownerId,
+        likePattern,
+        likePattern,
+        likePattern,
+        likePattern,
+      ];
 
       if (filters.project) {
         conditions.push('project = ?');
@@ -228,6 +208,7 @@ export class MemoryRepository {
     }
 
     return this.findAll({
+      ownerId: filters.ownerId,
       project: filters.project,
       favorite: filters.favorite,
       archived: filters.archived,
@@ -236,45 +217,47 @@ export class MemoryRepository {
     });
   }
 
-  async toggleFavorite(id: string): Promise<Memory | null> {
-    const existing = await this.findById(id);
+  async toggleFavorite(id: string, ownerId: string): Promise<Memory | null> {
+    const existing = await this.findById(id, ownerId);
     if (!existing) return null;
 
     const newFavorite = !existing.favorite;
+    const updatedAt = nowISO();
     await this.db.execute(
-      'UPDATE memories SET favorite = ?, updated_at = ? WHERE id = ?',
-      [newFavorite ? 1 : 0, nowISO(), id],
+      'UPDATE memories SET favorite = ?, updated_at = ? WHERE id = ? AND owner_id = ?',
+      [newFavorite ? 1 : 0, updatedAt, id, ownerId],
     );
 
-    return { ...existing, favorite: newFavorite, updatedAt: nowISO() };
+    return { ...existing, favorite: newFavorite, updatedAt };
   }
 
-  async archive(id: string, archived = true): Promise<Memory | null> {
-    const existing = await this.findById(id);
+  async archive(id: string, ownerId: string, archived = true): Promise<Memory | null> {
+    const existing = await this.findById(id, ownerId);
     if (!existing) return null;
 
     const updatedAt = nowISO();
-    await this.db.execute('UPDATE memories SET archived = ?, updated_at = ? WHERE id = ?', [
-      archived ? 1 : 0,
-      updatedAt,
-      id,
-    ]);
+    await this.db.execute(
+      'UPDATE memories SET archived = ?, updated_at = ? WHERE id = ? AND owner_id = ?',
+      [archived ? 1 : 0, updatedAt, id, ownerId],
+    );
 
     return { ...existing, archived, updatedAt };
   }
 
-  async listProjects(): Promise<string[]> {
+  async listProjects(ownerId: string): Promise<string[]> {
     const rows = await this.db.query<{ project: string }>(
       `SELECT DISTINCT project FROM memories
-       WHERE project != '' AND archived = 0
+       WHERE owner_id = ? AND project != '' AND archived = 0
        ORDER BY project ASC`,
+      [ownerId],
     );
     return rows.map((r) => r.project);
   }
 
-  async listTags(): Promise<string[]> {
+  async listTags(ownerId: string): Promise<string[]> {
     const rows = await this.db.query<{ tags: string }>(
-      'SELECT tags FROM memories WHERE archived = 0',
+      'SELECT tags FROM memories WHERE owner_id = ? AND archived = 0',
+      [ownerId],
     );
 
     const tagSet = new Set<string>();
@@ -292,15 +275,40 @@ export class MemoryRepository {
     return Array.from(tagSet).sort();
   }
 
-  async findAllRaw(): Promise<Memory[]> {
+  async findAllByOwner(ownerId: string): Promise<Memory[]> {
     const rows = await this.db.query<MemoryRow>(
-      'SELECT * FROM memories ORDER BY created_at ASC',
+      'SELECT * FROM memories WHERE owner_id = ? ORDER BY created_at ASC',
+      [ownerId],
     );
     return rows.map(rowToMemory);
   }
 
-  async deleteAll(): Promise<void> {
-    await this.db.execute('DELETE FROM memories');
+  async deleteAllByOwner(ownerId: string): Promise<void> {
+    await this.db.execute('DELETE FROM memories WHERE owner_id = ?', [ownerId]);
+  }
+
+  private async searchByTag(
+    tag: string,
+    filters: SearchFilters,
+  ): Promise<{ memories: Memory[]; total: number }> {
+    const conditions: string[] = ['owner_id = ?', 'tags LIKE ?'];
+    const params: unknown[] = [filters.ownerId, `%"${tag}"%`];
+
+    this.applySearchFilters(conditions, params, filters);
+
+    return this.executeSearch(conditions, params, filters.limit, filters.offset);
+  }
+
+  private async searchByProject(
+    project: string,
+    filters: SearchFilters,
+  ): Promise<{ memories: Memory[]; total: number }> {
+    const conditions: string[] = ['owner_id = ?', 'project = ?'];
+    const params: unknown[] = [filters.ownerId, project];
+
+    this.applySearchFilters(conditions, params, filters);
+
+    return this.executeSearch(conditions, params, filters.limit, filters.offset);
   }
 
   private applySearchFilters(
@@ -308,10 +316,6 @@ export class MemoryRepository {
     params: unknown[],
     filters: Pick<SearchFilters, 'favorite' | 'archived' | 'project'>,
   ): void {
-    if (filters.project && !conditions.some((c) => c.includes('project ='))) {
-      conditions.push('project = ?');
-      params.push(filters.project);
-    }
     if (filters.favorite !== undefined) {
       conditions.push('favorite = ?');
       params.push(filters.favorite ? 1 : 0);

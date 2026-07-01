@@ -16,6 +16,7 @@ function rowToClient(row: ClientRow): Client {
     type: row.type,
     description: row.description,
     metadata,
+    ownerId: row.owner_id,
     createdAt: row.created_at,
     active: row.active === 1,
   };
@@ -27,7 +28,16 @@ export interface InsertClientData {
   type: string;
   description?: string;
   metadata?: Record<string, unknown>;
+  ownerId: string;
   createdAt?: string;
+}
+
+export interface UpdateClientData {
+  name: string;
+  type: string;
+  description: string;
+  metadata: Record<string, unknown>;
+  active: boolean;
 }
 
 export class ClientRepository {
@@ -38,14 +48,15 @@ export class ClientRepository {
     const now = data.createdAt ?? nowISO();
 
     await this.db.execute(
-      `INSERT INTO clients (id, name, type, description, metadata, created_at, active)
-       VALUES (?, ?, ?, ?, ?, ?, 1)`,
+      `INSERT INTO clients (id, name, type, description, metadata, owner_id, created_at, active)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 1)`,
       [
         id,
         data.name,
         data.type,
         data.description ?? '',
         JSON.stringify(data.metadata ?? {}),
+        data.ownerId,
         now,
       ],
     );
@@ -58,5 +69,32 @@ export class ClientRepository {
   async findById(id: string): Promise<Client | null> {
     const rows = await this.db.query<ClientRow>('SELECT * FROM clients WHERE id = ?', [id]);
     return rows[0] ? rowToClient(rows[0]) : null;
+  }
+
+  async listByOwner(ownerId: string): Promise<Client[]> {
+    const rows = await this.db.query<ClientRow>(
+      'SELECT * FROM clients WHERE owner_id = ? ORDER BY created_at DESC',
+      [ownerId],
+    );
+    return rows.map(rowToClient);
+  }
+
+  async update(id: string, ownerId: string, data: UpdateClientData): Promise<Client | null> {
+    const result = await this.db.execute(
+      `UPDATE clients
+       SET name = ?, type = ?, description = ?, metadata = ?, active = ?
+       WHERE id = ? AND owner_id = ?`,
+      [
+        data.name,
+        data.type,
+        data.description,
+        JSON.stringify(data.metadata),
+        data.active ? 1 : 0,
+        id,
+        ownerId,
+      ],
+    );
+    if ((result.meta?.changes ?? 0) === 0) return null;
+    return this.findById(id);
   }
 }
