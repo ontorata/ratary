@@ -19,6 +19,7 @@ export interface AppDependencies {
 export async function buildApp(options?: {
   logger?: boolean;
   skipAuth?: boolean;
+  skipSwagger?: boolean;
 }): Promise<FastifyInstance> {
   const env = getEnv();
   const enableLogger = options?.logger ?? env.NODE_ENV !== 'test';
@@ -49,7 +50,10 @@ export async function buildApp(options?: {
     await fastify.register(authPlugin);
   }
 
-  await fastify.register(swaggerPlugin);
+  const skipSwagger = options?.skipSwagger ?? Boolean(process.env.VERCEL);
+  if (!skipSwagger) {
+    await fastify.register(swaggerPlugin);
+  }
 
   const db = getD1Client();
   const repository = new MemoryRepository(db);
