@@ -117,9 +117,50 @@ npm run mcp
 
 ## Setup di Laptop Baru
 
-Panduan ini untuk memindahkan development environment ke laptop lain. **Data memory tetap di Cloudflare D1** (cloud) — yang perlu disetup ulang hanya kode lokal, `.env`, dan konfigurasi Cursor.
+Panduan lengkap memindahkan **AI Brain** ke laptop baru.  
+Baca ini sebelum atau sesudah pindah perangkat.
 
-### Prasyarat
+### Apa yang ikut pindah vs tetap di cloud
+
+| Ikut Anda (backup manual) | Tetap di cloud (tidak hilang) |
+|---------------------------|-------------------------------|
+| File `.env` (credential) | Semua **memory** di D1 |
+| `AUTH_SECRET` (wajib sama!) | Tabel `identities`, `audit_logs` |
+| API key `aic_...` (simpan di password manager) | Deploy Vercel |
+| `.cursor/mcp.json` (path + env) | Repo GitHub |
+| Folder `D:\Apps\_backups` (opsional) | |
+
+> **Penting:** `AUTH_SECRET` harus **sama** dengan laptop lama. Jika diganti, semua API key di database tidak bisa diverifikasi lagi.
+
+---
+
+### Sebelum tinggalkan laptop lama
+
+Salin ke password manager / USB terenkripsi:
+
+```
+□ Isi file .env lengkap (atau minimal 4 variabel di bawah)
+□ API key aic_... (dari saat bootstrap — tidak bisa dilihat ulang dari DB)
+□ .cursor/mcp.json (jika sudah dikonfigurasi)
+□ Folder _backups (opsional, kalau mau offline copy chat)
+```
+
+**Variabel wajib di `.env`:**
+
+```env
+CLOUDFLARE_ACCOUNT_ID=...
+D1_DATABASE_ID=...
+D1_API_TOKEN=...
+AUTH_SECRET=...          # min 32 karakter — HARUS sama dengan laptop lama
+PORT=3001
+BACKUP_ROOT=D:/Apps/_backups
+```
+
+Generate `AUTH_SECRET` baru **hanya** jika database masih kosong dan belum bootstrap.
+
+---
+
+### Prasyarat software
 
 | Software | Versi | Cek |
 |----------|-------|-----|
@@ -128,198 +169,263 @@ Panduan ini untuk memindahkan development environment ke laptop lain. **Data mem
 | Git | terbaru | `git --version` |
 | Cursor | terbaru | — |
 
-Akun yang harus bisa diakses:
-- **GitHub** — clone repo `https://github.com/lutfi04/ai-brain.git`
-- **Cloudflare** — Dashboard → D1 (database yang sama dengan laptop lama)
-- **Vercel** (opsional) — jika pakai deploy production
+Akun yang dibutuhkan:
+- [GitHub](https://github.com/lutfi04/ai-brain) — clone repo
+- [Cloudflare](https://dash.cloudflare.com) — D1 database
+- [Vercel](https://vercel.com) (opsional) — production API
 
-### Langkah 1 — Clone repository
+---
+
+### Langkah 1 — Clone & install
 
 ```bash
 git clone https://github.com/lutfi04/ai-brain.git
 cd ai-brain
+npm install
 ```
 
-### Langkah 2 — Credential Cloudflare D1
+---
 
-File `.env` **tidak** ada di Git. Ambil dari laptop lama (password manager / backup aman) atau buat ulang di Cloudflare Dashboard.
+### Langkah 2 — Buat `.env`
 
 ```bash
 cp .env.example .env
 ```
 
-Isi `.env`:
+Isi dengan credential dari laptop lama:
 
 ```env
 CLOUDFLARE_ACCOUNT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 D1_DATABASE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 D1_API_TOKEN=your_cloudflare_api_token
 
+AUTH_SECRET=your_auth_secret_min_32_characters_long
+
 NODE_ENV=development
 PORT=3001
 LOG_LEVEL=info
 
-# Sesuaikan path folder backup di laptop baru
 BACKUP_ROOT=D:/Apps/_backups
 BACKUP_SYNC_DEBOUNCE_MS=3000
 ```
 
-**Cara dapat nilai D1:**
+**Cara dapat credential D1** (jika belum punya salinan):
 
-1. Buka [Cloudflare Dashboard](https://dash.cloudflare.com) → **Workers & Pages** → **D1**
-2. Pilih database `ai-memory-cloud` (atau nama yang Anda pakai)
-3. **Database ID** → `D1_DATABASE_ID`
-4. **Account ID** (sidebar kanan) → `CLOUDFLARE_ACCOUNT_ID`
-5. **My Profile → API Tokens** → buat token dengan permission **D1 Edit** → `D1_API_TOKEN`
+1. Cloudflare Dashboard → **Workers & Pages** → **D1**
+2. Pilih database Anda → copy **Database ID**
+3. Sidebar kanan → copy **Account ID** (hex 32 char, bukan email)
+4. **My Profile → API Tokens** → buat token **D1 Edit**
 
-> **Tips:** `CLOUDFLARE_ACCOUNT_ID` adalah string hex 32 karakter, **bukan** email.
+**`AUTH_SECRET`:** salin dari laptop lama. Jika hilang dan sudah ada identities di DB, Anda harus reset database atau buat DB baru.
 
-### Langkah 3 — Install & migrasi database
+---
+
+### Langkah 3 — Migrasi & verifikasi D1
 
 ```bash
-npm install
 npm run db:migrate
-```
-
-`db:migrate` aman dijalankan ulang — hanya membuat tabel jika belum ada.
-
-Verifikasi koneksi D1:
-
-```bash
 npm run test:integration
 ```
 
-Output harus menampilkan `All integration tests passed!`
+Harus muncul: `All integration tests PASSED against Cloudflare D1`
 
-### Langkah 4 — Jalankan server lokal
+---
 
-**Mode development (disarankan):**
+### Langkah 4 — Jalankan server
 
 ```bash
 npm run dev
 ```
 
-**Mode production lokal:**
-
-```bash
-npm run build:local
-npm start
-```
-
-Cek API:
+Cek:
 
 ```bash
 curl http://localhost:3001/health
 # {"status":"ok",...}
 
-curl http://localhost:3001/memory?limit=3
-# Daftar memory dari D1 (sama dengan laptop lama)
+curl http://localhost:3001/api/v1/memory?limit=3 \
+  -H "Authorization: Bearer aic_YOUR_KEY"
 ```
 
-Swagger UI: `http://localhost:3001/docs`
+> Tanpa API key, endpoint memory mengembalikan **401**.
 
-> Jika port 3000 bentrok dengan app lain (Nuxt, dll.), set `PORT=3001` di `.env`.
+Swagger: `http://localhost:3001/docs`
 
-### Langkah 5 — Setup MCP di Cursor
+---
+
+### Langkah 5 — Authentication (API key)
+
+#### Skenario A — Sudah bootstrap di laptop lama (umum)
+
+1. Pakai API key `aic_...` yang sudah disimpan
+2. Verifikasi:
+
+```bash
+curl -X POST http://localhost:3001/api/v1/auth/verify \
+  -H "Authorization: Bearer aic_YOUR_KEY"
+```
+
+Response: `{ "success": true, "data": { "authenticated": true, ... } }`
+
+3. **Jangan** jalankan `/auth/bootstrap` lagi (akan ditolak 403)
+
+#### Skenario B — Database baru / belum pernah bootstrap
+
+```bash
+curl -X POST http://localhost:3001/api/v1/auth/bootstrap \
+  -H "Content-Type: application/json" \
+  -d "{\"name\":\"cursor\",\"client\":{\"name\":\"cursor\",\"type\":\"mcp\"}}"
+```
+
+Simpan `data.apiKey` — **hanya muncul sekali**.
+
+#### Buat API key tambahan (setelah punya key aktif)
+
+```bash
+curl -X POST http://localhost:3001/api/v1/auth/identities \
+  -H "Authorization: Bearer aic_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"name\":\"laptop-baru\",\"type\":\"api_key\"}"
+```
+
+---
+
+### Langkah 6 — Setup MCP di Cursor
 
 ```bash
 cp .cursor/mcp.json.example .cursor/mcp.json
 ```
 
-Edit `.cursor/mcp.json`:
-- Ganti path `D:/Apps/ai-brain/...` ke path absolut repo di laptop baru
-- Isi `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, `D1_API_TOKEN`
+Edit path absolut + credential D1:
 
-Reload Cursor → **Settings → MCP** → pastikan `ai-memory-cloud` aktif.
-
-Uji di chat Cursor:
-
+```json
+{
+  "mcpServers": {
+    "ai-memory-cloud": {
+      "command": "npx",
+      "args": ["-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"],
+      "env": {
+        "CLOUDFLARE_ACCOUNT_ID": "...",
+        "D1_DATABASE_ID": "...",
+        "D1_API_TOKEN": "...",
+        "NODE_ENV": "production",
+        "LOG_LEVEL": "info"
+      }
+    }
+  }
+}
 ```
-search_memory query="mangrove"
-```
 
-### Langkah 6 — Folder backup chat (opsional)
+> MCP mengakses D1 **langsung** — tidak perlu API key `aic_` untuk MCP stdio.
 
-Jika Anda punya folder backup chat di laptop lama, salin ke laptop baru (USB / cloud sync):
+Langkah setelah simpan:
+1. Cursor → **Settings → MCP** → `ai-memory-cloud` hijau
+2. **Reload Window**
+3. Uji: `search_memory` dengan query `mangrove`
+
+---
+
+### Langkah 7 — Folder backup chat (opsional)
+
+Salin dari laptop lama:
 
 ```
 D:\Apps\_backups\
 ```
 
-Update `BACKUP_ROOT` di `.env` sesuai path baru.
-
-**Import sekali (semua backup lama):**
+Update `BACKUP_ROOT` di `.env`.
 
 ```bash
+# Import sekali
 npm run import:backups
-npm run import:backups -- --include-jsonl   # termasuk transcript JSONL
-```
 
-**Auto-sync ke memory (disarankan):**
-
-Terminal 1 — API:
-```bash
-npm run dev
-```
-
-Terminal 2 — watcher backup:
-```bash
+# Auto-sync (terminal terpisah)
 npm run sync:backups:watch
 ```
 
-Setiap file baru di `_backups` otomatis masuk ke D1.
+---
 
-### Langkah 7 — Production API (opsional)
+### Langkah 8 — Production (Vercel)
 
-Tanpa server lokal, memory tetap bisa diakses via deploy Vercel:
+URL: `https://ai-brain-beryl.vercel.app`
 
+**Env vars di Vercel Dashboard** (harus sama dengan lokal):
+
+| Variable | Wajib |
+|----------|-------|
+| `CLOUDFLARE_ACCOUNT_ID` | Ya |
+| `D1_DATABASE_ID` | Ya |
+| `D1_API_TOKEN` | Ya |
+| `AUTH_SECRET` | Ya |
+
+```bash
+curl https://ai-brain-beryl.vercel.app/health
+curl https://ai-brain-beryl.vercel.app/api/v1/memory?limit=3 \
+  -H "Authorization: Bearer aic_YOUR_KEY"
 ```
-https://ai-brain-beryl.vercel.app/health
-https://ai-brain-beryl.vercel.app/memory
-```
-
-Env vars di **Vercel Dashboard** harus sama dengan `.env` lokal.
 
 ---
 
 ### Checklist pindah laptop
 
-- [ ] Clone repo `ai-brain`
-- [ ] `npm install`
-- [ ] Salin / buat `.env` dengan credential D1
-- [ ] `npm run db:migrate`
-- [ ] `npm run test:integration` → lulus
-- [ ] `npm run dev` → `/health` OK
-- [ ] Setup `.cursor/mcp.json` + reload Cursor
-- [ ] MCP `ai-memory-cloud` hijau di Settings
-- [ ] (Opsional) Salin folder `_backups` + set `BACKUP_ROOT`
-- [ ] (Opsional) `npm run sync:backups:watch` untuk auto-sync
+```
+□ Clone repo + npm install
+□ Salin .env (D1 + AUTH_SECRET)
+□ npm run db:migrate
+□ npm run test:integration → lulus
+□ npm run dev → /health OK
+□ API key aic_... tersimpan & /auth/verify OK
+□ .cursor/mcp.json + MCP hijau di Cursor
+□ (Opsional) Salin _backups + sync:backups:watch
+□ (Opsional) Vercel env vars lengkap
+```
+
+---
 
 ### Troubleshooting
 
 | Masalah | Solusi |
 |---------|--------|
-| `Environment validation failed` | Pastikan 3 variabel D1 terisi di `.env` |
-| `D1 API error (401)` | Token salah/expired — buat API token baru |
-| `D1 API error (400)` account | `CLOUDFLARE_ACCOUNT_ID` harus hex ID, bukan email |
-| Port sudah dipakai | Ganti `PORT=3001` di `.env` |
-| MCP tidak muncul | Cek path absolut di `mcp.json`, reload Cursor |
-| Memory kosong (`total: 0`) | Pastikan `D1_DATABASE_ID` sama dengan laptop lama |
-| `npm start` error | Jalankan `npm run build:local` dulu, atau pakai `npm run dev` |
-| Sync backup gagal | Cek `BACKUP_ROOT` ada dan path pakai `/` di `.env` |
+| `Environment validation failed` | Isi `CLOUDFLARE_*`, `D1_*`, `AUTH_SECRET` |
+| `AUTH_SECRET is required` | Tambah ke `.env` (min 32 char) |
+| API key selalu 401 | `AUTH_SECRET` beda dengan saat key dibuat |
+| `D1 API error (401)` | Token Cloudflare expired — buat baru |
+| `CLOUDFLARE_ACCOUNT_ID` salah | Harus hex ID, bukan email |
+| Port bentrok | `PORT=3001` di `.env` |
+| Memory `total: 0` | `D1_DATABASE_ID` salah (DB berbeda) |
+| Bootstrap 403 | Normal — sudah pernah bootstrap |
+| MCP tidak hijau | Cek path absolut `tsx` di mcp.json |
+| `npm start` gagal | `npm run build:local` dulu, atau pakai `npm run dev` |
 
-### Perintah berguna
+---
+
+### Perintah cepat
 
 ```bash
-npm run dev                  # Server dev + hot reload
-npm run test                 # Unit test
-npm run test:integration     # Test CRUD ke D1
-npm run mcp                  # MCP stdio standalone
-npm run import:backups       # Import markdown backup
-npm run import:transcript -- "path/to/transcript.jsonl"
-npm run sync:backups         # Sync backup sekali
-npm run sync:backups:watch   # Auto-sync folder backup
-npm run sync:file -- "path/to/README.md"
+npm run dev                    # Server lokal
+npm run test                   # 27 unit + E2E tests
+npm run test:integration       # Test D1 live
+npm run mcp                    # MCP standalone
+npm run import:backups         # Import backup markdown
+npm run sync:backups:watch     # Auto-sync _backups → D1
+```
+
+### Diagram alur singkat
+
+```
+Laptop Baru
+    │
+    ├─ git clone + npm install
+    ├─ .env (D1 + AUTH_SECRET + PORT)
+    ├─ db:migrate + test:integration
+    ├─ npm run dev
+    │
+    ├─ REST API ──► Authorization: Bearer aic_...
+    │                    │
+    │                    ▼
+    │              Cloudflare D1 (memory + identities)
+    │
+    └─ Cursor MCP ──► D1 langsung (tanpa API key)
 ```
 
 ---
