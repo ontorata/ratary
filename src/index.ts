@@ -1,13 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { buildApp } from '../src/server.js';
+import { buildApp } from './server.js';
 import type { FastifyInstance } from 'fastify';
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 let app: FastifyInstance | undefined;
 let initError: Error | undefined;
