@@ -2,6 +2,21 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { MemoryService } from '../services/memory.service.js';
 
 export class HealthController {
+  async root(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    reply.send({
+      service: 'ai-memory-cloud',
+      status: 'ok',
+      endpoints: {
+        health: '/health',
+        memory: '/memory',
+        search: '/search',
+        projects: '/projects',
+        tags: '/tags',
+        backup: '/backup/export',
+      },
+    });
+  }
+
   async check(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
     reply.send({
       status: 'ok',

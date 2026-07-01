@@ -195,6 +195,14 @@ export async function healthRoutes(
   controller: import('../controllers/index.js').HealthController,
 ): Promise<void> {
   fastify.get(
+    '/',
+    {
+      schema: { tags: ['Health'], summary: 'API root' },
+    },
+    controller.root.bind(controller),
+  );
+
+  fastify.get(
     '/health',
     {
       schema: { tags: ['Health'], summary: 'Health check' },
