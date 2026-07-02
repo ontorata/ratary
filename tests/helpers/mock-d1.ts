@@ -620,16 +620,122 @@ export class MockD1Client implements D1Client {
     let results = [...this.memories.values()];
     const upperSql = sql.toUpperCase();
     const queryParams = [...params];
-    if (upperSql.includes('LIMIT ?') && typeof queryParams[queryParams.length - 1] === 'number') {
+    if (upperSql.includes('OFFSET ?') && typeof queryParams[queryParams.length - 1] === 'number') {
+      queryParams.pop();
+      if (typeof queryParams[queryParams.length - 1] === 'number') {
+        queryParams.pop();
+      }
+    } else if (upperSql.includes('LIMIT ?') && typeof queryParams[queryParams.length - 1] === 'number') {
       queryParams.pop();
     }
-    let paramIndex = 0;
 
+    let paramIndex = 0;
     const nextParam = (): unknown => queryParams[paramIndex++];
 
+    type FilterHandler = { position: number; run: () => void };
+    const handlers: FilterHandler[] = [];
+    const pos = (needle: string): number => upperSql.indexOf(needle);
+
     if (upperSql.includes('OWNER_ID = ?')) {
-      const ownerId = nextParam() as string;
-      results = results.filter((m) => m.owner_id === ownerId);
+      handlers.push({
+        position: pos('OWNER_ID = ?'),
+        run: () => {
+          const ownerId = nextParam() as string;
+          results = results.filter((m) => m.owner_id === ownerId);
+        },
+      });
+    }
+
+    if (upperSql.includes('ARCHIVED = ?')) {
+      handlers.push({
+        position: pos('ARCHIVED = ?'),
+        run: () => {
+          const archived = nextParam() as number;
+          results = results.filter((m) => m.archived === archived);
+        },
+      });
+    } else if (upperSql.includes('ARCHIVED = 0')) {
+      handlers.push({
+        position: pos('ARCHIVED = 0'),
+        run: () => {
+          results = results.filter((m) => m.archived === 0);
+        },
+      });
+    }
+
+    if (upperSql.includes('PROJECT_ID = ?')) {
+      handlers.push({
+        position: pos('PROJECT_ID = ?'),
+        run: () => {
+          const projectId = nextParam() as string;
+          results = results.filter((m) => (m.project_id ?? '') === projectId);
+        },
+      });
+    }
+
+    if (upperSql.includes('LEVEL IN (')) {
+      const levelMatch = upperSql.match(/LEVEL IN \(([^)]+)\)/);
+      const count = levelMatch ? levelMatch[1].split(',').length : 0;
+      handlers.push({
+        position: pos('LEVEL IN ('),
+        run: () => {
+          const levels: string[] = [];
+          for (let i = 0; i < count; i++) {
+            levels.push(nextParam() as string);
+          }
+          results = results.filter((m) => levels.includes(m.level ?? 'note'));
+        },
+      });
+    }
+
+    if (upperSql.includes('IMPORTANCE >= ?')) {
+      handlers.push({
+        position: pos('IMPORTANCE >= ?'),
+        run: () => {
+          const importanceMin = nextParam() as number;
+          results = results.filter((m) => (m.importance ?? 50) >= importanceMin);
+        },
+      });
+    }
+
+    if (upperSql.includes('PROJECT = ?') && !upperSql.includes('PROJECT LIKE')) {
+      handlers.push({
+        position: pos('PROJECT = ?'),
+        run: () => {
+          const project = nextParam() as string;
+          results = results.filter((m) => m.project === project);
+        },
+      });
+    }
+
+    if (upperSql.includes('CATEGORY = ?')) {
+      handlers.push({
+        position: pos('CATEGORY = ?'),
+        run: () => {
+          const category = nextParam() as string;
+          results = results.filter((m) => (m.category ?? '') === category);
+        },
+      });
+    }
+
+    if (upperSql.includes('MEMORY_TYPE = ?')) {
+      handlers.push({
+        position: pos('MEMORY_TYPE = ?'),
+        run: () => {
+          const memoryType = nextParam() as string;
+          results = results.filter((m) => (m.memory_type ?? 'note') === memoryType);
+        },
+      });
+    }
+
+    if (upperSql.includes('FAVORITE = ?')) {
+      handlers.push({
+        position: pos('FAVORITE = ?'),
+        run: () => {
+          const favorite = nextParam() as number;
+          results = results.filter((m) => m.favorite === favorite);
+        },
+      });
     }
 
     if (
@@ -637,98 +743,76 @@ export class MockD1Client implements D1Client {
         '(TITLE LIKE ? OR CONTENT LIKE ? OR SUMMARY LIKE ? OR KEYWORDS LIKE ? OR CODENAME LIKE ?)',
       )
     ) {
-      const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
-      nextParam();
-      nextParam();
-      nextParam();
-      nextParam();
-      results = results.filter(
-        (m) =>
-          m.title.toLowerCase().includes(keyword) ||
-          m.content.toLowerCase().includes(keyword) ||
-          m.summary.toLowerCase().includes(keyword) ||
-          (m.keywords ?? '').toLowerCase().includes(keyword) ||
-          (m.codename ?? '').toLowerCase().includes(keyword),
-      );
+      handlers.push({
+        position: pos('(TITLE LIKE ? OR CONTENT LIKE ? OR SUMMARY LIKE ? OR KEYWORDS LIKE ? OR CODENAME LIKE ?)'),
+        run: () => {
+          const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
+          nextParam();
+          nextParam();
+          nextParam();
+          nextParam();
+          results = results.filter(
+            (m) =>
+              m.title.toLowerCase().includes(keyword) ||
+              m.content.toLowerCase().includes(keyword) ||
+              m.summary.toLowerCase().includes(keyword) ||
+              (m.keywords ?? '').toLowerCase().includes(keyword) ||
+              (m.codename ?? '').toLowerCase().includes(keyword),
+          );
+        },
+      });
     } else if (upperSql.includes('(TITLE LIKE ? OR CONTENT LIKE ?')) {
-      const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
-      nextParam();
-      nextParam();
-      nextParam();
-      nextParam();
-      nextParam();
-      results = results.filter(
-        (m) =>
-          m.title.toLowerCase().includes(keyword) ||
-          m.content.toLowerCase().includes(keyword) ||
-          m.summary.toLowerCase().includes(keyword) ||
-          m.project.toLowerCase().includes(keyword) ||
-          (m.codename ?? '').toLowerCase().includes(keyword) ||
-          (m.keywords ?? '').toLowerCase().includes(keyword),
-      );
+      handlers.push({
+        position: pos('(TITLE LIKE ? OR CONTENT LIKE ?'),
+        run: () => {
+          const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
+          nextParam();
+          nextParam();
+          nextParam();
+          nextParam();
+          nextParam();
+          results = results.filter(
+            (m) =>
+              m.title.toLowerCase().includes(keyword) ||
+              m.content.toLowerCase().includes(keyword) ||
+              m.summary.toLowerCase().includes(keyword) ||
+              m.project.toLowerCase().includes(keyword) ||
+              (m.codename ?? '').toLowerCase().includes(keyword) ||
+              (m.keywords ?? '').toLowerCase().includes(keyword),
+          );
+        },
+      });
     }
 
     if (upperSql.includes('(TAGS LIKE ? OR KEYWORDS LIKE ?)')) {
-      const tagPattern = nextParam() as string;
-      nextParam();
-      const tag = tagPattern.slice(2, -2);
-      results = results.filter(
-        (m) =>
-          m.tags.includes(`"${tag}"`) ||
-          m.tags.includes(tag) ||
-          (m.keywords ?? '').includes(`"${tag}"`),
-      );
+      handlers.push({
+        position: pos('(TAGS LIKE ? OR KEYWORDS LIKE ?)'),
+        run: () => {
+          const tagPattern = nextParam() as string;
+          nextParam();
+          const tag = tagPattern.slice(2, -2);
+          results = results.filter(
+            (m) =>
+              m.tags.includes(`"${tag}"`) ||
+              m.tags.includes(tag) ||
+              (m.keywords ?? '').includes(`"${tag}"`),
+          );
+        },
+      });
     } else if (upperSql.includes('TAGS LIKE ?')) {
-      const tagPattern = nextParam() as string;
-      const tag = tagPattern.slice(2, -2);
-      results = results.filter((m) => m.tags.includes(`"${tag}"`) || m.tags.includes(tag));
+      handlers.push({
+        position: pos('TAGS LIKE ?'),
+        run: () => {
+          const tagPattern = nextParam() as string;
+          const tag = tagPattern.slice(2, -2);
+          results = results.filter((m) => m.tags.includes(`"${tag}"`) || m.tags.includes(tag));
+        },
+      });
     }
 
-    if (upperSql.includes('CATEGORY = ?')) {
-      const category = nextParam() as string;
-      results = results.filter((m) => (m.category ?? '') === category);
-    }
-
-    if (upperSql.includes('MEMORY_TYPE = ?')) {
-      const memoryType = nextParam() as string;
-      results = results.filter((m) => (m.memory_type ?? 'note') === memoryType);
-    }
-
-    if (upperSql.includes('IMPORTANCE >= ?')) {
-      const importanceMin = nextParam() as number;
-      results = results.filter((m) => (m.importance ?? 50) >= importanceMin);
-    }
-
-    if (upperSql.includes('PROJECT_ID = ?')) {
-      const projectId = nextParam() as string;
-      results = results.filter((m) => (m.project_id ?? '') === projectId);
-    }
-
-    if (upperSql.includes('LEVEL IN (')) {
-      const levelMatch = upperSql.match(/LEVEL IN \(([^)]+)\)/);
-      const count = levelMatch ? levelMatch[1].split(',').length : 0;
-      const levels: string[] = [];
-      for (let i = 0; i < count; i++) {
-        levels.push(nextParam() as string);
-      }
-      results = results.filter((m) => levels.includes(m.level ?? 'note'));
-    }
-
-    if (upperSql.includes('PROJECT = ?') && !upperSql.includes('LIKE')) {
-      const project = nextParam() as string;
-      results = results.filter((m) => m.project === project);
-    }
-
-    if (upperSql.includes('FAVORITE = ?')) {
-      const favorite = nextParam() as number;
-      results = results.filter((m) => m.favorite === favorite);
-    }
-
-    if (upperSql.includes('ARCHIVED = ?')) {
-      const archived = nextParam() as number;
-      results = results.filter((m) => m.archived === archived);
-    } else if (upperSql.includes('ARCHIVED = 0')) {
-      results = results.filter((m) => m.archived === 0);
+    handlers.sort((a, b) => a.position - b.position);
+    for (const handler of handlers) {
+      handler.run();
     }
 
     return results;

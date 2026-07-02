@@ -1,0 +1,4 @@
+export const DEFAULT_CONTEXT_MAX_CHARS = 12_000;
+export const MAX_CONTEXT_MAX_CHARS = 24_000;
+
+export const DEFAULT_RETRIEVAL_RANK_LIMIT = 10;
