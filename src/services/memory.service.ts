@@ -11,6 +11,7 @@ import type {
   MemoryScope,
 } from '../types/memory.js';
 import type { MemoryType } from '../types/knowledge.js';
+import { DEFAULT_MEMORY_LEVEL } from '../types/memory-level.js';
 import { NotFoundError } from '../types/errors.js';
 
 export class MemoryService {
@@ -52,6 +53,7 @@ export class MemoryService {
       favorite: input.favorite,
       archived: false,
       ownerId: scope.ownerId,
+      level: input.level ?? DEFAULT_MEMORY_LEVEL,
     });
   }
 

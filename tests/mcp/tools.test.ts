@@ -7,6 +7,7 @@ import { createMemoryService } from '../../src/services/create-memory-service.js
 import { MemoryRelationService } from '../../src/services/memory-relation.service.js';
 import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
+import { ContextService } from '../../src/memory/context.service.js';
 import { createMcpServer } from '../../src/mcp/server.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
@@ -21,6 +22,8 @@ const EXPECTED_TOOLS = [
   'get_memory',
   'get_memory_by_codename',
   'search_memory',
+  'get_context',
+  'build_prompt',
   'list_projects',
   'list_tags',
   'link_memories',
@@ -43,7 +46,8 @@ describe('MCP tools', () => {
       new MemoryRelationRepository(mockDb),
       new MemoryRepository(mockDb),
     );
-    const server = createMcpServer(memoryService, relationService);
+    const contextService = new ContextService(new MemoryRepository(mockDb));
+    const server = createMcpServer(memoryService, relationService, contextService);
 
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await server.connect(serverTransport);
@@ -121,5 +125,39 @@ describe('MCP tools', () => {
       arguments: { id: savedBody.id },
     });
     expect(deleted.isError).not.toBe(true);
+  });
+
+  it('runs get_context and build_prompt', async () => {
+    await client.callTool({
+      name: 'save_memory',
+      arguments: {
+        title: 'Context MCP test',
+        content: 'Memory intelligence context body',
+        project: 'ai-brain',
+        tags: ['context'],
+      },
+    });
+
+    const context = await client.callTool({
+      name: 'get_context',
+      arguments: { query: 'intelligence', limit: 5 },
+    });
+    expect(context.isError).not.toBe(true);
+    const contextBody = JSON.parse((context.content as [{ text: string }])[0].text) as {
+      context: string;
+    };
+    expect(contextBody.context).toContain('Relevant Memory Context');
+
+    const prompt = await client.callTool({
+      name: 'build_prompt',
+      arguments: { task: 'Summarize context', query: 'intelligence' },
+    });
+    expect(prompt.isError).not.toBe(true);
+    const promptBody = JSON.parse((prompt.content as [{ text: string }])[0].text) as {
+      system: string;
+      user: string;
+    };
+    expect(promptBody.system).toBeTruthy();
+    expect(promptBody.user).toContain('Summarize context');
   });
 });

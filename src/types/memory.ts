@@ -75,6 +75,7 @@ export const createMemorySchema = z
     summary: z.string().max(SUMMARY_MAX).default(''),
     tags: z.array(z.string().max(100)).max(50).default([]),
     favorite: z.boolean().default(false),
+    level: z.enum(MEMORY_LEVELS).optional(),
   })
   .merge(knowledgeMetadataSchema);
 

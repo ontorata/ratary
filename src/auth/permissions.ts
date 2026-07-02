@@ -16,6 +16,10 @@ export function resolveRequiredPermission(method: string, path: string): Permiss
     return null;
   }
 
+  if (method === 'POST' && normalized === '/api/v1/context') {
+    return PERMISSIONS.MEMORY_READ;
+  }
+
   if (method === 'GET' || method === 'HEAD') {
     return PERMISSIONS.MEMORY_READ;
   }

@@ -18,6 +18,8 @@ import {
   createKnowledgeController,
   createMemoryRelationController,
 } from './controllers/knowledge.controller.js';
+import { createContextController } from './controllers/context.controller.js';
+import { ContextService } from './memory/context.service.js';
 import { registerV1Routes } from './routes/v1/index.js';
 import { healthRoutes } from './routes/index.js';
 import { errorHandlerPlugin, observabilityPlugin } from './plugins/index.js';
@@ -92,6 +94,7 @@ export async function buildApp(options?: {
   const authController = createAuthController(authLayer.identityService, authLayer.clientService);
   const knowledgeController = createKnowledgeController(memoryService);
   const relationController = createMemoryRelationController(relationService);
+  const contextController = createContextController(new ContextService(repository));
 
   const controllers = {
     health: healthController,
@@ -100,6 +103,7 @@ export async function buildApp(options?: {
     auth: authController,
     knowledge: knowledgeController,
     relations: relationController,
+    context: contextController,
   };
 
   await fastify.register(

@@ -8,8 +8,10 @@ import { KnowledgeService } from '../knowledge/knowledge.service.js';
 import { SearchService } from '../search/search.service.js';
 import { MemoryService } from '../services/memory.service.js';
 import { MemoryRelationService } from '../services/memory-relation.service.js';
+import { ContextService } from '../memory/context.service.js';
 import { getMcpMemoryScope } from '../types/memory-scope.js';
 import { memoryTypeSchema, categorySchema } from '../types/knowledge.js';
+import { MEMORY_LEVELS } from '../types/memory-level.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -23,6 +25,7 @@ const metadataSchema = z.object({
 function createMcpServer(
   memoryService: MemoryService,
   relationService: MemoryRelationService,
+  contextService: ContextService,
 ): McpServer {
   const scope = getMcpMemoryScope();
   const server = new McpServer({
@@ -57,6 +60,7 @@ function createMcpServer(
         importance: meta.importance,
         language: meta.language,
         notes: meta.notes,
+        level: 'note',
       });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
@@ -246,6 +250,68 @@ function createMcpServer(
     },
   );
 
+  server.tool(
+    'get_context',
+    'Retrieve, rank, and build token-safe markdown context from memories',
+    {
+      query: z.string().optional().describe('Search query for retrieval'),
+      projectId: z.string().optional().describe('Filter by project slug/id'),
+      tags: z.array(z.string()).optional().describe('Filter by tags'),
+      levels: z.array(z.enum(MEMORY_LEVELS)).optional().describe('Memory levels to include'),
+      limit: z.number().int().min(1).max(20).optional().describe('Max ranked memories'),
+      max_chars: z.number().int().min(500).max(24_000).optional().describe('Context char budget'),
+      format: z.enum(['markdown', 'xml']).optional().describe('Context output format'),
+    },
+    async (params) => {
+      const result = await contextService.buildContext(scope, {
+        query: params.query,
+        projectId: params.projectId,
+        tags: params.tags,
+        levels: params.levels,
+        limit: params.limit,
+        context: {
+          maxChars: params.max_chars,
+          format: params.format,
+        },
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    },
+  );
+
+  server.tool(
+    'build_prompt',
+    'Build full system and user prompts for an external LLM from ranked memory context',
+    {
+      task: z.string().describe('User task or instruction'),
+      query: z.string().optional().describe('Search query for retrieval'),
+      projectId: z.string().optional().describe('Filter by project slug/id'),
+      tags: z.array(z.string()).optional().describe('Filter by tags'),
+      levels: z.array(z.enum(MEMORY_LEVELS)).optional().describe('Memory levels to include'),
+      limit: z.number().int().min(1).max(20).optional().describe('Max ranked memories'),
+      max_chars: z.number().int().min(500).max(24_000).optional().describe('Context char budget'),
+      system_role: z.string().optional().describe('Custom system role prompt'),
+    },
+    async (params) => {
+      const result = await contextService.buildPrompt(scope, {
+        task: params.task,
+        query: params.query,
+        projectId: params.projectId,
+        tags: params.tags,
+        levels: params.levels,
+        limit: params.limit,
+        systemRole: params.system_role,
+        context: {
+          maxChars: params.max_chars,
+        },
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    },
+  );
+
   return server;
 }
 
@@ -257,8 +323,9 @@ export async function startMcpStdioServer(): Promise<void> {
   const search = new SearchService(repository);
   const memoryService = new MemoryService(repository, knowledge, search);
   const relationService = new MemoryRelationService(relationRepository, repository);
+  const contextService = new ContextService(repository);
 
-  const server = createMcpServer(memoryService, relationService);
+  const server = createMcpServer(memoryService, relationService, contextService);
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
