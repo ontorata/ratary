@@ -18,7 +18,9 @@ Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemin
 
 ## Arsitektur
 
-Detail lengkap: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+**Konstitusi (wajib untuk semua agent):** **[docs/AI_BRAIN_CONSTITUTION.md](docs/AI_BRAIN_CONSTITUTION.md)**
+
+Detail operasional: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
 ```
 src/
@@ -44,7 +46,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | **Phase 2.5 — Stabilization** | ✅ | **[docs/PHASE-2.5.md](docs/PHASE-2.5.md)** |
 | **Phase 2.6 — Knowledge Foundation** | ✅ | **[docs/PHASE-2.6-DESIGN.md](docs/PHASE-2.6-DESIGN.md)** |
 | **Phase 3 — JWT/OAuth & Permissions** | ✅ | **[docs/PHASE-3.md](docs/PHASE-3.md)** |
-| **Phase 4 — Memory Intelligence** | 📋 Design | **[docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)** |
+| **Phase 4 — Memory Intelligence** | ✅ | **[docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)** |
 
 ## Quick Start
 

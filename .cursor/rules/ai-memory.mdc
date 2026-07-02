@@ -5,6 +5,8 @@ alwaysApply: true
 
 # AI Memory Cloud
 
+**Arsitektur:** Baca [docs/AI_BRAIN_CONSTITUTION.md](../docs/AI_BRAIN_CONSTITUTION.md) sebelum mengubah kode. Anggap immutable.
+
 Server MCP **ai-memory-cloud** terhubung langsung ke Cloudflare D1. Di Cursor, **tidak perlu** API key `aic_...`, `npm start`, atau curl.
 
 ## Awal chat / lanjut pekerjaan

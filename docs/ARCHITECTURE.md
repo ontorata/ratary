@@ -2,6 +2,53 @@
 
 **Status:** Phase 3 ✅ · Phase 4 (Memory Intelligence) ✅
 
+> **Konstitusi:** Semua implementasi wajib mengikuti **[AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md)** (alias `ARCHITECT_RULES.md`). Baca dulu; anggap immutable.
+
+## AI Brain — target architecture
+
+```
+Memory Layer          ← repo ini (utama): CRUD, retrieval, context, consolidation
+        ↓
+Knowledge Layer       ← repo ini (parsial): metadata, relations, codename, levels
+        ↓
+Embedding Layer       ← reserved: embedding_id, object_key (Phase 5+)
+        ↓
+Vector Layer          ← future: hybrid retrieval (vector top-K + SQL filters)
+        ↓
+Graph Layer           ← future: memory_relations → graph traversal / inference
+        ↓
+Reasoning Layer       ← future: external service / agent runtime
+        ↓
+Planning Layer        ← future: task decomposition, goal stacks
+        ↓
+Execution Layer       ← future: tool calls, CI, deploy hooks
+        ↓
+Multi-Agent Layer     ← future: orchestration across agents + shared brain
+```
+
+### Posisi repo saat ini
+
+| Layer | Di repo ini | Swap / extend point |
+|-------|-------------|---------------------|
+| Memory | ✅ `MemoryService`, `memory/`, D1 `memories` | `IMemoryRepository` |
+| Knowledge | ✅ `KnowledgeService`, `memory_relations` | Extend `KnowledgeService`; jangan fork |
+| Embedding | 🔲 kolom `embedding_id` | New `IEmbeddingProvider` (belum ada) |
+| Vector | 🔲 | `Retriever` memanggil port; SQL LIKE hari ini |
+| Graph | 🔲 relasi flat | `MemoryRelationRepository` → graph adapter nanti |
+| Reasoning–Multi-Agent | 🔲 | MCP/REST sebagai boundary; logika di luar repo |
+
+### Prinsip extensibility
+
+1. **Repository adalah satu-satunya swap point untuk storage** — Postgres, R2, vector DB mengganti impl, bukan service di atasnya.
+2. **Retriever/Ranker/ContextBuilder tetap storage-agnostic** — mereka depend on interfaces + pure functions, bukan D1.
+3. **Reserve columns, jangan refactor schema** — `embedding_id`, `object_key`, `semantic_hash` sudah disiapkan untuk fase berikutnya.
+4. **Boundary jelas ke luar** — MCP tools dan REST API adalah kontrak ke Reasoning/Agent layer; jangan embed agent logic di sini.
+5. **Jangan optimize hanya untuk D1** — caps, ports, dan config (`ranking.config.ts`) harus masuk akal saat vector/graph ditambahkan.
+
+Setiap PR harus menjawab: *layer mana yang maju, dan apa port/interface yang memungkinkan layer berikutnya tanpa rewrite?*
+
+Detail guard rails, layer boundaries, dan aturan implementasi: **[AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md)**.
+
 ## Alur request REST API
 
 ```
