@@ -1,4 +1,4 @@
-import type { MemoryRepository } from '../repositories/memory.repository.js';
+import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import type { KnowledgeService } from '../knowledge/knowledge.service.js';
 import type { SearchService } from '../search/search.service.js';
 import type {
@@ -16,7 +16,7 @@ import { NotFoundError } from '../types/errors.js';
 
 export class MemoryService {
   constructor(
-    private readonly repository: MemoryRepository,
+    private readonly repository: IMemoryRepository,
     private readonly knowledge: KnowledgeService,
     private readonly search: SearchService,
   ) {}

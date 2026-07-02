@@ -1,4 +1,4 @@
-import type { MemoryRepository } from '../repositories/memory.repository.js';
+import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import type { MemoryType } from '../types/knowledge.js';
 import { resolveCodenamePrefix } from './codename.generator.js';
 import { slugify, withSlugSuffix } from './slug.generator.js';
@@ -33,7 +33,7 @@ export interface EnrichedKnowledgeFields {
 }
 
 export class KnowledgeService {
-  constructor(private readonly repository: MemoryRepository) {}
+  constructor(private readonly repository: IMemoryRepository) {}
 
   async enrichForCreate(
     ownerId: string,
