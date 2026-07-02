@@ -316,6 +316,29 @@ export class MockD1Client implements D1Client {
         return { results: [], success: true, meta: { changes: 1 } };
       }
 
+      if (
+        normalizedSql.includes('PROJECT_ID = ?') &&
+        normalizedSql.includes('SEMANTIC_HASH = ?') &&
+        params.length === 6
+      ) {
+        const projectId = params[0] as string;
+        const level = params[1] as string;
+        const semanticHash = params[2] as string;
+        const updatedAt = params[3] as string;
+        const id = params[4] as string;
+        const ownerId = params[5] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.project_id = projectId;
+        existing.level = level;
+        existing.semantic_hash = semanticHash;
+        existing.updated_at = updatedAt;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
       let id: string;
       let ownerId: string | undefined;
 

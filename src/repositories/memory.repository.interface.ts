@@ -71,4 +71,9 @@ export interface IMemoryRepository {
     olderThanDays: number;
   }): Promise<Memory[]>;
   bumpImportance(id: string, ownerId: string, importance: number): Promise<Memory | null>;
+  applyMemoryIntelligenceBackfill(
+    id: string,
+    ownerId: string,
+    data: { projectId: string; level: MemoryLevel; semanticHash: string },
+  ): Promise<void>;
 }

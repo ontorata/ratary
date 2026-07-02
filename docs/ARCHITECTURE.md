@@ -1,6 +1,6 @@
 # Arsitektur AI Memory Cloud
 
-**Status:** Phase 3 ✅ · Phase 4 (Memory Intelligence) berikutnya
+**Status:** Phase 3 ✅ · Phase 4 (Memory Intelligence) ✅
 
 ## Alur request REST API
 
@@ -27,11 +27,13 @@ services/        Business logic (tidak tahu HTTP)
     └── MemoryRelationService
     │
     ▼
+memory/          Phase 4 — Retriever, Ranker, ContextBuilder, PromptBuilder,
+                 ContextService, MemoryConsolidator, semantic-hash
 knowledge/       Pure modules + KnowledgeService (codename, slug, metadata)
 search/          RankingEngine (pure) + SearchService
     │
     ▼
-repositories/    SQL ke Cloudflare D1
+repositories/    SQL ke Cloudflare D1 (IMemoryRepository port)
     │
     ▼
 Cloudflare D1    memories, memory_relations, identities, clients, audit_logs, settings
@@ -43,7 +45,7 @@ Cloudflare D1    memories, memory_relations, identities, clients, audit_logs, se
 AI Client (Cursor, Claude Code, …)
     │
     ▼
-src/mcp/stdio.ts ──► MemoryService ──► MemoryRepository ──► D1
+src/mcp/stdio.ts ──► MemoryService + ContextService ──► MemoryRepository ──► D1
     │
     └── Scope: MCP_OWNER_ID env (default '' = legacy pool)
 ```
@@ -63,19 +65,20 @@ src/
   controllers/    HTTP handlers (+ memory-response WIB fields)
   db/             D1 client, migrations
   knowledge/      Codename, slug, summary, keywords, KnowledgeService
-  mcp/            MCP stdio server
+  memory/         Phase 4 intelligence pipeline
+  mcp/            MCP stdio server (14 tools)
   plugins/        error-handler, swagger, observability, rate-limit
-  repositories/   MemoryRepository, MemoryRelationRepository
+  repositories/   MemoryRepository (IMemoryRepository), MemoryRelationRepository
   routes/         Route definitions + validasi
   search/         RankingEngine, SearchService
   services/       MemoryService, HealthService, MemoryRelationService
-  types/          Zod schemas, errors
+  types/          Zod schemas, errors, context
   utils/          Mappers, formatWIB, memory-response
 
-tests/            Vitest (unit + API E2E) — 69+ tests
-scripts/          migrate, backfill-knowledge, setup-mcp, import/sync backups
+tests/            Vitest (unit + API E2E) — 100+ tests
+scripts/          migrate, backfill, consolidate, setup-mcp, import/sync backups
 api/              Vercel serverless entry
-docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/4, arsitektur)
+docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/3/4, arsitektur)
 ```
 
 **Roadmap:**
@@ -84,8 +87,8 @@ docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/4, arsitektur)
 |-------|--------|---------|
 | 2.5 Stabilization | ✅ | [PHASE-2.5.md](PHASE-2.5.md) |
 | 2.6 Knowledge Foundation | ✅ | [PHASE-2.6-DESIGN.md](PHASE-2.6-DESIGN.md) |
-| **3 Authorization** | ✅ | [PHASE-3.md](PHASE-3.md) |
-| 4 Memory Intelligence | 📐 desain | [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) |
+| 3 Authorization | ✅ | [PHASE-3.md](PHASE-3.md) |
+| **4 Memory Intelligence** | ✅ | [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) |
 
 ## Layer rules
 
@@ -97,6 +100,7 @@ docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/4, arsitektur)
 | `repositories/` | SQL D1 | HTTP, auth decisions |
 | `auth.middleware` | Panggil AuthService | Akses DB langsung |
 | `knowledge/` | Pure generators + orchestrator | HTTP, SQL |
+| `memory/` | Retrieval, context, consolidation logic | SQL langsung |
 
 ## Knowledge Foundation (Phase 2.6)
 
@@ -105,6 +109,16 @@ docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/4, arsitektur)
 - Search: `RankingEngine` → `relevanceScore` runtime (bukan kolom DB)
 - Backfill legacy: `npm run db:backfill-knowledge`
 - UNIQUE per `(owner_id, codename)` dan `(owner_id, slug)`
+
+## Memory Intelligence (Phase 4)
+
+- Kolom baru: `project_id`, `level`, `last_accessed`, `access_count`, `embedding_id`, `object_key`, `semantic_hash`
+- Pipeline: `Retriever` → `Ranker` → `ContextBuilder` → `PromptBuilder` via `ContextService`
+- Budget default: **12.000 karakter** konteks (~3k token)
+- Consolidator: `npm run consolidate:memories` (dry-run default), `npm run consolidate:memories:execute`
+- Backfill M4b: `npm run db:backfill-memory-intelligence`
+- Level defaults: MCP `save_memory` → `note`; import/sync backup → `raw`
+- MCP tools baru: `get_context`, `build_prompt` (additive; `search_memory` tidak berubah)
 
 ## Timestamp
 
@@ -119,6 +133,7 @@ docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/4, arsitektur)
 - API key (`aic_*`) dan OAuth token (`oac_*`) disimpan sebagai **HMAC hash**
 - JWT short-lived via `POST /api/v1/auth/token` (HS256, `AUTH_SECRET`)
 - Permissions: `memory.read`, `memory.write` — enforced setelah auth middleware
+- `POST /api/v1/context` memerlukan `memory.read` (bukan `memory.write`)
 - Plaintext hanya dikembalikan saat **bootstrap / create / rotate**
 - `AuditService` subscribe event bus — `identity.*`, `auth.failed`, `client.*`
 - Memory di-scope per `owner_id` (REST dari `request.user`, MCP dari `MCP_OWNER_ID`)
@@ -131,6 +146,7 @@ Legacy routes (`/memory`, `/search`, `/backup`) **dihapus di Phase 3**. Gunakan 
 |-----------|---------|
 | `/api/v1/memory` | CRUD + relations |
 | `/api/v1/search` | Ranked search |
+| `/api/v1/context` | Build context + LLM prompt (Phase 4) |
 | `/api/v1/health` | Health + D1 ping |
 | `/health` | Root alias (monitoring) |
 
@@ -140,3 +156,4 @@ Legacy routes (`/memory`, `/search`, `/backup`) **dihapus di Phase 3**. Gunakan 
 - **Vercel:** `api/index.ts` → `buildApp({ skipSwagger: true })`
 - **Health:** `GET /health` dan `GET /api/v1/health` — ping D1, `503` jika DB down
 - **Setup MCP:** `npm run setup` (baca `.env`, tulis config Cursor/Claude)
+- **Production migrate:** `npm run db:migrate` lalu `npm run db:backfill-memory-intelligence`

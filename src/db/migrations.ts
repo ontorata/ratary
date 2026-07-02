@@ -210,6 +210,21 @@ export async function migrateMemoryIntelligencePhase1(client: D1Client): Promise
   }
 }
 
+/** Phase 4 M4c — retrieval indexes after backfill. */
+export async function migrateMemoryIntelligencePhase3(client: D1Client): Promise<void> {
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_memories_project_id ON memories(owner_id, project_id)`,
+  );
+  await client.execute(`CREATE INDEX IF NOT EXISTS idx_memories_level ON memories(level)`);
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_memories_last_accessed ON memories(last_accessed)`,
+  );
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_memories_retrieval
+     ON memories(owner_id, project_id, archived, importance DESC, updated_at DESC)`,
+  );
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promise<void> {
   await client.execute(
@@ -241,6 +256,7 @@ export async function runMigrations(client: D1Client = getD1Client()): Promise<v
   await migrateKnowledgeFoundationPhase1(client);
   await migrateKnowledgeFoundationPhase3(client);
   await migrateMemoryIntelligencePhase1(client);
+  await migrateMemoryIntelligencePhase3(client);
 }
 
 export interface D1Statement {

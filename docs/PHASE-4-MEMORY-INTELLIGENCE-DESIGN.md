@@ -1,6 +1,6 @@
 # Phase 4 — Memory Intelligence Layer (Design)
 
-**Status:** 📋 Design — pending approval  
+**Status:** ✅ Implemented  
 **Prasyarat:** Phase 2.6 Knowledge Foundation complete (`c5c4f30`)  
 **Storage:** Cloudflare D1 only (no PostgreSQL, R2, vector DB in this phase)  
 **Goal:** Scalable retrieval + consolidation pipeline with repository portability for future Postgres / object storage / vector search
@@ -460,16 +460,16 @@ No UNIQUE constraint changes. No table splits.
 
 ## 14. Definition of Done
 
-- [ ] `IMemoryRepository` + D1 impl; no SQL outside repository
-- [ ] Retriever never unbounded query
-- [ ] Ranker returns top-K with level + recency + importance
-- [ ] ContextBuilder respects char budget
-- [ ] Consolidator merges duplicates, archives, never deletes
-- [ ] M4a/b/c migrations + backfill
-- [ ] MCP `get_context` + REST `/context`
-- [ ] ≥80 tests including retrieval cap + consolidation dry-run
-- [ ] `docs/ARCHITECTURE.md` updated
+- [x] `IMemoryRepository` + D1 impl; no SQL outside repository
+- [x] Retriever never unbounded query
+- [x] Ranker returns top-K with level + recency + importance
+- [x] ContextBuilder respects char budget
+- [x] Consolidator merges duplicates, archives, never deletes
+- [x] M4a/b/c migrations + backfill
+- [x] MCP `get_context` + REST `/context`
+- [x] ≥80 tests including retrieval cap + consolidation dry-run
+- [x] `docs/ARCHITECTURE.md` updated
 
 ---
 
-**Next step:** Review §13 open questions → approve → implement commit 1.
+**Status:** Phase 4 complete. See `docs/ARCHITECTURE.md` for runtime overview.

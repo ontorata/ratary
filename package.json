@@ -21,6 +21,7 @@
     "mcp": "tsx src/mcp/stdio.ts",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:backfill-knowledge": "tsx scripts/backfill-knowledge.ts",
+    "db:backfill-memory-intelligence": "tsx scripts/backfill-memory-intelligence.ts",
     "consolidate:memories": "tsx scripts/consolidate-memories.ts",
     "consolidate:memories:execute": "tsx scripts/consolidate-memories.ts --execute",
     "test:integration": "tsx scripts/test-integration.ts",

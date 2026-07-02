@@ -625,6 +625,19 @@ export class MemoryRepository implements IMemoryRepository {
     return { ...existing, importance, updatedAt };
   }
 
+  async applyMemoryIntelligenceBackfill(
+    id: string,
+    ownerId: string,
+    data: { projectId: string; level: MemoryLevel; semanticHash: string },
+  ): Promise<void> {
+    const updatedAt = nowISO();
+    await this.db.execute(
+      `UPDATE memories SET project_id = ?, level = ?, semantic_hash = ?, updated_at = ?
+       WHERE id = ? AND owner_id = ?`,
+      [data.projectId, data.level, data.semanticHash, updatedAt, id, ownerId],
+    );
+  }
+
   private async searchByTag(
     tag: string,
     filters: SearchFilters,

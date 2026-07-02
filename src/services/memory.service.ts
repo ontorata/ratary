@@ -199,6 +199,7 @@ export class MemoryService {
         summary: item.summary,
         tags: item.tags,
         favorite: item.favorite,
+        level: 'raw',
       });
       imported++;
     }
@@ -218,6 +219,7 @@ export class MemoryService {
         summary: item.summary,
         tags: item.tags,
         favorite: item.favorite,
+        level: 'raw',
       });
       imported++;
     }
