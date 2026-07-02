@@ -90,6 +90,11 @@ export interface SearchFilters {
 
 const CODENAME_MAX_RETRIES = 3;
 
+const RETRIEVAL_MEMORY_SELECT = `id, title, project, '' as content, summary, tags, favorite, archived,
+  owner_id, created_at, updated_at, codename, slug, keywords, category, memory_type,
+  importance, language, notes, project_id, level, last_accessed, access_count,
+  embedding_id, object_key, semantic_hash`;
+
 export class MemoryRepository implements IMemoryRepository {
   constructor(private readonly db: D1Client) {}
 
@@ -546,7 +551,7 @@ export class MemoryRepository implements IMemoryRepository {
     params.push(limit);
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories WHERE ${conditions.join(' AND ')}
+      `SELECT ${RETRIEVAL_MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')}
        ORDER BY importance DESC, updated_at DESC
        LIMIT ?`,
       params,

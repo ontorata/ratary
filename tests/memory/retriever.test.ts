@@ -67,4 +67,20 @@ describe('Retriever', () => {
 
     expect(results.some((m) => m.title.includes('Hydration'))).toBe(true);
   });
+
+  it('should omit full content bodies in retrieval projection', async () => {
+    await seed('Heavy body', 'mangroveapps');
+    const memory = (await repository.findAllByOwner(ownerId))[0];
+    expect(memory.content.length).toBeGreaterThan(0);
+
+    const results = await retriever.retrieve({
+      scope: { ownerId },
+      projectId: 'mangroveapps',
+      limit: 5,
+    });
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0].content).toBe('');
+    expect(results[0].title).toBe('Heavy body');
+  });
 });

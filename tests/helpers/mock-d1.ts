@@ -625,6 +625,27 @@ export class MockD1Client implements D1Client {
       return { results: rows, success: true };
     }
 
+    if (
+      normalizedSql.includes('FROM MEMORIES') &&
+      normalizedSql.includes("'' AS CONTENT") &&
+      !normalizedSql.includes('SELECT * FROM MEMORIES')
+    ) {
+      const filtered = this.filterMemories(sql, params);
+
+      if (normalizedSql.includes('ORDER BY IMPORTANCE DESC, UPDATED_AT DESC')) {
+        const limit = params[params.length - 1] as number;
+        const sorted = filtered
+          .sort((a, b) => {
+            const imp = (b.importance ?? 50) - (a.importance ?? 50);
+            if (imp !== 0) return imp;
+            return b.updated_at.localeCompare(a.updated_at);
+          })
+          .slice(0, limit)
+          .map((row) => ({ ...row, content: '' }));
+        return { results: sorted, success: true };
+      }
+    }
+
     if (normalizedSql.includes('SELECT * FROM MEMORIES')) {
       const filtered = this.filterMemories(sql, params);
 
