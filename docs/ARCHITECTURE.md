@@ -1,204 +1,229 @@
-# Arsitektur AI Memory Cloud
+# Arsitektur — AI Memory Cloud
 
-**Status:** Phase 3 ✅ · Phase 4 (Memory Intelligence) ✅
+**Status:** Phase 4 ✅ production · Phase 5 📋 planned  
+**Rules:** [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) (immutable)  
+**Current work:** [TASK_PROMPT.md](TASK_PROMPT.md)
 
-> **Konstitusi:** Semua implementasi wajib mengikuti **[AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md)** (alias `ARCHITECT_RULES.md`). Baca dulu; anggap immutable.
+---
 
-## AI Brain — target architecture
-
-```
-Memory Layer          ← repo ini (utama): CRUD, retrieval, context, consolidation
-        ↓
-Knowledge Layer       ← repo ini (parsial): metadata, relations, codename, levels
-        ↓
-Embedding Layer       ← reserved: embedding_id, object_key (Phase 5+)
-        ↓
-Vector Layer          ← future: hybrid retrieval (vector top-K + SQL filters)
-        ↓
-Graph Layer           ← future: memory_relations → graph traversal / inference
-        ↓
-Reasoning Layer       ← future: external service / agent runtime
-        ↓
-Planning Layer        ← future: task decomposition, goal stacks
-        ↓
-Execution Layer       ← future: tool calls, CI, deploy hooks
-        ↓
-Multi-Agent Layer     ← future: orchestration across agents + shared brain
-```
-
-### Posisi repo saat ini
-
-| Layer | Di repo ini | Swap / extend point |
-|-------|-------------|---------------------|
-| Memory | ✅ `MemoryService`, `memory/`, D1 `memories` | `IMemoryRepository` |
-| Knowledge | ✅ `KnowledgeService`, `memory_relations` | Extend `KnowledgeService`; jangan fork |
-| Embedding | 🔲 kolom `embedding_id` | New `IEmbeddingProvider` (belum ada) |
-| Vector | 🔲 | `Retriever` memanggil port; SQL LIKE hari ini |
-| Graph | 🔲 relasi flat | `MemoryRelationRepository` → graph adapter nanti |
-| Reasoning–Multi-Agent | 🔲 | MCP/REST sebagai boundary; logika di luar repo |
-
-### Prinsip extensibility
-
-1. **Repository adalah satu-satunya swap point untuk storage** — Postgres, R2, vector DB mengganti impl, bukan service di atasnya.
-2. **Retriever/Ranker/ContextBuilder tetap storage-agnostic** — mereka depend on interfaces + pure functions, bukan D1.
-3. **Reserve columns, jangan refactor schema** — `embedding_id`, `object_key`, `semantic_hash` sudah disiapkan untuk fase berikutnya.
-4. **Boundary jelas ke luar** — MCP tools dan REST API adalah kontrak ke Reasoning/Agent layer; jangan embed agent logic di sini.
-5. **Jangan optimize hanya untuk D1** — caps, ports, dan config (`ranking.config.ts`) harus masuk akal saat vector/graph ditambahkan.
-
-Setiap PR harus menjawab: *layer mana yang maju, dan apa port/interface yang memungkinkan layer berikutnya tanpa rewrite?*
-
-Detail guard rails, layer boundaries, dan aturan implementasi: **[AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md)**.
-
-## Alur request REST API
+## 1. Target stack
 
 ```
-Client (Cursor / curl / MCP tidak lewat sini)
-    │
-    ▼
-Fastify (server.ts)
-    ├── CORS
-    ├── observability (request ID, response time log)
-    ├── error-handler (global)
-    ├── auth middleware (onRequest) ──► AuthService ──► IdentityProvider chain
-    │
-    ▼
-routes/          Validasi Zod, rate limit (auth)
-    │
-    ▼
-controllers/     Tipis — parse request, panggil service, format response (+ WIB)
-    │
-    ▼
-services/        Business logic (tidak tahu HTTP)
-    ├── MemoryService      CRUD, backup, orkestrasi knowledge
-    ├── SearchService      Ranking + pagination
-    └── MemoryRelationService
-    │
-    ▼
-memory/          Phase 4 — Retriever, Ranker, ContextBuilder, PromptBuilder,
-                 ContextService, MemoryConsolidator, semantic-hash
-knowledge/       Pure modules + KnowledgeService (codename, slug, metadata)
-search/          RankingEngine (pure) + SearchService
-    │
-    ▼
-repositories/    SQL ke Cloudflare D1 (IMemoryRepository port)
-    │
-    ▼
-Cloudflare D1    memories, memory_relations, identities, clients, audit_logs, settings
+Memory Layer          ← this repo: CRUD, retrieval, context, consolidation
+Knowledge Layer       ← metadata, relations, codenames, levels
+Embedding Layer       ← Phase 5+ (embedding_id reserved)
+Vector Layer          ← Phase 6+ hybrid retrieval
+Graph Layer           ← Phase 8+ (IGraphProvider per ADR-002)
+Reasoning → Multi-Agent ← outside repo; MCP/REST boundary only
 ```
 
-## Alur MCP (stdio)
+---
 
-```
-AI Client (Cursor, Claude Code, …)
-    │
-    ▼
-src/mcp/stdio.ts ──► MemoryService + ContextService ──► MemoryRepository ──► D1
-    │
-    └── Scope: MCP_OWNER_ID env (default '' = legacy pool)
-```
+## 2. Implemented phases
 
-MCP **tidak** melalui REST auth — credential D1 di env MCP config.  
-Onboarding: `npm run setup` → `.mcp.json` + `.cursor/mcp.json`.
+| Phase | Status | Notes |
+|-------|--------|-------|
+| 1 Foundation | ✅ | CRUD, MCP, D1 |
+| 2.5 Stabilization | ✅ | [archive/PHASE-2.5.md](archive/PHASE-2.5.md) |
+| 2.6 Knowledge | ✅ | Codename, slug, relations, ranking |
+| 3 Authorization | ✅ | JWT, OAuth, API keys, permissions |
+| 4 Memory Intelligence | ✅ | Retriever, context, consolidator |
+| 5 Embedding | 📋 | [TASK_PROMPT.md](TASK_PROMPT.md) |
+| 6–10 | 🔲 | ADRs in [adr/](adr/) |
 
-## Struktur folder
+**Tests:** 110 · **MCP tools:** 14 · **Deploy REST:** Vercel · **Storage:** Cloudflare D1 (HTTP API)
+
+---
+
+## 3. Project structure
 
 ```
 src/
-  auth/           Identity layer (Phase 3: JWT, OAuth, permissions)
-    providers/    ApiKeyProvider, OAuthProvider, JwtProvider
-    *.repository  Akses tabel auth
-    *.service     Bootstrap, identities, clients, audit
-  config/         env.ts (Zod validation, load .env dari repo root)
-  controllers/    HTTP handlers (+ memory-response WIB fields)
-  db/             D1 client, migrations
-  knowledge/      Codename, slug, summary, keywords, KnowledgeService
-  memory/         Phase 4 intelligence pipeline
-  mcp/            MCP stdio server (14 tools)
-  plugins/        error-handler, swagger, observability, rate-limit
-  repositories/   MemoryRepository (IMemoryRepository), MemoryRelationRepository
-  routes/         Route definitions + validasi
-  search/         RankingEngine, SearchService
-  services/       MemoryService, HealthService, MemoryRelationService
-  types/          Zod schemas, errors, context
-  utils/          Mappers, formatWIB, memory-response
+  routes/           HTTP routing, Zod validation, rate limits
+  controllers/      Thin handlers, WIB display fields
+  services/         MemoryService, HealthService, MemoryRelationService
+  memory/           Retriever, Ranker, ContextBuilder, PromptBuilder,
+                    ContextService, Consolidator, semantic-hash
+  knowledge/        Pure generators + KnowledgeService
+  search/           RankingEngine (pure) + SearchService
+  auth/             Identity, JWT, OAuth, audit, permissions
+  repositories/     MemoryRepository, MemoryRelationRepository
+  mcp/              stdio server + tool definitions
+  db/               D1 client, migrations
+  config/           env.ts (Zod)
+  types/            Domain types + Zod schemas
+  utils/            Mappers, formatWIB (no business logic)
+  plugins/          Fastify plugins
 
-tests/            Vitest (unit + API E2E) — 100+ tests
-scripts/          migrate, backfill, consolidate, setup-mcp, import/sync backups
-api/              Vercel serverless entry
-docs/             PANDUAN.md, ARCHITECTURE.md, archive/ (desain fase)
+api/                Vercel serverless entry
+scripts/            migrate, backfill, consolidate, setup-mcp, sync
+tests/              Vitest unit + API E2E
+docs/               Constitution, architecture, task prompt, ADRs
 ```
 
-**Roadmap:**
+---
 
-| Phase | Status | Dokumen |
-|-------|--------|---------|
-| 2.5–5 | ✅ / 📋 | [archive/](archive/) — desain historis |
-| Pemakaian | — | [PANDUAN.md](PANDUAN.md) |
+## 4. Dependency graph
 
-## Layer rules
+### REST
 
-| Layer | Boleh | Tidak boleh |
-|-------|-------|-------------|
-| `routes/` | Validasi input, rate limit config | Business logic, SQL |
-| `controllers/` | Panggil service, map HTTP status, WIB display | SQL, auth logic |
-| `services/` | Orkestrasi, rules | `request`/`reply`, SQL langsung |
-| `repositories/` | SQL D1 | HTTP, auth decisions |
-| `auth.middleware` | Panggil AuthService | Akses DB langsung |
-| `knowledge/` | Pure generators + orchestrator | HTTP, SQL |
-| `memory/` | Retrieval, context, consolidation logic | SQL langsung |
+```
+Client
+  → Fastify (server.ts)
+      → auth middleware → AuthService
+      → routes/ (validation)
+      → controllers/
+      → services/ | memory/ | knowledge/ | search/
+      → repositories/
+      → Cloudflare D1
+```
 
-## Knowledge Foundation (Phase 2.6)
+### MCP
 
-- Metadata di kolom `memories`: `codename`, `slug`, `keywords`, `category`, `memory_type`, `importance`, `language`, `notes`
-- Relasi: tabel `memory_relations` (weight, confidence, source_type)
-- Search: `RankingEngine` → `relevanceScore` runtime (bukan kolom DB)
-- Backfill legacy: `npm run db:backfill-knowledge`
-- UNIQUE per `(owner_id, codename)` dan `(owner_id, slug)`
+```
+AI Client (stdio)
+  → mcp/stdio.ts → mcp/server.ts
+      → MemoryService, ContextService, SearchService, …
+      → repositories/ → D1
+      → scope: MCP_OWNER_ID (required in production)
+```
 
-## Memory Intelligence (Phase 4)
+MCP does **not** use REST auth — D1 credentials in env. Same business logic as REST.
 
-- Kolom baru: `project_id`, `level`, `last_accessed`, `access_count`, `embedding_id`, `object_key`, `semantic_hash`
-- Pipeline: `Retriever` → `Ranker` → `ContextBuilder` → `PromptBuilder` via `ContextService`
-- Budget default: **12.000 karakter** konteks (~3k token)
-- Consolidator: `npm run consolidate:memories` (dry-run default), `npm run consolidate:memories:execute`
-- Backfill M4b: `npm run db:backfill-memory-intelligence`
-- Level defaults: MCP `save_memory` → `note`; import/sync backup → `raw`
-- MCP tools baru: `get_context`, `build_prompt` (additive; `search_memory` tidak berubah)
+---
 
-## Timestamp
+## 5. Layer responsibilities
 
-| Layer | Format |
-|-------|--------|
-| D1 / domain (`createdAt`, `updatedAt`) | ISO-8601 **UTC** (`nowISO()`) |
-| REST API response | + `createdAtWib`, `updatedAtWib` via `formatWIB()` (Asia/Jakarta) |
-| MCP | UTC saja (tanpa field WIB) |
+| Layer | Responsibility |
+|-------|----------------|
+| `routes/` | Input validation, mount paths, rate limit hooks |
+| `controllers/` | HTTP status, map service results to JSON (+ WIB) |
+| `services/` | CRUD orchestration, backup, delegate to knowledge/search |
+| `memory/` | LLM retrieval pipeline, context budget, consolidation logic |
+| `knowledge/` | Enrichment: codename, slug, summary, keywords |
+| `search/` | Candidate fetch + `rankMemories` for REST search |
+| `repositories/` | All SQL; owner-scoped queries |
+| `auth/` | Identity chain, permissions, audit bus |
 
-## Auth & audit
+---
 
-- API key (`aic_*`) dan OAuth token (`oac_*`) disimpan sebagai **HMAC hash**
-- JWT short-lived via `POST /api/v1/auth/token` (HS256, `AUTH_SECRET`)
-- Permissions: `memory.read`, `memory.write` — enforced setelah auth middleware
-- `POST /api/v1/context` memerlukan `memory.read` (bukan `memory.write`)
-- Plaintext hanya dikembalikan saat **bootstrap / create / rotate**
-- `AuditService` subscribe event bus — `identity.*`, `auth.failed`, `client.*`
-- Memory di-scope per `owner_id` (REST dari `request.user`, MCP dari `MCP_OWNER_ID`)
+## 6. Extension points (ports)
 
-## Dual mount API
+| Concern | Interface | Implementation today | Future adapters |
+|---------|-----------|----------------------|-----------------|
+| Memory metadata SQL | `IMemoryReader` / `IMemoryWriter` | `MemoryRepository` (D1) | Postgres |
+| Combined port | `IMemoryRepository` | same class | same |
+| Retrieval candidates | `IRetrievalCandidateSource` | `SqlRetrievalCandidateSource` | Vector, graph, composite |
+| LLM retrieval | `Retriever` | uses port above | unchanged |
+| Ranking | `ranking.engine.ts` | pure functions | fusion weights (Phase 6) |
+| Relations SQL | `MemoryRelationRepository` (concrete) | D1 | + `IMemoryRelationRepository` |
+| Embedding inference | `IEmbeddingProvider` | 🔲 Phase 5 | OpenAI, Workers AI, noop |
+| Vector storage | `IEmbeddingStore` | 🔲 Phase 5 | D1 MVP → Vectorize/pgvector |
+| Object blobs | `IContentStore` | 🔲 ADR-005 | R2, S3, MinIO |
+| Graph traversal | `IGraphProvider` | 🔲 ADR-002 Phase 8 | D1 CTE, graph DB |
+| Workspace scope | `MemoryScope` (+ ADR-002 fields) | `ownerId` only | workspace, agent, org |
+| Auth | `IdentityProvider` chain | API key, JWT, OAuth | — |
 
-Legacy routes (`/memory`, `/search`, `/backup`) **dihapus di Phase 3**. Gunakan **`/api/v1/*`**.
+**Composition root:** `server.ts`, `mcp/server.ts`, `scripts/*` — only place for `new MemoryRepository(db)`.
 
-| Canonical | Catatan |
-|-----------|---------|
+---
+
+## 7. Memory intelligence pipeline (Phase 4)
+
+```
+ContextService
+  → Retriever → IRetrievalCandidateSource
+  → Ranker → ranking.engine + retrieval boosts
+  → ContextBuilder (token budget)
+  → PromptBuilder
+  → IMemoryWriter.recordAccess (per ranked memory)
+```
+
+**Search (separate path):**
+
+```
+SearchService → IMemoryReader.findSearchCandidates → rankMemories → paginate
+```
+
+Caps: `search/ranking.config.ts`, `memory/context.config.ts`.
+
+---
+
+## 8. Data model (memories)
+
+| Area | Fields / tables |
+|------|-----------------|
+| Core | title, content, summary, project, tags, owner_id |
+| Knowledge (2.6) | codename, slug, keywords, category, memory_type, importance |
+| Intelligence (4) | project_id, level, last_accessed, access_count, semantic_hash |
+| Reserved (5+) | embedding_id, object_key |
+| Relations | memory_relations (flat edges) |
+| Auth | identities, clients, audit_logs, settings |
+
+UNIQUE: `(owner_id, codename)`, `(owner_id, slug)`.
+
+---
+
+## 9. API surface
+
+Canonical prefix: `/api/v1/*` (legacy `/memory` routes removed Phase 3).
+
+| Endpoint | Permission |
+|----------|------------|
 | `/api/v1/memory` | CRUD + relations |
-| `/api/v1/search` | Ranked search |
-| `/api/v1/context` | Build context + LLM prompt (Phase 4) |
-| `/api/v1/health` | Health + D1 ping |
-| `/health` | Root alias (monitoring) |
+| `/api/v1/search` | memory.read |
+| `/api/v1/context` | memory.read |
+| `/api/v1/auth/*` | auth flows |
+| `/api/v1/health`, `/health` | public |
 
-## Deployment
+---
 
-- **Lokal:** `npm run dev` → `dev-server.ts` (migrate + graceful shutdown)
-- **Vercel:** `api/index.ts` → `buildApp({ skipSwagger: true })`
-- **Health:** `GET /health` dan `GET /api/v1/health` — ping D1, `503` jika DB down
-- **Setup MCP:** `npm run setup` (baca `.env`, tulis config Cursor/Claude)
-- **Production migrate:** `npm run db:migrate` lalu `npm run db:backfill-memory-intelligence`
+## 10. Auth & scope
+
+- REST: `ownerId` from `request.user` (JWT / API key / OAuth).
+- MCP: `ownerId` from `MCP_OWNER_ID` env (`assertMcpOwnerConfigured` in production).
+- Cross-owner memory access → **404** (no enumeration).
+- Audit today: auth events only (`identity.*`, `auth.failed`, `client.*`).
+
+Future scope contract: [adr/002-workspace-identity-model.md](adr/002-workspace-identity-model.md) (Approved).
+
+---
+
+## 11. Deployment & ops
+
+| Environment | Entry |
+|-------------|--------|
+| Local | `npm run dev` → `dev-server.ts` |
+| Production REST | `api/index.ts` → Vercel |
+| MCP | `npm run mcp` / `npm run setup` |
+| Migrate | `npm run db:migrate` |
+| Backfill M4b | `npm run db:backfill-memory-intelligence` |
+| Consolidate | `npm run consolidate:memories` (dry-run default) |
+
+User onboarding: [PANDUAN.md](PANDUAN.md).
+
+---
+
+## 12. Structural decisions
+
+| Document | Role |
+|----------|------|
+| [ADR-POLICY.md](ADR-POLICY.md) | When ADR required |
+| [adr/README.md](adr/README.md) | Index — ADR-002 Approved (workspace model) |
+| [archive/](archive/) | Phase 2.5–5 design history |
+
+---
+
+## 13. Known technical debt (documented)
+
+| Item | Mitigation path |
+|------|-----------------|
+| `MemoryRepository` ~729 lines | Additive methods only; ADR-004 type extract |
+| Port types in concrete file | ADR-004 → `types/memory-persistence.ts` |
+| `MemoryRelationRepository` no interface | `IMemoryRelationRepository` before Phase 8 |
+| Search uses `SELECT *` | Projection refactor (perf, not blocking Phase 5) |
+| N× `recordAccess` on context build | Batch update (perf) |
+
+---
+
+*Operational detail for the active phase: [TASK_PROMPT.md](TASK_PROMPT.md).*

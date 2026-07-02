@@ -165,6 +165,10 @@ Keduanya menulis ke **D1 yang sama**.
 
 | Dokumen | Isi |
 |---------|-----|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Arsitektur & layer saat ini |
-| [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) | Aturan implementasi (agent) |
+| [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) | Aturan immutable (agent) |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Struktur, layer, extension points |
+| [ENGINEERING.md](ENGINEERING.md) | Proses Principal Engineer & format analisis |
+| [TASK_PROMPT.md](TASK_PROMPT.md) | Pekerjaan aktif (Phase 5 Embedding) |
+| [TASK_PROMPT.template.md](TASK_PROMPT.template.md) | Template task untuk fase berikutnya |
+| [ADR-POLICY.md](ADR-POLICY.md) | Kebijakan ADR — wajib untuk perubahan struktural |
 | [archive/](archive/) | Desain historis per fase |

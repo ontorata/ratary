@@ -1,188 +1,172 @@
 # AI Brain Constitution
 
-> **Alias:** `ARCHITECT_RULES.md` — same document; use either name in prompts.
+> **Alias:** `ARCHITECT_RULES.md` — same document.
 
-**Status:** Immutable project constitution.  
-**Audience:** All implementers — Cursor, Codex, Claude Code, ChatGPT, CI agents, or any future agent.
+**Status:** Immutable. **Only the project owner may amend.**
 
 ---
 
-## How to use this document
+## How to use
 
-**Every implementation prompt must begin with:**
+**Every implementation session must begin with:**
 
 ```
-Read docs/AI_BRAIN_CONSTITUTION.md first. Treat it as immutable project constitution.
+Read docs/AI_BRAIN_CONSTITUTION.md first. Treat it as immutable.
+Read docs/ARCHITECTURE.md for structure and extension points.
+Read docs/ENGINEERING.md for analysis process and output format.
+Read docs/TASK_PROMPT.md for the current task only.
 ```
 
-Then add phase-specific requirements (design approval, commits, tests, etc.).
+If work conflicts with this constitution → **stop and ask**. Do not improvise a parallel architecture.
 
-Agents must read this file **before** writing code. If a task conflicts with this constitution, **stop and ask** — do not improvise a parallel architecture.
-
-**Amendments:** Only the project owner may change this file. Agents must not weaken, bypass, or duplicate these rules elsewhere.
+**Current work lives in [TASK_PROMPT.md](TASK_PROMPT.md)** — not in this file.
 
 ---
 
-## 1. Long-term vision
+## 1. Vision
 
-This repository is **one component** of **AI Brain**, not the whole system.
+This repo is **one component** of AI Brain:
 
 ```
-Memory Layer
-    ↓
-Knowledge Layer
-    ↓
-Embedding Layer
-    ↓
-Vector Layer
-    ↓
-Graph Layer
-    ↓
-Reasoning Layer
-    ↓
-Planning Layer
-    ↓
-Execution Layer
-    ↓
-Multi-Agent Layer
+Memory → Knowledge → Embedding → Vector → Graph → Reasoning → Planning → Execution → Multi-Agent
 ```
 
-**Rule:** Every implementation must move toward this stack.  
-**Never** optimize only for the current phase (e.g. D1-only shortcuts that block Postgres, R2, or vector search later).
+**Rule:** Every change must advance toward this stack.  
+**Never** optimize only for the current phase or current storage (D1-only shortcuts that block Postgres, R2, vector DB, graph DB).
 
-Operational detail and current repo mapping: [ARCHITECTURE.md](ARCHITECTURE.md).
-
----
-
-## 2. Repo scope today
-
-| Layer | In this repo | Extend / swap via |
-|-------|--------------|-------------------|
-| Memory | ✅ CRUD, retrieval, context, consolidation | `IMemoryRepository`, `memory/` |
-| Knowledge | ✅ Metadata, relations, codenames, levels | `KnowledgeService`, `types/knowledge.ts` |
-| Embedding | 🔲 Reserved (`embedding_id`, `object_key`) | Future `IEmbeddingProvider` |
-| Vector | 🔲 | `Retriever` via ports; no SQL-only lock-in |
-| Graph | 🔲 Flat relations today | `MemoryRelationRepository` → graph adapter later |
-| Reasoning → Multi-Agent | 🔲 | MCP + REST as boundary; logic stays outside this repo |
+**Design for at least the next three phases.** If a change would require rewrite in a later phase → **ADR first**, no code.
 
 ---
 
-## 3. Architecture guard rails
-
-### Never duplicate
-
-Extend the **canonical module** instead of copying logic:
-
-| Concern | Canonical owner | Extend via |
-|---------|-----------------|------------|
-| Memory metadata / enrichment | `KnowledgeService` + `types/knowledge.ts` | Schemas; `enrichForCreate` / `enrichForUpdate` |
-| Persistence | `MemoryRepository` (`IMemoryRepository`) | New interface methods + one D1 impl |
-| CRUD / backup | `MemoryService` | New methods on existing class |
-| REST search (paginated) | `SearchService` + `findSearchCandidates` | `SearchFilters`; caps in config |
-| Relevance scoring | `search/ranking.engine.ts` | Weights in `search/ranking.config.ts` only |
-| LLM retrieval pipeline | `memory/Retriever` → `Ranker` → `ContextService` | New steps in `memory/`; reuse `rankMemories` |
-| Input validation | `types/*.ts` (Zod) | Co-locate with domain; routes use `preValidation` only |
-
-### Never create
-
-- `MemoryServiceV2`, `SearchService2`
-- `KnowledgeManager`, `MemoryManager`
-- `UniversalRepository`
-- `utils/` modules containing **business logic** (`utils/` = mappers, `formatWIB`, response shaping only)
-
-### Never duplicate (summary)
-
-- metadata  
-- repositories  
-- services  
-- search logic  
-- ranking logic  
-- validation  
-
-### New abstractions
-
-Each must have **one clear responsibility** and a reason it cannot live in an existing module.
-
-Prefer:
-
-- **Interface** (`IMemoryRepository`) over a second repository class  
-- **Pure functions** (`semantic-hash.ts`, `knowledge/*` generators) over new services  
-- **Orchestrator** (`ContextService`) composing existing pieces over reimplementing search/rank  
-
----
-
-## 4. Layer boundaries (this repo)
+## 2. Fixed dependency direction
 
 ```
-routes/       → validation, rate limits — no business logic, no SQL
-controllers/  → call services, HTTP status, WIB display — no SQL, no auth logic
-services/     → orchestration — no request/reply, no direct SQL
-repositories/ → SQL / D1 only — no HTTP, no auth decisions
-knowledge/    → pure generators + KnowledgeService — no HTTP, no SQL
-memory/       → retrieval, context, consolidation — no direct SQL
-search/       → RankingEngine (pure) + SearchService
-auth/         → identity, permissions — via AuthService, not raw DB in middleware
+routes → controllers → services | memory/ | knowledge/ | search/ | auth/
+                              → repositories → storage adapters
+MCP → mcp/server.ts → same services (never duplicate business logic in tools)
 ```
 
-Stack entrypoints:
-
-- **REST:** `routes/` → `controllers/` → `services/` | `memory/` → `repositories/`  
-- **MCP:** `mcp/server.ts` → same services — **never** duplicate business logic in tool handlers  
+**Never reverse this direction.**  
+**Never bypass layers** (no SQL in services, no HTTP in repositories, no business logic in routes).
 
 ---
 
-## 5. Extensibility principles
+## 3. Layer rules (non-negotiable)
 
-1. **Repository is the storage swap point** — Postgres, R2, vector DB replace impl; services above stay unchanged.  
-2. **Retriever / Ranker / ContextBuilder stay storage-agnostic** — depend on interfaces and pure functions.  
-3. **Reserve columns; avoid breaking schema** — `embedding_id`, `object_key`, `semantic_hash` are forward-compatible.  
-4. **MCP and REST are outward boundaries** — no agent reasoning, planning, or execution logic inside this repo.  
-5. **Configs must survive the next layer** — caps and weights in `ranking.config.ts` / `context.config.ts`, not hard-coded for D1-only paths.  
-
-**PR checklist:** Which layer advances? Which port/interface enables the next layer without a rewrite?
+| Layer | Allowed | Forbidden |
+|-------|---------|-----------|
+| `routes/` | Validation, rate limits | SQL, business logic |
+| `controllers/` | Parse request, call service, HTTP response | SQL, repository, auth logic |
+| `services/` | Orchestration, business rules | `request`/`reply`, SQL |
+| `repositories/` | SQL / storage only | Business logic, HTTP, auth decisions |
+| `knowledge/` | Pure generators + `KnowledgeService` | SQL, HTTP |
+| `search/` | `RankingEngine` (pure) + `SearchService` | Repository, HTTP, D1 |
+| `memory/` | Retrieval, rank, context, prompt, consolidation | SQL |
+| `auth/` | Identity, permissions via services | Raw DB in middleware |
 
 ---
 
-## 6. Implementation discipline
+## 4. Never duplicate
 
-When implementing features (any phase):
+Extend the **canonical module** — do not copy logic.
+
+| Concern | Owner |
+|---------|--------|
+| Memory metadata | `KnowledgeService` + `types/knowledge.ts` |
+| Persistence | `IMemoryRepository` (+ reader/writer ports) |
+| CRUD / backup | `MemoryService` |
+| REST search | `SearchService` + `findSearchCandidates` |
+| Relevance scoring | `search/ranking.engine.ts` + `ranking.config.ts` |
+| LLM retrieval | `memory/Retriever` → `Ranker` → `ContextService` |
+| Validation | `types/*.ts` (Zod) |
+
+---
+
+## 5. Never create
+
+- `*V2` classes (`MemoryServiceV2`, `RetrieverV2`, …)
+- `KnowledgeManager`, `MemoryManager`, `UniversalRepository`
+- Placeholders, stubs, `TODO`, `FIXME`, dead code for future phases
+- Business logic in `utils/` (mappers and `formatWIB` only)
+- Agent reasoning, planning, or execution logic **inside this repo**
+
+---
+
+## 6. Storage & ports
+
+- **Repository is the metadata SQL swap point** — not the only port for all storage.
+- **Never write SQL outside repositories.**
+- **Embedding** → `IEmbeddingProvider` — **not** inside repository.
+- **Vectors** → `IEmbeddingStore` + `IRetrievalCandidateSource` — **not** vector SQL in `MemoryRepository`.
+- **Large content** → `IContentStore` (future) — not coupled to D1 row shape in services.
+- **Graph** → extend via `IGraphProvider` — **do not replace** `MemoryRelationRepository` with a V2 class.
+- Infrastructure adapters (D1, Postgres, R2, S3, Qdrant, Weaviate, pgvector) must be **replaceable** without rewriting `MemoryService`, `KnowledgeService`, or `SearchService`.
+
+---
+
+## 7. Search (fixed)
+
+```
+Repository → SearchService → RankingEngine (pure)
+```
+
+`RankingEngine` **must not** access repositories, D1, or HTTP.
+
+---
+
+## 8. Backward compatibility
+
+- **Never remove** public fields or break MCP tool contracts without owner approval.
+- **Never rename** public REST/MCP APIs without approval.
+- **Prefer additive** schema (`ALTER`, new columns, new ports).
+- Migrations: idempotent, phased (add → backfill → indexes), **no destructive delete** of user memories (archive only).
+
+---
+
+## 9. Architecture decisions
+
+- **Every structural change requires an approved ADR** — [ADR-POLICY.md](ADR-POLICY.md).
+- Agents must not weaken or duplicate these rules in other files.
+
+---
+
+## 10. Implementation discipline
 
 | Rule | Requirement |
 |------|-------------|
 | Commits | Small; **one concern per commit** |
-| Scope | **No** architectural changes outside approved design |
-| Scope | **No** unrelated refactors or formatting |
-| Quality gate | After each commit: `lint` → `typecheck` → `test` — **stop if any fails** |
-| Tests | Never skip; never mark complete until all tests pass |
-| MCP changes | Additive tools preferred; do not break existing tool contracts without approval |
-| Migrations | Phased (add columns → backfill → indexes); no destructive deletes of user data |
-| Consolidation | Archive only; **never hard-delete** memories |
+| Scope | No architecture outside approved ADR + [TASK_PROMPT.md](TASK_PROMPT.md) |
+| Quality gate | `lint` → `format:check` → `typecheck` → `test` — stop on failure |
+| Tests | No decrease in coverage; never skip |
+| MCP | Additive tools preferred |
+| Long-term | Evaluate compatibility with Phases 5–10 before coding |
 
 ---
 
-## 7. Canonical patterns (do not fork)
+## 11. Canonical patterns
 
 | Pattern | Rule |
 |---------|------|
-| Class name | Keep `MemoryRepository` (interface: `IMemoryRepository`) |
-| Search vs retrieval | `SearchService` = REST paginated search; `Retriever` = bounded LLM candidate fetch |
-| Context budget | Default 12k chars; max 24k — see `context.config.ts` |
-| Levels | MCP `save_memory` → `note`; import/sync → `raw` |
-| Permissions | `memory.read` / `memory.write`; context endpoints use `memory.read` |
-| Timestamps | UTC in DB; WIB display in REST only via `formatWIB()` |
+| Class name | `MemoryRepository` implements `IMemoryRepository` |
+| Search vs retrieval | `SearchService` = paginated REST; `Retriever` = bounded LLM candidates |
+| Context budget | Config in `context.config.ts` |
+| Permissions | `memory.read` / `memory.write`; context = `memory.read` |
+| Timestamps | UTC in DB; WIB in REST display only |
 
 ---
 
-## 8. Related documents
+## 12. Document hierarchy
 
-| Document | Purpose |
-|----------|---------|
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Current system diagram, deployment, phase status |
-| [PANDUAN.md](PANDUAN.md) | User guide — setup, usage, MCP |
-| [archive/](archive/) | Phase design docs (historical) |
-
-**Hierarchy:** `AI_BRAIN_CONSTITUTION.md` → phase design doc → task prompt.
+```
+AI_BRAIN_CONSTITUTION.md   ← immutable rules (this file)
+ARCHITECTURE.md            ← structure, layers, extension points
+ENGINEERING.md             ← Principal Engineer process & pre-code analysis
+TASK_PROMPT.md             ← current phase work (see TASK_PROMPT.template.md)
+ADR-POLICY.md → docs/adr/  ← structural decisions
+archive/                   ← historical phase designs
+PANDUAN.md                 ← user guide
+```
 
 ---
 
-*Last updated: Phase 4 complete. Amend only with explicit owner approval.*
+*Amend only with explicit project owner approval.*

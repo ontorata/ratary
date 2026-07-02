@@ -18,9 +18,9 @@ Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemin
 
 ## Arsitektur
 
-**Konstitusi (wajib untuk semua agent):** **[docs/AI_BRAIN_CONSTITUTION.md](docs/AI_BRAIN_CONSTITUTION.md)**
+**Konstitusi (immutable):** **[docs/AI_BRAIN_CONSTITUTION.md](docs/AI_BRAIN_CONSTITUTION.md)**
 
-Detail operasional: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+**Arsitektur:** **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** · **Proses dev:** **[docs/ENGINEERING.md](docs/ENGINEERING.md)** · **Pekerjaan aktif:** **[docs/TASK_PROMPT.md](docs/TASK_PROMPT.md)**
 
 ```
 src/
