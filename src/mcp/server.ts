@@ -9,7 +9,7 @@ import { SearchService } from '../search/search.service.js';
 import { MemoryService } from '../services/memory.service.js';
 import { MemoryRelationService } from '../services/memory-relation.service.js';
 import { ContextService } from '../memory/context.service.js';
-import { getMcpMemoryScope } from '../types/memory-scope.js';
+import { getMcpMemoryScope, assertMcpOwnerConfigured } from '../types/memory-scope.js';
 import { memoryTypeSchema, categorySchema } from '../types/knowledge.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
 
@@ -316,6 +316,7 @@ function createMcpServer(
 }
 
 export async function startMcpStdioServer(): Promise<void> {
+  assertMcpOwnerConfigured();
   const db = getD1Client();
   const repository = new MemoryRepository(db);
   const relationRepository = new MemoryRelationRepository(db);
