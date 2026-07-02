@@ -26,29 +26,27 @@ export function toScoredMemoryResponse(memory: ScoredMemory): ScoredMemoryRespon
   };
 }
 
-export function toMemoryListResponse(result: {
-  memories: Memory[];
+export function toMemoryListResponse(result: { memories: Memory[]; total: number }): {
+  memories: MemoryResponse[];
   total: number;
-}): { memories: MemoryResponse[]; total: number } {
+} {
   return {
     memories: result.memories.map(toMemoryResponse),
     total: result.total,
   };
 }
 
-export function toSearchResponse(result: {
-  memories: ScoredMemory[];
+export function toSearchResponse(result: { memories: ScoredMemory[]; total: number }): {
+  memories: ScoredMemoryResponse[];
   total: number;
-}): { memories: ScoredMemoryResponse[]; total: number } {
+} {
   return {
     memories: result.memories.map(toScoredMemoryResponse),
     total: result.total,
   };
 }
 
-export function toBackupResponse(result: {
-  memories: Memory[];
-}): { memories: MemoryResponse[] } {
+export function toBackupResponse(result: { memories: Memory[] }): { memories: MemoryResponse[] } {
   return {
     memories: result.memories.map(toMemoryResponse),
   };

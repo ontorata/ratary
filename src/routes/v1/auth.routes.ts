@@ -4,6 +4,7 @@ import {
   bootstrapBodySchema,
   createClientBodySchema,
   createIdentityBodySchema,
+  issueTokenBodySchema,
   updateClientBodySchema,
 } from '../../auth/auth.types.js';
 import type { AuthController } from '../../controllers/auth.controller.js';
@@ -93,6 +94,15 @@ export async function authRoutes(
       schema: { tags: ['Auth'], summary: 'Verify current credentials' },
     },
     controller.verify.bind(controller),
+  );
+
+  fastify.post(
+    '/auth/token',
+    {
+      preValidation: [validateBody(issueTokenBodySchema)],
+      schema: { tags: ['Auth'], summary: 'Issue short-lived JWT for current identity' },
+    },
+    controller.issueToken.bind(controller),
   );
 
   fastify.post(

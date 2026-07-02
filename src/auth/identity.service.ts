@@ -3,7 +3,7 @@ import type { IdentityRepository } from './identity.repository.js';
 import type { SettingsRepository } from './settings.repository.js';
 import { executeTransaction } from '../db/migrations.js';
 import { generateId, nowISO } from '../utils/memory-mapper.js';
-import { generateApiKeyPlaintext, hashSecret } from './crypto.js';
+import { generateApiKeyPlaintext, generateOAuthTokenPlaintext, hashSecret } from './crypto.js';
 import { emitAuthEvent } from './events.js';
 import { ForbiddenError, NotFoundError } from '../types/errors.js';
 import type {
@@ -11,12 +11,16 @@ import type {
   CreateIdentityBody,
   Identity,
   IdentityMetadata,
+  IssueTokenBody,
 } from './auth.types.js';
+import type { AuthUser } from './auth.types.js';
+import type { JwtService } from './jwt.service.js';
 import { SETTINGS_KEYS } from './settings.repository.js';
 
 export interface CreateIdentityResult {
   identity: Identity;
-  apiKey: string;
+  apiKey?: string;
+  oauthToken?: string;
 }
 
 export interface BootstrapResult extends CreateIdentityResult {
@@ -29,6 +33,7 @@ export class IdentityService {
     private readonly db: D1Client,
     private readonly identityRepository: IdentityRepository,
     private readonly settingsRepository: SettingsRepository,
+    private readonly jwtService: JwtService,
   ) {}
 
   async isBootstrapAvailable(): Promise<boolean> {
@@ -136,7 +141,32 @@ export class IdentityService {
     actor: { identityId: string; ownerId: string },
   ): Promise<CreateIdentityResult> {
     const ownerId = input.owner_id ?? actor.ownerId;
-    const plaintext = generateApiKeyPlaintext();
+
+    if (input.type === 'jwt') {
+      const identity = await this.identityRepository.insert({
+        type: input.type,
+        name: input.name,
+        secretHash: null,
+        ownerId,
+        description: input.description,
+        metadata: input.metadata ?? { permissions: ['memory.read', 'memory.write'] },
+        clientId: input.client_id ?? null,
+        createdBy: actor.identityId,
+        expiresAt: input.expires_at ?? null,
+      });
+
+      emitAuthEvent({
+        event: 'identity.created',
+        identityId: identity.id,
+        ownerId: identity.ownerId,
+        clientId: identity.clientId,
+      });
+
+      return { identity };
+    }
+
+    const plaintext =
+      input.type === 'oauth' ? generateOAuthTokenPlaintext() : generateApiKeyPlaintext();
     const secretHash = hashSecret(plaintext);
 
     const identity = await this.identityRepository.insert({
@@ -158,7 +188,9 @@ export class IdentityService {
       clientId: identity.clientId,
     });
 
-    return { identity, apiKey: plaintext };
+    return input.type === 'oauth'
+      ? { identity, oauthToken: plaintext }
+      : { identity, apiKey: plaintext };
   }
 
   async list(ownerId?: string): Promise<Identity[]> {
@@ -194,8 +226,12 @@ export class IdentityService {
     if (!identity.active) {
       throw new ForbiddenError('Cannot rotate revoked identity');
     }
+    if (identity.type === 'jwt') {
+      throw new ForbiddenError('JWT identities do not support secret rotation');
+    }
 
-    const plaintext = generateApiKeyPlaintext();
+    const plaintext =
+      identity.type === 'oauth' ? generateOAuthTokenPlaintext() : generateApiKeyPlaintext();
     const secretHash = hashSecret(plaintext);
     await this.identityRepository.rotateSecret(id, secretHash);
 
@@ -209,7 +245,28 @@ export class IdentityService {
       clientId: identity.clientId,
     });
 
-    return { identity: updated, apiKey: plaintext };
+    return identity.type === 'oauth'
+      ? { identity: updated, oauthToken: plaintext }
+      : { identity: updated, apiKey: plaintext };
+  }
+
+  async issueToken(
+    actor: AuthUser,
+    input: IssueTokenBody,
+  ): Promise<{ token: string; expiresIn: number; tokenType: 'Bearer' }> {
+    const identity = await this.identityRepository.findById(actor.identityId);
+    if (!identity) throw new NotFoundError('Identity', actor.identityId);
+    if (!identity.active) throw new ForbiddenError('Cannot issue token for revoked identity');
+
+    const token = this.jwtService.sign({
+      identityId: identity.id,
+      ownerId: identity.ownerId,
+      clientId: identity.clientId,
+      permissions: identity.metadata.permissions,
+      expiresInSec: input.expires_in,
+    });
+
+    return { token, expiresIn: input.expires_in, tokenType: 'Bearer' };
   }
 
   async verifyByPlaintext(plaintext: string): Promise<Identity> {

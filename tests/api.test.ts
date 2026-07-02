@@ -47,7 +47,7 @@ describe('REST API', () => {
     it('should create, read, update, and delete memory', async () => {
       const createRes = await app.inject({
         method: 'POST',
-        url: '/memory',
+        url: '/api/v1/memory',
         payload: {
           title: 'Login JWT',
           project: 'auth-service',
@@ -63,13 +63,13 @@ describe('REST API', () => {
       expect(created.id).toBeDefined();
       expect(created.title).toBe('Login JWT');
 
-      const getRes = await app.inject({ method: 'GET', url: `/memory/${created.id}` });
+      const getRes = await app.inject({ method: 'GET', url: `/api/v1/memory/${created.id}` });
       expect(getRes.statusCode).toBe(200);
       expect(getRes.json().content).toContain('JWT HS256');
 
       const updateRes = await app.inject({
         method: 'PUT',
-        url: `/memory/${created.id}`,
+        url: `/api/v1/memory/${created.id}`,
         payload: { title: 'Updated JWT' },
       });
       expect(updateRes.statusCode).toBe(200);
@@ -77,13 +77,13 @@ describe('REST API', () => {
 
       const deleteRes = await app.inject({
         method: 'DELETE',
-        url: `/memory/${created.id}`,
+        url: `/api/v1/memory/${created.id}`,
       });
       expect(deleteRes.statusCode).toBe(204);
 
       const notFoundRes = await app.inject({
         method: 'GET',
-        url: `/memory/${created.id}`,
+        url: `/api/v1/memory/${created.id}`,
       });
       expect(notFoundRes.statusCode).toBe(404);
     });
@@ -91,7 +91,7 @@ describe('REST API', () => {
     it('should validate create input', async () => {
       const response = await app.inject({
         method: 'POST',
-        url: '/memory',
+        url: '/api/v1/memory',
         payload: { title: '' },
       });
 
@@ -103,7 +103,7 @@ describe('REST API', () => {
     it('should search memories', async () => {
       const createRes = await app.inject({
         method: 'POST',
-        url: '/memory',
+        url: '/api/v1/memory',
         payload: {
           title: 'JWT Auth',
           content: 'JWT HS256 middleware',
@@ -113,12 +113,12 @@ describe('REST API', () => {
       });
       expect(createRes.statusCode).toBe(201);
 
-      const listRes = await app.inject({ method: 'GET', url: '/memory' });
+      const listRes = await app.inject({ method: 'GET', url: '/api/v1/memory' });
       expect(listRes.json().total).toBeGreaterThanOrEqual(1);
 
       const response = await app.inject({
         method: 'GET',
-        url: '/search',
+        url: '/api/v1/search',
         query: { q: 'JWT' },
       });
 
@@ -131,14 +131,14 @@ describe('REST API', () => {
     it('should toggle favorite', async () => {
       const createRes = await app.inject({
         method: 'POST',
-        url: '/memory',
+        url: '/api/v1/memory',
         payload: { title: 'Test', content: 'Content' },
       });
       const { id } = createRes.json();
 
       const favRes = await app.inject({
         method: 'POST',
-        url: `/memory/${id}/favorite`,
+        url: `/api/v1/memory/${id}/favorite`,
       });
 
       expect(favRes.statusCode).toBe(200);
@@ -150,7 +150,7 @@ describe('REST API', () => {
     it('should export and import backup', async () => {
       await app.inject({
         method: 'POST',
-        url: '/memory',
+        url: '/api/v1/memory',
         payload: {
           title: 'Backup Item',
           content: 'Backup content',
@@ -158,13 +158,13 @@ describe('REST API', () => {
         },
       });
 
-      const exportRes = await app.inject({ method: 'GET', url: '/backup/export' });
+      const exportRes = await app.inject({ method: 'GET', url: '/api/v1/backup/export' });
       expect(exportRes.statusCode).toBe(200);
       expect(exportRes.json().memories.length).toBeGreaterThanOrEqual(1);
 
       const importRes = await app.inject({
         method: 'POST',
-        url: '/backup/import',
+        url: '/api/v1/backup/import',
         payload: {
           memories: [
             {

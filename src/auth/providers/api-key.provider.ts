@@ -3,6 +3,7 @@ import type { AuthContext, ResolvedIdentity } from '../auth.types.js';
 import { hashSecret, isApiKeyFormat } from '../crypto.js';
 import { ForbiddenError, UnauthorizedError } from '../../types/errors.js';
 import type { IdentityProvider } from './identity-provider.js';
+import { extractBearerToken } from '../token-utils.js';
 
 export class ApiKeyProvider implements IdentityProvider {
   readonly name = 'api_key';
@@ -10,7 +11,7 @@ export class ApiKeyProvider implements IdentityProvider {
   constructor(private readonly identityRepository: IdentityRepository) {}
 
   async authenticate(ctx: AuthContext): Promise<ResolvedIdentity | null> {
-    const token = extractBearerOrApiKey(ctx);
+    const token = extractBearerToken(ctx);
     if (!token || !isApiKeyFormat(token)) return null;
 
     return resolveApiKey(this.identityRepository, token);
@@ -46,19 +47,4 @@ export async function resolveApiKey(
     clientId: identity.clientId,
     metadata: identity.metadata,
   };
-}
-
-function extractBearerOrApiKey(ctx: AuthContext): string | null {
-  const authHeader = ctx.headers.authorization;
-  const apiKeyHeader = ctx.headers['x-api-key'];
-
-  if (typeof apiKeyHeader === 'string' && apiKeyHeader.length > 0) {
-    return apiKeyHeader;
-  }
-
-  if (typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
-    return authHeader.slice(7).trim();
-  }
-
-  return null;
 }

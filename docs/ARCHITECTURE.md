@@ -1,6 +1,6 @@
 # Arsitektur AI Memory Cloud
 
-**Status:** Phase 2.6 ✅ · Phase 3 (JWT/OAuth) berikutnya
+**Status:** Phase 3 ✅ · Phase 4 (Memory Intelligence) berikutnya
 
 ## Alur request REST API
 
@@ -55,8 +55,8 @@ Onboarding: `npm run setup` → `.mcp.json` + `.cursor/mcp.json`.
 
 ```
 src/
-  auth/           Identity layer (Phase 2; JWT/OAuth stubs → Phase 3)
-    providers/    ApiKeyProvider (+ jwt.provider, oauth.provider stubs)
+  auth/           Identity layer (Phase 3: JWT, OAuth, permissions)
+    providers/    ApiKeyProvider, OAuthProvider, JwtProvider
     *.repository  Akses tabel auth
     *.service     Bootstrap, identities, clients, audit
   config/         env.ts (Zod validation, load .env dari repo root)
@@ -84,7 +84,7 @@ docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/4, arsitektur)
 |-------|--------|---------|
 | 2.5 Stabilization | ✅ | [PHASE-2.5.md](PHASE-2.5.md) |
 | 2.6 Knowledge Foundation | ✅ | [PHASE-2.6-DESIGN.md](PHASE-2.6-DESIGN.md) |
-| **3 Authorization** | 🔜 berikutnya | JWT/OAuth providers, permissions |
+| **3 Authorization** | ✅ | [PHASE-3.md](PHASE-3.md) |
 | 4 Memory Intelligence | 📐 desain | [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) |
 
 ## Layer rules
@@ -116,21 +116,23 @@ docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/4, arsitektur)
 
 ## Auth & audit
 
-- API key disimpan sebagai **HMAC hash** (`AUTH_SECRET`), prefix `aic_`
+- API key (`aic_*`) dan OAuth token (`oac_*`) disimpan sebagai **HMAC hash**
+- JWT short-lived via `POST /api/v1/auth/token` (HS256, `AUTH_SECRET`)
+- Permissions: `memory.read`, `memory.write` — enforced setelah auth middleware
 - Plaintext hanya dikembalikan saat **bootstrap / create / rotate**
 - `AuditService` subscribe event bus — `identity.*`, `auth.failed`, `client.*`
 - Memory di-scope per `owner_id` (REST dari `request.user`, MCP dari `MCP_OWNER_ID`)
 
-## Dual mount API (legacy)
+## Dual mount API
 
-| Canonical | Legacy (deprecated) |
-|-----------|---------------------|
-| `/api/v1/memory` | `/memory` |
-| `/api/v1/search` | `/search` |
-| `/api/v1/health` | `/health` |
-| `/api/v1/knowledge/*` | — |
+Legacy routes (`/memory`, `/search`, `/backup`) **dihapus di Phase 3**. Gunakan **`/api/v1/*`**.
 
-Gunakan **`/api/v1/*`** untuk integrasi baru. Legacy akan dihapus di versi major berikutnya.
+| Canonical | Catatan |
+|-----------|---------|
+| `/api/v1/memory` | CRUD + relations |
+| `/api/v1/search` | Ranked search |
+| `/api/v1/health` | Health + D1 ping |
+| `/health` | Root alias (monitoring) |
 
 ## Deployment
 

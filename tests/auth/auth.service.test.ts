@@ -3,6 +3,8 @@ import { AuthService } from '../../src/auth/auth.service.js';
 import { IdentityRepository } from '../../src/auth/identity.repository.js';
 import { ApiKeyProvider } from '../../src/auth/providers/api-key.provider.js';
 import { JwtProvider } from '../../src/auth/providers/jwt.provider.js';
+import { OAuthProvider } from '../../src/auth/providers/oauth.provider.js';
+import { JwtService } from '../../src/auth/jwt.service.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 import { UnauthorizedError } from '../../src/types/errors.js';
 import { hashSecret, generateApiKeyPlaintext } from '../../src/auth/crypto.js';
@@ -48,8 +50,13 @@ describe('AuthService', () => {
   beforeEach(() => {
     mockDb = new MockD1Client();
     identityRepository = new IdentityRepository(mockDb);
+    const jwtService = new JwtService();
     authService = new AuthService(
-      [new ApiKeyProvider(identityRepository), new JwtProvider()],
+      [
+        new ApiKeyProvider(identityRepository),
+        new OAuthProvider(identityRepository),
+        new JwtProvider(jwtService, identityRepository),
+      ],
       identityRepository,
     );
   });

@@ -149,7 +149,7 @@ describe('Auth API E2E', () => {
     expect(newKeyFails.statusCode).toBe(403);
   });
 
-  it('should support legacy memory routes with dual mount', async () => {
+  it('should return 404 for removed legacy memory routes', async () => {
     const bootstrap = await app.inject({
       method: 'POST',
       url: '/api/v1/auth/bootstrap',
@@ -162,7 +162,7 @@ describe('Auth API E2E', () => {
       url: '/memory',
       headers: { authorization: `Bearer ${apiKey}` },
     });
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(404);
   });
 
   it('should write audit logs on auth events', async () => {

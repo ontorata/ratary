@@ -7,15 +7,19 @@ import { AuditService } from './audit.service.js';
 import { IdentityService } from './identity.service.js';
 import { ClientService } from './client.service.js';
 import { AuthService } from './auth.service.js';
+import { JwtService } from './jwt.service.js';
 import { ApiKeyProvider, JwtProvider, OAuthProvider } from './providers/index.js';
 import { createAuthenticateMiddleware } from './auth.middleware.js';
+import { createPermissionMiddleware } from './permission.middleware.js';
 
 export interface AuthLayer {
   authService: AuthService;
   identityService: IdentityService;
   clientService: ClientService;
   auditService: AuditService;
+  jwtService: JwtService;
   authenticate: ReturnType<typeof createAuthenticateMiddleware>;
+  enforcePermissions: ReturnType<typeof createPermissionMiddleware>;
 }
 
 export function createAuthLayer(db: D1Client): AuthLayer {
@@ -23,22 +27,37 @@ export function createAuthLayer(db: D1Client): AuthLayer {
   const clientRepository = new ClientRepository(db);
   const auditRepository = new AuditRepository(db);
   const settingsRepository = new SettingsRepository(db);
+  const jwtService = new JwtService();
 
   const auditService = new AuditService(auditRepository);
   const clientService = new ClientService(clientRepository);
 
-  const identityService = new IdentityService(db, identityRepository, settingsRepository);
+  const identityService = new IdentityService(
+    db,
+    identityRepository,
+    settingsRepository,
+    jwtService,
+  );
 
   const providers = [
     new ApiKeyProvider(identityRepository),
-    new JwtProvider(),
-    new OAuthProvider(),
+    new OAuthProvider(identityRepository),
+    new JwtProvider(jwtService, identityRepository),
   ];
 
   const authService = new AuthService(providers, identityRepository);
   const authenticate = createAuthenticateMiddleware(authService);
+  const enforcePermissions = createPermissionMiddleware();
 
-  return { authService, identityService, clientService, auditService, authenticate };
+  return {
+    authService,
+    identityService,
+    clientService,
+    auditService,
+    jwtService,
+    authenticate,
+    enforcePermissions,
+  };
 }
 
 export * from './auth.types.js';

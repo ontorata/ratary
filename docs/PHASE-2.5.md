@@ -27,7 +27,7 @@ Fase ini **bukan menambah fitur bisnis**, melainkan menguatkan fondasi sebelum P
 | Tidak ada plaintext API key | ✅ | Hanya `secret_hash` di DB |
 | HMAC + `AUTH_SECRET` | ✅ | `src/auth/crypto.ts` |
 | Bootstrap hanya sekali | ✅ | + test E2E |
-| Semua endpoint `/api/v1` | ⚠️ | Dual mount legacy (`/memory`, `/health`) masih ada — dihapus di Phase 3 |
+| Semua endpoint `/api/v1` | ✅ | Legacy routes dihapus Phase 3 |
 | Audit log | ✅ | Auth events → `audit_logs` |
 | Rate limiting (auth) | ✅ | Phase 2.5 — `@fastify/rate-limit` |
 
@@ -51,7 +51,7 @@ Fase ini **bukan menambah fitur bisnis**, melainkan menguatkan fondasi sebelum P
 | Integration test REST API | ✅ | `tests/api.test.ts`, `tests/auth/api.test.ts` |
 | Bootstrap test | ✅ | |
 | Unauthorized test | ✅ | |
-| Permission denied test | 🔜 | Phase 3 (JWT/OAuth + granular permissions) |
+| Permission denied test | ✅ | `tests/auth/phase3.test.ts` |
 
 ### Deployment
 
@@ -99,11 +99,11 @@ Fase ini **bukan menambah fitur bisnis**, melainkan menguatkan fondasi sebelum P
 - [x] Unit test `HealthService`
 - [x] E2E: bootstrap, 401, client registry, owner isolation (dari Phase 2)
 
-### Belum / Phase 3
+### Selesai di Phase 3
 
-- [ ] Permission granular (`memory.read`, `memory.write` enforcement)
-- [ ] JWT / OAuth providers (stubs ada)
-- [ ] Hapus legacy routes (`/memory`, dll.)
+- [x] Permission granular (`memory.read`, `memory.write` enforcement)
+- [x] JWT / OAuth providers
+- [x] Hapus legacy routes (`/memory`, dll.)
 - [ ] Test coverage threshold di CI
 - [ ] Rate limit di Vercel edge (perlu KV / Upstash jika multi-instance)
 
@@ -169,7 +169,7 @@ Sama dengan yang dijalankan GitHub Actions (`.github/workflows/ci.yml`).
 2. Bootstrap production (sekali) jika belum
 3. Set `AUTH_SECRET` + D1 vars di Vercel
 4. Monitor `/health` di uptime checker
-5. Lanjut **Phase 3** — JWT/OAuth + permission enforcement
+5. Lanjut **Phase 4** — Memory Intelligence
 
 ---
 

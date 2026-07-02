@@ -78,6 +78,7 @@ export class AuthController {
         reply,
         {
           apiKey: result.apiKey,
+          oauthToken: result.oauthToken,
           identity: toPublicIdentity(result.identity),
         },
         201,
@@ -115,6 +116,7 @@ export class AuthController {
       const result = await this.identityService.rotate(id, user.ownerId);
       sendSuccess(reply, {
         apiKey: result.apiKey,
+        oauthToken: result.oauthToken,
         identity: toPublicIdentity(result.identity),
       });
     } catch (error) {
@@ -131,7 +133,19 @@ export class AuthController {
         identity_id: user.identityId,
         identity_type: user.identityType,
         client_id: user.clientId,
+        permissions: user.permissions,
       });
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
+  async issueToken(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      const user = request.user!;
+      const body = request.body as import('../auth/auth.types.js').IssueTokenBody;
+      const result = await this.identityService.issueToken(user, body);
+      sendSuccess(reply, result);
     } catch (error) {
       this.handleError(error, reply);
     }

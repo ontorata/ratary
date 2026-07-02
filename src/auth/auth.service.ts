@@ -66,6 +66,7 @@ function toAuthUser(resolved: ResolvedIdentity): AuthUser {
     identityId: resolved.identityId,
     identityType: resolved.type,
     clientId: resolved.clientId,
+    permissions: resolved.metadata.permissions ?? [],
   };
 }
 

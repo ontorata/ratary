@@ -43,8 +43,8 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | Phase 2 — Identity & Auth | ✅ | README Auth endpoints |
 | **Phase 2.5 — Stabilization** | ✅ | **[docs/PHASE-2.5.md](docs/PHASE-2.5.md)** |
 | **Phase 2.6 — Knowledge Foundation** | ✅ | **[docs/PHASE-2.6-DESIGN.md](docs/PHASE-2.6-DESIGN.md)** |
+| **Phase 3 — JWT/OAuth & Permissions** | ✅ | **[docs/PHASE-3.md](docs/PHASE-3.md)** |
 | **Phase 4 — Memory Intelligence** | 📋 Design | **[docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)** |
-| Phase 3 — JWT/OAuth & Permissions | 🔜 | — |
 
 ## Quick Start
 
@@ -496,21 +496,22 @@ curl http://localhost:3001/api/v1/memory \
   -H "Authorization: Bearer aic_xxxx..."
 ```
 
-### Memory & backup (dual mount: `/api/v1/*` + legacy `/*`)
+### Memory & backup (`/api/v1/*`)
 
 | Method | Endpoint | Deskripsi |
 |--------|----------|-----------|
-| GET | `/health` | Health check |
-| POST | `/api/v1/memory` atau `/memory` | Buat memory |
+| GET | `/health` atau `/api/v1/health` | Health check |
+| POST | `/api/v1/memory` | Buat memory |
 | GET | `/api/v1/memory/:id` | Get by ID |
 | PUT | `/api/v1/memory/:id` | Update |
 | DELETE | `/api/v1/memory/:id` | Delete |
 | GET | `/api/v1/memory` | List |
-| GET | `/api/v1/search` atau `/search` | Search |
+| GET | `/api/v1/search` | Search |
 | GET | `/api/v1/projects` | List projects |
 | GET | `/api/v1/tags` | List tags |
 | POST | `/api/v1/memory/:id/favorite` | Toggle favorite |
 | POST | `/api/v1/memory/:id/archive` | Archive |
+| POST | `/api/v1/auth/token` | Issue JWT |
 | GET | `/api/v1/backup/export` | Export JSON |
 | POST | `/api/v1/backup/import` | Import JSON |
 

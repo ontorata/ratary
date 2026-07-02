@@ -19,7 +19,7 @@ import {
   createMemoryRelationController,
 } from './controllers/knowledge.controller.js';
 import { registerV1Routes } from './routes/v1/index.js';
-import { healthRoutes, memoryRoutes, backupRoutes } from './routes/index.js';
+import { healthRoutes } from './routes/index.js';
 import { errorHandlerPlugin, observabilityPlugin } from './plugins/index.js';
 import { getEnv } from './config/index.js';
 import { createAuthLayer } from './auth/index.js';
@@ -67,6 +67,7 @@ export async function buildApp(options?: {
 
   if (!options?.skipAuth) {
     fastify.addHook('onRequest', authLayer.authenticate);
+    fastify.addHook('onRequest', authLayer.enforcePermissions);
   }
 
   const skipSwagger = options?.skipSwagger ?? Boolean(process.env.VERCEL);
@@ -108,11 +109,8 @@ export async function buildApp(options?: {
     { prefix: '/api/v1' },
   );
 
-  // Legacy routes (backward compatible dual mount — no knowledge endpoints)
   await fastify.register(async (instance) => {
     await healthRoutes(instance, healthController);
-    await memoryRoutes(instance, memoryController);
-    await backupRoutes(instance, backupController);
   });
 
   return fastify;

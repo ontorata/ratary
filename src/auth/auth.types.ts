@@ -89,6 +89,7 @@ export interface AuthUser {
   identityId: string;
   identityType: IdentityType;
   clientId: string | null;
+  permissions: string[];
 }
 
 export interface AuthContext {
@@ -120,7 +121,7 @@ export const bootstrapBodySchema = z.object({
 });
 
 export const createIdentityBodySchema = z.object({
-  type: z.enum(['api_key', 'service_account']).default('api_key'),
+  type: z.enum(['api_key', 'service_account', 'oauth', 'jwt']).default('api_key'),
   name: z.string().min(1).max(200),
   description: z.string().max(2000).default(''),
   owner_id: z.string().uuid().optional(),
@@ -149,3 +150,9 @@ export const updateClientBodySchema = z.object({
 
 export type CreateClientBody = z.infer<typeof createClientBodySchema>;
 export type UpdateClientBody = z.infer<typeof updateClientBodySchema>;
+
+export const issueTokenBodySchema = z.object({
+  expires_in: z.coerce.number().int().min(60).max(86400).default(3600),
+});
+
+export type IssueTokenBody = z.infer<typeof issueTokenBodySchema>;

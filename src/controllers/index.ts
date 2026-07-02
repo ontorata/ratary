@@ -32,7 +32,6 @@ export class HealthController {
         tags: '/api/v1/tags',
         backup: '/api/v1/backup/export',
         auth_bootstrap: '/api/v1/auth/bootstrap',
-        legacy_memory: '/memory',
       },
     });
   }

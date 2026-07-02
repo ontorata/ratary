@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { IdentityService } from '../../src/auth/identity.service.js';
 import { IdentityRepository } from '../../src/auth/identity.repository.js';
 import { SettingsRepository } from '../../src/auth/settings.repository.js';
+import { JwtService } from '../../src/auth/jwt.service.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 import { ForbiddenError } from '../../src/types/errors.js';
 
@@ -15,7 +16,7 @@ describe('IdentityService', () => {
     mockDb = new MockD1Client();
     const identityRepository = new IdentityRepository(mockDb);
     const settingsRepository = new SettingsRepository(mockDb);
-    service = new IdentityService(mockDb, identityRepository, settingsRepository);
+    service = new IdentityService(mockDb, identityRepository, settingsRepository, new JwtService());
   });
 
   it('should report bootstrap available when db is empty', async () => {

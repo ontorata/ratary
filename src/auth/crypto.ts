@@ -2,6 +2,7 @@ import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { getEnv } from '../config/index.js';
 
 const API_KEY_PREFIX = 'aic_';
+const OAUTH_TOKEN_PREFIX = 'oac_';
 
 export function getAuthSecret(): string {
   const env = getEnv();
@@ -25,6 +26,14 @@ export function generateApiKeyPlaintext(): string {
   return `${API_KEY_PREFIX}${randomBytes(32).toString('hex')}`;
 }
 
+export function generateOAuthTokenPlaintext(): string {
+  return `${OAUTH_TOKEN_PREFIX}${randomBytes(32).toString('hex')}`;
+}
+
 export function isApiKeyFormat(value: string): boolean {
   return value.startsWith(API_KEY_PREFIX) && value.length > API_KEY_PREFIX.length + 16;
+}
+
+export function isOAuthTokenFormat(value: string): boolean {
+  return value.startsWith(OAUTH_TOKEN_PREFIX) && value.length > OAUTH_TOKEN_PREFIX.length + 16;
 }
