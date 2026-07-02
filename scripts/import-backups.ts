@@ -25,8 +25,20 @@ function getArgValue(flag: string): string | undefined {
 }
 
 const FILE_ARG = getArgValue('--file');
+const DIR_ARG = getArgValue('--dir');
+const PROJECT_OVERRIDE = getArgValue('--project');
+const TAG_OVERRIDE = getArgValue('--tag');
+const ALL_FILES = process.argv.includes('--all-files');
 
 const MEMORY_SCOPE = getMcpMemoryScope();
+
+function applyImportOverrides(memories: MemoryDraft[]): MemoryDraft[] {
+  return memories.map((m) => ({
+    ...m,
+    project: PROJECT_OVERRIDE ?? m.project,
+    tags: TAG_OVERRIDE ? [...new Set([...m.tags, TAG_OVERRIDE])] : m.tags,
+  }));
+}
 
 async function importMemories(memories: MemoryDraft[]): Promise<number> {
   if (DRY_RUN) return memories.length;
@@ -38,10 +50,10 @@ async function importMemories(memories: MemoryDraft[]): Promise<number> {
     const batch = memories.slice(i, i + BATCH_SIZE);
     const result = await service.importBackup(MEMORY_SCOPE, {
       memories: batch.map((m) => ({
-        title: m.title,
+        title: m.title.slice(0, 500),
         project: m.project,
         content: m.content,
-        summary: m.summary,
+        summary: m.summary.slice(0, 300),
         tags: m.tags,
         favorite: false,
         archived: false,
@@ -75,23 +87,33 @@ async function importSingleTranscript(filePath: string): Promise<void> {
   console.log(`\nSelesai! ${imported} memories diimport.`);
 }
 
-async function importFromBackupRoot(): Promise<void> {
-  console.log(`Scanning backups: ${BACKUP_ROOT}`);
+async function importFromDirectory(root: string): Promise<void> {
+  console.log(`Scanning: ${root}`);
   if (INCLUDE_JSONL) console.log('Termasuk: agent transcript (.jsonl)');
   if (TRANSCRIPTS_ONLY) console.log('Hanya: agent transcript (.jsonl)');
+  if (ALL_FILES) console.log('Mode: semua file markdown (tanpa dedupe per folder)');
+  if (PROJECT_OVERRIDE) console.log(`Project override: ${PROJECT_OVERRIDE}`);
   console.log(DRY_RUN ? 'Mode: DRY RUN (tidak import ke D1)\n' : 'Mode: IMPORT ke D1\n');
 
-  await ensureBackupRoot(BACKUP_ROOT);
+  await ensureBackupRoot(root);
 
-  const candidates = dedupeCandidates(
-    await collectCandidates(BACKUP_ROOT, BACKUP_ROOT, INCLUDE_JSONL || TRANSCRIPTS_ONLY),
-  ).filter((c) => !TRANSCRIPTS_ONLY || c.kind === 'transcript');
+  let candidates = await collectCandidates(
+    root,
+    root,
+    INCLUDE_JSONL || TRANSCRIPTS_ONLY,
+  );
 
-  console.log(`Found ${candidates.length} backup files to import\n`);
+  if (!ALL_FILES) {
+    candidates = dedupeCandidates(candidates);
+  }
+
+  candidates = candidates.filter((c) => !TRANSCRIPTS_ONLY || c.kind === 'transcript');
+
+  console.log(`Found ${candidates.length} files to import\n`);
 
   const memories: MemoryDraft[] = [];
   for (const candidate of candidates) {
-    const parts = await fileToMemories(candidate.filePath, BACKUP_ROOT);
+    const parts = applyImportOverrides(await fileToMemories(candidate.filePath, root));
     memories.push(...parts);
     for (const m of parts) {
       console.log(`  [${m.project}] ${m.title}`);
@@ -100,13 +122,15 @@ async function importFromBackupRoot(): Promise<void> {
 
   if (DRY_RUN) {
     console.log(`\nDry run selesai. ${memories.length} memories siap diimport.`);
-    console.log('Jalankan: npm run import:backups -- --include-jsonl');
     return;
   }
 
   const imported = await importMemories(memories);
   console.log(`\nSelesai! ${imported} memories diimport ke Cloudflare D1.`);
-  console.log(`Cek: GET https://ai-brain-beryl.vercel.app/memory`);
+}
+
+async function importFromBackupRoot(): Promise<void> {
+  await importFromDirectory(BACKUP_ROOT);
 }
 
 async function main(): Promise<void> {
@@ -116,17 +140,24 @@ async function main(): Promise<void> {
       return;
     }
 
-    const memories = await fileToMemories(resolve(FILE_ARG), BACKUP_ROOT);
+    const root = DIR_ARG ? resolve(DIR_ARG) : BACKUP_ROOT;
+    const memories = applyImportOverrides(await fileToMemories(resolve(FILE_ARG), root));
     for (const m of memories) console.log(`  [${m.project}] ${m.title}`);
     const imported = await importMemories(memories);
     console.log(`\nSelesai! ${imported} memories diimport.`);
     return;
   }
 
+  if (DIR_ARG) {
+    await importFromDirectory(resolve(DIR_ARG));
+    return;
+  }
+
   await importFromBackupRoot();
 }
 
-main().catch((error) => {
-  console.error('Import gagal:', error);
+main().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error('Import gagal:', message);
   process.exit(1);
 });

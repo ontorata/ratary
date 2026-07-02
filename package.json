@@ -25,6 +25,7 @@
     "import:backups": "tsx scripts/import-backups.ts",
     "import:backups:dry": "tsx scripts/import-backups.ts --dry-run",
     "import:transcript": "tsx scripts/import-backups.ts --file",
+    "import:folder": "tsx scripts/import-backups.ts",
     "sync:backups": "tsx scripts/sync-backups.ts --once",
     "sync:backups:watch": "tsx scripts/sync-backups.ts --watch",
     "sync:backups:poll": "tsx scripts/sync-backups.ts --poll",
