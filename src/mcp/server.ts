@@ -4,9 +4,8 @@ import { z } from 'zod';
 import { getD1Client } from '../db/index.js';
 import { MemoryRepository } from '../repositories/memory.repository.js';
 import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
-import { KnowledgeService } from '../knowledge/knowledge.service.js';
-import { SearchService } from '../search/search.service.js';
-import { MemoryService } from '../services/memory.service.js';
+import { createMemoryService } from '../services/create-memory-service.js';
+import type { MemoryService } from '../services/memory.service.js';
 import { MemoryRelationService } from '../services/memory-relation.service.js';
 import { ContextService } from '../memory/context.service.js';
 import { getMcpMemoryScope, assertMcpOwnerConfigured } from '../types/memory-scope.js';
@@ -320,9 +319,7 @@ export async function startMcpStdioServer(): Promise<void> {
   const db = getD1Client();
   const repository = new MemoryRepository(db);
   const relationRepository = new MemoryRelationRepository(db);
-  const knowledge = new KnowledgeService(repository);
-  const search = new SearchService(repository);
-  const memoryService = new MemoryService(repository, knowledge, search);
+  const memoryService = createMemoryService(db);
   const relationService = new MemoryRelationService(relationRepository, repository);
   const contextService = new ContextService(repository);
 

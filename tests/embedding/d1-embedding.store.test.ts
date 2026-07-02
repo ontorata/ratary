@@ -88,6 +88,39 @@ describe('D1EmbeddingStore', () => {
     expect(await store.findByMemoryId('mem-4', ownerId, modelId)).toBeNull();
   });
 
+  it('should delete all embeddings for owner', async () => {
+    await store.upsert({
+      memoryId: 'mem-5a',
+      ownerId,
+      modelId,
+      dimensions: 2,
+      vector: [1, 0],
+      contentHash: 'a',
+    });
+    await store.upsert({
+      memoryId: 'mem-5b',
+      ownerId,
+      modelId,
+      dimensions: 2,
+      vector: [0, 1],
+      contentHash: 'b',
+    });
+    await store.upsert({
+      memoryId: 'mem-other',
+      ownerId: 'other-owner',
+      modelId,
+      dimensions: 2,
+      vector: [1, 1],
+      contentHash: 'c',
+    });
+
+    await store.deleteAllByOwner(ownerId);
+
+    expect(await store.findByMemoryId('mem-5a', ownerId, modelId)).toBeNull();
+    expect(await store.findByMemoryId('mem-5b', ownerId, modelId)).toBeNull();
+    expect(await store.findByMemoryId('mem-other', 'other-owner', modelId)).not.toBeNull();
+  });
+
   it('should rank similar vectors for owner only', async () => {
     await store.upsert({
       memoryId: 'mem-a',

@@ -513,6 +513,18 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: existed ? 1 : 0 } };
     }
 
+    if (normalizedSql.startsWith('DELETE FROM MEMORY_EMBEDDINGS WHERE OWNER_ID = ?')) {
+      const ownerId = params[0] as string;
+      let deleted = 0;
+      for (const [id, row] of this.memoryEmbeddings.entries()) {
+        if (row.owner_id === ownerId) {
+          this.memoryEmbeddings.delete(id);
+          deleted++;
+        }
+      }
+      return { results: [], success: true, meta: { changes: deleted } };
+    }
+
     if (
       normalizedSql.startsWith('DELETE FROM MEMORY_EMBEDDINGS WHERE MEMORY_ID = ? AND OWNER_ID = ?')
     ) {

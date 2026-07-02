@@ -28,6 +28,7 @@ export interface SimilarityMatch {
 export interface IEmbeddingStore {
   upsert(input: EmbeddingUpsertInput): Promise<string>;
   deleteByMemoryId(memoryId: string, ownerId: string): Promise<void>;
+  deleteAllByOwner(ownerId: string): Promise<void>;
   findByMemoryId(
     memoryId: string,
     ownerId: string,

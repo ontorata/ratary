@@ -1,5 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NotFoundError } from '../src/types/errors.js';
+import { MemoryRepository } from '../src/repositories/memory.repository.js';
+import { KnowledgeService } from '../src/knowledge/knowledge.service.js';
+import { SearchService } from '../src/search/search.service.js';
+import { MemoryService } from '../src/services/memory.service.js';
+import { D1EmbeddingStore } from '../src/embedding/d1-embedding.store.js';
+import { NOOP_EMBEDDING_MODEL_ID } from '../src/embedding/noop-embedding.provider.js';
 import { MockD1Client } from './helpers/mock-d1.js';
 import { createTestMemoryStack } from './helpers/test-stack.js';
 
@@ -96,6 +102,80 @@ describe('MemoryService', () => {
       await service.deleteMemory(scope, created.id);
 
       await expect(service.getMemoryById(scope, created.id)).rejects.toThrow(NotFoundError);
+    });
+  });
+
+  describe('deleteMemory with embedding store', () => {
+    let embeddingService: MemoryService;
+    let embeddingStore: D1EmbeddingStore;
+    const modelId = NOOP_EMBEDDING_MODEL_ID;
+
+    beforeEach(() => {
+      const repository = new MemoryRepository(mockDb);
+      const knowledge = new KnowledgeService(repository);
+      const search = new SearchService(repository);
+      embeddingStore = new D1EmbeddingStore(mockDb);
+      embeddingService = new MemoryService(repository, knowledge, search, embeddingStore);
+    });
+
+    it('should delete embedding when memory is deleted', async () => {
+      const created = await embeddingService.createMemory(scope, {
+        title: 'With Embedding',
+        content: 'Content',
+        project: '',
+        summary: '',
+        tags: [],
+        favorite: false,
+      });
+
+      await embeddingStore.upsert({
+        memoryId: created.id,
+        ownerId: scope.ownerId,
+        modelId,
+        dimensions: 3,
+        vector: [1, 0, 0],
+        contentHash: 'hash-1',
+      });
+
+      await embeddingService.deleteMemory(scope, created.id);
+
+      expect(await embeddingStore.findByMemoryId(created.id, scope.ownerId, modelId)).toBeNull();
+    });
+
+    it('should delete all embeddings on replace backup', async () => {
+      const created = await embeddingService.createMemory(scope, {
+        title: 'Backup Row',
+        content: 'Content',
+        project: '',
+        summary: '',
+        tags: [],
+        favorite: false,
+      });
+
+      await embeddingStore.upsert({
+        memoryId: created.id,
+        ownerId: scope.ownerId,
+        modelId,
+        dimensions: 2,
+        vector: [1, 0],
+        contentHash: 'hash-2',
+      });
+
+      await embeddingService.replaceBackup(scope, {
+        memories: [
+          {
+            title: 'Replaced',
+            content: 'New content',
+            project: '',
+            summary: '',
+            tags: [],
+            favorite: false,
+            archived: false,
+          },
+        ],
+      });
+
+      expect(await embeddingStore.findByMemoryId(created.id, scope.ownerId, modelId)).toBeNull();
     });
   });
 

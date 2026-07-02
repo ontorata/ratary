@@ -1,4 +1,5 @@
 import type { D1Client } from '../db/d1-client.js';
+import { D1EmbeddingStore } from '../embedding/d1-embedding.store.js';
 import { MemoryRepository } from '../repositories/memory.repository.js';
 import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
 import { KnowledgeService } from '../knowledge/knowledge.service.js';
@@ -10,7 +11,8 @@ export function createMemoryService(db: D1Client): MemoryService {
   const repository = new MemoryRepository(db);
   const knowledge = new KnowledgeService(repository);
   const search = new SearchService(repository);
-  return new MemoryService(repository, knowledge, search);
+  const embeddingStore = new D1EmbeddingStore(db);
+  return new MemoryService(repository, knowledge, search, embeddingStore);
 }
 
 export function createMemoryRelationService(db: D1Client): MemoryRelationService {

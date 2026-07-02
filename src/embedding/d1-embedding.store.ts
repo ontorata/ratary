@@ -82,6 +82,10 @@ export class D1EmbeddingStore implements IEmbeddingStore {
     ]);
   }
 
+  async deleteAllByOwner(ownerId: string): Promise<void> {
+    await this.db.execute(`DELETE FROM memory_embeddings WHERE owner_id = ?`, [ownerId]);
+  }
+
   async findByMemoryId(
     memoryId: string,
     ownerId: string,

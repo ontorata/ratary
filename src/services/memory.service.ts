@@ -1,4 +1,5 @@
 import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
+import type { IEmbeddingStore } from '../embedding/embedding.store.interface.js';
 import type { KnowledgeService } from '../knowledge/knowledge.service.js';
 import type { SearchService } from '../search/search.service.js';
 import type {
@@ -19,6 +20,7 @@ export class MemoryService {
     private readonly repository: IMemoryRepository,
     private readonly knowledge: KnowledgeService,
     private readonly search: SearchService,
+    private readonly embeddingStore?: IEmbeddingStore,
   ) {}
 
   async createMemory(scope: MemoryScope, input: CreateMemoryInput): Promise<Memory> {
@@ -110,6 +112,10 @@ export class MemoryService {
     const deleted = await this.repository.delete(id, scope.ownerId);
     if (!deleted) {
       throw new NotFoundError('Memory', id);
+    }
+
+    if (this.embeddingStore) {
+      await this.embeddingStore.deleteByMemoryId(id, scope.ownerId);
     }
   }
 
@@ -208,6 +214,10 @@ export class MemoryService {
   }
 
   async replaceBackup(scope: MemoryScope, input: BackupImportInput): Promise<{ imported: number }> {
+    if (this.embeddingStore) {
+      await this.embeddingStore.deleteAllByOwner(scope.ownerId);
+    }
+
     await this.repository.deleteAllByOwner(scope.ownerId);
 
     let imported = 0;
