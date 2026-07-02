@@ -558,9 +558,9 @@ export class MemoryRepository implements IMemoryRepository {
   async recordAccess(id: string, ownerId: string): Promise<void> {
     const now = nowISO();
     await this.db.execute(
-      `UPDATE memories SET last_accessed = ?, access_count = access_count + 1, updated_at = ?
+      `UPDATE memories SET last_accessed = ?, access_count = access_count + 1
        WHERE id = ? AND owner_id = ?`,
-      [now, now, id, ownerId],
+      [now, id, ownerId],
     );
   }
 

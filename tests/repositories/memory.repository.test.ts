@@ -137,6 +137,7 @@ describe('MemoryRepository', () => {
 
     expect(updated?.accessCount).toBe(1);
     expect(updated?.lastAccessed).toBeTruthy();
+    expect(updated?.updatedAt).toBe(memory.updatedAt);
   });
 
   it('should delete only when owner matches', async () => {

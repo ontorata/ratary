@@ -285,18 +285,19 @@ export class MockD1Client implements D1Client {
     }
 
     if (normalizedSql.startsWith('UPDATE MEMORIES')) {
-      if (normalizedSql.includes('LAST_ACCESSED = ?') && normalizedSql.includes('ACCESS_COUNT = ACCESS_COUNT + 1')) {
+      if (
+        normalizedSql.includes('LAST_ACCESSED = ?') &&
+        normalizedSql.includes('ACCESS_COUNT = ACCESS_COUNT + 1')
+      ) {
         const lastAccessed = params[0] as string;
-        const updatedAt = params[1] as string;
-        const id = params[2] as string;
-        const ownerId = params[3] as string;
+        const id = params[1] as string;
+        const ownerId = params[2] as string;
         const existing = this.memories.get(id);
         if (!existing || existing.owner_id !== ownerId) {
           return { results: [], success: true, meta: { changes: 0 } };
         }
         existing.last_accessed = lastAccessed;
         existing.access_count = (existing.access_count ?? 0) + 1;
-        existing.updated_at = updatedAt;
         this.memories.set(id, existing);
         return { results: [], success: true, meta: { changes: 1 } };
       }
