@@ -163,4 +163,105 @@ describe('MemoryRepository', () => {
     expect(await repository.delete(memory.id, ownerId)).toBe(true);
     expect(await repository.findById(memory.id, ownerId)).toBeNull();
   });
+
+  it('should find memories without embedding_id for owner only', async () => {
+    const withoutEmbed = await repository.insert({
+      title: 'No embed',
+      project: 'p',
+      content: 'c',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0300',
+      slug: 'no-embed',
+      favorite: false,
+      ownerId,
+    });
+
+    const withEmbed = await repository.insert({
+      title: 'Has embed',
+      project: 'p',
+      content: 'c',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0301',
+      slug: 'has-embed',
+      favorite: false,
+      ownerId,
+    });
+
+    await repository.applyEmbeddingBackfill(withEmbed.id, ownerId, {
+      embeddingId: 'emb-001',
+    });
+
+    await repository.insert({
+      title: 'Other owner',
+      project: 'p',
+      content: 'c',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0302',
+      slug: 'other',
+      favorite: false,
+      ownerId: 'other-owner',
+    });
+
+    const pending = await repository.findWithoutEmbedding(ownerId, 10);
+
+    expect(pending).toHaveLength(1);
+    expect(pending[0]?.id).toBe(withoutEmbed.id);
+    expect(pending[0]?.embeddingId).toBeNull();
+  });
+
+  it('should apply embedding backfill scoped to owner', async () => {
+    const memory = await repository.insert({
+      title: 'Backfill',
+      project: 'p',
+      content: 'c',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0400',
+      slug: 'backfill',
+      favorite: false,
+      ownerId,
+    });
+
+    await repository.applyEmbeddingBackfill(memory.id, 'wrong-owner', {
+      embeddingId: 'emb-wrong',
+    });
+
+    let found = await repository.findById(memory.id, ownerId);
+    expect(found?.embeddingId).toBeNull();
+
+    await repository.applyEmbeddingBackfill(memory.id, ownerId, {
+      embeddingId: 'emb-abc',
+    });
+
+    found = await repository.findById(memory.id, ownerId);
+    expect(found?.embeddingId).toBe('emb-abc');
+    expect(found?.updatedAt).toBe(memory.updatedAt);
+  });
 });

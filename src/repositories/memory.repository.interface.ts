@@ -32,6 +32,7 @@ export interface IMemoryReader {
   listTags(ownerId: string): Promise<string[]>;
   findAllByOwner(ownerId: string): Promise<Memory[]>;
   findWithoutCodename(ownerId: string, limit: number): Promise<Memory[]>;
+  findWithoutEmbedding(ownerId: string, limit: number): Promise<Memory[]>;
   findRetrievalCandidates(filters: RetrievalFilters): Promise<Memory[]>;
   findDuplicatesBySemanticHash(filters: {
     ownerId: string;
@@ -77,6 +78,7 @@ export interface IMemoryWriter {
     ownerId: string,
     data: { projectId: string; level: MemoryLevel; semanticHash: string },
   ): Promise<void>;
+  applyEmbeddingBackfill(id: string, ownerId: string, data: { embeddingId: string }): Promise<void>;
 }
 
 /**

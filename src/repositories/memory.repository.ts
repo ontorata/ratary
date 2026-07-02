@@ -401,6 +401,17 @@ export class MemoryRepository implements IMemoryRepository {
     return rows.map(rowToMemory);
   }
 
+  async findWithoutEmbedding(ownerId: string, limit: number): Promise<Memory[]> {
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT * FROM memories
+       WHERE owner_id = ? AND (embedding_id IS NULL OR embedding_id = '')
+       ORDER BY updated_at DESC
+       LIMIT ?`,
+      [ownerId, limit],
+    );
+    return rows.map(rowToMemory);
+  }
+
   async applyKnowledgeBackfill(
     id: string,
     ownerId: string,
@@ -581,6 +592,18 @@ export class MemoryRepository implements IMemoryRepository {
        WHERE id = ? AND owner_id = ?`,
       [data.projectId, data.level, data.semanticHash, updatedAt, id, ownerId],
     );
+  }
+
+  async applyEmbeddingBackfill(
+    id: string,
+    ownerId: string,
+    data: { embeddingId: string },
+  ): Promise<void> {
+    await this.db.execute(`UPDATE memories SET embedding_id = ? WHERE id = ? AND owner_id = ?`, [
+      data.embeddingId,
+      id,
+      ownerId,
+    ]);
   }
 
   private async searchByTag(

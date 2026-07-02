@@ -344,6 +344,19 @@ export class MockD1Client implements D1Client {
         return { results: [], success: true, meta: { changes: 1 } };
       }
 
+      if (normalizedSql.includes('EMBEDDING_ID = ?') && params.length === 3) {
+        const embeddingId = params[0] as string;
+        const id = params[1] as string;
+        const ownerId = params[2] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.embedding_id = embeddingId;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
       let id: string;
       let ownerId: string | undefined;
 
@@ -665,6 +678,18 @@ export class MockD1Client implements D1Client {
         return { results: sorted, success: true };
       }
 
+      if (
+        normalizedSql.includes('ORDER BY UPDATED_AT DESC') &&
+        normalizedSql.includes('EMBEDDING_ID IS NULL') &&
+        !normalizedSql.includes('OFFSET')
+      ) {
+        const limit = params[params.length - 1] as number;
+        const sorted = filtered
+          .sort((a, b) => b.updated_at.localeCompare(a.updated_at))
+          .slice(0, limit);
+        return { results: sorted, success: true };
+      }
+
       const limit = params[params.length - 2] as number | undefined;
       const offset = params[params.length - 1] as number | undefined;
 
@@ -804,6 +829,17 @@ export class MockD1Client implements D1Client {
         run: () => {
           const semanticHash = nextParam() as string;
           results = results.filter((m) => (m.semantic_hash ?? '') === semanticHash);
+        },
+      });
+    }
+
+    if (upperSql.includes('EMBEDDING_ID IS NULL OR EMBEDDING_ID =')) {
+      handlers.push({
+        position: pos('EMBEDDING_ID IS NULL'),
+        run: () => {
+          results = results.filter(
+            (m) => m.embedding_id === null || m.embedding_id === undefined || m.embedding_id === '',
+          );
         },
       });
     }
