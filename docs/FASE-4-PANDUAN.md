@@ -144,6 +144,7 @@ Apa isu terbuka dari memory tentang deployment?
 
 | Dokumen | Untuk siapa |
 |---------|-------------|
+| [PANDUAN-PENGGUNA.md](PANDUAN-PENGGUNA.md) | **Semua pengguna** — setup, cara pakai, troubleshooting |
 | [MULAI-DISINI.md](MULAI-DISINI.md) | Setup pertama kali |
 | [MCP-SETUP.md](MCP-SETUP.md) | Detail teknis MCP |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Developer |

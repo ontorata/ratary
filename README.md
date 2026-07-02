@@ -50,7 +50,8 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 
 ## Quick Start
 
-> **Paling mudah:** [docs/MULAI-DISINI.md](docs/MULAI-DISINI.md) — 3 langkah, Cursor + Claude Code.
+> **Paling mudah:** [docs/MULAI-DISINI.md](docs/MULAI-DISINI.md) — 3 langkah, Cursor + Claude Code.  
+> **Panduan pengguna lengkap:** [docs/PANDUAN-PENGGUNA.md](docs/PANDUAN-PENGGUNA.md)
 
 > **Pindah laptop?** Ikuti panduan lengkap di [Setup di Laptop Baru](#setup-di-laptop-baru).
 
