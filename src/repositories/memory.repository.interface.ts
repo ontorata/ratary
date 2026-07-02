@@ -59,4 +59,16 @@ export interface IMemoryRepository {
   deleteAllByOwner(ownerId: string): Promise<void>;
   findRetrievalCandidates(filters: RetrievalFilters): Promise<Memory[]>;
   recordAccess(id: string, ownerId: string): Promise<void>;
+  findDuplicatesBySemanticHash(filters: {
+    ownerId: string;
+    projectId?: string;
+    semanticHash: string;
+  }): Promise<Memory[]>;
+  findStaleCandidates(filters: {
+    ownerId: string;
+    projectId?: string;
+    minAccessCount: number;
+    olderThanDays: number;
+  }): Promise<Memory[]>;
+  bumpImportance(id: string, ownerId: string, importance: number): Promise<Memory | null>;
 }

@@ -42,6 +42,8 @@ export interface InsertMemoryData {
   projectId?: string;
   level?: MemoryLevel;
   semanticHash?: string | null;
+  accessCount?: number;
+  lastAccessed?: string | null;
 }
 
 export interface UpdateMemoryData {
@@ -167,8 +169,8 @@ export class MemoryRepository implements IMemoryRepository {
             data.notes,
             projectId,
             level,
-            null,
-            0,
+            data.lastAccessed ?? null,
+            data.accessCount ?? 0,
             null,
             null,
             data.semanticHash ?? null,
@@ -560,6 +562,67 @@ export class MemoryRepository implements IMemoryRepository {
        WHERE id = ? AND owner_id = ?`,
       [now, now, id, ownerId],
     );
+  }
+
+  async findDuplicatesBySemanticHash(filters: {
+    ownerId: string;
+    projectId?: string;
+    semanticHash: string;
+  }): Promise<Memory[]> {
+    const conditions = ['owner_id = ?', 'archived = 0', 'semantic_hash = ?'];
+    const params: unknown[] = [filters.ownerId, filters.semanticHash];
+
+    if (filters.projectId) {
+      conditions.push('project_id = ?');
+      params.push(filters.projectId);
+    }
+
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT * FROM memories WHERE ${conditions.join(' AND ')} ORDER BY importance DESC, updated_at DESC`,
+      params,
+    );
+    return rows.map(rowToMemory);
+  }
+
+  async findStaleCandidates(filters: {
+    ownerId: string;
+    projectId?: string;
+    minAccessCount: number;
+    olderThanDays: number;
+  }): Promise<Memory[]> {
+    const cutoff = new Date(Date.now() - filters.olderThanDays * 24 * 60 * 60 * 1000).toISOString();
+    const conditions = [
+      'owner_id = ?',
+      'archived = 0',
+      "level IN ('note', 'raw')",
+      'access_count >= ?',
+      'updated_at < ?',
+    ];
+    const params: unknown[] = [filters.ownerId, filters.minAccessCount, cutoff];
+
+    if (filters.projectId) {
+      conditions.push('project_id = ?');
+      params.push(filters.projectId);
+    }
+
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT * FROM memories WHERE ${conditions.join(' AND ')} ORDER BY access_count DESC`,
+      params,
+    );
+    return rows.map(rowToMemory);
+  }
+
+  async bumpImportance(id: string, ownerId: string, importance: number): Promise<Memory | null> {
+    const existing = await this.findById(id, ownerId);
+    if (!existing) return null;
+
+    const updatedAt = nowISO();
+    await this.db.execute(
+      'UPDATE memories SET importance = ?, updated_at = ? WHERE id = ? AND owner_id = ?',
+      [importance, updatedAt, id, ownerId],
+    );
+
+    return { ...existing, importance, updatedAt };
   }
 
   private async searchByTag(

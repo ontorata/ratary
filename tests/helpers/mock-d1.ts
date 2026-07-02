@@ -301,6 +301,21 @@ export class MockD1Client implements D1Client {
         return { results: [], success: true, meta: { changes: 1 } };
       }
 
+      if (normalizedSql.includes('IMPORTANCE = ?') && params.length === 4) {
+        const importance = params[0] as number;
+        const updatedAt = params[1] as string;
+        const id = params[2] as string;
+        const ownerId = params[3] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.importance = importance;
+        existing.updated_at = updatedAt;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
       let id: string;
       let ownerId: string | undefined;
 
@@ -675,17 +690,30 @@ export class MockD1Client implements D1Client {
 
     if (upperSql.includes('LEVEL IN (')) {
       const levelMatch = upperSql.match(/LEVEL IN \(([^)]+)\)/);
-      const count = levelMatch ? levelMatch[1].split(',').length : 0;
-      handlers.push({
-        position: pos('LEVEL IN ('),
-        run: () => {
-          const levels: string[] = [];
-          for (let i = 0; i < count; i++) {
-            levels.push(nextParam() as string);
-          }
-          results = results.filter((m) => levels.includes(m.level ?? 'note'));
-        },
-      });
+      const levelClause = levelMatch?.[1] ?? '';
+      if (levelClause.includes('?')) {
+        const count = levelClause.split(',').length;
+        handlers.push({
+          position: pos('LEVEL IN ('),
+          run: () => {
+            const levels: string[] = [];
+            for (let i = 0; i < count; i++) {
+              levels.push(nextParam() as string);
+            }
+            results = results.filter((m) => levels.includes(m.level ?? 'note'));
+          },
+        });
+      } else if (levelClause.includes("'NOTE'") && levelClause.includes("'RAW'")) {
+        handlers.push({
+          position: pos('LEVEL IN ('),
+          run: () => {
+            results = results.filter((m) => {
+              const level = m.level ?? 'note';
+              return level === 'note' || level === 'raw';
+            });
+          },
+        });
+      }
     }
 
     if (upperSql.includes('IMPORTANCE >= ?')) {
@@ -694,6 +722,36 @@ export class MockD1Client implements D1Client {
         run: () => {
           const importanceMin = nextParam() as number;
           results = results.filter((m) => (m.importance ?? 50) >= importanceMin);
+        },
+      });
+    }
+
+    if (upperSql.includes('ACCESS_COUNT >= ?')) {
+      handlers.push({
+        position: pos('ACCESS_COUNT >= ?'),
+        run: () => {
+          const minAccess = nextParam() as number;
+          results = results.filter((m) => (m.access_count ?? 0) >= minAccess);
+        },
+      });
+    }
+
+    if (upperSql.includes('UPDATED_AT < ?')) {
+      handlers.push({
+        position: pos('UPDATED_AT < ?'),
+        run: () => {
+          const cutoff = nextParam() as string;
+          results = results.filter((m) => m.updated_at < cutoff);
+        },
+      });
+    }
+
+    if (upperSql.includes('SEMANTIC_HASH = ?')) {
+      handlers.push({
+        position: pos('SEMANTIC_HASH = ?'),
+        run: () => {
+          const semanticHash = nextParam() as string;
+          results = results.filter((m) => (m.semantic_hash ?? '') === semanticHash);
         },
       });
     }
