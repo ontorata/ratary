@@ -1,6 +1,6 @@
 # ADR-003: Embedding Storage MVP
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-01  
 **Deciders:** Project owner  
 

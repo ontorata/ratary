@@ -1,7 +1,7 @@
 # Task Prompt — Phase 5 Embedding
 
-**Status:** Active (replace entire file when moving to next phase).  
-**Template:** [TASK_PROMPT.template.md](TASK_PROMPT.template.md)
+**Status:** ✅ Completed (2026-07-01).  
+**Template:** [TASK_PROMPT.template.md](TASK_PROMPT.template.md) — use for Phase 6 when ADR-001 is Approved.
 
 **Before coding:** [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [ENGINEERING.md](ENGINEERING.md) — complete pre-code analysis per ENGINEERING first.
 
@@ -33,8 +33,8 @@ Async embedding generation and vector storage behind ports (`IEmbeddingProvider`
 | ADR | Title | Status |
 |-----|-------|--------|
 | [002](adr/002-workspace-identity-model.md) | Workspace & identity | **Approved** |
-| [003](adr/003-embedding-storage-mvp.md) | Embedding storage MVP | **Proposed → approve** |
-| [004](adr/004-repository-port-types.md) | Repository port types | **Proposed → approve** |
+| [003](adr/003-embedding-storage-mvp.md) | Embedding storage MVP | **Implemented** |
+| [004](adr/004-repository-port-types.md) | Repository port types | **Implemented** |
 
 ### Future compatibility (must remain ✓)
 
@@ -98,13 +98,52 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 
 ## Definition of done
 
-- [ ] ADR-003 & ADR-004 Approved
-- [ ] `IEmbeddingProvider` + noop with tests
-- [ ] `memory_embeddings` + `D1EmbeddingStore`
-- [ ] `EmbeddingJobRunner` + backfill (dry-run default, idempotent)
-- [ ] `embedding_id` via `applyEmbeddingBackfill` only — not sync CRUD
-- [ ] 110+ tests green; no TODO/FIXME
-- [ ] Docs updated; **final completion report** delivered
+- [x] ADR-003 & ADR-004 Implemented
+- [x] `IEmbeddingProvider` + noop with tests
+- [x] `memory_embeddings` + `D1EmbeddingStore`
+- [x] `EmbeddingJobRunner` + backfill (dry-run default, idempotent)
+- [x] `embedding_id` via `applyEmbeddingBackfill` only — not sync CRUD
+- [x] `OpenAIEmbeddingProvider` optional (`EMBEDDING_PROVIDER=openai`)
+- [x] Embedding cleanup on memory delete / replace backup
+- [x] 152 tests green; no TODO/FIXME
+- [x] Docs updated; final completion report below
+
+---
+
+## Final completion report
+
+### Scope delivered
+
+Phase 5 embedding layer: async backfill, D1 vector storage behind ports, optional OpenAI provider, orphan vector cleanup on delete.
+
+### Commits (main)
+
+| # | Hash | Summary |
+|---|------|---------|
+| 1 | `66f45ba` | ADR-004 persistence types |
+| 2 | `e89d7ff` | `IEmbeddingProvider` + noop |
+| 3 | `166da4d` | `memory_embeddings` schema |
+| 4 | `427a48f` | Repo backfill methods |
+| 5 | `aafec2e` | `buildEmbedText` + content hash |
+| 6 | `e2fb2fc` | `IEmbeddingStore` + D1 store |
+| 7 | `43e2387` | `EmbeddingJobRunner` + script |
+| 8 | `c47a230` | OpenAI provider + env |
+| 9 | `6b1ec8a` | Delete/replace cleanup |
+| 10 | *(this commit)* | Docs + ADR status |
+
+### Quality gate
+
+`npm run lint && npm run typecheck && npm test` — **152 passed**.
+
+### Constraints verified
+
+- No sync embed on CRUD; no vector SQL in `MemoryRepository`
+- REST/MCP contracts unchanged; `Retriever` / `RankingEngine` untouched
+- Owner-scoped store ops; `content_hash` idempotent skip
+
+### Next
+
+Approve [ADR-001](adr/001-multi-source-retrieval.md) → copy [TASK_PROMPT.template.md](TASK_PROMPT.template.md) for **Phase 6 Hybrid Retrieval**.
 
 ---
 

@@ -1,6 +1,6 @@
 # ADR-004: Repository Port Type Boundaries
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-01  
 **Deciders:** Project owner  
 

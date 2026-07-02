@@ -158,6 +158,22 @@ Keduanya menulis ke **D1 yang sama**.
 |----------|-----------|
 | `npm run dev` | REST API / Swagger |
 | `npm run sync:backups:watch` | Sync folder chat ke D1 |
+| `npm run db:backfill-embeddings` | Generate embedding untuk memory tanpa `embedding_id` (dry-run default) |
+| `npm run db:backfill-embeddings:execute` | Jalankan backfill embedding (butuh provider) |
+
+### Embedding (Fase 5)
+
+Backfill **async** — CRUD tidak memanggil model embedding.
+
+1. Default: `EMBEDDING_PROVIDER=noop` (tes lokal, vektor nol).
+2. Produksi OpenAI: set di `.env`:
+   - `EMBEDDING_PROVIDER=openai`
+   - `EMBEDDING_API_KEY=sk-...`
+   - `EMBEDDING_MODEL=text-embedding-3-small` (opsional)
+3. Cek dulu: `npm run db:backfill-embeddings`
+4. Jalankan: `npm run db:backfill-embeddings:execute`
+
+Hapus memory lewat REST/MCP otomatis membersihkan vektor terkait.
 
 ---
 
@@ -168,7 +184,7 @@ Keduanya menulis ke **D1 yang sama**.
 | [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) | Aturan immutable (agent) |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Struktur, layer, extension points |
 | [ENGINEERING.md](ENGINEERING.md) | Proses Principal Engineer & format analisis |
-| [TASK_PROMPT.md](TASK_PROMPT.md) | Pekerjaan aktif (Phase 5 Embedding) |
+| [TASK_PROMPT.md](TASK_PROMPT.md) | Laporan selesai Phase 5 Embedding |
 | [TASK_PROMPT.template.md](TASK_PROMPT.template.md) | Template task untuk fase berikutnya |
 | [ADR-POLICY.md](ADR-POLICY.md) | Kebijakan ADR — wajib untuk perubahan struktural |
 | [archive/](archive/) | Desain historis per fase |

@@ -1,8 +1,8 @@
 # Arsitektur — AI Memory Cloud
 
-**Status:** Phase 4 ✅ production · Phase 5 📋 planned  
+**Status:** Phase 4 ✅ production · Phase 5 ✅ complete  
 **Rules:** [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) (immutable)  
-**Current work:** [TASK_PROMPT.md](TASK_PROMPT.md)
+**Next phase:** Phase 6 Hybrid Retrieval — [adr/001-multi-source-retrieval.md](adr/001-multi-source-retrieval.md)
 
 ---
 
@@ -11,7 +11,7 @@
 ```
 Memory Layer          ← this repo: CRUD, retrieval, context, consolidation
 Knowledge Layer       ← metadata, relations, codenames, levels
-Embedding Layer       ← Phase 5+ (embedding_id reserved)
+Embedding Layer       ← Phase 5 ✅ (async backfill, D1 MVP)
 Vector Layer          ← Phase 6+ hybrid retrieval
 Graph Layer           ← Phase 8+ (IGraphProvider per ADR-002)
 Reasoning → Multi-Agent ← outside repo; MCP/REST boundary only
@@ -28,10 +28,10 @@ Reasoning → Multi-Agent ← outside repo; MCP/REST boundary only
 | 2.6 Knowledge | ✅ | Codename, slug, relations, ranking |
 | 3 Authorization | ✅ | JWT, OAuth, API keys, permissions |
 | 4 Memory Intelligence | ✅ | Retriever, context, consolidator |
-| 5 Embedding | 📋 | [TASK_PROMPT.md](TASK_PROMPT.md) |
+| 5 Embedding | ✅ | Provider/store ports, backfill job, OpenAI optional |
 | 6–10 | 🔲 | ADRs in [adr/](adr/) |
 
-**Tests:** 110 · **MCP tools:** 14 · **Deploy REST:** Vercel · **Storage:** Cloudflare D1 (HTTP API)
+**Tests:** 152 · **MCP tools:** 14 · **Deploy REST:** Vercel · **Storage:** Cloudflare D1 (HTTP API)
 
 ---
 
@@ -48,6 +48,7 @@ src/
   search/           RankingEngine (pure) + SearchService
   auth/             Identity, JWT, OAuth, audit, permissions
   repositories/     MemoryRepository, MemoryRelationRepository
+  embedding/        IEmbeddingProvider, IEmbeddingStore, job runner
   mcp/              stdio server + tool definitions
   db/               D1 client, migrations
   config/           env.ts (Zod)
@@ -117,14 +118,14 @@ MCP does **not** use REST auth — D1 credentials in env. Same business logic as
 | LLM retrieval | `Retriever` | uses port above | unchanged |
 | Ranking | `ranking.engine.ts` | pure functions | fusion weights (Phase 6) |
 | Relations SQL | `MemoryRelationRepository` (concrete) | D1 | + `IMemoryRelationRepository` |
-| Embedding inference | `IEmbeddingProvider` | 🔲 Phase 5 | OpenAI, Workers AI, noop |
-| Vector storage | `IEmbeddingStore` | 🔲 Phase 5 | D1 MVP → Vectorize/pgvector |
+| Embedding inference | `IEmbeddingProvider` | `NoopEmbeddingProvider`, `OpenAIEmbeddingProvider` | Workers AI |
+| Vector storage | `IEmbeddingStore` | `D1EmbeddingStore` (MVP ~5–10k vectors/owner) | Vectorize, pgvector |
 | Object blobs | `IContentStore` | 🔲 ADR-005 | R2, S3, MinIO |
 | Graph traversal | `IGraphProvider` | 🔲 ADR-002 Phase 8 | D1 CTE, graph DB |
 | Workspace scope | `MemoryScope` (+ ADR-002 fields) | `ownerId` only | workspace, agent, org |
 | Auth | `IdentityProvider` chain | API key, JWT, OAuth | — |
 
-**Composition root:** `server.ts`, `mcp/server.ts`, `scripts/*` — only place for `new MemoryRepository(db)`.
+**Composition root:** `server.ts`, `mcp/server.ts`, `create-memory-service.ts`, `scripts/*` — only place for `new MemoryRepository(db)` and `new D1EmbeddingStore(db)`.
 
 ---
 
@@ -157,6 +158,7 @@ Caps: `search/ranking.config.ts`, `memory/context.config.ts`.
 | Knowledge (2.6) | codename, slug, keywords, category, memory_type, importance |
 | Intelligence (4) | project_id, level, last_accessed, access_count, semantic_hash |
 | Reserved (5+) | embedding_id, object_key |
+| Embeddings (5) | memory_embeddings (vector_json, content_hash, model_id) |
 | Relations | memory_relations (flat edges) |
 | Auth | identities, clients, audit_logs, settings |
 
@@ -198,6 +200,7 @@ Future scope contract: [adr/002-workspace-identity-model.md](adr/002-workspace-i
 | MCP | `npm run mcp` / `npm run setup` |
 | Migrate | `npm run db:migrate` |
 | Backfill M4b | `npm run db:backfill-memory-intelligence` |
+| Backfill embeddings | `npm run db:backfill-embeddings` (dry-run default) |
 | Consolidate | `npm run consolidate:memories` (dry-run default) |
 
 User onboarding: [PANDUAN.md](PANDUAN.md).
@@ -214,16 +217,37 @@ User onboarding: [PANDUAN.md](PANDUAN.md).
 
 ---
 
-## 13. Known technical debt (documented)
+## 13. Embedding layer (Phase 5)
 
-| Item | Mitigation path |
-|------|-----------------|
-| `MemoryRepository` ~729 lines | Additive methods only; ADR-004 type extract |
-| Port types in concrete file | ADR-004 → `types/memory-persistence.ts` |
-| `MemoryRelationRepository` no interface | `IMemoryRelationRepository` before Phase 8 |
-| Search uses `SELECT *` | Projection refactor (perf, not blocking Phase 5) |
-| N× `recordAccess` on context build | Batch update (perf) |
+Async only — **no** `embed()` on `insert()` / `update()`.
+
+```
+scripts/backfill-embeddings.ts
+  → EmbeddingJobRunner
+      → IMemoryReader.findWithoutEmbedding
+      → IEmbeddingProvider.embed (noop | openai)
+      → IEmbeddingStore.upsert + IMemoryWriter.applyEmbeddingBackfill
+```
+
+- Vectors live in `memory_embeddings`; `memories.embedding_id` is the link.
+- `content_hash` skips unchanged text; delete/replace-backup cleans vectors via `MemoryService`.
+- `searchSimilar` is owner-scoped in-memory cosine (MVP scale ~5–10k vectors per owner).
+- Env: `EMBEDDING_PROVIDER`, `EMBEDDING_MODEL`, `EMBEDDING_API_KEY`, `EMBEDDING_BATCH_SIZE`.
+
+Phase 6 will add `VectorRetrievalCandidateSource` without changing REST/MCP contracts.
 
 ---
 
-*Operational detail for the active phase: [TASK_PROMPT.md](TASK_PROMPT.md).*
+## 14. Known technical debt (documented)
+
+| Item | Mitigation path |
+|------|-----------------|
+| `MemoryRepository` ~729 lines | Additive methods only; split when Postgres adapter lands |
+| `MemoryRelationRepository` no interface | `IMemoryRelationRepository` before Phase 8 |
+| Search uses `SELECT *` | Projection refactor (perf, not blocking Phase 6) |
+| N× `recordAccess` on context build | Batch update (perf) |
+| D1 vector search in-process | Vectorize/pgvector when scale exceeds MVP ceiling |
+
+---
+
+*Phase 5 completion report: [TASK_PROMPT.md](TASK_PROMPT.md). Next: Phase 6 after ADR-001 Approved.*

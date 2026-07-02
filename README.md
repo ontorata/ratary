@@ -47,6 +47,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | **Phase 2.6 — Knowledge Foundation** | ✅ | [archive](docs/archive/) |
 | **Phase 3 — JWT/OAuth & Permissions** | ✅ | [archive](docs/archive/) |
 | **Phase 4 — Memory Intelligence** | ✅ | [archive](docs/archive/) · panduan: **[docs/PANDUAN.md](docs/PANDUAN.md)** |
+| **Phase 5 — Embedding** | ✅ | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) §13 · backfill: `npm run db:backfill-embeddings` |
 
 ## Quick Start
 
