@@ -285,6 +285,22 @@ export class MockD1Client implements D1Client {
     }
 
     if (normalizedSql.startsWith('UPDATE MEMORIES')) {
+      if (normalizedSql.includes('LAST_ACCESSED = ?') && normalizedSql.includes('ACCESS_COUNT = ACCESS_COUNT + 1')) {
+        const lastAccessed = params[0] as string;
+        const updatedAt = params[1] as string;
+        const id = params[2] as string;
+        const ownerId = params[3] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.last_accessed = lastAccessed;
+        existing.access_count = (existing.access_count ?? 0) + 1;
+        existing.updated_at = updatedAt;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
       let id: string;
       let ownerId: string | undefined;
 
@@ -572,6 +588,19 @@ export class MockD1Client implements D1Client {
 
     if (normalizedSql.includes('SELECT * FROM MEMORIES')) {
       const filtered = this.filterMemories(sql, params);
+
+      if (normalizedSql.includes('ORDER BY IMPORTANCE DESC, UPDATED_AT DESC')) {
+        const limit = params[params.length - 1] as number;
+        const sorted = filtered
+          .sort((a, b) => {
+            const imp = (b.importance ?? 50) - (a.importance ?? 50);
+            if (imp !== 0) return imp;
+            return b.updated_at.localeCompare(a.updated_at);
+          })
+          .slice(0, limit);
+        return { results: sorted, success: true };
+      }
+
       const limit = params[params.length - 2] as number | undefined;
       const offset = params[params.length - 1] as number | undefined;
 
@@ -590,16 +619,38 @@ export class MockD1Client implements D1Client {
   private filterMemories(sql: string, params: unknown[]): MemoryRow[] {
     let results = [...this.memories.values()];
     const upperSql = sql.toUpperCase();
+    const queryParams = [...params];
+    if (upperSql.includes('LIMIT ?') && typeof queryParams[queryParams.length - 1] === 'number') {
+      queryParams.pop();
+    }
     let paramIndex = 0;
 
-    const nextParam = (): unknown => params[paramIndex++];
+    const nextParam = (): unknown => queryParams[paramIndex++];
 
     if (upperSql.includes('OWNER_ID = ?')) {
       const ownerId = nextParam() as string;
       results = results.filter((m) => m.owner_id === ownerId);
     }
 
-    if (upperSql.includes('(TITLE LIKE ? OR CONTENT LIKE ?')) {
+    if (
+      upperSql.includes(
+        '(TITLE LIKE ? OR CONTENT LIKE ? OR SUMMARY LIKE ? OR KEYWORDS LIKE ? OR CODENAME LIKE ?)',
+      )
+    ) {
+      const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
+      nextParam();
+      nextParam();
+      nextParam();
+      nextParam();
+      results = results.filter(
+        (m) =>
+          m.title.toLowerCase().includes(keyword) ||
+          m.content.toLowerCase().includes(keyword) ||
+          m.summary.toLowerCase().includes(keyword) ||
+          (m.keywords ?? '').toLowerCase().includes(keyword) ||
+          (m.codename ?? '').toLowerCase().includes(keyword),
+      );
+    } else if (upperSql.includes('(TITLE LIKE ? OR CONTENT LIKE ?')) {
       const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
       nextParam();
       nextParam();
@@ -646,6 +697,21 @@ export class MockD1Client implements D1Client {
     if (upperSql.includes('IMPORTANCE >= ?')) {
       const importanceMin = nextParam() as number;
       results = results.filter((m) => (m.importance ?? 50) >= importanceMin);
+    }
+
+    if (upperSql.includes('PROJECT_ID = ?')) {
+      const projectId = nextParam() as string;
+      results = results.filter((m) => (m.project_id ?? '') === projectId);
+    }
+
+    if (upperSql.includes('LEVEL IN (')) {
+      const levelMatch = upperSql.match(/LEVEL IN \(([^)]+)\)/);
+      const count = levelMatch ? levelMatch[1].split(',').length : 0;
+      const levels: string[] = [];
+      for (let i = 0; i < count; i++) {
+        levels.push(nextParam() as string);
+      }
+      results = results.filter((m) => levels.includes(m.level ?? 'note'));
     }
 
     if (upperSql.includes('PROJECT = ?') && !upperSql.includes('LIKE')) {

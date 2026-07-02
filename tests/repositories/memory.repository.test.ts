@@ -113,6 +113,32 @@ describe('MemoryRepository', () => {
     expect(memory.semanticHash).toBeNull();
   });
 
+  it('should record access for owner-scoped memory', async () => {
+    const memory = await repository.insert({
+      title: 'Access',
+      project: 'p1',
+      content: 'body',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0200',
+      slug: 'access',
+      favorite: false,
+      ownerId,
+    });
+
+    await repository.recordAccess(memory.id, ownerId);
+    const updated = await repository.findById(memory.id, ownerId);
+
+    expect(updated?.accessCount).toBe(1);
+    expect(updated?.lastAccessed).toBeTruthy();
+  });
+
   it('should delete only when owner matches', async () => {
     const memory = await repository.insert({
       title: 'Del',

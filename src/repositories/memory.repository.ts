@@ -497,6 +497,71 @@ export class MemoryRepository implements IMemoryRepository {
     await this.db.execute('DELETE FROM memories WHERE owner_id = ?', [ownerId]);
   }
 
+  async findRetrievalCandidates(filters: import('./memory.repository.interface.js').RetrievalFilters): Promise<Memory[]> {
+    const conditions: string[] = ['owner_id = ?'];
+    const params: unknown[] = [filters.ownerId];
+
+    if (filters.archived === true) {
+      conditions.push('archived = ?');
+      params.push(1);
+    } else {
+      conditions.push('archived = 0');
+    }
+
+    if (filters.projectId) {
+      conditions.push('project_id = ?');
+      params.push(filters.projectId);
+    }
+
+    if (filters.levels && filters.levels.length > 0) {
+      const placeholders = filters.levels.map(() => '?').join(', ');
+      conditions.push(`level IN (${placeholders})`);
+      params.push(...filters.levels);
+    }
+
+    if (filters.importanceMin !== undefined) {
+      conditions.push('importance >= ?');
+      params.push(filters.importanceMin);
+    }
+
+    if (filters.query) {
+      conditions.push(
+        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ?)',
+      );
+      const likePattern = `%${filters.query}%`;
+      params.push(likePattern, likePattern, likePattern, likePattern, likePattern, likePattern);
+    }
+
+    if (filters.tags && filters.tags.length > 0) {
+      const tagConditions = filters.tags.map(() => '(tags LIKE ? OR keywords LIKE ?)');
+      conditions.push(`(${tagConditions.join(' OR ')})`);
+      for (const tag of filters.tags) {
+        params.push(`%"${tag}"%`, `%"${tag}"%`);
+      }
+    }
+
+    const limit = Math.min(filters.maxCandidates, 100);
+    params.push(limit);
+
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT * FROM memories WHERE ${conditions.join(' AND ')}
+       ORDER BY importance DESC, updated_at DESC
+       LIMIT ?`,
+      params,
+    );
+
+    return rows.map(rowToMemory);
+  }
+
+  async recordAccess(id: string, ownerId: string): Promise<void> {
+    const now = nowISO();
+    await this.db.execute(
+      `UPDATE memories SET last_accessed = ?, access_count = access_count + 1, updated_at = ?
+       WHERE id = ? AND owner_id = ?`,
+      [now, now, id, ownerId],
+    );
+  }
+
   private async searchByTag(
     tag: string,
     filters: SearchFilters,

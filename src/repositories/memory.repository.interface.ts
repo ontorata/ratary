@@ -1,10 +1,22 @@
 import type { Memory } from '../types/memory.js';
+import type { MemoryLevel } from '../types/memory-level.js';
 import type {
   InsertMemoryData,
   UpdateMemoryData,
   ListFilters,
   SearchFilters,
 } from './memory.repository.js';
+
+export interface RetrievalFilters {
+  ownerId: string;
+  projectId?: string;
+  tags?: string[];
+  levels?: MemoryLevel[];
+  query?: string;
+  importanceMin?: number;
+  archived?: boolean;
+  maxCandidates: number;
+}
 
 /**
  * Portability contract for memory persistence.
@@ -45,4 +57,6 @@ export interface IMemoryRepository {
     },
   ): Promise<void>;
   deleteAllByOwner(ownerId: string): Promise<void>;
+  findRetrievalCandidates(filters: RetrievalFilters): Promise<Memory[]>;
+  recordAccess(id: string, ownerId: string): Promise<void>;
 }
