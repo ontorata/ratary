@@ -13,7 +13,11 @@ import {
   parseCodenameSequence,
   resolveCodenamePrefix,
 } from '../knowledge/codename.generator.js';
+import { slugify } from '../knowledge/slug.generator.js';
 import type { MemoryType } from '../types/knowledge.js';
+import type { MemoryLevel } from '../types/memory-level.js';
+import { DEFAULT_MEMORY_LEVEL } from '../types/memory-level.js';
+import type { IMemoryRepository } from './memory.repository.interface.js';
 
 export interface InsertMemoryData {
   title: string;
@@ -35,6 +39,9 @@ export interface InsertMemoryData {
   id?: string;
   createdAt?: string;
   updatedAt?: string;
+  projectId?: string;
+  level?: MemoryLevel;
+  semanticHash?: string | null;
 }
 
 export interface UpdateMemoryData {
@@ -52,6 +59,8 @@ export interface UpdateMemoryData {
   slug?: string;
   favorite?: boolean;
   archived?: boolean;
+  projectId?: string;
+  level?: MemoryLevel;
 }
 
 export interface ListFilters {
@@ -79,7 +88,7 @@ export interface SearchFilters {
 
 const CODENAME_MAX_RETRIES = 3;
 
-export class MemoryRepository {
+export class MemoryRepository implements IMemoryRepository {
   constructor(private readonly db: D1Client) {}
 
   async allocateCodename(ownerId: string, prefix: string): Promise<string> {
@@ -112,6 +121,8 @@ export class MemoryRepository {
     const now = data.createdAt ?? nowISO();
     const updatedAt = data.updatedAt ?? now;
     const ownerId = data.ownerId ?? '';
+    const projectId = data.projectId ?? slugify(data.project ?? '');
+    const level = data.level ?? DEFAULT_MEMORY_LEVEL;
 
     for (let attempt = 0; attempt < CODENAME_MAX_RETRIES; attempt++) {
       const codename =
@@ -131,8 +142,9 @@ export class MemoryRepository {
           `INSERT INTO memories (
             id, title, project, content, summary, tags, favorite, archived,
             owner_id, created_at, updated_at,
-            codename, slug, keywords, category, memory_type, importance, language, notes
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            codename, slug, keywords, category, memory_type, importance, language, notes,
+            project_id, level, last_accessed, access_count, embedding_id, object_key, semantic_hash
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             id,
             data.title,
@@ -153,6 +165,13 @@ export class MemoryRepository {
             data.importance,
             data.language,
             data.notes,
+            projectId,
+            level,
+            null,
+            0,
+            null,
+            null,
+            data.semanticHash ?? null,
           ],
         );
 
@@ -181,6 +200,7 @@ export class MemoryRepository {
       ...existing,
       title: data.title ?? existing.title,
       project: data.project ?? existing.project,
+      projectId: data.projectId ?? (data.project !== undefined ? slugify(data.project) : existing.projectId),
       content: data.content ?? existing.content,
       summary: data.summary ?? existing.summary,
       tags: data.tags ?? existing.tags,
@@ -191,6 +211,7 @@ export class MemoryRepository {
       language: data.language ?? existing.language,
       notes: data.notes ?? existing.notes,
       slug: data.slug ?? existing.slug,
+      level: data.level ?? existing.level,
       favorite: data.favorite ?? existing.favorite,
       archived: data.archived ?? existing.archived,
       updatedAt: nowISO(),
@@ -200,7 +221,7 @@ export class MemoryRepository {
       `UPDATE memories
        SET title = ?, project = ?, content = ?, summary = ?, tags = ?,
            keywords = ?, category = ?, memory_type = ?, importance = ?,
-           language = ?, notes = ?, slug = ?,
+           language = ?, notes = ?, slug = ?, project_id = ?, level = ?,
            favorite = ?, archived = ?, updated_at = ?
        WHERE id = ? AND owner_id = ?`,
       [
@@ -216,6 +237,8 @@ export class MemoryRepository {
         updated.language,
         updated.notes,
         updated.slug,
+        updated.projectId,
+        updated.level,
         updated.favorite ? 1 : 0,
         updated.archived ? 1 : 0,
         updated.updatedAt,

@@ -187,6 +187,29 @@ export async function migrateKnowledgeFoundationPhase1(client: D1Client): Promis
   );
 }
 
+const MEMORY_INTELLIGENCE_COLUMNS: Array<{ name: string; ddl: string }> = [
+  { name: 'project_id', ddl: "ALTER TABLE memories ADD COLUMN project_id TEXT NOT NULL DEFAULT ''" },
+  { name: 'level', ddl: "ALTER TABLE memories ADD COLUMN level TEXT NOT NULL DEFAULT 'note'" },
+  { name: 'last_accessed', ddl: 'ALTER TABLE memories ADD COLUMN last_accessed TEXT' },
+  {
+    name: 'access_count',
+    ddl: 'ALTER TABLE memories ADD COLUMN access_count INTEGER NOT NULL DEFAULT 0',
+  },
+  { name: 'embedding_id', ddl: 'ALTER TABLE memories ADD COLUMN embedding_id TEXT' },
+  { name: 'object_key', ddl: 'ALTER TABLE memories ADD COLUMN object_key TEXT' },
+  { name: 'semantic_hash', ddl: 'ALTER TABLE memories ADD COLUMN semantic_hash TEXT' },
+];
+
+/** Phase 4 M4a — intelligence columns (indexes in M4c). */
+export async function migrateMemoryIntelligencePhase1(client: D1Client): Promise<void> {
+  for (const column of MEMORY_INTELLIGENCE_COLUMNS) {
+    const hasColumn = await tableHasColumn(client, 'memories', column.name);
+    if (!hasColumn) {
+      await client.execute(column.ddl);
+    }
+  }
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promise<void> {
   await client.execute(
@@ -217,6 +240,7 @@ export async function runMigrations(client: D1Client = getD1Client()): Promise<v
 
   await migrateKnowledgeFoundationPhase1(client);
   await migrateKnowledgeFoundationPhase3(client);
+  await migrateMemoryIntelligencePhase1(client);
 }
 
 export interface D1Statement {

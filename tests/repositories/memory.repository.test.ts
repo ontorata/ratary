@@ -87,6 +87,32 @@ describe('MemoryRepository', () => {
     expect(result.memories[0].title).toBe('A');
   });
 
+  it('should insert intelligence fields with defaults', async () => {
+    const memory = await repository.insert({
+      title: 'Intel',
+      project: 'Mangrove Apps',
+      content: 'body',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0100',
+      slug: 'intel',
+      favorite: false,
+      ownerId,
+    });
+
+    expect(memory.projectId).toBe('mangrove-apps');
+    expect(memory.level).toBe('note');
+    expect(memory.accessCount).toBe(0);
+    expect(memory.lastAccessed).toBeNull();
+    expect(memory.semanticHash).toBeNull();
+  });
+
   it('should delete only when owner matches', async () => {
     const memory = await repository.insert({
       title: 'Del',

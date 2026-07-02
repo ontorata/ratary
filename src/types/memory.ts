@@ -1,5 +1,9 @@
 import { z } from 'zod';
 import { knowledgeMetadataSchema, memoryTypeSchema } from './knowledge.js';
+import { MEMORY_LEVELS, type MemoryLevel } from './memory-level.js';
+
+export { MEMORY_LEVELS, DEFAULT_MEMORY_LEVEL } from './memory-level.js';
+export type { MemoryLevel } from './memory-level.js';
 
 export const memoryRowSchema = z.object({
   id: z.string().uuid(),
@@ -21,6 +25,13 @@ export const memoryRowSchema = z.object({
   importance: z.number().int().optional(),
   language: z.string().optional(),
   notes: z.string().optional(),
+  project_id: z.string().optional(),
+  level: z.enum(MEMORY_LEVELS).optional(),
+  last_accessed: z.string().nullable().optional(),
+  access_count: z.number().int().optional(),
+  embedding_id: z.string().nullable().optional(),
+  object_key: z.string().nullable().optional(),
+  semantic_hash: z.string().nullable().optional(),
 });
 
 export type MemoryRow = z.infer<typeof memoryRowSchema>;
@@ -43,6 +54,13 @@ export interface Memory {
   favorite: boolean;
   archived: boolean;
   ownerId: string;
+  projectId: string;
+  level: MemoryLevel;
+  lastAccessed: string | null;
+  accessCount: number;
+  embeddingId: string | null;
+  objectKey: string | null;
+  semanticHash: string | null;
   createdAt: string;
   updatedAt: string;
 }

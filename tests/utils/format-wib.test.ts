@@ -40,6 +40,13 @@ describe('toMemoryResponse', () => {
     favorite: false,
     archived: false,
     ownerId: 'owner-1',
+    projectId: 'note-0001',
+    level: 'note',
+    lastAccessed: null,
+    accessCount: 0,
+    embeddingId: null,
+    objectKey: null,
+    semanticHash: null,
     createdAt: '2026-07-02T00:00:00.000Z',
     updatedAt: '2026-07-02T14:30:45.000Z',
   };

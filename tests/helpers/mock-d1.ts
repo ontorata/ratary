@@ -55,6 +55,13 @@ export class MockD1Client implements D1Client {
         { name: 'importance' },
         { name: 'language' },
         { name: 'notes' },
+        { name: 'project_id' },
+        { name: 'level' },
+        { name: 'last_accessed' },
+        { name: 'access_count' },
+        { name: 'embedding_id' },
+        { name: 'object_key' },
+        { name: 'semantic_hash' },
       ];
       return { results: columns, success: true };
     }
@@ -247,6 +254,13 @@ export class MockD1Client implements D1Client {
         importance: (params[16] as number | undefined) ?? 50,
         language: (params[17] as string | undefined) ?? 'id',
         notes: (params[18] as string | undefined) ?? '',
+        project_id: (params[19] as string | undefined) ?? '',
+        level: (params[20] as string | undefined) ?? 'note',
+        last_accessed: (params[21] as string | null | undefined) ?? null,
+        access_count: (params[22] as number | undefined) ?? 0,
+        embedding_id: (params[23] as string | null | undefined) ?? null,
+        object_key: (params[24] as string | null | undefined) ?? null,
+        semantic_hash: (params[25] as string | null | undefined) ?? null,
       };
       this.memories.set(row.id, row);
       return { results: [], success: true, meta: { changes: 1 } };
@@ -290,6 +304,34 @@ export class MockD1Client implements D1Client {
           existing.archived = params[0] as number;
         }
         existing.updated_at = params[1] as string;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
+      if (params.length >= 19) {
+        id = params[17] as string;
+        ownerId = params[18] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.title = params[0] as string;
+        existing.project = params[1] as string;
+        existing.content = params[2] as string;
+        existing.summary = params[3] as string;
+        existing.tags = params[4] as string;
+        existing.keywords = params[5] as string;
+        existing.category = params[6] as string;
+        existing.memory_type = params[7] as string;
+        existing.importance = params[8] as number;
+        existing.language = params[9] as string;
+        existing.notes = params[10] as string;
+        existing.slug = params[11] as string | null;
+        existing.project_id = params[12] as string;
+        existing.level = params[13] as string;
+        existing.favorite = params[14] as number;
+        existing.archived = params[15] as number;
+        existing.updated_at = params[16] as string;
         this.memories.set(id, existing);
         return { results: [], success: true, meta: { changes: 1 } };
       }

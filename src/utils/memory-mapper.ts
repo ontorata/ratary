@@ -28,6 +28,13 @@ export function rowToMemory(row: {
   importance?: number;
   language?: string;
   notes?: string;
+  project_id?: string;
+  level?: string;
+  last_accessed?: string | null;
+  access_count?: number;
+  embedding_id?: string | null;
+  object_key?: string | null;
+  semantic_hash?: string | null;
 }): import('../types/memory.js').Memory {
   let tags: string[] = [];
   try {
@@ -63,6 +70,13 @@ export function rowToMemory(row: {
     favorite: row.favorite === 1,
     archived: row.archived === 1,
     ownerId: row.owner_id ?? '',
+    projectId: row.project_id ?? '',
+    level: (row.level as import('../types/memory-level.js').MemoryLevel) ?? 'note',
+    lastAccessed: row.last_accessed ?? null,
+    accessCount: row.access_count ?? 0,
+    embeddingId: row.embedding_id ?? null,
+    objectKey: row.object_key ?? null,
+    semanticHash: row.semantic_hash ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
