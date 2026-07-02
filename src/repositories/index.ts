@@ -6,4 +6,9 @@ export type {
   ListFilters,
   SearchFilters,
 } from './memory.repository.js';
-export type { IMemoryRepository, RetrievalFilters } from './memory.repository.interface.js';
+export type {
+  IMemoryRepository,
+  IMemoryReader,
+  IMemoryWriter,
+  RetrievalFilters,
+} from './memory.repository.interface.js';

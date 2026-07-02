@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import type { IMemoryRepository } from '../../src/repositories/memory.repository.interface.js';
+import type {
+  IMemoryRepository,
+  IMemoryReader,
+  IMemoryWriter,
+} from '../../src/repositories/memory.repository.interface.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 import { KnowledgeService } from '../../src/knowledge/knowledge.service.js';
@@ -22,5 +26,17 @@ describe('repository interface dependency inversion', () => {
     expect(search).toBeDefined();
     expect(memory).toBeDefined();
     expect(relations).toBeDefined();
+  });
+
+  it('should satisfy ISP reader and writer ports from one repository', () => {
+    const mockDb = new MockD1Client();
+    const repository: IMemoryRepository = new MemoryRepository(mockDb);
+    const reader: IMemoryReader = repository;
+    const writer: IMemoryWriter = repository;
+
+    expect(new SearchService(reader)).toBeDefined();
+    expect(new MemoryRelationService(new MemoryRelationRepository(mockDb), reader)).toBeDefined();
+    expect(new KnowledgeService(repository)).toBeDefined();
+    expect(writer.allocateCodename).toBeTypeOf('function');
   });
 });

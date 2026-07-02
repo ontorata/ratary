@@ -1,5 +1,5 @@
 import type { SearchFilters } from '../repositories/memory.repository.js';
-import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
+import type { IMemoryReader } from '../repositories/memory.repository.interface.js';
 import type { Memory } from '../types/memory.js';
 import type { SearchQuery } from '../types/memory.js';
 import type { MemoryScope } from '../types/memory-scope.js';
@@ -11,7 +11,7 @@ export interface ScoredMemory extends Memory {
 }
 
 export class SearchService {
-  constructor(private readonly repository: IMemoryRepository) {}
+  constructor(private readonly repository: IMemoryReader) {}
 
   async search(
     scope: MemoryScope,

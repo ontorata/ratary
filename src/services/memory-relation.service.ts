@@ -1,4 +1,4 @@
-import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
+import type { IMemoryReader } from '../repositories/memory.repository.interface.js';
 import type { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
 import type { CreateRelationInput, MemoryRelation } from '../types/knowledge.js';
 import type { MemoryScope } from '../types/memory.js';
@@ -7,7 +7,7 @@ import { NotFoundError, ValidationError } from '../types/errors.js';
 export class MemoryRelationService {
   constructor(
     private readonly relationRepository: MemoryRelationRepository,
-    private readonly memoryRepository: IMemoryRepository,
+    private readonly memoryRepository: IMemoryReader,
   ) {}
 
   async listRelations(scope: MemoryScope, memoryId: string): Promise<MemoryRelation[]> {

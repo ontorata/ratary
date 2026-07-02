@@ -18,16 +18,9 @@ export interface RetrievalFilters {
   maxCandidates: number;
 }
 
-/**
- * Portability contract for memory persistence.
- * Only D1 (later Postgres) implementations contain SQL.
- */
-export interface IMemoryRepository {
-  allocateCodename(ownerId: string, prefix: string): Promise<string>;
+/** Read-only memory persistence operations. */
+export interface IMemoryReader {
   slugExists(ownerId: string, slug: string, excludeSlug?: string): Promise<boolean>;
-  insert(data: InsertMemoryData): Promise<Memory>;
-  update(id: string, ownerId: string, data: UpdateMemoryData): Promise<Memory | null>;
-  delete(id: string, ownerId: string): Promise<boolean>;
   findById(id: string, ownerId: string): Promise<Memory | null>;
   findByCodename(ownerId: string, codename: string): Promise<Memory | null>;
   findBySlug(ownerId: string, slug: string): Promise<Memory | null>;
@@ -35,12 +28,32 @@ export interface IMemoryRepository {
   findSearchCandidates(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }>;
   search(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }>;
   listDistinctCategories(ownerId: string): Promise<string[]>;
-  toggleFavorite(id: string, ownerId: string): Promise<Memory | null>;
-  archive(id: string, ownerId: string, archived?: boolean): Promise<Memory | null>;
   listProjects(ownerId: string): Promise<string[]>;
   listTags(ownerId: string): Promise<string[]>;
   findAllByOwner(ownerId: string): Promise<Memory[]>;
   findWithoutCodename(ownerId: string, limit: number): Promise<Memory[]>;
+  findRetrievalCandidates(filters: RetrievalFilters): Promise<Memory[]>;
+  findDuplicatesBySemanticHash(filters: {
+    ownerId: string;
+    projectId?: string;
+    semanticHash: string;
+  }): Promise<Memory[]>;
+  findStaleCandidates(filters: {
+    ownerId: string;
+    projectId?: string;
+    minAccessCount: number;
+    olderThanDays: number;
+  }): Promise<Memory[]>;
+}
+
+/** Write and maintenance memory persistence operations. */
+export interface IMemoryWriter {
+  allocateCodename(ownerId: string, prefix: string): Promise<string>;
+  insert(data: InsertMemoryData): Promise<Memory>;
+  update(id: string, ownerId: string, data: UpdateMemoryData): Promise<Memory | null>;
+  delete(id: string, ownerId: string): Promise<boolean>;
+  toggleFavorite(id: string, ownerId: string): Promise<Memory | null>;
+  archive(id: string, ownerId: string, archived?: boolean): Promise<Memory | null>;
   applyKnowledgeBackfill(
     id: string,
     ownerId: string,
@@ -57,19 +70,7 @@ export interface IMemoryRepository {
     },
   ): Promise<void>;
   deleteAllByOwner(ownerId: string): Promise<void>;
-  findRetrievalCandidates(filters: RetrievalFilters): Promise<Memory[]>;
   recordAccess(id: string, ownerId: string): Promise<void>;
-  findDuplicatesBySemanticHash(filters: {
-    ownerId: string;
-    projectId?: string;
-    semanticHash: string;
-  }): Promise<Memory[]>;
-  findStaleCandidates(filters: {
-    ownerId: string;
-    projectId?: string;
-    minAccessCount: number;
-    olderThanDays: number;
-  }): Promise<Memory[]>;
   bumpImportance(id: string, ownerId: string, importance: number): Promise<Memory | null>;
   applyMemoryIntelligenceBackfill(
     id: string,
@@ -77,3 +78,9 @@ export interface IMemoryRepository {
     data: { projectId: string; level: MemoryLevel; semanticHash: string },
   ): Promise<void>;
 }
+
+/**
+ * Portability contract for memory persistence.
+ * Only D1 (later Postgres) implementations contain SQL.
+ */
+export interface IMemoryRepository extends IMemoryReader, IMemoryWriter {}
