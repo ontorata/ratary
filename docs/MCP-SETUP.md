@@ -100,17 +100,21 @@ Atau gunakan path absolut ke `node.exe` (cari dengan `where node`):
 | **Project** | `.cursor/mcp.json` |
 | **Global** | `%USERPROFILE%\.cursor\mcp.json` (Windows) |
 | **Template** | `.cursor/mcp.json.example` |
+| **Panduan singkat** | **[docs/CURSOR-QUICKSTART.md](CURSOR-QUICKSTART.md)** |
 
 ```bash
 cp .cursor/mcp.json.example .cursor/mcp.json
-# Edit path + credential D1
+# Edit path repo + cwd — credential D1 dibaca dari .env (jangan duplikasi di mcp.json)
 ```
 
 **Langkah:**
-1. Simpan file → **Cursor → Settings → MCP**
-2. Pastikan `ai-memory-cloud` **hijau/Connected**
-3. **Reload Window** jika perlu
-4. Uji di chat: `search_memory` dengan query apa saja
+1. Isi `.env` di root repo (D1 credentials)
+2. Simpan `mcp.json` → **Cursor → Settings → MCP**
+3. Pastikan `ai-memory-cloud` **hijau/Connected**
+4. **Reload Window** jika perlu
+5. Uji di chat: *"cari memory tentang [proyek]"* — AI memakai `search_memory` otomatis
+
+> **User biasa:** tidak perlu API key `aic_...`, tidak perlu `npm start`, tidak perlu curl handoff.
 
 ---
 

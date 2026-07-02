@@ -1,0 +1,31 @@
+---
+description: AI Memory Cloud — baca/simpan memory otomatis via MCP (tanpa REST API)
+alwaysApply: true
+---
+
+# AI Memory Cloud
+
+Server MCP **ai-memory-cloud** terhubung langsung ke Cloudflare D1. Di Cursor, **tidak perlu** API key `aic_...`, `npm start`, atau curl.
+
+## Awal chat / lanjut pekerjaan
+
+1. Panggil `search_memory` dengan nama proyek atau topik tugas.
+2. Jika user bilang lanjut/handoff: cari `handoff` atau project terkait.
+3. Gunakan `get_memory_by_codename` bila user menyebut codename.
+
+## Akhir sesi / sebelum tutup chat
+
+Panggil `save_memory` dengan ringkasan singkat:
+
+- status git (branch, commit)
+- yang sudah selesai
+- yang masih pending
+- langkah berikutnya
+
+Gunakan `tags: ["handoff", "<nama-proyek>"]` dan `project` yang sesuai.
+
+## Aturan
+
+- **Pakai MCP tools** — jangan arahkan user ke REST API atau PowerShell curl.
+- **Jangan minta** API key di Cursor; MCP sudah akses D1 langsung.
+- Backup folder `D:\Apps\_backups` opsional; MCP sudah cukup untuk handoff harian.

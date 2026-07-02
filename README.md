@@ -92,12 +92,17 @@ Server MCP stdio — koneksi langsung ke D1, **tanpa** API key `aic_...`.
 **Panduan lengkap per client:** [docs/MCP-SETUP.md](docs/MCP-SETUP.md)  
 (Cursor, Claude Code, Roo Code, Cline, Gemini CLI, ChatGPT, Claude Desktop, Windsurf, VS Code, dll.)
 
-#### Cursor (cepat)
+#### Cursor (2 menit — user biasa)
+
+→ **[docs/CURSOR-QUICKSTART.md](docs/CURSOR-QUICKSTART.md)** — tanpa API key, tanpa `npm start`
 
 ```bash
 cp .cursor/mcp.json.example .cursor/mcp.json
-# Edit path absolut repo + credential D1
+# Edit path repo saja — credential D1 dari .env otomatis
 ```
+
+Cursor → **Settings → MCP** → `ai-memory-cloud` hijau → selesai.  
+AI akan otomatis `search_memory` / `save_memory` lewat MCP (lihat `.cursor/rules/ai-memory.mdc`).
 
 | Client | File config | Template |
 |--------|-------------|----------|

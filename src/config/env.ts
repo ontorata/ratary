@@ -1,6 +1,10 @@
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { config as loadDotenv } from 'dotenv';
 
-loadDotenv({ quiet: true });
+/** Always load repo-root `.env` — MCP/Cursor may run with a different cwd. */
+const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+loadDotenv({ path: resolve(projectRoot, '.env'), quiet: true });
 
 import { z } from 'zod';
 
