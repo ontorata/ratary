@@ -5,6 +5,12 @@ import { runMigrations } from '../src/db/migrations.js';
 
 const BATCH_SIZE = 100;
 
+const SUMMARY_MAX = 300;
+
+function truncateSummary(summary: string): string {
+  return summary.length > SUMMARY_MAX ? summary.slice(0, SUMMARY_MAX) : summary;
+}
+
 async function backfillKnowledge(): Promise<void> {
   console.log('Connecting to Cloudflare D1...');
   const client = getD1Client();
@@ -34,14 +40,14 @@ async function backfillKnowledge(): Promise<void> {
           title: memory.title,
           project: memory.project,
           content: memory.content,
-          summary: memory.summary || undefined,
+          summary: memory.summary ? truncateSummary(memory.summary) : undefined,
           tags: memory.tags,
         });
 
         await repository.applyKnowledgeBackfill(memory.id, ownerId, {
           codename: enriched.codename,
           slug: enriched.slug,
-          summary: memory.summary || enriched.summary,
+          summary: truncateSummary(memory.summary || enriched.summary),
           keywords: enriched.keywords,
           category: enriched.category,
           memoryType: enriched.memoryType,
@@ -60,7 +66,8 @@ async function backfillKnowledge(): Promise<void> {
   console.log(`Backfill complete. Updated ${updated} memories.`);
 }
 
-backfillKnowledge().catch((error) => {
-  console.error('Backfill failed:', error);
+backfillKnowledge().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error('Backfill failed:', message);
   process.exit(1);
 });

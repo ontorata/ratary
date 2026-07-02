@@ -2,6 +2,12 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { HealthService } from '../services/health.service.js';
 import type { MemoryService } from '../services/memory.service.js';
 import type { MemoryScope } from '../types/memory.js';
+import {
+  toBackupResponse,
+  toMemoryListResponse,
+  toMemoryResponse,
+  toSearchResponse,
+} from '../utils/memory-response.js';
 import { createAuthController, AuthController } from './auth.controller.js';
 
 export { createAuthController, AuthController };
@@ -50,7 +56,7 @@ export class MemoryController {
       memoryScopeFromRequest(request),
       request.body as never,
     );
-    reply.status(201).send(memory);
+    reply.status(201).send(toMemoryResponse(memory));
   }
 
   async getById(
@@ -61,7 +67,7 @@ export class MemoryController {
       memoryScopeFromRequest(request),
       request.params.id,
     );
-    reply.send(memory);
+    reply.send(toMemoryResponse(memory));
   }
 
   async getByCodename(
@@ -72,7 +78,7 @@ export class MemoryController {
       memoryScopeFromRequest(request),
       request.params.codename,
     );
-    reply.send(memory);
+    reply.send(toMemoryResponse(memory));
   }
 
   async getBySlug(
@@ -83,7 +89,7 @@ export class MemoryController {
       memoryScopeFromRequest(request),
       request.params.slug,
     );
-    reply.send(memory);
+    reply.send(toMemoryResponse(memory));
   }
 
   async update(
@@ -95,7 +101,7 @@ export class MemoryController {
       request.params.id,
       request.body as never,
     );
-    reply.send(memory);
+    reply.send(toMemoryResponse(memory));
   }
 
   async delete(
@@ -111,7 +117,7 @@ export class MemoryController {
       memoryScopeFromRequest(request),
       request.query as never,
     );
-    reply.send(result);
+    reply.send(toMemoryListResponse(result));
   }
 
   async search(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -119,7 +125,7 @@ export class MemoryController {
       memoryScopeFromRequest(request),
       request.query as never,
     );
-    reply.send(result);
+    reply.send(toSearchResponse(result));
   }
 
   async listProjects(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -140,7 +146,7 @@ export class MemoryController {
       memoryScopeFromRequest(request),
       request.params.id,
     );
-    reply.send(memory);
+    reply.send(toMemoryResponse(memory));
   }
 
   async archive(
@@ -152,7 +158,7 @@ export class MemoryController {
       request.params.id,
       true,
     );
-    reply.send(memory);
+    reply.send(toMemoryResponse(memory));
   }
 }
 
@@ -165,7 +171,7 @@ export class BackupController {
 
   async export(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const backup = await this.memoryService.exportBackup(memoryScopeFromRequest(request));
-    reply.send(backup);
+    reply.send(toBackupResponse(backup));
   }
 
   async import(request: FastifyRequest, reply: FastifyReply): Promise<void> {

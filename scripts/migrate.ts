@@ -7,7 +7,8 @@ async function migrate(): Promise<void> {
   console.log('Migration completed successfully.');
 }
 
-migrate().catch((error) => {
-  console.error('Migration failed:', error);
+migrate().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error('Migration failed:', message);
   process.exit(1);
 });
