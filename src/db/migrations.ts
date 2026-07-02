@@ -133,6 +133,26 @@ CREATE INDEX IF NOT EXISTS idx_relations_target ON memory_relations(target_memor
 CREATE INDEX IF NOT EXISTS idx_relations_owner ON memory_relations(owner_id);
 `;
 
+const MEMORY_EMBEDDINGS_SQL = `
+CREATE TABLE IF NOT EXISTS memory_embeddings (
+  id TEXT PRIMARY KEY,
+  memory_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  model_id TEXT NOT NULL,
+  dimensions INTEGER NOT NULL,
+  vector_json TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_memory_embeddings_owner_memory
+  ON memory_embeddings (owner_id, memory_id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_memory_embeddings_memory_model
+  ON memory_embeddings (memory_id, model_id);
+`;
+
 function splitStatements(sql: string): string[] {
   return sql
     .split(';')
@@ -188,7 +208,10 @@ export async function migrateKnowledgeFoundationPhase1(client: D1Client): Promis
 }
 
 const MEMORY_INTELLIGENCE_COLUMNS: Array<{ name: string; ddl: string }> = [
-  { name: 'project_id', ddl: "ALTER TABLE memories ADD COLUMN project_id TEXT NOT NULL DEFAULT ''" },
+  {
+    name: 'project_id',
+    ddl: "ALTER TABLE memories ADD COLUMN project_id TEXT NOT NULL DEFAULT ''",
+  },
   { name: 'level', ddl: "ALTER TABLE memories ADD COLUMN level TEXT NOT NULL DEFAULT 'note'" },
   { name: 'last_accessed', ddl: 'ALTER TABLE memories ADD COLUMN last_accessed TEXT' },
   {
@@ -225,6 +248,13 @@ export async function migrateMemoryIntelligencePhase3(client: D1Client): Promise
   );
 }
 
+/** Phase 5 M5a/b — embedding vector storage table and indexes. */
+export async function migrateEmbeddingPhase1(client: D1Client): Promise<void> {
+  for (const sql of splitStatements(MEMORY_EMBEDDINGS_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promise<void> {
   await client.execute(
@@ -257,6 +287,7 @@ export async function runMigrations(client: D1Client = getD1Client()): Promise<v
   await migrateKnowledgeFoundationPhase3(client);
   await migrateMemoryIntelligencePhase1(client);
   await migrateMemoryIntelligencePhase3(client);
+  await migrateEmbeddingPhase1(client);
 }
 
 export interface D1Statement {

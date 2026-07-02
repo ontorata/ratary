@@ -21,6 +21,7 @@ export class MockD1Client implements D1Client {
   private clients: Map<string, ClientRow> = new Map();
   private settings: Map<string, string> = new Map();
   private auditLogs: unknown[] = [];
+  private memoryEmbeddingsTableReady = false;
   private inTransaction = false;
   async query<T = Record<string, unknown>>(sql: string, params: unknown[] = []): Promise<T[]> {
     const result = await this.execute(sql, params);
@@ -31,6 +32,9 @@ export class MockD1Client implements D1Client {
     const normalizedSql = sql.trim().toUpperCase();
 
     if (normalizedSql.startsWith('CREATE TABLE') || normalizedSql.startsWith('CREATE INDEX')) {
+      if (normalizedSql.includes('MEMORY_EMBEDDINGS')) {
+        this.memoryEmbeddingsTableReady = true;
+      }
       return { results: [], success: true, meta: { changes: 0 } };
     }
 
@@ -685,7 +689,10 @@ export class MockD1Client implements D1Client {
       if (typeof queryParams[queryParams.length - 1] === 'number') {
         queryParams.pop();
       }
-    } else if (upperSql.includes('LIMIT ?') && typeof queryParams[queryParams.length - 1] === 'number') {
+    } else if (
+      upperSql.includes('LIMIT ?') &&
+      typeof queryParams[queryParams.length - 1] === 'number'
+    ) {
       queryParams.pop();
     }
 
@@ -847,7 +854,9 @@ export class MockD1Client implements D1Client {
       )
     ) {
       handlers.push({
-        position: pos('(TITLE LIKE ? OR CONTENT LIKE ? OR SUMMARY LIKE ? OR KEYWORDS LIKE ? OR CODENAME LIKE ?)'),
+        position: pos(
+          '(TITLE LIKE ? OR CONTENT LIKE ? OR SUMMARY LIKE ? OR KEYWORDS LIKE ? OR CODENAME LIKE ?)',
+        ),
         run: () => {
           const keyword = (nextParam() as string).slice(1, -1).toLowerCase();
           nextParam();

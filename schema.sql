@@ -103,6 +103,25 @@ CREATE INDEX IF NOT EXISTS idx_relations_source ON memory_relations(source_memor
 CREATE INDEX IF NOT EXISTS idx_relations_target ON memory_relations(target_memory_id);
 CREATE INDEX IF NOT EXISTS idx_relations_owner ON memory_relations(owner_id);
 
+-- memory_embeddings: Phase 5 vector storage (MVP — vectors as JSON text)
+CREATE TABLE IF NOT EXISTS memory_embeddings (
+  id TEXT PRIMARY KEY,
+  memory_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  model_id TEXT NOT NULL,
+  dimensions INTEGER NOT NULL,
+  vector_json TEXT NOT NULL,
+  content_hash TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_memory_embeddings_owner_memory
+  ON memory_embeddings (owner_id, memory_id);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_memory_embeddings_memory_model
+  ON memory_embeddings (memory_id, model_id);
+
 -- audit_logs: append-only activity trail
 CREATE TABLE IF NOT EXISTS audit_logs (
   id TEXT PRIMARY KEY,
