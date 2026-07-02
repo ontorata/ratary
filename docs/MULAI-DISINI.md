@@ -66,6 +66,9 @@ Approve `ai-memory-cloud` saat diminta → chat: `cari memory tentang ai-brain`
 | Lanjut kerja [proyek] | Baca memory lama |
 | Simpan handoff | Simpan ringkasan ke D1 |
 | Cari catatan tentang X | Search memory |
+| Lanjut kerja [proyek] (Fase 4) | AI ambil konteks memory yang paling relevan |
+
+Panduan Fase 4 untuk pemula: **[FASE-4-PANDUAN.md](FASE-4-PANDUAN.md)**
 
 ---
 
