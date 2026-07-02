@@ -2,6 +2,8 @@ import type { IMemoryRepository } from '../repositories/memory.repository.interf
 import type { MemoryScope } from '../types/memory-scope.js';
 import type { MemoryLevel } from '../types/memory-level.js';
 import { Retriever } from './retriever.js';
+import { SqlRetrievalCandidateSource } from './sql-retrieval-candidate-source.js';
+import type { IRetrievalCandidateSource } from './retrieval-candidate-source.interface.js';
 import { Ranker, type ScoredMemory } from './ranker.js';
 import { ContextBuilder, type ContextBuildOptions } from './context-builder.js';
 import { PromptBuilder } from './prompt-builder.js';
@@ -33,8 +35,13 @@ export class ContextService {
   private readonly contextBuilder: ContextBuilder;
   private readonly promptBuilder: PromptBuilder;
 
-  constructor(private readonly repository: IMemoryRepository) {
-    this.retriever = new Retriever(repository);
+  constructor(
+    private readonly repository: IMemoryRepository,
+    candidateSource?: IRetrievalCandidateSource,
+  ) {
+    this.retriever = new Retriever(
+      candidateSource ?? new SqlRetrievalCandidateSource(repository),
+    );
     this.ranker = new Ranker();
     this.contextBuilder = new ContextBuilder();
     this.promptBuilder = new PromptBuilder();

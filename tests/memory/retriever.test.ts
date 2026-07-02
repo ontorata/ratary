@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Retriever } from '../../src/memory/retriever.js';
+import { SqlRetrievalCandidateSource } from '../../src/memory/sql-retrieval-candidate-source.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 
@@ -11,7 +12,7 @@ describe('Retriever', () => {
   beforeEach(() => {
     const mockDb = new MockD1Client();
     repository = new MemoryRepository(mockDb);
-    retriever = new Retriever(repository);
+    retriever = new Retriever(new SqlRetrievalCandidateSource(repository));
   });
 
   async function seed(

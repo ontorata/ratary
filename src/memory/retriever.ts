@@ -1,6 +1,7 @@
-import type { IMemoryRepository, RetrievalFilters } from '../repositories/memory.repository.interface.js';
+import type { RetrievalFilters } from '../repositories/memory.repository.interface.js';
 import type { MemoryScope } from '../types/memory-scope.js';
 import type { MemoryLevel } from '../types/memory-level.js';
+import type { IRetrievalCandidateSource } from './retrieval-candidate-source.interface.js';
 import { RETRIEVAL_CANDIDATE_CAP, RETRIEVAL_SQL_CAP } from '../search/ranking.config.js';
 
 export interface RetrievalRequest {
@@ -16,7 +17,7 @@ const DEFAULT_RETRIEVE_LIMIT = 20;
 const MAX_RETRIEVE_LIMIT = 50;
 
 export class Retriever {
-  constructor(private readonly repository: IMemoryRepository) {}
+  constructor(private readonly candidateSource: IRetrievalCandidateSource) {}
 
   async retrieve(request: RetrievalRequest): Promise<import('../types/memory.js').Memory[]> {
     const limit = Math.min(request.limit ?? DEFAULT_RETRIEVE_LIMIT, MAX_RETRIEVE_LIMIT);
@@ -36,6 +37,6 @@ export class Retriever {
       maxCandidates,
     };
 
-    return this.repository.findRetrievalCandidates(filters);
+    return this.candidateSource.findCandidates(filters);
   }
 }
