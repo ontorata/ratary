@@ -21,6 +21,14 @@ const envSchema = z
 
     // Identity layer — HMAC secret for hashing API keys (min 32 chars)
     AUTH_SECRET: z.string().min(32, 'AUTH_SECRET must be at least 32 characters').optional(),
+
+    // Embedding layer (Phase 5)
+    EMBEDDING_PROVIDER: z.enum(['noop', 'openai']).default('noop'),
+    EMBEDDING_MODEL: z.string().default('text-embedding-3-small'),
+    EMBEDDING_API_KEY: z.string().optional(),
+    EMBEDDING_BASE_URL: z.string().default('https://api.openai.com/v1'),
+    EMBEDDING_BATCH_SIZE: z.coerce.number().int().positive().default(32),
+    EMBEDDING_MAX_RETRIES: z.coerce.number().int().positive().default(3),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {
@@ -28,6 +36,14 @@ const envSchema = z
         code: 'custom',
         path: ['AUTH_SECRET'],
         message: 'AUTH_SECRET is required in production',
+      });
+    }
+
+    if (env.EMBEDDING_PROVIDER === 'openai' && !env.EMBEDDING_API_KEY) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['EMBEDDING_API_KEY'],
+        message: 'EMBEDDING_API_KEY is required when EMBEDDING_PROVIDER=openai',
       });
     }
   });

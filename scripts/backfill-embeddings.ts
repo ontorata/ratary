@@ -1,21 +1,25 @@
 import { getD1Client } from '../src/db/index.js';
 import { runMigrations } from '../src/db/migrations.js';
+import { getEnv } from '../src/config/env.js';
+import { createEmbeddingProvider } from '../src/embedding/create-embedding-provider.js';
 import { D1EmbeddingStore } from '../src/embedding/d1-embedding.store.js';
 import { EmbeddingJobRunner } from '../src/embedding/embedding-job.runner.js';
-import { NoopEmbeddingProvider } from '../src/embedding/noop-embedding.provider.js';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { parseEmbeddingBackfillArgs } from './lib/embedding-backfill.js';
 
 async function backfillEmbeddings(): Promise<void> {
   const cli = parseEmbeddingBackfillArgs(process.argv);
-  console.log(`Embedding backfill (${cli.dryRun ? 'dry-run' : 'execute'})...`);
+  const env = getEnv();
+  console.log(
+    `Embedding backfill (${cli.dryRun ? 'dry-run' : 'execute'}) via ${env.EMBEDDING_PROVIDER}...`,
+  );
 
   const client = getD1Client();
   await runMigrations(client);
 
   const repository = new MemoryRepository(client);
   const store = new D1EmbeddingStore(client);
-  const provider = new NoopEmbeddingProvider();
+  const provider = createEmbeddingProvider();
   const runner = new EmbeddingJobRunner(repository, repository, provider, store);
 
   const ownerRows = cli.ownerId
@@ -30,11 +34,13 @@ async function backfillEmbeddings(): Promise<void> {
     return;
   }
 
+  const batchSize = cli.batchSize ?? env.EMBEDDING_BATCH_SIZE;
+
   for (const { owner_id: ownerId } of ownerRows) {
     const report = await runner.run({
       ownerId,
       projectId: cli.projectId,
-      batchSize: cli.batchSize,
+      batchSize,
       dryRun: cli.dryRun,
       forceReembed: cli.forceReembed,
     });
