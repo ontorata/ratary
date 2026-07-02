@@ -13,8 +13,21 @@ interface ClientRow {
   active: number;
 }
 
+interface MemoryEmbeddingRow {
+  id: string;
+  memory_id: string;
+  owner_id: string;
+  model_id: string;
+  dimensions: number;
+  vector_json: string;
+  content_hash: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export class MockD1Client implements D1Client {
   private memories: Map<string, MemoryRow> = new Map();
+  private memoryEmbeddings: Map<string, MemoryEmbeddingRow> = new Map();
   private relations: Map<string, Record<string, unknown>> = new Map();
   private identities: Map<string, IdentityRow> = new Map();
   private identityByHash: Map<string, string> = new Map();
@@ -270,6 +283,22 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: 1 } };
     }
 
+    if (normalizedSql.startsWith('INSERT INTO MEMORY_EMBEDDINGS')) {
+      const row: MemoryEmbeddingRow = {
+        id: params[0] as string,
+        memory_id: params[1] as string,
+        owner_id: params[2] as string,
+        model_id: params[3] as string,
+        dimensions: params[4] as number,
+        vector_json: params[5] as string,
+        content_hash: params[6] as string,
+        created_at: params[7] as string,
+        updated_at: params[8] as string,
+      };
+      this.memoryEmbeddings.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
     if (normalizedSql.startsWith('INSERT INTO MEMORY_RELATIONS')) {
       const id = params[0] as string;
       this.relations.set(id, {
@@ -285,6 +314,25 @@ export class MockD1Client implements D1Client {
         metadata: params[9],
         created_at: params[10],
       });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('UPDATE MEMORY_EMBEDDINGS')) {
+      const dimensions = params[0] as number;
+      const vectorJson = params[1] as string;
+      const contentHash = params[2] as string;
+      const updatedAt = params[3] as string;
+      const id = params[4] as string;
+      const ownerId = params[5] as string;
+      const existing = this.memoryEmbeddings.get(id);
+      if (!existing || existing.owner_id !== ownerId) {
+        return { results: [], success: true, meta: { changes: 0 } };
+      }
+      existing.dimensions = dimensions;
+      existing.vector_json = vectorJson;
+      existing.content_hash = contentHash;
+      existing.updated_at = updatedAt;
+      this.memoryEmbeddings.set(id, existing);
       return { results: [], success: true, meta: { changes: 1 } };
     }
 
@@ -463,6 +511,21 @@ export class MockD1Client implements D1Client {
       const existed = row?.owner_id === ownerId;
       if (existed) this.memories.delete(id);
       return { results: [], success: true, meta: { changes: existed ? 1 : 0 } };
+    }
+
+    if (
+      normalizedSql.startsWith('DELETE FROM MEMORY_EMBEDDINGS WHERE MEMORY_ID = ? AND OWNER_ID = ?')
+    ) {
+      const memoryId = params[0] as string;
+      const ownerId = params[1] as string;
+      let deleted = 0;
+      for (const [id, row] of this.memoryEmbeddings.entries()) {
+        if (row.memory_id === memoryId && row.owner_id === ownerId) {
+          this.memoryEmbeddings.delete(id);
+          deleted++;
+        }
+      }
+      return { results: [], success: true, meta: { changes: deleted } };
     }
 
     if (normalizedSql.startsWith('DELETE FROM MEMORIES WHERE ID')) {
@@ -661,6 +724,29 @@ export class MockD1Client implements D1Client {
           .map((row) => ({ ...row, content: '' }));
         return { results: sorted, success: true };
       }
+    }
+
+    if (
+      normalizedSql.includes('FROM MEMORY_EMBEDDINGS') &&
+      normalizedSql.includes('MEMORY_ID = ?') &&
+      normalizedSql.includes('MODEL_ID = ?')
+    ) {
+      const memoryId = params[0] as string;
+      const ownerId = params[1] as string;
+      const modelId = params[2] as string;
+      const row = [...this.memoryEmbeddings.values()].find(
+        (e) => e.memory_id === memoryId && e.owner_id === ownerId && e.model_id === modelId,
+      );
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM MEMORY_EMBEDDINGS') &&
+      normalizedSql.includes('OWNER_ID = ?')
+    ) {
+      const ownerId = params[0] as string;
+      const rows = [...this.memoryEmbeddings.values()].filter((e) => e.owner_id === ownerId);
+      return { results: rows, success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM MEMORIES')) {
