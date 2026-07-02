@@ -5,7 +5,7 @@ export type {
   UpdateMemoryData,
   ListFilters,
   SearchFilters,
-} from './memory.repository.js';
+} from '../types/memory-persistence.js';
 export type {
   IMemoryRepository,
   IMemoryReader,

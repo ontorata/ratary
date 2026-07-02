@@ -17,76 +17,13 @@ import { slugify } from '../knowledge/slug.generator.js';
 import type { MemoryType } from '../types/knowledge.js';
 import type { MemoryLevel } from '../types/memory-level.js';
 import { DEFAULT_MEMORY_LEVEL } from '../types/memory-level.js';
+import type {
+  InsertMemoryData,
+  ListFilters,
+  SearchFilters,
+  UpdateMemoryData,
+} from '../types/memory-persistence.js';
 import type { IMemoryRepository } from './memory.repository.interface.js';
-
-export interface InsertMemoryData {
-  title: string;
-  project: string;
-  content: string;
-  summary: string;
-  tags: string[];
-  keywords: string[];
-  category: string;
-  memoryType: string;
-  importance: number;
-  language: string;
-  notes: string;
-  codename: string;
-  slug: string;
-  favorite: boolean;
-  archived?: boolean;
-  ownerId?: string;
-  id?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  projectId?: string;
-  level?: MemoryLevel;
-  semanticHash?: string | null;
-  accessCount?: number;
-  lastAccessed?: string | null;
-}
-
-export interface UpdateMemoryData {
-  title?: string;
-  project?: string;
-  content?: string;
-  summary?: string;
-  tags?: string[];
-  keywords?: string[];
-  category?: string;
-  memoryType?: string;
-  importance?: number;
-  language?: string;
-  notes?: string;
-  slug?: string;
-  favorite?: boolean;
-  archived?: boolean;
-  projectId?: string;
-  level?: MemoryLevel;
-}
-
-export interface ListFilters {
-  ownerId: string;
-  project?: string;
-  favorite?: boolean;
-  archived?: boolean;
-  limit: number;
-  offset: number;
-}
-
-export interface SearchFilters {
-  ownerId: string;
-  query?: string;
-  tag?: string;
-  project?: string;
-  category?: string;
-  memoryType?: MemoryType;
-  importanceMin?: number;
-  favorite?: boolean;
-  archived?: boolean;
-  limit: number;
-  offset: number;
-}
 
 const CODENAME_MAX_RETRIES = 3;
 
@@ -207,7 +144,8 @@ export class MemoryRepository implements IMemoryRepository {
       ...existing,
       title: data.title ?? existing.title,
       project: data.project ?? existing.project,
-      projectId: data.projectId ?? (data.project !== undefined ? slugify(data.project) : existing.projectId),
+      projectId:
+        data.projectId ?? (data.project !== undefined ? slugify(data.project) : existing.projectId),
       content: data.content ?? existing.content,
       summary: data.summary ?? existing.summary,
       tags: data.tags ?? existing.tags,
@@ -504,7 +442,9 @@ export class MemoryRepository implements IMemoryRepository {
     await this.db.execute('DELETE FROM memories WHERE owner_id = ?', [ownerId]);
   }
 
-  async findRetrievalCandidates(filters: import('./memory.repository.interface.js').RetrievalFilters): Promise<Memory[]> {
+  async findRetrievalCandidates(
+    filters: import('./memory.repository.interface.js').RetrievalFilters,
+  ): Promise<Memory[]> {
     const conditions: string[] = ['owner_id = ?'];
     const params: unknown[] = [filters.ownerId];
 

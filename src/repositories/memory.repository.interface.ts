@@ -2,10 +2,10 @@ import type { Memory } from '../types/memory.js';
 import type { MemoryLevel } from '../types/memory-level.js';
 import type {
   InsertMemoryData,
-  UpdateMemoryData,
   ListFilters,
   SearchFilters,
-} from './memory.repository.js';
+  UpdateMemoryData,
+} from '../types/memory-persistence.js';
 
 export interface RetrievalFilters {
   ownerId: string;

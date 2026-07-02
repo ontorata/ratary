@@ -1,4 +1,4 @@
-import type { SearchFilters } from '../repositories/memory.repository.js';
+import type { SearchFilters } from '../types/memory-persistence.js';
 import type { IMemoryReader } from '../repositories/memory.repository.interface.js';
 import type { Memory } from '../types/memory.js';
 import type { SearchQuery } from '../types/memory.js';
