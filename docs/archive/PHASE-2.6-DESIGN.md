@@ -536,4 +536,4 @@ Legacy mount (`/memory`, dll.) **tidak** mendapat endpoint knowledge baru.
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [PHASE-2.5.md](PHASE-2.5.md)
-- [MCP-SETUP.md](MCP-SETUP.md)
+- [../PANDUAN.md](../PANDUAN.md)

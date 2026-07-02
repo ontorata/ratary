@@ -178,8 +178,8 @@ When implementing features (any phase):
 | Document | Purpose |
 |----------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Current system diagram, deployment, phase status |
-| [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) | Phase 4 design (historical + DoD) |
-| Phase N design docs | Phase-specific scope — must **not** override this constitution |
+| [PANDUAN.md](PANDUAN.md) | User guide — setup, usage, MCP |
+| [archive/](archive/) | Phase design docs (historical) |
 
 **Hierarchy:** `AI_BRAIN_CONSTITUTION.md` → phase design doc → task prompt.
 

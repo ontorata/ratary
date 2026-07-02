@@ -3,7 +3,7 @@
 Second brain untuk AI coding assistant — simpan, cari, dan akses seluruh knowledge coding Anda dari berbagai perangkat.
 
 Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemini CLI**, **ChatGPT (REST API)**, dan AI lain yang mendukung MCP stdio.  
-→ Panduan lengkap: **[docs/MCP-SETUP.md](docs/MCP-SETUP.md)**
+→ Panduan lengkap: **[docs/PANDUAN.md](docs/PANDUAN.md)**
 
 ## Tech Stack
 
@@ -43,15 +43,14 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 |------|--------|---------|
 | Phase 1 — Foundation | ✅ | README Quick Start |
 | Phase 2 — Identity & Auth | ✅ | README Auth endpoints |
-| **Phase 2.5 — Stabilization** | ✅ | **[docs/PHASE-2.5.md](docs/PHASE-2.5.md)** |
-| **Phase 2.6 — Knowledge Foundation** | ✅ | **[docs/PHASE-2.6-DESIGN.md](docs/PHASE-2.6-DESIGN.md)** |
-| **Phase 3 — JWT/OAuth & Permissions** | ✅ | **[docs/PHASE-3.md](docs/PHASE-3.md)** |
-| **Phase 4 — Memory Intelligence** | ✅ | **[docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](docs/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)** · panduan pemakaian: **[docs/FASE-4-PANDUAN.md](docs/FASE-4-PANDUAN.md)** |
+| **Phase 2.5 — Stabilization** | ✅ | [archive](docs/archive/) |
+| **Phase 2.6 — Knowledge Foundation** | ✅ | [archive](docs/archive/) |
+| **Phase 3 — JWT/OAuth & Permissions** | ✅ | [archive](docs/archive/) |
+| **Phase 4 — Memory Intelligence** | ✅ | [archive](docs/archive/) · panduan: **[docs/PANDUAN.md](docs/PANDUAN.md)** |
 
 ## Quick Start
 
-> **Paling mudah:** [docs/MULAI-DISINI.md](docs/MULAI-DISINI.md) — 3 langkah, Cursor + Claude Code.  
-> **Panduan pengguna lengkap:** [docs/PANDUAN-PENGGUNA.md](docs/PANDUAN-PENGGUNA.md)
+> **Mulai di sini:** [docs/PANDUAN.md](docs/PANDUAN.md) — setup 3 langkah, cara pakai, MCP.
 
 > **Pindah laptop?** Ikuti panduan lengkap di [Setup di Laptop Baru](#setup-di-laptop-baru).
 
@@ -98,12 +97,12 @@ Dokumentasi Swagger di `http://localhost:3000/docs`
 
 Server MCP stdio — koneksi langsung ke D1, **tanpa** API key `aic_...`.
 
-**Panduan lengkap per client:** [docs/MCP-SETUP.md](docs/MCP-SETUP.md)  
+**Panduan MCP & multi-client:** [docs/PANDUAN.md](docs/PANDUAN.md) §6  
 (Cursor, Claude Code, Roo Code, Cline, Gemini CLI, ChatGPT, Claude Desktop, Windsurf, VS Code, dll.)
 
 #### Cursor & Claude Code (1 perintah)
 
-→ **[docs/MULAI-DISINI.md](docs/MULAI-DISINI.md)**
+→ **[docs/PANDUAN.md](docs/PANDUAN.md)**
 
 ```bash
 npm run setup
@@ -140,9 +139,9 @@ Contoh konfigurasi (sesuaikan path):
 }
 ```
 
-**Windows:** jika MCP gagal connect, pakai `"command": "cmd"` + `"/c", "npx", ...` — detail di [MCP-SETUP.md](docs/MCP-SETUP.md#windows--jika-npx-gagal--connection-closed).
+**Windows:** jika MCP gagal connect, pakai `"command": "cmd"` — detail di [PANDUAN.md](docs/PANDUAN.md).
 
-**ChatGPT:** MCP stdio tidak didukung langsung — gunakan **REST API** + API key. Lihat [ChatGPT di MCP-SETUP.md](docs/MCP-SETUP.md#chatgpt-developer-mode).
+**ChatGPT:** MCP stdio tidak didukung — gunakan **REST API** + API key. Lihat [PANDUAN.md](docs/PANDUAN.md).
 
 Setelah simpan config:
 1. Reload / restart client AI
@@ -334,7 +333,7 @@ curl -X POST http://localhost:3001/api/v1/auth/identities \
 
 ### Langkah 6 — Setup MCP
 
-Ikuti **[docs/MCP-SETUP.md](docs/MCP-SETUP.md)** untuk client Anda (Cursor, Claude Code, Roo, Cline, Gemini CLI, dll.).
+Ikuti **[docs/PANDUAN.md](docs/PANDUAN.md)** untuk client Anda (Cursor, Claude Code, Roo, Cline, Gemini CLI, dll.).
 
 Ringkas Cursor:
 
@@ -453,7 +452,7 @@ Laptop Baru
 
 ## MCP Tools
 
-Panduan setup per client: **[docs/MCP-SETUP.md](docs/MCP-SETUP.md)**
+Panduan setup per client: **[docs/PANDUAN.md](docs/PANDUAN.md)**
 
 | Tool | Deskripsi |
 |------|-----------|
@@ -609,7 +608,7 @@ npm run db:migrate   # Run D1 migrations
 
 **Health:** `GET /health` memeriksa koneksi D1 — mengembalikan `503` jika database tidak dapat dijangkau.
 
-Lihat **[docs/PHASE-2.5.md](docs/PHASE-2.5.md)** untuk checklist stabilisasi lengkap.
+Lihat **[docs/archive/PHASE-2.5.md](docs/archive/PHASE-2.5.md)** untuk checklist stabilisasi lengkap.
 
 ## Environment Variables
 

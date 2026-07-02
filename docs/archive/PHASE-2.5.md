@@ -176,5 +176,5 @@ Sama dengan yang dijalankan GitHub Actions (`.github/workflows/ci.yml`).
 ## Referensi
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)
-- [MCP-SETUP.md](MCP-SETUP.md)
+- [../PANDUAN.md](../PANDUAN.md)
 - README → Setup di Laptop Baru

@@ -125,17 +125,15 @@ src/
 tests/            Vitest (unit + API E2E) — 100+ tests
 scripts/          migrate, backfill, consolidate, setup-mcp, import/sync backups
 api/              Vercel serverless entry
-docs/             Panduan (MULAI-DISINI, MCP, Phase 2.5/2.6/3/4, arsitektur)
+docs/             PANDUAN.md, ARCHITECTURE.md, archive/ (desain fase)
 ```
 
 **Roadmap:**
 
 | Phase | Status | Dokumen |
 |-------|--------|---------|
-| 2.5 Stabilization | ✅ | [PHASE-2.5.md](PHASE-2.5.md) |
-| 2.6 Knowledge Foundation | ✅ | [PHASE-2.6-DESIGN.md](PHASE-2.6-DESIGN.md) |
-| 3 Authorization | ✅ | [PHASE-3.md](PHASE-3.md) |
-| **4 Memory Intelligence** | ✅ | [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) |
+| 2.5–5 | ✅ / 📋 | [archive/](archive/) — desain historis |
+| Pemakaian | — | [PANDUAN.md](PANDUAN.md) |
 
 ## Layer rules
 
