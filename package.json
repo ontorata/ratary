@@ -28,7 +28,8 @@
     "sync:backups": "tsx scripts/sync-backups.ts --once",
     "sync:backups:watch": "tsx scripts/sync-backups.ts --watch",
     "sync:backups:poll": "tsx scripts/sync-backups.ts --poll",
-    "sync:file": "tsx scripts/sync-backups.ts --file"
+    "sync:file": "tsx scripts/sync-backups.ts --file",
+    "setup": "tsx scripts/setup-mcp.ts"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",

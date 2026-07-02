@@ -100,12 +100,13 @@ Atau gunakan path absolut ke `node.exe` (cari dengan `where node`):
 | **Project** | `.cursor/mcp.json` |
 | **Global** | `%USERPROFILE%\.cursor\mcp.json` (Windows) |
 | **Template** | `.cursor/mcp.json.example` |
-| **Panduan singkat** | **[docs/CURSOR-QUICKSTART.md](CURSOR-QUICKSTART.md)** |
+| **Panduan singkat** | **[docs/MULAI-DISINI.md](MULAI-DISINI.md)** |
 
 ```bash
-cp .cursor/mcp.json.example .cursor/mcp.json
-# Edit path repo + cwd — credential D1 dibaca dari .env (jangan duplikasi di mcp.json)
+npm run setup
 ```
+
+Path + `cwd` otomatis. Credential D1 dari `.env` — jangan duplikasi di `mcp.json`.
 
 **Langkah:**
 1. Isi `.env` di root repo (D1 credentials)
@@ -122,38 +123,24 @@ cp .cursor/mcp.json.example .cursor/mcp.json
 
 | Scope | File |
 |-------|------|
-| Project (disarankan, bisa di-commit) | `.mcp.json` di root repo |
-| Local (hanya Anda, project ini) | `~/.claude.json` |
-| User (semua project) | `~/.claude.json` → key `mcpServers` |
+| Project (disarankan) | `.mcp.json` di root repo |
+| Template | `mcp.json.example` |
+| **Setup otomatis** | `npm run setup` |
 
 ```bash
-cp mcp.json.example .mcp.json
-# Edit path + credential D1
-```
-
-**Via CLI** (alternatif):
-
-```bash
-claude mcp add-json ai-memory-cloud --scope project '{
-  "command": "npx",
-  "args": ["-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"],
-  "env": {
-    "CLOUDFLARE_ACCOUNT_ID": "xxx",
-    "D1_DATABASE_ID": "xxx",
-    "D1_API_TOKEN": "xxx",
-    "NODE_ENV": "production",
-    "LOG_LEVEL": "info"
-  }
-}'
+cd D:/Apps/ai-brain
+npm run setup
+claude
 ```
 
 **Langkah:**
-1. Buka Claude Code di folder `ai-brain`
-2. **Restart session** setelah edit config (dibaca saat startup)
-3. Approve server jika diminta (project `.mcp.json`)
-4. Uji: minta Claude cari memory — `search_memory`
+1. `npm run setup` — tulis `.mcp.json` (credential dari `.env`, tanpa duplikasi)
+2. `claude` di folder repo
+3. **Approve** server `ai-memory-cloud` saat diminta
+4. Uji: *"cari memory tentang [proyek]"*
 
-> Jangan taruh `mcpServers` di `.claude/settings.json` — itu file settings, bukan MCP.
+> **Jangan** pakai `claude mcp add-json` di PowerShell — sering gagal karena quoting JSON.  
+> **Jangan** taruh `mcpServers` di `.claude/settings.json` — itu file settings, bukan MCP.
 
 ---
 

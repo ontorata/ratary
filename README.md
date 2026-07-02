@@ -47,6 +47,8 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 
 ## Quick Start
 
+> **Paling mudah:** [docs/MULAI-DISINI.md](docs/MULAI-DISINI.md) — 3 langkah, Cursor + Claude Code.
+
 > **Pindah laptop?** Ikuti panduan lengkap di [Setup di Laptop Baru](#setup-di-laptop-baru).
 
 ### 1. Setup Cloudflare D1
@@ -69,12 +71,15 @@ cp .env.example .env
 # Isi credentials Cloudflare D1
 ```
 
-### 3. Install & Migrate
+### 3. Install, Migrate & Setup MCP
 
 ```bash
 npm install
 npm run db:migrate
+npm run setup
 ```
+
+`npm run setup` membuat config MCP untuk **Cursor** dan **Claude Code** otomatis (path + `.env`).
 
 ### 4. Run Development Server
 
@@ -92,17 +97,16 @@ Server MCP stdio — koneksi langsung ke D1, **tanpa** API key `aic_...`.
 **Panduan lengkap per client:** [docs/MCP-SETUP.md](docs/MCP-SETUP.md)  
 (Cursor, Claude Code, Roo Code, Cline, Gemini CLI, ChatGPT, Claude Desktop, Windsurf, VS Code, dll.)
 
-#### Cursor (2 menit — user biasa)
+#### Cursor & Claude Code (1 perintah)
 
-→ **[docs/CURSOR-QUICKSTART.md](docs/CURSOR-QUICKSTART.md)** — tanpa API key, tanpa `npm start`
+→ **[docs/MULAI-DISINI.md](docs/MULAI-DISINI.md)**
 
 ```bash
-cp .cursor/mcp.json.example .cursor/mcp.json
-# Edit path repo saja — credential D1 dari .env otomatis
+npm run setup
 ```
 
-Cursor → **Settings → MCP** → `ai-memory-cloud` hijau → selesai.  
-AI akan otomatis `search_memory` / `save_memory` lewat MCP (lihat `.cursor/rules/ai-memory.mdc`).
+Lalu Cursor: **Settings → MCP** hijau → Reload.  
+Claude Code: `claude` di folder repo → approve server.
 
 | Client | File config | Template |
 |--------|-------------|----------|
