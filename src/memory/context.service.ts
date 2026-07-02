@@ -39,9 +39,7 @@ export class ContextService {
     private readonly repository: IMemoryRepository,
     candidateSource?: IRetrievalCandidateSource,
   ) {
-    this.retriever = new Retriever(
-      candidateSource ?? new SqlRetrievalCandidateSource(repository),
-    );
+    this.retriever = new Retriever(candidateSource ?? new SqlRetrievalCandidateSource(repository));
     this.ranker = new Ranker();
     this.contextBuilder = new ContextBuilder();
     this.promptBuilder = new PromptBuilder();

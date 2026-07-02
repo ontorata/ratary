@@ -239,8 +239,8 @@ Before merging Phase 5+ code, verify:
 
 ## References
 
-- [AI_BRAIN_CONSTITUTION.md](../AI_BRAIN_CONSTITUTION.md)
-- [ADR-POLICY.md](../ADR-POLICY.md)
+- [11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
+- [POLICY.md](POLICY.md)
 - [ADR-001-multi-source-retrieval.md](001-multi-source-retrieval.md)
 - [ADR-003-embedding-storage-mvp.md](003-embedding-storage-mvp.md)
 - [ARCHITECTURE.md](../ARCHITECTURE.md)

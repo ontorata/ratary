@@ -1,4 +1,7 @@
-import type { IMemoryReader, RetrievalFilters } from '../repositories/memory.repository.interface.js';
+import type {
+  IMemoryReader,
+  RetrievalFilters,
+} from '../repositories/memory.repository.interface.js';
 import type { Memory } from '../types/memory.js';
 import type { IRetrievalCandidateSource } from './retrieval-candidate-source.interface.js';
 

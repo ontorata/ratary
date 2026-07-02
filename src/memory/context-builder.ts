@@ -27,7 +27,9 @@ export class ContextBuilder {
       const codename = memory.codename ?? memory.id.slice(0, 8);
       const header = `### [${codename}] ${memory.title} (importance: ${memory.importance})`;
       const summaryLine = memory.summary ? `> ${memory.summary}` : '';
-      const body = summaryOnly ? '' : this.truncateContent(memory.content, maxChars - used - header.length - 50);
+      const body = summaryOnly
+        ? ''
+        : this.truncateContent(memory.content, maxChars - used - header.length - 50);
 
       const block = [header, summaryLine, body].filter(Boolean).join('\n');
       if (used + block.length + 2 > maxChars) {

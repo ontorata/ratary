@@ -177,7 +177,8 @@ export class MemoryConsolidator {
     const byTitle = new Map<string, Memory[]>();
 
     for (const memory of memories) {
-      const hash = memory.semanticHash ?? computeSemanticHash(memory.title, memory.summary, memory.content);
+      const hash =
+        memory.semanticHash ?? computeSemanticHash(memory.title, memory.summary, memory.content);
       const hashGroup = byHash.get(hash) ?? [];
       hashGroup.push(memory);
       byHash.set(hash, hashGroup);

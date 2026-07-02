@@ -1,7 +1,11 @@
 import type { Memory } from '../types/memory.js';
 import type { MemoryLevel } from '../types/memory-level.js';
 import { rankMemories, type SearchQueryContext } from '../search/ranking.engine.js';
-import { RETRIEVAL_DEFAULT_LIMIT, RETRIEVAL_MAX_RANKED, RETRIEVAL_WEIGHTS } from '../search/ranking.config.js';
+import {
+  RETRIEVAL_DEFAULT_LIMIT,
+  RETRIEVAL_MAX_RANKED,
+  RETRIEVAL_WEIGHTS,
+} from '../search/ranking.config.js';
 
 export interface ScoredMemory extends Memory {
   relevanceScore: number;
@@ -35,7 +39,10 @@ function accessBoost(accessCount: number): number {
 export function applyRetrievalBoosts(memory: ScoredMemory): ScoredMemory {
   const levelBoost = LEVEL_BOOST[memory.level] ?? 0;
   const boosted =
-    memory.relevanceScore + levelBoost + recencyBoost(memory.updatedAt) + accessBoost(memory.accessCount);
+    memory.relevanceScore +
+    levelBoost +
+    recencyBoost(memory.updatedAt) +
+    accessBoost(memory.accessCount);
 
   return { ...memory, relevanceScore: boosted };
 }

@@ -66,5 +66,5 @@
 
 ## References
 
-- [AI_BRAIN_CONSTITUTION.md](../AI_BRAIN_CONSTITUTION.md)
-- [ADR-POLICY.md](../ADR-POLICY.md)
+- [.ai/ai-rules/11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
+- [POLICY.md](POLICY.md)

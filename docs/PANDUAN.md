@@ -181,10 +181,10 @@ Hapus memory lewat REST/MCP otomatis membersihkan vektor terkait.
 
 | Dokumen | Isi |
 |---------|-----|
-| [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) | Aturan immutable (agent) |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Struktur, layer, extension points |
-| [ENGINEERING.md](ENGINEERING.md) | Proses Principal Engineer & format analisis |
+| [.ai/ai-rules/11-AI-RULES.md](.ai/ai-rules/11-AI-RULES.md) | Aturan agent + registry modul |
+| [.ai/architecture/04-ARCHITECTURE.md](.ai/architecture/04-ARCHITECTURE.md) | Struktur, layer, extension points |
+| [.ai/workflow/05-WORKFLOW.md](.ai/workflow/05-WORKFLOW.md) | Proses Principal Engineer & format analisis |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Laporan selesai Phase 5 Embedding |
-| [TASK_PROMPT.template.md](TASK_PROMPT.template.md) | Template task untuk fase berikutnya |
-| [ADR-POLICY.md](ADR-POLICY.md) | Kebijakan ADR — wajib untuk perubahan struktural |
+| [.ai/workflow/12-TASK-TEMPLATE.md](.ai/workflow/12-TASK-TEMPLATE.md) | Template task untuk fase berikutnya |
+| [adr/POLICY.md](adr/POLICY.md) | Kebijakan ADR — wajib untuk perubahan struktural |
 | [archive/](archive/) | Desain historis per fase |

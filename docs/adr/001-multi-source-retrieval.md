@@ -84,6 +84,6 @@ Without a merge strategy, Phase 6 forces a rewrite of `ContextService` or `Retri
 
 ## References
 
-- [AI_BRAIN_CONSTITUTION.md](../AI_BRAIN_CONSTITUTION.md)
-- [ADR-POLICY.md](../ADR-POLICY.md)
+- [11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
+- [POLICY.md](POLICY.md)
 - [archive/PHASE-5-EMBEDDING-DESIGN.md](../archive/PHASE-5-EMBEDDING-DESIGN.md)

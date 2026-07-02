@@ -10,11 +10,9 @@ export function normalizeForHash(text: string): string {
 }
 
 export function computeSemanticHash(title: string, summary: string, content: string): string {
-  const payload = [
-    normalizeForHash(title),
-    normalizeForHash(summary),
-    content.slice(0, 500),
-  ].join('|');
+  const payload = [normalizeForHash(title), normalizeForHash(summary), content.slice(0, 500)].join(
+    '|',
+  );
 
   return createHash('sha256').update(payload).digest('hex');
 }

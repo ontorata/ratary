@@ -1,6 +1,6 @@
 # Architecture Decision Records (ADR)
 
-Index of structural decisions. **Policy:** [ADR-POLICY.md](../ADR-POLICY.md)
+Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 
 | ADR | Title | Status | Unblocks |
 |-----|-------|--------|----------|

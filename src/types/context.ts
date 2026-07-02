@@ -20,8 +20,10 @@ export const buildContextBodySchema = z.object({
 
 export type BuildContextBody = z.infer<typeof buildContextBodySchema>;
 
-export const getContextBodySchema = buildContextBodySchema.omit({ task: true, systemRole: true }).extend({
-  query: z.string().min(1).max(500).optional(),
-});
+export const getContextBodySchema = buildContextBodySchema
+  .omit({ task: true, systemRole: true })
+  .extend({
+    query: z.string().min(1).max(500).optional(),
+  });
 
 export type GetContextBody = z.infer<typeof getContextBodySchema>;

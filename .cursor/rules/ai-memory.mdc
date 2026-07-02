@@ -5,7 +5,7 @@ alwaysApply: true
 
 # AI Memory Cloud
 
-**Arsitektur:** Baca [docs/AI_BRAIN_CONSTITUTION.md](../docs/AI_BRAIN_CONSTITUTION.md) (immutable), [docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md), [docs/ENGINEERING.md](../docs/ENGINEERING.md), dan [docs/TASK_PROMPT.md](../docs/TASK_PROMPT.md) sebelum mengubah kode. Ikuti format output di ENGINEERING.md.
+**Arsitektur (AI authority):** Baca [.ai/constitution/INDEX.md](../.ai/constitution/INDEX.md) pertama. `.ai/` = satu-satunya otoritas implementasi. Manusia: [docs/README.md](../docs/README.md), [docs/PANDUAN.md](../docs/PANDUAN.md). Ikuti [.ai/ai-rules/11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md) — balas user dalam Indonesian; kode, komentar, commit, ADR dalam English; jangan terjemahkan source code yang sudah ada.
 
 Server MCP **ai-memory-cloud** terhubung langsung ke Cloudflare D1. Di Cursor, **tidak perlu** API key `aic_...`, `npm start`, atau curl.
 
