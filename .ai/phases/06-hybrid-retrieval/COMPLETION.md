@@ -36,6 +36,15 @@ Implemented hybrid SQL + vector retrieval using `CompositeRetrievalCandidateSour
 |-------------|---------|-------------|
 | `HYBRID_RETRIEVAL` | `false` | Enable hybrid SQL+vector retrieval |
 
+### Fusion Weights (Optional — Implemented)
+
+| Config | Default | Description |
+|--------|---------|-------------|
+| `RRF_CONFIG.SOURCE_WEIGHTS.sql` | `1.0` | Weight for SQL source in weighted RRF |
+| `RRF_CONFIG.SOURCE_WEIGHTS.vector` | `1.0` | Weight for vector source in weighted RRF |
+
+Weighted RRF formula: `score = Σᵢ wᵢ / (k + rankᵢ(d))`
+
 ---
 
 ## Implementation Details
@@ -44,13 +53,15 @@ Implemented hybrid SQL + vector retrieval using `CompositeRetrievalCandidateSour
 
 ```
 For each document d in union of all sources:
-  rrf_score = Σᵢ 1 / (k + rankᵢ(d))
+  rrf_score = Σᵢ wᵢ / (k + rankᵢ(d))
   Where rankᵢ(d) = position of d in source i (1-based; 0 = not found)
 
 Parameters:
   k = 60 (standard constant)
   SOURCE_CAPS.sql = 50 (50% of cap)
   SOURCE_CAPS.vector = 50 (50% of cap)
+  SOURCE_WEIGHTS.sql = 1.0 (equal weight)
+  SOURCE_WEIGHTS.vector = 1.0 (equal weight)
 ```
 
 ### Architecture
@@ -83,7 +94,7 @@ ContextService
 
 - ✅ Lint: passing
 - ✅ Typecheck: passing  
-- ✅ Tests: **189/189 passing** (46 test files)
+- ✅ Tests: **192/192 passing** (46 test files)
 - ✅ No TODO/FIXME
 - ✅ One concern per commit
 
@@ -97,6 +108,7 @@ ContextService
 | d1b4c4a VectorRetrievalCandidateSource | 189/189 | ✅ |
 | 90669bf wiring changes | 189/189 | ✅ |
 | dec0a09 documentation | 189/189 | ✅ |
+| fusion-weights weighted RRF | 192/192 | ✅ |
 
 ---
 

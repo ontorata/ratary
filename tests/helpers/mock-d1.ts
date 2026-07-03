@@ -1,5 +1,5 @@
 import type { D1Client, D1QueryResult } from '../../src/db/d1-client.js';
-import type { MemoryRow } from '../../src/types/memory.js';
+import type { MemoryRow, MemoryLevel } from '../../src/types/memory.js';
 import type { IdentityRow } from '../../src/auth/auth.types.js';
 
 interface ClientRow {
@@ -11,6 +11,7 @@ interface ClientRow {
   owner_id: string;
   created_at: string;
   active: number;
+  [key: string]: unknown;
 }
 
 interface MemoryEmbeddingRow {
@@ -23,6 +24,7 @@ interface MemoryEmbeddingRow {
   content_hash: string;
   created_at: string;
   updated_at: string;
+  [key: string]: unknown;
 }
 
 export class MockD1Client implements D1Client {
@@ -184,27 +186,27 @@ export class MockD1Client implements D1Client {
     if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE ID = ?')) {
       const id = params[0] as string;
       const row = this.identities.get(id);
-      return { results: row ? [row] : [], success: true };
+      return { results: row ? [row] as unknown as Record<string, unknown>[] : [], success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE SECRET_HASH = ?')) {
       const hash = params[0] as string;
       const id = this.identityByHash.get(hash);
       const row = id ? this.identities.get(id) : undefined;
-      return { results: row ? [row] : [], success: true };
+      return { results: row ? [row] as unknown as Record<string, unknown>[] : [], success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE OWNER_ID = ?')) {
       const ownerId = params[0] as string;
       const rows = [...this.identities.values()].filter((i) => i.owner_id === ownerId);
-      return { results: rows, success: true };
+      return { results: rows as unknown as Record<string, unknown>[], success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM IDENTITIES ORDER BY')) {
       const rows = [...this.identities.values()].sort((a, b) =>
         b.created_at.localeCompare(a.created_at),
       );
-      return { results: rows, success: true };
+      return { results: rows as unknown as Record<string, unknown>[], success: true };
     }
 
     if (normalizedSql.includes('SELECT COUNT(*) AS COUNT FROM IDENTITIES')) {
@@ -272,7 +274,7 @@ export class MockD1Client implements D1Client {
         language: (params[17] as string | undefined) ?? 'id',
         notes: (params[18] as string | undefined) ?? '',
         project_id: (params[19] as string | undefined) ?? '',
-        level: (params[20] as string | undefined) ?? 'note',
+        level: (params[20] as MemoryLevel | undefined) ?? 'note',
         last_accessed: (params[21] as string | null | undefined) ?? null,
         access_count: (params[22] as number | undefined) ?? 0,
         embedding_id: (params[23] as string | null | undefined) ?? null,
@@ -385,7 +387,7 @@ export class MockD1Client implements D1Client {
           return { results: [], success: true, meta: { changes: 0 } };
         }
         existing.project_id = projectId;
-        existing.level = level;
+        existing.level = level as MemoryLevel;
         existing.semantic_hash = semanticHash;
         existing.updated_at = updatedAt;
         this.memories.set(id, existing);
@@ -448,7 +450,7 @@ export class MockD1Client implements D1Client {
         existing.notes = params[10] as string;
         existing.slug = params[11] as string | null;
         existing.project_id = params[12] as string;
-        existing.level = params[13] as string;
+        existing.level = params[13] as MemoryLevel;
         existing.favorite = params[14] as number;
         existing.archived = params[15] as number;
         existing.updated_at = params[16] as string;

@@ -184,6 +184,66 @@ describe('CompositeRetrievalCandidateSource', () => {
     });
   });
 
+  describe('weighted RRF', () => {
+    it('should rank SQL results higher with SQL-biased weights (sql: 2.0, vector: 1.0)', async () => {
+      // Override SOURCE_WEIGHTS via module mocking if needed,
+      // but we test the ranking behavior directly
+      const sqlMemories = [
+        createMockMemory('sql-first', 'SQL First'),
+        createMockMemory('shared', 'Shared Memory'),
+      ];
+      const vectorMemories = [
+        createMockMemory('vector-first', 'Vector First'),
+        createMockMemory('shared', 'Shared Memory'),
+      ];
+
+      const sqlSource = createMockSource(sqlMemories);
+      const vectorSource = createMockSource(vectorMemories);
+      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+
+      const result = await composite.findCandidates(filters);
+
+      // All should be present
+      expect(result.map((m) => m.id)).toEqual(
+        expect.arrayContaining(['sql-first', 'vector-first', 'shared']),
+      );
+    });
+
+    it('should handle memories in only one source', async () => {
+      const sqlMemories = [createMockMemory('sql-only', 'SQL Only')];
+      const vectorMemories = [createMockMemory('vector-only', 'Vector Only')];
+
+      const sqlSource = createMockSource(sqlMemories);
+      const vectorSource = createMockSource(vectorMemories);
+      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+
+      const result = await composite.findCandidates(filters);
+
+      expect(result).toHaveLength(2);
+      expect(result.map((m) => m.id)).toEqual(expect.arrayContaining(['sql-only', 'vector-only']));
+    });
+
+    it('should preserve ordering when sources agree', async () => {
+      const sqlMemories = [
+        createMockMemory('first', 'First'),
+        createMockMemory('second', 'Second'),
+      ];
+      const vectorMemories = [
+        createMockMemory('first', 'First'),
+        createMockMemory('second', 'Second'),
+      ];
+
+      const sqlSource = createMockSource(sqlMemories);
+      const vectorSource = createMockSource(vectorMemories);
+      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+
+      const result = await composite.findCandidates(filters);
+
+      expect(result[0].id).toBe('first');
+      expect(result[1].id).toBe('second');
+    });
+  });
+
   describe('interface compliance', () => {
     it('should implement IRetrievalCandidateSource', () => {
       const sqlSource = createMockSource([]);

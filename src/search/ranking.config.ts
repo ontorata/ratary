@@ -42,4 +42,9 @@ export const RRF_CONFIG = {
     sql: 50,
     vector: 50,
   },
+  /** Per-source weights for weighted RRF - higher = more influence */
+  SOURCE_WEIGHTS: {
+    sql: 1.0,
+    vector: 1.0,
+  },
 } as const;

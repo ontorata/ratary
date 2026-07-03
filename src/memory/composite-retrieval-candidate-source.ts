@@ -65,10 +65,18 @@ export class CompositeRetrievalCandidateSource implements IRetrievalCandidateSou
   /**
    * Apply Reciprocal Rank Fusion to merge ranked candidate lists.
    * Documents not present in a source get rank 0 and contribute 0 to score.
+   * Uses weighted RRF: score = Σᵢ wᵢ / (k + rankᵢ(d))
    */
   private applyRRF(sourceResults: Memory[][]): Memory[] {
     // Build rank maps for each source
     const rankMaps = sourceResults.map((results) => this.buildRankMap(results));
+
+    // Get source weights (default 1.0 for any additional sources)
+    const weights = [
+      RRF_CONFIG.SOURCE_WEIGHTS.sql,
+      RRF_CONFIG.SOURCE_WEIGHTS.vector,
+      ...Array(Math.max(0, sourceResults.length - 2)).fill(1.0),
+    ];
 
     // Build union of all unique memoryIds
     const memoryIds = new Set<string>();
@@ -78,14 +86,15 @@ export class CompositeRetrievalCandidateSource implements IRetrievalCandidateSou
       }
     }
 
-    // Compute RRF score for each memory
+    // Compute weighted RRF score for each memory
     const scores = new Map<string, number>();
     for (const memoryId of memoryIds) {
       let score = 0;
-      for (const rankMap of rankMaps) {
-        const rank = rankMap.get(memoryId) ?? 0;
+      for (let i = 0; i < rankMaps.length; i++) {
+        const rank = rankMaps[i].get(memoryId) ?? 0;
         if (rank > 0) {
-          score += 1 / (RRF_CONFIG.K + rank);
+          const weight = weights[i] ?? 1.0;
+          score += weight / (RRF_CONFIG.K + rank);
         }
       }
       scores.set(memoryId, score);
