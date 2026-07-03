@@ -1,6 +1,6 @@
 ﻿# Phase 8 — Knowledge Graph
 
-**Status:** 🔲 Next (ADR-006 Proposed)  
+**Status:** 🔲 Active (ADR-006 Approved)  
 **Roadmap:** Next  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
@@ -35,7 +35,7 @@ No external design archive.
 
 | Document | Responsibility | Status |
 |----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Approved design intent | Draft — pending ADR-006 approval |
+| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Aligned with ADR-006 |
 | [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | Reserved |
 | [MIGRATION.md](MIGRATION.md) | Schema and data migrations | Reserved |
 | [TESTING.md](TESTING.md) | Verification strategy | Reserved |

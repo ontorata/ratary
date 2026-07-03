@@ -1,8 +1,9 @@
 # ADR-006: Graph Provider Port (Knowledge Graph Retrieval)
 
-**Status:** Proposed  
+**Status:** Approved  
 **Date:** 2026-07-03  
 **Amended:** 2026-07-03 (review clarifications — Option B)  
+**Approved:** 2026-07-03  
 **Deciders:** Project owner  
 
 ---
@@ -265,4 +266,4 @@ Seeds are intentionally excluded from graph leg output to avoid double-counting 
 
 ---
 
-*Awaiting owner approval to change status from Proposed → Approved.*
+*Approved — implementation may proceed per Migration section.*

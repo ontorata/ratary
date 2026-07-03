@@ -81,7 +81,7 @@ Phases 1–7 are **complete with code evidence (Phases 1–6) and documentation 
 | Phase 6 composite retrieval pattern | ✅ Ready |
 | Phase 7 protocol boundary | ✅ Complete |
 | Phase 2.6 `memory_relations` data | ✅ Ready |
-| `IGraphProvider` ADR | 🔲 [ADR-006 Proposed](../../../docs/adr/006-igraph-provider.md) — owner approval required |
+| `IGraphProvider` ADR | ✅ [ADR-006 Approved](../../../docs/adr/006-igraph-provider.md) (2026-07-03) |
 
 ---
 
