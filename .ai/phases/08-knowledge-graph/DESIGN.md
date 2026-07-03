@@ -149,18 +149,22 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           traverseNeighbors()                                 │
 │                                                                              │
-│   D1 CTE Query:                                                              │
+│   D1 CTE Query (bidirectional BFS — see ADR-006):                            │
+│   Canonical columns: source_memory_id, target_memory_id, relation, owner_id │
 │   WITH RECURSIVE graph AS (                                                 │
-│     SELECT target_id, relation_type, 1 as depth                            │
-│     FROM memory_relations                                                    │
-│     WHERE source_id = ? AND relation_type = ?                              │
+│     -- outgoing: source → target                                            │
+│     SELECT target_memory_id, relation, 1 AS depth                           │
+│     FROM memory_relations                                                   │
+│     WHERE source_memory_id = ? AND owner_id = ?                           │
 │     UNION ALL                                                               │
-│     SELECT mr.target_id, mr.relation_type, g.depth + 1                     │
-│     FROM memory_relations mr                                                │
-│     JOIN graph g ON mr.source_id = g.target_id                              │
-│     WHERE g.depth < ?                                                       │
+│     -- incoming: target → source                                            │
+│     SELECT source_memory_id, relation, 1 AS depth                           │
+│     FROM memory_relations                                                   │
+│     WHERE target_memory_id = ? AND owner_id = ?                             │
+│     UNION ALL                                                               │
+│     SELECT ... (recursive hops, depth < GRAPH_MAX_DEPTH)                    │
 │   )                                                                          │
-│   SELECT DISTINCT target_id FROM graph                                      │
+│   SELECT DISTINCT memory_id FROM graph                                      │
 └─────────────────────────────────────────────────────────────────────────────┘
                                    │
                                    ▼
