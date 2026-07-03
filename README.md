@@ -42,19 +42,27 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 
 ## Roadmap
 
-| Fase | Status | Dokumen |
-|------|--------|---------|
-| Phase 1 — Foundation | ✅ | README Quick Start |
-| Phase 2 — Identity & Auth | ✅ | README Auth endpoints |
-| **Phase 2.5 — Stabilization** | ✅ | [archive](docs/archive/) |
-| **Phase 2.6 — Knowledge Foundation** | ✅ | [archive](docs/archive/) |
-| **Phase 3 — JWT/OAuth & Permissions** | ✅ | [archive](docs/archive/) |
-| **Phase 4 — Memory Intelligence** | ✅ | [archive](docs/archive/) · panduan: **[docs/PANDUAN.md](docs/PANDUAN.md)** |
-| **Phase 5 — Embedding** | ✅ | [.ai/core/architecture/10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md) · backfill: `npm run db:backfill-embeddings` |
-| **Phase 6 — Hybrid Retrieval** | ✅ | [.ai/phases/06-hybrid-retrieval/](.ai/phases/06-hybrid-retrieval/) |
-| **Phase 7 — Agent Runtime** | ✅ | [.ai/phases/07-agent-runtime/](.ai/phases/07-agent-runtime/) |
-| **Phase 8 — Knowledge Graph** | ✅ | [.ai/phases/08-knowledge-graph/](.ai/phases/08-knowledge-graph/) |
-| **Phase 9 — Multi-AI** | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · ADR-007 |
+| Referensi | Tautan |
+|-----------|--------|
+| Timeline & milestones | [.ai/phases/roadmap/09-ROADMAP.md](.ai/phases/roadmap/09-ROADMAP.md) |
+| Metrik, debt, perintah ops | [.ai/core/architecture/10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md) |
+| Panduan setup & MCP | [docs/PANDUAN.md](docs/PANDUAN.md) |
+
+| Fase | Status | Evidence |
+|------|--------|----------|
+| 1 — Foundation | ✅ | [.ai/phases/01-foundation/](.ai/phases/01-foundation/) |
+| 2.5 — Stabilization | ✅ | [.ai/phases/02.5-stabilization/](.ai/phases/02.5-stabilization/) |
+| 2.6 — Knowledge Foundation | ✅ | [.ai/phases/02.6-knowledge/](.ai/phases/02.6-knowledge/) |
+| 3 — Authorization | ✅ | [.ai/phases/03-authorization/](.ai/phases/03-authorization/) |
+| 4 — Memory Intelligence | ✅ | [.ai/phases/04-memory-intelligence/](.ai/phases/04-memory-intelligence/) |
+| 5 — Embedding | ✅ | [.ai/phases/05-embedding/](.ai/phases/05-embedding/) · [ADR-003](docs/adr/003-embedding-storage-mvp.md) |
+| 6 — Hybrid Retrieval | ✅ | [.ai/phases/06-hybrid-retrieval/](.ai/phases/06-hybrid-retrieval/) · [ADR-001](docs/adr/001-multi-source-retrieval.md) |
+| 7 — Agent Runtime | ✅ | [.ai/phases/07-agent-runtime/](.ai/phases/07-agent-runtime/) |
+| 8 — Knowledge Graph | ✅ | [.ai/phases/08-knowledge-graph/](.ai/phases/08-knowledge-graph/) · [ADR-006](docs/adr/006-igraph-provider.md) |
+| 9 — Multi-AI | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · [ADR-007](docs/adr/007-multi-ai-workspace-scope.md) |
+| 10 — Enterprise | 🔲 | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-002](docs/adr/002-workspace-identity-model.md) |
+
+*Desain historis (read-only): [docs/archive/](docs/archive/). Perintah backfill/migrate: lihat [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
 
 ## Quick Start
 

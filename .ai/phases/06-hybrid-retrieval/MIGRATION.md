@@ -1,7 +1,7 @@
 ﻿# Phase 6 — Hybrid Retrieval — MIGRATION
 
 **Document:** MIGRATION  
-**Phase status:** Ready  
+**Phase status:** Closed (N/A — no migrations)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -25,7 +25,11 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ## Migrations
 
-_None planned yet — update when schema changes identified._
+**N/A — no schema or data migration required for Phase 6.**
+
+Hybrid retrieval composes existing Phase 4 (`SqlRetrievalCandidateSource`) and Phase 5 (`IEmbeddingStore`, `IEmbeddingProvider`) infrastructure. No DDL, backfill, or rollback steps apply to this phase.
+
+Gate evidence: REVIEW.md — Migration **PASS** (N/A, no DDL).
 
 ---
 
