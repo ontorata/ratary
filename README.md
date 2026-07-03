@@ -8,7 +8,8 @@ Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemin
 ## Tech Stack
 
 - **Fastify** + **TypeScript** — REST API
-- **Cloudflare D1** — SQLite serverless database (single source of truth)
+- **Cloudflare D1** — SQLite serverless database (default metadata store)
+- **Platform adapters** — Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j (opt-in, Phase 10)
 - **MCP Server** — Model Context Protocol untuk integrasi AI
 - **Zod** — validasi input
 - **Pino** — structured logging
@@ -30,7 +31,9 @@ src/
   routes/         → HTTP routing (no business logic)
   controllers/    → Request/response handling
   services/       → Business logic (MemoryService)
-  repositories/   → D1 database access
+  repositories/   → Scoped data access (via ISqlDatabase)
+  infrastructure/ → Vendor adapters (Phase 10)
+  ports/          → Vendor-neutral contracts
   db/             → D1 client
   mcp/            → MCP server tools
   plugins/        → Fastify plugins
@@ -61,7 +64,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 8 — Knowledge Graph | ✅ | [.ai/phases/08-knowledge-graph/](.ai/phases/08-knowledge-graph/) · [ADR-006](docs/adr/006-igraph-provider.md) |
 | 9 — Multi-AI | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · [ADR-007](docs/adr/007-multi-ai-workspace-scope.md) |
 | 9.5 — Platform Architecture | ✅ | [.ai/phases/09.5-platform-architecture/](.ai/phases/09.5-platform-architecture/) · [ADR-008](docs/adr/008-platform-architecture.md) |
-| 10 — Enterprise | 🔲 | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-002](docs/adr/002-workspace-identity-model.md) |
+| 10 — Enterprise | ✅ | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-008–016](docs/adr/README.md) |
 
 *Desain historis (read-only): [docs/archive/](docs/archive/). Perintah backfill/migrate: lihat [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
 
@@ -69,7 +72,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 
 > **Mulai di sini:** [docs/PANDUAN.md](docs/PANDUAN.md) — setup 3 langkah, cara pakai, MCP.
 
-> **Pindah laptop?** Ikuti panduan lengkap di [Setup di Laptop Baru](#setup-di-laptop-baru).
+> **Migrasi lingkungan pengembangan?** Panduan lengkap: [Instalasi pada Lingkungan Pengembangan Baru](#instalasi-pada-lingkungan-pengembangan-baru).
 
 ### 1. Setup Cloudflare D1
 
@@ -173,34 +176,34 @@ npm run mcp
 
 ---
 
-## Setup di Laptop Baru
+## Instalasi pada Lingkungan Pengembangan Baru
 
-Panduan lengkap memindahkan **AI Brain** ke laptop baru.  
-Baca ini sebelum atau sesudah pindah perangkat.
+Panduan formal untuk memindahkan instalasi **AI Memory Cloud** ke perangkat atau lingkungan pengembangan baru.  
+Dokumen ini relevan apabila Anda berganti workstation, memulihkan environment setelah reinstall, atau menstandarkan setup tim.
 
-### Apa yang ikut pindah vs tetap di cloud
+### Apa yang perlu disalin vs tetap di cloud
 
-| Ikut Anda (backup manual) | Tetap di cloud (tidak hilang) |
-|---------------------------|-------------------------------|
-| File `.env` (credential) | Semua **memory** di D1 |
-| `AUTH_SECRET` (wajib sama!) | Tabel `identities`, `audit_logs` |
-| API key `aic_...` (simpan di password manager) | Deploy Vercel |
-| `.cursor/mcp.json` (path + env) | Repo GitHub |
+| Disalin secara manual (lokal) | Tetap di cloud (tidak hilang) |
+|-------------------------------|-------------------------------|
+| File `.env` (kredensial) | Seluruh **memory** di D1 |
+| `AUTH_SECRET` (wajib identik) | Tabel `identities`, `audit_logs` |
+| API key `aic_...` (password manager) | Deploy Vercel |
+| `.cursor/mcp.json` (path + env) | Repositori GitHub |
 | Folder `D:\Apps\_backups` (opsional) | |
 
-> **Penting:** `AUTH_SECRET` harus **sama** dengan laptop lama. Jika diganti, semua API key di database tidak bisa diverifikasi lagi.
+> **Penting:** Nilai `AUTH_SECRET` harus **identik** dengan lingkungan sumber. Perubahan nilai ini membuat API key yang sudah diterbitkan tidak dapat diverifikasi.
 
 ---
 
-### Sebelum tinggalkan laptop lama
+### Persiapan sebelum meninggalkan lingkungan sumber
 
-Salin ke password manager / USB terenkripsi:
+Arsipkan ke password manager atau media terenkripsi:
 
 ```
-□ Isi file .env lengkap (atau minimal 4 variabel di bawah)
-□ API key aic_... (dari saat bootstrap — tidak bisa dilihat ulang dari DB)
+□ Isi file .env lengkap (atau minimal empat variabel di bawah)
+□ API key aic_... (diterbitkan saat bootstrap — tidak dapat dibaca ulang dari DB)
 □ .cursor/mcp.json (jika sudah dikonfigurasi)
-□ Folder _backups (opsional, kalau mau offline copy chat)
+□ Folder _backups (opsional, salinan offline riwayat chat)
 ```
 
 **Variabel wajib di `.env`:**
@@ -209,32 +212,32 @@ Salin ke password manager / USB terenkripsi:
 CLOUDFLARE_ACCOUNT_ID=...
 D1_DATABASE_ID=...
 D1_API_TOKEN=...
-AUTH_SECRET=...          # min 32 karakter — HARUS sama dengan laptop lama
+AUTH_SECRET=...          # min 32 karakter — HARUS sama dengan lingkungan sumber
 PORT=3001
 BACKUP_ROOT=D:/Apps/_backups
 ```
 
-Generate `AUTH_SECRET` baru **hanya** jika database masih kosong dan belum bootstrap.
+Generate `AUTH_SECRET` baru **hanya** jika database masih kosong dan bootstrap belum pernah dijalankan.
 
 ---
 
-### Prasyarat software
+### Prasyarat perangkat lunak
 
-| Software | Versi | Cek |
-|----------|-------|-----|
+| Perangkat lunak | Versi | Verifikasi |
+|-----------------|-------|------------|
 | Node.js | **24.x** | `node -v` |
 | npm | 10+ | `npm -v` |
-| Git | terbaru | `git --version` |
-| Cursor | terbaru | — |
+| Git | stabil terbaru | `git --version` |
+| Cursor | stabil terbaru | — |
 
-Akun yang dibutuhkan:
-- [GitHub](https://github.com/lutfi04/ai-brain) — clone repo
-- [Cloudflare](https://dash.cloudflare.com) — D1 database
-- [Vercel](https://vercel.com) (opsional) — production API
+Akun yang diperlukan:
+- [GitHub](https://github.com/lutfi04/ai-brain) — clone repositori
+- [Cloudflare](https://dash.cloudflare.com) — database D1
+- [Vercel](https://vercel.com) (opsional) — API produksi
 
 ---
 
-### Langkah 1 — Clone & install
+### Langkah 1 — Clone repositori dan instalasi dependensi
 
 ```bash
 git clone https://github.com/lutfi04/ai-brain.git
@@ -244,13 +247,13 @@ npm install
 
 ---
 
-### Langkah 2 — Buat `.env`
+### Langkah 2 — Konfigurasi `.env`
 
 ```bash
 cp .env.example .env
 ```
 
-Isi dengan credential dari laptop lama:
+Isi dengan kredensial dari lingkungan sumber:
 
 ```env
 CLOUDFLARE_ACCOUNT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -267,35 +270,35 @@ BACKUP_ROOT=D:/Apps/_backups
 BACKUP_SYNC_DEBOUNCE_MS=3000
 ```
 
-**Cara dapat credential D1** (jika belum punya salinan):
+**Mendapatkan kredensial D1** (jika belum tersedia salinan):
 
 1. Cloudflare Dashboard → **Workers & Pages** → **D1**
-2. Pilih database Anda → copy **Database ID**
-3. Sidebar kanan → copy **Account ID** (hex 32 char, bukan email)
-4. **My Profile → API Tokens** → buat token **D1 Edit**
+2. Pilih database → salin **Database ID**
+3. Sidebar kanan → salin **Account ID** (hex 32 karakter, bukan alamat email)
+4. **My Profile → API Tokens** → buat token dengan izin **D1 Edit**
 
-**`AUTH_SECRET`:** salin dari laptop lama. Jika hilang dan sudah ada identities di DB, Anda harus reset database atau buat DB baru.
+**`AUTH_SECRET`:** salin dari lingkungan sumber. Jika hilang dan identities sudah ada di DB, diperlukan reset database atau pembuatan database baru.
 
 ---
 
-### Langkah 3 — Migrasi & verifikasi D1
+### Langkah 3 — Migrasi skema dan verifikasi D1
 
 ```bash
 npm run db:migrate
 npm run test:integration
 ```
 
-Harus muncul: `All integration tests PASSED against Cloudflare D1`
+Output yang diharapkan: `All integration tests PASSED against Cloudflare D1`
 
 ---
 
-### Langkah 4 — Jalankan server
+### Langkah 4 — Menjalankan server pengembangan
 
 ```bash
 npm run dev
 ```
 
-Cek:
+Verifikasi:
 
 ```bash
 curl http://localhost:3001/health
@@ -311,11 +314,11 @@ Swagger: `http://localhost:3001/docs`
 
 ---
 
-### Langkah 5 — Authentication (API key)
+### Langkah 5 — Autentikasi (API key)
 
-#### Skenario A — Sudah bootstrap di laptop lama (umum)
+#### Skenario A — Bootstrap sudah dilakukan di lingkungan sumber (umum)
 
-1. Pakai API key `aic_...` yang sudah disimpan
+1. Gunakan API key `aic_...` yang sudah diarsipkan
 2. Verifikasi:
 
 ```bash
@@ -325,9 +328,9 @@ curl -X POST http://localhost:3001/api/v1/auth/verify \
 
 Response: `{ "success": true, "data": { "authenticated": true, ... } }`
 
-3. **Jangan** jalankan `/auth/bootstrap` lagi (akan ditolak 403)
+3. **Jangan** menjalankan `/auth/bootstrap` kembali (akan ditolak dengan 403)
 
-#### Skenario B — Database baru / belum pernah bootstrap
+#### Skenario B — Database baru / bootstrap belum pernah dilakukan
 
 ```bash
 curl -X POST http://localhost:3001/api/v1/auth/bootstrap \
@@ -335,58 +338,58 @@ curl -X POST http://localhost:3001/api/v1/auth/bootstrap \
   -d "{\"name\":\"cursor\",\"client\":{\"name\":\"cursor\",\"type\":\"mcp\"}}"
 ```
 
-Simpan `data.apiKey` — **hanya muncul sekali**.
+Simpan `data.apiKey` — **hanya ditampilkan sekali**.
 
-#### Buat API key tambahan (setelah punya key aktif)
+#### Menerbitkan API key tambahan (setelah memiliki key aktif)
 
 ```bash
 curl -X POST http://localhost:3001/api/v1/auth/identities \
   -H "Authorization: Bearer aic_YOUR_KEY" \
   -H "Content-Type: application/json" \
-  -d "{\"name\":\"laptop-baru\",\"type\":\"api_key\"}"
+  -d "{\"name\":\"dev-workstation\",\"type\":\"api_key\"}"
 ```
 
 ---
 
-### Langkah 6 — Setup MCP
+### Langkah 6 — Konfigurasi MCP
 
-Ikuti **[docs/PANDUAN.md](docs/PANDUAN.md)** untuk client Anda (Cursor, Claude Code, Roo, Cline, Gemini CLI, dll.).
+Ikuti **[docs/PANDUAN.md](docs/PANDUAN.md)** untuk klien yang digunakan (Cursor, Claude Code, Roo, Cline, Gemini CLI, dan lainnya).
 
-Ringkas Cursor:
+Ringkasan Cursor:
 
 ```bash
 cp .cursor/mcp.json.example .cursor/mcp.json
 ```
 
-Edit path absolut + credential D1 → **Settings → MCP** → `ai-memory-cloud` hijau → uji `search_memory`.
+Sesuaikan path absolut dan kredensial D1 → **Settings → MCP** → status `ai-memory-cloud` aktif → uji `search_memory`.
 
 ---
 
-### Langkah 7 — Folder backup chat (opsional)
+### Langkah 7 — Folder cadangan chat (opsional)
 
-Salin dari laptop lama:
+Salin dari lingkungan sumber:
 
 ```
 D:\Apps\_backups\
 ```
 
-Update `BACKUP_ROOT` di `.env`.
+Perbarui `BACKUP_ROOT` di `.env`.
 
 ```bash
 # Import sekali
 npm run import:backups
 
-# Auto-sync (terminal terpisah)
+# Sinkronisasi otomatis (terminal terpisah)
 npm run sync:backups:watch
 ```
 
 ---
 
-### Langkah 8 — Production (Vercel)
+### Langkah 8 — Produksi (Vercel)
 
 URL: `https://ai-brain-beryl.vercel.app`
 
-**Env vars di Vercel Dashboard** (harus sama dengan lokal):
+**Variabel lingkungan di Vercel Dashboard** (harus konsisten dengan lokal):
 
 | Variable | Wajib |
 |----------|-------|
@@ -403,18 +406,18 @@ curl https://ai-brain-beryl.vercel.app/api/v1/memory?limit=3 \
 
 ---
 
-### Checklist pindah laptop
+### Checklist migrasi lingkungan
 
 ```
-□ Clone repo + npm install
+□ Clone repositori + npm install
 □ Salin .env (D1 + AUTH_SECRET)
 □ npm run db:migrate
 □ npm run test:integration → lulus
 □ npm run dev → /health OK
 □ API key aic_... tersimpan & /auth/verify OK
-□ .cursor/mcp.json + MCP hijau di Cursor
+□ .cursor/mcp.json + MCP aktif di Cursor
 □ (Opsional) Salin _backups + sync:backups:watch
-□ (Opsional) Vercel env vars lengkap
+□ (Opsional) Variabel Vercel lengkap
 ```
 
 ---
@@ -423,34 +426,34 @@ curl https://ai-brain-beryl.vercel.app/api/v1/memory?limit=3 \
 
 | Masalah | Solusi |
 |---------|--------|
-| `Environment validation failed` | Isi `CLOUDFLARE_*`, `D1_*`, `AUTH_SECRET` |
-| `AUTH_SECRET is required` | Tambah ke `.env` (min 32 char) |
-| API key selalu 401 | `AUTH_SECRET` beda dengan saat key dibuat |
-| `D1 API error (401)` | Token Cloudflare expired — buat baru |
-| `CLOUDFLARE_ACCOUNT_ID` salah | Harus hex ID, bukan email |
-| Port bentrok | `PORT=3001` di `.env` |
-| Memory `total: 0` | `D1_DATABASE_ID` salah (DB berbeda) |
-| Bootstrap 403 | Normal — sudah pernah bootstrap |
-| MCP tidak hijau | Cek path absolut `tsx` di mcp.json |
-| `npm start` gagal | `npm run build:local` dulu, atau pakai `npm run dev` |
+| `Environment validation failed` | Lengkapi `CLOUDFLARE_*`, `D1_*`, `AUTH_SECRET` |
+| `AUTH_SECRET is required` | Tambahkan ke `.env` (min 32 karakter) |
+| API key selalu 401 | `AUTH_SECRET` tidak cocok dengan saat key diterbitkan |
+| `D1 API error (401)` | Token Cloudflare kedaluwarsa — buat token baru |
+| `CLOUDFLARE_ACCOUNT_ID` salah | Harus ID hex, bukan email |
+| Port bentrok | Set `PORT=3001` di `.env` |
+| Memory `total: 0` | `D1_DATABASE_ID` menunjuk ke database yang salah |
+| Bootstrap 403 | Normal — bootstrap sudah pernah dijalankan |
+| MCP tidak aktif | Periksa path absolut `tsx` di mcp.json |
+| `npm start` gagal | Jalankan `npm run build:local` terlebih dahulu, atau gunakan `npm run dev` |
 
 ---
 
-### Perintah cepat
+### Perintah operasional
 
 ```bash
 npm run dev                    # Server lokal
-npm run test                   # 27 unit + E2E tests
-npm run test:integration       # Test D1 live
+npm run test                   # Unit + E2E (397 tests)
+npm run test:integration       # Verifikasi D1 live
 npm run mcp                    # MCP standalone
 npm run import:backups         # Import backup markdown
-npm run sync:backups:watch     # Auto-sync _backups → D1
+npm run sync:backups:watch     # Sinkronisasi _backups → D1
 ```
 
-### Diagram alur singkat
+### Diagram alur migrasi
 
 ```
-Laptop Baru
+Lingkungan Pengembangan Baru
     │
     ├─ git clone + npm install
     ├─ .env (D1 + AUTH_SECRET + PORT)
@@ -613,7 +616,7 @@ curl -X POST "https://your-app.vercel.app/backup/import?replace=true" \
 
 ### Sync folder chat backup → memory
 
-Lihat [Langkah 6 — Folder backup chat](#langkah-6--folder-backup-chat-opsional) di panduan setup laptop baru.
+Lihat [Langkah 7 — Folder cadangan chat](#langkah-7--folder-cadangan-chat-opsional) di panduan instalasi lingkungan pengembangan.
 
 | Perintah | Fungsi |
 |----------|--------|
@@ -628,7 +631,7 @@ Lihat [Langkah 6 — Folder backup chat](#langkah-6--folder-backup-chat-opsional
 npm run dev          # Start dev server (disarankan, graceful shutdown)
 npm run build:local  # Compile TypeScript → dist/
 npm start            # Jalankan dist/ (butuh build:local dulu)
-npm run test         # Run tests (unit + API E2E)
+npm run test         # Run tests (397 unit + E2E)
 npm run lint         # ESLint
 npm run format       # Prettier
 npm run format:check # CI format gate
@@ -658,6 +661,27 @@ Lihat **[docs/archive/PHASE-2.5.md](docs/archive/PHASE-2.5.md)** untuk checklist
 | `BACKUP_ROOT` | No | Path folder backup chat (default: `D:/Apps/_backups`) |
 | `BACKUP_SYNC_DEBOUNCE_MS` | No | Delay sebelum sync file (default: 3000) |
 | `BACKUP_SYNC_POLL_MS` | No | Interval polling sync (default: 30000) |
+
+### Infrastruktur platform (Fase 10 — opt-in)
+
+Default: D1 metadata, inline storage, noop cache/events/analytics. Provider eksternal diaktifkan per variabel lingkungan. Rincian: [docs/PANDUAN.md](docs/PANDUAN.md) §8, [docs/adr/README.md](docs/adr/README.md).
+
+| Variable | Default | Deskripsi |
+|----------|---------|-----------|
+| `SQL_PROVIDER` | `d1` | `d1` \| `postgres` |
+| `DATABASE_URL` | — | PostgreSQL (wajib jika `SQL_PROVIDER=postgres`) |
+| `VECTOR_PROVIDER` | `d1` | `d1` \| `pgvector` |
+| `PGVECTOR_DATABASE_URL` | — | Postgres khusus vektor (opsional) |
+| `OBJECT_STORAGE_PROVIDER` | `inline` | `inline` \| `r2` \| `s3` |
+| `SEARCH_PROVIDER` | `sql` | `sql` \| `meilisearch` |
+| `GRAPH_PROVIDER` | `d1` | `d1` \| `neo4j` |
+| `CACHE_PROVIDER` | `none` | `none` \| `memory` \| `redis` |
+| `EVENT_BUS_PROVIDER` | `none` | `none` \| `noop` \| `redis` |
+| `ANALYTICS_PROVIDER` | `none` | `none` \| `duckdb` |
+| `ENTERPRISE_RBAC` | `false` | RBAC workspace (Fase 10) |
+| `OTEL_ENABLED` | `false` | OpenTelemetry HTTP tracing |
+
+Backfill provider eksternal (dry-run default): `db:backfill-pgvector`, `db:backfill-meilisearch`, `db:backfill-neo4j` — lihat [PANDUAN.md](docs/PANDUAN.md).
 
 ## License
 

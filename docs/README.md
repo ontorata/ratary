@@ -16,8 +16,9 @@
 | Document | Purpose |
 |----------|---------|
 | [../README.md](../README.md) | Product overview, quick start, tech stack |
-| [PANDUAN.md](PANDUAN.md) | Setup, usage, MCP (Indonesian) |
+| [PANDUAN.md](PANDUAN.md) | Setup, usage, MCP, platform infrastructure (Indonesian) |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | High-level system explanation (human-readable) |
+| [../README.md#instalasi-pada-lingkungan-pengembangan-baru](../README.md#instalasi-pada-lingkungan-pengembangan-baru) | Formal migration / new dev environment guide |
 
 ---
 

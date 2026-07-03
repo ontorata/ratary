@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 9.5 complete — platform ports (2026-07-03)
+**Last updated:** Phase 10 infrastructure adapters complete (2026-07-03)
 
 ---
 
@@ -20,12 +20,13 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 310 |
+| Tests passing | 397 |
 | MCP tools | 19 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
-| Storage | Cloudflare D1 (HTTP API) |
+| Storage (default) | Cloudflare D1 (HTTP API) |
 | Local dev | `npm run dev` → `dev-server.ts` |
+| Platform adapters | Opt-in via env — see [ADR-008–016](../../../docs/adr/README.md) |
 
 ---
 
@@ -33,10 +34,9 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | Phase 10 Enterprise — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| Next phase | **10 — Enterprise** |
+| Active task | Post–Phase 10 gate / next roadmap item — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| Last completed | Phase 10 — [.ai/phases/10-enterprise/](../phases/10-enterprise/README.md) |
 | Blocker | None |
-| Last completed | Phase 9.5 — [.ai/phases/09.5-platform-architecture/](../phases/09.5-platform-architecture/README.md) |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
 
@@ -50,9 +50,14 @@ Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases
 | `npm run db:backfill-memory-intelligence` | Phase 4 intelligence backfill |
 | `npm run db:backfill-embeddings` | Embedding backfill (dry-run default) |
 | `npm run db:backfill-workspaces` | Phase 9 default workspace backfill |
+| `npm run db:backfill-organizations` | Phase 10 organization backfill |
+| `npm run db:backfill-pgvector` | D1 embeddings → pgvector (dry-run default) |
+| `npm run db:backfill-meilisearch` | Memories → Meilisearch index |
+| `npm run db:backfill-neo4j` | Relations → Neo4j graph |
 | `npm run consolidate:memories` | Memory consolidation (dry-run default) |
 
-User onboarding: [PANDUAN.md](../../docs/PANDUAN.md).
+User onboarding: [PANDUAN.md](../../../docs/PANDUAN.md).  
+New dev environment: [README.md § Instalasi](../../../README.md#instalasi-pada-lingkungan-pengembangan-baru).
 
 ---
 
@@ -69,7 +74,7 @@ User onboarding: [PANDUAN.md](../../docs/PANDUAN.md).
 | ~~O-04-2~~ | ~~Retrieval projection content exclusion — verify all paths~~ | ✅ **Resolved** — regression test in `tests/repositories/memory.repository.test.ts` (2026-07-03) |
 | — | `SELECT *` in non-retrieval repository queries | **Investigated (2026-07-03)** — postponed; retrieval paths use `RETRIEVAL_MEMORY_SELECT`; revisit with Postgres adapter |
 | — | N× `recordAccess` on context build | Batch update (perf) — low-medium effort |
-| — | D1 vector search in-process | Vectorize/pgvector when scale exceeds MVP ceiling |
+| ~~—~~ | ~~D1 vector search in-process~~ | ✅ **Mitigated** — pgvector adapter (ADR-011); opt-in `VECTOR_PROVIDER=pgvector` |
 
 Aggregate audit: [.ai/phases/audits/latest.md](../../phases/audits/latest.md).
 
@@ -88,4 +93,4 @@ Do **not** duplicate structural architecture from [04-ARCHITECTURE.md](../04-ARC
 
 ---
 
-*Operational snapshot only. Historical full architecture doc: [archive/ARCHITECTURE.md](../../docs/archive/ARCHITECTURE.md).*
+*Operational snapshot only. Historical full architecture doc: [archive/ARCHITECTURE.md](../../../docs/archive/ARCHITECTURE.md).*

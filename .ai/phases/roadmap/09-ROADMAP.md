@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 9.5 active · Next: Phase 10 Enterprise
+**Last updated:** Phase 10 infrastructure complete (2026-07-03)
 
 ---
 
@@ -36,20 +36,20 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 | Status | Phases |
 |--------|--------|
-| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9 |
-| **In progress** | — |
+| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9, 9.5, 10 (infra) |
+| **In progress** | 10 — gate review |
 | **Completed (sub)** | 9.5 — Platform Architecture |
-| **Next** | 10 — Enterprise |
-| **Future** | 10 |
+| **Next** | Post–Phase 10 roadmap |
+| **Future** | — |
 
 **Capability stack:**
 
 ```
 Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Multi-AI → Enterprise
-  ✅        ✅           ✅       ✅        🔲         ✅            🔲          🔲
+  ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅ (infra)
 ```
 
-**Metrics (current):** 196 tests · 14 MCP tools · REST on Vercel · D1 storage
+**Metrics (current):** 397 tests · 19 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
 
 ---
 
@@ -484,33 +484,35 @@ Storage-agnostic **port registry** (`src/ports/`). Prepare enterprise infrastruc
 
 # Phase 10 — Enterprise
 
-**Status:** 🔲 Future
+**Status:** 🟡 Implemented — formal gate pending
 
 ## Scope
 
-Organization tenant, workspace membership RBAC, enterprise audit, compliance hooks, Postgres/metadata scale path.
+Organization tenant, workspace membership RBAC, platform infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry), and external provider backfill scripts.
 
 ## Milestones
 
-- [ ] `organizations` schema
-- [ ] Workspace membership + RBAC port
-- [ ] JWT claims for org/workspace
+- [x] `organizations` schema
+- [x] Workspace membership + RBAC port
+- [x] JWT claims for org/workspace
+- [x] Postgres adapter (ADR-009)
+- [x] Platform adapters T0–T8 + events (ADR-005, 011–016)
+- [x] Backfill scripts (pgvector, Meilisearch, Neo4j)
 - [ ] Audit expansion (memory access optional ADR)
-- [ ] Postgres adapter or D1 enterprise path ADR
-- [ ] `IContentStore` if large content (ADR-005)
+- [ ] Formal phase gate (REVIEW, RETROSPECTIVE)
 
 ## Success criteria
 
-- [ ] Multi-tenant org isolation
-- [ ] Role-based memory access within workspace
+- [x] Multi-tenant org isolation (E2E)
+- [x] Role-based memory access within workspace (`ENTERPRISE_RBAC` opt-in)
 - [ ] Audit trail for compliance queries
-- [ ] Scale path documented and tested
+- [x] Scale path documented and tested (397 tests at default env)
 
 ## Dependencies
 
-- Phase 9 multi-AI scope model
-- ADR-002 Phase 10 migration
-- ADR-005 if blob offload required
+- Phase 9 multi-AI scope model ✅
+- ADR-002 Phase 10 migration ✅
+- ADR-005 content object store ✅
 
 ## Risks
 

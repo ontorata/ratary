@@ -215,6 +215,51 @@ API eksplorasi graph (tanpa flag di atas): MCP `get_graph_capabilities`, `traver
 
 ---
 
+## 8. Infrastruktur platform (Fase 10)
+
+Adapter eksternal diaktifkan melalui variabel lingkungan di composition root. **Default tidak berubah** (D1, inline storage, tanpa cache/events/analytics eksternal).
+
+| Variable | Default | Provider |
+|----------|---------|----------|
+| `SQL_PROVIDER` | `d1` | PostgreSQL metadata |
+| `VECTOR_PROVIDER` | `d1` | pgvector |
+| `OBJECT_STORAGE_PROVIDER` | `inline` | R2 / S3 |
+| `SEARCH_PROVIDER` | `sql` | Meilisearch |
+| `GRAPH_PROVIDER` | `d1` | Neo4j |
+| `CACHE_PROVIDER` | `none` | Redis |
+| `EVENT_BUS_PROVIDER` | `none` | Redis Streams |
+| `ANALYTICS_PROVIDER` | `none` | DuckDB (dev) |
+| `ENTERPRISE_RBAC` | `false` | RBAC workspace |
+| `OTEL_ENABLED` | `false` | OpenTelemetry |
+
+Rincian ADR: [docs/adr/README.md](adr/README.md). Contoh variabel: [.env.example](../.env.example).
+
+### Backfill provider eksternal
+
+Semua perintah di bawah **dry-run** secara default; tambahkan `:execute` atau flag `--execute` untuk menulis data.
+
+| Perintah | Prasyarat env |
+|----------|---------------|
+| `npm run db:backfill-pgvector` | `PGVECTOR_DATABASE_URL` atau `DATABASE_URL` |
+| `npm run db:backfill-meilisearch` | `MEILISEARCH_HOST`, `MEILISEARCH_INDEX` |
+| `npm run db:backfill-neo4j` | `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD` |
+| `npm run db:backfill-organizations` | Enterprise schema (D1) |
+| `npm run db:backfill-workspaces` | Phase 9 workspace |
+
+Opsi CLI: `--owner=<uuid>`, `--batch-size=100`, `--execute`.
+
+---
+
+## 9. Migrasi lingkungan pengembangan
+
+Apabila Anda memindahkan instalasi ke perangkat atau workstation baru, ikuti panduan formal:
+
+**[README.md — Instalasi pada Lingkungan Pengembangan Baru](../README.md#instalasi-pada-lingkungan-pengembangan-baru)**
+
+Ringkasan: salin `.env` (terutama `AUTH_SECRET`), jalankan `db:migrate`, verifikasi dengan `test:integration`, konfigurasi ulang MCP.
+
+---
+
 ## Developer?
 
 | Dokumen | Isi |

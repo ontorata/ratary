@@ -20,13 +20,13 @@ Higher capabilities (agents, planning, execution) integrate **externally** at pr
 ## Capability stack (current)
 
 ```
-Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Agent boundary
-  ✅        ✅          ✅         ✅              ✅                 ✅ (Phase 7)
+Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Graph → Multi-AI → Platform adapters
+  ✅        ✅          ✅         ✅              ✅            ✅        ✅            ✅ (Phase 10)
 ```
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
-Future: Multi-AI (Phase 9), Enterprise (Phase 10). **Phase 8 (Knowledge Graph)** is implemented — `IGraphProvider`, graph-augmented composite retrieval, MCP/REST graph endpoints. See [ADR-006](../docs/adr/006-igraph-provider.md) and [.ai/phases/roadmap/09-ROADMAP.md](../.ai/phases/roadmap/09-ROADMAP.md).
+**Phase 10 (Enterprise):** storage-agnostic infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) wired at the composition root with opt-in env flags. Default deployment remains D1-centric. See [ADR-008–016](adr/README.md) and [.ai/phases/10-enterprise/](../.ai/phases/10-enterprise/README.md).
 
 ---
 
@@ -37,7 +37,8 @@ Future: Multi-AI (Phase 9), Enterprise (Phase 10). **Phase 8 (Knowledge Graph)**
 | **Edge** | Routes, controllers, MCP tools — mapping only |
 | **Application** | Services orchestrating use cases |
 | **Domain** | Memory, knowledge, search, ranking — business rules |
-| **Persistence** | Repositories and stores — scoped data access |
+| **Ports** | Vendor-neutral contracts (`ISqlDatabase`, `IVectorStore`, …) |
+| **Infrastructure** | Adapters (D1, Postgres, R2, pgvector, …) — Phase 10 |
 | **Composition root** | `server.ts`, `mcp/server.ts` — wires adapters |
 
 **Rule:** REST and MCP share the same application services. No duplicated business logic.
@@ -61,8 +62,10 @@ Recorded in [adr/](adr/). ADR decision text is immutable; status may change (Pro
 | ADR | Topic |
 |-----|-------|
 | [001](adr/001-multi-source-retrieval.md) | Hybrid retrieval (Phase 6) — **Implemented** |
-| [002](adr/002-workspace-identity-model.md) | Workspace identity contract — **Approved** |
-| [003](adr/003-embedding-storage-mvp.md) | Embedding storage — **Implemented** |
+| [006](adr/006-igraph-provider.md) | Graph provider (Phase 8) — **Implemented** |
+| [007](adr/007-multi-ai-workspace-scope.md) | Multi-AI workspace scope — **Implemented** |
+| [008](adr/008-platform-architecture.md) | Platform ports (Phase 9.5) — **Implemented** |
+| [009–016](adr/README.md) | Phase 10 infrastructure adapters — **Approved** |
 
 Full index: [adr/README.md](adr/README.md).
 
@@ -79,6 +82,7 @@ Phase design documents before ADR approval live in [archive/](archive/). They ar
 | Need | Document |
 |------|----------|
 | Install & use | [PANDUAN.md](PANDUAN.md) |
+| New dev environment | [README.md § Instalasi](../README.md#instalasi-pada-lingkungan-pengembangan-baru) |
 | AI governance | [.ai/START-HERE.md](../.ai/START-HERE.md) |
 | Vocabulary | [.ai/core/glossary/GLOSSARY.md](../.ai/core/glossary/GLOSSARY.md) |
 

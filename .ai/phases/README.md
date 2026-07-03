@@ -31,8 +31,8 @@ phases/
 ├── 06-hybrid-retrieval/              ✅ Closed
 ├── 07-agent-runtime/                 ✅ Closed
 ├── 08-knowledge-graph/               ✅ Closed
-├── 09-multi-ai/                      🟡 Active
-└── 10-enterprise/                    🔲 Reserved
+├── 09-multi-ai/                      ✅ Closed
+└── 10-enterprise/                    🟡 Gate pending
 ```
 
 Each `phases/NN-name/` folder:
@@ -84,8 +84,8 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 6 Hybrid Retrieval | [06-hybrid-retrieval/](06-hybrid-retrieval/README.md) | ✅ Closed | [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) |
 | 7 Agent Runtime | [07-agent-runtime/](07-agent-runtime/README.md) | ✅ Closed | External boundary |
 | 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | ✅ Closed | [ADR-006](../../../docs/adr/006-igraph-provider.md) |
-| 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | 🟡 Active | [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md) Proposed |
-| 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | 🔲 Reserved | ADR-002, ADR-005 |
+| 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | ✅ Closed | [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md) |
+| 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | 🟡 Gate pending | [ADR-005–016](../../../docs/adr/README.md) |
 
 ---
 

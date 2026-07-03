@@ -177,4 +177,4 @@ Sama dengan yang dijalankan GitHub Actions (`.github/workflows/ci.yml`).
 
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [../PANDUAN.md](../PANDUAN.md)
-- README → Setup di Laptop Baru
+- README → Instalasi pada Lingkungan Pengembangan Baru
