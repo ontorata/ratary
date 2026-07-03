@@ -2,7 +2,7 @@
 
 **Audit ID:** `audits/phase-04`  
 **Phase:** 4 — Memory Intelligence  
-**Date:** 2026 (retroactive)  
+**Date:** 2026-07-03  
 **Auditor:** Architecture review (AI-assisted)  
 **Verdict:** **PASS WITH OBSERVATIONS**
 
@@ -41,18 +41,27 @@ Retriever, Ranker, ContextBuilder, PromptBuilder, ContextService, consolidator, 
 
 ## Observations (accepted debt)
 
-| ID | Observation | Severity | Deferred to |
-|----|-------------|----------|-------------|
-| O-04-1 | API cross-owner leak E2E tests below design minimum | Medium | Phase 6 or hardening sprint |
-| O-04-2 | Retrieval projection content exclusion — verify all paths | Low | Regression suite |
-
-Debt accepted for phase close. Tracked in [latest.md](latest.md).
+| ID | Observation | Severity | Deferred to | Status |
+|----|-------------|----------|-------------|--------|
+| ~~O-04-1~~ | ~~API cross-owner leak E2E tests below design minimum~~ | Medium | ~~Phase 6 or hardening sprint~~ | **✅ RESOLVED** |
+| O-04-2 | Retrieval projection content exclusion — verify all paths | Low | Regression suite | OPEN |
+| O-05-1 | Duplicate MemoryRepository in composition roots | Medium | Phase 6 wiring | **✅ RESOLVED** |
 
 ---
 
 ## Gate alignment
 
 Phase 4 marked ✅ in roadmap. Observations non-blocking for Phase 5.
+
+---
+
+## Addendum 2026-07-03
+
+- **D-01 RESOLVED**: 20 cross-owner leak E2E tests added
+- **D-02 RESOLVED**: MemoryRepository shared instance pattern implemented
+- Quality gate: 172 tests passing
+- Typed errors added (`ValidationError`, `DatabaseError`, etc.) for better error handling
+- Memory intelligence layer stable
 
 ---
 

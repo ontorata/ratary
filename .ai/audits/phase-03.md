@@ -2,7 +2,7 @@
 
 **Audit ID:** `audits/phase-03`  
 **Phase:** 3 — Authorization  
-**Date:** 2026 (retroactive)  
+**Date:** 2026-07-03  
 **Auditor:** Architecture review (AI-assisted)  
 **Verdict:** **PASS**
 
@@ -37,16 +37,23 @@ JWT, OAuth, API keys, bootstrap, permissions, audit bus, `/api/v1` canonical rou
 
 ---
 
-## Observations
+## Current status (2026-07-03)
 
-- Cross-owner leak E2E coverage recommended for hardening (deferred — see latest.md).
-- Foundation for ADR-002 scope types in later phases.
+Phase 3 remains **PASS**. Authorization layer unchanged. Cross-owner isolation enforced.
 
 ---
 
 ## Gate alignment
 
 Phase 3 marked ✅ in roadmap.
+
+---
+
+## Addendum 2026-07-03
+
+- Quality gate: 172 tests passing
+- **D-01 RESOLVED**: 20 cross-owner leak E2E tests now in `tests/api/cross-owner-leak.test.ts`
+- Authorization patterns stable
 
 ---
 

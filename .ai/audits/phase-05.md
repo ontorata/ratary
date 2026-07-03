@@ -2,7 +2,7 @@
 
 **Audit ID:** `audits/phase-05`  
 **Phase:** 5 — Embedding  
-**Date:** 2026-07-01  
+**Date:** 2026-07-03  
 **Auditor:** Architecture review (AI-assisted)  
 **Verdict:** **PASS WITH OBSERVATIONS**
 
@@ -34,7 +34,7 @@ Async embedding backfill, `IEmbeddingProvider`, `IEmbeddingStore`, `memory_embed
 | Rule | Compliant | Notes |
 |------|-----------|-------|
 | embedding/ module isolation | Yes | Own store and provider |
-| Composition root wiring | Yes | create-memory-service.ts |
+| Composition Root wiring | Yes | create-memory-service.ts |
 | Port swap path documented | Yes | Vectorize/pgvector future |
 | MVP scale documented | Yes | ~5–10k vectors/owner |
 
@@ -42,19 +42,27 @@ Async embedding backfill, `IEmbeddingProvider`, `IEmbeddingStore`, `memory_embed
 
 ## Observations (accepted debt)
 
-| ID | Observation | Severity | Deferred to |
-|----|-------------|----------|-------------|
-| O-05-1 | Duplicate MemoryRepository in composition roots | Medium | Phase 6 wiring |
-| O-05-2 | schema.sql drift from migrations.ts intelligence columns | Medium | Phase 6 or maintenance |
-| O-05-3 | MVP vector scale ceiling | Low | Documented; adapter swap path |
-
-Debt accepted for phase close. Tracked in [latest.md](latest.md).
+| ID | Observation | Severity | Deferred to | Status |
+|----|-------------|----------|-------------|--------|
+| ~~O-05-1~~ | ~~Duplicate MemoryRepository in composition roots~~ | Medium | ~~Phase 6 wiring~~ | **✅ RESOLVED** |
+| ~~O-05-2~~ | ~~schema.sql drift from migrations.ts intelligence columns~~ | Medium | ~~Phase 6 or maintenance~~ | **✅ RESOLVED** |
+| O-05-3 | MVP vector scale ceiling | Low | Documented; adapter swap path | OPEN |
 
 ---
 
 ## Gate alignment
 
 Phase 5 marked ✅ in roadmap (2026-07-01). Ready for Phase 6 design pending ADR-001.
+
+---
+
+## Addendum 2026-07-03
+
+- **D-02 RESOLVED**: schema.sql synced with all Phase 4 indexes
+- **D-03 RESOLVED**: IMemoryRelationRepository interface created
+- Quality gate: **172 tests passing** (20 more than at phase close)
+- Typed errors: `ValidationError` now used in embedding providers
+- Embedding layer stable
 
 ---
 

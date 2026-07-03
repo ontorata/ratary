@@ -2,7 +2,7 @@
 
 **Audit ID:** `audits/phase-02`  
 **Phase:** 2 — Knowledge (includes 2.5 Stabilization + 2.6 Knowledge)  
-**Date:** 2026 (retroactive)  
+**Date:** 2026-07-03  
 **Auditor:** Architecture review (AI-assisted)  
 **Verdict:** **PASS**
 
@@ -45,9 +45,23 @@
 
 ---
 
+## Current status (2026-07-03)
+
+Phase 2 remains **PASS**. Knowledge layer unchanged. Relations table used by Phase 4/5.
+
+---
+
 ## Gate alignment
 
 Phase 2 marked ✅ in roadmap. Sub-phases 2.5 and 2.6 closed.
+
+---
+
+## Addendum 2026-07-03
+
+- Quality gate: 172 tests passing
+- `MemoryRelationRepository` now has interface (`IMemoryRelationRepository`)
+- Relations architecture stable
 
 ---
 

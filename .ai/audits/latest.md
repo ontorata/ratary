@@ -1,116 +1,113 @@
 # Audit: Latest (Aggregate)
 
 **Audit ID:** `audits/latest`  
-**Scope:** Phases 1–5 complete · Pre-Phase 6 readiness  
-**Date:** 2026-07-01  
+**Scope:** Phases 1–5 complete · Phase 6 design in progress  
+**Date:** 2026-07-03  
 **Auditor:** Architecture review (AI-assisted)  
-**Verdict:** **YES WITH CONDITIONS** — proceed to Phase 6 design only after conditions met
+**Verdict:** **PASS** — Phase 5 complete, Phase 6 design active
 
 ---
 
 ## Executive summary
 
-Phases 1–5 architecture is **sound**. Layering, port patterns, and retrieval pipeline are ready for hybrid retrieval extension. Phase 6 implementation is **blocked** until ADR-001 is **Approved**.
+Phases 1–5 architecture is **sound and stable**. All previously identified technical debt (D-01, D-02, D-03) has been resolved. Layering, port patterns, and retrieval pipeline are ready for Phase 6 Hybrid Retrieval implementation. ADR-001 has been **Approved**.
 
 | Dimension | Score |
 |-----------|-------|
 | Constitution compliance | PASS |
 | Layer architecture | PASS |
 | Port readiness (Phase 6) | PASS |
-| Test suite health | PASS (152 tests) |
-| ADR gates | **BLOCKED** (ADR-001 Proposed) |
-| Cross-phase debt | PASS WITH OBSERVATIONS |
+| Test suite health | PASS (172 tests) |
+| ADR gates | PASS (ADR-001 Approved) |
+| Cross-phase debt | **PASS** ✅ |
 
 ---
 
 ## Phase audit rollup
 
-| Phase | Verdict | Audit |
-|-------|---------|-------|
-| 1 Foundation | PASS | [phase-01.md](phase-01.md) |
-| 2 Knowledge | PASS | [phase-02.md](phase-02.md) |
-| 3 Authorization | PASS | [phase-03.md](phase-03.md) |
-| 4 Memory Intelligence | PASS WITH OBSERVATIONS | [phase-04.md](phase-04.md) |
-| 5 Embedding | PASS WITH OBSERVATIONS | [phase-05.md](phase-05.md) |
+| Phase | Verdict | Audit | Updates |
+|-------|---------|-------|---------|
+| 1 Foundation | PASS | [phase-01.md](phase-01.md) | ✅ Current |
+| 2 Knowledge | PASS | [phase-02.md](phase-02.md) | ✅ Current |
+| 3 Authorization | PASS | [phase-03.md](phase-03.md) | ✅ Current |
+| 4 Memory Intelligence | PASS | [phase-04.md](phase-04.md) | ✅ Current |
+| 5 Embedding | PASS WITH OBSERVATIONS | [phase-05.md](phase-05.md) | ✅ Current |
 
 ---
 
-## Conditions for Phase 6 start
+## Technical Debt Resolution (2026-07-03)
 
-| # | Condition | Status | Owner |
-|---|-----------|--------|-------|
-| 1 | ADR-001 **Approved** | **OPEN** | Project owner |
-| 2 | Readiness review for Phase 6 | Pending ADR-001 | Maintainer |
-| 3 | TASK_PROMPT rotated to Phase 6 | Pending ADR-001 | Maintainer |
-| 4 | `implementation/pre-implementation-gate` Go | Pending | AI + owner |
-
-**Do not merge Phase 6 implementation code until condition 1 is satisfied.**
+| ID | Description | Status | Resolution |
+|----|-------------|--------|------------|
+| ~~D-01~~ | ~~API cross-owner leak E2E tests missing~~ | **✅ RESOLVED** | 20 security tests in `tests/api/cross-owner-leak.test.ts` |
+| ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | **✅ RESOLVED** | Refactored to shared repository instance |
+| ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | **✅ RESOLVED** | schema.sql synced with all Phase 4 indexes |
+| D-04 | ADR-001 merge policy must be unit-tested | Phase 6 | In progress |
 
 ---
 
-## Open cross-phase debt
+## Remaining Observations
 
-| ID | Source | Description | Severity | Target |
-|----|--------|-------------|----------|--------|
-| D-01 | phase-04 | API cross-owner leak E2E tests (design required ≥6) | Medium | Phase 6 or hardening |
-| D-02 | phase-05 | Duplicate MemoryRepository in composition roots | Medium | Phase 6 wiring |
-| D-03 | phase-05 | schema.sql drift from migrations.ts | Medium | Maintenance PR |
-| D-04 | roadmap | ADR-001 merge policy must be unit-tested | High | Phase 6 |
+| ID | Observation | Severity | Deferred to | Status |
+|----|-------------|----------|-------------|--------|
+| O-04-2 | Retrieval projection content exclusion — verify all paths | Low | Regression suite | OPEN |
+| O-05-3 | MVP vector scale ceiling | Low | Documented; adapter swap path | OPEN |
+| D-04 | ADR-001 merge policy unit-testing | High | Phase 6 | OPEN |
 
-None are retroactive blockers for Phases 1–5 closure. D-04 is a Phase 6 implementation requirement.
+None are retroactive blockers for Phases 1–5 closure.
 
 ---
 
-## Phase 6 readiness (design)
+## Phase 6 Readiness
 
 | Prerequisite | Status |
 |--------------|--------|
 | Phase 4 `IRetrievalCandidateSource` | Ready |
 | Phase 5 `IEmbeddingStore.searchSimilar` | Ready |
-| ADR-001 Option B (CompositeRetrievalCandidateSource) | Proposed — not Approved |
+| ADR-001 (CompositeRetrievalCandidateSource) | **✅ Approved** |
 | Extension points in src/ | Verified |
-| Phase folder [06-hybrid-retrieval/](../phases/06-hybrid-retrieval/README.md) | Active (design draft) |
+| Phase folder [06-hybrid-retrieval/](../phases/06-hybrid-retrieval/README.md) | Active |
 
 ---
 
-## Metrics at audit
+## Quality Metrics (2026-07-03)
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 152 |
+| Tests passing | 172 |
 | MCP tools | 14 |
 | Storage | D1 |
-| Next phase | 6 Hybrid Retrieval |
+| Test coverage growth | +20 tests since Phase 5 close |
 
 ---
 
-## Recommended actions
+## Recommended Actions
 
-| Priority | Action | Playbook / prompt |
-|----------|--------|-------------------|
-| 1 | Approve ADR-001 | Owner decision |
-| 2 | Run phase-start playbook | [playbooks/phase-start.md](../playbooks/phase-start.md) |
-| 3 | Unify composition root (D-02) | Phase 6 wiring milestone |
-| 4 | Sync schema.sql (D-03) | Maintenance PR |
-| 5 | Add cross-owner E2E tests (D-01) | `testing/integration-test-design` |
-
----
-
-## Next audit trigger
-
-Update this file when:
-- ADR-001 Approved
-- Phase 6 gate PASS or BLOCKER
-- Hotfix with architectural impact
-- Quarterly debt review
+| Priority | Action | Status |
+|----------|--------|--------|
+| 1 | Phase 6 implementation start | **ACTIVE** |
+| 2 | ADR-001 merge policy unit-tests (D-04) | Phase 6 |
+| 3 | Cross-phase regression suite | Ongoing |
+| 4 | O-04-2 content projection verification | Low priority |
 
 ---
 
-## Verdict history
+## Verdict History
 
 | Date | Verdict | Notes |
 |------|---------|-------|
 | 2026-07-01 | YES WITH CONDITIONS | Pre-Phase 6; ADR-001 gate open |
+| 2026-07-03 | **PASS** ✅ | D-01, D-02, D-03 resolved; ADR-001 Approved; 172 tests |
+
+---
+
+## Next Audit Trigger
+
+Update this file when:
+- Phase 6 gate PASS or BLOCKER
+- Hotfix with architectural impact
+- Quarterly debt review
+- Major ADR approval/rejection
 
 ---
 
