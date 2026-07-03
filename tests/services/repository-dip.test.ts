@@ -5,7 +5,10 @@ import type {
   IMemoryWriter,
 } from '../../src/repositories/memory.repository.interface.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
-import { createTestMemoryRepository, createTestRelationRepository } from '../helpers/sql-test-harness.js';
+import {
+  createTestMemoryRepository,
+  createTestRelationRepository,
+} from '../helpers/sql-test-harness.js';
 import { KnowledgeService } from '../../src/knowledge/knowledge.service.js';
 import { SearchService } from '../../src/search/search.service.js';
 import { MemoryService } from '../../src/services/memory.service.js';

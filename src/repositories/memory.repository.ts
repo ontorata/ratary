@@ -372,7 +372,7 @@ export class MemoryRepository implements IMemoryRepository {
   }
 
   async listDistinctCategories(ownerId: string, workspaceId?: string): Promise<string[]> {
-    const conditions = ["owner_id = ?", "category != ''", 'archived = 0'];
+    const conditions = ['owner_id = ?', "category != ''", 'archived = 0'];
     const params: unknown[] = [ownerId];
     appendWorkspaceFilter(conditions, params, workspaceId);
 
@@ -426,7 +426,7 @@ export class MemoryRepository implements IMemoryRepository {
   }
 
   async listProjects(ownerId: string, workspaceId?: string): Promise<string[]> {
-    const conditions = ["owner_id = ?", "project != ''", 'archived = 0'];
+    const conditions = ['owner_id = ?', "project != ''", 'archived = 0'];
     const params: unknown[] = [ownerId];
     appendWorkspaceFilter(conditions, params, workspaceId);
 
@@ -605,11 +605,7 @@ export class MemoryRepository implements IMemoryRepository {
     await this.recordAccessBatch([id], ownerId, workspaceId);
   }
 
-  async recordAccessBatch(
-    ids: string[],
-    ownerId: string,
-    workspaceId?: string,
-  ): Promise<void> {
+  async recordAccessBatch(ids: string[], ownerId: string, workspaceId?: string): Promise<void> {
     if (ids.length === 0) return;
 
     const now = nowISO();

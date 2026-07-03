@@ -53,8 +53,7 @@ describeObjectStorageContract('R2ObjectStorageAdapter (mock commands)', () => {
 });
 
 describeObjectStorageContract('InlineObjectStorage', async () => {
-  const { InlineObjectStorage } = await import(
-    '../../src/infrastructure/storage/inline-object-storage.adapter.js'
-  );
+  const { InlineObjectStorage } =
+    await import('../../src/infrastructure/storage/inline-object-storage.adapter.js');
   return new InlineObjectStorage();
 });

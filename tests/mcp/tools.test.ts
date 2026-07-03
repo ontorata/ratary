@@ -3,7 +3,11 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { setD1Client, resetD1Client } from '../../src/db/index.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
-import { createTestMemoryRepository, createTestRelationRepository, asSqlDatabase } from '../helpers/sql-test-harness.js';
+import {
+  createTestMemoryRepository,
+  createTestRelationRepository,
+  asSqlDatabase,
+} from '../helpers/sql-test-harness.js';
 import {
   createMemoryService,
   createMemoryRelationService,

@@ -70,8 +70,7 @@ function buildCompositeCandidateSource(
   }
 
   if (useGraph) {
-    const graphProvider =
-      platform?.graphProvider ?? createGraphProvider(env, platform!.sql!);
+    const graphProvider = platform?.graphProvider ?? createGraphProvider(env, platform!.sql!);
     registered.push({
       role: 'graph',
       source: new GraphRetrievalCandidateSource(graphProvider, repository, {

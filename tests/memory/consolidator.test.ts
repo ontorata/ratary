@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryConsolidator } from '../../src/memory/consolidator.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
-import { createTestMemoryRepository, createTestRelationRepository } from '../helpers/sql-test-harness.js';
+import {
+  createTestMemoryRepository,
+  createTestRelationRepository,
+} from '../helpers/sql-test-harness.js';
 import { computeSemanticHash } from '../../src/memory/semantic-hash.js';
 
 describe('MemoryConsolidator', () => {

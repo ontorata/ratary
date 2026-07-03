@@ -30,11 +30,7 @@ export class RedisStreamsEventBus implements IEventBus {
     private readonly config: RedisStreamsEventBusConfig,
   ) {}
 
-  async publish<T>(
-    topic: string,
-    payload: T,
-    options?: { correlationId?: string },
-  ): Promise<void> {
+  async publish<T>(topic: string, payload: T, options?: { correlationId?: string }): Promise<void> {
     const stream = this.streamKey(topic);
     const envelope: EventEnvelope<T> = {
       topic,

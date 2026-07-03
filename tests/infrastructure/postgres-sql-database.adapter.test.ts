@@ -28,10 +28,16 @@ describe('PostgresSqlDatabaseAdapter', () => {
     const query = vi.fn(async (): Promise<QueryResult> => mockQueryResult([], 3));
     const adapter = new PostgresSqlDatabaseAdapter({ query });
 
-    const result = await adapter.execute('UPDATE memories SET title = ? WHERE id = ?', ['x', 'id-1']);
+    const result = await adapter.execute('UPDATE memories SET title = ? WHERE id = ?', [
+      'x',
+      'id-1',
+    ]);
 
     expect(result.meta?.changes).toBe(3);
-    expect(query).toHaveBeenCalledWith('UPDATE memories SET title = $1 WHERE id = $2', ['x', 'id-1']);
+    expect(query).toHaveBeenCalledWith('UPDATE memories SET title = $1 WHERE id = $2', [
+      'x',
+      'id-1',
+    ]);
   });
 
   it('should expose unwrapPool', () => {

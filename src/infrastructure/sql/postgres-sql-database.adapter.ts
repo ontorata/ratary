@@ -13,22 +13,17 @@ export interface PostgresPoolQueryable {
 export class PostgresSqlDatabaseAdapter implements ISqlDatabase {
   constructor(private readonly pool: PostgresPoolQueryable) {}
 
-  async query<T = Record<string, unknown>>(
-    sql: string,
-    params?: readonly unknown[],
-  ): Promise<T[]> {
-    const result = await this.pool.query(
-      translateQuestionMarkPlaceholders(sql),
-      [...(params ?? [])],
-    );
+  async query<T = Record<string, unknown>>(sql: string, params?: readonly unknown[]): Promise<T[]> {
+    const result = await this.pool.query(translateQuestionMarkPlaceholders(sql), [
+      ...(params ?? []),
+    ]);
     return result.rows as T[];
   }
 
   async execute(sql: string, params?: readonly unknown[]): Promise<SqlExecuteResult> {
-    const result = await this.pool.query(
-      translateQuestionMarkPlaceholders(sql),
-      [...(params ?? [])],
-    );
+    const result = await this.pool.query(translateQuestionMarkPlaceholders(sql), [
+      ...(params ?? []),
+    ]);
     return {
       results: result.rows as Record<string, unknown>[],
       meta: {

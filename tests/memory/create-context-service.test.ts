@@ -10,7 +10,11 @@ import type {
   IEmbeddingProvider,
 } from '../../src/embedding/embedding.provider.interface.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
-import { createTestMemoryRepository, createTestRelationRepository, asSqlDatabase } from '../helpers/sql-test-harness.js';
+import {
+  createTestMemoryRepository,
+  createTestRelationRepository,
+  asSqlDatabase,
+} from '../helpers/sql-test-harness.js';
 
 const QUERY = 'semantic-anchor';
 const QUERY_VECTOR = [1, 0, 0];

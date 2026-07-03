@@ -106,7 +106,10 @@ export async function buildApp(options?: {
     fastify.addHook('onRequest', authLayer.authenticate);
     fastify.addHook('onRequest', authLayer.enforcePermissions);
     if (env.ENTERPRISE_RBAC) {
-      fastify.addHook('onRequest', createWorkspaceMembershipMiddleware(platform.workspaceMembership));
+      fastify.addHook(
+        'onRequest',
+        createWorkspaceMembershipMiddleware(platform.workspaceMembership),
+      );
     }
   }
 
@@ -144,7 +147,11 @@ export async function buildApp(options?: {
   const contextController = createContextController(contextService, scopeResolver);
   const graphService = createGraphService(platform.sql, repository);
   const graphController = createGraphController(graphService, scopeResolver);
-  const workspaceController = createWorkspaceController(platform.sql, scopeResolver, multiAi.agentIdentity);
+  const workspaceController = createWorkspaceController(
+    platform.sql,
+    scopeResolver,
+    multiAi.agentIdentity,
+  );
 
   const controllers = {
     health: healthController,

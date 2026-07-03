@@ -99,10 +99,7 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
     OTEL_SERVICE_NAME: z.string().default('ai-memory-cloud'),
-    OTEL_EXPORTER_OTLP_ENDPOINT: z
-      .string()
-      .url()
-      .default('http://127.0.0.1:4318/v1/traces'),
+    OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().default('http://127.0.0.1:4318/v1/traces'),
     ENTERPRISE_RBAC: z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
@@ -167,7 +164,8 @@ const envSchema = z
         ctx.addIssue({
           code: 'custom',
           path: ['R2_ACCOUNT_ID'],
-          message: 'R2_ACCOUNT_ID or CLOUDFLARE_ACCOUNT_ID is required when OBJECT_STORAGE_PROVIDER=r2',
+          message:
+            'R2_ACCOUNT_ID or CLOUDFLARE_ACCOUNT_ID is required when OBJECT_STORAGE_PROVIDER=r2',
         });
       }
       if (!env.R2_BUCKET_NAME) {

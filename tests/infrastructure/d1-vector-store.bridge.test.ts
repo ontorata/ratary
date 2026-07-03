@@ -18,9 +18,7 @@ function createMockEmbeddingStore(): IEmbeddingStore {
       createdAt: '2026-01-01T00:00:00.000Z',
       updatedAt: '2026-01-01T00:00:00.000Z',
     })),
-    searchSimilar: vi.fn(async () => [
-      { memoryId: 'mem-2', embeddingId: 'emb-2', score: 0.9 },
-    ]),
+    searchSimilar: vi.fn(async () => [{ memoryId: 'mem-2', embeddingId: 'emb-2', score: 0.9 }]),
   };
 }
 

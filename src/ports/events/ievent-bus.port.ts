@@ -15,11 +15,7 @@ export interface EventSubscription {
 }
 
 export interface IEventBus {
-  publish<T>(
-    topic: string,
-    payload: T,
-    options?: { correlationId?: string },
-  ): Promise<void>;
+  publish<T>(topic: string, payload: T, options?: { correlationId?: string }): Promise<void>;
   subscribe<T>(
     topic: string,
     handler: (event: EventEnvelope<T>) => Promise<void>,

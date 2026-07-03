@@ -71,7 +71,9 @@ describe('workspace-store', () => {
       },
     ]);
 
-    expect(await findWorkspaceById(asSqlDatabase(db), 'owner-a', 'ws-1')).toMatchObject({ id: 'ws-1' });
+    expect(await findWorkspaceById(asSqlDatabase(db), 'owner-a', 'ws-1')).toMatchObject({
+      id: 'ws-1',
+    });
     expect(await findWorkspaceById(asSqlDatabase(db), 'owner-b', 'ws-1')).toBeNull();
   });
 

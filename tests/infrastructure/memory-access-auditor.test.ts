@@ -63,18 +63,12 @@ describe('Memory access auditor', () => {
   });
 
   it('createMemoryAccessAuditor returns NoOp when MEMORY_ACCESS_AUDIT=false', () => {
-    const auditor = createMemoryAccessAuditor(
-      { MEMORY_ACCESS_AUDIT: false } as never,
-      db,
-    );
+    const auditor = createMemoryAccessAuditor({ MEMORY_ACCESS_AUDIT: false } as never, db);
     expect(auditor).toBeInstanceOf(NoOpMemoryAccessAuditor);
   });
 
   it('createMemoryAccessAuditor returns AuditLog when MEMORY_ACCESS_AUDIT=true', () => {
-    const auditor = createMemoryAccessAuditor(
-      { MEMORY_ACCESS_AUDIT: true } as never,
-      db,
-    );
+    const auditor = createMemoryAccessAuditor({ MEMORY_ACCESS_AUDIT: true } as never, db);
     expect(auditor).toBeInstanceOf(AuditLogMemoryAccessAuditor);
   });
 });

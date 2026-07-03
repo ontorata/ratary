@@ -22,11 +22,9 @@ export function createLexicalRetrievalSource(
       host: env.MEILISEARCH_HOST,
       apiKey: env.MEILISEARCH_API_KEY,
     });
-    return new MeilisearchRetrievalSource(
-      wrapMeilisearchClient(client),
-      repository,
-      { index: env.MEILISEARCH_INDEX },
-    );
+    return new MeilisearchRetrievalSource(wrapMeilisearchClient(client), repository, {
+      index: env.MEILISEARCH_INDEX,
+    });
   }
 
   if (env.SEARCH_PROVIDER !== 'sql') {

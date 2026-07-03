@@ -290,7 +290,9 @@ export class MockD1Client implements D1Client {
       for (const [id, row] of this.workspaces.entries()) {
         if (
           row.owner_id === ownerId &&
-          (row.organization_id === null || row.organization_id === undefined || row.organization_id === '')
+          (row.organization_id === null ||
+            row.organization_id === undefined ||
+            row.organization_id === '')
         ) {
           row.organization_id = organizationId;
           this.workspaces.set(id, row);
@@ -306,7 +308,11 @@ export class MockD1Client implements D1Client {
     ) {
       const owners = new Set<string>();
       for (const row of this.workspaces.values()) {
-        if (row.organization_id === null || row.organization_id === undefined || row.organization_id === '') {
+        if (
+          row.organization_id === null ||
+          row.organization_id === undefined ||
+          row.organization_id === ''
+        ) {
           owners.add(row.owner_id);
         }
       }
@@ -346,7 +352,10 @@ export class MockD1Client implements D1Client {
     ) {
       const [id, ownerId] = params as [string, string];
       const row = [...this.workspaces.values()].find((w) => w.id === id && w.owner_id === ownerId);
-      return { results: row ? [{ ...row, organization_id: row.organization_id ?? null }] : [], success: true };
+      return {
+        results: row ? [{ ...row, organization_id: row.organization_id ?? null }] : [],
+        success: true,
+      };
     }
 
     if (
@@ -615,7 +624,8 @@ export class MockD1Client implements D1Client {
         for (const id of ids) {
           const existing = this.memories.get(id);
           if (!existing || existing.owner_id !== ownerId) continue;
-          if (workspaceId !== undefined && (existing.workspace_id ?? null) !== workspaceId) continue;
+          if (workspaceId !== undefined && (existing.workspace_id ?? null) !== workspaceId)
+            continue;
           existing.last_accessed = lastAccessed;
           existing.access_count = (existing.access_count ?? 0) + 1;
           this.memories.set(id, existing);
@@ -1075,9 +1085,7 @@ export class MockD1Client implements D1Client {
       const filtered = this.filterMemories(sql, params);
       return { results: [{ count: filtered.length }], success: true };
     }
-    if (
-      normalizedSql.includes('FROM MEMORIES WHERE OWNER_ID = ? ORDER BY CREATED_AT ASC')
-    ) {
+    if (normalizedSql.includes('FROM MEMORIES WHERE OWNER_ID = ? ORDER BY CREATED_AT ASC')) {
       const ownerId = params[0] as string;
       const rows = [...this.memories.values()]
         .filter((m) => m.owner_id === ownerId)

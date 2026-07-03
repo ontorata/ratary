@@ -1,6 +1,9 @@
 import type { ISqlDatabase } from '../../../ports/sql/isql-database.port.js';
 import type { RelationType } from '../../../types/knowledge.js';
-import { DEFAULT_GRAPH_MAX_DEPTH, DEFAULT_GRAPH_MAX_NEIGHBORS } from '../../../graph/graph.config.js';
+import {
+  DEFAULT_GRAPH_MAX_DEPTH,
+  DEFAULT_GRAPH_MAX_NEIGHBORS,
+} from '../../../graph/graph.config.js';
 import type {
   GraphCapabilities,
   GraphNeighbor,

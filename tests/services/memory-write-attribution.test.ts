@@ -23,16 +23,7 @@ describe('MemoryService write attribution and sync', () => {
     await mockDb.execute(
       `INSERT INTO agents (id, workspace_id, owner_id, name, client_id, agent_type, metadata, created_at, active)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)`,
-      [
-        'agent-1',
-        'ws-1',
-        'owner-a',
-        'Cursor',
-        null,
-        'mcp',
-        '{}',
-        '2026-07-03T00:00:00.000Z',
-      ],
+      ['agent-1', 'ws-1', 'owner-a', 'Cursor', null, 'mcp', '{}', '2026-07-03T00:00:00.000Z'],
     );
 
     const repository = createTestMemoryRepository(mockDb);
@@ -41,7 +32,14 @@ describe('MemoryService write attribution and sync', () => {
     const sql = asSqlDatabase(mockDb);
     syncManager = new AcceptSyncManager(sql, new AuditRepository(sql));
     const agentIdentity = new D1AgentIdentity(sql);
-    service = new MemoryService(repository, knowledge, search, undefined, syncManager, agentIdentity);
+    service = new MemoryService(
+      repository,
+      knowledge,
+      search,
+      undefined,
+      syncManager,
+      agentIdentity,
+    );
   });
 
   it('should persist last_modified_by_agent_id on create when agent resolves', async () => {

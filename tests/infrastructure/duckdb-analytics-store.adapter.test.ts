@@ -47,6 +47,8 @@ describe('DuckDbAnalyticsStore', () => {
   });
 
   it('should expose access_count_by_owner query template', () => {
-    expect(DUCKDB_ANALYTICS_QUERY_TEMPLATES.access_count_by_owner).toContain('memory_access_events');
+    expect(DUCKDB_ANALYTICS_QUERY_TEMPLATES.access_count_by_owner).toContain(
+      'memory_access_events',
+    );
   });
 });

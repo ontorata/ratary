@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import type { IVectorStore, VectorScopeKey, VectorUpsertInput } from '../../src/ports/vector/ivector-store.port.js';
+import type {
+  IVectorStore,
+  VectorScopeKey,
+  VectorUpsertInput,
+} from '../../src/ports/vector/ivector-store.port.js';
 
 const scopeA: VectorScopeKey = { ownerId: 'owner-a' };
 const scopeB: VectorScopeKey = { ownerId: 'owner-b' };
@@ -13,10 +17,7 @@ const sampleVector: VectorUpsertInput = {
   contentHash: 'hash-a',
 };
 
-export function describeVectorStoreContract(
-  label: string,
-  createStore: () => IVectorStore,
-): void {
+export function describeVectorStoreContract(label: string, createStore: () => IVectorStore): void {
   describe(`IVectorStore contract (${label})`, () => {
     it('should upsert and find by memory id within scope', async () => {
       const store = createStore();

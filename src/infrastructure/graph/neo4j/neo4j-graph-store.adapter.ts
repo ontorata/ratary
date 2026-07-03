@@ -1,5 +1,8 @@
 import type { RelationType } from '../../../types/knowledge.js';
-import { DEFAULT_GRAPH_MAX_DEPTH, DEFAULT_GRAPH_MAX_NEIGHBORS } from '../../../graph/graph.config.js';
+import {
+  DEFAULT_GRAPH_MAX_DEPTH,
+  DEFAULT_GRAPH_MAX_NEIGHBORS,
+} from '../../../graph/graph.config.js';
 import type {
   GraphCapabilities,
   GraphNeighbor,
@@ -13,10 +16,7 @@ export interface Neo4jQueryRecord {
 }
 
 export interface Neo4jQueryClient {
-  run(
-    cypher: string,
-    params?: Record<string, unknown>,
-  ): Promise<{ records: Neo4jQueryRecord[] }>;
+  run(cypher: string, params?: Record<string, unknown>): Promise<{ records: Neo4jQueryRecord[] }>;
 }
 
 /**

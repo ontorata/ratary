@@ -50,11 +50,7 @@ export type {
 
 export type { ICache, CacheEntryOptions } from './cache/icache.port.js';
 
-export type {
-  IEventBus,
-  EventEnvelope,
-  EventSubscription,
-} from './events/ievent-bus.port.js';
+export type { IEventBus, EventEnvelope, EventSubscription } from './events/ievent-bus.port.js';
 
 export type {
   IAnalyticsStore,

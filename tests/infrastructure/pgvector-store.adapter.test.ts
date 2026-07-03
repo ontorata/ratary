@@ -21,10 +21,7 @@ interface StoredRow {
 class InMemoryPgVectorDatabase implements ISqlDatabase {
   private rows = new Map<string, StoredRow>();
 
-  async query<T = Record<string, unknown>>(
-    sql: string,
-    params?: readonly unknown[],
-  ): Promise<T[]> {
+  async query<T = Record<string, unknown>>(sql: string, params?: readonly unknown[]): Promise<T[]> {
     if (sql.includes('FROM memory_vectors') && sql.includes('memory_id = ?')) {
       const [memoryId, ownerId, modelId] = params ?? [];
       const row = [...this.rows.values()].find(

@@ -19,7 +19,12 @@ class InMemoryRedisStreamsClient implements RedisStreamsGroupClient {
     return null;
   }
 
-  async xgroupCreate(stream: string, group: string, _id: string, _mkstream?: 'MKSTREAM'): Promise<'OK'> {
+  async xgroupCreate(
+    stream: string,
+    group: string,
+    _id: string,
+    _mkstream?: 'MKSTREAM',
+  ): Promise<'OK'> {
     this.groups.add(`${stream}:${group}`);
     return 'OK';
   }
