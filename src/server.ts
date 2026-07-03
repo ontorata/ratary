@@ -20,6 +20,8 @@ import {
   createMemoryRelationController,
 } from './controllers/knowledge.controller.js';
 import { createContextController } from './controllers/context.controller.js';
+import { createGraphController } from './controllers/graph.controller.js';
+import { createGraphService } from './services/graph.service.js';
 import { createContextService } from './memory/create-context-service.js';
 import { createEmbeddingProvider } from './embedding/create-embedding-provider.js';
 import { D1EmbeddingStore } from './embedding/d1-embedding.store.js';
@@ -99,6 +101,8 @@ export async function buildApp(options?: {
   const embeddingStore = new D1EmbeddingStore(db);
   const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
   const contextController = createContextController(contextService);
+  const graphService = createGraphService(db, repository);
+  const graphController = createGraphController(graphService);
 
   const controllers = {
     health: healthController,
@@ -108,6 +112,7 @@ export async function buildApp(options?: {
     knowledge: knowledgeController,
     relations: relationController,
     context: contextController,
+    graph: graphController,
   };
 
   await fastify.register(

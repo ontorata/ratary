@@ -14,8 +14,10 @@ import { createContextService } from '../memory/create-context-service.js';
 import { createEmbeddingProvider } from '../embedding/create-embedding-provider.js';
 import { D1EmbeddingStore } from '../embedding/d1-embedding.store.js';
 import type { ContextService } from '../memory/context.service.js';
+import type { GraphService } from '../services/graph.service.js';
+import { createGraphService } from '../services/graph.service.js';
 import { getMcpMemoryScope, assertMcpOwnerConfigured } from '../types/memory-scope.js';
-import { memoryTypeSchema, categorySchema } from '../types/knowledge.js';
+import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../types/knowledge.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
 
 const metadataSchema = z.object({
@@ -31,6 +33,7 @@ function createMcpServer(
   memoryService: MemoryService,
   relationService: MemoryRelationService,
   contextService: ContextService,
+  graphService: GraphService,
 ): McpServer {
   const scope = getMcpMemoryScope();
   const server = new McpServer({
@@ -317,6 +320,42 @@ function createMcpServer(
     },
   );
 
+  server.tool('get_graph_capabilities', 'Discover graph traversal capabilities', {}, async () => {
+    const capabilities = graphService.getCapabilities();
+    return {
+      content: [{ type: 'text', text: JSON.stringify({ capabilities }, null, 2) }],
+    };
+  });
+
+  server.tool(
+    'traverse_relations',
+    'Traverse memory relations via bidirectional BFS from a seed memory',
+    {
+      memoryId: z.string().uuid().describe('Seed memory UUID'),
+      depth: z.number().int().min(1).max(3).optional().describe('BFS depth cap'),
+      types: z.array(z.enum(RELATION_TYPES)).optional().describe('Filter by relation types'),
+    },
+    async (params) => {
+      const result = await graphService.traverseRelations(scope, {
+        memoryId: params.memoryId,
+        depth: params.depth,
+        types: params.types,
+      });
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(
+              { memoryIds: result.memoryIds, neighbors: result.neighbors },
+              null,
+              2,
+            ),
+          },
+        ],
+      };
+    },
+  );
+
   return server;
 }
 
@@ -330,8 +369,9 @@ export async function startMcpStdioServer(): Promise<void> {
   const embeddingProvider = createEmbeddingProvider();
   const embeddingStore = new D1EmbeddingStore(db);
   const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
+  const graphService = createGraphService(db, repository);
 
-  const server = createMcpServer(memoryService, relationService, contextService);
+  const server = createMcpServer(memoryService, relationService, contextService, graphService);
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }

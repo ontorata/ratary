@@ -10,6 +10,7 @@ import {
 import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { createContextService } from '../../src/memory/create-context-service.js';
+import { createGraphService } from '../../src/services/graph.service.js';
 import { createMcpServer } from '../../src/mcp/server.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
@@ -32,6 +33,8 @@ const EXPECTED_TOOLS = [
   'list_relations',
   'toggle_favorite',
   'archive_memory',
+  'get_graph_capabilities',
+  'traverse_relations',
 ] as const;
 
 describe('MCP tools', () => {
@@ -48,7 +51,8 @@ describe('MCP tools', () => {
     const memoryService = createMemoryService(mockDb, repository);
     const relationService = createMemoryRelationService(mockDb, repository, relationRepository);
     const contextService = createContextService(repository);
-    const server = createMcpServer(memoryService, relationService, contextService);
+    const graphService = createGraphService(mockDb, repository);
+    const server = createMcpServer(memoryService, relationService, contextService, graphService);
 
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await server.connect(serverTransport);
