@@ -41,6 +41,10 @@ function createMockSource(memories: Memory[]): IRetrievalCandidateSource {
   };
 }
 
+function register(role: 'sql' | 'vector' | 'graph', source: IRetrievalCandidateSource) {
+  return { role, source };
+}
+
 describe('CompositeRetrievalCandidateSource', () => {
   let filters: RetrievalFilters;
 
@@ -55,7 +59,10 @@ describe('CompositeRetrievalCandidateSource', () => {
     it('should return empty array when all sources return empty', async () => {
       const sqlSource = createMockSource([]);
       const vectorSource = createMockSource([]);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -66,7 +73,10 @@ describe('CompositeRetrievalCandidateSource', () => {
       const sqlMemories = [createMockMemory('1', 'SQL Memory')];
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource([]);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -80,7 +90,7 @@ describe('CompositeRetrievalCandidateSource', () => {
         createMockMemory('2', 'SQL Memory 2'),
       ];
       const sqlSource = createMockSource(sqlMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource]);
+      const composite = new CompositeRetrievalCandidateSource([register('sql', sqlSource)]);
 
       const result = await composite.findCandidates(filters);
 
@@ -96,7 +106,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -120,7 +133,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -142,7 +158,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -163,7 +182,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -181,7 +203,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       await composite.findCandidates(filters);
 
@@ -210,7 +235,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -226,7 +254,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -246,7 +277,10 @@ describe('CompositeRetrievalCandidateSource', () => {
 
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       const result = await composite.findCandidates(filters);
 
@@ -255,10 +289,53 @@ describe('CompositeRetrievalCandidateSource', () => {
     });
   });
 
+  describe('role-based caps', () => {
+    it('should apply sql+graph caps regardless of source order', async () => {
+      const sqlSource = createMockSource([]);
+      const graphSource = createMockSource([]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('graph', graphSource),
+        register('sql', sqlSource),
+      ]);
+
+      await composite.findCandidates(filters);
+
+      expect(sqlSource.findCandidates).toHaveBeenCalledWith(
+        expect.objectContaining({ maxCandidates: 50 }),
+      );
+      expect(graphSource.findCandidates).toHaveBeenCalledWith(
+        expect.objectContaining({ maxCandidates: 50 }),
+      );
+    });
+
+    it('should apply triple-source caps (40/40/30) when sql, vector, and graph are active', async () => {
+      const sqlSource = createMockSource([]);
+      const vectorSource = createMockSource([]);
+      const graphSource = createMockSource([]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('graph', graphSource),
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
+
+      await composite.findCandidates(filters);
+
+      expect(sqlSource.findCandidates).toHaveBeenCalledWith(
+        expect.objectContaining({ maxCandidates: 40 }),
+      );
+      expect(vectorSource.findCandidates).toHaveBeenCalledWith(
+        expect.objectContaining({ maxCandidates: 40 }),
+      );
+      expect(graphSource.findCandidates).toHaveBeenCalledWith(
+        expect.objectContaining({ maxCandidates: 30 }),
+      );
+    });
+  });
+
   describe('interface compliance', () => {
     it('should implement IRetrievalCandidateSource', () => {
       const sqlSource = createMockSource([]);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource]);
+      const composite = new CompositeRetrievalCandidateSource([register('sql', sqlSource)]);
 
       expect(typeof composite.findCandidates).toBe('function');
     });
@@ -266,7 +343,10 @@ describe('CompositeRetrievalCandidateSource', () => {
     it('should pass filters to sources', async () => {
       const sqlSource = createMockSource([]);
       const vectorSource = createMockSource([]);
-      const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+      const composite = new CompositeRetrievalCandidateSource([
+        register('sql', sqlSource),
+        register('vector', vectorSource),
+      ]);
 
       // Call with filters - each source receives capped version
       await composite.findCandidates(filters);

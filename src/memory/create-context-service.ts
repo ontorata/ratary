@@ -31,7 +31,10 @@ export function createContextService(
       embeddingProvider,
       repository,
     );
-    candidateSource = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
+    candidateSource = new CompositeRetrievalCandidateSource([
+      { role: 'sql', source: sqlSource },
+      { role: 'vector', source: vectorSource },
+    ]);
   }
 
   return new ContextService(repository, candidateSource);
