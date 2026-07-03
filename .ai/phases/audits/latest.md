@@ -43,8 +43,8 @@ Phases 1–10 are **complete with code evidence**. Phase 10 gate PASS at **100%*
 | ID | Item |
 |----|------|
 | T-01 | `MemoryRepository` ~622 lines |
-| T-02 | `SELECT *` in non-retrieval queries |
-| T-03 | N× `recordAccess` on context build |
+| ~~T-02~~ | ~~`SELECT *` in non-retrieval queries~~ — resolved: explicit column lists |
+| ~~T-03~~ | ~~N× `recordAccess` on context build~~ — resolved: `recordAccessBatch` |
 | ~~T-04~~ | ~~D1 in-process vector search~~ — mitigated (pgvector adapter) |
 | T-05 | D1 in-process graph BFS (MVP) |
 

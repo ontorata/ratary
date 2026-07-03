@@ -70,19 +70,21 @@ export class ContextService {
     const context = this.contextBuilder.build(ranked, request.context);
 
     const workspaceId = workspaceIdFromScope(scope);
-    await Promise.all(
-      ranked.map(async (memory) => {
-        await this.repository.recordAccess(memory.id, scope.ownerId, workspaceId);
-        if (this.memoryAccessAuditor) {
-          await this.memoryAccessAuditor.recordAccess({
+    const memoryIds = ranked.map((memory) => memory.id);
+    await this.repository.recordAccessBatch(memoryIds, scope.ownerId, workspaceId);
+
+    if (this.memoryAccessAuditor) {
+      await Promise.all(
+        ranked.map((memory) =>
+          this.memoryAccessAuditor!.recordAccess({
             memoryId: memory.id,
             ownerId: scope.ownerId,
             workspaceId,
             source: 'context.build',
-          });
-        }
-      }),
-    );
+          }),
+        ),
+      );
+    }
 
     return {
       context,

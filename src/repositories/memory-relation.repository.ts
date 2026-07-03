@@ -23,6 +23,13 @@ interface RelationRow {
   created_at: string;
 }
 
+const RELATION_SELECT = `id, source_memory_id, target_memory_id, relation, owner_id,
+  weight, confidence, created_by, source_type, metadata, created_at`;
+
+const RELATION_SELECT_QUALIFIED = RELATION_SELECT.split(', ')
+  .map((column) => `r.${column}`)
+  .join(', ');
+
 function rowToRelation(row: RelationRow): MemoryRelation {
   let metadata: Record<string, unknown> = {};
   try {
@@ -92,7 +99,7 @@ export class MemoryRelationRepository implements IMemoryRelationRepository {
 
   async findById(id: string, ownerId: string): Promise<MemoryRelation | null> {
     const rows = await this.db.query<RelationRow>(
-      'SELECT * FROM memory_relations WHERE id = ? AND owner_id = ?',
+      `SELECT ${RELATION_SELECT} FROM memory_relations WHERE id = ? AND owner_id = ?`,
       [id, ownerId],
     );
     if (rows.length === 0) return null;
@@ -106,7 +113,7 @@ export class MemoryRelationRepository implements IMemoryRelationRepository {
   ): Promise<MemoryRelation[]> {
     if (workspaceId) {
       const rows = await this.db.query<RelationRow>(
-        `SELECT r.* FROM memory_relations r
+        `SELECT ${RELATION_SELECT_QUALIFIED} FROM memory_relations r
          INNER JOIN memories sm ON sm.id = r.source_memory_id AND sm.owner_id = r.owner_id
          INNER JOIN memories tm ON tm.id = r.target_memory_id AND tm.owner_id = r.owner_id
          WHERE r.owner_id = ? AND (r.source_memory_id = ? OR r.target_memory_id = ?)
@@ -118,7 +125,7 @@ export class MemoryRelationRepository implements IMemoryRelationRepository {
     }
 
     const rows = await this.db.query<RelationRow>(
-      `SELECT * FROM memory_relations
+      `SELECT ${RELATION_SELECT} FROM memory_relations
        WHERE owner_id = ? AND (source_memory_id = ? OR target_memory_id = ?)
        ORDER BY created_at DESC`,
       [ownerId, memoryId, memoryId],

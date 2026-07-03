@@ -602,6 +602,30 @@ export class MockD1Client implements D1Client {
     if (normalizedSql.startsWith('UPDATE MEMORIES')) {
       if (
         normalizedSql.includes('LAST_ACCESSED = ?') &&
+        normalizedSql.includes('ACCESS_COUNT = ACCESS_COUNT + 1') &&
+        normalizedSql.includes('ID IN (')
+      ) {
+        const lastAccessed = params[0] as string;
+        const hasWorkspace = normalizedSql.includes('WORKSPACE_ID = ?');
+        const trailing = hasWorkspace ? 2 : 1;
+        const ownerId = params[params.length - trailing] as string;
+        const workspaceId = hasWorkspace ? (params[params.length - 1] as string) : undefined;
+        const ids = params.slice(1, params.length - trailing) as string[];
+        let changes = 0;
+        for (const id of ids) {
+          const existing = this.memories.get(id);
+          if (!existing || existing.owner_id !== ownerId) continue;
+          if (workspaceId !== undefined && (existing.workspace_id ?? null) !== workspaceId) continue;
+          existing.last_accessed = lastAccessed;
+          existing.access_count = (existing.access_count ?? 0) + 1;
+          this.memories.set(id, existing);
+          changes++;
+        }
+        return { results: [], success: true, meta: { changes } };
+      }
+
+      if (
+        normalizedSql.includes('LAST_ACCESSED = ?') &&
         normalizedSql.includes('ACCESS_COUNT = ACCESS_COUNT + 1')
       ) {
         const lastAccessed = params[0] as string;
@@ -873,7 +897,7 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: count } };
     }
 
-    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? AND CODENAME = ?')) {
+    if (normalizedSql.includes('FROM MEMORIES WHERE OWNER_ID = ? AND CODENAME = ?')) {
       const ownerId = params[0] as string;
       const codename = params[1] as string;
       const row = [...this.memories.values()].find(
@@ -882,7 +906,7 @@ export class MockD1Client implements D1Client {
       return { results: row ? [row] : [], success: true };
     }
 
-    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? AND SLUG = ?')) {
+    if (normalizedSql.includes('FROM MEMORIES WHERE OWNER_ID = ? AND SLUG = ?')) {
       const ownerId = params[0] as string;
       const slug = params[1] as string;
       const row = [...this.memories.values()].find(
@@ -946,7 +970,10 @@ export class MockD1Client implements D1Client {
       return { results: rows, success: true };
     }
 
-    if (normalizedSql.includes('SELECT * FROM MEMORY_RELATIONS WHERE ID = ? AND OWNER_ID = ?')) {
+    if (
+      normalizedSql.startsWith('SELECT') &&
+      normalizedSql.includes('FROM MEMORY_RELATIONS WHERE ID = ? AND OWNER_ID = ?')
+    ) {
       const id = params[0] as string;
       const ownerId = params[1] as string;
       const row = this.relations.get(id);
@@ -956,7 +983,12 @@ export class MockD1Client implements D1Client {
       };
     }
 
-    if (normalizedSql.includes('SELECT * FROM MEMORY_RELATIONS')) {
+    if (
+      normalizedSql.startsWith('SELECT') &&
+      normalizedSql.includes('FROM MEMORY_RELATIONS') &&
+      normalizedSql.includes('SOURCE_MEMORY_ID = ? OR TARGET_MEMORY_ID = ?') &&
+      !normalizedSql.includes('INNER JOIN')
+    ) {
       const ownerId = params[0] as string;
       const memoryId = params[1] as string;
       const rows = [...this.relations.values()].filter(
@@ -1044,7 +1076,7 @@ export class MockD1Client implements D1Client {
       return { results: [{ count: filtered.length }], success: true };
     }
     if (
-      normalizedSql.includes('SELECT * FROM MEMORIES WHERE OWNER_ID = ? ORDER BY CREATED_AT ASC')
+      normalizedSql.includes('FROM MEMORIES WHERE OWNER_ID = ? ORDER BY CREATED_AT ASC')
     ) {
       const ownerId = params[0] as string;
       const rows = [...this.memories.values()]
@@ -1131,7 +1163,11 @@ export class MockD1Client implements D1Client {
       return { results: rows, success: true };
     }
 
-    if (normalizedSql.includes('SELECT * FROM MEMORIES')) {
+    if (
+      normalizedSql.includes('FROM MEMORIES') &&
+      !normalizedSql.includes("'' AS CONTENT") &&
+      !normalizedSql.includes('SELECT COUNT(*)')
+    ) {
       const filtered = this.filterMemories(sql, params);
 
       if (normalizedSql.includes('ORDER BY IMPORTANCE DESC, UPDATED_AT DESC')) {

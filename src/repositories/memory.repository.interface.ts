@@ -86,6 +86,7 @@ export interface IMemoryWriter {
   ): Promise<void>;
   deleteAllByOwner(ownerId: string, workspaceId?: string): Promise<void>;
   recordAccess(id: string, ownerId: string, workspaceId?: string): Promise<void>;
+  recordAccessBatch(ids: string[], ownerId: string, workspaceId?: string): Promise<void>;
   bumpImportance(
     id: string,
     ownerId: string,

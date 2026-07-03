@@ -141,6 +141,51 @@ describe('MemoryRepository', () => {
     expect(updated?.updatedAt).toBe(memory.updatedAt);
   });
 
+  it('should batch record access for multiple memories in one update', async () => {
+    const first = await repository.insert({
+      title: 'Batch A',
+      project: 'p1',
+      content: 'a',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0201',
+      slug: 'batch-a',
+      favorite: false,
+      ownerId,
+    });
+    const second = await repository.insert({
+      title: 'Batch B',
+      project: 'p1',
+      content: 'b',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0202',
+      slug: 'batch-b',
+      favorite: false,
+      ownerId,
+    });
+
+    await repository.recordAccessBatch([first.id, second.id], ownerId);
+
+    const updatedFirst = await repository.findById(first.id, ownerId);
+    const updatedSecond = await repository.findById(second.id, ownerId);
+
+    expect(updatedFirst?.accessCount).toBe(1);
+    expect(updatedSecond?.accessCount).toBe(1);
+  });
+
   it('should delete only when owner matches', async () => {
     const memory = await repository.insert({
       title: 'Del',

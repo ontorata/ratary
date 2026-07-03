@@ -20,7 +20,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 402 |
+| Tests passing | 405 |
 | MCP tools | 19 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
@@ -72,8 +72,8 @@ New dev environment: [README.md § Instalasi](../../../README.md#instalasi-pada-
 | — | `MemoryRepository` ~622 lines | Additive methods only; split when Postgres adapter lands |
 | ~~—~~ | ~~`MemoryRelationRepository` no interface~~ | ✅ **Resolved** — `IMemoryRelationRepository` created (2026-07-03) |
 | ~~O-04-2~~ | ~~Retrieval projection content exclusion — verify all paths~~ | ✅ **Resolved** — regression test in `tests/repositories/memory.repository.test.ts` (2026-07-03) |
-| — | `SELECT *` in non-retrieval repository queries | **Investigated (2026-07-03)** — postponed; retrieval paths use `RETRIEVAL_MEMORY_SELECT`; revisit with Postgres adapter |
-| — | N× `recordAccess` on context build | Batch update (perf) — low-medium effort |
+| ~~—~~ | ~~`SELECT *` in non-retrieval repository queries~~ | ✅ **Resolved** — explicit `MEMORY_SELECT` / `RELATION_SELECT` (2026-07-03) |
+| ~~—~~ | ~~N× `recordAccess` on context build~~ | ✅ **Resolved** — `recordAccessBatch` + single UPDATE (2026-07-03) |
 | ~~—~~ | ~~D1 vector search in-process~~ | ✅ **Mitigated** — pgvector adapter (ADR-011); opt-in `VECTOR_PROVIDER=pgvector` |
 
 Aggregate audit: [.ai/phases/audits/latest.md](../../phases/audits/latest.md).

@@ -34,6 +34,11 @@ const RETRIEVAL_MEMORY_SELECT = `id, title, project, '' as content, summary, tag
   importance, language, notes, project_id, level, last_accessed, access_count,
   embedding_id, object_key, semantic_hash`;
 
+const MEMORY_SELECT = `id, title, project, content, summary, tags, favorite, archived,
+  owner_id, created_at, updated_at, codename, slug, keywords, category, memory_type,
+  importance, language, notes, project_id, level, last_accessed, access_count,
+  embedding_id, object_key, semantic_hash, workspace_id, last_modified_by_agent_id`;
+
 export class MemoryRepository implements IMemoryRepository {
   constructor(private readonly db: ISqlDatabase) {}
 
@@ -259,7 +264,7 @@ export class MemoryRepository implements IMemoryRepository {
     appendWorkspaceFilter(conditions, params, workspaceId);
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories WHERE ${conditions.join(' AND ')}`,
+      `SELECT ${MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')}`,
       params,
     );
     if (rows.length === 0) return null;
@@ -272,7 +277,7 @@ export class MemoryRepository implements IMemoryRepository {
     appendWorkspaceFilter(conditions, params, workspaceId);
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories WHERE ${conditions.join(' AND ')}`,
+      `SELECT ${MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')}`,
       params,
     );
     if (rows.length === 0) return null;
@@ -308,7 +313,7 @@ export class MemoryRepository implements IMemoryRepository {
     const total = countRows[0]?.count ?? 0;
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories ${whereClause}
+      `SELECT ${MEMORY_SELECT} FROM memories ${whereClause}
        ORDER BY updated_at DESC
        LIMIT ? OFFSET ?`,
       [...params, filters.limit, filters.offset],
@@ -465,7 +470,7 @@ export class MemoryRepository implements IMemoryRepository {
     appendWorkspaceFilter(conditions, params, workspaceId);
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories WHERE ${conditions.join(' AND ')} ORDER BY created_at ASC`,
+      `SELECT ${MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')} ORDER BY created_at ASC`,
       params,
     );
     return rows.map(rowToMemory);
@@ -473,7 +478,7 @@ export class MemoryRepository implements IMemoryRepository {
 
   async findWithoutCodename(ownerId: string, limit: number): Promise<Memory[]> {
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories
+      `SELECT ${MEMORY_SELECT} FROM memories
        WHERE owner_id = ? AND (codename IS NULL OR codename = '')
        ORDER BY created_at ASC
        LIMIT ?`,
@@ -484,7 +489,7 @@ export class MemoryRepository implements IMemoryRepository {
 
   async findWithoutEmbedding(ownerId: string, limit: number): Promise<Memory[]> {
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories
+      `SELECT ${MEMORY_SELECT} FROM memories
        WHERE owner_id = ? AND (embedding_id IS NULL OR embedding_id = '')
        ORDER BY updated_at DESC
        LIMIT ?`,
@@ -597,9 +602,20 @@ export class MemoryRepository implements IMemoryRepository {
   }
 
   async recordAccess(id: string, ownerId: string, workspaceId?: string): Promise<void> {
+    await this.recordAccessBatch([id], ownerId, workspaceId);
+  }
+
+  async recordAccessBatch(
+    ids: string[],
+    ownerId: string,
+    workspaceId?: string,
+  ): Promise<void> {
+    if (ids.length === 0) return;
+
     const now = nowISO();
-    const conditions = ['id = ?', 'owner_id = ?'];
-    const params: unknown[] = [now, id, ownerId];
+    const placeholders = ids.map(() => '?').join(', ');
+    const conditions = [`id IN (${placeholders})`, 'owner_id = ?'];
+    const params: unknown[] = [now, ...ids, ownerId];
     appendWorkspaceFilter(conditions, params, workspaceId);
 
     await this.db.execute(
@@ -625,7 +641,7 @@ export class MemoryRepository implements IMemoryRepository {
     }
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories WHERE ${conditions.join(' AND ')} ORDER BY importance DESC, updated_at DESC`,
+      `SELECT ${MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')} ORDER BY importance DESC, updated_at DESC`,
       params,
     );
     return rows.map(rowToMemory);
@@ -655,7 +671,7 @@ export class MemoryRepository implements IMemoryRepository {
     }
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories WHERE ${conditions.join(' AND ')} ORDER BY access_count DESC`,
+      `SELECT ${MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')} ORDER BY access_count DESC`,
       params,
     );
     return rows.map(rowToMemory);
@@ -782,7 +798,7 @@ export class MemoryRepository implements IMemoryRepository {
     const total = countRows[0]?.count ?? 0;
 
     const rows = await this.db.query<MemoryRow>(
-      `SELECT * FROM memories ${whereClause}
+      `SELECT ${MEMORY_SELECT} FROM memories ${whereClause}
        ORDER BY updated_at DESC
        LIMIT ? OFFSET ?`,
       [...params, limit, offset],
