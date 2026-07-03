@@ -1,7 +1,7 @@
 ﻿# Phase 7 — Agent Runtime
 
-**Status:** Ready  
-**Roadmap:** Next
+**Status:** ✅ Complete  
+**Roadmap:** Completed
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -35,15 +35,15 @@ No external design archive.
 
 | Document | Responsibility | Status |
 |----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Approved design intent | Reserved |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | Reserved |
-| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | Reserved |
-| [TESTING.md](TESTING.md) | Verification strategy | Reserved |
-| [REVIEW.md](REVIEW.md) | Architecture review and gate | Reserved |
-| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | Reserved |
+| [DESIGN.md](DESIGN.md) | Agent boundary architecture | ✅ Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ N/A |
+| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ N/A |
+| [TESTING.md](TESTING.md) | Verification strategy | ✅ N/A |
+| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
+| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
 | [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | Reserved |
-| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | Reserved |
-| [RISKS.md](RISKS.md) | Risk register | Reserved |
+| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
+| [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
 
 ---
 
