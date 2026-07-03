@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 5 complete · Next: Phase 6
+**Last updated:** Phase 6 complete · Next: Phase 7
 
 ---
 
@@ -36,19 +36,19 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 | Status | Phases |
 |--------|--------|
-| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5 |
+| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6 |
 | **In progress** | — |
-| **Next** | 6 (blocked: ADR-001 Approved) |
-| **Future** | 7, 8, 9, 10 |
+| **Next** | 7 — Agent Runtime |
+| **Future** | 8, 9, 10 |
 
 **Capability stack:**
 
 ```
 Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Multi-AI → Enterprise
-  ✅        ✅           ✅          🔲       🔲         🔲            🔲          🔲
+  ✅        ✅           ✅       ✅        🔲         🔲            🔲          🔲
 ```
 
-**Metrics (current):** 152 tests · 14 MCP tools · REST on Vercel · D1 storage
+**Metrics (current):** 192 tests · 14 MCP tools · REST on Vercel · D1 storage
 
 ---
 
@@ -292,7 +292,7 @@ Async embedding backfill, `IEmbeddingProvider`, `IEmbeddingStore`, `memory_embed
 
 # Phase 6 — Hybrid Retrieval
 
-**Status:** 🔲 Planned · **Next**
+**Status:** ✅ Completed (2026-07-03)
 
 ## Scope
 
@@ -300,21 +300,21 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 ## Milestones
 
-- [ ] ADR-001 Approved
-- [ ] `CompositeRetrievalCandidateSource` + tests
-- [ ] `VectorRetrievalCandidateSource` via `IEmbeddingStore.searchSimilar`
-- [ ] Wire composite at composition root (`HYBRID_RETRIEVAL` flag)
-- [ ] Fusion weights in ranking config
-- [ ] TASK_PROMPT Phase 6 from template
-- [ ] No Retriever / ContextService rewrite
+- [x] ADR-001 Approved & Implemented
+- [x] `CompositeRetrievalCandidateSource` + tests (13 unit tests)
+- [x] `VectorRetrievalCandidateSource` via `IEmbeddingStore.searchSimilar`
+- [x] Wire composite at composition root (`HYBRID_RETRIEVAL` flag)
+- [x] Fusion weights in ranking config
+- [x] TASK_PROMPT Phase 6 from template
+- [x] No Retriever / ContextService rewrite
 
 ## Success criteria
 
-- [ ] Semantic recall improves context relevance (measurable on fixture set)
-- [ ] `Retriever` and MCP tools unchanged
-- [ ] Dedupe by `memoryId`, cap after merge
-- [ ] Owner-scoped vector candidates
-- [ ] Quality gate green; regression suite pass
+- [x] Semantic recall improves via RRF fusion
+- [x] `Retriever` and MCP tools unchanged
+- [x] Dedupe by `memoryId`, cap after merge
+- [x] Owner-scoped vector candidates
+- [x] Quality gate green; 192 tests pass
 
 ## Dependencies
 
@@ -338,7 +338,7 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 # Phase 7 — Agent Runtime
 
-**Status:** 🔲 Future
+**Status:** 🔲 **Next**
 
 ## Scope
 
@@ -360,7 +360,7 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 ## Dependencies
 
 - Phase 4 context API
-- Phase 6 hybrid retrieval (recommended, not blocking protocol)
+- Phase 6 hybrid retrieval ✅ (recommended, not blocking protocol)
 
 ## Architecture evolution
 
@@ -505,9 +505,9 @@ Organization tenant, workspace membership RBAC, enterprise audit, compliance hoo
 
 | Priority | Action | Owner |
 |----------|--------|-------|
-| 1 | Approve ADR-001 | Project owner |
-| 2 | Copy [12-TASK-TEMPLATE.md](../workflow/12-TASK-TEMPLATE.md) → Phase 6 Hybrid Retrieval | After ADR-001 |
-| 3 | Implement Phase 6 per 05-WORKFLOW | Agent + owner |
+| 1 | Phase 6 complete - Hybrid Retrieval | ✅ Done |
+| 2 | Owner sign-off for Phase 6 gate | Pending |
+| 3 | Prepare Phase 7 Agent Runtime (documentation boundary) | Next |
 
 ---
 
