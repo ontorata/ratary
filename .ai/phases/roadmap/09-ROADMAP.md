@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 10 infrastructure complete (2026-07-03)
+**Last updated:** Phase 10 gate PASS (2026-07-03)
 
 ---
 
@@ -36,8 +36,8 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 | Status | Phases |
 |--------|--------|
-| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9, 9.5, 10 (infra) |
-| **In progress** | 10 — gate review |
+| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9, 9.5, 10 |
+| **In progress** | — |
 | **Completed (sub)** | 9.5 — Platform Architecture |
 | **Next** | Post–Phase 10 roadmap |
 | **Future** | — |
@@ -46,7 +46,7 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 ```
 Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Multi-AI → Enterprise
-  ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅ (infra)
+  ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅
 ```
 
 **Metrics (current):** 397 tests · 19 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
@@ -484,11 +484,11 @@ Storage-agnostic **port registry** (`src/ports/`). Prepare enterprise infrastruc
 
 # Phase 10 — Enterprise
 
-**Status:** 🟡 Implemented — formal gate pending
+**Status:** ✅ **Complete** (gate PASS 2026-07-03)
 
 ## Scope
 
-Organization tenant, workspace membership RBAC, platform infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry), and external provider backfill scripts.
+Organization tenant, workspace membership RBAC, platform infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry), external provider backfill scripts, and opt-in memory access audit.
 
 ## Milestones
 
@@ -498,15 +498,15 @@ Organization tenant, workspace membership RBAC, platform infrastructure adapters
 - [x] Postgres adapter (ADR-009)
 - [x] Platform adapters T0–T8 + events (ADR-005, 011–016)
 - [x] Backfill scripts (pgvector, Meilisearch, Neo4j)
-- [ ] Audit expansion (memory access optional ADR)
-- [ ] Formal phase gate (REVIEW, RETROSPECTIVE)
+- [x] Audit expansion (memory access — ADR-017)
+- [x] Formal phase gate (REVIEW, RETROSPECTIVE)
 
 ## Success criteria
 
 - [x] Multi-tenant org isolation (E2E)
 - [x] Role-based memory access within workspace (`ENTERPRISE_RBAC` opt-in)
-- [ ] Audit trail for compliance queries
-- [x] Scale path documented and tested (397 tests at default env)
+- [x] Audit trail for compliance queries (`MEMORY_ACCESS_AUDIT` opt-in)
+- [x] Scale path documented and tested (402 tests at default env)
 
 ## Dependencies
 
@@ -534,9 +534,10 @@ Organization tenant, workspace membership RBAC, platform infrastructure adapters
 
 | Priority | Action | Owner |
 |----------|--------|-------|
-| 1 | Phase 7 complete — Agent Runtime boundary | ✅ Done |
-| 2 | Owner sign-off for Phase 6 gate | ✅ Done (2026-07-03) |
-| 3 | Phase 8 implementation (ADR-006 Approved) | Next |
+| 1 | Phase 8 — Knowledge Graph (ADR-006) | ✅ Done (gate PASS 2026-07-03) |
+| 2 | Phase 9 / 9.5 — Multi-AI + platform ports | ✅ Done (2026-07-03) |
+| 3 | Phase 10 — Enterprise gate | ✅ Done (2026-07-03) |
+| 4 | Post–Phase 10 roadmap definition | Next |
 
 ---
 
@@ -574,14 +575,16 @@ Organization tenant, workspace membership RBAC, platform infrastructure adapters
 
 # Checklist — phase completion
 
-- [ ] All phase milestones checked
-- [ ] Success criteria verified with tests
-- [ ] 10-PHASE-STATUS.md phase row updated
-- [ ] 09-ROADMAP.md status updated
-- [ ] ADRs marked Implemented
-- [ ] TASK_PROMPT completion report archived
-- [ ] PANDUAN updated if user-visible
-- [ ] No constitutional violations per 08-REVIEW
+**Last verified:** 2026-07-03 (Phase 10 gate PASS)
+
+- [x] All phase milestones checked — Phases 1–10; evidence in `.ai/phases/NN-*/CHECKLIST.md`
+- [x] Success criteria verified with tests — **402 passed** (89 files); `npm test` green
+- [x] 10-PHASE-STATUS.md phase row updated — [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
+- [x] 09-ROADMAP.md status updated — Summary + Phase 10 **Complete**
+- [x] ADRs marked Implemented / Approved — [docs/adr/README.md](../../../docs/adr/README.md) (ADR-001–017)
+- [x] TASK_PROMPT completion report archived — [TASK_PROMPT.md](../../TASK_PROMPT.md) → post–Phase 10
+- [x] PANDUAN updated if user-visible — §8 platform, §9 migrasi, `MEMORY_ACCESS_AUDIT`
+- [x] No constitutional violations per 08-REVIEW — Phase 10 REVIEW PASS; layer boundaries preserved
 
 ---
 

@@ -1,52 +1,29 @@
-# Task Prompt — Phase 9.5 Platform Architecture
+# Task Prompt — Post–Phase 10
 
-**Status:** ✅ Complete — ADR-008 Implemented (2026-07-03)  
+**Status:** Phases 1–10 complete (2026-07-03)  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)
 
 ---
 
 # TASK
 
-Implement **Phase 9.5 — Platform Architecture** per [ADR-008](../docs/adr/008-platform-architecture.md).
+**No active phase implementation.** All roadmap phases through Phase 10 are gated PASS.
 
-**Objective:** Storage-agnostic port registry. **No** new user features. **No** provider implementations.
+**Next:** Define post–Phase 10 roadmap item (production Postgres cutover, batch `recordAccess`, observability dashboards, or other owner-prioritized work).
 
-**Evidence:** [.ai/phases/09.5-platform-architecture/](phases/09.5-platform-architecture/)
-
----
-
-## ADR gates
-
-| ADR | Title | Status |
-|-----|-------|--------|
-| [008](../docs/adr/008-platform-architecture.md) | Platform architecture ports | **Approved** |
+**Evidence:** [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 
 ---
 
-## Implementation order
+## Recently completed (reference)
 
-1. [x] ADR-008 Approved
-2. [x] `src/ports/` registry (10 interfaces)
-3. [x] Contract tests (`tests/ports/platform-ports.test.ts`)
-4. [x] Phase gate docs (DESIGN, IMPLEMENTATION, MIGRATION, TESTING, RISKS)
-5. [x] REVIEW + COMPLETION + quality gate (310 tests)
-
----
-
-## Definition of Done
-
-- [x] All required ports defined in `src/ports/`
-- [x] Services unchanged; D1 adapters unchanged
-- [x] No provider implementations
-- [x] 310 tests green
-- [x] Gate REVIEW PASS
+| Phase | ADR | Gate |
+|-------|-----|------|
+| 8 Knowledge Graph | ADR-006 Implemented | PASS 2026-07-03 |
+| 9 Multi-AI | ADR-007 Implemented | PASS 2026-07-03 |
+| 9.5 Platform | ADR-008 Implemented | PASS 2026-07-03 |
+| 10 Enterprise | ADR-005–017 | PASS 2026-07-03 |
 
 ---
 
-## Next
-
-**Phase 10 — Enterprise** per [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md).
-
----
-
-*Rotated from Phase 9 completion 2026-07-03.*
+*Rotated after Phase 10 gate PASS 2026-07-03.*

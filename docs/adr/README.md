@@ -21,6 +21,7 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [014-meilisearch-retrieval-source.md](014-meilisearch-retrieval-source.md) | Meilisearch retrieval source | **Approved** | External search index |
 | [015-neo4j-graph-store-adapter.md](015-neo4j-graph-store-adapter.md) | Neo4j graph store adapter | **Approved** | Graph scale |
 | [016-redis-streams-event-bus.md](016-redis-streams-event-bus.md) | Redis Streams event bus | **Approved** | Async events |
+| [017-memory-access-audit.md](017-memory-access-audit.md) | Memory access audit (opt-in) | **Implemented** | Compliance trail |
 
 **Rule:** No implementation of Proposed ADRs until owner marks **Approved**.
 
@@ -28,6 +29,6 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 
 **Phase 9.5 complete:** ADR-008 Implemented (2026-07-03).
 
-**Phase 10:** ADR-005–016 Approved (T1–T8 infrastructure adapters); ADR-010 Implemented.
+**Phase 10:** ADR-005–017 Approved/Implemented; gate PASS (2026-07-03).
 
 **Implementation plan:** [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)

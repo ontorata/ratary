@@ -9,6 +9,7 @@ import { Ranker, type ScoredMemory } from './ranker.js';
 import { ContextBuilder, type ContextBuildOptions } from './context-builder.js';
 import { PromptBuilder } from './prompt-builder.js';
 import { DEFAULT_RETRIEVAL_RANK_LIMIT } from './context.config.js';
+import type { IMemoryAccessAuditor } from '../ports/audit/imemory-access-auditor.port.js';
 
 export interface BuildContextRequest {
   projectId?: string;
@@ -39,6 +40,7 @@ export class ContextService {
   constructor(
     private readonly repository: IMemoryRepository,
     candidateSource?: IRetrievalCandidateSource,
+    private readonly memoryAccessAuditor?: IMemoryAccessAuditor,
   ) {
     this.retriever = new Retriever(candidateSource ?? new SqlRetrievalCandidateSource(repository));
     this.ranker = new Ranker();
@@ -67,10 +69,19 @@ export class ContextService {
 
     const context = this.contextBuilder.build(ranked, request.context);
 
+    const workspaceId = workspaceIdFromScope(scope);
     await Promise.all(
-      ranked.map((memory) =>
-        this.repository.recordAccess(memory.id, scope.ownerId, workspaceIdFromScope(scope)),
-      ),
+      ranked.map(async (memory) => {
+        await this.repository.recordAccess(memory.id, scope.ownerId, workspaceId);
+        if (this.memoryAccessAuditor) {
+          await this.memoryAccessAuditor.recordAccess({
+            memoryId: memory.id,
+            ownerId: scope.ownerId,
+            workspaceId,
+            source: 'context.build',
+          });
+        }
+      }),
     );
 
     return {

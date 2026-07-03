@@ -107,6 +107,10 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+    MEMORY_ACCESS_AUDIT: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {

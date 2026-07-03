@@ -443,7 +443,7 @@ curl https://ai-brain-beryl.vercel.app/api/v1/memory?limit=3 \
 
 ```bash
 npm run dev                    # Server lokal
-npm run test                   # Unit + E2E (397 tests)
+npm run test                   # Unit + E2E (402 tests)
 npm run test:integration       # Verifikasi D1 live
 npm run mcp                    # MCP standalone
 npm run import:backups         # Import backup markdown
@@ -631,7 +631,7 @@ Lihat [Langkah 7 — Folder cadangan chat](#langkah-7--folder-cadangan-chat-opsi
 npm run dev          # Start dev server (disarankan, graceful shutdown)
 npm run build:local  # Compile TypeScript → dist/
 npm start            # Jalankan dist/ (butuh build:local dulu)
-npm run test         # Run tests (397 unit + E2E)
+npm run test         # Run tests (402 unit + E2E)
 npm run lint         # ESLint
 npm run format       # Prettier
 npm run format:check # CI format gate
@@ -679,6 +679,7 @@ Default: D1 metadata, inline storage, noop cache/events/analytics. Provider ekst
 | `EVENT_BUS_PROVIDER` | `none` | `none` \| `noop` \| `redis` |
 | `ANALYTICS_PROVIDER` | `none` | `none` \| `duckdb` |
 | `ENTERPRISE_RBAC` | `false` | RBAC workspace (Fase 10) |
+| `MEMORY_ACCESS_AUDIT` | `false` | Audit `memory.accessed` on context build (ADR-017) |
 | `OTEL_ENABLED` | `false` | OpenTelemetry HTTP tracing |
 
 Backfill provider eksternal (dry-run default): `db:backfill-pgvector`, `db:backfill-meilisearch`, `db:backfill-neo4j` — lihat [PANDUAN.md](docs/PANDUAN.md).

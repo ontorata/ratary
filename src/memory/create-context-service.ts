@@ -6,6 +6,7 @@ import type { IVectorStore } from '../ports/vector/ivector-store.port.js';
 import type { IGraphProvider } from '../graph/igraph-provider.interface.js';
 import type { RegisteredRetrievalSource } from './retrieval-source.types.js';
 import type { Env } from '../config/env.js';
+import type { IMemoryAccessAuditor } from '../ports/audit/imemory-access-auditor.port.js';
 import { ContextService } from './context.service.js';
 import { VectorRetrievalCandidateSource } from './vector-retrieval-candidate-source.js';
 import { CompositeRetrievalCandidateSource } from './composite-retrieval-candidate-source.js';
@@ -19,6 +20,7 @@ export interface ContextServicePlatformDeps {
   vectorStore?: IVectorStore;
   sql?: ISqlDatabase;
   graphProvider?: IGraphProvider;
+  memoryAccessAuditor?: IMemoryAccessAuditor;
 }
 
 /**
@@ -37,7 +39,7 @@ export function createContextService(
   const env = getEnv();
   const candidateSource = buildCompositeCandidateSource(repository, env, platform);
 
-  return new ContextService(repository, candidateSource);
+  return new ContextService(repository, candidateSource, platform?.memoryAccessAuditor);
 }
 
 function buildCompositeCandidateSource(

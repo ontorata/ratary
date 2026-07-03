@@ -11,7 +11,7 @@
 ```text
 npm run lint      → PASS
 npm run typecheck → PASS
-npm test          → 337 passed (71 files)
+npm test          → 402 passed (72 files)
 ```
 
 Baseline at default env (`ENTERPRISE_RBAC=false`): **unchanged regression surface** vs pre-Phase-10 (310+ target exceeded).
@@ -28,7 +28,8 @@ Baseline at default env (`ENTERPRISE_RBAC=false`): **unchanged regression surfac
 | Enterprise DDL | `tests/db/enterprise-migration.test.ts` | 4 |
 | Org backfill | `tests/scripts/organization-backfill.test.ts` | 1 |
 | RBAC E2E | `tests/api/cross-organization-leak.test.ts` | 12 |
-| JWT enterprise claims | `tests/auth/jwt.service.test.ts` | +1 |
+| Memory access audit | `tests/infrastructure/memory-access-auditor.test.ts` | 4 |
+| Context audit wiring | `tests/memory/context.service.test.ts` | +1 |
 
 ---
 

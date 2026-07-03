@@ -11,6 +11,7 @@ import {
 import type { MemoryService } from '../services/memory.service.js';
 import { MemoryRelationService } from '../services/memory-relation.service.js';
 import { createContextService } from '../memory/create-context-service.js';
+import { createMemoryAccessAuditor } from '../infrastructure/composition/create-memory-access-auditor.js';
 import { createEmbeddingProvider } from '../embedding/create-embedding-provider.js';
 import { createPlatformAdapters } from '../infrastructure/composition/create-platform-adapters.js';
 import { getEnv } from '../config/index.js';
@@ -419,10 +420,12 @@ export async function startMcpStdioServer(): Promise<void> {
   const memoryService = createMemoryService(platform.sql, repository, multiAi);
   const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
   const embeddingProvider = createEmbeddingProvider();
+  const memoryAccessAuditor = createMemoryAccessAuditor(env, platform.sql);
   const contextService = createContextService(repository, {
     embeddingProvider,
     vectorStore: platform.vectorStore,
     sql: platform.sql,
+    memoryAccessAuditor,
   });
   const graphService = createGraphService(platform.sql, repository);
   const { scopeResolver, agentIdentity } = multiAi;

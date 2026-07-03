@@ -25,6 +25,7 @@ import { createGraphController } from './controllers/graph.controller.js';
 import { createWorkspaceController } from './controllers/workspace.controller.js';
 import { createGraphService } from './services/graph.service.js';
 import { createContextService } from './memory/create-context-service.js';
+import { createMemoryAccessAuditor } from './infrastructure/composition/create-memory-access-auditor.js';
 import { createEmbeddingProvider } from './embedding/create-embedding-provider.js';
 import { registerV1Routes } from './routes/v1/index.js';
 import { healthRoutes } from './routes/index.js';
@@ -133,10 +134,12 @@ export async function buildApp(options?: {
   const knowledgeController = createKnowledgeController(memoryService, scopeResolver);
   const relationController = createMemoryRelationController(relationService, scopeResolver);
   const embeddingProvider = createEmbeddingProvider();
+  const memoryAccessAuditor = createMemoryAccessAuditor(env, platform.sql);
   const contextService = createContextService(repository, {
     embeddingProvider,
     vectorStore: platform.vectorStore,
     sql: platform.sql,
+    memoryAccessAuditor,
   });
   const contextController = createContextController(contextService, scopeResolver);
   const graphService = createGraphService(platform.sql, repository);

@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 10 infrastructure adapters complete (2026-07-03)
+**Last updated:** Phase 10 gate PASS (2026-07-03)
 
 ---
 
@@ -20,13 +20,13 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 397 |
+| Tests passing | 402 |
 | MCP tools | 19 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
 | Storage (default) | Cloudflare D1 (HTTP API) |
 | Local dev | `npm run dev` → `dev-server.ts` |
-| Platform adapters | Opt-in via env — see [ADR-008–016](../../../docs/adr/README.md) |
+| Platform adapters | Opt-in via env — see [ADR-008–017](../../../docs/adr/README.md) |
 
 ---
 
@@ -34,8 +34,8 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | Post–Phase 10 gate / next roadmap item — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| Last completed | Phase 10 — [.ai/phases/10-enterprise/](../phases/10-enterprise/README.md) |
+| Active task | Post–Phase 10 roadmap — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| Last completed | Phase 10 gate PASS — [.ai/phases/10-enterprise/](../phases/10-enterprise/README.md) |
 | Blocker | None |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.

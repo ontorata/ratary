@@ -1,8 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ContextService } from '../../src/memory/context.service.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 import { createTestMemoryRepository } from '../helpers/sql-test-harness.js';
+import type { IMemoryAccessAuditor } from '../../src/ports/audit/imemory-access-auditor.port.js';
 
 describe('ContextService', () => {
   let service: ContextService;
@@ -62,5 +63,21 @@ describe('ContextService', () => {
     expect(result.system).toBeTruthy();
     expect(result.user).toContain('Summarize architecture');
     expect(result.context).toContain('Architecture note');
+  });
+
+  it('should emit memory access audit entries when auditor is wired', async () => {
+    await seed('Audit target', 'Content for audit trail');
+
+    const recordAccess = vi.fn().mockResolvedValue(undefined);
+    const auditor: IMemoryAccessAuditor = { recordAccess };
+    const auditedService = new ContextService(repository, undefined, auditor);
+
+    await auditedService.buildContext({ ownerId }, { query: 'audit', limit: 5 });
+
+    expect(recordAccess).toHaveBeenCalled();
+    expect(recordAccess.mock.calls[0][0]).toMatchObject({
+      ownerId,
+      source: 'context.build',
+    });
   });
 });

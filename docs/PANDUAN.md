@@ -230,6 +230,7 @@ Adapter eksternal diaktifkan melalui variabel lingkungan di composition root. **
 | `EVENT_BUS_PROVIDER` | `none` | Redis Streams |
 | `ANALYTICS_PROVIDER` | `none` | DuckDB (dev) |
 | `ENTERPRISE_RBAC` | `false` | RBAC workspace |
+| `MEMORY_ACCESS_AUDIT` | `false` | Audit trail `memory.accessed` (context build) |
 | `OTEL_ENABLED` | `false` | OpenTelemetry |
 
 Rincian ADR: [docs/adr/README.md](adr/README.md). Contoh variabel: [.env.example](../.env.example).
@@ -267,7 +268,7 @@ Ringkasan: salin `.env` (terutama `AUTH_SECRET`), jalankan `db:migrate`, verifik
 | [.ai/core/ai-rules/11-AI-RULES.md](.ai/core/ai-rules/11-AI-RULES.md) | Aturan agent + registry modul |
 | [.ai/core/architecture/04-ARCHITECTURE.md](.ai/core/architecture/04-ARCHITECTURE.md) | Struktur, layer, extension points |
 | [.ai/workflow/05-WORKFLOW.md](.ai/workflow/05-WORKFLOW.md) | Proses Principal Engineer & format analisis |
-| [TASK_PROMPT.md](TASK_PROMPT.md) | Laporan selesai Phase 5 Embedding |
+| [TASK_PROMPT.md](TASK_PROMPT.md) | Status post–Phase 10 |
 | [.ai/workflow/12-TASK-TEMPLATE.md](.ai/workflow/12-TASK-TEMPLATE.md) | Template task untuk fase berikutnya |
 | [adr/POLICY.md](adr/POLICY.md) | Kebijakan ADR — wajib untuk perubahan struktural |
 | [archive/](archive/) | Desain historis per fase |
