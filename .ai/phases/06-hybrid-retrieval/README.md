@@ -1,7 +1,7 @@
 ﻿# Phase 6 — Hybrid Retrieval
 
-**Status:** Ready  
-**Roadmap:** Next  
+**Status:** ✅ Complete  
+**Roadmap:** Completed
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -35,21 +35,25 @@ See [docs/adr/](../../docs/adr/) and .ai/adr/.
 
 | Document | Responsibility | Status |
 |----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Approved design intent | Active |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | Reserved |
-| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | Reserved |
-| [TESTING.md](TESTING.md) | Verification strategy | Reserved |
-| [REVIEW.md](REVIEW.md) | Architecture review and gate | Reserved |
-| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | Reserved |
+| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ Complete |
+| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ N/A |
+| [TESTING.md](TESTING.md) | Verification strategy | ✅ Complete |
+| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
+| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
 | [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | Reserved |
-| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | Active |
-| [RISKS.md](RISKS.md) | Risk register | Active |
+| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
+| [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
 
 ---
 
 ## Notes
 
-**DESIGN**, **RISKS**, and **CHECKLIST** are active. Implementation documents await ADR-001 Approval.
+**Phase 6 Gate: PASS** (2026-07-03)
+- All milestones complete
+- 192 tests passing
+- ADR-001 Implemented
+- Ready for Phase 7
 
 ---
 

@@ -1,7 +1,7 @@
 ﻿# Phase 7 — Agent Runtime
 
-**Status:** Reserved  
-**Roadmap:** Future  
+**Status:** Ready  
+**Roadmap:** Next
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -49,7 +49,15 @@ No external design archive.
 
 ## Notes
 
-Folder scaffolded. Documents activate at Readiness Review.
+Phase 7 is primarily a **documentation phase** - defining the agent integration boundary. No new implementation in `src/`.
+
+**Key Scope:**
+- Agent loops consume MCP/REST externally (outside repo)
+- Foundation may add scope hooks per ADR-002
+- MCP tool contracts stable for agent consumers
+- Optional: `agentId` in `MemoryScope` types (Phase 9)
+
+**Dependencies:** Phase 4 context API ✅, Phase 6 hybrid ✅
 
 ---
 

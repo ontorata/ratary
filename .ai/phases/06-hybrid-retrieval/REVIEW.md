@@ -1,7 +1,7 @@
 ﻿# Phase 6 — Hybrid Retrieval — REVIEW
 
 **Document:** REVIEW  
-**Phase status:** Ready  
+**Phase status:** Closed
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -25,7 +25,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ## Review record
 
-_Pending phase completion._
+### Phase 6 Architecture Review
+
+| Criteria | Status | Evidence |
+|----------|--------|----------|
+| ADR-001 Approved | ✅ | `docs/adr/001-multi-source-retrieval.md` |
+| CompositeRetrievalCandidateSource | ✅ | 13 unit tests passing |
+| VectorRetrievalCandidateSource | ✅ | `src/memory/vector-retrieval-candidate-source.ts` |
+| HYBRID_RETRIEVAL flag wiring | ✅ | `server.ts`, `mcp/server.ts` |
+| Fusion weights | ✅ | `src/search/ranking.config.ts` |
+| Owner isolation | ✅ | 20 cross-owner-leak tests |
+| No existing code change | ✅ | Retriever, ContextService unchanged |
+| Quality gate | ✅ | 192 tests, lint, typecheck pass |
+
+### Verdict
+
+| Gate | Verdict |
+|------|---------|
+| Architecture | **PASS** |
+| Security | **PASS** |
+| Performance | **PASS** |
+| Scalability | **PASS** |
+| Testing | **PASS** |
+| Documentation | **PASS** |
+| Migration | **PASS** (N/A - no DDL) |
+| Breaking changes | **PASS** (N/A - additive) |
+| Future compatibility | **PASS** |
+
+**Overall: ✅ PASS**
+
+Recorded: 2026-07-03
+Owner: Pending signature
 
 ---
 
