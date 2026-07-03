@@ -138,7 +138,7 @@ npm run mcp          # tidak crash = D1 OK
 npm run test:integration
 ```
 
-Tools MCP: `save_memory`, `search_memory`, `get_context`, `build_prompt`, dan 10 lainnya (14 total).
+Tools MCP: `save_memory`, `search_memory`, `get_context`, `build_prompt`, `get_graph_capabilities`, `traverse_relations`, dan 10 lainnya (**16 total**).
 
 ### MCP vs REST
 
@@ -174,6 +174,35 @@ Backfill **async** — CRUD tidak memanggil model embedding.
 4. Jalankan: `npm run db:backfill-embeddings:execute`
 
 Hapus memory lewat REST/MCP otomatis membersihkan vektor terkait.
+
+### Hybrid & graph retrieval (Fase 6 + 8)
+
+Retrieval multi-sumber diaktifkan lewat env (default: SQL-only).
+
+| Variable | Default | Efek |
+|----------|---------|------|
+| `HYBRID_RETRIEVAL` | `false` | Gabung SQL + vector (RRF) — butuh embedding provider |
+| `GRAPH_RETRIEVAL` | `false` | Tambah leg graph di composite retrieval |
+| `GRAPH_MAX_DEPTH` | `2` | Kedalaman BFS (max 3) |
+| `GRAPH_SEED_CAP` | `5` | Seed lexical per query |
+| `GRAPH_MAX_NEIGHBORS` | `30` | Budget neighbor total |
+
+Contoh graph-only recall:
+
+```env
+GRAPH_RETRIEVAL=true
+```
+
+Contoh full hybrid + graph:
+
+```env
+HYBRID_RETRIEVAL=true
+GRAPH_RETRIEVAL=true
+EMBEDDING_PROVIDER=openai
+EMBEDDING_API_KEY=sk-...
+```
+
+API eksplorasi graph (tanpa flag di atas): MCP `get_graph_capabilities`, `traverse_relations`; REST `GET /api/v1/graph/capabilities`, `POST /api/v1/graph/traverse`.
 
 ---
 

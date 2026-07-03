@@ -1,32 +1,61 @@
 ﻿# Phase 8 — Knowledge Graph — REVIEW
 
 **Document:** REVIEW  
-**Phase status:** Reserved  
+**Phase status:** Closed  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Purpose
+## Architecture review record
 
-Record architecture review findings and formal phase gate verdict.
-
----
-
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Architecture review scheduled (pre-gate) |
-| **Updated by** | Reviewer records findings; owner records gate verdict |
-| **Read-only when** | Gate verdict recorded — verdict section immutable |
-| **Roadmap relation** | PASS authorizes roadmap status change to Completed |
-
----
-
-## Review record
-
-_Pending phase completion._
+| Criteria | Status | Evidence |
+|----------|--------|----------|
+| ADR-006 Approved + Implemented | ✅ | `docs/adr/006-igraph-provider.md` |
+| `IGraphProvider` port (no IRetrievalCandidateSource on port) | ✅ | `src/graph/igraph-provider.interface.ts` |
+| Bidirectional BFS + owner scope | ✅ | `traversal.ts`, `d1-graph.adapter.test.ts` |
+| `GraphRetrievalCandidateSource` Appendix F | ✅ | 10 unit tests |
+| Role-based RRF caps (not array index) | ✅ | `getRrfSourceCap()`, composite tests |
+| Wiring matrix Appendix E | ✅ | `create-context-service.ts` |
+| No graph SQL in MemoryRepository | ✅ | grep clean |
+| `MemoryRelationService` unchanged | ✅ | no relation API changes |
+| MCP/REST additive only | ✅ | 2 tools + 2 endpoints |
+| Owner isolation (graph paths) | ✅ | cross-owner-leak + graph tests |
+| Quality gate | ✅ | 231 tests, lint, typecheck, format |
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+## Findings resolved (gate audit 2026-07-03)
+
+| ID | Finding | Resolution |
+|----|---------|------------|
+| G-01 | Gate docs missing | IMPLEMENTATION, TESTING, REVIEW, COMPLETION finalized |
+| S-01 | No graph cross-owner tests | Added Graph API section in cross-owner-leak |
+| S-02 | Context+graph cross-owner | Added `GRAPH_RETRIEVAL=true` isolation test |
+| S-03 | PANDUAN missing env docs | Added hybrid/graph section |
+| D-01 | DESIGN §5 transport contradiction | Amended layer table |
+| D-04 | Health discovery missing graph | Added endpoints to HealthController |
+| B-01 | API traverse archived filter | `GraphService` hydrates + drops archived |
+
+---
+
+## Verdict
+
+| Gate | Verdict |
+|------|---------|
+| Architecture | **PASS** |
+| Security | **PASS** |
+| Performance | **PASS** (MVP scale; T-05 debt documented) |
+| Scalability | **PASS** (external adapter path) |
+| Testing | **PASS** |
+| Documentation | **PASS** |
+| Migration | **PASS** (no DDL) |
+| Breaking changes | **PASS** (additive) |
+| Future compatibility | **PASS** (Phase 9/10 additive) |
+
+**Overall: ✅ PASS**
+
+Recorded: 2026-07-03
+
+---
+
+*Verdict section immutable after gate PASS.*

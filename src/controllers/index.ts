@@ -31,6 +31,8 @@ export class HealthController {
         projects: '/api/v1/projects',
         tags: '/api/v1/tags',
         backup: '/api/v1/backup/export',
+        graph_capabilities: '/api/v1/graph/capabilities',
+        graph_traverse: '/api/v1/graph/traverse',
         auth_bootstrap: '/api/v1/auth/bootstrap',
       },
     });

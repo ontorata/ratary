@@ -179,10 +179,10 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 
 | Layer | Responsibility | Forbidden |
 |-------|---------------|-----------|
-| **Transport** | Unchanged | No graph-specific endpoints |
-| **Controllers** | Unchanged | No graph logic |
-| **Application Services** | Unchanged | No traversal logic |
-| **Retrieval** | Graph source integration | Direct relation queries |
+| **Transport** | Additive graph endpoints under `/api/v1/graph/`; MCP graph tools | Breaking changes to Phase 1–7 routes/tools |
+| **Controllers** | Thin handlers delegating to `GraphService` | Traversal logic in controllers |
+| **Application Services** | `GraphService` for explore API; retrieval via existing services | Duplicating RRF merge |
+| **Retrieval** | Graph source integration | Direct relation queries in retriever |
 | **Domain** | Traversal algorithms (pure) | I/O |
 | **Persistence** | `IGraphProvider` adapter | Business rules |
 
@@ -336,7 +336,7 @@ interface GraphCapabilities {
 | Tool | Input | Output | Purpose |
 |------|-------|--------|---------|
 | `get_graph_capabilities` | `{}` | `{ capabilities }` | Discover graph features |
-| `traverse_relations` | `{ memoryId, depth?, types? }` | `{ memoryIds[] }` | Graph traversal |
+| `traverse_relations` | `{ memoryId, depth?, types? }` | `{ memoryIds[], neighbors[] }` | Graph traversal (explore API; archived neighbors excluded) |
 
 ### Unchanged MCP tools
 

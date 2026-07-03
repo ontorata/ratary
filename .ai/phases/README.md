@@ -28,10 +28,10 @@ phases/
 ├── 03-authorization/                 ✅ Closed
 ├── 04-memory-intelligence/           ✅ Closed
 ├── 05-embedding/                     ✅ Closed
-├── 06-hybrid-retrieval/              🔲 Next (Ready)
-├── 07-agent-runtime/                 🔲 Reserved
-├── 08-knowledge-graph/               🔲 Reserved
-├── 09-multi-ai/                      🔲 Reserved
+├── 06-hybrid-retrieval/              ✅ Closed
+├── 07-agent-runtime/                 ✅ Closed
+├── 08-knowledge-graph/               ✅ Closed
+├── 09-multi-ai/                      🔲 Next
 └── 10-enterprise/                    🔲 Reserved
 ```
 
@@ -81,10 +81,10 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 3 Authorization | [03-authorization/](03-authorization/README.md) | ✅ Closed | [PHASE-3.md](../../docs/archive/PHASE-3.md) |
 | 4 Memory Intelligence | [04-memory-intelligence/](04-memory-intelligence/README.md) | ✅ Closed | [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) |
 | 5 Embedding | [05-embedding/](05-embedding/README.md) | ✅ Closed | [PHASE-5-EMBEDDING-DESIGN.md](../../docs/archive/PHASE-5-EMBEDDING-DESIGN.md) |
-| 6 Hybrid Retrieval | [06-hybrid-retrieval/](06-hybrid-retrieval/README.md) | 🔲 Next | [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) |
-| 7 Agent Runtime | [07-agent-runtime/](07-agent-runtime/README.md) | 🔲 Reserved | External boundary |
-| 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | 🔲 Reserved | `IGraphProvider` ADR (future) |
-| 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | 🔲 Reserved | [ADR-002](../../../docs/adr/002-workspace-identity-model.md) |
+| 6 Hybrid Retrieval | [06-hybrid-retrieval/](06-hybrid-retrieval/README.md) | ✅ Closed | [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) |
+| 7 Agent Runtime | [07-agent-runtime/](07-agent-runtime/README.md) | ✅ Closed | External boundary |
+| 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | ✅ Closed | [ADR-006](../../../docs/adr/006-igraph-provider.md) |
+| 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | 🔲 Next | [ADR-002](../../../docs/adr/002-workspace-identity-model.md) |
 | 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | 🔲 Reserved | ADR-002, ADR-005 |
 
 ---

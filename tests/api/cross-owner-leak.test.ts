@@ -11,6 +11,7 @@
  * - Context/build_prompt endpoints
  * - Backup export
  * - Relations
+ * - Graph traversal (Phase 8)
  * - Favorites and archive operations
  *
  * @see ai-brain/.ai/architecture/10-PHASE-STATUS.md D-01
@@ -83,9 +84,12 @@ describe('Cross-Owner Leak Prevention E2E', () => {
   });
 
   afterEach(async () => {
-    await app.close();
+    if (app) {
+      await app.close();
+    }
     resetD1Client();
     resetEnvCache();
+    vi.stubEnv('GRAPH_RETRIEVAL', 'false');
   });
 
   describe('Memory CRUD by ID', () => {
@@ -336,6 +340,130 @@ describe('Cross-Owner Leak Prevention E2E', () => {
         headers: { authorization: `Bearer ${ownerBKey}` },
       });
       expect(response.statusCode).toBe(404);
+    });
+  });
+
+  describe('Graph API', () => {
+    it('should return 404 when Owner B tries to traverse Owner A memory', async () => {
+      const response = await app.inject({
+        method: 'POST',
+        url: '/api/v1/graph/traverse',
+        headers: { authorization: `Bearer ${ownerBKey}` },
+        payload: { memoryId: ownerAMemoryId, depth: 2 },
+      });
+      expect(response.statusCode).toBe(404);
+    });
+
+    it('should allow both owners to read graph capabilities without leaking memory data', async () => {
+      const responseA = await app.inject({
+        method: 'GET',
+        url: '/api/v1/graph/capabilities',
+        headers: { authorization: `Bearer ${ownerAKey}` },
+      });
+      const responseB = await app.inject({
+        method: 'GET',
+        url: '/api/v1/graph/capabilities',
+        headers: { authorization: `Bearer ${ownerBKey}` },
+      });
+
+      expect(responseA.statusCode).toBe(200);
+      expect(responseB.statusCode).toBe(200);
+      expect(responseA.json().capabilities.supportsBidirectional).toBe(true);
+      expect(JSON.stringify(responseB.json())).not.toContain('Secret A Memory');
+    });
+  });
+
+  describe('Context API with graph retrieval enabled', () => {
+    let graphApp: FastifyInstance;
+    let graphOwnerBKey: string;
+
+    beforeEach(async () => {
+      await app.close();
+      resetD1Client();
+      resetEnvCache();
+      mockDb = new MockD1Client();
+      setD1Client(mockDb);
+      vi.stubEnv('GRAPH_RETRIEVAL', 'true');
+      graphApp = await buildApp({ logger: false, skipAuth: false });
+      await graphApp.ready();
+
+      const bootstrapA = await graphApp.inject({
+        method: 'POST',
+        url: '/api/v1/auth/bootstrap',
+        payload: { name: 'graph-owner-a', client: { name: 'cursor', type: 'mcp' } },
+      });
+      const graphOwnerAKey = bootstrapA.json().data.apiKey as string;
+
+      const bootstrapB = await graphApp.inject({
+        method: 'POST',
+        url: '/api/v1/auth/identities',
+        headers: { authorization: `Bearer ${graphOwnerAKey}` },
+        payload: { name: 'graph-owner-b-key', owner_id: '00000000-0000-4000-8000-000000000099' },
+      });
+      graphOwnerBKey = bootstrapB.json().data.apiKey as string;
+
+      const seedA = await graphApp.inject({
+        method: 'POST',
+        url: '/api/v1/memory',
+        headers: { authorization: `Bearer ${graphOwnerAKey}` },
+        payload: {
+          title: 'Secret graph seed',
+          content: 'Owner A graph seed with secret keyword',
+          project: 'graph-secret',
+        },
+      });
+      const neighborA = await graphApp.inject({
+        method: 'POST',
+        url: '/api/v1/memory',
+        headers: { authorization: `Bearer ${graphOwnerAKey}` },
+        payload: {
+          title: 'Secret graph neighbor',
+          content: 'Only reachable via Owner A relation edge',
+          project: 'graph-secret',
+        },
+      });
+
+      await graphApp.inject({
+        method: 'POST',
+        url: `/api/v1/memory/${seedA.json().id}/relations`,
+        headers: { authorization: `Bearer ${graphOwnerAKey}` },
+        payload: {
+          targetMemoryId: neighborA.json().id,
+          relation: 'depends_on',
+        },
+      });
+
+      await graphApp.inject({
+        method: 'POST',
+        url: '/api/v1/memory',
+        headers: { authorization: `Bearer ${graphOwnerBKey}` },
+        payload: {
+          title: 'Owner B decoy',
+          content: 'secret keyword in Owner B scope only',
+          project: 'graph-b',
+        },
+      });
+    });
+
+    afterEach(async () => {
+      if (graphApp) {
+        await graphApp.close();
+      }
+    });
+
+    it('should not include Owner A graph neighbors in context for Owner B', async () => {
+      const response = await graphApp.inject({
+        method: 'POST',
+        url: '/api/v1/context',
+        headers: { authorization: `Bearer ${graphOwnerBKey}` },
+        payload: { task: 'Analyze graph leak', query: 'secret graph seed' },
+      });
+
+      expect(response.statusCode).toBe(200);
+      const context = response.json().context as string;
+      expect(context).not.toContain('Secret graph seed');
+      expect(context).not.toContain('Secret graph neighbor');
+      expect(context).not.toContain('Only reachable via Owner A relation edge');
     });
   });
 

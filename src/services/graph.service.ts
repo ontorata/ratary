@@ -65,10 +65,25 @@ export class GraphService {
       relationTypes: request.types,
     });
 
+    if (neighbors.length === 0) {
+      return {
+        seedMemoryId: request.memoryId,
+        neighbors: [],
+        memoryIds: [],
+      };
+    }
+
+    const neighborIds = neighbors.map((neighbor) => neighbor.memoryId);
+    const memories = await this.memoryReader.findByIds(neighborIds, scope.ownerId);
+    const activeIds = new Set(
+      memories.filter((memory) => !memory.archived).map((memory) => memory.id),
+    );
+    const activeNeighbors = neighbors.filter((neighbor) => activeIds.has(neighbor.memoryId));
+
     return {
       seedMemoryId: request.memoryId,
-      neighbors,
-      memoryIds: neighbors.map((neighbor) => neighbor.memoryId),
+      neighbors: activeNeighbors,
+      memoryIds: activeNeighbors.map((neighbor) => neighbor.memoryId),
     };
   }
 }

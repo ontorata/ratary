@@ -112,6 +112,7 @@ describe('GraphService', () => {
 
     vi.mocked(memoryReader.findById).mockResolvedValue(makeMemory(seedId));
     vi.mocked(graphProvider.traverseNeighbors).mockResolvedValue([neighbor]);
+    vi.mocked(memoryReader.findByIds).mockResolvedValue([makeMemory(neighbor.memoryId)]);
 
     const result = await service.traverseRelations(
       { ownerId },
@@ -138,5 +139,32 @@ describe('GraphService', () => {
       ownerId,
       expect.objectContaining({ maxDepth: 3 }),
     );
+  });
+
+  it('should drop archived neighbors after hydration', async () => {
+    vi.mocked(memoryReader.findById).mockResolvedValue(makeMemory(seedId));
+    vi.mocked(graphProvider.traverseNeighbors).mockResolvedValue([
+      {
+        memoryId: '00000000-0000-0000-0000-000000000002',
+        depth: 1,
+        relationType: 'related',
+        direction: 'outgoing',
+      },
+      {
+        memoryId: '00000000-0000-0000-0000-000000000003',
+        depth: 1,
+        relationType: 'related',
+        direction: 'outgoing',
+      },
+    ]);
+    vi.mocked(memoryReader.findByIds).mockResolvedValue([
+      { ...makeMemory('00000000-0000-0000-0000-000000000002'), archived: false },
+      { ...makeMemory('00000000-0000-0000-0000-000000000003'), archived: true },
+    ]);
+
+    const result = await service.traverseRelations({ ownerId }, { memoryId: seedId });
+
+    expect(result.memoryIds).toEqual(['00000000-0000-0000-0000-000000000002']);
+    expect(result.neighbors).toHaveLength(1);
   });
 });

@@ -1,14 +1,8 @@
 ﻿# Phase 8 — Knowledge Graph — CHECKLIST
 
 **Document:** CHECKLIST  
-**Phase status:** Implementation complete — gate review pending  
+**Phase status:** Closed (gate PASS 2026-07-03)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
-
----
-
-## Purpose
-
-Executable gate checklist instance — one item per milestone or success criterion.
 
 ---
 
@@ -21,10 +15,10 @@ Executable gate checklist instance — one item per milestone or success criteri
 
 ### Core implementation (ADR-006 migration)
 
-- [x] `IGraphProvider` port + types (`src/graph/igraph-provider.interface.ts`)
+- [x] `IGraphProvider` port + types
 - [x] `D1GraphAdapter` bidirectional BFS + tests
 - [x] `GraphRetrievalCandidateSource` + tests (Appendix F)
-- [x] RRF role-based caps + `graph` source in `ranking.config.ts`
+- [x] RRF role-based caps + `graph` source
 - [x] `createContextService()` wiring matrix + `GRAPH_*` env flags
 - [x] MCP `get_graph_capabilities`, `traverse_relations`
 - [x] REST `GET /api/v1/graph/capabilities`, `POST /api/v1/graph/traverse`
@@ -35,16 +29,21 @@ Executable gate checklist instance — one item per milestone or success criteri
 - [x] `MemoryRelationService` API unchanged
 - [x] No `MemoryRelationRepositoryV2`
 
+### Security
+
+- [x] Cross-owner graph traverse (404)
+- [x] Context + `GRAPH_RETRIEVAL` isolation test
+
 ### Quality gate
 
-- [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — **227 tests**
+- [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — **231 tests**
 
-### Gate docs (pending)
+### Gate docs
 
-- [ ] REVIEW.md signed
-- [ ] COMPLETION.md finalized
-- [ ] Phase 8 README status → Complete
+- [x] REVIEW.md signed PASS
+- [x] COMPLETION.md finalized
+- [x] Phase 8 README → Complete
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Frozen at gate PASS.*

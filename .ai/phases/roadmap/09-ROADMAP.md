@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 7 complete · Phase 8 implementation complete (gate pending)
+**Last updated:** Phase 8 complete · Next: Phase 9
 
 ---
 
@@ -38,7 +38,7 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 |--------|--------|
 | **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7 |
 | **In progress** | — |
-| **Next** | 8 — Knowledge Graph (gate review) |
+| **Next** | 9 — Multi-AI |
 | **Future** | 9, 10 |
 
 **Capability stack:**
@@ -371,13 +371,13 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 # Phase 8 — Knowledge Graph
 
-**Status:** 🟡 **Implementation complete** — gate review pending (ADR-006 steps 1–6 done)
+**Status:** ✅ **Complete** (gate PASS 2026-07-03)
 
 ## Scope
 
 `IGraphProvider` for traversal; graph-augmented retrieval source; flat `memory_relations` CRUD unchanged.
 
-**ADR:** [docs/adr/006-igraph-provider.md](../../docs/adr/006-igraph-provider.md) — **Approved** · **Implemented** (2026-07-03)
+**ADR:** [docs/adr/006-igraph-provider.md](../../docs/adr/006-igraph-provider.md) — **Approved** · **Implemented**
 
 ## Milestones
 
@@ -387,7 +387,7 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 - [x] Composite retrieval includes graph source (role-based RRF caps)
 - [x] `createContextService()` wiring matrix + `GRAPH_*` env flags
 - [x] MCP `get_graph_capabilities`, `traverse_relations`; REST `/api/v1/graph/*`
-- [ ] Phase 8 gate docs (CHECKLIST / REVIEW / COMPLETION)
+- [x] Phase 8 gate docs (CHECKLIST / REVIEW / COMPLETION)
 
 ## Success criteria
 
