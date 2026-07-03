@@ -1,9 +1,6 @@
 import type { D1Client } from '../db/d1-client.js';
 import type { RelationType } from '../types/knowledge.js';
-import {
-  DEFAULT_GRAPH_MAX_DEPTH,
-  DEFAULT_GRAPH_MAX_NEIGHBORS,
-} from './graph.config.js';
+import { DEFAULT_GRAPH_MAX_DEPTH, DEFAULT_GRAPH_MAX_NEIGHBORS } from './graph.config.js';
 import type {
   GraphCapabilities,
   GraphNeighbor,
