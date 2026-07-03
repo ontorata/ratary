@@ -94,7 +94,7 @@ ContextService
 
 - ✅ Lint: passing
 - ✅ Typecheck: passing  
-- ✅ Tests: **192/192 passing** (46 test files)
+- ✅ Tests: **196/196 passing** (47 test files)
 - ✅ No TODO/FIXME
 - ✅ One concern per commit
 
@@ -139,6 +139,10 @@ Enable hybrid retrieval by setting:
 
 ```bash
 HYBRID_RETRIEVAL=true
+EMBEDDING_PROVIDER=openai   # required for meaningful vector recall
+EMBEDDING_API_KEY=sk-...
 ```
 
-When enabled, the `get_context` and `build_prompt` tools will use both SQL and vector search with RRF merging.
+Run `npm run db:backfill-embeddings` after enabling OpenAI embeddings. **Do not use `EMBEDDING_PROVIDER=noop` with hybrid mode** — zero vectors produce tie scores and arbitrary ranking.
+
+When enabled with real embeddings, the `get_context` and `build_prompt` tools use both SQL and vector search with RRF merging.

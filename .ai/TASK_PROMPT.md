@@ -1,6 +1,6 @@
-# Task Prompt — Phase 7 Agent Runtime (boundary)
+# Task Prompt — Phase 8 Knowledge Graph
 
-**Status:** 🔲 Active — documentation & boundary work only.  
+**Status:** 🔲 Active — ADR gate then implementation.  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)
 
 **Before coding:** [core/ai-rules/11-AI-RULES.md](core/ai-rules/11-AI-RULES.md) · [core/architecture/04-ARCHITECTURE.md](core/architecture/04-ARCHITECTURE.md) · [workflow/05-WORKFLOW.md](workflow/05-WORKFLOW.md)
@@ -9,15 +9,16 @@
 
 # TASK
 
-Prepare **Phase 7 — Agent Runtime** boundary: agent loops and orchestration stay **outside** this repository. Document MCP/REST integration contracts for external agent runtimes. No planner, executor, or reasoning engine inside `src/`.
+Implement **Phase 8 — Knowledge Graph**: `IGraphProvider` port, graph-augmented retrieval candidate source, and composite wiring — without replacing flat `memory_relations` CRUD.
 
 ---
 
 ## Requirements
 
-- Agent runtime ADR drafted or linked (external system scope)
-- MCP tool contracts verified stable for agent consumers
-- Phase 7 folder docs aligned with [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
+- `IGraphProvider` ADR drafted and **Approved** before implementation
+- Graph retrieval candidate source via existing `IRetrievalCandidateSource` pattern
+- Extend `CompositeRetrievalCandidateSource` (third leg) — no Retriever rewrite
+- Phase 8 folder docs aligned with [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 - Update [core/architecture/10-PHASE-STATUS.md](core/architecture/10-PHASE-STATUS.md) when gate criteria met
 - Quality gate: `npm run lint && npm run format:check && npm run typecheck && npm test`
 
@@ -27,11 +28,13 @@ Prepare **Phase 7 — Agent Runtime** boundary: agent loops and orchestration st
 |-----|-------|--------|
 | [001](../docs/adr/001-multi-source-retrieval.md) | Hybrid retrieval | **Implemented** |
 | [002](../docs/adr/002-workspace-identity-model.md) | Workspace identity | **Approved** |
+| TBD | IGraphProvider | **Proposed → approve** |
 
 ### Out of scope
 
-- Agent planning / execution loops in `src/`
-- New MCP tools unless required for stable agent boundary (owner approval)
+- `MemoryRelationRepositoryV2` or relation schema rewrite
+- Graph SQL inside `MemoryRepository`
+- Agent planning / execution (Phase 7 boundary — external)
 
 ---
 
@@ -46,12 +49,13 @@ Prepare **Phase 7 — Agent Runtime** boundary: agent loops and orchestration st
 
 ## Definition of Done
 
-- [ ] Phase 7 milestones in roadmap checked with evidence
-- [ ] External agent integration documented (human + AI refs)
+- [ ] IGraphProvider ADR Approved
+- [ ] Graph retrieval source + unit tests
+- [ ] Composite wiring with env gate (if applicable)
 - [ ] `10-PHASE-STATUS.md` and `09-ROADMAP.md` consistent
 - [ ] All quality gates pass
 - [ ] No constitution violations per [core/standards/08-REVIEW.md](core/standards/08-REVIEW.md)
 
 ---
 
-*Rotate from [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md) when Phase 7 completes.*
+*Rotated from Phase 7 completion (2026-07-03). Design draft: [phases/08-knowledge-graph/DESIGN.md](phases/08-knowledge-graph/DESIGN.md).*

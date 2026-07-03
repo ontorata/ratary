@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 6 complete · Next: Phase 7
+**Last updated:** Phase 7 complete · Next: Phase 8
 
 ---
 
@@ -36,19 +36,19 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 | Status | Phases |
 |--------|--------|
-| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6 |
+| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7 |
 | **In progress** | — |
-| **Next** | 7 — Agent Runtime |
-| **Future** | 8, 9, 10 |
+| **Next** | 8 — Knowledge Graph |
+| **Future** | 9, 10 |
 
 **Capability stack:**
 
 ```
 Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Multi-AI → Enterprise
-  ✅        ✅           ✅       ✅        🔲         🔲            🔲          🔲
+  ✅        ✅           ✅       ✅        🔲         ✅            🔲          🔲
 ```
 
-**Metrics (current):** 192 tests · 14 MCP tools · REST on Vercel · D1 storage
+**Metrics (current):** 196 tests · 14 MCP tools · REST on Vercel · D1 storage
 
 ---
 
@@ -338,7 +338,7 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 # Phase 7 — Agent Runtime
 
-**Status:** 🔲 **Next**
+**Status:** ✅ **Completed** (2026-07-03)
 
 ## Scope
 
@@ -346,26 +346,26 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 ## Milestones
 
-- [ ] Agent runtime ADR (external system)
-- [ ] MCP tool contracts stable for agent consumers
-- [ ] Optional: `agentId` in `MemoryScope` types (undefined until Phase 9)
-- [ ] Documentation for agent integration boundary
+- [x] Agent runtime ADR (external system) — boundary in [07-agent-runtime/DESIGN.md](../07-agent-runtime/DESIGN.md)
+- [x] MCP tool contracts stable for agent consumers — 14 tools verified
+- [x] Optional: `agentId` in `MemoryScope` types — deferred to Phase 9 per ADR-002
+- [x] Documentation for agent integration boundary — DESIGN.md + COMPLETION.md
 
 ## Success criteria
 
-- [ ] External agent can complete save → context → act loop via MCP
-- [ ] No agent planner code in `src/services/` or `src/memory/`
-- [ ] Constitution boundary preserved
+- [x] External agent can complete save → context → act loop via MCP
+- [x] No agent planner code in `src/services/` or `src/memory/`
+- [x] Constitution boundary preserved
 
 ## Dependencies
 
 - Phase 4 context API
-- Phase 6 hybrid retrieval ✅ (recommended, not blocking protocol)
+- Phase 6 hybrid retrieval ✅
 
 ## Architecture evolution
 
 - Protocol-stable boundary only
-- Prepares `IScopeResolver` contract (types)
+- Prepares `IScopeResolver` contract (types) for Phase 9
 
 ---
 
@@ -505,9 +505,9 @@ Organization tenant, workspace membership RBAC, enterprise audit, compliance hoo
 
 | Priority | Action | Owner |
 |----------|--------|-------|
-| 1 | Phase 6 complete - Hybrid Retrieval | ✅ Done |
-| 2 | Owner sign-off for Phase 6 gate | Pending |
-| 3 | Prepare Phase 7 Agent Runtime (documentation boundary) | Next |
+| 1 | Phase 7 complete — Agent Runtime boundary | ✅ Done |
+| 2 | Owner sign-off for Phase 6 gate | ✅ Done (2026-07-03) |
+| 3 | Prepare Phase 8 Knowledge Graph (ADR gate + implementation) | Next |
 
 ---
 

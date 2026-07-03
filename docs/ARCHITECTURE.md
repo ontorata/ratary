@@ -20,9 +20,11 @@ Higher capabilities (agents, planning, execution) integrate **externally** at pr
 ## Capability stack (current)
 
 ```
-Memory → Knowledge → Search → Embedding → Hybrid Retrieval
-  ✅        ✅          ✅         ✅              ✅ (Phase 6 complete)
+Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Agent boundary
+  ✅        ✅          ✅         ✅              ✅                 ✅ (Phase 7)
 ```
+
+Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
 Future: Graph (Phase 8), Multi-AI (Phase 9), Enterprise (Phase 10). See [.ai/phases/roadmap/09-ROADMAP.md](../.ai/phases/roadmap/09-ROADMAP.md).
 

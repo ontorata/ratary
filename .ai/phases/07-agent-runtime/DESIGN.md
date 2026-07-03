@@ -661,6 +661,7 @@ interface ActorMetadata {
   actorId: string;
   actorName?: string;
   actorSource?: string;  // For webhooks, GitHub Actions
+  organizationId?: string;  // Phase 10 enterprise actor tracking
   timestamp: string;      // ISO 8601
   sessionId?: string;   // For session-scoped operations
 }
@@ -870,6 +871,8 @@ interface RelationCreatedEvent {
 ```
 
 ### Event subscription contract
+
+Event subscriptions are scoped to `ownerId` in all phases through Phase 9. Organization-level subscription is deferred to Phase 10.
 
 ```typescript
 interface IEventBus {
@@ -1092,6 +1095,15 @@ The Phase 7 boundary design guarantees:
 - [x] Future Graph Layer preserved (`IGraphProvider` contract)
 - [x] Future Agent Layer excluded (boundary document)
 
+### Section deliverables checklist (23 sections)
+
+- [x] §1 Purpose · §2 Scope · §3 Architecture · §4–§6 Boundaries & forbidden patterns
+- [x] §7 Inside/outside table · §8 Protocol versioning · §9 Capability negotiation
+- [x] §10 Capability manifest · §11 MCP tools · §12 REST API · §13 Compatibility matrix
+- [x] §14 Actor model · §15 Session model · §16 Integration patterns · §17 Event model
+- [x] §18 Deprecation policy · §19 Future compatibility · §20 Constitution compliance
+- [x] §21 Success criteria · §22 Risks · §23 References
+
 ---
 
 ## 21. Success Criteria
@@ -1108,7 +1120,7 @@ The Phase 7 boundary design guarantees:
 | Session model defined | 4 memory levels defined | Section 15 |
 | Event model reserved | Future contract documented | Section 17 |
 | Future compatibility | Phase 8-10 readiness | Section 19 |
-| Constitution compliance | 17 checklist items | Section 20 |
+| Constitution compliance | 17 checklist items + 23 section deliverables | Section 20 |
 
 ### Success indicators
 
@@ -1203,8 +1215,8 @@ The Phase 7 boundary design guarantees:
 | Phase | Document | Phase 7 relation |
 |-------|----------|-----------------|
 | 6 | [06-hybrid-retrieval/DESIGN.md](../06-hybrid-retrieval/DESIGN.md) | Hybrid retrieval enables richer context |
-| 8 | [08-knowledge-graph/DESIGN.md](../08-knowledge-graph/DESIGN.md) | Future: graph-augmented retrieval |
-| 9 | [09-multi-ai/DESIGN.md](../09-multi-ai/DESIGN.md) | Future: workspace scope |
+| 8 | [08-knowledge-graph/DESIGN.md](../08-knowledge-graph/DESIGN.md) (planned) | Future: graph-augmented retrieval — see [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) |
+| 9 | [09-multi-ai/DESIGN.md](../09-multi-ai/DESIGN.md) (planned) | Future: workspace scope — see [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) |
 
 ### External references
 

@@ -44,7 +44,7 @@ Retriever, Ranker, ContextBuilder, PromptBuilder, ContextService, consolidator, 
 | ID | Observation | Severity | Deferred to | Status |
 |----|-------------|----------|-------------|--------|
 | ~~O-04-1~~ | ~~API cross-owner leak E2E tests below design minimum~~ | Medium | ~~Phase 6 or hardening sprint~~ | **✅ RESOLVED** |
-| O-04-2 | Retrieval projection content exclusion — verify all paths | Low | Regression suite | OPEN |
+| ~~O-04-2~~ | ~~Retrieval projection content exclusion — verify all paths~~ | Low | Regression suite | **✅ RESOLVED** (2026-07-03) |
 | O-05-1 | Duplicate MemoryRepository in composition roots | Medium | Phase 6 wiring | **✅ RESOLVED** |
 
 ---

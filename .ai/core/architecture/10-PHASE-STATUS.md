@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 6 Hybrid Retrieval complete (2026-07-03) · ADR-001 Implemented · Next: Phase 7
+**Last updated:** Phase 7 Agent Runtime complete (2026-07-03) · ADR-001 Implemented · Next: Phase 8
 
 ---
 
@@ -20,7 +20,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 192 |
+| Tests passing | 196 |
 | MCP tools | 14 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
@@ -34,9 +34,9 @@ Record **live** project metrics, deployment facts, and documented technical debt
 | Item | Value |
 |------|-------|
 | Active task | [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| Next phase | **7 — Agent Runtime** |
-| Blocker | None — ADR-001 Implemented (2026-07-03) |
-| Last completed | Phase 6 — [.ai/phases/06-hybrid-retrieval/](../06-hybrid-retrieval/README.md) |
+| Next phase | **8 — Knowledge Graph** |
+| Blocker | None — Phase 7 gate PASS (2026-07-03) |
+| Last completed | Phase 7 — [.ai/phases/07-agent-runtime/](../07-agent-runtime/README.md) |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
 
@@ -63,9 +63,10 @@ User onboarding: [PANDUAN.md](../../docs/PANDUAN.md).
 | ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ✅ **Resolved** — Refactored `createMemoryService/createMemoryRelationService` to accept shared repository instance (2026-07-03) |
 | ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ✅ **Resolved** — schema.sql synced with all Phase 4 indexes (2026-07-03) |
 | ~~D-04~~ | ~~ADR-001 merge policy must be unit-tested~~ | ✅ **Resolved** — 13 unit tests for `CompositeRetrievalCandidateSource` (2026-07-03) |
-| — | `MemoryRepository` ~692 lines | Additive methods only; split when Postgres adapter lands |
+| — | `MemoryRepository` ~622 lines | Additive methods only; split when Postgres adapter lands |
 | ~~—~~ | ~~`MemoryRelationRepository` no interface~~ | ✅ **Resolved** — `IMemoryRelationRepository` created (2026-07-03) |
-| — | `SELECT *` in repositories | **Investigated (2026-07-03)** — postponed; benefit minimal without content projection; revisit after Phase 6 |
+| ~~O-04-2~~ | ~~Retrieval projection content exclusion — verify all paths~~ | ✅ **Resolved** — regression test in `tests/repositories/memory.repository.test.ts` (2026-07-03) |
+| — | `SELECT *` in non-retrieval repository queries | **Investigated (2026-07-03)** — postponed; retrieval paths use `RETRIEVAL_MEMORY_SELECT`; revisit with Postgres adapter |
 | — | N× `recordAccess` on context build | Batch update (perf) — low-medium effort |
 | — | D1 vector search in-process | Vectorize/pgvector when scale exceeds MVP ceiling |
 

@@ -69,7 +69,7 @@ Read in order:
 | Terminology | `core/glossary/GLOSSARY.md` |
 | Prompt templates | `workflow/prompts/` |
 | Checklists | `workflow/checklists/` |
-| Current phase docs | `phases/06-hybrid-retrieval/` (last completed) |
+| Current phase docs | `phases/07-agent-runtime/` (last completed) |
 | Active task | `TASK_PROMPT.md` |
 
 ---
@@ -86,8 +86,8 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 4 Memory Intelligence | ✅ Complete |
 | 5 Embedding | ✅ Complete |
 | 6 Hybrid Retrieval | ✅ Complete |
-| 7 Agent Runtime | 🔲 **Next** |
-| 8 Knowledge Graph | 🔲 Future |
+| 7 Agent Runtime | ✅ Complete |
+| 8 Knowledge Graph | 🔲 **Next** |
 | 9 Multi-AI | 🔲 Future |
 | 10 Enterprise | 🔲 Future |
 

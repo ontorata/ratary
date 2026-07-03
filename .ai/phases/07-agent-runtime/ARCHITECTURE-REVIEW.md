@@ -36,10 +36,10 @@ None.
 
 | # | Section | Finding | Recommendation |
 |---|---------|---------|----------------|
-| m1 | §14 | **ActorMetadata missing organizationId** — `ActorType` includes `'future_organization'` but `ActorMetadata` interface has no `organizationId` field for Phase 10 actor tracking. | Add `organizationId?: string` to ActorMetadata interface. |
-| m2 | §17 | **Event subscription authorization undefined** — Event contracts define shapes but don't specify who can subscribe to events in multi-tenant scenarios. | Add note: "Event subscriptions scoped to ownerId; org-level subscription deferred to Phase 10." |
-| m3 | §20 | **Constitutional checklist incomplete** — Only 17 items verifying architectural principles, but task requires 23 section deliverables. | Expand checklist to explicitly verify each of the 23 required sections. |
-| m4 | §23 | **Future phase links may be broken** — References link to Phase 8 and Phase 9 DESIGN.md which may not exist yet (phases are future). | Add "(planned)" suffix or link to 09-ROADMAP.md instead. |
+| m1 | §14 | **ActorMetadata missing organizationId** | ✅ Added `organizationId?: string` (2026-07-03) |
+| m2 | §17 | **Event subscription authorization undefined** | ✅ Scoped to `ownerId`; org-level deferred Phase 10 (2026-07-03) |
+| m3 | §20 | **Constitutional checklist incomplete** | ✅ Section deliverables checklist added (2026-07-03) |
+| m4 | §23 | **Future phase links may be broken** | ✅ Marked (planned) + roadmap links (2026-07-03) |
 
 ---
 

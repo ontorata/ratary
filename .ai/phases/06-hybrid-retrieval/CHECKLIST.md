@@ -1,7 +1,7 @@
 ﻿# Phase 6 — Hybrid Retrieval — CHECKLIST
 
 **Document:** CHECKLIST  
-**Phase status:** Active  
+**Phase status:** Complete (gate PASS 2026-07-03)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Template:** [review/01-PHASE-CHECKLIST.md](../../review/01-PHASE-CHECKLIST.md)
 
@@ -36,7 +36,7 @@ Executable gate checklist instance — one item per Phase 6 milestone or success
 
 ## Success criteria
 
-- [x] Semantic recall improves on fixture set (measurable)
+- [x] Semantic recall via vector path — `tests/memory/create-context-service.test.ts` (HYBRID_RETRIEVAL integration)
 - [x] `Retriever` and MCP tools unchanged
 - [x] Dedupe by `memoryId`, cap after merge
 - [x] Owner-scoped vector candidates
@@ -44,7 +44,7 @@ Executable gate checklist instance — one item per Phase 6 milestone or success
 
 ## Quality gate
 
-- [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — green (192 tests passed)
+- [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — green (196 tests passed)
 - [x] [08-REVIEW-CHECKLIST.md](../../core/standards/08-REVIEW.md) satisfied — **All gates passed**
 - [x] ARCHITECTURE.md Phase 6 row updated
 - [x] ADR-001 marked Implemented
