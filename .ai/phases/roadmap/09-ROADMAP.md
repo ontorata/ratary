@@ -371,11 +371,13 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 # Phase 8 — Knowledge Graph
 
-**Status:** 🔲 Future
+**Status:** 🔲 **Next** (blocked on ADR-006 approval)
 
 ## Scope
 
 `IGraphProvider` for traversal; graph-augmented retrieval source; flat `memory_relations` CRUD unchanged.
+
+**ADR:** [docs/adr/006-igraph-provider.md](../../docs/adr/006-igraph-provider.md) — **Proposed**
 
 ## Milestones
 
@@ -507,7 +509,7 @@ Organization tenant, workspace membership RBAC, enterprise audit, compliance hoo
 |----------|--------|-------|
 | 1 | Phase 7 complete — Agent Runtime boundary | ✅ Done |
 | 2 | Owner sign-off for Phase 6 gate | ✅ Done (2026-07-03) |
-| 3 | Prepare Phase 8 Knowledge Graph (ADR gate + implementation) | Next |
+| 3 | Approve ADR-006 IGraphProvider | Next |
 
 ---
 

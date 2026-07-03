@@ -84,7 +84,7 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 ### Design invariants
 
 1. **Flat relations unchanged** — `memory_relations` table remains; no migration to graph-native format.
-2. **Graph is a retrieval adapter** — `IGraphProvider` implements `IRetrievalCandidateSource`.
+2. **Graph is a retrieval adapter** — `GraphRetrievalCandidateSource` implements `IRetrievalCandidateSource` and wraps `IGraphProvider`.
 3. **Neighborhood expansion bounded** — Traversal depth limited by context cap.
 4. **No graph-native storage** — D1 CTE queries flat relations.
 5. **Port pattern preserved** — `IGraphProvider` swappable for external graph engine.

@@ -28,7 +28,7 @@ Implement **Phase 8 — Knowledge Graph**: `IGraphProvider` port, graph-augmente
 |-----|-------|--------|
 | [001](../docs/adr/001-multi-source-retrieval.md) | Hybrid retrieval | **Implemented** |
 | [002](../docs/adr/002-workspace-identity-model.md) | Workspace identity | **Approved** |
-| TBD | IGraphProvider | **Proposed → approve** |
+| [006](../docs/adr/006-igraph-provider.md) | Graph provider port | **Proposed → approve** |
 
 ### Out of scope
 
@@ -49,7 +49,7 @@ Implement **Phase 8 — Knowledge Graph**: `IGraphProvider` port, graph-augmente
 
 ## Definition of Done
 
-- [ ] IGraphProvider ADR Approved
+- [ ] [ADR-006](../docs/adr/006-igraph-provider.md) IGraphProvider Approved
 - [ ] Graph retrieval source + unit tests
 - [ ] Composite wiring with env gate (if applicable)
 - [ ] `10-PHASE-STATUS.md` and `09-ROADMAP.md` consistent
@@ -58,4 +58,4 @@ Implement **Phase 8 — Knowledge Graph**: `IGraphProvider` port, graph-augmente
 
 ---
 
-*Rotated from Phase 7 completion (2026-07-03). Design draft: [phases/08-knowledge-graph/DESIGN.md](phases/08-knowledge-graph/DESIGN.md).*
+*Rotated from Phase 7 completion (2026-07-03). Design: [phases/08-knowledge-graph/DESIGN.md](phases/08-knowledge-graph/DESIGN.md). ADR draft: [docs/adr/006-igraph-provider.md](../docs/adr/006-igraph-provider.md).*
