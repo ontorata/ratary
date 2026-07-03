@@ -25,6 +25,11 @@ export interface SimilarityMatch {
   score: number;
 }
 
+/**
+ * Legacy vector persistence port (owner-scoped API used by Phase 5–9 adapters).
+ * Canonical platform port: {@link IVectorStore} in `src/ports/vector/`.
+ * Future adapters may implement `IVectorStore` directly; D1 bridge remains until Phase 10.
+ */
 export interface IEmbeddingStore {
   upsert(input: EmbeddingUpsertInput): Promise<string>;
   deleteByMemoryId(memoryId: string, ownerId: string): Promise<void>;

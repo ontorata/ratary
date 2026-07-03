@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 9 complete · Next: Phase 10 Enterprise
+**Last updated:** Phase 9.5 active · Next: Phase 10 Enterprise
 
 ---
 
@@ -38,6 +38,7 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 |--------|--------|
 | **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9 |
 | **In progress** | — |
+| **Completed (sub)** | 9.5 — Platform Architecture |
 | **Next** | 10 — Enterprise |
 | **Future** | 10 |
 
@@ -447,6 +448,37 @@ Shared workspace memory across agents and clients; `IScopeResolver`, `IAgentIden
 ## Gate
 
 [.ai/phases/09-multi-ai/COMPLETION.md](../09-multi-ai/COMPLETION.md)
+
+---
+
+# Phase 9.5 — Platform Architecture
+
+**Status:** ✅ **Complete** (2026-07-03)
+
+## Scope
+
+Storage-agnostic **port registry** (`src/ports/`). Prepare enterprise infrastructure swap without changing domain or application services. No new user-facing features; no provider implementations.
+
+**ADR:** [docs/adr/008-platform-architecture.md](../../docs/adr/008-platform-architecture.md) — **Approved**
+
+## Milestones
+
+- [x] ADR-008 Approved
+- [x] `ISqlDatabase`, `IMemoryRepository`, `IRelationRepository`, `IEmbeddingProvider`
+- [x] `IVectorStore`, `IGraphStore`, `IObjectStorage`, `ICache`, `IEventBus`, `IAnalyticsStore`
+- [x] Contract tests
+- [x] Gate PASS
+
+## Success criteria
+
+- [x] All ports in `src/ports/index.ts`
+- [x] Zero behavior change to REST/MCP
+- [x] D1 remains default adapter
+- [x] Quality gate green (310 tests)
+
+## Gate
+
+[.ai/phases/09.5-platform-architecture/README.md](../09.5-platform-architecture/README.md)
 
 ---
 

@@ -1,15 +1,17 @@
-# Task Prompt — Phase 9 Multi-AI
+# Task Prompt — Phase 9.5 Platform Architecture
 
-**Status:** ✅ Complete — ADR-007 Implemented (2026-07-03)  
+**Status:** ✅ Complete — ADR-008 Implemented (2026-07-03)  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)
 
 ---
 
 # TASK
 
-Implement **Phase 9 — Multi-AI** per [ADR-007](../docs/adr/007-multi-ai-workspace-scope.md) (Approved 2026-07-03).
+Implement **Phase 9.5 — Platform Architecture** per [ADR-008](../docs/adr/008-platform-architecture.md).
 
-**Result:** ✅ Complete — see [.ai/phases/09-multi-ai/COMPLETION.md](phases/09-multi-ai/COMPLETION.md)
+**Objective:** Storage-agnostic port registry. **No** new user features. **No** provider implementations.
+
+**Evidence:** [.ai/phases/09.5-platform-architecture/](phases/09.5-platform-architecture/)
 
 ---
 
@@ -17,33 +19,27 @@ Implement **Phase 9 — Multi-AI** per [ADR-007](../docs/adr/007-multi-ai-worksp
 
 | ADR | Title | Status |
 |-----|-------|--------|
-| [002](../docs/adr/002-workspace-identity-model.md) | Workspace identity contract | **Approved** |
-| [007](../docs/adr/007-multi-ai-workspace-scope.md) | Multi-AI workspace scope | **Implemented** ✅ |
+| [008](../docs/adr/008-platform-architecture.md) | Platform architecture ports | **Approved** |
 
 ---
 
-## Implementation order (ADR-007 Migration)
+## Implementation order
 
-1. [x] Types + ports (`MemoryScope`, `IScopeResolver`, `IAgentIdentity`, `ISyncManager`)
-2. [x] Schema migration + backfill (`migrateMultiAiPhase1`, `db:backfill-workspaces`)
-3. [x] `DefaultScopeResolver` + tests
-4. [x] `D1AgentIdentity` + tests
-5. [x] `AcceptSyncManager` MVP + tests
-6. [x] Repository workspace filters
-7. [x] Composition wiring (REST + MCP)
-8. [x] Cross-workspace isolation E2E
-9. [x] Optional workspace/agent REST + MCP tools
+1. [x] ADR-008 Approved
+2. [x] `src/ports/` registry (10 interfaces)
+3. [x] Contract tests (`tests/ports/platform-ports.test.ts`)
+4. [x] Phase gate docs (DESIGN, IMPLEMENTATION, MIGRATION, TESTING, RISKS)
+5. [x] REVIEW + COMPLETION + quality gate (310 tests)
 
 ---
 
 ## Definition of Done
 
-- [x] ADR-007 **Approved** (2026-07-03)
-- [x] Migration + backfill complete
-- [x] Workspace isolation E2E
-- [x] Agent attribution on writes (`last_modified_by_agent_id` + sync hook)
-- [x] Quality gates pass (300 tests)
-- [x] Gate docs (REVIEW, COMPLETION, TESTING)
+- [x] All required ports defined in `src/ports/`
+- [x] Services unchanged; D1 adapters unchanged
+- [x] No provider implementations
+- [x] 310 tests green
+- [x] Gate REVIEW PASS
 
 ---
 
@@ -53,4 +49,4 @@ Implement **Phase 9 — Multi-AI** per [ADR-007](../docs/adr/007-multi-ai-worksp
 
 ---
 
-*Completed 2026-07-03. Rotated from Phase 8 completion.*
+*Rotated from Phase 9 completion 2026-07-03.*

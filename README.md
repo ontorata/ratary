@@ -60,6 +60,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 7 — Agent Runtime | ✅ | [.ai/phases/07-agent-runtime/](.ai/phases/07-agent-runtime/) |
 | 8 — Knowledge Graph | ✅ | [.ai/phases/08-knowledge-graph/](.ai/phases/08-knowledge-graph/) · [ADR-006](docs/adr/006-igraph-provider.md) |
 | 9 — Multi-AI | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · [ADR-007](docs/adr/007-multi-ai-workspace-scope.md) |
+| 9.5 — Platform Architecture | ✅ | [.ai/phases/09.5-platform-architecture/](.ai/phases/09.5-platform-architecture/) · [ADR-008](docs/adr/008-platform-architecture.md) |
 | 10 — Enterprise | 🔲 | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-002](docs/adr/002-workspace-identity-model.md) |
 
 *Desain historis (read-only): [docs/archive/](docs/archive/). Perintah backfill/migrate: lihat [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*

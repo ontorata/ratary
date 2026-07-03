@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 9 complete — gate PASS 2026-07-03
+**Last updated:** Phase 9.5 complete — platform ports (2026-07-03)
 
 ---
 
@@ -20,7 +20,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 300 |
+| Tests passing | 310 |
 | MCP tools | 19 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
@@ -33,10 +33,10 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | Phase 10 Enterprise (future) — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| Active task | Phase 10 Enterprise — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
 | Next phase | **10 — Enterprise** |
 | Blocker | None |
-| Last completed | Phase 9 — [.ai/phases/09-multi-ai/](../phases/09-multi-ai/README.md) |
+| Last completed | Phase 9.5 — [.ai/phases/09.5-platform-architecture/](../phases/09.5-platform-architecture/README.md) |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
 

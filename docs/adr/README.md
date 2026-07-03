@@ -12,9 +12,12 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [005-content-object-store.md](005-content-object-store.md) | Content offload via IContentStore | **Proposed** | R2/S3/MinIO |
 | [006-igraph-provider.md](006-igraph-provider.md) | Graph provider port (Phase 8) | **Implemented** | Knowledge Graph ✅ |
 | [007-multi-ai-workspace-scope.md](007-multi-ai-workspace-scope.md) | Multi-AI workspace scope (Phase 9) | **Implemented** | Shared workspace memory |
+| [008-platform-architecture.md](008-platform-architecture.md) | Platform ports — storage-agnostic layer (Phase 9.5) | **Implemented** | Enterprise adapter swap |
 
 **Rule:** No implementation of Proposed ADRs until owner marks **Approved**.
 
 **Phase 9 complete:** ADR-007 Implemented (2026-07-03).
+
+**Phase 9.5 complete:** ADR-008 Implemented (2026-07-03).
 
 **Next:** Phase 10 Enterprise per [ADR-002](002-workspace-identity-model.md) Phase 10 migration.
