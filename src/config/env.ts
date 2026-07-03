@@ -29,6 +29,9 @@ const envSchema = z
     EMBEDDING_BASE_URL: z.string().default('https://api.openai.com/v1'),
     EMBEDDING_BATCH_SIZE: z.coerce.number().int().positive().default(32),
     EMBEDDING_MAX_RETRIES: z.coerce.number().int().positive().default(3),
+
+    // Hybrid retrieval (Phase 6)
+    HYBRID_RETRIEVAL: z.enum(['true', 'false']).transform((v) => v === 'true').default('false'),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {

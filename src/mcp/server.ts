@@ -7,7 +7,10 @@ import { MemoryRelationRepository } from '../repositories/memory-relation.reposi
 import { createMemoryService, createMemoryRelationService } from '../services/create-memory-service.js';
 import type { MemoryService } from '../services/memory.service.js';
 import { MemoryRelationService } from '../services/memory-relation.service.js';
-import { ContextService } from '../memory/context.service.js';
+import { createContextService } from '../memory/create-context-service.js';
+import { createEmbeddingProvider } from '../embedding/create-embedding-provider.js';
+import { D1EmbeddingStore } from '../embedding/d1-embedding.store.js';
+import type { ContextService } from '../memory/context.service.js';
 import { getMcpMemoryScope, assertMcpOwnerConfigured } from '../types/memory-scope.js';
 import { memoryTypeSchema, categorySchema } from '../types/knowledge.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
@@ -321,7 +324,9 @@ export async function startMcpStdioServer(): Promise<void> {
   const relationRepository = new MemoryRelationRepository(db);
   const memoryService = createMemoryService(db, repository);
   const relationService = createMemoryRelationService(db, repository, relationRepository);
-  const contextService = new ContextService(repository);
+  const embeddingProvider = createEmbeddingProvider();
+  const embeddingStore = new D1EmbeddingStore(db);
+  const contextService = createContextService(repository, embeddingProvider, embeddingStore);
 
   const server = createMcpServer(memoryService, relationService, contextService);
   const transport = new StdioServerTransport();

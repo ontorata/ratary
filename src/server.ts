@@ -17,7 +17,9 @@ import {
   createMemoryRelationController,
 } from './controllers/knowledge.controller.js';
 import { createContextController } from './controllers/context.controller.js';
-import { ContextService } from './memory/context.service.js';
+import { createContextService } from './memory/create-context-service.js';
+import { createEmbeddingProvider } from './embedding/create-embedding-provider.js';
+import { D1EmbeddingStore } from './embedding/d1-embedding.store.js';
 import { registerV1Routes } from './routes/v1/index.js';
 import { healthRoutes } from './routes/index.js';
 import { errorHandlerPlugin, observabilityPlugin } from './plugins/index.js';
@@ -90,7 +92,10 @@ export async function buildApp(options?: {
   const authController = createAuthController(authLayer.identityService, authLayer.clientService);
   const knowledgeController = createKnowledgeController(memoryService);
   const relationController = createMemoryRelationController(relationService);
-  const contextController = createContextController(new ContextService(repository));
+  const embeddingProvider = createEmbeddingProvider();
+  const embeddingStore = new D1EmbeddingStore(db);
+  const contextService = createContextService(repository, embeddingProvider, embeddingStore);
+  const contextController = createContextController(contextService);
 
   const controllers = {
     health: healthController,
