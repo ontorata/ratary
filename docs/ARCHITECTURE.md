@@ -3,8 +3,8 @@
 **Purpose:** Human-readable explanation of AI Memory Cloud structure.  
 **Audience:** Developers and operators onboarding to the project.
 
-> **Canonical structural law (AI authority):** [.ai/architecture/04-ARCHITECTURE.md](../.ai/architecture/04-ARCHITECTURE.md)  
-> **Live status:** [.ai/architecture/10-PHASE-STATUS.md](../.ai/architecture/10-PHASE-STATUS.md)  
+> **Canonical structural law (AI authority):** [.ai/core/architecture/04-ARCHITECTURE.md](../.ai/core/architecture/04-ARCHITECTURE.md)  
+> **Live status:** [.ai/core/architecture/10-PHASE-STATUS.md](../.ai/core/architecture/10-PHASE-STATUS.md)  
 > **Do not implement from this file alone** — it summarizes; `.ai/` governs behavior.
 
 ---
@@ -77,10 +77,9 @@ Phase design documents before ADR approval live in [archive/](archive/). They ar
 | Need | Document |
 |------|----------|
 | Install & use | [PANDUAN.md](PANDUAN.md) |
-| MCP setup | [MCP-SETUP.md](MCP-SETUP.md) |
 | AI governance | [.ai/constitution/INDEX.md](../.ai/constitution/INDEX.md) |
-| Vocabulary | [.ai/glossary/GLOSSARY.md](../.ai/glossary/GLOSSARY.md) |
+| Vocabulary | [.ai/core/glossary/GLOSSARY.md](../.ai/core/glossary/GLOSSARY.md) |
 
 ---
 
-*Human overview only. Structural law: `.ai/architecture/`.*
+*Human overview only. Structural law: `.ai/core/architecture/`.*

@@ -9,9 +9,10 @@
 **Baca ini dulu:**
 
 ```
-1. core/CONSTITUTION.md      — Immutable rules
-2. core/ARCHITECTURE.md      — Layer patterns
-3. core/GLOSSARY.md          — Terminology
+1. core/constitution/INDEX.md   — Mandatory entry index
+2. core/constitution/00-CONSTITUTION.md  — Immutable rules
+3. core/architecture/04-ARCHITECTURE.md — Layer patterns
+4. core/glossary/GLOSSARY.md   — Terminology
 ```
 
 ---
@@ -22,39 +23,25 @@
 .ai/
 ├── START-HERE.md            ← YOU ARE HERE
 ├── core/                    ← Baca sekali (permanent rules)
-│   ├── CONSTITUTION.md
-│   ├── ARCHITECTURE.md
-│   ├── GLOSSARY.md
-│   ├── ai-rules/
-│   ├── decision-framework/
-│   ├── architecture/
-│   ├── supplementary/
-│   ├── standards/
-│   ├── governance/
-│   ├── adr/
-│   └── templates/
+│   ├── constitution/        — Constitution + INDEX
+│   ├── architecture/        — Layer patterns, phase status
+│   ├── standards/           — Engineering, coding, testing, etc.
+│   ├── decision-framework/  — Decision procedure
+│   ├── ai-rules/            — AI behavior rules
+│   ├── glossary/            — Terminology
+│   ├── supplementary/      — Security, performance, writing
+│   ├── templates/           — ADR, task, completion templates
+│   └── adr/                 — Architecture Decision Records
 ├── workflow/                ← Baca saat bekerja
-│   ├── prompts/
-│   ├── playbooks/
-│   ├── checklists/
-│   ├── implementation/
-│   ├── review/
-│   ├── workflow/
-│   └── communication/
+│   ├── prompts/             — Prompt templates
+│   ├── playbooks/           — Runbooks
+│   ├── checklists/          — Decision, pre-merge, release
+│   ├── communication/       — AI protocol
+│   └── workflow/            — Development workflow
 └── phases/                  ← Baca jika terkait phase
-    ├── 01-foundation/
-    ├── 02.5-stabilization/
-    ├── 02.6-knowledge/
-    ├── 03-authorization/
-    ├── 04-memory-intelligence/
-    ├── 05-embedding/
-    ├── 06-hybrid-retrieval/
-    ├── 07-agent-runtime/
-    ├── 08-knowledge-graph/
-    ├── 09-multi-ai/
-    ├── 10-enterprise/
-    ├── roadmap/
-    └── audits/
+    ├── phases/              — Phase documents (01-10)
+    ├── roadmap/             — Roadmap
+    └── audits/              — Phase audits
 ```
 
 ---
@@ -63,12 +50,13 @@
 
 | Kebutuhan | Lokasi |
 |-----------|--------|
-| Apa yang boleh diimplementasi | `core/CONSTITUTION.md` |
-| Layer pattern | `core/ARCHITECTURE.md` |
-| Terminologi | `core/GLOSSARY.md` |
+| Entry index | `core/constitution/INDEX.md` |
+| Apa yang boleh diimplementasi | `core/constitution/00-CONSTITUTION.md` |
+| Layer pattern | `core/architecture/04-ARCHITECTURE.md` |
+| Terminologi | `core/glossary/GLOSSARY.md` |
 | Prompt templates | `workflow/prompts/` |
 | Checklist | `workflow/checklists/` |
-| Phase saat ini | `phases/` |
+| Phase saat ini | `phases/phases/` |
 
 ---
 
@@ -122,10 +110,18 @@ These belong to external agent systems.
 
 ## Read Order
 
-1. **Session Start** → Baca `core/CONSTITUTION.md`
-2. **Before Implementation** → Baca `core/ARCHITECTURE.md`
+1. **Session Start** → Baca `core/constitution/INDEX.md`
+2. **Before Implementation** → Baca `core/constitution/00-CONSTITUTION.md` + `core/architecture/04-ARCHITECTURE.md`
 3. **During Work** → Gunakan `workflow/prompts/`
-4. **Phase-specific** → Baca di `phases/`
+4. **Phase-specific** → Baca di `phases/phases/`
+
+---
+
+## Human Documentation
+
+Human docs (not for AI implementation authority):
+- [docs/README.md](../docs/README.md) — Human documentation index
+- [docs/PANDUAN.md](../docs/PANDUAN.md) — Setup & usage guide
 
 ---
 

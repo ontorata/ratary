@@ -14,7 +14,6 @@
 |----------|---------|
 | [../README.md](../README.md) | Product overview, quick start, tech stack |
 | [PANDUAN.md](PANDUAN.md) | Setup, usage, MCP (Indonesian) |
-| [MCP-SETUP.md](MCP-SETUP.md) | MCP configuration reference |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | High-level system explanation (human-readable) |
 
 ---
@@ -37,12 +36,10 @@ All AI governance lives under **`.ai/`**:
 |-------|------|
 | Entry index | [.ai/constitution/INDEX.md](../.ai/constitution/INDEX.md) |
 | Constitution | [.ai/constitution/00-CONSTITUTION.md](../.ai/constitution/00-CONSTITUTION.md) |
-| Standards | [.ai/standards/](../.ai/standards/) |
-| Architecture law | [.ai/architecture/](../.ai/architecture/) |
+| Standards | [.ai/core/standards/](../.ai/core/standards/) |
+| Architecture law | [.ai/core/architecture/](../.ai/core/architecture/) |
 | Active task | [.ai/TASK_PROMPT.md](../.ai/TASK_PROMPT.md) |
-| Prompt library | [.ai/prompts/PROMPT-LIBRARY.md](../.ai/prompts/PROMPT-LIBRARY.md) |
-
-Legacy paths at `docs/00-CONSTITUTION.md`, `docs/01-ENGINEERING-STANDARD.md`, etc. are **redirect stubs only**.
+| Prompt library | [.ai/workflow/prompts/PROMPT-LIBRARY.md](../.ai/workflow/prompts/PROMPT-LIBRARY.md) |
 
 ---
 
@@ -51,10 +48,10 @@ Legacy paths at `docs/00-CONSTITUTION.md`, `docs/01-ENGINEERING-STANDARD.md`, et
 ```
 Owner instruction
   → .ai/constitution/00-CONSTITUTION.md
-  → .ai/decision-framework/13-AI-DECISION-FRAMEWORK.md
-  → .ai/architecture/04-ARCHITECTURE.md
+  → .ai/core/decision-framework/13-AI-DECISION-FRAMEWORK.md
+  → .ai/core/architecture/04-ARCHITECTURE.md
   → docs/adr/ (approved ADRs)
-  → .ai/standards/*
+  → .ai/core/standards/*
   → .ai/TASK_PROMPT.md
   → src/
 ```
@@ -63,4 +60,4 @@ Documentation in `docs/` (except ADRs) **must not** override `.ai/`.
 
 ---
 
-*Human documentation index. AI corpus: [.ai/README.md](../.ai/README.md).*
+*Human documentation index. AI corpus: [.ai/START-HERE.md](../.ai/START-HERE.md).*
