@@ -16,3 +16,8 @@ export function parseBackfillArgs(argv: string[]): BackfillCliOptions {
     batchSize: Number.isFinite(parsedBatchSize) && parsedBatchSize > 0 ? parsedBatchSize : 100,
   };
 }
+
+export function parseTargetUrlArg(argv: string[]): string | undefined {
+  const flag = argv.find((arg) => arg.startsWith('--target-url='));
+  return flag?.slice('--target-url='.length);
+}

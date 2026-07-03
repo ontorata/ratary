@@ -12,7 +12,7 @@
 |----|------|------------|--------------|
 | R10-01 | Adapter wiring breaks regression | Default flags = current behavior | **337 tests** green at default env |
 | R10-02 | Dual port naming confusion | Bridges only in infrastructure | Single `createPlatformAdapters()` factory |
-| R10-03 | Postgres dialect drift | Deferred sub-ADR | ADR-009 Proposed; runtime throw if selected |
+| R10-03 | Postgres dialect drift | Mitigated at adapter layer | ADR-009 Implemented; production cutover Phase 11 |
 | R10-04 | RBAC leaks into MemoryService | Auth boundary only | Grep: no membership checks in services |
 | R10-05 | Org schema migration on live D1 | Idempotent DDL + backfill | Migration + backfill tests |
 | R10-06 | Object storage dual-write | Inline default | `InlineObjectStorage` only; R2 gated |
@@ -27,7 +27,7 @@
 
 | Risk | Notes |
 |------|-------|
-| Postgres not implemented | By design until ADR-009 Approved |
+| Postgres not production-proven at full-suite scale | Adapter Implemented (ADR-009); cutover runbook Phase 11 (ADR-018) |
 | JWT enterprise claims not auto-populated on issueToken | Additive schema only; membership enforced via DB port |
 | RBAC requires manual membership seeding | Expected for enterprise; backfill script covers org linkage only |
 

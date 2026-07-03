@@ -26,6 +26,7 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 ## Not Covered
 
 - Active implementation tasks → [../../../TASK_PROMPT.md](../../../TASK_PROMPT.md)
+- Post–Phase 10 phases 11–14 → [10-POST-ROADMAP.md](10-POST-ROADMAP.md)
 - Structural ADR content → [adr/](../../../docs/adr/)
 - Immutable engineering law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) – [08-REVIEW.md](../../core/standards/08-REVIEW.md)
 - Historical phase design detail → [archive/](../../docs/archive/)
@@ -39,17 +40,19 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 | **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9, 9.5, 10 |
 | **In progress** | — |
 | **Completed (sub)** | 9.5 — Platform Architecture |
-| **Next** | Post–Phase 10 roadmap |
-| **Future** | — |
+| **Next** | Phase 11 — Production Operations ([10-POST-ROADMAP.md](10-POST-ROADMAP.md)) |
+| **Future** | Phases 12–14 (event pipeline, content scale, search/graph prod) |
 
 **Capability stack:**
 
 ```
-Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Multi-AI → Enterprise
-  ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅
+Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Multi-AI → Enterprise → Production Ops
+  ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅              🔲
 ```
 
-**Metrics (current):** 397 tests · 19 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
+**Metrics (current):** 405 tests · 19 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
+
+**Post–Phase 10 plan:** [10-POST-ROADMAP.md](10-POST-ROADMAP.md)
 
 ---
 
@@ -537,7 +540,8 @@ Organization tenant, workspace membership RBAC, platform infrastructure adapters
 | 1 | Phase 8 — Knowledge Graph (ADR-006) | ✅ Done (gate PASS 2026-07-03) |
 | 2 | Phase 9 / 9.5 — Multi-AI + platform ports | ✅ Done (2026-07-03) |
 | 3 | Phase 10 — Enterprise gate | ✅ Done (2026-07-03) |
-| 4 | Post–Phase 10 roadmap definition | Next |
+| 4 | Post–Phase 10 roadmap definition | ✅ Done ([10-POST-ROADMAP.md](10-POST-ROADMAP.md) 2026-07-03) |
+| 5 | Phase 11 Readiness Review + ADR-018 draft | Next |
 
 ---
 

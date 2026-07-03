@@ -65,6 +65,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 9 — Multi-AI | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · [ADR-007](docs/adr/007-multi-ai-workspace-scope.md) |
 | 9.5 — Platform Architecture | ✅ | [.ai/phases/09.5-platform-architecture/](.ai/phases/09.5-platform-architecture/) · [ADR-008](docs/adr/008-platform-architecture.md) |
 | 10 — Enterprise | ✅ | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-008–016](docs/adr/README.md) |
+| 11 — Production Ops | 🔲 In Progress | [.ai/phases/11-production-ops/](.ai/phases/11-production-ops/) · [ADR-018](docs/adr/018-production-postgres-cutover.md) |
 
 *Desain historis (read-only): [docs/archive/](docs/archive/). Perintah backfill/migrate: lihat [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
 
@@ -682,7 +683,7 @@ Default: D1 metadata, inline storage, noop cache/events/analytics. Provider ekst
 | `MEMORY_ACCESS_AUDIT` | `false` | Audit `memory.accessed` on context build (ADR-017) |
 | `OTEL_ENABLED` | `false` | OpenTelemetry HTTP tracing |
 
-Backfill provider eksternal (dry-run default): `db:backfill-pgvector`, `db:backfill-meilisearch`, `db:backfill-neo4j` — lihat [PANDUAN.md](docs/PANDUAN.md).
+Backfill provider eksternal (dry-run default): `db:backfill-pgvector`, `db:backfill-meilisearch`, `db:backfill-neo4j` — lihat [PANDUAN.md](docs/PANDUAN.md). Postgres metadata cutover: [.ai/phases/11-production-ops/MIGRATION.md](.ai/phases/11-production-ops/MIGRATION.md).
 
 ## License
 

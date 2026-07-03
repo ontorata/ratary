@@ -1,9 +1,10 @@
 # ADR-006: Graph Provider Port (Knowledge Graph Retrieval)
 
-**Status:** Approved · Implemented (2026-07-03)  
+**Status:** Implemented  
 **Date:** 2026-07-03  
 **Amended:** 2026-07-03 (review clarifications — Option B)  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-03 (Phase 8 gate PASS)  
 **Deciders:** Project owner  
 
 ---

@@ -1,9 +1,10 @@
 # ADR-002: Workspace & Identity Model
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-01  
 **Deciders:** Project owner  
-**Scope:** Future contract only — **no implementation** in Phase 5. Guides Phases 5–10 without refactoring `MemoryService`, `KnowledgeService`, or `SearchService` cores.
+**Implemented:** 2026-07-03 (contract fulfilled Phases 8–10)  
+**Scope:** Contract ADR — entity model and scope port ratified; implementation delivered via phase ADRs below.
 
 ---
 
@@ -197,19 +198,37 @@ interface IWorkspaceMembership {
 
 ## Migration
 
-| When | Action |
-|------|--------|
-| **Now (ADR only)** | Document model; reviews check new code against scope contract |
-| **Phase 5–7** | Ports include `ownerId`; optional `workspaceId?` in types only (undefined) |
-| **Phase 8** | Implement `IGraphProvider`; ADR + approved before code |
-| **Phase 9** | Schema: `agents`, `workspaces`; `IScopeResolver`; `IAgentIdentity`, `ISyncManager` |
-| **Phase 10** | Schema: `organizations`; workspace membership; JWT claims; enable filters |
+| When | Action | Status |
+|------|--------|--------|
+| **ADR ratification** | Document model; reviews check new code against scope contract | ✅ |
+| **Phase 5–7** | Ports include `ownerId`; optional `workspaceId?` in types only | ✅ |
+| **Phase 8** | `IGraphStore` / graph retrieval ([ADR-006](006-igraph-provider.md)) | ✅ Implemented |
+| **Phase 9** | `workspaces`, `IScopeResolver`, `IAgentIdentity`, `ISyncManager` ([ADR-007](007-multi-ai-workspace-scope.md)) | ✅ Implemented |
+| **Phase 10** | `organizations`, `IWorkspaceMembership`, JWT claims ([ADR-010](010-workspace-membership-rbac.md)) | ✅ Implemented |
 
-No migration script in Phase 5.
+No standalone migration script was required for ADR-002 itself — schema changes are owned by phase ADRs.
 
 ## Rollback
 
-This ADR is documentation-only until phase-specific ADRs implement schema. Revoking ADR-002 means future phases revert to owner-only model—no production data affected today.
+Revoking ADR-002 would require reverting Phases 8–10 scope features — not applicable in production after gate PASS. Phase-specific rollback: disable `ENTERPRISE_RBAC`, revert to owner-only filters per [ADR-010](010-workspace-membership-rbac.md).
+
+---
+
+## Implementation evidence
+
+Contract fulfilled without `MemoryService` / `SearchService` rewrite:
+
+| Contract element | Implementing ADR | Key artifacts |
+|------------------|------------------|---------------|
+| `MemoryScope` extensions | ADR-007, ADR-010 | `src/types/memory-scope.ts` |
+| `IScopeResolver` | ADR-007 | `src/scope/iscope-resolver.interface.ts`, `resolve-request-scope.ts` |
+| `IAgentIdentity` | ADR-007 | `src/agent/iagent-identity.interface.ts` |
+| `ISyncManager` | ADR-007 | `src/sync/isync-manager.interface.ts` |
+| `IGraphStore` traversal | ADR-006 | `src/infrastructure/graph/d1/d1-graph.adapter.ts` |
+| `IWorkspaceMembership` | ADR-010 | `src/infrastructure/enterprise/d1-workspace-membership.adapter.ts` |
+| `IOrganizationStore` | ADR-010 | `src/infrastructure/enterprise/d1-organization-store.adapter.ts` |
+
+**Invariants preserved:** `owner_id` solo mode, 404 cross-workspace/org isolation, additive MCP/REST fields only.
 
 ## Impact on future phases
 

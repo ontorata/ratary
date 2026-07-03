@@ -1,8 +1,9 @@
 # ADR-011: pgvector Vector Store Adapter
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-03  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-03 (Phase 10 T3)  
 **Deciders:** Project owner  
 
 ---
@@ -68,3 +69,17 @@ Set `VECTOR_PROVIDER=d1`. Postgres vector data retained for forward-fix.
 - [ADR-001 Multi-source retrieval](001-multi-source-retrieval.md)
 - [ADR-009 PostgreSQL adapter](009-postgresql-metadata-adapter.md)
 - [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)
+
+---
+
+## Implementation evidence
+
+| Artifact | Location |
+|----------|----------|
+| `PgVectorStoreAdapter` | `src/infrastructure/vector/pgvector/pgvector-store.adapter.ts` |
+| DDL export | `src/infrastructure/vector/pgvector/pgvector.schema.ts` |
+| `D1VectorStoreBridge` (default) | wired via `createVectorStore()` |
+| Factory | `src/infrastructure/composition/create-vector-store.ts` |
+| Contract tests | `tests/infrastructure/contracts/ivector-store.contract.ts` |
+
+**Default:** `VECTOR_PROVIDER=d1`. Backfill D1 → `memory_vectors` deferred to Phase 13.

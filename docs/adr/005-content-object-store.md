@@ -1,8 +1,9 @@
 # ADR-005: Content Object Store (R2 / S3-compatible)
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-01  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-03 (Phase 10 T2)  
 **Deciders:** Project owner  
 
 > **Note:** Numbered 005 because [ADR-002](002-workspace-identity-model.md) reserves the workspace & identity contract (approved pre–Phase 5).
@@ -68,3 +69,18 @@ S3/MinIO reuse the same SDK pattern in a future adapter (same port).
 - [ADR-002 Workspace identity model](002-workspace-identity-model.md)
 - [ADR-008 Platform architecture](008-platform-architecture.md)
 - [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)
+
+---
+
+## Implementation evidence
+
+| Artifact | Location |
+|----------|----------|
+| `IObjectStorage` port | `src/ports/storage/iobject-storage.port.ts` |
+| `InlineObjectStorage` (default) | `src/infrastructure/storage/inline-object-storage.adapter.ts` |
+| `R2ObjectStorageAdapter` | `src/infrastructure/storage/r2-object-storage.adapter.ts` |
+| S3-compatible commands (MinIO/AWS) | `src/infrastructure/_shared/s3-object-storage.commands.ts` |
+| Factory | `src/infrastructure/composition/create-object-storage.ts` |
+| Contract tests | `tests/infrastructure/contracts/iobject-storage.contract.ts` |
+
+**Default:** `OBJECT_STORAGE_PROVIDER=inline`. Content offload via `IMemoryContentReader` and dual-write backfill remain Phase 13 milestones per [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).

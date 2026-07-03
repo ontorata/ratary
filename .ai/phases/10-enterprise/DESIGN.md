@@ -29,7 +29,7 @@ Phase 9.5 declared **storage-agnostic ports** (`src/ports/`) without changing ru
 1. **Infrastructure coupling** — Repositories, embedding store, and graph adapter accept `D1Client` concretely; swapping to PostgreSQL, pgvector, R2, or Redis requires untyped refactors.
 2. **Scale ceiling** — D1 in-process vector search (T-04), monolithic SQL repository (T-01), and inline `content` columns block enterprise scale documented in [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).
 3. **Enterprise tenancy** — ADR-002 defines `organizationId`, workspace RBAC, and membership ports; Phase 9 activated workspace scope but not organization-level isolation or role-based access.
-4. **Operational gaps** — No cache layer (T-03 `recordAccess` batching target), no analytics store for compliance queries, no event bus for audit/async enrichment, no object storage for large bodies (ADR-005 Proposed).
+4. **Operational gaps** — Cache, analytics, and event bus ports wired with NoOp/default adapters; object storage R2 adapter landed ([ADR-005 Implemented](../../../docs/adr/005-content-object-store.md)); content offload consumer deferred to Phase 13.
 
 **Outcome:** Wire **infrastructure adapters** behind existing ports, activate enterprise scope/RBAC at the **composition boundary**, and preserve all REST/MCP contracts additively — **without rewriting** `MemoryService`, `Retriever`, or domain cores.
 

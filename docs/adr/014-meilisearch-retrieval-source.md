@@ -1,8 +1,9 @@
 # ADR-014: Meilisearch Retrieval Source
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-03  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-03 (Phase 10 T7)  
 **Deciders:** Project owner  
 
 ---
@@ -35,3 +36,15 @@ Default `SEARCH_PROVIDER=sql` unchanged.
 
 - [ADR-001 Multi-source retrieval](001-multi-source-retrieval.md)
 - [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)
+
+---
+
+## Implementation evidence
+
+| Artifact | Location |
+|----------|----------|
+| `MeilisearchRetrievalSource` | `src/infrastructure/search/meilisearch/meilisearch-retrieval-source.ts` |
+| Factory (lexical source selection) | `src/infrastructure/composition/create-lexical-retrieval-source.ts` |
+| Wired in | `src/memory/create-context-service.ts` |
+
+**Default:** `SEARCH_PROVIDER=sql`. Index backfill script deferred to Phase 14.

@@ -34,7 +34,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | Post–Phase 10 roadmap — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| Active task | Phase 11 Readiness — [10-POST-ROADMAP.md](../../phases/roadmap/10-POST-ROADMAP.md) · [TASK_PROMPT.md](../../TASK_PROMPT.md) |
 | Last completed | Phase 10 gate PASS — [.ai/phases/10-enterprise/](../phases/10-enterprise/README.md) |
 | Blocker | None |
 

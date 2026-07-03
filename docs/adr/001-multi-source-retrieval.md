@@ -1,9 +1,10 @@
 # ADR-001: Multi-Source Retrieval (Hybrid RAG)
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-01  
 **Deciders:** Project owner  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-03 (Phase 6 gate PASS)
 
 ---
 
@@ -80,6 +81,21 @@ Without a merge strategy, Phase 6 forces a rewrite of `ContextService` or `Retri
 | 8 Knowledge Graph | `GraphRetrievalCandidateSource` added to composite array |
 | 9 Multi AI | Merge must respect scope per [ADR-002](002-workspace-identity-model.md); `workspaceId` in filters when active |
 | 10 Enterprise | Composite can log source mix for audit |
+
+---
+
+## Implementation evidence
+
+| Artifact | Location |
+|----------|----------|
+| `CompositeRetrievalCandidateSource` (RRF merge) | `src/memory/composite-retrieval-candidate-source.ts` |
+| `VectorRetrievalCandidateSource` | `src/memory/vector-retrieval-candidate-source.ts` |
+| `GraphRetrievalCandidateSource` | `src/graph/graph-retrieval-candidate-source.ts` |
+| RRF config (`K`, per-source caps) | `src/search/ranking.config.ts` |
+| Composition wiring | `src/memory/create-context-service.ts` |
+| Unit tests (13 merge-policy tests) | `tests/memory/composite-retrieval-candidate-source.test.ts` |
+
+**Default behavior:** Hybrid retrieval wired at composition root; graph leg active when `IGraphStore` available. `Retriever` and `ContextService` signatures unchanged.
 
 ---
 

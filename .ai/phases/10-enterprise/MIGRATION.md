@@ -63,8 +63,8 @@ Behavior (idempotent):
 
 ## Not in scope
 
-- PostgreSQL cutover (ADR-009 Proposed)
-- R2 content dual-write (ADR-005 Proposed)
+- PostgreSQL production cutover runbook ([ADR-018](018-production-postgres-cutover.md) — Phase 11)
+- R2 content dual-write / `IMemoryContentReader` wiring (Phase 13)
 
 ---
 

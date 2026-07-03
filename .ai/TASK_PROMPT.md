@@ -1,29 +1,61 @@
-# Task Prompt — Post–Phase 10
+# Task Prompt — Phase 11 Production Operations
 
-**Status:** Phases 1–10 complete (2026-07-03)  
-**Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)
+**Handoff (Cline / VS Code):** [HANDOFF.md](phases/11-production-ops/HANDOFF.md) — session state + starter prompt (2026-07-03)
+
+**Status:** Planned — Readiness Review pending  
+**Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)  
+**Roadmap:** [phases/roadmap/10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md)
 
 ---
 
 # TASK
 
-**No active phase implementation.** All roadmap phases through Phase 10 are gated PASS.
+**Phase 11 — Production Operations** (P0 post–Phase 10)
 
-**Next:** Define post–Phase 10 roadmap item (production Postgres cutover, batch `recordAccess`, observability dashboards, or other owner-prioritized work).
+**Objective:** Prove Postgres metadata path in staging; produce cutover runbook. Default D1 deploy unchanged.
 
-**Evidence:** [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
-
----
-
-## Recently completed (reference)
-
-| Phase | ADR | Gate |
-|-------|-----|------|
-| 8 Knowledge Graph | ADR-006 Implemented | PASS 2026-07-03 |
-| 9 Multi-AI | ADR-007 Implemented | PASS 2026-07-03 |
-| 9.5 Platform | ADR-008 Implemented | PASS 2026-07-03 |
-| 10 Enterprise | ADR-005–017 | PASS 2026-07-03 |
+**Do not implement until:** Readiness PASS. ADR-018 ✅ Approved (2026-07-03).
 
 ---
 
-*Rotated after Phase 10 gate PASS 2026-07-03.*
+## ADR gates
+
+| ADR | Title | Status |
+|-----|-------|--------|
+| [018](../../../docs/adr/018-production-postgres-cutover.md) | Production Postgres cutover | ✅ **Approved** (2026-07-03) |
+
+---
+
+## Milestones (from POST-ROADMAP)
+
+- [x] ADR-018 Approved (2026-07-03)
+- [x] Phase 11 folder scaffolded (`11-production-ops/`)
+- [x] DESIGN + RISKS + Readiness Review PASS (conditional)
+- [x] C11-1..C11-6: runPostgresMigrations, apply-postgres-schema, backfill, parity scripts, CI harness
+- [x] C11-7: MIGRATION.md cutover runbook
+- [x] C11-8: PANDUAN §8 + README ops matrix
+- [ ] Staging CI/job: `SQL_PROVIDER=postgres` full test suite
+- [ ] Gate REVIEW PASS
+
+---
+
+## Definition of Done
+
+- [ ] Staging evidence for Postgres metadata adapter
+- [ ] Owner sign-off on cutover strategy
+- [ ] 405+ tests green at default env (D1)
+- [ ] No service-layer rewrite
+
+---
+
+## Parallel tracks (later phases — not Phase 11)
+
+| Phase | Focus |
+|-------|--------|
+| 12 | Event pipeline, audit fan-out, OTel runbook |
+| 13 | R2 content offload, pgvector production |
+| 14 | Meilisearch / Neo4j production |
+
+---
+
+*Rotated from post–Phase 10 roadmap definition 2026-07-03.*

@@ -69,7 +69,7 @@ Read in order:
 | Terminology | `core/glossary/GLOSSARY.md` |
 | Prompt templates | `workflow/prompts/` |
 | Checklists | `workflow/checklists/` |
-| Current phase docs | [phases/10-enterprise/](phases/10-enterprise/) (complete) · [09.5-platform-architecture/](phases/09.5-platform-architecture/) |
+| Current phase docs | [11-production-ops/](phases/11-production-ops/) · [10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md) |
 | Active task | Rotate to Phase 10 when scheduled — [TASK_PROMPT.md](TASK_PROMPT.md) |
 
 ---
@@ -91,6 +91,7 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 9 Multi-AI | ✅ Complete (ADR-007 Implemented 2026-07-03) |
 | 9.5 Platform Architecture | ✅ Complete (ADR-008 2026-07-03) |
 | 10 Enterprise | ✅ Complete (2026-07-03) |
+| 11 Production Ops | 🔲 Scaffolded — [11-production-ops/](phases/11-production-ops/) |
 
 ---
 

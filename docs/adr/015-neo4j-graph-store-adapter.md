@@ -1,8 +1,9 @@
 # ADR-015: Neo4j Graph Store Adapter
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-03  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-03 (Phase 10 T8)  
 **Deciders:** Project owner  
 
 ---
@@ -29,3 +30,16 @@ Default `GRAPH_PROVIDER=d1` unchanged.
 - [ADR-006 Graph provider](006-igraph-provider.md)
 - [ADR-008 Platform architecture](008-platform-architecture.md)
 - [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)
+
+---
+
+## Implementation evidence
+
+| Artifact | Location |
+|----------|----------|
+| `Neo4jGraphStoreAdapter` | `src/infrastructure/graph/neo4j/neo4j-graph-store.adapter.ts` |
+| `D1GraphAdapter` (default) | `src/infrastructure/graph/d1/d1-graph.adapter.ts` |
+| Factory | `src/infrastructure/composition/create-graph-provider.ts` |
+| Backfill script (deferred prod use) | `scripts/backfill-neo4j.ts` |
+
+**Default:** `GRAPH_PROVIDER=d1`. Edge sync / production cutover deferred to Phase 14.

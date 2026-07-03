@@ -215,25 +215,74 @@ API eksplorasi graph (tanpa flag di atas): MCP `get_graph_capabilities`, `traver
 
 ---
 
-## 8. Infrastruktur platform (Fase 10)
+## 8. Infrastruktur platform (Fase 10 + 11)
 
 Adapter eksternal diaktifkan melalui variabel lingkungan di composition root. **Default tidak berubah** (D1, inline storage, tanpa cache/events/analytics eksternal).
 
-| Variable | Default | Provider |
-|----------|---------|----------|
-| `SQL_PROVIDER` | `d1` | PostgreSQL metadata |
-| `VECTOR_PROVIDER` | `d1` | pgvector |
-| `OBJECT_STORAGE_PROVIDER` | `inline` | R2 / S3 |
-| `SEARCH_PROVIDER` | `sql` | Meilisearch |
-| `GRAPH_PROVIDER` | `d1` | Neo4j |
-| `CACHE_PROVIDER` | `none` | Redis |
-| `EVENT_BUS_PROVIDER` | `none` | Redis Streams |
-| `ANALYTICS_PROVIDER` | `none` | DuckDB (dev) |
-| `ENTERPRISE_RBAC` | `false` | RBAC workspace |
-| `MEMORY_ACCESS_AUDIT` | `false` | Audit trail `memory.accessed` (context build) |
-| `OTEL_ENABLED` | `false` | OpenTelemetry |
+| Variable | Default | Provider | Catatan |
+|----------|---------|---------|---------|
+| `SQL_PROVIDER` | `d1` | D1 · `postgres` | **Phase 11:** Postgres metadata via `DATABASE_URL` |
+| `VECTOR_PROVIDER` | `d1` | D1 · `pgvector` | Vektor di tabel `memory_embeddings` |
+| `OBJECT_STORAGE_PROVIDER` | `inline` | R2 · S3 | Content offload (Phase 13) |
+| `SEARCH_PROVIDER` | `sql` | SQL · Meilisearch | Hybrid search (Phase 14) |
+| `GRAPH_PROVIDER` | `d1` | D1 · Neo4j | Knowledge graph (Phase 14) |
+| `CACHE_PROVIDER` | `none` | Redis | Opsional (Phase 12) |
+| `EVENT_BUS_PROVIDER` | `none` | Redis | Audit fan-out (Phase 12) |
+| `ANALYTICS_PROVIDER` | `none` | DuckDB | Dev analytics (Phase 12) |
+| `ENTERPRISE_RBAC` | `false` | RBAC | Workspace RBAC (Phase 10) |
+| `MEMORY_ACCESS_AUDIT` | `false` | Audit | `memory.accessed` trail (ADR-017) |
+| `OTEL_ENABLED` | `false` | OTel | OpenTelemetry HTTP tracing |
 
 Rincian ADR: [docs/adr/README.md](adr/README.md). Contoh variabel: [.env.example](../.env.example).
+
+### Postgres metadata (Phase 11)
+
+**Strategy:** Quiesce + backfill + env flip (ADR-018 Option A). **Runbook:** [.ai/phases/11-production-ops/MIGRATION.md](../.ai/phases/11-production-ops/MIGRATION.md)
+
+| Env | Value | Catatan |
+|-----|-------|---------|
+| `SQL_PROVIDER` | `postgres` | Flip saat cutover |
+| `DATABASE_URL` | `postgresql://...` | Wajib — dari vault, jangan commit |
+
+#### Apply schema Postgres (idempotent)
+
+```bash
+# via DATABASE_URL
+npm run db:apply-postgres-schema
+
+# via --database-url flag
+npx tsx scripts/apply-postgres-schema.ts --database-url=postgresql://user:pass@host:5432/dbname
+```
+
+#### Backfill D1 → Postgres
+
+```bash
+# dry-run (default) — log saja, tidak tulis
+npm run db:backfill-d1-to-postgres
+
+# execute — tulis data
+npm run db:backfill-d1-to-postgres -- --execute
+
+# dengan --target-url override
+npm run db:backfill-d1-to-postgres -- --target-url=postgresql://user:pass@host:5432/dbname --execute
+
+# scope owner tertentu
+npm run db:backfill-d1-to-postgres -- --owner=<uuid> --execute
+
+# batch size kustom (default 100)
+npm run db:backfill-d1-to-postgres -- --batch-size=500 --execute
+```
+
+#### Verifikasi parity (D1 ↔ Postgres)
+
+```bash
+npm run db:verify-postgres-parity
+
+# dengan --target-url override
+npm run db:verify-postgres-parity -- --target-url=postgresql://user:pass@host:5432/dbname
+```
+
+Exit code `0` = parity OK. `1` = mismatch — block flip sampai diperbaiki.
 
 ### Backfill provider eksternal
 

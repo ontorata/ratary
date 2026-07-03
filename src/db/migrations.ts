@@ -154,20 +154,49 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_memory_embeddings_memory_model
   ON memory_embeddings (memory_id, model_id);
 `;
 
-function splitStatements(sql: string): string[] {
+export type MigrationDialect = 'sqlite' | 'postgres';
+
+export function splitStatements(sql: string): string[] {
   return sql
     .split(';')
     .map((s) => s.trim())
     .filter((s) => s.length > 0);
 }
 
-async function tableHasColumn(client: D1Client, table: string, column: string): Promise<boolean> {
+function assertSqlIdentifier(name: string): void {
+  if (!/^[a-z_][a-z0-9_]*$/i.test(name)) {
+    throw new Error(`Invalid SQL identifier: ${name}`);
+  }
+}
+
+async function tableHasColumn(
+  client: ISqlDatabase,
+  table: string,
+  column: string,
+  dialect: MigrationDialect,
+): Promise<boolean> {
+  assertSqlIdentifier(table);
+  assertSqlIdentifier(column);
+
+  if (dialect === 'postgres') {
+    const rows = await client.query<{ column_name: string }>(
+      `SELECT column_name FROM information_schema.columns
+       WHERE table_schema = 'public' AND table_name = ? AND column_name = ?
+       LIMIT 1`,
+      [table, column],
+    );
+    return rows.length > 0;
+  }
+
   const rows = await client.query<{ name: string }>(`PRAGMA table_info(${table})`);
   return rows.some((row) => row.name === column);
 }
 
-async function migrateMemoriesOwnerId(client: D1Client): Promise<void> {
-  const hasOwnerId = await tableHasColumn(client, 'memories', 'owner_id');
+async function migrateMemoriesOwnerId(
+  client: ISqlDatabase,
+  dialect: MigrationDialect,
+): Promise<void> {
+  const hasOwnerId = await tableHasColumn(client, 'memories', 'owner_id', dialect);
   if (!hasOwnerId) {
     await client.execute(`ALTER TABLE memories ADD COLUMN owner_id TEXT NOT NULL DEFAULT ''`);
   }
@@ -175,8 +204,11 @@ async function migrateMemoriesOwnerId(client: D1Client): Promise<void> {
   await client.execute(`CREATE INDEX IF NOT EXISTS idx_memories_owner_id ON memories(owner_id)`);
 }
 
-async function migrateClientsOwnerId(client: D1Client): Promise<void> {
-  const hasOwnerId = await tableHasColumn(client, 'clients', 'owner_id');
+async function migrateClientsOwnerId(
+  client: ISqlDatabase,
+  dialect: MigrationDialect,
+): Promise<void> {
+  const hasOwnerId = await tableHasColumn(client, 'clients', 'owner_id', dialect);
   if (!hasOwnerId) {
     await client.execute(`ALTER TABLE clients ADD COLUMN owner_id TEXT NOT NULL DEFAULT ''`);
   }
@@ -185,9 +217,12 @@ async function migrateClientsOwnerId(client: D1Client): Promise<void> {
 }
 
 /** Phase 2.6 M1a — knowledge columns + relations table (no unique indexes yet). */
-export async function migrateKnowledgeFoundationPhase1(client: D1Client): Promise<void> {
+export async function migrateKnowledgeFoundationPhase1(
+  client: ISqlDatabase,
+  dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
   for (const column of KNOWLEDGE_MEMORY_COLUMNS) {
-    const hasColumn = await tableHasColumn(client, 'memories', column.name);
+    const hasColumn = await tableHasColumn(client, 'memories', column.name, dialect);
     if (!hasColumn) {
       await client.execute(column.ddl);
     }
@@ -225,9 +260,12 @@ const MEMORY_INTELLIGENCE_COLUMNS: Array<{ name: string; ddl: string }> = [
 ];
 
 /** Phase 4 M4a — intelligence columns (indexes in M4c). */
-export async function migrateMemoryIntelligencePhase1(client: D1Client): Promise<void> {
+export async function migrateMemoryIntelligencePhase1(
+  client: ISqlDatabase,
+  dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
   for (const column of MEMORY_INTELLIGENCE_COLUMNS) {
-    const hasColumn = await tableHasColumn(client, 'memories', column.name);
+    const hasColumn = await tableHasColumn(client, 'memories', column.name, dialect);
     if (!hasColumn) {
       await client.execute(column.ddl);
     }
@@ -235,7 +273,7 @@ export async function migrateMemoryIntelligencePhase1(client: D1Client): Promise
 }
 
 /** Phase 4 M4c — retrieval indexes after backfill. */
-export async function migrateMemoryIntelligencePhase3(client: D1Client): Promise<void> {
+export async function migrateMemoryIntelligencePhase3(client: ISqlDatabase): Promise<void> {
   await client.execute(
     `CREATE INDEX IF NOT EXISTS idx_memories_project_id ON memories(owner_id, project_id)`,
   );
@@ -250,7 +288,7 @@ export async function migrateMemoryIntelligencePhase3(client: D1Client): Promise
 }
 
 /** Phase 5 M5a/b — embedding vector storage table and indexes. */
-export async function migrateEmbeddingPhase1(client: D1Client): Promise<void> {
+export async function migrateEmbeddingPhase1(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(MEMORY_EMBEDDINGS_SQL)) {
     await client.execute(sql);
   }
@@ -293,13 +331,16 @@ const MULTI_AI_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
 ];
 
 /** Phase 9 M9a — workspaces/agents tables + memories workspace columns (ADR-007). */
-export async function migrateMultiAiPhase1(client: D1Client): Promise<void> {
+export async function migrateMultiAiPhase1(
+  client: ISqlDatabase,
+  dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
   for (const sql of splitStatements(WORKSPACES_AGENTS_SQL)) {
     await client.execute(sql);
   }
 
   for (const column of MULTI_AI_MEMORY_COLUMNS) {
-    const hasColumn = await tableHasColumn(client, 'memories', column.name);
+    const hasColumn = await tableHasColumn(client, 'memories', column.name, dialect);
     if (!hasColumn) {
       await client.execute(column.ddl);
     }
@@ -345,13 +386,16 @@ const ENTERPRISE_WORKSPACE_COLUMNS: Array<{ name: string; ddl: string }> = [
 ];
 
 /** Phase 10 M10a — organizations, workspace memberships (ADR-002 / ADR-010). */
-export async function migrateEnterprisePhase1(client: D1Client): Promise<void> {
+export async function migrateEnterprisePhase1(
+  client: ISqlDatabase,
+  dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
   for (const sql of splitStatements(ENTERPRISE_ORG_SQL)) {
     await client.execute(sql);
   }
 
   for (const column of ENTERPRISE_WORKSPACE_COLUMNS) {
-    const hasColumn = await tableHasColumn(client, 'workspaces', column.name);
+    const hasColumn = await tableHasColumn(client, 'workspaces', column.name, dialect);
     if (!hasColumn) {
       await client.execute(column.ddl);
     }
@@ -359,7 +403,7 @@ export async function migrateEnterprisePhase1(client: D1Client): Promise<void> {
 }
 
 /** Phase 2.6 M3 — unique indexes after backfill. */
-export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promise<void> {
+export async function migrateKnowledgeFoundationPhase3(client: ISqlDatabase): Promise<void> {
   await client.execute(
     `CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_codename
      ON memories(owner_id, codename) WHERE codename IS NOT NULL`,
@@ -370,7 +414,14 @@ export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promis
   );
 }
 
-export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
+/**
+ * Apply canonical schema migrations via ISqlDatabase (D1 or Postgres adapter).
+ * @see runPostgresMigrations in postgres-migrations.ts for Postgres entry point
+ */
+export async function runSchemaMigrations(
+  client: ISqlDatabase,
+  dialect: MigrationDialect,
+): Promise<void> {
   const statements = splitStatements(MIGRATION_SQL);
   const createTables = statements.filter((sql) => /^\s*CREATE\s+TABLE/i.test(sql));
   const createIndexes = statements.filter((sql) => !/^\s*CREATE\s+TABLE/i.test(sql));
@@ -379,20 +430,24 @@ export async function runMigrations(client: D1Client = getD1Client()): Promise<v
     await client.execute(sql);
   }
 
-  await migrateMemoriesOwnerId(client);
-  await migrateClientsOwnerId(client);
+  await migrateMemoriesOwnerId(client, dialect);
+  await migrateClientsOwnerId(client, dialect);
 
   for (const sql of createIndexes) {
     await client.execute(sql);
   }
 
-  await migrateKnowledgeFoundationPhase1(client);
+  await migrateKnowledgeFoundationPhase1(client, dialect);
   await migrateKnowledgeFoundationPhase3(client);
-  await migrateMemoryIntelligencePhase1(client);
+  await migrateMemoryIntelligencePhase1(client, dialect);
   await migrateMemoryIntelligencePhase3(client);
   await migrateEmbeddingPhase1(client);
-  await migrateMultiAiPhase1(client);
-  await migrateEnterprisePhase1(client);
+  await migrateMultiAiPhase1(client, dialect);
+  await migrateEnterprisePhase1(client, dialect);
+}
+
+export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
+  await runSchemaMigrations(client, 'sqlite');
 }
 
 export interface D1Statement {

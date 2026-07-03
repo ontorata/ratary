@@ -1,8 +1,9 @@
 # ADR-009: PostgreSQL Metadata Adapter
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-03  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-03 (Phase 10 T1)  
 **Deciders:** Project owner  
 
 ---
@@ -54,3 +55,17 @@ Set `SQL_PROVIDER=d1`. Postgres data retained for forward-fix; no automatic colu
 - [ADR-004 Repository port types](004-repository-port-types.md)
 - [ADR-008 Platform architecture](008-platform-architecture.md)
 - [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)
+
+---
+
+## Implementation evidence
+
+| Artifact | Location |
+|----------|----------|
+| `PostgresSqlDatabaseAdapter` | `src/infrastructure/sql/postgres-sql-database.adapter.ts` |
+| Placeholder translation | `src/infrastructure/_shared/sql-placeholders.ts` |
+| Factory | `src/infrastructure/composition/create-sql-database.ts` |
+| Env validation | `src/config/env.ts` (`SQL_PROVIDER`, `DATABASE_URL`) |
+| Unit + contract tests | `tests/infrastructure/postgres-sql-database.adapter.test.ts` |
+
+**Default:** `SQL_PROVIDER=d1`. Production cutover: [ADR-018](018-production-postgres-cutover.md) **Approved** — scripts after Readiness PASS.

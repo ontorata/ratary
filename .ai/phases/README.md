@@ -32,7 +32,8 @@ phases/
 ├── 07-agent-runtime/                 ✅ Closed
 ├── 08-knowledge-graph/               ✅ Closed
 ├── 09-multi-ai/                      ✅ Closed
-└── 10-enterprise/                    🟡 Gate pending
+└── 10-enterprise/                    ✅ Closed
+└── 11-production-ops/                🔄 Open (Readiness PASS)
 ```
 
 Each `phases/NN-name/` folder:
@@ -85,7 +86,8 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 7 Agent Runtime | [07-agent-runtime/](07-agent-runtime/README.md) | ✅ Closed | External boundary |
 | 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | ✅ Closed | [ADR-006](../../../docs/adr/006-igraph-provider.md) |
 | 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | ✅ Closed | [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md) |
-| 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | 🟡 Gate pending | [ADR-005–016](../../../docs/adr/README.md) |
+| 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | ✅ Closed | [ADR-005–017](../../../docs/adr/README.md) |
+| 11 Production Ops | [11-production-ops/](11-production-ops/README.md) | 🔄 Open | [ADR-018 Approved](../../../docs/adr/018-production-postgres-cutover.md) |
 
 ---
 
