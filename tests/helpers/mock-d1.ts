@@ -186,14 +186,14 @@ export class MockD1Client implements D1Client {
     if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE ID = ?')) {
       const id = params[0] as string;
       const row = this.identities.get(id);
-      return { results: row ? [row] as unknown as Record<string, unknown>[] : [], success: true };
+      return { results: row ? ([row] as unknown as Record<string, unknown>[]) : [], success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE SECRET_HASH = ?')) {
       const hash = params[0] as string;
       const id = this.identityByHash.get(hash);
       const row = id ? this.identities.get(id) : undefined;
-      return { results: row ? [row] as unknown as Record<string, unknown>[] : [], success: true };
+      return { results: row ? ([row] as unknown as Record<string, unknown>[]) : [], success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM IDENTITIES WHERE OWNER_ID = ?')) {

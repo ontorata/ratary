@@ -75,7 +75,10 @@ describe('CompositeRetrievalCandidateSource', () => {
     });
 
     it('should handle single source', async () => {
-      const sqlMemories = [createMockMemory('1', 'SQL Memory'), createMockMemory('2', 'SQL Memory 2')];
+      const sqlMemories = [
+        createMockMemory('1', 'SQL Memory'),
+        createMockMemory('2', 'SQL Memory 2'),
+      ];
       const sqlSource = createMockSource(sqlMemories);
       const composite = new CompositeRetrievalCandidateSource([sqlSource]);
 
@@ -90,7 +93,7 @@ describe('CompositeRetrievalCandidateSource', () => {
       const sharedMemory = createMockMemory('shared', 'Shared Memory');
       const sqlMemories = [sharedMemory, createMockMemory('sql-only', 'SQL Only')];
       const vectorMemories = [sharedMemory, createMockMemory('vector-only', 'Vector Only')];
-      
+
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
       const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
@@ -114,7 +117,7 @@ describe('CompositeRetrievalCandidateSource', () => {
         createMockMemory('vector-first', 'Vector First'),
         createMockMemory('shared', 'Shared Memory'),
       ];
-      
+
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
       const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
@@ -136,7 +139,7 @@ describe('CompositeRetrievalCandidateSource', () => {
         createMockMemory('b', 'B'),
         createMockMemory('a', 'A'),
       ];
-      
+
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
       const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
@@ -151,9 +154,13 @@ describe('CompositeRetrievalCandidateSource', () => {
   describe('cap enforcement', () => {
     it('should respect RETRIEVAL_CANDIDATE_CAP (100)', async () => {
       // Create 150 memories across sources
-      const sqlMemories = Array.from({ length: 50 }, (_, i) => createMockMemory(`sql-${i}`, `SQL ${i}`));
-      const vectorMemories = Array.from({ length: 50 }, (_, i) => createMockMemory(`vec-${i}`, `Vec ${i}`));
-      
+      const sqlMemories = Array.from({ length: 50 }, (_, i) =>
+        createMockMemory(`sql-${i}`, `SQL ${i}`),
+      );
+      const vectorMemories = Array.from({ length: 50 }, (_, i) =>
+        createMockMemory(`vec-${i}`, `Vec ${i}`),
+      );
+
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
       const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);
@@ -165,9 +172,13 @@ describe('CompositeRetrievalCandidateSource', () => {
     });
 
     it('should apply per-source caps (50 each)', async () => {
-      const sqlMemories = Array.from({ length: 100 }, (_, i) => createMockMemory(`sql-${i}`, `SQL ${i}`));
-      const vectorMemories = Array.from({ length: 100 }, (_, i) => createMockMemory(`vec-${i}`, `Vec ${i}`));
-      
+      const sqlMemories = Array.from({ length: 100 }, (_, i) =>
+        createMockMemory(`sql-${i}`, `SQL ${i}`),
+      );
+      const vectorMemories = Array.from({ length: 100 }, (_, i) =>
+        createMockMemory(`vec-${i}`, `Vec ${i}`),
+      );
+
       const sqlSource = createMockSource(sqlMemories);
       const vectorSource = createMockSource(vectorMemories);
       const composite = new CompositeRetrievalCandidateSource([sqlSource, vectorSource]);

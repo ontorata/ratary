@@ -57,7 +57,8 @@ export class CompositeRetrievalCandidateSource implements IRetrievalCandidateSou
     filters: RetrievalFilters,
   ): Promise<Memory[]> {
     // Determine cap based on source index (0 = SQL, 1+ = vector)
-    const cap = source === this.sources[0] ? RRF_CONFIG.SOURCE_CAPS.sql : RRF_CONFIG.SOURCE_CAPS.vector;
+    const cap =
+      source === this.sources[0] ? RRF_CONFIG.SOURCE_CAPS.sql : RRF_CONFIG.SOURCE_CAPS.vector;
     const cappedFilters = { ...filters, maxCandidates: cap };
     return source.findCandidates(cappedFilters);
   }

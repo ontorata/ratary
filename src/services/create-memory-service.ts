@@ -12,10 +12,7 @@ import { MemoryRelationService } from './memory-relation.service.js';
  * Creates MemoryService with a shared repository instance.
  * Pass existing repository to ensure single instance throughout the composition root.
  */
-export function createMemoryService(
-  db: D1Client,
-  repository?: IMemoryRepository,
-): MemoryService {
+export function createMemoryService(db: D1Client, repository?: IMemoryRepository): MemoryService {
   const memRepo = repository ?? new MemoryRepository(db);
   const knowledge = new KnowledgeService(memRepo);
   const search = new SearchService(memRepo);

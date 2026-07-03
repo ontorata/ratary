@@ -1,4 +1,9 @@
-import type { CreateRelationInput, MemoryRelation, RelationType, SourceType } from '../types/knowledge.js';
+import type {
+  CreateRelationInput,
+  MemoryRelation,
+  RelationType,
+  SourceType,
+} from '../types/knowledge.js';
 
 /**
  * Port interface for memory relations persistence.

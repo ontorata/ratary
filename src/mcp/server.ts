@@ -4,7 +4,10 @@ import { z } from 'zod';
 import { getD1Client } from '../db/index.js';
 import { MemoryRepository } from '../repositories/memory.repository.js';
 import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
-import { createMemoryService, createMemoryRelationService } from '../services/create-memory-service.js';
+import {
+  createMemoryService,
+  createMemoryRelationService,
+} from '../services/create-memory-service.js';
 import type { MemoryService } from '../services/memory.service.js';
 import { MemoryRelationService } from '../services/memory-relation.service.js';
 import { createContextService } from '../memory/create-context-service.js';

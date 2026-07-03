@@ -61,7 +61,11 @@ describe('Cross-Owner Leak Prevention E2E', () => {
       method: 'POST',
       url: '/api/v1/memory',
       headers: { authorization: `Bearer ${ownerAKey}` },
-      payload: { title: 'Secret A Memory', content: 'Owner A secret content', project: 'secret-project' },
+      payload: {
+        title: 'Secret A Memory',
+        content: 'Owner A secret content',
+        project: 'secret-project',
+      },
     });
     expect(createA.statusCode).toBe(201);
     ownerAMemoryId = createA.json().id as string;

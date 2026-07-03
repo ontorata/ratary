@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { VectorRetrievalCandidateSource } from '../../src/memory/vector-retrieval-candidate-source.js';
 import type { IEmbeddingStore } from '../../src/embedding/embedding.store.interface.js';
-import type { IEmbeddingProvider, EmbeddingResult } from '../../src/embedding/embedding.provider.interface.js';
+import type {
+  IEmbeddingProvider,
+  EmbeddingResult,
+} from '../../src/embedding/embedding.provider.interface.js';
 import type { IMemoryReader } from '../../src/repositories/memory.repository.interface.js';
 import type { Memory } from '../../src/types/memory.js';
 
@@ -214,10 +217,6 @@ describe('VectorRetrievalCandidateSource', () => {
     });
 
     // Verify the limit was passed to searchSimilar
-    expect(mockEmbeddingStore.searchSimilar).toHaveBeenCalledWith(
-      expect.any(Array),
-      'owner-1',
-      2,
-    );
+    expect(mockEmbeddingStore.searchSimilar).toHaveBeenCalledWith(expect.any(Array), 'owner-1', 2);
   });
 });

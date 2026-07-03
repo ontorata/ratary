@@ -3,7 +3,10 @@ import cors from '@fastify/cors';
 import { getD1Client } from './db/index.js';
 import { MemoryRepository } from './repositories/memory.repository.js';
 import { MemoryRelationRepository } from './repositories/memory-relation.repository.js';
-import { createMemoryService, createMemoryRelationService } from './services/create-memory-service.js';
+import {
+  createMemoryService,
+  createMemoryRelationService,
+} from './services/create-memory-service.js';
 import type { MemoryService } from './services/memory.service.js';
 import { HealthService } from './services/health.service.js';
 import {

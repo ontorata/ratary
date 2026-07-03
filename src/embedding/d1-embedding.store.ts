@@ -143,7 +143,9 @@ export class D1EmbeddingStore implements IEmbeddingStore {
 
   private assertVectorDimensions(vector: number[], dimensions: number): void {
     if (vector.length !== dimensions) {
-      throw new ValidationError(`Vector length ${vector.length} does not match dimensions ${dimensions}`);
+      throw new ValidationError(
+        `Vector length ${vector.length} does not match dimensions ${dimensions}`,
+      );
     }
   }
 }

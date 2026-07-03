@@ -31,7 +31,10 @@ const envSchema = z
     EMBEDDING_MAX_RETRIES: z.coerce.number().int().positive().default(3),
 
     // Hybrid retrieval (Phase 6)
-    HYBRID_RETRIEVAL: z.enum(['true', 'false']).transform((v) => v === 'true').default('false'),
+    HYBRID_RETRIEVAL: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {
