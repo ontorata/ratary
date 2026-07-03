@@ -14,6 +14,7 @@ import type {
 import type { MemoryType } from '../types/knowledge.js';
 import { DEFAULT_MEMORY_LEVEL } from '../types/memory-level.js';
 import { NotFoundError } from '../types/errors.js';
+import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 
 export class MemoryService {
   constructor(
@@ -55,12 +56,14 @@ export class MemoryService {
       favorite: input.favorite,
       archived: false,
       ownerId: scope.ownerId,
+      workspaceId: workspaceIdFromScope(scope),
       level: input.level ?? DEFAULT_MEMORY_LEVEL,
     });
   }
 
   async updateMemory(scope: MemoryScope, id: string, input: UpdateMemoryInput): Promise<Memory> {
-    const existing = await this.repository.findById(id, scope.ownerId);
+    const workspaceId = workspaceIdFromScope(scope);
+    const existing = await this.repository.findById(id, scope.ownerId, workspaceId);
     if (!existing) {
       throw new NotFoundError('Memory', id);
     }
@@ -86,21 +89,26 @@ export class MemoryService {
       },
     );
 
-    const updated = await this.repository.update(id, scope.ownerId, {
-      title: input.title,
-      project: input.project,
-      content: input.content,
-      summary: enriched.summary,
-      tags: input.tags,
-      keywords: enriched.keywords,
-      category: enriched.category,
-      memoryType: enriched.memoryType,
-      importance: enriched.importance,
-      language: enriched.language,
-      notes: enriched.notes,
-      slug: enriched.slug,
-      favorite: input.favorite,
-    });
+    const updated = await this.repository.update(
+      id,
+      scope.ownerId,
+      {
+        title: input.title,
+        project: input.project,
+        content: input.content,
+        summary: enriched.summary,
+        tags: input.tags,
+        keywords: enriched.keywords,
+        category: enriched.category,
+        memoryType: enriched.memoryType,
+        importance: enriched.importance,
+        language: enriched.language,
+        notes: enriched.notes,
+        slug: enriched.slug,
+        favorite: input.favorite,
+      },
+      workspaceId,
+    );
 
     if (!updated) {
       throw new NotFoundError('Memory', id);
@@ -109,7 +117,8 @@ export class MemoryService {
   }
 
   async deleteMemory(scope: MemoryScope, id: string): Promise<void> {
-    const deleted = await this.repository.delete(id, scope.ownerId);
+    const workspaceId = workspaceIdFromScope(scope);
+    const deleted = await this.repository.delete(id, scope.ownerId, workspaceId);
     if (!deleted) {
       throw new NotFoundError('Memory', id);
     }
@@ -120,7 +129,7 @@ export class MemoryService {
   }
 
   async getMemoryById(scope: MemoryScope, id: string): Promise<Memory> {
-    const memory = await this.repository.findById(id, scope.ownerId);
+    const memory = await this.repository.findById(id, scope.ownerId, workspaceIdFromScope(scope));
     if (!memory) {
       throw new NotFoundError('Memory', id);
     }
@@ -128,7 +137,11 @@ export class MemoryService {
   }
 
   async getMemoryByCodename(scope: MemoryScope, codename: string): Promise<Memory> {
-    const memory = await this.repository.findByCodename(scope.ownerId, codename);
+    const memory = await this.repository.findByCodename(
+      scope.ownerId,
+      codename,
+      workspaceIdFromScope(scope),
+    );
     if (!memory) {
       throw new NotFoundError('Memory', codename);
     }
@@ -136,7 +149,11 @@ export class MemoryService {
   }
 
   async getMemoryBySlug(scope: MemoryScope, slug: string): Promise<Memory> {
-    const memory = await this.repository.findBySlug(scope.ownerId, slug);
+    const memory = await this.repository.findBySlug(
+      scope.ownerId,
+      slug,
+      workspaceIdFromScope(scope),
+    );
     if (!memory) {
       throw new NotFoundError('Memory', slug);
     }
@@ -149,6 +166,7 @@ export class MemoryService {
   ): Promise<{ memories: Memory[]; total: number }> {
     return this.repository.findAll({
       ownerId: scope.ownerId,
+      workspaceId: workspaceIdFromScope(scope),
       project: query.project,
       favorite: query.favorite,
       archived: query.archived,
@@ -162,7 +180,11 @@ export class MemoryService {
   }
 
   async toggleFavorite(scope: MemoryScope, id: string): Promise<Memory> {
-    const memory = await this.repository.toggleFavorite(id, scope.ownerId);
+    const memory = await this.repository.toggleFavorite(
+      id,
+      scope.ownerId,
+      workspaceIdFromScope(scope),
+    );
     if (!memory) {
       throw new NotFoundError('Memory', id);
     }
@@ -170,7 +192,12 @@ export class MemoryService {
   }
 
   async archiveMemory(scope: MemoryScope, id: string, archived = true): Promise<Memory> {
-    const memory = await this.repository.archive(id, scope.ownerId, archived);
+    const memory = await this.repository.archive(
+      id,
+      scope.ownerId,
+      archived,
+      workspaceIdFromScope(scope),
+    );
     if (!memory) {
       throw new NotFoundError('Memory', id);
     }
@@ -178,19 +205,22 @@ export class MemoryService {
   }
 
   async listProjects(scope: MemoryScope): Promise<string[]> {
-    return this.repository.listProjects(scope.ownerId);
+    return this.repository.listProjects(scope.ownerId, workspaceIdFromScope(scope));
   }
 
   async listTags(scope: MemoryScope): Promise<string[]> {
-    return this.repository.listTags(scope.ownerId);
+    return this.repository.listTags(scope.ownerId, workspaceIdFromScope(scope));
   }
 
   async listCategories(scope: MemoryScope): Promise<string[]> {
-    return this.repository.listDistinctCategories(scope.ownerId);
+    return this.repository.listDistinctCategories(scope.ownerId, workspaceIdFromScope(scope));
   }
 
   async exportBackup(scope: MemoryScope): Promise<{ memories: Memory[] }> {
-    const memories = await this.repository.findAllByOwner(scope.ownerId);
+    const memories = await this.repository.findAllByOwner(
+      scope.ownerId,
+      workspaceIdFromScope(scope),
+    );
     return { memories };
   }
 
@@ -218,7 +248,7 @@ export class MemoryService {
       await this.embeddingStore.deleteAllByOwner(scope.ownerId);
     }
 
-    await this.repository.deleteAllByOwner(scope.ownerId);
+    await this.repository.deleteAllByOwner(scope.ownerId, workspaceIdFromScope(scope));
 
     let imported = 0;
     for (const item of input.memories) {

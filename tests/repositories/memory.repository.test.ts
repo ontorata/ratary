@@ -265,6 +265,56 @@ describe('MemoryRepository', () => {
     expect(found?.updatedAt).toBe(memory.updatedAt);
   });
 
+  it('should isolate memories by workspace when workspaceId is provided', async () => {
+    const wsA = 'ws-a';
+    const wsB = 'ws-b';
+
+    const inA = await repository.insert({
+      title: 'Workspace A',
+      project: 'p',
+      content: 'c',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0600',
+      slug: 'ws-a-memory',
+      favorite: false,
+      ownerId,
+      workspaceId: wsA,
+    });
+
+    await repository.insert({
+      title: 'Workspace B',
+      project: 'p',
+      content: 'c',
+      summary: '',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 50,
+      language: 'id',
+      notes: '',
+      codename: 'NOTE-0601',
+      slug: 'ws-b-memory',
+      favorite: false,
+      ownerId,
+      workspaceId: wsB,
+    });
+
+    expect(await repository.findById(inA.id, ownerId, wsA)).not.toBeNull();
+    expect(await repository.findById(inA.id, ownerId, wsB)).toBeNull();
+
+    const listA = await repository.findAll({ ownerId, workspaceId: wsA, limit: 10, offset: 0 });
+    expect(listA.total).toBe(1);
+    expect(listA.memories[0]?.title).toBe('Workspace A');
+  });
+
   it('should exclude content body from retrieval candidate projection (O-04-2)', async () => {
     const secretBody = 'SECRET_FULL_BODY_SHOULD_NOT_APPEAR_IN_RETRIEVAL';
     const memory = await repository.insert({

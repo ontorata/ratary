@@ -1,32 +1,20 @@
 ﻿# Phase 9 — Multi-AI — RISKS
 
-**Document:** RISKS  
-**Phase status:** Reserved  
-**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
-
----
-
-## Purpose
-
-Phase-specific risk register: identified, mitigated, realized, and deferred risks.
-
----
-
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Design phase — initial risk register |
-| **Updated by** | Assistant during phase; owner validates at gate |
-| **Read-only when** | Gate PASS — realized risks locked; deferred risks noted |
-| **Roadmap relation** | Phase slice of roadmap cross-phase and phase-specific risks |
+**Phase status:** Active
 
 ---
 
 ## Risk register
 
-See roadmap Phase 9 risks section. Extend during design.
+| ID | Risk | Severity | Mitigation |
+|----|------|----------|------------|
+| R9-01 | Scope refactor touches many repository queries | Medium | ADR-007 phased commits; workspace filter helper; E2E isolation tests |
+| R9-02 | MCP contract break | High | Additive env only; no tool signature changes |
+| R9-03 | Backfill misses orphan memories | Medium | Idempotent backfill script; verify counts per owner |
+| R9-04 | Sync conflicts silently lost | Low | MVP audit `sync.conflict`; document last-write-wins |
+| R9-05 | Default workspace slug collision | Low | Unique `(owner_id, slug)` constraint |
+| R9-06 | Graph/embedding legs ignore workspace | Medium | Phase 9 step: pass workspace filter when column live (ADR-006 note) |
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Extend during implementation.*

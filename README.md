@@ -52,7 +52,9 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | **Phase 4 — Memory Intelligence** | ✅ | [archive](docs/archive/) · panduan: **[docs/PANDUAN.md](docs/PANDUAN.md)** |
 | **Phase 5 — Embedding** | ✅ | [.ai/core/architecture/10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md) · backfill: `npm run db:backfill-embeddings` |
 | **Phase 6 — Hybrid Retrieval** | ✅ | [.ai/phases/06-hybrid-retrieval/](.ai/phases/06-hybrid-retrieval/) |
-| **Phase 7 — Agent Runtime** | 🔲 Next | [.ai/TASK_PROMPT.md](.ai/TASK_PROMPT.md) |
+| **Phase 7 — Agent Runtime** | ✅ | [.ai/phases/07-agent-runtime/](.ai/phases/07-agent-runtime/) |
+| **Phase 8 — Knowledge Graph** | ✅ | [.ai/phases/08-knowledge-graph/](.ai/phases/08-knowledge-graph/) |
+| **Phase 9 — Multi-AI** | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · ADR-007 |
 
 ## Quick Start
 
@@ -473,8 +475,11 @@ Panduan setup per client: **[docs/PANDUAN.md](docs/PANDUAN.md)**
 | `archive_memory` | Archive memory |
 | `get_graph_capabilities` | Graph traversal capabilities (Phase 8) |
 | `traverse_relations` | BFS traversal from seed memory (Phase 8) |
+| `list_workspaces` | List workspaces for MCP owner (Phase 9) |
+| `list_agents` | List agents in MCP workspace (Phase 9) |
+| `register_agent` | Register agent in MCP workspace (Phase 9) |
 
-See also: `get_memory_by_codename`, `get_context`, `build_prompt`, `link_memories`, `list_relations` — full list in MCP server.
+See also: `get_memory_by_codename`, `get_context`, `build_prompt`, `link_memories`, `list_relations` — **19 tools** total in MCP server.
 
 ## REST API Endpoints
 
@@ -496,6 +501,8 @@ See also: `get_memory_by_codename`, `get_context`, `build_prompt`, `link_memorie
 \*Bootstrap hanya aktif sekali selamanya.
 
 **Header auth:** `Authorization: Bearer aic_...` atau `X-API-Key: aic_...`
+
+**Header scope (Phase 9, optional):** `X-Workspace-Id`, `X-Agent-Id`
 
 ```bash
 # Bootstrap (sekali, setelah db:migrate)
@@ -528,6 +535,10 @@ curl http://localhost:3001/api/v1/memory \
 | POST | `/api/v1/backup/import` | Import JSON |
 | GET | `/api/v1/graph/capabilities` | Graph traversal capabilities (Phase 8) |
 | POST | `/api/v1/graph/traverse` | BFS traverse from seed memory (Phase 8) |
+| GET | `/api/v1/workspaces` | List workspaces (Phase 9) |
+| POST | `/api/v1/workspaces` | Create workspace (Phase 9) |
+| GET | `/api/v1/workspaces/:id/agents` | List agents in workspace (Phase 9) |
+| POST | `/api/v1/workspaces/:id/agents` | Register agent (Phase 9) |
 
 ## Data Model
 
@@ -630,7 +641,9 @@ Lihat **[docs/archive/PHASE-2.5.md](docs/archive/PHASE-2.5.md)** untuk checklist
 | `D1_DATABASE_ID` | Yes | D1 database ID |
 | `D1_API_TOKEN` | Yes | Cloudflare API token dengan D1 permission |
 | `AUTH_SECRET` | Yes (prod) | HMAC secret min 32 char (`openssl rand -hex 32`) |
-| `MCP_OWNER_ID` | No | Scope memory MCP (default: `''` = legacy shared pool) |
+| `MCP_OWNER_ID` | No | Scope memory MCP (required in production) |
+| `MCP_WORKSPACE_ID` | No | MCP workspace (default workspace if unset) |
+| `MCP_AGENT_ID` | No | MCP agent attribution hint |
 | `PORT` | No | Server port (default: 3000) |
 | `LOG_LEVEL` | No | Pino log level (default: info) |
 | `BACKUP_ROOT` | No | Path folder backup chat (default: `D:/Apps/_backups`) |

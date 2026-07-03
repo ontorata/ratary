@@ -18,6 +18,7 @@ export interface InsertMemoryData {
   favorite: boolean;
   archived?: boolean;
   ownerId?: string;
+  workspaceId?: string;
   id?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -49,6 +50,7 @@ export interface UpdateMemoryData {
 
 export interface ListFilters {
   ownerId: string;
+  workspaceId?: string;
   project?: string;
   favorite?: boolean;
   archived?: boolean;
@@ -58,6 +60,7 @@ export interface ListFilters {
 
 export interface SearchFilters {
   ownerId: string;
+  workspaceId?: string;
   query?: string;
   tag?: string;
   project?: string;

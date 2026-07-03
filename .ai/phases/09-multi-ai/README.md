@@ -1,56 +1,38 @@
 ﻿# Phase 9 — Multi-AI
 
-**Status:** Reserved  
-**Roadmap:** Future  
-**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+**Status:** ✅ **Complete** (gate PASS 2026-07-03)  
+**ADR:** [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md) — **Implemented**  
+**Contract:** [ADR-002](../../../docs/adr/002-workspace-identity-model.md) — Approved  
 
 ---
 
-## Purpose
+## Readiness verdict
 
-Single entry point for Phase 9 governance artifacts. Summarizes scope, links all phase documents, and records status relative to [09-ROADMAP.md](../../roadmap/09-ROADMAP.md).
+| Check | Status |
+|-------|--------|
+| Phase 8 gate PASS | ✅ |
+| ADR-002 Approved | ✅ |
+| ADR-007 | ✅ **Implemented** (2026-07-03) |
+| Extension points (MemoryScope, composition root) | ✅ |
+| Dependency phases complete | ✅ |
 
----
-
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Phase folder scaffolded at roadmap definition or Readiness PASS |
-| **Updated by** | Maintainer until gate PASS; then append-only |
-| **Read-only when** | Phase gate PASS and status synced to roadmap |
-| **Roadmap relation** | Canonical index for Phase 9 row in roadmap |
-
----
-
-## Scope summary
-
-See [09-ROADMAP.md — Phase 9](../../roadmap/09-ROADMAP.md).
-
-No external design archive.
+**Verdict: COMPLETE** — Phase 9 gate PASS 2026-07-03.
 
 ---
 
 ## Document index
 
-| Document | Responsibility | Status |
-|----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Approved design intent | Reserved |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | Reserved |
-| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | Reserved |
-| [TESTING.md](TESTING.md) | Verification strategy | Reserved |
-| [REVIEW.md](REVIEW.md) | Architecture review and gate | Reserved |
-| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | Reserved |
-| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | Reserved |
-| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | Reserved |
-| [RISKS.md](RISKS.md) | Risk register | Reserved |
+| Document | Status |
+|----------|--------|
+| [DESIGN.md](DESIGN.md) | ✅ Ready |
+| [MIGRATION.md](MIGRATION.md) | ✅ Implemented |
+| [RISKS.md](RISKS.md) | Initial |
+| [CHECKLIST.md](CHECKLIST.md) | ✅ Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | ✅ Complete |
+| [TESTING.md](TESTING.md) | ✅ Evidence attached |
+| [REVIEW.md](REVIEW.md) | ✅ PASS |
+| [COMPLETION.md](COMPLETION.md) | ✅ Complete |
 
 ---
 
-## Notes
-
-Folder scaffolded. Documents activate at Readiness Review.
-
----
-
-*Subordinate to [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) and [review/](../review/README.md).*
+*Subordinate to [09-ROADMAP.md](../../roadmap/09-ROADMAP.md).*

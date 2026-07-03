@@ -21,6 +21,7 @@ import {
 } from './controllers/knowledge.controller.js';
 import { createContextController } from './controllers/context.controller.js';
 import { createGraphController } from './controllers/graph.controller.js';
+import { createWorkspaceController } from './controllers/workspace.controller.js';
 import { createGraphService } from './services/graph.service.js';
 import { createContextService } from './memory/create-context-service.js';
 import { createEmbeddingProvider } from './embedding/create-embedding-provider.js';
@@ -30,9 +31,12 @@ import { healthRoutes } from './routes/index.js';
 import { errorHandlerPlugin, observabilityPlugin } from './plugins/index.js';
 import { getEnv } from './config/index.js';
 import { createAuthLayer } from './auth/index.js';
+import { createMultiAiPorts } from './composition/create-multi-ai-ports.js';
+import type { MultiAiPorts } from './composition/create-multi-ai-ports.js';
 
 export interface AppDependencies {
   memoryService: MemoryService;
+  multiAi: MultiAiPorts;
 }
 
 export async function buildApp(options?: {
@@ -60,7 +64,15 @@ export async function buildApp(options?: {
   await fastify.register(cors, {
     origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-API-Key', 'X-Request-Id', 'X-Client-Id'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-API-Key',
+      'X-Request-Id',
+      'X-Client-Id',
+      'X-Workspace-Id',
+      'X-Agent-Id',
+    ],
   });
 
   await fastify.register(errorHandlerPlugin);
@@ -88,21 +100,25 @@ export async function buildApp(options?: {
   const memoryService = createMemoryService(db, repository);
   const relationService = createMemoryRelationService(db, repository, relationRepository);
   const healthService = new HealthService(db);
+  const multiAi = createMultiAiPorts(db);
+  const { scopeResolver } = multiAi;
 
   fastify.decorate('memoryService', memoryService);
+  fastify.decorate('multiAi', multiAi);
 
   const healthController = createHealthController(healthService);
-  const memoryController = createMemoryController(memoryService);
-  const backupController = createBackupController(memoryService);
+  const memoryController = createMemoryController(memoryService, scopeResolver);
+  const backupController = createBackupController(memoryService, scopeResolver);
   const authController = createAuthController(authLayer.identityService, authLayer.clientService);
-  const knowledgeController = createKnowledgeController(memoryService);
-  const relationController = createMemoryRelationController(relationService);
+  const knowledgeController = createKnowledgeController(memoryService, scopeResolver);
+  const relationController = createMemoryRelationController(relationService, scopeResolver);
   const embeddingProvider = createEmbeddingProvider();
   const embeddingStore = new D1EmbeddingStore(db);
   const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
-  const contextController = createContextController(contextService);
+  const contextController = createContextController(contextService, scopeResolver);
   const graphService = createGraphService(db, repository);
-  const graphController = createGraphController(graphService);
+  const graphController = createGraphController(graphService, scopeResolver);
+  const workspaceController = createWorkspaceController(db, scopeResolver, multiAi.agentIdentity);
 
   const controllers = {
     health: healthController,
@@ -113,6 +129,7 @@ export async function buildApp(options?: {
     relations: relationController,
     context: contextController,
     graph: graphController,
+    workspace: workspaceController,
   };
 
   await fastify.register(
@@ -132,5 +149,6 @@ export async function buildApp(options?: {
 declare module 'fastify' {
   interface FastifyInstance {
     memoryService: MemoryService;
+    multiAi: MultiAiPorts;
   }
 }

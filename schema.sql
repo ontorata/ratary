@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS memories (
   embedding_id TEXT,
   object_key TEXT,
   semantic_hash TEXT,
+  workspace_id TEXT,
+  last_modified_by_agent_id TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -49,6 +51,38 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_codename
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_slug
   ON memories(owner_id, slug) WHERE slug IS NOT NULL;
+
+-- Phase 9 multi-AI index (ADR-007)
+CREATE INDEX IF NOT EXISTS idx_memories_workspace ON memories(workspace_id);
+
+-- workspaces: shared brain boundary per owner (Phase 9, ADR-007)
+CREATE TABLE IF NOT EXISTS workspaces (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  name TEXT NOT NULL DEFAULT 'Default',
+  slug TEXT NOT NULL DEFAULT 'default',
+  created_at TEXT NOT NULL,
+  UNIQUE (owner_id, slug)
+);
+
+CREATE INDEX IF NOT EXISTS idx_workspaces_owner ON workspaces(owner_id);
+
+-- agents: AI client identity inside a workspace (Phase 9, ADR-007)
+CREATE TABLE IF NOT EXISTS agents (
+  id TEXT PRIMARY KEY,
+  workspace_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  client_id TEXT,
+  agent_type TEXT NOT NULL DEFAULT 'mcp',
+  metadata TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  active INTEGER NOT NULL DEFAULT 1,
+  FOREIGN KEY (workspace_id) REFERENCES workspaces(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_agents_workspace ON agents(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_agents_owner ON agents(owner_id);
 
 -- identities: api_key, jwt, oauth, service_account, mcp_token, ...
 CREATE TABLE IF NOT EXISTS identities (

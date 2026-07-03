@@ -1,5 +1,6 @@
 import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import type { MemoryScope } from '../types/memory-scope.js';
+import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 import type { MemoryLevel } from '../types/memory-level.js';
 import { Retriever } from './retriever.js';
 import { SqlRetrievalCandidateSource } from './sql-retrieval-candidate-source.js';
@@ -67,7 +68,9 @@ export class ContextService {
     const context = this.contextBuilder.build(ranked, request.context);
 
     await Promise.all(
-      ranked.map((memory) => this.repository.recordAccess(memory.id, scope.ownerId)),
+      ranked.map((memory) =>
+        this.repository.recordAccess(memory.id, scope.ownerId, workspaceIdFromScope(scope)),
+      ),
     );
 
     return {

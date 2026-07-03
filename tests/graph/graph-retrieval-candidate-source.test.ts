@@ -180,6 +180,7 @@ describe('GraphRetrievalCandidateSource', () => {
     expect(memoryReader.findByIds).toHaveBeenCalledWith(
       ['n-from-seed-1', 'n-from-seed-2'],
       ownerId,
+      undefined,
     );
   });
 
@@ -286,6 +287,7 @@ describe('GraphRetrievalCandidateSource', () => {
     expect(memoryReader.findByIds).toHaveBeenCalledWith(
       ['shared-neighbor', 'unique-neighbor'],
       ownerId,
+      undefined,
     );
   });
 });

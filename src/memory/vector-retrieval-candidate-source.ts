@@ -45,7 +45,7 @@ export class VectorRetrievalCandidateSource implements IRetrievalCandidateSource
 
     // Hydrate memories with full data
     const memoryIds = matches.map((m) => m.memoryId);
-    const memories = await this.memoryReader.findByIds(memoryIds, ownerId);
+    const memories = await this.memoryReader.findByIds(memoryIds, ownerId, filters.workspaceId);
 
     // Create id -> memory map for O(1) lookup
     const memoryMap = new Map(memories.map((m) => [m.id, m]));

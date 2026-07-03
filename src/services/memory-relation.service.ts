@@ -3,6 +3,7 @@ import type { MemoryRelationRepository } from '../repositories/memory-relation.r
 import type { CreateRelationInput, MemoryRelation } from '../types/knowledge.js';
 import type { MemoryScope } from '../types/memory.js';
 import { NotFoundError, ValidationError } from '../types/errors.js';
+import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 
 export class MemoryRelationService {
   constructor(
@@ -11,11 +12,12 @@ export class MemoryRelationService {
   ) {}
 
   async listRelations(scope: MemoryScope, memoryId: string): Promise<MemoryRelation[]> {
-    const memory = await this.memoryRepository.findById(memoryId, scope.ownerId);
+    const workspaceId = workspaceIdFromScope(scope);
+    const memory = await this.memoryRepository.findById(memoryId, scope.ownerId, workspaceId);
     if (!memory) {
       throw new NotFoundError('Memory', memoryId);
     }
-    return this.relationRepository.findByMemoryId(memoryId, scope.ownerId);
+    return this.relationRepository.findByMemoryId(memoryId, scope.ownerId, workspaceId);
   }
 
   async createRelation(
@@ -24,12 +26,17 @@ export class MemoryRelationService {
     input: CreateRelationInput,
     createdBy?: string | null,
   ): Promise<MemoryRelation> {
-    const source = await this.memoryRepository.findById(sourceMemoryId, scope.ownerId);
+    const workspaceId = workspaceIdFromScope(scope);
+    const source = await this.memoryRepository.findById(sourceMemoryId, scope.ownerId, workspaceId);
     if (!source) {
       throw new NotFoundError('Memory', sourceMemoryId);
     }
 
-    const target = await this.memoryRepository.findById(input.targetMemoryId, scope.ownerId);
+    const target = await this.memoryRepository.findById(
+      input.targetMemoryId,
+      scope.ownerId,
+      workspaceId,
+    );
     if (!target) {
       throw new NotFoundError('Memory', input.targetMemoryId);
     }
@@ -52,7 +59,8 @@ export class MemoryRelationService {
   }
 
   async deleteRelation(scope: MemoryScope, memoryId: string, relationId: string): Promise<void> {
-    const memory = await this.memoryRepository.findById(memoryId, scope.ownerId);
+    const workspaceId = workspaceIdFromScope(scope);
+    const memory = await this.memoryRepository.findById(memoryId, scope.ownerId, workspaceId);
     if (!memory) {
       throw new NotFoundError('Memory', memoryId);
     }

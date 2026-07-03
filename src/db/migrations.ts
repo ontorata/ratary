@@ -255,6 +255,60 @@ export async function migrateEmbeddingPhase1(client: D1Client): Promise<void> {
   }
 }
 
+const WORKSPACES_AGENTS_SQL = `
+CREATE TABLE IF NOT EXISTS workspaces (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  name TEXT NOT NULL DEFAULT 'Default',
+  slug TEXT NOT NULL DEFAULT 'default',
+  created_at TEXT NOT NULL,
+  UNIQUE (owner_id, slug)
+);
+
+CREATE TABLE IF NOT EXISTS agents (
+  id TEXT PRIMARY KEY,
+  workspace_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  client_id TEXT,
+  agent_type TEXT NOT NULL DEFAULT 'mcp',
+  metadata TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL,
+  active INTEGER NOT NULL DEFAULT 1,
+  FOREIGN KEY (workspace_id) REFERENCES workspaces(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_workspaces_owner ON workspaces(owner_id);
+CREATE INDEX IF NOT EXISTS idx_agents_workspace ON agents(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_agents_owner ON agents(owner_id);
+`;
+
+const MULTI_AI_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
+  { name: 'workspace_id', ddl: 'ALTER TABLE memories ADD COLUMN workspace_id TEXT' },
+  {
+    name: 'last_modified_by_agent_id',
+    ddl: 'ALTER TABLE memories ADD COLUMN last_modified_by_agent_id TEXT',
+  },
+];
+
+/** Phase 9 M9a — workspaces/agents tables + memories workspace columns (ADR-007). */
+export async function migrateMultiAiPhase1(client: D1Client): Promise<void> {
+  for (const sql of splitStatements(WORKSPACES_AGENTS_SQL)) {
+    await client.execute(sql);
+  }
+
+  for (const column of MULTI_AI_MEMORY_COLUMNS) {
+    const hasColumn = await tableHasColumn(client, 'memories', column.name);
+    if (!hasColumn) {
+      await client.execute(column.ddl);
+    }
+  }
+
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_memories_workspace ON memories(workspace_id)`,
+  );
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promise<void> {
   await client.execute(
@@ -288,6 +342,7 @@ export async function runMigrations(client: D1Client = getD1Client()): Promise<v
   await migrateMemoryIntelligencePhase1(client);
   await migrateMemoryIntelligencePhase3(client);
   await migrateEmbeddingPhase1(client);
+  await migrateMultiAiPhase1(client);
 }
 
 export interface D1Statement {

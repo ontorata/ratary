@@ -14,6 +14,26 @@ interface ClientRow {
   [key: string]: unknown;
 }
 
+interface WorkspaceRow {
+  id: string;
+  owner_id: string;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+interface AgentRow {
+  id: string;
+  workspace_id: string;
+  owner_id: string;
+  name: string;
+  client_id: string | null;
+  agent_type: string;
+  metadata: string;
+  created_at: string;
+  active: number;
+}
+
 interface MemoryEmbeddingRow {
   id: string;
   memory_id: string;
@@ -34,6 +54,8 @@ export class MockD1Client implements D1Client {
   private identities: Map<string, IdentityRow> = new Map();
   private identityByHash: Map<string, string> = new Map();
   private clients: Map<string, ClientRow> = new Map();
+  private workspaces: Map<string, WorkspaceRow> = new Map();
+  private agents: Map<string, AgentRow> = new Map();
   private settings: Map<string, string> = new Map();
   private auditLogs: unknown[] = [];
   private memoryEmbeddingsTableReady = false;
@@ -81,6 +103,8 @@ export class MockD1Client implements D1Client {
         { name: 'embedding_id' },
         { name: 'object_key' },
         { name: 'semantic_hash' },
+        { name: 'workspace_id' },
+        { name: 'last_modified_by_agent_id' },
       ];
       return { results: columns, success: true };
     }
@@ -154,6 +178,93 @@ export class MockD1Client implements D1Client {
       const id = params[0] as string;
       const row = this.clients.get(id);
       return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO WORKSPACES')) {
+      const row: WorkspaceRow = {
+        id: params[0] as string,
+        owner_id: params[1] as string,
+        name: params[2] as string,
+        slug: params[3] as string,
+        created_at: params[4] as string,
+      };
+      this.workspaces.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM WORKSPACES') &&
+      normalizedSql.includes('WHERE ID = ? AND OWNER_ID = ?')
+    ) {
+      const [id, ownerId] = params as [string, string];
+      const row = [...this.workspaces.values()].find((w) => w.id === id && w.owner_id === ownerId);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM WORKSPACES') &&
+      normalizedSql.includes('WHERE OWNER_ID = ? AND SLUG = ?')
+    ) {
+      const [ownerId, slug] = params as [string, string];
+      const row = [...this.workspaces.values()].find(
+        (w) => w.owner_id === ownerId && w.slug === slug,
+      );
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM WORKSPACES') &&
+      normalizedSql.includes('WHERE OWNER_ID = ?') &&
+      normalizedSql.includes('ORDER BY CREATED_AT ASC')
+    ) {
+      const ownerId = params[0] as string;
+      const rows = [...this.workspaces.values()]
+        .filter((w) => w.owner_id === ownerId)
+        .sort((a, b) => a.created_at.localeCompare(b.created_at));
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO AGENTS')) {
+      const row = {
+        id: params[0] as string,
+        workspace_id: params[1] as string,
+        owner_id: params[2] as string,
+        name: params[3] as string,
+        client_id: (params[4] as string | null) ?? null,
+        agent_type: params[5] as string,
+        metadata: params[6] as string,
+        created_at: params[7] as string,
+        active: 1,
+      };
+      this.agents.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM AGENTS') &&
+      normalizedSql.includes('WHERE ID = ? AND OWNER_ID = ? AND WORKSPACE_ID = ?')
+    ) {
+      const [id, ownerId, workspaceId] = params as [string, string, string];
+      const activeOnly = normalizedSql.includes('AND ACTIVE = 1');
+      const row = this.agents.get(id);
+      const match =
+        row &&
+        row.owner_id === ownerId &&
+        row.workspace_id === workspaceId &&
+        (!activeOnly || row.active === 1);
+      return { results: match ? [row] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM AGENTS') &&
+      normalizedSql.includes('WHERE OWNER_ID = ? AND WORKSPACE_ID = ?') &&
+      normalizedSql.includes('ORDER BY CREATED_AT DESC')
+    ) {
+      const [ownerId, workspaceId] = params as [string, string];
+      const rows = [...this.agents.values()]
+        .filter((a) => a.owner_id === ownerId && a.workspace_id === workspaceId && a.active === 1)
+        .sort((a, b) => b.created_at.localeCompare(a.created_at));
+      return { results: rows, success: true };
     }
 
     if (normalizedSql.includes('UPDATE CLIENTS')) {
@@ -280,6 +391,7 @@ export class MockD1Client implements D1Client {
         embedding_id: (params[23] as string | null | undefined) ?? null,
         object_key: (params[24] as string | null | undefined) ?? null,
         semantic_hash: (params[25] as string | null | undefined) ?? null,
+        workspace_id: (params[26] as string | null | undefined) ?? null,
       };
       this.memories.set(row.id, row);
       return { results: [], success: true, meta: { changes: 1 } };
@@ -506,11 +618,21 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: 0 } };
     }
 
-    if (normalizedSql.startsWith('DELETE FROM MEMORIES WHERE ID = ? AND OWNER_ID = ?')) {
+    if (
+      normalizedSql.includes('DELETE FROM MEMORIES WHERE') &&
+      normalizedSql.includes('ID = ?') &&
+      normalizedSql.includes('OWNER_ID = ?')
+    ) {
       const id = params[0] as string;
       const ownerId = params[1] as string;
+      const workspaceId = normalizedSql.includes('WORKSPACE_ID = ?')
+        ? (params[2] as string)
+        : undefined;
       const row = this.memories.get(id);
-      const existed = row?.owner_id === ownerId;
+      let existed = row?.owner_id === ownerId;
+      if (existed && workspaceId !== undefined) {
+        existed = (row?.workspace_id ?? null) === workspaceId;
+      }
       if (existed) this.memories.delete(id);
       return { results: [], success: true, meta: { changes: existed ? 1 : 0 } };
     }
@@ -694,17 +816,33 @@ export class MockD1Client implements D1Client {
     ) {
       const id = params[0] as string;
       const ownerId = params[1] as string;
+      const workspaceId = normalizedSql.includes('WORKSPACE_ID = ?')
+        ? (params[2] as string)
+        : undefined;
       const row = this.memories.get(id);
-      return { results: row && row.owner_id === ownerId ? [row] : [], success: true };
+      const matchesOwner = row && row.owner_id === ownerId;
+      const matchesWorkspace = !workspaceId || (row?.workspace_id ?? null) === workspaceId;
+      return {
+        results: matchesOwner && matchesWorkspace && row ? [row] : [],
+        success: true,
+      };
     }
 
     // IN clause handler - specific pattern for findByIds
     if (normalizedSql.includes('WHERE ID IN (')) {
       const ownerId = params[params.length - 1] as string;
-      const ids = params.slice(0, -1) as string[];
+      const workspaceId = normalizedSql.includes('WORKSPACE_ID = ?')
+        ? (params[params.length - 2] as string)
+        : undefined;
+      const idParams = workspaceId ? params.slice(0, -2) : params.slice(0, -1);
+      const ids = idParams as string[];
       const rows = ids
         .map((id) => this.memories.get(id))
-        .filter((row): row is MemoryRow => row !== undefined && row.owner_id === ownerId);
+        .filter((row): row is MemoryRow => {
+          if (row === undefined || row.owner_id !== ownerId) return false;
+          if (workspaceId && (row.workspace_id ?? null) !== workspaceId) return false;
+          return true;
+        });
       return { results: rows, success: true };
     }
 
@@ -733,10 +871,17 @@ export class MockD1Client implements D1Client {
 
     if (normalizedSql.includes('SELECT DISTINCT PROJECT')) {
       const ownerId = params[0] as string;
+      const workspaceId = normalizedSql.includes('WORKSPACE_ID = ?')
+        ? (params[1] as string)
+        : undefined;
       const projects = [
         ...new Set(
           [...this.memories.values()]
-            .filter((m) => m.owner_id === ownerId && m.project !== '' && m.archived === 0)
+            .filter((m) => {
+              if (m.owner_id !== ownerId || m.project === '' || m.archived !== 0) return false;
+              if (workspaceId !== undefined) return (m.workspace_id ?? null) === workspaceId;
+              return true;
+            })
             .map((m) => m.project),
         ),
       ].sort();
@@ -745,8 +890,15 @@ export class MockD1Client implements D1Client {
 
     if (normalizedSql.includes('SELECT TAGS FROM MEMORIES WHERE OWNER_ID = ?')) {
       const ownerId = params[0] as string;
+      const workspaceId = normalizedSql.includes('WORKSPACE_ID = ?')
+        ? (params[1] as string)
+        : undefined;
       const rows = [...this.memories.values()]
-        .filter((m) => m.owner_id === ownerId && m.archived === 0)
+        .filter((m) => {
+          if (m.owner_id !== ownerId || m.archived !== 0) return false;
+          if (workspaceId !== undefined) return (m.workspace_id ?? null) === workspaceId;
+          return true;
+        })
         .map((m) => ({ tags: m.tags }));
       return { results: rows, success: true };
     }
@@ -866,6 +1018,16 @@ export class MockD1Client implements D1Client {
         run: () => {
           const ownerId = nextParam() as string;
           results = results.filter((m) => m.owner_id === ownerId);
+        },
+      });
+    }
+
+    if (upperSql.includes('WORKSPACE_ID = ?')) {
+      handlers.push({
+        position: pos('WORKSPACE_ID = ?'),
+        run: () => {
+          const workspaceId = nextParam() as string;
+          results = results.filter((m) => (m.workspace_id ?? null) === workspaceId);
         },
       });
     }
@@ -1110,6 +1272,8 @@ export class MockD1Client implements D1Client {
     this.identities.clear();
     this.identityByHash.clear();
     this.clients.clear();
+    this.workspaces.clear();
+    this.agents.clear();
     this.settings.clear();
     this.auditLogs = [];
   }

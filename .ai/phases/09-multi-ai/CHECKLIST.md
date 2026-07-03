@@ -1,32 +1,44 @@
-﻿# Phase 9 — Multi-AI — CHECKLIST
-
-**Document:** CHECKLIST  
-**Phase status:** Reserved  
-**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
-
----
-
-## Purpose
-
-Executable gate checklist instance — one item per milestone or success criterion.
-
----
-
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Phase open (Readiness PASS) from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md) |
-| **Updated by** | Assistant during phase; owner signs at gate |
-| **Read-only when** | Phase gate PASS — frozen snapshot |
-| **Roadmap relation** | Each item traces to milestone or success criterion |
-
----
-
-## Phase checklist
-
-Copy from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md) when phase opens.
-
----
-
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+﻿# Phase 9 — Multi-AI — CHECKLIST
+
+**Phase status:** ✅ Complete — gate PASS (2026-07-03)
+
+---
+
+## Readiness
+
+- [x] Phase 8 complete
+- [x] ADR-002 Approved
+- [x] ADR-007 drafted (Approved 2026-07-03)
+- [x] ADR-007 **Approved** (2026-07-03)
+- [x] `MemoryScope` + port interfaces (step 1)
+- [x] Schema: `workspaces`, `agents`, `memories.workspace_id` (step 2)
+- [x] Backfill default workspace per owner (`db:backfill-workspaces`)
+- [x] `DefaultScopeResolver` + tests (step 3)
+- [x] `D1AgentIdentity` adapter + tests (step 4)
+- [x] `AcceptSyncManager` MVP + tests (step 5)
+- [x] Repository workspace filters (step 6)
+- [x] Composition wiring (REST + MCP) (step 7)
+- [x] Cross-workspace isolation E2E (step 8)
+- [x] Optional: workspace/agent REST + MCP list tools (step 9)
+
+---
+
+## Success criteria
+
+- [x] Multiple AI clients share workspace-scoped memory
+- [x] `MemoryService` core not rewritten
+- [x] Owner + workspace isolation enforced
+- [ ] Agent attribution on writes (audit or column) — deferred; column migrated
+- [x] Quality gate green (298 tests)
+
+---
+
+## Gate docs
+
+- [x] REVIEW.md PASS
+- [x] COMPLETION.md
+- [x] TESTING.md evidence
+
+---
+
+*Phase 9 gate PASS 2026-07-03.*

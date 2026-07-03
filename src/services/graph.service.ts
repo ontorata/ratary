@@ -11,6 +11,7 @@ import { D1GraphAdapter } from '../graph/d1-graph.adapter.js';
 import { DEFAULT_GRAPH_MAX_DEPTH_MVP } from '../graph/graph.config.js';
 import { getEnv } from '../config/index.js';
 import { NotFoundError } from '../types/errors.js';
+import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 
 export interface GraphServiceConfig {
   maxDepth: number;
@@ -52,7 +53,8 @@ export class GraphService {
     scope: MemoryScope,
     request: TraverseGraphRequest,
   ): Promise<TraverseGraphResult> {
-    const memory = await this.memoryReader.findById(request.memoryId, scope.ownerId);
+    const workspaceId = workspaceIdFromScope(scope);
+    const memory = await this.memoryReader.findById(request.memoryId, scope.ownerId, workspaceId);
     if (!memory) {
       throw new NotFoundError('Memory', request.memoryId);
     }
@@ -74,7 +76,7 @@ export class GraphService {
     }
 
     const neighborIds = neighbors.map((neighbor) => neighbor.memoryId);
-    const memories = await this.memoryReader.findByIds(neighborIds, scope.ownerId);
+    const memories = await this.memoryReader.findByIds(neighborIds, scope.ownerId, workspaceId);
     const activeIds = new Set(
       memories.filter((memory) => !memory.archived).map((memory) => memory.id),
     );

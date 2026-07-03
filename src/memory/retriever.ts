@@ -1,5 +1,6 @@
 import type { RetrievalFilters } from '../repositories/memory.repository.interface.js';
 import type { MemoryScope } from '../types/memory-scope.js';
+import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 import type { MemoryLevel } from '../types/memory-level.js';
 import type { IRetrievalCandidateSource } from './retrieval-candidate-source.interface.js';
 import { RETRIEVAL_CANDIDATE_CAP, RETRIEVAL_SQL_CAP } from '../search/ranking.config.js';
@@ -29,6 +30,7 @@ export class Retriever {
 
     const filters: RetrievalFilters = {
       ownerId: request.scope.ownerId,
+      workspaceId: workspaceIdFromScope(request.scope),
       projectId: request.projectId,
       query: request.query,
       tags: request.tags,

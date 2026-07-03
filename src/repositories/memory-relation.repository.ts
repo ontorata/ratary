@@ -99,7 +99,24 @@ export class MemoryRelationRepository implements IMemoryRelationRepository {
     return rowToRelation(rows[0]);
   }
 
-  async findByMemoryId(memoryId: string, ownerId: string): Promise<MemoryRelation[]> {
+  async findByMemoryId(
+    memoryId: string,
+    ownerId: string,
+    workspaceId?: string,
+  ): Promise<MemoryRelation[]> {
+    if (workspaceId) {
+      const rows = await this.db.query<RelationRow>(
+        `SELECT r.* FROM memory_relations r
+         INNER JOIN memories sm ON sm.id = r.source_memory_id AND sm.owner_id = r.owner_id
+         INNER JOIN memories tm ON tm.id = r.target_memory_id AND tm.owner_id = r.owner_id
+         WHERE r.owner_id = ? AND (r.source_memory_id = ? OR r.target_memory_id = ?)
+           AND sm.workspace_id = ? AND tm.workspace_id = ?
+         ORDER BY r.created_at DESC`,
+        [ownerId, memoryId, memoryId, workspaceId, workspaceId],
+      );
+      return rows.map(rowToRelation);
+    }
+
     const rows = await this.db.query<RelationRow>(
       `SELECT * FROM memory_relations
        WHERE owner_id = ? AND (source_memory_id = ? OR target_memory_id = ?)

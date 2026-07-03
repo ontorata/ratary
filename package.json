@@ -24,6 +24,7 @@
     "db:backfill-memory-intelligence": "tsx scripts/backfill-memory-intelligence.ts",
     "db:backfill-embeddings": "tsx scripts/backfill-embeddings.ts",
     "db:backfill-embeddings:execute": "tsx scripts/backfill-embeddings.ts --execute",
+    "db:backfill-workspaces": "tsx scripts/backfill-workspaces.ts",
     "consolidate:memories": "tsx scripts/consolidate-memories.ts",
     "consolidate:memories:execute": "tsx scripts/consolidate-memories.ts --execute",
     "test:integration": "tsx scripts/test-integration.ts",

@@ -60,6 +60,15 @@ AI otomatis memilih cuplikan memory yang paling relevan — bukan dump semua cat
 
 Tanpa `MCP_OWNER_ID` di production, MCP **tidak akan start** — mencegah memory tercampur antar user.
 
+**Phase 9 — workspace (opsional):**
+
+| Variable | Fungsi |
+|----------|--------|
+| `MCP_WORKSPACE_ID` | Scope memory ke workspace tertentu (default: workspace `default` owner) |
+| `MCP_AGENT_ID` | Hint attribution agent (registry via `register_agent`) |
+
+REST: header `X-Workspace-Id` / `X-Agent-Id` pada request memory.
+
 Jangan commit atau share file `.env`.
 
 ---
@@ -138,7 +147,7 @@ npm run mcp          # tidak crash = D1 OK
 npm run test:integration
 ```
 
-Tools MCP: `save_memory`, `search_memory`, `get_context`, `build_prompt`, `get_graph_capabilities`, `traverse_relations`, dan 10 lainnya (**16 total**).
+Tools MCP: `save_memory`, `search_memory`, `get_context`, `build_prompt`, `get_graph_capabilities`, `traverse_relations`, `list_workspaces`, `list_agents`, `register_agent`, dan 10 lainnya (**19 total**).
 
 ### MCP vs REST
 

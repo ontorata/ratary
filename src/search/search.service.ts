@@ -3,6 +3,7 @@ import type { IMemoryReader } from '../repositories/memory.repository.interface.
 import type { Memory } from '../types/memory.js';
 import type { SearchQuery } from '../types/memory.js';
 import type { MemoryScope } from '../types/memory-scope.js';
+import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 import { SEARCH_CANDIDATE_CAP } from './ranking.config.js';
 import { rankMemories } from './ranking.engine.js';
 
@@ -19,6 +20,7 @@ export class SearchService {
   ): Promise<{ memories: ScoredMemory[]; total: number }> {
     const filters: SearchFilters = {
       ownerId: scope.ownerId,
+      workspaceId: workspaceIdFromScope(scope),
       query: query.q,
       tag: query.tag,
       project: query.project,

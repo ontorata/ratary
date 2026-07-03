@@ -11,6 +11,8 @@ import { MemoryRelationRepository } from '../../src/repositories/memory-relation
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { createContextService } from '../../src/memory/create-context-service.js';
 import { createGraphService } from '../../src/services/graph.service.js';
+import { DefaultScopeResolver } from '../../src/scope/default-scope-resolver.js';
+import { D1AgentIdentity } from '../../src/agent/d1-agent-identity.js';
 import { createMcpServer } from '../../src/mcp/server.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
@@ -35,6 +37,9 @@ const EXPECTED_TOOLS = [
   'archive_memory',
   'get_graph_capabilities',
   'traverse_relations',
+  'list_workspaces',
+  'list_agents',
+  'register_agent',
 ] as const;
 
 describe('MCP tools', () => {
@@ -52,7 +57,16 @@ describe('MCP tools', () => {
     const relationService = createMemoryRelationService(mockDb, repository, relationRepository);
     const contextService = createContextService(repository);
     const graphService = createGraphService(mockDb, repository);
-    const server = createMcpServer(memoryService, relationService, contextService, graphService);
+    const scopeResolver = new DefaultScopeResolver(mockDb);
+    const agentIdentity = new D1AgentIdentity(mockDb);
+    const server = createMcpServer(
+      memoryService,
+      relationService,
+      contextService,
+      graphService,
+      scopeResolver,
+      agentIdentity,
+    );
 
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await server.connect(serverTransport);
@@ -164,5 +178,28 @@ describe('MCP tools', () => {
     };
     expect(promptBody.system).toBeTruthy();
     expect(promptBody.user).toContain('Summarize context');
+  });
+
+  it('runs list_workspaces, register_agent, and list_agents', async () => {
+    const listed = await client.callTool({ name: 'list_workspaces', arguments: {} });
+    expect(listed.isError).not.toBe(true);
+    const listedBody = JSON.parse((listed.content as [{ text: string }])[0].text) as {
+      workspaces: Array<{ slug: string }>;
+    };
+    expect(listedBody.workspaces.some((w) => w.slug === 'default')).toBe(true);
+
+    const registered = await client.callTool({
+      name: 'register_agent',
+      arguments: { name: 'MCP Test Agent', agent_type: 'mcp' },
+    });
+    expect(registered.isError).not.toBe(true);
+    const agent = JSON.parse((registered.content as [{ text: string }])[0].text) as { id: string };
+
+    const agents = await client.callTool({ name: 'list_agents', arguments: {} });
+    expect(agents.isError).not.toBe(true);
+    const agentsBody = JSON.parse((agents.content as [{ text: string }])[0].text) as {
+      agents: Array<{ id: string }>;
+    };
+    expect(agentsBody.agents.some((a) => a.id === agent.id)).toBe(true);
   });
 });

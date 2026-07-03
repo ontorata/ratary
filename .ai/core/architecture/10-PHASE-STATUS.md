@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 8 Knowledge Graph gate PASS (2026-07-03) · ADR-006 Implemented · Next: Phase 9
+**Last updated:** Phase 9 complete — gate PASS 2026-07-03
 
 ---
 
@@ -20,8 +20,8 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 231 |
-| MCP tools | 16 |
+| Tests passing | 298 |
+| MCP tools | 19 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
 | Storage | Cloudflare D1 (HTTP API) |
@@ -33,10 +33,10 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | [TASK_PROMPT.md](../../TASK_PROMPT.md) — rotate to Phase 9 |
-| Next phase | **9 — Multi-AI** |
-| Blocker | None — Phase 8 gate PASS (2026-07-03) |
-| Last completed | Phase 8 — [.ai/phases/08-knowledge-graph/](../08-knowledge-graph/README.md) |
+| Active task | Phase 10 Enterprise (future) — [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| Next phase | **10 — Enterprise** |
+| Blocker | None |
+| Last completed | Phase 9 — [.ai/phases/09-multi-ai/](../phases/09-multi-ai/README.md) |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
 
@@ -49,6 +49,7 @@ Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases
 | `npm run db:migrate` | Apply D1 migrations |
 | `npm run db:backfill-memory-intelligence` | Phase 4 intelligence backfill |
 | `npm run db:backfill-embeddings` | Embedding backfill (dry-run default) |
+| `npm run db:backfill-workspaces` | Phase 9 default workspace backfill |
 | `npm run consolidate:memories` | Memory consolidation (dry-run default) |
 
 User onboarding: [PANDUAN.md](../../docs/PANDUAN.md).

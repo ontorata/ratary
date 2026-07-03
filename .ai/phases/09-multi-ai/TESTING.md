@@ -1,31 +1,43 @@
 ﻿# Phase 9 — Multi-AI — TESTING
 
-**Document:** TESTING  
-**Phase status:** Reserved  
-**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+**Status:** ✅ Evidence attached (2026-07-03)
 
 ---
 
-## Purpose
+## Quality gate
 
-Record verification strategy and evidence: unit, integration, E2E, fixtures, quality gate.
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
 
----
-
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Test plan drafted — parallel with implementation |
-| **Updated by** | Implementing assistant; evidence attached before gate |
-| **Read-only when** | Phase gate PASS |
-| **Roadmap relation** | Proves roadmap success criteria requiring verification |
+**Result:** 298 tests passing (2026-07-03).
 
 ---
 
-## Test plan
+## Test coverage
 
-_To be drafted with implementation._
+| Area | Tests |
+|------|-------|
+| Types + ports | `tests/scope/memory-scope.test.ts`, `tests/scope/scope-ports.test.ts` |
+| Migration + backfill | `tests/db/multi-ai-migration.test.ts`, `tests/scripts/workspace-backfill.test.ts` |
+| Scope resolver | `tests/scope/default-scope-resolver.test.ts`, `tests/scope/resolve-request-scope.test.ts` |
+| Agent identity | `tests/agent/d1-agent-identity.test.ts` |
+| Sync manager | `tests/sync/accept-sync-manager.test.ts` |
+| Repository isolation | `tests/repositories/memory.repository.test.ts` (workspace filter) |
+| Cross-owner E2E | `tests/api/cross-owner-leak.test.ts` (23) — regression |
+| Cross-workspace E2E | `tests/api/cross-workspace-leak.test.ts` (17) |
+| Workspace/agent API | `tests/api/workspaces.test.ts` (5) |
+| Workspace store | `tests/scope/workspace-store.test.ts` (3) |
+| MCP tools | `tests/mcp/tools.test.ts` (19 tools incl. Phase 9) |
+
+---
+
+## Manual verification (production)
+
+1. `npm run db:migrate`
+2. `npm run db:backfill-workspaces`
+3. Bootstrap REST → create memory → verify `workspace_id` set
+4. MCP with `MCP_OWNER_ID` + optional `MCP_WORKSPACE_ID` → `list_workspaces`, `save_memory`
 
 ---
 

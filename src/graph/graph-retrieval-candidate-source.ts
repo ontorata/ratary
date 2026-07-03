@@ -76,7 +76,11 @@ export class GraphRetrievalCandidateSource implements IRetrievalCandidateSource 
       return [];
     }
 
-    const memories = await this.memoryReader.findByIds(orderedNeighborIds, ownerId);
+    const memories = await this.memoryReader.findByIds(
+      orderedNeighborIds,
+      ownerId,
+      filters.workspaceId,
+    );
     const memoryMap = new Map(memories.map((memory) => [memory.id, memory]));
 
     const results: Memory[] = [];

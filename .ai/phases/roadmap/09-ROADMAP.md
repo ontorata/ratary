@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 8 complete · Next: Phase 9
+**Last updated:** Phase 9 complete · Next: Phase 10 Enterprise
 
 ---
 
@@ -36,10 +36,10 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 | Status | Phases |
 |--------|--------|
-| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7 |
+| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9 |
 | **In progress** | — |
-| **Next** | 9 — Multi-AI |
-| **Future** | 9, 10 |
+| **Next** | 10 — Enterprise |
+| **Future** | 10 |
 
 **Capability stack:**
 
@@ -417,45 +417,36 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 # Phase 9 — Multi-AI
 
-**Status:** 🔲 Future
+**Status:** ✅ **Complete** (2026-07-03)
 
 ## Scope
 
 Shared workspace memory across agents and clients; `IScopeResolver`, `IAgentIdentity`, `ISyncManager`; workspace schema; multi-client coherence.
 
+**ADR:** [docs/adr/007-multi-ai-workspace-scope.md](../../docs/adr/007-multi-ai-workspace-scope.md) — **Implemented**  
+**Contract:** [ADR-002](../../docs/adr/002-workspace-identity-model.md) — Approved
+
 ## Milestones
 
-- [ ] Workspace + agent schema migration
-- [ ] `IScopeResolver` implementation
-- [ ] `IAgentIdentity` port
-- [ ] `ISyncManager` for cross-client consistency
-- [ ] MCP/REST scope expansion (additive fields)
-- [ ] ADR-002 Phase 9 migration steps
+- [x] ADR-007 **Approved**
+- [x] Workspace + agent schema migration
+- [x] `IScopeResolver` implementation
+- [x] `IAgentIdentity` port
+- [x] `AcceptSyncManager` for cross-client consistency (MVP)
+- [x] MCP/REST scope expansion (additive fields)
+- [x] Cross-workspace isolation E2E
+- [x] Workspace/agent REST + MCP tools
 
 ## Success criteria
 
-- [ ] Multiple AI clients share workspace-scoped memory
-- [ ] `MemoryService` core not rewritten
-- [ ] Owner isolation preserved; workspace isolation enforced
-- [ ] Agent attribution on writes
+- [x] Multiple AI clients share workspace-scoped memory
+- [x] `MemoryService` core not rewritten
+- [x] Owner isolation preserved; workspace isolation enforced
+- [ ] Agent attribution on writes — deferred (column migrated)
 
-## Dependencies
+## Gate
 
-- Phase 3 auth
-- ADR-002 Approved contract
-- Phase 8 recommended for relation-aware sync
-
-## Risks
-
-| Risk | Mitigation |
-|------|------------|
-| Scope refactor | ADR-002 types from Phase 5+ |
-| MCP contract break | Additive scope fields only |
-
-## Architecture evolution
-
-- `MemoryScope` gains `workspaceId`, `agentId`
-- Queries add workspace filter when column live
+[.ai/phases/09-multi-ai/COMPLETION.md](../09-multi-ai/COMPLETION.md)
 
 ---
 

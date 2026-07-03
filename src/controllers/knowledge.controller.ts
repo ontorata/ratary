@@ -4,16 +4,21 @@ import type { MemoryService } from '../services/memory.service.js';
 import type { MemoryRelationService } from '../services/memory-relation.service.js';
 import type { MemoryScope } from '../types/memory.js';
 import type { CreateRelationInput } from '../types/knowledge.js';
-
-function memoryScopeFromRequest(request: FastifyRequest): MemoryScope {
-  return { ownerId: request.user?.ownerId ?? '' };
-}
+import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
+import { resolveMemoryScopeFromRequest } from '../scope/resolve-request-scope.js';
 
 export class KnowledgeController {
-  constructor(private readonly memoryService: MemoryService) {}
+  constructor(
+    private readonly memoryService: MemoryService,
+    private readonly scopeResolver: IScopeResolver,
+  ) {}
+
+  private resolveScope(request: FastifyRequest): Promise<MemoryScope> {
+    return resolveMemoryScopeFromRequest(request, this.scopeResolver);
+  }
 
   async listCategories(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const used = await this.memoryService.listCategories(memoryScopeFromRequest(request));
+    const used = await this.memoryService.listCategories(await this.resolveScope(request));
     const suggested = CATEGORIES.filter((c) => c !== '');
     const merged = Array.from(new Set([...suggested, ...used])).sort();
     reply.send({ categories: merged });
@@ -24,19 +29,29 @@ export class KnowledgeController {
   }
 }
 
-export function createKnowledgeController(memoryService: MemoryService): KnowledgeController {
-  return new KnowledgeController(memoryService);
+export function createKnowledgeController(
+  memoryService: MemoryService,
+  scopeResolver: IScopeResolver,
+): KnowledgeController {
+  return new KnowledgeController(memoryService, scopeResolver);
 }
 
 export class MemoryRelationController {
-  constructor(private readonly relationService: MemoryRelationService) {}
+  constructor(
+    private readonly relationService: MemoryRelationService,
+    private readonly scopeResolver: IScopeResolver,
+  ) {}
+
+  private resolveScope(request: FastifyRequest): Promise<MemoryScope> {
+    return resolveMemoryScopeFromRequest(request, this.scopeResolver);
+  }
 
   async list(
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
     const relations = await this.relationService.listRelations(
-      memoryScopeFromRequest(request),
+      await this.resolveScope(request),
       request.params.id,
     );
     reply.send({ relations });
@@ -47,7 +62,7 @@ export class MemoryRelationController {
     reply: FastifyReply,
   ): Promise<void> {
     const relation = await this.relationService.createRelation(
-      memoryScopeFromRequest(request),
+      await this.resolveScope(request),
       request.params.id,
       request.body as CreateRelationInput,
       request.user?.identityId,
@@ -60,7 +75,7 @@ export class MemoryRelationController {
     reply: FastifyReply,
   ): Promise<void> {
     await this.relationService.deleteRelation(
-      memoryScopeFromRequest(request),
+      await this.resolveScope(request),
       request.params.id,
       request.params.relationId,
     );
@@ -70,6 +85,7 @@ export class MemoryRelationController {
 
 export function createMemoryRelationController(
   relationService: MemoryRelationService,
+  scopeResolver: IScopeResolver,
 ): MemoryRelationController {
-  return new MemoryRelationController(relationService);
+  return new MemoryRelationController(relationService, scopeResolver);
 }

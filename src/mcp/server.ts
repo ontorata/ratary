@@ -16,7 +16,13 @@ import { D1EmbeddingStore } from '../embedding/d1-embedding.store.js';
 import type { ContextService } from '../memory/context.service.js';
 import type { GraphService } from '../services/graph.service.js';
 import { createGraphService } from '../services/graph.service.js';
-import { getMcpMemoryScope, assertMcpOwnerConfigured } from '../types/memory-scope.js';
+import { assertMcpOwnerConfigured } from '../types/memory-scope.js';
+import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
+import { resolveMcpMemoryScope } from '../scope/resolve-request-scope.js';
+import { createMultiAiPorts } from '../composition/create-multi-ai-ports.js';
+import type { IAgentIdentity } from '../agent/iagent-identity.interface.js';
+import { AGENT_TYPES } from '../agent/agent.types.js';
+import { ensureDefaultWorkspace, listWorkspacesByOwner } from '../scope/workspace-store.js';
 import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../types/knowledge.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
 
@@ -34,8 +40,10 @@ function createMcpServer(
   relationService: MemoryRelationService,
   contextService: ContextService,
   graphService: GraphService,
+  scopeResolver: IScopeResolver,
+  agentIdentity: IAgentIdentity,
 ): McpServer {
-  const scope = getMcpMemoryScope();
+  const mcpScope = () => resolveMcpMemoryScope(scopeResolver);
   const server = new McpServer({
     name: 'ai-memory-cloud',
     version: '1.0.0',
@@ -55,7 +63,7 @@ function createMcpServer(
     },
     async (params) => {
       const meta = params.metadata ?? {};
-      const memory = await memoryService.createMemory(scope, {
+      const memory = await memoryService.createMemory(await mcpScope(), {
         title: params.title,
         content: params.content,
         project: params.project ?? '',
@@ -91,7 +99,7 @@ function createMcpServer(
     },
     async (params) => {
       const { id, metadata, ...rest } = params;
-      const memory = await memoryService.updateMemory(scope, id, {
+      const memory = await memoryService.updateMemory(await mcpScope(), id, {
         ...rest,
         category: metadata?.category,
         memoryType: metadata?.memoryType,
@@ -113,7 +121,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID to delete'),
     },
     async (params) => {
-      await memoryService.deleteMemory(scope, params.id);
+      await memoryService.deleteMemory(await mcpScope(), params.id);
       return {
         content: [{ type: 'text', text: `Memory ${params.id} deleted successfully` }],
       };
@@ -127,7 +135,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID'),
     },
     async (params) => {
-      const memory = await memoryService.getMemoryById(scope, params.id);
+      const memory = await memoryService.getMemoryById(await mcpScope(), params.id);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -141,7 +149,7 @@ function createMcpServer(
       codename: z.string().describe('Memory codename'),
     },
     async (params) => {
-      const memory = await memoryService.getMemoryByCodename(scope, params.codename);
+      const memory = await memoryService.getMemoryByCodename(await mcpScope(), params.codename);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -164,7 +172,7 @@ function createMcpServer(
       offset: z.number().int().min(0).optional().describe('Pagination offset'),
     },
     async (params) => {
-      const result = await memoryService.searchMemory(scope, {
+      const result = await memoryService.searchMemory(await mcpScope(), {
         q: params.q,
         tag: params.tag,
         project: params.project,
@@ -183,14 +191,14 @@ function createMcpServer(
   );
 
   server.tool('list_projects', 'List all unique project names', {}, async () => {
-    const projects = await memoryService.listProjects(scope);
+    const projects = await memoryService.listProjects(await mcpScope());
     return {
       content: [{ type: 'text', text: JSON.stringify({ projects }, null, 2) }],
     };
   });
 
   server.tool('list_tags', 'List all unique tags', {}, async () => {
-    const tags = await memoryService.listTags(scope);
+    const tags = await memoryService.listTags(await mcpScope());
     return {
       content: [{ type: 'text', text: JSON.stringify({ tags }, null, 2) }],
     };
@@ -205,7 +213,7 @@ function createMcpServer(
       relation: z.enum(['related', 'depends_on', 'parent', 'child', 'duplicate', 'reference']),
     },
     async (params) => {
-      const relation = await relationService.createRelation(scope, params.sourceId, {
+      const relation = await relationService.createRelation(await mcpScope(), params.sourceId, {
         targetMemoryId: params.targetId,
         relation: params.relation,
         sourceType: 'mcp',
@@ -223,7 +231,7 @@ function createMcpServer(
       id: z.string().uuid(),
     },
     async (params) => {
-      const relations = await relationService.listRelations(scope, params.id);
+      const relations = await relationService.listRelations(await mcpScope(), params.id);
       return {
         content: [{ type: 'text', text: JSON.stringify({ relations }, null, 2) }],
       };
@@ -237,7 +245,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID'),
     },
     async (params) => {
-      const memory = await memoryService.toggleFavorite(scope, params.id);
+      const memory = await memoryService.toggleFavorite(await mcpScope(), params.id);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -251,7 +259,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID to archive'),
     },
     async (params) => {
-      const memory = await memoryService.archiveMemory(scope, params.id, true);
+      const memory = await memoryService.archiveMemory(await mcpScope(), params.id, true);
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -271,7 +279,7 @@ function createMcpServer(
       format: z.enum(['markdown', 'xml']).optional().describe('Context output format'),
     },
     async (params) => {
-      const result = await contextService.buildContext(scope, {
+      const result = await contextService.buildContext(await mcpScope(), {
         query: params.query,
         projectId: params.projectId,
         tags: params.tags,
@@ -302,7 +310,7 @@ function createMcpServer(
       system_role: z.string().optional().describe('Custom system role prompt'),
     },
     async (params) => {
-      const result = await contextService.buildPrompt(scope, {
+      const result = await contextService.buildPrompt(await mcpScope(), {
         task: params.task,
         query: params.query,
         projectId: params.projectId,
@@ -327,6 +335,45 @@ function createMcpServer(
     };
   });
 
+  server.tool('list_workspaces', 'List workspaces for the MCP owner', {}, async () => {
+    const scope = await mcpScope();
+    const db = getD1Client();
+    await ensureDefaultWorkspace(db, scope.ownerId);
+    const workspaces = await listWorkspacesByOwner(db, scope.ownerId);
+    return {
+      content: [{ type: 'text', text: JSON.stringify({ workspaces }, null, 2) }],
+    };
+  });
+
+  server.tool('list_agents', 'List agents registered in the MCP workspace', {}, async () => {
+    const agents = await agentIdentity.listByWorkspace(await mcpScope());
+    return {
+      content: [{ type: 'text', text: JSON.stringify({ agents }, null, 2) }],
+    };
+  });
+
+  server.tool(
+    'register_agent',
+    'Register an agent identity in the MCP workspace',
+    {
+      name: z.string().describe('Display name for the agent'),
+      agent_type: z.enum(AGENT_TYPES).optional().describe('Agent type'),
+      client_id: z.string().uuid().nullable().optional().describe('Optional linked client id'),
+      metadata: z.record(z.unknown()).optional().describe('Optional metadata object'),
+    },
+    async (params) => {
+      const agent = await agentIdentity.register(await mcpScope(), {
+        name: params.name,
+        agentType: params.agent_type,
+        clientId: params.client_id ?? undefined,
+        metadata: params.metadata,
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(agent, null, 2) }],
+      };
+    },
+  );
+
   server.tool(
     'traverse_relations',
     'Traverse memory relations via bidirectional BFS from a seed memory',
@@ -336,7 +383,7 @@ function createMcpServer(
       types: z.array(z.enum(RELATION_TYPES)).optional().describe('Filter by relation types'),
     },
     async (params) => {
-      const result = await graphService.traverseRelations(scope, {
+      const result = await graphService.traverseRelations(await mcpScope(), {
         memoryId: params.memoryId,
         depth: params.depth,
         types: params.types,
@@ -370,8 +417,16 @@ export async function startMcpStdioServer(): Promise<void> {
   const embeddingStore = new D1EmbeddingStore(db);
   const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
   const graphService = createGraphService(db, repository);
+  const { scopeResolver, agentIdentity } = createMultiAiPorts(db);
 
-  const server = createMcpServer(memoryService, relationService, contextService, graphService);
+  const server = createMcpServer(
+    memoryService,
+    relationService,
+    contextService,
+    graphService,
+    scopeResolver,
+    agentIdentity,
+  );
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }

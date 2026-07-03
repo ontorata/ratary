@@ -9,6 +9,7 @@ import type {
 
 export interface RetrievalFilters {
   ownerId: string;
+  workspaceId?: string;
   projectId?: string;
   tags?: string[];
   levels?: MemoryLevel[];
@@ -21,27 +22,29 @@ export interface RetrievalFilters {
 /** Read-only memory persistence operations. */
 export interface IMemoryReader {
   slugExists(ownerId: string, slug: string, excludeSlug?: string): Promise<boolean>;
-  findById(id: string, ownerId: string): Promise<Memory | null>;
-  findByIds(ids: string[], ownerId: string): Promise<Memory[]>;
-  findByCodename(ownerId: string, codename: string): Promise<Memory | null>;
-  findBySlug(ownerId: string, slug: string): Promise<Memory | null>;
+  findById(id: string, ownerId: string, workspaceId?: string): Promise<Memory | null>;
+  findByIds(ids: string[], ownerId: string, workspaceId?: string): Promise<Memory[]>;
+  findByCodename(ownerId: string, codename: string, workspaceId?: string): Promise<Memory | null>;
+  findBySlug(ownerId: string, slug: string, workspaceId?: string): Promise<Memory | null>;
   findAll(filters: ListFilters): Promise<{ memories: Memory[]; total: number }>;
   findSearchCandidates(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }>;
   search(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }>;
-  listDistinctCategories(ownerId: string): Promise<string[]>;
-  listProjects(ownerId: string): Promise<string[]>;
-  listTags(ownerId: string): Promise<string[]>;
-  findAllByOwner(ownerId: string): Promise<Memory[]>;
+  listDistinctCategories(ownerId: string, workspaceId?: string): Promise<string[]>;
+  listProjects(ownerId: string, workspaceId?: string): Promise<string[]>;
+  listTags(ownerId: string, workspaceId?: string): Promise<string[]>;
+  findAllByOwner(ownerId: string, workspaceId?: string): Promise<Memory[]>;
   findWithoutCodename(ownerId: string, limit: number): Promise<Memory[]>;
   findWithoutEmbedding(ownerId: string, limit: number): Promise<Memory[]>;
   findRetrievalCandidates(filters: RetrievalFilters): Promise<Memory[]>;
   findDuplicatesBySemanticHash(filters: {
     ownerId: string;
+    workspaceId?: string;
     projectId?: string;
     semanticHash: string;
   }): Promise<Memory[]>;
   findStaleCandidates(filters: {
     ownerId: string;
+    workspaceId?: string;
     projectId?: string;
     minAccessCount: number;
     olderThanDays: number;
@@ -52,10 +55,20 @@ export interface IMemoryReader {
 export interface IMemoryWriter {
   allocateCodename(ownerId: string, prefix: string): Promise<string>;
   insert(data: InsertMemoryData): Promise<Memory>;
-  update(id: string, ownerId: string, data: UpdateMemoryData): Promise<Memory | null>;
-  delete(id: string, ownerId: string): Promise<boolean>;
-  toggleFavorite(id: string, ownerId: string): Promise<Memory | null>;
-  archive(id: string, ownerId: string, archived?: boolean): Promise<Memory | null>;
+  update(
+    id: string,
+    ownerId: string,
+    data: UpdateMemoryData,
+    workspaceId?: string,
+  ): Promise<Memory | null>;
+  delete(id: string, ownerId: string, workspaceId?: string): Promise<boolean>;
+  toggleFavorite(id: string, ownerId: string, workspaceId?: string): Promise<Memory | null>;
+  archive(
+    id: string,
+    ownerId: string,
+    archived?: boolean,
+    workspaceId?: string,
+  ): Promise<Memory | null>;
   applyKnowledgeBackfill(
     id: string,
     ownerId: string,
@@ -71,9 +84,14 @@ export interface IMemoryWriter {
       notes: string;
     },
   ): Promise<void>;
-  deleteAllByOwner(ownerId: string): Promise<void>;
-  recordAccess(id: string, ownerId: string): Promise<void>;
-  bumpImportance(id: string, ownerId: string, importance: number): Promise<Memory | null>;
+  deleteAllByOwner(ownerId: string, workspaceId?: string): Promise<void>;
+  recordAccess(id: string, ownerId: string, workspaceId?: string): Promise<void>;
+  bumpImportance(
+    id: string,
+    ownerId: string,
+    importance: number,
+    workspaceId?: string,
+  ): Promise<Memory | null>;
   applyMemoryIntelligenceBackfill(
     id: string,
     ownerId: string,

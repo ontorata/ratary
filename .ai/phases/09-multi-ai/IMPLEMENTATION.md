@@ -1,31 +1,52 @@
 ﻿# Phase 9 — Multi-AI — IMPLEMENTATION
 
-**Document:** IMPLEMENTATION  
-**Phase status:** Reserved  
-**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+**Status:** ✅ Complete (2026-07-03)  
+**ADR:** [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md)
 
 ---
 
-## Purpose
+## Summary
 
-Record what was or will be built: modules, composition wiring, feature flags, and commit sequence.
-
----
-
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Implementation planning starts (TASK_PROMPT active) |
-| **Updated by** | Implementing AI assistant; maintainer on handoff |
-| **Read-only when** | Phase gate PASS |
-| **Roadmap relation** | Tracks milestone checkboxes in roadmap Phase 9 section |
+Workspace-scoped memory for multiple AI clients. Additive REST headers, MCP env scope, repository filters, composition wiring, and workspace/agent registry API.
 
 ---
 
-## Implementation plan
+## Modules delivered
 
-_Not started._
+| Area | Path |
+|------|------|
+| Types + ports | `src/types/memory-scope.ts`, `src/scope/iscope-resolver.interface.ts`, `src/agent/iagent-identity.interface.ts`, `src/sync/isync-manager.interface.ts` |
+| Schema + migration | `src/db/migrations.ts` (`migrateMultiAiPhase1`), `schema.sql` |
+| Backfill | `scripts/backfill-workspaces.ts`, `npm run db:backfill-workspaces` |
+| Scope resolution | `src/scope/default-scope-resolver.ts`, `src/scope/resolve-request-scope.ts`, `src/scope/workspace-store.ts` |
+| Agent registry | `src/agent/d1-agent-identity.ts` |
+| Sync MVP | `src/sync/accept-sync-manager.ts` |
+| Repository filters | `src/repositories/repository-scope.ts`, `MemoryRepository` + services |
+| Composition | `src/composition/create-multi-ai-ports.ts`, `src/server.ts`, `src/mcp/server.ts` |
+| REST API | `src/controllers/workspace.controller.ts`, `src/routes/v1/workspace.routes.ts` |
+| MCP tools | `list_workspaces`, `list_agents`, `register_agent` (+ per-tool scope resolve) |
+
+---
+
+## Environment / transport
+
+| Variable / header | Purpose |
+|-------------------|---------|
+| `MCP_OWNER_ID` | MCP owner anchor (required in production) |
+| `MCP_WORKSPACE_ID` | Optional MCP workspace (default workspace if unset) |
+| `MCP_AGENT_ID` | Optional MCP agent attribution hint |
+| `X-Workspace-Id` | REST workspace scope |
+| `X-Agent-Id` | REST agent attribution hint |
+
+---
+
+## Deferred
+
+| Item | Notes |
+|------|-------|
+| `AcceptSyncManager` on MemoryService write path | Port wired at composition root; hook pending |
+| `last_modified_by_agent_id` on memory writes | Column migrated; population deferred |
+| Organization / RBAC | Phase 10 |
 
 ---
 

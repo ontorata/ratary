@@ -33,7 +33,11 @@ export interface IMemoryRelationRepository {
   /**
    * Find all relations for a memory (as source or target) with owner scope.
    */
-  findByMemoryId(memoryId: string, ownerId: string): Promise<MemoryRelation[]>;
+  findByMemoryId(
+    memoryId: string,
+    ownerId: string,
+    workspaceId?: string,
+  ): Promise<MemoryRelation[]>;
 
   /**
    * Check if a relation exists with owner scope.

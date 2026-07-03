@@ -69,8 +69,8 @@ Read in order:
 | Terminology | `core/glossary/GLOSSARY.md` |
 | Prompt templates | `workflow/prompts/` |
 | Checklists | `workflow/checklists/` |
-| Current phase docs | `phases/09-multi-ai/` (next) · last closed: `phases/08-knowledge-graph/` |
-| Active task | `TASK_PROMPT.md` |
+| Current phase docs | `phases/10-enterprise/` (next) · [09-multi-ai/](phases/09-multi-ai/) (complete) |
+| Active task | Rotate to Phase 10 when scheduled — [TASK_PROMPT.md](TASK_PROMPT.md) |
 
 ---
 
@@ -88,8 +88,8 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 6 Hybrid Retrieval | ✅ Complete |
 | 7 Agent Runtime | ✅ Complete |
 | 8 Knowledge Graph | ✅ Complete |
-| 9 Multi-AI | 🔲 **Next** |
-| 10 Enterprise | 🔲 Future |
+| 9 Multi-AI | ✅ Complete (ADR-007 Implemented 2026-07-03) |
+| 10 Enterprise | 🔲 Next |
 
 ---
 
