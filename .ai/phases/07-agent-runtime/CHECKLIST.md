@@ -25,7 +25,25 @@ Executable gate checklist instance — one item per milestone or success criteri
 
 ## Phase checklist
 
-Copy from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md) when phase opens.
+### Milestones
+
+- [ ] Agent runtime ADR (external system)
+- [ ] MCP tool contracts stable for agent consumers
+- [ ] Optional: `agentId` in `MemoryScope` types (undefined until Phase 9)
+- [ ] Documentation for agent integration boundary
+
+### Success criteria
+
+- [ ] External agent can complete save → context → act loop via MCP
+- [ ] No agent planner code in `src/services/` or `src/memory/`
+- [ ] Constitution boundary preserved
+
+### Quality gate
+
+- [ ] `npm run lint && npm run format:check && npm run typecheck && npm test` — green
+- [ ] [08-REVIEW-CHECKLIST.md](../../../standards/08-REVIEW.md) satisfied
+- [ ] ARCHITECTURE.md Phase 7 row updated
+- [ ] Agent boundary documentation complete
 
 ---
 
