@@ -28,3 +28,18 @@ export const RETRIEVAL_WEIGHTS = {
   recencyDays30: 8,
   accessCountLog: 5,
 } as const;
+
+/**
+ * Reciprocal Rank Fusion (RRF) configuration for hybrid retrieval.
+ * Used by CompositeRetrievalCandidateSource to merge ranked candidates.
+ * @see ADR-001 Multi-Source Retrieval
+ */
+export const RRF_CONFIG = {
+  /** Standard RRF constant - higher = more equal rank distribution */
+  K: 60,
+  /** Per-source candidate caps (50% of RETRIEVAL_CANDIDATE_CAP each) */
+  SOURCE_CAPS: {
+    sql: 50,
+    vector: 50,
+  },
+} as const;
