@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { asSqlDatabase } from '../helpers/sql-test-harness.js';
 import type { D1Client, D1QueryResult } from '../../src/db/d1-client.js';
 import { D1AgentIdentity } from '../../src/agent/d1-agent-identity.js';
 import type { MemoryScope } from '../../src/types/memory-scope.js';
@@ -112,7 +113,7 @@ describe('D1AgentIdentity', () => {
 
   it('should register an agent in the scoped workspace', async () => {
     const db = new FakeAgentDb([wsA]);
-    const identity = new D1AgentIdentity(db);
+    const identity = new D1AgentIdentity(asSqlDatabase(db));
 
     const agent = await identity.register(workspaceScope('owner-a', 'ws-a'), {
       name: 'Cursor',
@@ -135,7 +136,7 @@ describe('D1AgentIdentity', () => {
   });
 
   it('should reject register without workspaceId', async () => {
-    const identity = new D1AgentIdentity(new FakeAgentDb([wsA]));
+    const identity = new D1AgentIdentity(asSqlDatabase(new FakeAgentDb([wsA])));
 
     await expect(
       identity.register({ ownerId: 'owner-a' }, { name: 'Cursor' }),
@@ -143,7 +144,7 @@ describe('D1AgentIdentity', () => {
   });
 
   it('should reject register for workspace not owned by scope owner', async () => {
-    const identity = new D1AgentIdentity(new FakeAgentDb([wsB]));
+    const identity = new D1AgentIdentity(asSqlDatabase(new FakeAgentDb([wsB])));
 
     await expect(
       identity.register(workspaceScope('owner-a', 'ws-b'), { name: 'Cursor' }),
@@ -167,7 +168,7 @@ describe('D1AgentIdentity', () => {
         },
       ],
     );
-    const identity = new D1AgentIdentity(db);
+    const identity = new D1AgentIdentity(asSqlDatabase(db));
 
     const agent = await identity.resolve(workspaceScope('owner-a', 'ws-a'), 'agent-1');
 
@@ -191,7 +192,7 @@ describe('D1AgentIdentity', () => {
         },
       ],
     );
-    const identity = new D1AgentIdentity(db);
+    const identity = new D1AgentIdentity(asSqlDatabase(db));
 
     const agent = await identity.resolve(workspaceScope('owner-a', 'ws-b'), 'agent-1');
 
@@ -215,7 +216,7 @@ describe('D1AgentIdentity', () => {
         },
       ],
     );
-    const identity = new D1AgentIdentity(db);
+    const identity = new D1AgentIdentity(asSqlDatabase(db));
 
     const agent = await identity.resolve(workspaceScope('owner-a', 'ws-a'), 'agent-1');
 
@@ -272,7 +273,7 @@ describe('D1AgentIdentity', () => {
         },
       ],
     );
-    const identity = new D1AgentIdentity(db);
+    const identity = new D1AgentIdentity(asSqlDatabase(db));
 
     const agents = await identity.listByWorkspace(workspaceScope('owner-a', 'ws-a'));
 

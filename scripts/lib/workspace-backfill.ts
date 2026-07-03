@@ -1,5 +1,6 @@
 import { ensureDefaultWorkspace } from '../../src/scope/workspace-store.js';
 import type { D1Client } from '../../src/db/d1-client.js';
+import { sqlFromD1Client } from './sql-from-d1-client.js';
 
 export { DEFAULT_WORKSPACE_SLUG, DEFAULT_WORKSPACE_NAME } from '../../src/scope/workspace-store.js';
 export interface WorkspaceBackfillResult {
@@ -19,6 +20,8 @@ export async function backfillDefaultWorkspaces(
   client: D1Client,
   now: () => string = () => new Date().toISOString(),
 ): Promise<WorkspaceBackfillResult> {
+  const sql = sqlFromD1Client(client);
+
   const owners = await client.query<{ owner_id: string }>(
     `SELECT DISTINCT owner_id FROM memories WHERE workspace_id IS NULL`,
   );
@@ -27,7 +30,7 @@ export async function backfillDefaultWorkspaces(
   let memoriesUpdated = 0;
 
   for (const { owner_id: ownerId } of owners) {
-    const { workspace, created } = await ensureDefaultWorkspace(client, ownerId, now);
+    const { workspace, created } = await ensureDefaultWorkspace(sql, ownerId, now);
     if (created) {
       workspacesCreated++;
     }

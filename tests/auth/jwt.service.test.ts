@@ -45,4 +45,21 @@ describe('JwtService', () => {
 
     expect(() => jwtService.verify(token)).toThrow(ForbiddenError);
   });
+
+  it('should round-trip optional enterprise claims', () => {
+    const token = jwtService.sign({
+      identityId: '00000000-0000-4000-8000-000000000001',
+      ownerId: '00000000-0000-4000-8000-000000000002',
+      clientId: null,
+      permissions: ['memory.read'],
+      organizationId: '00000000-0000-4000-8000-000000000099',
+      workspaceRoles: [{ workspaceId: '00000000-0000-4000-8000-0000000000aa', role: 'member' }],
+    });
+
+    const claims = jwtService.verify(token);
+    expect(claims.organization_id).toBe('00000000-0000-4000-8000-000000000099');
+    expect(claims.workspace_roles).toEqual([
+      { workspace_id: '00000000-0000-4000-8000-0000000000aa', role: 'member' },
+    ]);
+  });
 });

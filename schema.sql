@@ -62,10 +62,39 @@ CREATE TABLE IF NOT EXISTS workspaces (
   name TEXT NOT NULL DEFAULT 'Default',
   slug TEXT NOT NULL DEFAULT 'default',
   created_at TEXT NOT NULL,
+  organization_id TEXT,
   UNIQUE (owner_id, slug)
 );
 
 CREATE INDEX IF NOT EXISTS idx_workspaces_owner ON workspaces(owner_id);
+
+-- organizations: enterprise tenant boundary (Phase 10, ADR-002 / ADR-010)
+CREATE TABLE IF NOT EXISTS organizations (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL DEFAULT 'default',
+  created_at TEXT NOT NULL,
+  UNIQUE (owner_id, slug)
+);
+
+CREATE INDEX IF NOT EXISTS idx_organizations_owner ON organizations(owner_id);
+
+-- workspace_memberships: RBAC binding identity to workspace (Phase 10, ADR-010)
+CREATE TABLE IF NOT EXISTS workspace_memberships (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL,
+  workspace_id TEXT NOT NULL,
+  identity_id TEXT NOT NULL,
+  role TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE (organization_id, workspace_id, identity_id),
+  FOREIGN KEY (organization_id) REFERENCES organizations(id),
+  FOREIGN KEY (workspace_id) REFERENCES workspaces(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_workspace_memberships_workspace ON workspace_memberships(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_workspace_memberships_identity ON workspace_memberships(identity_id);
 
 -- agents: AI client identity inside a workspace (Phase 9, ADR-007)
 CREATE TABLE IF NOT EXISTS agents (

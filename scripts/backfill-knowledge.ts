@@ -2,6 +2,7 @@ import { getD1Client } from '../src/db/index.js';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { KnowledgeService } from '../src/knowledge/knowledge.service.js';
 import { runMigrations } from '../src/db/migrations.js';
+import { sqlFromD1Client } from './lib/sql-from-d1-client.js';
 
 const BATCH_SIZE = 100;
 
@@ -16,7 +17,7 @@ async function backfillKnowledge(): Promise<void> {
   const client = getD1Client();
   await runMigrations(client);
 
-  const repository = new MemoryRepository(client);
+  const repository = new MemoryRepository(sqlFromD1Client(client));
   const knowledge = new KnowledgeService(repository);
 
   const rows = await client.query<{ owner_id: string }>(

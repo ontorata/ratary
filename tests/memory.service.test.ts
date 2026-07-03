@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NotFoundError } from '../src/types/errors.js';
-import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { KnowledgeService } from '../src/knowledge/knowledge.service.js';
 import { SearchService } from '../src/search/search.service.js';
 import { MemoryService } from '../src/services/memory.service.js';
 import { D1EmbeddingStore } from '../src/embedding/d1-embedding.store.js';
 import { NOOP_EMBEDDING_MODEL_ID } from '../src/embedding/noop-embedding.provider.js';
 import { MockD1Client } from './helpers/mock-d1.js';
+import { asSqlDatabase, createTestMemoryRepository } from './helpers/sql-test-harness.js';
 import { createTestMemoryStack } from './helpers/test-stack.js';
 
 describe('MemoryService', () => {
@@ -111,10 +111,10 @@ describe('MemoryService', () => {
     const modelId = NOOP_EMBEDDING_MODEL_ID;
 
     beforeEach(() => {
-      const repository = new MemoryRepository(mockDb);
+      const repository = createTestMemoryRepository(mockDb);
       const knowledge = new KnowledgeService(repository);
       const search = new SearchService(repository);
-      embeddingStore = new D1EmbeddingStore(mockDb);
+      embeddingStore = new D1EmbeddingStore(asSqlDatabase(mockDb));
       embeddingService = new MemoryService(repository, knowledge, search, embeddingStore);
     });
 

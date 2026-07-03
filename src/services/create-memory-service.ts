@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import type { MultiAiPorts } from '../composition/create-multi-ai-ports.js';
 import { D1EmbeddingStore } from '../embedding/d1-embedding.store.js';
@@ -14,7 +14,7 @@ import { MemoryRelationService } from './memory-relation.service.js';
  * Pass existing repository to ensure single instance throughout the composition root.
  */
 export function createMemoryService(
-  db: D1Client,
+  db: ISqlDatabase,
   repository?: IMemoryRepository,
   multiAi?: Pick<MultiAiPorts, 'syncManager' | 'agentIdentity'>,
 ): MemoryService {
@@ -37,7 +37,7 @@ export function createMemoryService(
  * Pass existing repositories to ensure single instance throughout the composition root.
  */
 export function createMemoryRelationService(
-  db: D1Client,
+  db: ISqlDatabase,
   repository?: IMemoryRepository,
   relationRepository?: MemoryRelationRepository,
 ): MemoryRelationService {

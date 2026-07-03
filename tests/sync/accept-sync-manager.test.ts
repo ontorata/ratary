@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
+import { asSqlDatabase } from '../helpers/sql-test-harness.js';
 import type { D1Client, D1QueryResult } from '../../src/db/d1-client.js';
 import type { AuditLogInput } from '../../src/auth/audit.repository.js';
 import { AuditRepository } from '../../src/auth/audit.repository.js';
@@ -48,7 +50,7 @@ class RecordingAuditRepository extends AuditRepository {
   readonly entries: AuditLogInput[] = [];
 
   constructor(db: D1Client) {
-    super(db);
+    super(asSqlDatabase(db));
   }
 
   override async append(input: AuditLogInput): Promise<void> {
@@ -76,7 +78,7 @@ describe('AcceptSyncManager', () => {
       },
     ]);
     const audit = new RecordingAuditRepository(db);
-    const sync = new AcceptSyncManager(db, audit);
+    const sync = new AcceptSyncManager(asSqlDatabase(db), audit);
 
     const result = await sync.reconcileWrite(baseEvent);
 
@@ -94,7 +96,7 @@ describe('AcceptSyncManager', () => {
       },
     ]);
     const audit = new RecordingAuditRepository(db);
-    const sync = new AcceptSyncManager(db, audit);
+    const sync = new AcceptSyncManager(asSqlDatabase(db), audit);
 
     await sync.reconcileWrite(baseEvent);
 
@@ -112,7 +114,7 @@ describe('AcceptSyncManager', () => {
       },
     ]);
     const audit = new RecordingAuditRepository(db);
-    const sync = new AcceptSyncManager(db, audit);
+    const sync = new AcceptSyncManager(asSqlDatabase(db), audit);
 
     await sync.reconcileWrite(baseEvent);
 
@@ -143,7 +145,7 @@ describe('AcceptSyncManager', () => {
       },
     ]);
     const audit = new RecordingAuditRepository(db);
-    const sync = new AcceptSyncManager(db, audit);
+    const sync = new AcceptSyncManager(asSqlDatabase(db), audit);
 
     await sync.reconcileWrite({ ...baseEvent, operation: 'create' });
 
@@ -161,7 +163,7 @@ describe('AcceptSyncManager', () => {
       },
     ]);
     const audit = new RecordingAuditRepository(db);
-    const sync = new AcceptSyncManager(db, audit);
+    const sync = new AcceptSyncManager(asSqlDatabase(db), audit);
 
     await sync.reconcileWrite({ ...baseEvent, expectedUpdatedAt: undefined });
 
@@ -179,7 +181,7 @@ describe('AcceptSyncManager', () => {
       },
     ]);
     const audit = new RecordingAuditRepository(db);
-    const sync = new AcceptSyncManager(db, audit);
+    const sync = new AcceptSyncManager(asSqlDatabase(db), audit);
 
     await sync.reconcileWrite(baseEvent);
 
@@ -197,7 +199,7 @@ describe('AcceptSyncManager', () => {
       },
     ]);
     const audit = new RecordingAuditRepository(db);
-    const sync = new AcceptSyncManager(db, audit);
+    const sync = new AcceptSyncManager(asSqlDatabase(db), audit);
 
     const result = await sync.reconcileWrite({ ...baseEvent, operation: 'delete' });
 

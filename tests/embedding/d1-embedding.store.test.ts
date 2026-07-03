@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { D1EmbeddingStore } from '../../src/embedding/d1-embedding.store.js';
 import { NOOP_EMBEDDING_MODEL_ID } from '../../src/embedding/noop-embedding.provider.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { asSqlDatabase } from '../helpers/sql-test-harness.js';
 
 describe('D1EmbeddingStore', () => {
   let store: D1EmbeddingStore;
@@ -13,7 +14,7 @@ describe('D1EmbeddingStore', () => {
 
   beforeEach(() => {
     mockDb = new MockD1Client();
-    store = new D1EmbeddingStore(mockDb);
+    store = new D1EmbeddingStore(asSqlDatabase(mockDb));
   });
 
   it('should insert and find embedding by memory and model', async () => {

@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { slugify } from '../knowledge/slug.generator.js';
 import { ValidationError } from '../types/errors.js';
 
@@ -12,6 +12,7 @@ export interface WorkspaceRecord {
   name: string;
   slug: string;
   createdAt: string;
+  organizationId?: string;
 }
 
 interface WorkspaceRow {
@@ -20,6 +21,7 @@ interface WorkspaceRow {
   name: string;
   slug: string;
   created_at: string;
+  organization_id?: string | null;
 }
 
 function mapWorkspaceRow(row: WorkspaceRow): WorkspaceRecord {
@@ -29,16 +31,17 @@ function mapWorkspaceRow(row: WorkspaceRow): WorkspaceRecord {
     name: row.name,
     slug: row.slug,
     createdAt: row.created_at,
+    organizationId: row.organization_id ?? undefined,
   };
 }
 
 export async function findWorkspaceBySlug(
-  client: D1Client,
+  client: ISqlDatabase,
   ownerId: string,
   slug: string,
 ): Promise<WorkspaceRecord | null> {
   const rows = await client.query<WorkspaceRow>(
-    `SELECT id, owner_id, name, slug, created_at
+    `SELECT id, owner_id, name, slug, created_at, organization_id
      FROM workspaces
      WHERE owner_id = ? AND slug = ?`,
     [ownerId, slug],
@@ -48,11 +51,11 @@ export async function findWorkspaceBySlug(
 }
 
 export async function listWorkspacesByOwner(
-  client: D1Client,
+  client: ISqlDatabase,
   ownerId: string,
 ): Promise<WorkspaceRecord[]> {
   const rows = await client.query<WorkspaceRow>(
-    `SELECT id, owner_id, name, slug, created_at
+    `SELECT id, owner_id, name, slug, created_at, organization_id
      FROM workspaces
      WHERE owner_id = ?
      ORDER BY created_at ASC`,
@@ -68,7 +71,7 @@ export interface CreateWorkspaceInput {
 }
 
 export async function createWorkspace(
-  client: D1Client,
+  client: ISqlDatabase,
   ownerId: string,
   input: CreateWorkspaceInput,
   now: () => string = () => new Date().toISOString(),
@@ -109,12 +112,12 @@ export async function createWorkspace(
 }
 
 export async function findWorkspaceById(
-  client: D1Client,
+  client: ISqlDatabase,
   ownerId: string,
   workspaceId: string,
 ): Promise<WorkspaceRecord | null> {
   const rows = await client.query<WorkspaceRow>(
-    `SELECT id, owner_id, name, slug, created_at
+    `SELECT id, owner_id, name, slug, created_at, organization_id
      FROM workspaces
      WHERE id = ? AND owner_id = ?`,
     [workspaceId, ownerId],
@@ -124,11 +127,11 @@ export async function findWorkspaceById(
 }
 
 export async function findDefaultWorkspace(
-  client: D1Client,
+  client: ISqlDatabase,
   ownerId: string,
 ): Promise<WorkspaceRecord | null> {
   const rows = await client.query<WorkspaceRow>(
-    `SELECT id, owner_id, name, slug, created_at
+    `SELECT id, owner_id, name, slug, created_at, organization_id
      FROM workspaces
      WHERE owner_id = ? AND slug = ?`,
     [ownerId, DEFAULT_WORKSPACE_SLUG],
@@ -141,7 +144,7 @@ export async function findDefaultWorkspace(
  * Returns the owner's default workspace, creating it lazily if missing (ADR-007 Appendix C).
  */
 export async function ensureDefaultWorkspace(
-  client: D1Client,
+  client: ISqlDatabase,
   ownerId: string,
   now: () => string = () => new Date().toISOString(),
 ): Promise<{ workspace: WorkspaceRecord; created: boolean }> {

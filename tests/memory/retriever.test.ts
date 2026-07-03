@@ -3,6 +3,7 @@ import { Retriever } from '../../src/memory/retriever.js';
 import { SqlRetrievalCandidateSource } from '../../src/memory/sql-retrieval-candidate-source.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository } from '../helpers/sql-test-harness.js';
 
 describe('Retriever', () => {
   let retriever: Retriever;
@@ -11,7 +12,7 @@ describe('Retriever', () => {
 
   beforeEach(() => {
     const mockDb = new MockD1Client();
-    repository = new MemoryRepository(mockDb);
+    repository = createTestMemoryRepository(mockDb);
     retriever = new Retriever(new SqlRetrievalCandidateSource(repository));
   });
 

@@ -4,6 +4,7 @@ import type { RelationEdge } from '../../src/graph/traversal.js';
 import { D1GraphAdapter } from '../../src/graph/d1-graph.adapter.js';
 import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { asSqlDatabase, createTestRelationRepository } from '../helpers/sql-test-harness.js';
 import { DEFAULT_GRAPH_MAX_DEPTH } from '../../src/graph/graph.config.js';
 
 const ID_A = '00000000-0000-0000-0000-000000000001';
@@ -107,8 +108,8 @@ describe('D1GraphAdapter', () => {
 
   beforeEach(() => {
     mockDb = new MockD1Client();
-    relationRepo = new MemoryRelationRepository(mockDb);
-    adapter = new D1GraphAdapter(mockDb);
+    relationRepo = createTestRelationRepository(mockDb);
+    adapter = new D1GraphAdapter(asSqlDatabase(mockDb));
   });
 
   it('should traverse via D1-loaded edges with owner isolation', async () => {

@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type {
   CreateRelationInput,
   MemoryRelation,
@@ -47,7 +47,7 @@ function rowToRelation(row: RelationRow): MemoryRelation {
 }
 
 export class MemoryRelationRepository implements IMemoryRelationRepository {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async insert(data: {
     sourceMemoryId: string;

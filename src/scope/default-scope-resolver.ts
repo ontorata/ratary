@@ -6,7 +6,7 @@ import type {
   McpScopeEnv,
   ScopeResolutionHints,
 } from './iscope-resolver.interface.js';
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { ensureDefaultWorkspace, findWorkspaceById } from './workspace-store.js';
 
 /**
@@ -14,7 +14,7 @@ import { ensureDefaultWorkspace, findWorkspaceById } from './workspace-store.js'
  * Default workspace is ensured lazily when no workspace hint is provided.
  */
 export class DefaultScopeResolver implements IScopeResolver {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async resolveFromRequest(auth: AuthUser, hints?: ScopeResolutionHints): Promise<MemoryScope> {
     const scope: MemoryScope = { ownerId: auth.ownerId };
@@ -31,9 +31,15 @@ export class DefaultScopeResolver implements IScopeResolver {
         throw new NotFoundError('Workspace', workspaceIdHint);
       }
       scope.workspaceId = workspace.id;
+      if (workspace.organizationId) {
+        scope.organizationId = workspace.organizationId;
+      }
     } else {
       const { workspace } = await ensureDefaultWorkspace(this.db, auth.ownerId);
       scope.workspaceId = workspace.id;
+      if (workspace.organizationId) {
+        scope.organizationId = workspace.organizationId;
+      }
     }
 
     const agentId = hints?.agentId?.trim();
@@ -54,9 +60,15 @@ export class DefaultScopeResolver implements IScopeResolver {
         throw new NotFoundError('Workspace', workspaceIdHint);
       }
       scope.workspaceId = workspace.id;
+      if (workspace.organizationId) {
+        scope.organizationId = workspace.organizationId;
+      }
     } else {
       const { workspace } = await ensureDefaultWorkspace(this.db, env.ownerId);
       scope.workspaceId = workspace.id;
+      if (workspace.organizationId) {
+        scope.organizationId = workspace.organizationId;
+      }
     }
 
     const agentId = env.agentId?.trim();

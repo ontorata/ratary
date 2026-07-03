@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { generateId, nowISO } from '../utils/memory-mapper.js';
 
 export interface AuditLogInput {
@@ -15,7 +15,7 @@ export interface AuditLogInput {
 }
 
 export class AuditRepository {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async append(input: AuditLogInput): Promise<void> {
     await this.db.execute(

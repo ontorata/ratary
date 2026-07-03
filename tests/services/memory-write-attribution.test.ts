@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { KnowledgeService } from '../../src/knowledge/knowledge.service.js';
 import { SearchService } from '../../src/search/search.service.js';
 import { MemoryService } from '../../src/services/memory.service.js';
@@ -8,6 +7,7 @@ import { AcceptSyncManager } from '../../src/sync/accept-sync-manager.js';
 import { AuditRepository } from '../../src/auth/audit.repository.js';
 import type { ISyncManager } from '../../src/sync/isync-manager.interface.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository, asSqlDatabase } from '../helpers/sql-test-harness.js';
 
 describe('MemoryService write attribution and sync', () => {
   let mockDb: MockD1Client;
@@ -35,11 +35,12 @@ describe('MemoryService write attribution and sync', () => {
       ],
     );
 
-    const repository = new MemoryRepository(mockDb);
+    const repository = createTestMemoryRepository(mockDb);
     const knowledge = new KnowledgeService(repository);
     const search = new SearchService(repository);
-    syncManager = new AcceptSyncManager(mockDb, new AuditRepository(mockDb));
-    const agentIdentity = new D1AgentIdentity(mockDb);
+    const sql = asSqlDatabase(mockDb);
+    syncManager = new AcceptSyncManager(sql, new AuditRepository(sql));
+    const agentIdentity = new D1AgentIdentity(sql);
     service = new MemoryService(repository, knowledge, search, undefined, syncManager, agentIdentity);
   });
 

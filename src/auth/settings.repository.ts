@@ -1,11 +1,11 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 
 export const SETTINGS_KEYS = {
   BOOTSTRAP_COMPLETED: 'bootstrap.completed',
 } as const;
 
 export class SettingsRepository {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async get(key: string): Promise<string | null> {
     const rows = await this.db.query<{ value: string }>(

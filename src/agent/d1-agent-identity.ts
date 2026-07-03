@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { findWorkspaceById } from '../scope/workspace-store.js';
 import { NotFoundError, ValidationError } from '../types/errors.js';
 import { hasWorkspaceScope, type MemoryScope } from '../types/memory-scope.js';
@@ -51,7 +51,7 @@ function requireWorkspaceScope(
  * D1-backed agent registry within a workspace (ADR-007).
  */
 export class D1AgentIdentity implements IAgentIdentity {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async register(scope: MemoryScope, descriptor: AgentDescriptor): Promise<AgentRecord> {
     requireWorkspaceScope(scope);

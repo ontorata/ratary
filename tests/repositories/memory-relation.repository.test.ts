@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
+import { createTestRelationRepository } from '../helpers/sql-test-harness.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 
 describe('MemoryRelationRepository', () => {
@@ -9,7 +9,7 @@ describe('MemoryRelationRepository', () => {
 
   beforeEach(() => {
     mockDb = new MockD1Client();
-    repository = new MemoryRelationRepository(mockDb);
+    repository = createTestRelationRepository(mockDb);
   });
 
   it('should insert and find relation scoped to owner', async () => {

@@ -87,11 +87,17 @@ export function getD1Client(): D1Client {
   if (clientInstance) return clientInstance;
 
   const env = getEnv();
-  clientInstance = new CloudflareD1Client(
-    env.CLOUDFLARE_ACCOUNT_ID,
-    env.D1_DATABASE_ID,
-    env.D1_API_TOKEN,
-  );
+  const accountId = env.CLOUDFLARE_ACCOUNT_ID;
+  const databaseId = env.D1_DATABASE_ID;
+  const apiToken = env.D1_API_TOKEN;
+
+  if (!accountId || !databaseId || !apiToken) {
+    throw new Error(
+      'D1 credentials are required for getD1Client(). Set CLOUDFLARE_ACCOUNT_ID, D1_DATABASE_ID, and D1_API_TOKEN, or use SQL_PROVIDER=postgres with DATABASE_URL.',
+    );
+  }
+
+  clientInstance = new CloudflareD1Client(accountId, databaseId, apiToken);
 
   return clientInstance;
 }

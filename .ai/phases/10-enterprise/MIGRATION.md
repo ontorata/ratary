@@ -1,32 +1,71 @@
 ﻿# Phase 10 — Enterprise — MIGRATION
 
 **Document:** MIGRATION  
-**Phase status:** Reserved  
+**Phase status:** Complete  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Purpose
+## Schema changes (additive)
 
-Record schema and data migrations: forward path, rollback, idempotency, and production notes.
+Applied via `migrateEnterprisePhase1()` in `src/db/migrations.ts` (runs automatically on `runMigrations()`).
 
----
+### New tables
 
-## Lifecycle
+```sql
+organizations (id, owner_id, name, slug, created_at)
+workspace_memberships (id, organization_id, workspace_id, identity_id, role, created_at)
+```
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+### Column addition
 
----
+```sql
+ALTER TABLE workspaces ADD COLUMN organization_id TEXT;
+```
 
-## Migrations
-
-_None planned yet — update when schema changes identified._
+Canonical snapshot: `schema.sql` (Phase 10 section).
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+## Rollout steps
+
+| Step | Action | Production impact |
+|------|--------|-------------------|
+| 1 | Deploy code (defaults unchanged) | None |
+| 2 | `runMigrations()` / deploy hook | Additive DDL only |
+| 3 | `npx tsx scripts/backfill-organizations.ts` | Links workspaces → default org per owner |
+| 4 | (Optional) `ENTERPRISE_RBAC=true` | Enables membership checks |
+
+---
+
+## Backfill: organizations
+
+**Script:** `scripts/backfill-organizations.ts`  
+**Library:** `scripts/lib/organization-backfill.ts`
+
+Behavior (idempotent):
+
+1. For each owner with workspaces missing `organization_id`, ensure `organizations` row (`slug=default`).
+2. `UPDATE workspaces SET organization_id = ? WHERE owner_id = ? AND organization_id IS NULL`.
+3. Exit non-zero if any workspace remains unlinked.
+
+---
+
+## Rollback
+
+| Change | Rollback |
+|--------|----------|
+| Code deploy | Revert release; defaults restore D1-only path |
+| `ENTERPRISE_RBAC=true` | Set `ENTERPRISE_RBAC=false` → Phase 9 owner-only path |
+| DDL | Forward-fix only; do not drop columns in production |
+
+---
+
+## Not in scope
+
+- PostgreSQL cutover (ADR-009 Proposed)
+- R2 content dual-write (ADR-005 Proposed)
+
+---
+
+*Migration verified by `tests/db/enterprise-migration.test.ts` and `tests/scripts/organization-backfill.test.ts`.*

@@ -61,3 +61,14 @@ export type {
   AnalyticsQuery,
   AnalyticsRow,
 } from './analytics/ianalytics-store.port.js';
+
+export type {
+  IWorkspaceMembership,
+  WorkspacePermission,
+} from './enterprise/iworkspace-membership.port.js';
+
+export type {
+  IOrganizationStore,
+  Organization,
+  CreateOrganizationInput,
+} from './enterprise/iorganization-store.port.js';

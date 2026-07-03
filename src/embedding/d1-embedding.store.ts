@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { generateId, nowISO } from '../utils/memory-mapper.js';
 import { cosineSimilarity } from './cosine-similarity.js';
 import type {
@@ -36,7 +36,7 @@ function rowToStoredEmbedding(row: EmbeddingRow): StoredEmbedding {
 }
 
 export class D1EmbeddingStore implements IEmbeddingStore {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async upsert(input: EmbeddingUpsertInput): Promise<string> {
     this.assertVectorDimensions(input.vector, input.dimensions);

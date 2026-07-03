@@ -12,6 +12,8 @@ export interface MemoryScope {
   agentId?: string;
   /** Retrieval/list filter hint (not a security boundary). */
   projectId?: string;
+  /** Enterprise tenant — Phase 10+. */
+  organizationId?: string;
 }
 
 /** True when workspace-scoped queries should apply (post-migration). */

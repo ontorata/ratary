@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { SearchService } from '../../src/search/search.service.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository } from '../helpers/sql-test-harness.js';
 
 describe('SearchService', () => {
   let service: SearchService;
@@ -10,7 +11,7 @@ describe('SearchService', () => {
 
   beforeEach(() => {
     const mockDb = new MockD1Client();
-    repository = new MemoryRepository(mockDb);
+    repository = createTestMemoryRepository(mockDb);
     service = new SearchService(repository);
   });
 

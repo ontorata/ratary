@@ -3,12 +3,11 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { setD1Client, resetD1Client } from '../../src/db/index.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository, createTestRelationRepository, asSqlDatabase } from '../helpers/sql-test-harness.js';
 import {
   createMemoryService,
   createMemoryRelationService,
 } from '../../src/services/create-memory-service.js';
-import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
-import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { createContextService } from '../../src/memory/create-context-service.js';
 import { createGraphService } from '../../src/services/graph.service.js';
 import { DefaultScopeResolver } from '../../src/scope/default-scope-resolver.js';
@@ -51,14 +50,15 @@ describe('MCP tools', () => {
     mockDb = new MockD1Client();
     setD1Client(mockDb);
 
-    const repository = new MemoryRepository(mockDb);
-    const relationRepository = new MemoryRelationRepository(mockDb);
-    const memoryService = createMemoryService(mockDb, repository);
-    const relationService = createMemoryRelationService(mockDb, repository, relationRepository);
-    const contextService = createContextService(repository);
-    const graphService = createGraphService(mockDb, repository);
-    const scopeResolver = new DefaultScopeResolver(mockDb);
-    const agentIdentity = new D1AgentIdentity(mockDb);
+    const sql = asSqlDatabase(mockDb);
+    const repository = createTestMemoryRepository(mockDb);
+    const relationRepository = createTestRelationRepository(mockDb);
+    const memoryService = createMemoryService(sql, repository);
+    const relationService = createMemoryRelationService(sql, repository, relationRepository);
+    const contextService = createContextService(repository, { sql });
+    const graphService = createGraphService(sql, repository);
+    const scopeResolver = new DefaultScopeResolver(sql);
+    const agentIdentity = new D1AgentIdentity(sql);
     const server = createMcpServer(
       memoryService,
       relationService,
@@ -66,6 +66,7 @@ describe('MCP tools', () => {
       graphService,
       scopeResolver,
       agentIdentity,
+      sql,
     );
 
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();

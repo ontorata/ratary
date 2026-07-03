@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { MemoryRow } from '../types/memory.js';
 import {
   generateId,
@@ -35,7 +35,7 @@ const RETRIEVAL_MEMORY_SELECT = `id, title, project, '' as content, summary, tag
   embedding_id, object_key, semantic_hash`;
 
 export class MemoryRepository implements IMemoryRepository {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async allocateCodename(ownerId: string, prefix: string): Promise<string> {
     const pattern = `${prefix.toUpperCase()}-%`;

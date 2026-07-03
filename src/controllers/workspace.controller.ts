@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { IAgentIdentity } from '../agent/iagent-identity.interface.js';
 import type { AgentRecord } from '../agent/agent.types.js';
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
 import {
   createWorkspace,
@@ -42,7 +42,7 @@ function toAgentResponse(agent: AgentRecord) {
 
 export class WorkspaceController {
   constructor(
-    private readonly db: D1Client,
+    private readonly db: ISqlDatabase,
     private readonly scopeResolver: IScopeResolver,
     private readonly agentIdentity: IAgentIdentity,
   ) {}
@@ -104,7 +104,7 @@ export class WorkspaceController {
 }
 
 export function createWorkspaceController(
-  db: D1Client,
+  db: ISqlDatabase,
   scopeResolver: IScopeResolver,
   agentIdentity: IAgentIdentity,
 ): WorkspaceController {

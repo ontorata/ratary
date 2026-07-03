@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { D1Client, D1QueryResult } from '../../src/db/d1-client.js';
+import { asSqlDatabase } from '../helpers/sql-test-harness.js';
 import { DefaultScopeResolver } from '../../src/scope/default-scope-resolver.js';
 import {
   DEFAULT_WORKSPACE_SLUG,
@@ -70,16 +71,16 @@ describe('workspace-store', () => {
       },
     ]);
 
-    expect(await findWorkspaceById(db, 'owner-a', 'ws-1')).toMatchObject({ id: 'ws-1' });
-    expect(await findWorkspaceById(db, 'owner-b', 'ws-1')).toBeNull();
+    expect(await findWorkspaceById(asSqlDatabase(db), 'owner-a', 'ws-1')).toMatchObject({ id: 'ws-1' });
+    expect(await findWorkspaceById(asSqlDatabase(db), 'owner-b', 'ws-1')).toBeNull();
   });
 
   it('should create default workspace lazily', async () => {
     const db = new FakeWorkspaceDb();
     const fixedNow = () => '2026-07-03T00:00:00.000Z';
 
-    const first = await ensureDefaultWorkspace(db, 'owner-a', fixedNow);
-    const second = await ensureDefaultWorkspace(db, 'owner-a', fixedNow);
+    const first = await ensureDefaultWorkspace(asSqlDatabase(db), 'owner-a', fixedNow);
+    const second = await ensureDefaultWorkspace(asSqlDatabase(db), 'owner-a', fixedNow);
 
     expect(first.created).toBe(true);
     expect(second.created).toBe(false);
@@ -107,7 +108,7 @@ describe('DefaultScopeResolver', () => {
         created_at: '2026-01-01T00:00:00.000Z',
       },
     ]);
-    const resolver = new DefaultScopeResolver(db);
+    const resolver = new DefaultScopeResolver(asSqlDatabase(db));
 
     const scope = await resolver.resolveFromRequest(authUser('owner-a'), {
       workspaceId: 'ws-custom',
@@ -133,7 +134,7 @@ describe('DefaultScopeResolver', () => {
         created_at: '2026-01-01T00:00:00.000Z',
       },
     ]);
-    const resolver = new DefaultScopeResolver(db);
+    const resolver = new DefaultScopeResolver(asSqlDatabase(db));
 
     await expect(
       resolver.resolveFromRequest(authUser('owner-a'), { workspaceId: 'ws-other' }),
@@ -150,7 +151,7 @@ describe('DefaultScopeResolver', () => {
         created_at: '2026-01-01T00:00:00.000Z',
       },
     ]);
-    const resolver = new DefaultScopeResolver(db);
+    const resolver = new DefaultScopeResolver(asSqlDatabase(db));
 
     const scope = await resolver.resolveFromRequest(authUser('owner-a'));
 
@@ -160,12 +161,12 @@ describe('DefaultScopeResolver', () => {
 
   it('should create default workspace on first REST request when missing', async () => {
     const db = new FakeWorkspaceDb();
-    const resolver = new DefaultScopeResolver(db);
+    const resolver = new DefaultScopeResolver(asSqlDatabase(db));
 
     const scope = await resolver.resolveFromRequest(authUser('owner-new'));
 
     expect(scope.workspaceId).toBeDefined();
-    expect(await findDefaultWorkspace(db, 'owner-new')).toMatchObject({
+    expect(await findDefaultWorkspace(asSqlDatabase(db), 'owner-new')).toMatchObject({
       id: scope.workspaceId,
       slug: DEFAULT_WORKSPACE_SLUG,
     });
@@ -181,7 +182,7 @@ describe('DefaultScopeResolver', () => {
         created_at: '2026-01-01T00:00:00.000Z',
       },
     ]);
-    const resolver = new DefaultScopeResolver(db);
+    const resolver = new DefaultScopeResolver(asSqlDatabase(db));
 
     const scope = await resolver.resolveFromMcp({
       ownerId: 'owner-a',
@@ -206,7 +207,7 @@ describe('DefaultScopeResolver', () => {
         created_at: '2026-01-01T00:00:00.000Z',
       },
     ]);
-    const resolver = new DefaultScopeResolver(db);
+    const resolver = new DefaultScopeResolver(asSqlDatabase(db));
 
     const scope = await resolver.resolveFromMcp({ ownerId: 'owner-a' });
 

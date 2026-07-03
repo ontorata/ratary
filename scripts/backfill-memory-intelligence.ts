@@ -2,6 +2,7 @@ import { getD1Client } from '../src/db/index.js';
 import { runMigrations } from '../src/db/migrations.js';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { buildIntelligenceBackfillPatch } from './lib/memory-intelligence-backfill.js';
+import { sqlFromD1Client } from './lib/sql-from-d1-client.js';
 
 const BATCH_SIZE = 100;
 
@@ -10,7 +11,7 @@ async function backfillMemoryIntelligence(): Promise<void> {
   const client = getD1Client();
   await runMigrations(client);
 
-  const repository = new MemoryRepository(client);
+  const repository = new MemoryRepository(sqlFromD1Client(client));
   const rows = await client.query<{
     id: string;
     owner_id: string;

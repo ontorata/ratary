@@ -1,19 +1,19 @@
 import type { Memory } from '../types/memory.js';
 import type { RetrievalFilters } from '../repositories/memory.repository.interface.js';
 import type { IRetrievalCandidateSource } from './retrieval-candidate-source.interface.js';
-import type { IEmbeddingStore } from '../embedding/embedding.store.interface.js';
+import type { IVectorStore } from '../ports/vector/ivector-store.port.js';
 import type { IEmbeddingProvider } from '../embedding/embedding.provider.interface.js';
 import type { IMemoryReader } from '../repositories/memory.repository.interface.js';
 
 /**
  * Vector-based retrieval candidate source.
  *
- * Uses embedding similarity search to find candidate memories,
+ * Uses IVectorStore similarity search to find candidate memories,
  * then hydrates them with full data from the repository.
  */
 export class VectorRetrievalCandidateSource implements IRetrievalCandidateSource {
   constructor(
-    private readonly embeddingStore: IEmbeddingStore,
+    private readonly vectorStore: IVectorStore,
     private readonly embeddingProvider: IEmbeddingProvider,
     private readonly memoryReader: IMemoryReader,
   ) {}
@@ -25,7 +25,6 @@ export class VectorRetrievalCandidateSource implements IRetrievalCandidateSource
       return [];
     }
 
-    // Generate embedding for query text
     const embeddingResults = await this.embeddingProvider.embed([
       { memoryId: '__query__', text: query },
     ]);
@@ -36,21 +35,21 @@ export class VectorRetrievalCandidateSource implements IRetrievalCandidateSource
 
     const queryVector = embeddingResults[0].vector;
 
-    // Search for similar embeddings
-    const matches = await this.embeddingStore.searchSimilar(queryVector, ownerId, maxCandidates);
+    const matches = await this.vectorStore.searchSimilar(
+      queryVector,
+      { ownerId, workspaceId: filters.workspaceId },
+      maxCandidates,
+    );
 
     if (matches.length === 0) {
       return [];
     }
 
-    // Hydrate memories with full data
     const memoryIds = matches.map((m) => m.memoryId);
     const memories = await this.memoryReader.findByIds(memoryIds, ownerId, filters.workspaceId);
 
-    // Create id -> memory map for O(1) lookup
     const memoryMap = new Map(memories.map((m) => [m.id, m]));
 
-    // Build results preserving similarity ranking order
     const results: Memory[] = [];
     for (const match of matches) {
       const memory = memoryMap.get(match.memoryId);

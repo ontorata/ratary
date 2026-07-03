@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { IdentityRepository } from './identity.repository.js';
 import type { SettingsRepository } from './settings.repository.js';
 import { executeTransaction } from '../db/migrations.js';
@@ -30,7 +30,7 @@ export interface BootstrapResult extends CreateIdentityResult {
 
 export class IdentityService {
   constructor(
-    private readonly db: D1Client,
+    private readonly db: ISqlDatabase,
     private readonly identityRepository: IdentityRepository,
     private readonly settingsRepository: SettingsRepository,
     private readonly jwtService: JwtService,

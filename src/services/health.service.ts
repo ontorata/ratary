@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 
 export interface HealthStatus {
   status: 'ok' | 'degraded';
@@ -10,7 +10,7 @@ export interface HealthStatus {
 }
 
 export class HealthService {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async check(): Promise<HealthStatus> {
     const database = await this.pingDatabase();

@@ -12,7 +12,8 @@ import type { MemoryService } from '../services/memory.service.js';
 import { MemoryRelationService } from '../services/memory-relation.service.js';
 import { createContextService } from '../memory/create-context-service.js';
 import { createEmbeddingProvider } from '../embedding/create-embedding-provider.js';
-import { D1EmbeddingStore } from '../embedding/d1-embedding.store.js';
+import { createPlatformAdapters } from '../infrastructure/composition/create-platform-adapters.js';
+import { getEnv } from '../config/index.js';
 import type { ContextService } from '../memory/context.service.js';
 import type { GraphService } from '../services/graph.service.js';
 import { createGraphService } from '../services/graph.service.js';
@@ -24,6 +25,7 @@ import type { IAgentIdentity } from '../agent/iagent-identity.interface.js';
 import { AGENT_TYPES } from '../agent/agent.types.js';
 import { ensureDefaultWorkspace, listWorkspacesByOwner } from '../scope/workspace-store.js';
 import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../types/knowledge.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
 
 const metadataSchema = z.object({
@@ -42,6 +44,7 @@ function createMcpServer(
   graphService: GraphService,
   scopeResolver: IScopeResolver,
   agentIdentity: IAgentIdentity,
+  sql: ISqlDatabase,
 ): McpServer {
   const mcpScope = () => resolveMcpMemoryScope(scopeResolver);
   const server = new McpServer({
@@ -337,9 +340,8 @@ function createMcpServer(
 
   server.tool('list_workspaces', 'List workspaces for the MCP owner', {}, async () => {
     const scope = await mcpScope();
-    const db = getD1Client();
-    await ensureDefaultWorkspace(db, scope.ownerId);
-    const workspaces = await listWorkspacesByOwner(db, scope.ownerId);
+    await ensureDefaultWorkspace(sql, scope.ownerId);
+    const workspaces = await listWorkspacesByOwner(sql, scope.ownerId);
     return {
       content: [{ type: 'text', text: JSON.stringify({ workspaces }, null, 2) }],
     };
@@ -408,16 +410,21 @@ function createMcpServer(
 
 export async function startMcpStdioServer(): Promise<void> {
   assertMcpOwnerConfigured();
-  const db = getD1Client();
-  const repository = new MemoryRepository(db);
-  const relationRepository = new MemoryRelationRepository(db);
-  const multiAi = createMultiAiPorts(db);
-  const memoryService = createMemoryService(db, repository, multiAi);
-  const relationService = createMemoryRelationService(db, repository, relationRepository);
+  const env = getEnv();
+  const d1 = env.SQL_PROVIDER === 'd1' ? getD1Client() : null;
+  const platform = createPlatformAdapters(d1, env);
+  const repository = new MemoryRepository(platform.sql);
+  const relationRepository = new MemoryRelationRepository(platform.sql);
+  const multiAi = createMultiAiPorts(platform.sql);
+  const memoryService = createMemoryService(platform.sql, repository, multiAi);
+  const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
   const embeddingProvider = createEmbeddingProvider();
-  const embeddingStore = new D1EmbeddingStore(db);
-  const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
-  const graphService = createGraphService(db, repository);
+  const contextService = createContextService(repository, {
+    embeddingProvider,
+    vectorStore: platform.vectorStore,
+    sql: platform.sql,
+  });
+  const graphService = createGraphService(platform.sql, repository);
   const { scopeResolver, agentIdentity } = multiAi;
 
   const server = createMcpServer(
@@ -427,6 +434,7 @@ export async function startMcpStdioServer(): Promise<void> {
     graphService,
     scopeResolver,
     agentIdentity,
+    platform.sql,
   );
   const transport = new StdioServerTransport();
   await server.connect(transport);

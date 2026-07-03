@@ -4,7 +4,7 @@ import { buildApp } from '../../src/server.js';
 import { setD1Client, resetD1Client } from '../../src/db/index.js';
 import { resetEnvCache } from '../../src/config/index.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
-import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
+import { createTestRelationRepository } from '../helpers/sql-test-harness.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
 vi.stubEnv('D1_DATABASE_ID', 'test-database');
@@ -68,7 +68,7 @@ describe('Graph API E2E', () => {
     });
     const neighbor = neighborResponse.json();
 
-    const relationRepository = new MemoryRelationRepository(mockDb);
+    const relationRepository = createTestRelationRepository(mockDb);
     await relationRepository.insert({
       sourceMemoryId: seed.id,
       targetMemoryId: neighbor.id,

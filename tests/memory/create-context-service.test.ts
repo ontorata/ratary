@@ -3,13 +3,14 @@ import { resetEnvCache } from '../../src/config/env.js';
 import { createContextService } from '../../src/memory/create-context-service.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { D1EmbeddingStore } from '../../src/embedding/d1-embedding.store.js';
+import { D1VectorStoreBridge } from '../../src/infrastructure/vector/d1-vector-store.bridge.js';
 import type {
   EmbeddingInput,
   EmbeddingResult,
   IEmbeddingProvider,
 } from '../../src/embedding/embedding.provider.interface.js';
-import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository, createTestRelationRepository, asSqlDatabase } from '../helpers/sql-test-harness.js';
 
 const QUERY = 'semantic-anchor';
 const QUERY_VECTOR = [1, 0, 0];
@@ -33,7 +34,9 @@ describe('createContextService', () => {
   let mockDb: MockD1Client;
   let repository: MemoryRepository;
   let embeddingStore: D1EmbeddingStore;
+  let vectorStore: D1VectorStoreBridge;
   let provider: DeterministicEmbeddingProvider;
+  let sql: ReturnType<typeof asSqlDatabase>;
 
   beforeEach(() => {
     resetEnvCache();
@@ -45,8 +48,10 @@ describe('createContextService', () => {
     vi.stubEnv('GRAPH_RETRIEVAL', 'false');
 
     mockDb = new MockD1Client();
-    repository = new MemoryRepository(mockDb);
-    embeddingStore = new D1EmbeddingStore(mockDb);
+    sql = asSqlDatabase(mockDb);
+    repository = createTestMemoryRepository(mockDb);
+    embeddingStore = new D1EmbeddingStore(sql);
+    vectorStore = new D1VectorStoreBridge(embeddingStore);
     provider = new DeterministicEmbeddingProvider();
   });
 
@@ -89,7 +94,11 @@ describe('createContextService', () => {
   it('should use SQL-only retrieval when HYBRID_RETRIEVAL is false', async () => {
     await seedVectorOnlyMemory();
 
-    const service = createContextService(repository, provider, embeddingStore);
+    const service = createContextService(repository, {
+      embeddingProvider: provider,
+      vectorStore,
+      sql,
+    });
     const result = await service.buildContext({ ownerId }, { query: QUERY, limit: 5 });
 
     expect(result.memories).toHaveLength(0);
@@ -100,7 +109,11 @@ describe('createContextService', () => {
     resetEnvCache();
 
     const memoryId = await seedVectorOnlyMemory();
-    const service = createContextService(repository, provider, embeddingStore);
+    const service = createContextService(repository, {
+      embeddingProvider: provider,
+      vectorStore,
+      sql,
+    });
     const result = await service.buildContext({ ownerId }, { query: QUERY, limit: 5 });
 
     expect(result.memories.map((m) => m.id)).toContain(memoryId);
@@ -176,7 +189,7 @@ describe('createContextService', () => {
       ownerId,
     });
 
-    const relationRepository = new MemoryRelationRepository(mockDb);
+    const relationRepository = createTestRelationRepository(mockDb);
     await relationRepository.insert({
       sourceMemoryId: seed.id,
       targetMemoryId: neighbor.id,
@@ -184,7 +197,11 @@ describe('createContextService', () => {
       ownerId,
     });
 
-    const service = createContextService(repository, provider, embeddingStore, mockDb);
+    const service = createContextService(repository, {
+      embeddingProvider: provider,
+      vectorStore,
+      sql,
+    });
     const result = await service.buildContext({ ownerId }, { query: 'JWT refresh', limit: 10 });
 
     expect(result.memories.map((memory) => memory.id)).toContain(neighbor.id);

@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { IdentityRepository } from './identity.repository.js';
 import { ClientRepository } from './client.repository.js';
 import { AuditRepository } from './audit.repository.js';
@@ -22,7 +22,7 @@ export interface AuthLayer {
   enforcePermissions: ReturnType<typeof createPermissionMiddleware>;
 }
 
-export function createAuthLayer(db: D1Client): AuthLayer {
+export function createAuthLayer(db: ISqlDatabase): AuthLayer {
   const identityRepository = new IdentityRepository(db);
   const clientRepository = new ClientRepository(db);
   const auditRepository = new AuditRepository(db);

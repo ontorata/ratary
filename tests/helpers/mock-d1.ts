@@ -20,6 +20,24 @@ interface WorkspaceRow {
   name: string;
   slug: string;
   created_at: string;
+  organization_id?: string | null;
+}
+
+interface OrganizationRow {
+  id: string;
+  owner_id: string;
+  name: string;
+  slug: string;
+  created_at: string;
+}
+
+interface WorkspaceMembershipRow {
+  id: string;
+  organization_id: string;
+  workspace_id: string;
+  identity_id: string;
+  role: string;
+  created_at: string;
 }
 
 interface AgentRow {
@@ -55,6 +73,8 @@ export class MockD1Client implements D1Client {
   private identityByHash: Map<string, string> = new Map();
   private clients: Map<string, ClientRow> = new Map();
   private workspaces: Map<string, WorkspaceRow> = new Map();
+  private organizations: Map<string, OrganizationRow> = new Map();
+  private workspaceMemberships: Map<string, WorkspaceMembershipRow> = new Map();
   private agents: Map<string, AgentRow> = new Map();
   private settings: Map<string, string> = new Map();
   private auditLogs: unknown[] = [];
@@ -187,9 +207,137 @@ export class MockD1Client implements D1Client {
         name: params[2] as string,
         slug: params[3] as string,
         created_at: params[4] as string,
+        organization_id: null,
       };
       this.workspaces.set(row.id, row);
       return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO ORGANIZATIONS')) {
+      const row: OrganizationRow = {
+        id: params[0] as string,
+        owner_id: params[1] as string,
+        name: params[2] as string,
+        slug: params[3] as string,
+        created_at: params[4] as string,
+      };
+      this.organizations.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO WORKSPACE_MEMBERSHIPS')) {
+      const row: WorkspaceMembershipRow = {
+        id: params[0] as string,
+        organization_id: params[1] as string,
+        workspace_id: params[2] as string,
+        identity_id: params[3] as string,
+        role: params[4] as string,
+        created_at: params[5] as string,
+      };
+      this.workspaceMemberships.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM WORKSPACE_MEMBERSHIPS') &&
+      normalizedSql.includes('WHERE WORKSPACE_ID = ? AND IDENTITY_ID = ?')
+    ) {
+      const [workspaceId, identityId] = params as [string, string];
+      const row = [...this.workspaceMemberships.values()].find(
+        (m) => m.workspace_id === workspaceId && m.identity_id === identityId,
+      );
+      return { results: row ? [{ role: row.role }] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('UPDATE WORKSPACE_MEMBERSHIPS SET ROLE = ?')) {
+      const [role, workspaceId, identityId] = params as [string, string, string];
+      const row = [...this.workspaceMemberships.values()].find(
+        (m) => m.workspace_id === workspaceId && m.identity_id === identityId,
+      );
+      if (row) {
+        row.role = role;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.startsWith('DELETE FROM WORKSPACE_MEMBERSHIPS')) {
+      const [workspaceId, identityId] = params as [string, string];
+      for (const [key, row] of this.workspaceMemberships.entries()) {
+        if (row.workspace_id === workspaceId && row.identity_id === identityId) {
+          this.workspaceMemberships.delete(key);
+        }
+      }
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('UPDATE WORKSPACES SET ORGANIZATION_ID = ? WHERE ID = ?')) {
+      const [organizationId, workspaceId] = params as [string, string];
+      const row = this.workspaces.get(workspaceId);
+      if (row) {
+        row.organization_id = organizationId;
+        this.workspaces.set(workspaceId, row);
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (
+      normalizedSql.includes('UPDATE WORKSPACES SET ORGANIZATION_ID = ?') &&
+      normalizedSql.includes('OWNER_ID = ?') &&
+      normalizedSql.includes('ORGANIZATION_ID IS NULL')
+    ) {
+      const [organizationId, ownerId] = params as [string, string];
+      let changes = 0;
+      for (const [id, row] of this.workspaces.entries()) {
+        if (
+          row.owner_id === ownerId &&
+          (row.organization_id === null || row.organization_id === undefined || row.organization_id === '')
+        ) {
+          row.organization_id = organizationId;
+          this.workspaces.set(id, row);
+          changes++;
+        }
+      }
+      return { results: [], success: true, meta: { changes } };
+    }
+
+    if (
+      normalizedSql.includes('FROM WORKSPACES') &&
+      normalizedSql.includes('ORGANIZATION_ID IS NULL')
+    ) {
+      const owners = new Set<string>();
+      for (const row of this.workspaces.values()) {
+        if (row.organization_id === null || row.organization_id === undefined || row.organization_id === '') {
+          owners.add(row.owner_id);
+        }
+      }
+      return {
+        results: [...owners].map((owner_id) => ({ owner_id })),
+        success: true,
+      };
+    }
+
+    if (
+      normalizedSql.includes('FROM ORGANIZATIONS') &&
+      normalizedSql.includes('WHERE OWNER_ID = ? AND SLUG = ?')
+    ) {
+      const [ownerId, slug] = params as [string, string];
+      const row = [...this.organizations.values()].find(
+        (org) => org.owner_id === ownerId && org.slug === slug,
+      );
+      return { results: row ? [{ id: row.id }] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('COUNT(*) AS COUNT FROM WORKSPACES') &&
+      normalizedSql.includes('ORGANIZATION_ID IS NULL')
+    ) {
+      const count = [...this.workspaces.values()].filter(
+        (row) =>
+          row.organization_id === null ||
+          row.organization_id === undefined ||
+          row.organization_id === '',
+      ).length;
+      return { results: [{ count }], success: true };
     }
 
     if (
@@ -198,7 +346,7 @@ export class MockD1Client implements D1Client {
     ) {
       const [id, ownerId] = params as [string, string];
       const row = [...this.workspaces.values()].find((w) => w.id === id && w.owner_id === ownerId);
-      return { results: row ? [row] : [], success: true };
+      return { results: row ? [{ ...row, organization_id: row.organization_id ?? null }] : [], success: true };
     }
 
     if (
@@ -1309,6 +1457,8 @@ export class MockD1Client implements D1Client {
     this.identityByHash.clear();
     this.clients.clear();
     this.workspaces.clear();
+    this.organizations.clear();
+    this.workspaceMemberships.clear();
     this.agents.clear();
     this.settings.clear();
     this.auditLogs = [];
@@ -1316,6 +1466,14 @@ export class MockD1Client implements D1Client {
 
   getAuditLogCount(): number {
     return this.auditLogs.length;
+  }
+
+  removeWorkspaceMembership(workspaceId: string, identityId: string): void {
+    for (const [key, row] of this.workspaceMemberships.entries()) {
+      if (row.workspace_id === workspaceId && row.identity_id === identityId) {
+        this.workspaceMemberships.delete(key);
+      }
+    }
   }
 
   getMemory(id: string): MemoryRow | undefined {

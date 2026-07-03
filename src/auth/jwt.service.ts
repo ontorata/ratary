@@ -10,6 +10,8 @@ export interface JwtClaims {
   type: 'jwt';
   iat: number;
   exp: number;
+  organization_id?: string;
+  workspace_roles?: Array<{ workspace_id: string; role: string }>;
 }
 
 export interface SignJwtInput {
@@ -18,6 +20,8 @@ export interface SignJwtInput {
   clientId: string | null;
   permissions: string[];
   expiresInSec?: number;
+  organizationId?: string;
+  workspaceRoles?: Array<{ workspaceId: string; role: string }>;
 }
 
 const DEFAULT_EXPIRES_IN_SEC = 3600;
@@ -49,6 +53,15 @@ export class JwtService {
       iat: now,
       exp: now + expiresInSec,
     };
+    if (input.organizationId) {
+      payload.organization_id = input.organizationId;
+    }
+    if (input.workspaceRoles?.length) {
+      payload.workspace_roles = input.workspaceRoles.map((entry) => ({
+        workspace_id: entry.workspaceId,
+        role: entry.role,
+      }));
+    }
     const payloadB64 = base64UrlEncode(JSON.stringify(payload));
     const signature = signSegment(headerB64, payloadB64);
     return `${headerB64}.${payloadB64}.${signature}`;

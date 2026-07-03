@@ -1,5 +1,5 @@
 import type { AuditRepository } from '../auth/audit.repository.js';
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { hasWorkspaceScope } from '../types/memory-scope.js';
 import type {
   ISyncManager,
@@ -16,7 +16,7 @@ interface MemoryTimestampRow {
  */
 export class AcceptSyncManager implements ISyncManager {
   constructor(
-    private readonly db: D1Client,
+    private readonly db: ISqlDatabase,
     private readonly audit: AuditRepository,
   ) {}
 

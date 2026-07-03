@@ -3,6 +3,7 @@ import cors from '@fastify/cors';
 import { getD1Client } from './db/index.js';
 import { MemoryRepository } from './repositories/memory.repository.js';
 import { MemoryRelationRepository } from './repositories/memory-relation.repository.js';
+import { createPlatformAdapters } from './infrastructure/composition/create-platform-adapters.js';
 import {
   createMemoryService,
   createMemoryRelationService,
@@ -25,18 +26,25 @@ import { createWorkspaceController } from './controllers/workspace.controller.js
 import { createGraphService } from './services/graph.service.js';
 import { createContextService } from './memory/create-context-service.js';
 import { createEmbeddingProvider } from './embedding/create-embedding-provider.js';
-import { D1EmbeddingStore } from './embedding/d1-embedding.store.js';
 import { registerV1Routes } from './routes/v1/index.js';
 import { healthRoutes } from './routes/index.js';
 import { errorHandlerPlugin, observabilityPlugin } from './plugins/index.js';
+import {
+  isOpenTelemetryEnabled,
+  openTelemetryFastifyPlugin,
+  registerOpenTelemetry,
+} from './infrastructure/observability/opentelemetry/index.js';
 import { getEnv } from './config/index.js';
 import { createAuthLayer } from './auth/index.js';
 import { createMultiAiPorts } from './composition/create-multi-ai-ports.js';
 import type { MultiAiPorts } from './composition/create-multi-ai-ports.js';
+import { createWorkspaceMembershipMiddleware } from './auth/workspace-membership.middleware.js';
+import type { PlatformAdapters } from './infrastructure/composition/create-platform-adapters.js';
 
 export interface AppDependencies {
   memoryService: MemoryService;
   multiAi: MultiAiPorts;
+  platform: PlatformAdapters;
 }
 
 export async function buildApp(options?: {
@@ -46,6 +54,10 @@ export async function buildApp(options?: {
 }): Promise<FastifyInstance> {
   const env = getEnv();
   const enableLogger = options?.logger ?? env.NODE_ENV !== 'test';
+
+  if (isOpenTelemetryEnabled(env)) {
+    registerOpenTelemetry(env);
+  }
 
   const isDev = env.NODE_ENV === 'development' && !process.env.VERCEL;
 
@@ -81,12 +93,20 @@ export async function buildApp(options?: {
     await fastify.register(observabilityPlugin);
   }
 
-  const db = getD1Client();
-  const authLayer = createAuthLayer(db);
+  if (isOpenTelemetryEnabled(env)) {
+    await fastify.register(openTelemetryFastifyPlugin);
+  }
+
+  const d1 = env.SQL_PROVIDER === 'd1' ? getD1Client() : null;
+  const platform = createPlatformAdapters(d1, env);
+  const authLayer = createAuthLayer(platform.sql);
 
   if (!options?.skipAuth) {
     fastify.addHook('onRequest', authLayer.authenticate);
     fastify.addHook('onRequest', authLayer.enforcePermissions);
+    if (env.ENTERPRISE_RBAC) {
+      fastify.addHook('onRequest', createWorkspaceMembershipMiddleware(platform.workspaceMembership));
+    }
   }
 
   const skipSwagger = options?.skipSwagger ?? Boolean(process.env.VERCEL);
@@ -95,13 +115,13 @@ export async function buildApp(options?: {
     await fastify.register(swaggerPlugin);
   }
 
-  const repository = new MemoryRepository(db);
-  const relationRepository = new MemoryRelationRepository(db);
-  const multiAi = createMultiAiPorts(db);
+  const repository = new MemoryRepository(platform.sql);
+  const relationRepository = new MemoryRelationRepository(platform.sql);
+  const multiAi = createMultiAiPorts(platform.sql);
   const { scopeResolver } = multiAi;
-  const memoryService = createMemoryService(db, repository, multiAi);
-  const relationService = createMemoryRelationService(db, repository, relationRepository);
-  const healthService = new HealthService(db);
+  const memoryService = createMemoryService(platform.sql, repository, multiAi);
+  const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
+  const healthService = new HealthService(platform.sql);
 
   fastify.decorate('memoryService', memoryService);
   fastify.decorate('multiAi', multiAi);
@@ -113,12 +133,15 @@ export async function buildApp(options?: {
   const knowledgeController = createKnowledgeController(memoryService, scopeResolver);
   const relationController = createMemoryRelationController(relationService, scopeResolver);
   const embeddingProvider = createEmbeddingProvider();
-  const embeddingStore = new D1EmbeddingStore(db);
-  const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
+  const contextService = createContextService(repository, {
+    embeddingProvider,
+    vectorStore: platform.vectorStore,
+    sql: platform.sql,
+  });
   const contextController = createContextController(contextService, scopeResolver);
-  const graphService = createGraphService(db, repository);
+  const graphService = createGraphService(platform.sql, repository);
   const graphController = createGraphController(graphService, scopeResolver);
-  const workspaceController = createWorkspaceController(db, scopeResolver, multiAi.agentIdentity);
+  const workspaceController = createWorkspaceController(platform.sql, scopeResolver, multiAi.agentIdentity);
 
   const controllers = {
     health: healthController,

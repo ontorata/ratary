@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { VectorRetrievalCandidateSource } from '../../src/memory/vector-retrieval-candidate-source.js';
-import type { IEmbeddingStore } from '../../src/embedding/embedding.store.interface.js';
+import type { IVectorStore } from '../../src/ports/vector/ivector-store.port.js';
 import type {
   IEmbeddingProvider,
   EmbeddingResult,
@@ -10,7 +10,7 @@ import type { Memory } from '../../src/types/memory.js';
 
 describe('VectorRetrievalCandidateSource', () => {
   let source: VectorRetrievalCandidateSource;
-  let mockEmbeddingStore: IEmbeddingStore;
+  let mockVectorStore: IVectorStore;
   let mockEmbeddingProvider: IEmbeddingProvider;
   let mockMemoryReader: IMemoryReader;
 
@@ -44,10 +44,10 @@ describe('VectorRetrievalCandidateSource', () => {
   };
 
   beforeEach(() => {
-    mockEmbeddingStore = {
+    mockVectorStore = {
       upsert: vi.fn(),
       deleteByMemoryId: vi.fn(),
-      deleteAllByOwner: vi.fn(),
+      deleteAllInScope: vi.fn(),
       findByMemoryId: vi.fn(),
       searchSimilar: vi.fn(),
     };
@@ -79,7 +79,7 @@ describe('VectorRetrievalCandidateSource', () => {
     };
 
     source = new VectorRetrievalCandidateSource(
-      mockEmbeddingStore,
+      mockVectorStore,
       mockEmbeddingProvider,
       mockMemoryReader,
     );
@@ -121,7 +121,7 @@ describe('VectorRetrievalCandidateSource', () => {
       dimensions: 3,
     };
     vi.mocked(mockEmbeddingProvider.embed).mockResolvedValue([mockEmbedding]);
-    vi.mocked(mockEmbeddingStore.searchSimilar).mockResolvedValue([]);
+    vi.mocked(mockVectorStore.searchSimilar).mockResolvedValue([]);
 
     const result = await source.findCandidates({
       ownerId: 'owner-1',
@@ -144,7 +144,7 @@ describe('VectorRetrievalCandidateSource', () => {
     const memory2: Memory = { ...mockMemory, id: 'mem-2', title: 'Memory 2' };
     const memory3: Memory = { ...mockMemory, id: 'mem-3', title: 'Memory 3' };
 
-    vi.mocked(mockEmbeddingStore.searchSimilar).mockResolvedValue([
+    vi.mocked(mockVectorStore.searchSimilar).mockResolvedValue([
       { memoryId: 'mem-1', embeddingId: 'emb-1', score: 0.9 },
       { memoryId: 'mem-2', embeddingId: 'emb-2', score: 0.8 },
       { memoryId: 'mem-3', embeddingId: 'emb-3', score: 0.7 },
@@ -174,7 +174,7 @@ describe('VectorRetrievalCandidateSource', () => {
     vi.mocked(mockEmbeddingProvider.embed).mockResolvedValue([mockEmbedding]);
 
     // Only return 2 of 3 memories (mem-2 is missing)
-    vi.mocked(mockEmbeddingStore.searchSimilar).mockResolvedValue([
+    vi.mocked(mockVectorStore.searchSimilar).mockResolvedValue([
       { memoryId: 'mem-1', embeddingId: 'emb-1', score: 0.9 },
       { memoryId: 'mem-2', embeddingId: 'emb-2', score: 0.8 },
       { memoryId: 'mem-3', embeddingId: 'emb-3', score: 0.7 },
@@ -202,7 +202,7 @@ describe('VectorRetrievalCandidateSource', () => {
     vi.mocked(mockEmbeddingProvider.embed).mockResolvedValue([mockEmbedding]);
 
     // 3 matches from vector store
-    vi.mocked(mockEmbeddingStore.searchSimilar).mockResolvedValue([
+    vi.mocked(mockVectorStore.searchSimilar).mockResolvedValue([
       { memoryId: 'mem-1', embeddingId: 'emb-1', score: 0.9 },
       { memoryId: 'mem-2', embeddingId: 'emb-2', score: 0.8 },
       { memoryId: 'mem-3', embeddingId: 'emb-3', score: 0.7 },
@@ -217,6 +217,10 @@ describe('VectorRetrievalCandidateSource', () => {
     });
 
     // Verify the limit was passed to searchSimilar
-    expect(mockEmbeddingStore.searchSimilar).toHaveBeenCalledWith(expect.any(Array), 'owner-1', 2);
+    expect(mockVectorStore.searchSimilar).toHaveBeenCalledWith(
+      expect.any(Array),
+      { ownerId: 'owner-1', workspaceId: undefined },
+      2,
+    );
   });
 });

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { SqlRetrievalCandidateSource } from '../../src/memory/sql-retrieval-candidate-source.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository } from '../helpers/sql-test-harness.js';
 
 describe('SqlRetrievalCandidateSource', () => {
   let source: SqlRetrievalCandidateSource;
@@ -10,7 +11,7 @@ describe('SqlRetrievalCandidateSource', () => {
 
   beforeEach(() => {
     const mockDb = new MockD1Client();
-    repository = new MemoryRepository(mockDb);
+    repository = createTestMemoryRepository(mockDb);
     source = new SqlRetrievalCandidateSource(repository);
   });
 

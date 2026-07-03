@@ -1,4 +1,5 @@
 import { getD1Client, type D1Client } from './d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 
 /**
  * Canonical migration SQL — kept in sync with schema.sql at repo root.
@@ -309,6 +310,54 @@ export async function migrateMultiAiPhase1(client: D1Client): Promise<void> {
   );
 }
 
+const ENTERPRISE_ORG_SQL = `
+CREATE TABLE IF NOT EXISTS organizations (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL DEFAULT 'default',
+  created_at TEXT NOT NULL,
+  UNIQUE (owner_id, slug)
+);
+
+CREATE TABLE IF NOT EXISTS workspace_memberships (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL,
+  workspace_id TEXT NOT NULL,
+  identity_id TEXT NOT NULL,
+  role TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE (organization_id, workspace_id, identity_id),
+  FOREIGN KEY (organization_id) REFERENCES organizations(id),
+  FOREIGN KEY (workspace_id) REFERENCES workspaces(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_organizations_owner ON organizations(owner_id);
+CREATE INDEX IF NOT EXISTS idx_workspace_memberships_workspace ON workspace_memberships(workspace_id);
+CREATE INDEX IF NOT EXISTS idx_workspace_memberships_identity ON workspace_memberships(identity_id);
+`;
+
+const ENTERPRISE_WORKSPACE_COLUMNS: Array<{ name: string; ddl: string }> = [
+  {
+    name: 'organization_id',
+    ddl: 'ALTER TABLE workspaces ADD COLUMN organization_id TEXT',
+  },
+];
+
+/** Phase 10 M10a — organizations, workspace memberships (ADR-002 / ADR-010). */
+export async function migrateEnterprisePhase1(client: D1Client): Promise<void> {
+  for (const sql of splitStatements(ENTERPRISE_ORG_SQL)) {
+    await client.execute(sql);
+  }
+
+  for (const column of ENTERPRISE_WORKSPACE_COLUMNS) {
+    const hasColumn = await tableHasColumn(client, 'workspaces', column.name);
+    if (!hasColumn) {
+      await client.execute(column.ddl);
+    }
+  }
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: D1Client): Promise<void> {
   await client.execute(
@@ -343,6 +392,7 @@ export async function runMigrations(client: D1Client = getD1Client()): Promise<v
   await migrateMemoryIntelligencePhase3(client);
   await migrateEmbeddingPhase1(client);
   await migrateMultiAiPhase1(client);
+  await migrateEnterprisePhase1(client);
 }
 
 export interface D1Statement {
@@ -351,7 +401,7 @@ export interface D1Statement {
 }
 
 export async function executeTransaction(
-  client: D1Client,
+  client: ISqlDatabase,
   statements: D1Statement[],
 ): Promise<void> {
   if (statements.length === 0) return;

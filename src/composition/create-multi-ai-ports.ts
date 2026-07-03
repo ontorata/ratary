@@ -1,6 +1,6 @@
 import { AuditRepository } from '../auth/audit.repository.js';
 import { D1AgentIdentity } from '../agent/d1-agent-identity.js';
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { DefaultScopeResolver } from '../scope/default-scope-resolver.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
 import { AcceptSyncManager } from '../sync/accept-sync-manager.js';
@@ -14,7 +14,7 @@ export interface MultiAiPorts {
 }
 
 /** Phase 9 composition-root factories — wired before controllers and MCP tools. */
-export function createMultiAiPorts(db: D1Client): MultiAiPorts {
+export function createMultiAiPorts(db: ISqlDatabase): MultiAiPorts {
   const audit = new AuditRepository(db);
   return {
     scopeResolver: new DefaultScopeResolver(db),

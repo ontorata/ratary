@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { KnowledgeService } from '../../src/knowledge/knowledge.service.js';
-import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository } from '../helpers/sql-test-harness.js';
 
 describe('KnowledgeService', () => {
   let service: KnowledgeService;
@@ -10,7 +10,7 @@ describe('KnowledgeService', () => {
 
   beforeEach(() => {
     mockDb = new MockD1Client();
-    service = new KnowledgeService(new MemoryRepository(mockDb));
+    service = new KnowledgeService(createTestMemoryRepository(mockDb));
   });
 
   it('should enrich create input with codename slug summary keywords', async () => {

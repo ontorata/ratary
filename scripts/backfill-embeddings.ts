@@ -6,6 +6,7 @@ import { D1EmbeddingStore } from '../src/embedding/d1-embedding.store.js';
 import { EmbeddingJobRunner } from '../src/embedding/embedding-job.runner.js';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { parseEmbeddingBackfillArgs } from './lib/embedding-backfill.js';
+import { sqlFromD1Client } from './lib/sql-from-d1-client.js';
 
 async function backfillEmbeddings(): Promise<void> {
   const cli = parseEmbeddingBackfillArgs(process.argv);
@@ -17,8 +18,9 @@ async function backfillEmbeddings(): Promise<void> {
   const client = getD1Client();
   await runMigrations(client);
 
-  const repository = new MemoryRepository(client);
-  const store = new D1EmbeddingStore(client);
+  const sql = sqlFromD1Client(client);
+  const repository = new MemoryRepository(sql);
+  const store = new D1EmbeddingStore(sql);
   const provider = createEmbeddingProvider();
   const runner = new EmbeddingJobRunner(repository, repository, provider, store);
 

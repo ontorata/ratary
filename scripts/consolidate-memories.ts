@@ -3,6 +3,7 @@ import { runMigrations } from '../src/db/migrations.js';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { MemoryRelationRepository } from '../src/repositories/memory-relation.repository.js';
 import { MemoryConsolidator } from '../src/memory/consolidator.js';
+import { sqlFromD1Client } from './lib/sql-from-d1-client.js';
 
 function parseArgs(): { dryRun: boolean; projectId?: string } {
   const dryRun = !process.argv.includes('--execute');
@@ -18,8 +19,9 @@ async function consolidateMemories(): Promise<void> {
   const client = getD1Client();
   await runMigrations(client);
 
-  const repository = new MemoryRepository(client);
-  const relationRepository = new MemoryRelationRepository(client);
+  const sql = sqlFromD1Client(client);
+  const repository = new MemoryRepository(sql);
+  const relationRepository = new MemoryRelationRepository(sql);
   const consolidator = new MemoryConsolidator(repository, relationRepository);
 
   const owners = await client.query<{ owner_id: string }>(

@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { generateId, nowISO } from '../utils/memory-mapper.js';
 import type { Client, ClientRow } from './auth.types.js';
 
@@ -41,7 +41,7 @@ export interface UpdateClientData {
 }
 
 export class ClientRepository {
-  constructor(private readonly db: D1Client) {}
+  constructor(private readonly db: ISqlDatabase) {}
 
   async insert(data: InsertClientData): Promise<Client> {
     const id = data.id ?? generateId();

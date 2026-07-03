@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository } from '../helpers/sql-test-harness.js';
 
 describe('MemoryRepository', () => {
   let repository: MemoryRepository;
@@ -9,7 +10,7 @@ describe('MemoryRepository', () => {
 
   beforeEach(() => {
     mockDb = new MockD1Client();
-    repository = new MemoryRepository(mockDb);
+    repository = createTestMemoryRepository(mockDb);
   });
 
   it('should insert and find by id scoped to owner', async () => {

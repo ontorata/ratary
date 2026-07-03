@@ -1,8 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryConsolidator } from '../../src/memory/consolidator.js';
-import { MemoryRepository } from '../../src/repositories/memory.repository.js';
-import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
+import { createTestMemoryRepository, createTestRelationRepository } from '../helpers/sql-test-harness.js';
 import { computeSemanticHash } from '../../src/memory/semantic-hash.js';
 
 describe('MemoryConsolidator', () => {
@@ -12,8 +11,8 @@ describe('MemoryConsolidator', () => {
 
   beforeEach(() => {
     const mockDb = new MockD1Client();
-    repository = new MemoryRepository(mockDb);
-    consolidator = new MemoryConsolidator(repository, new MemoryRelationRepository(mockDb));
+    repository = createTestMemoryRepository(mockDb);
+    consolidator = new MemoryConsolidator(repository, createTestRelationRepository(mockDb));
   });
 
   async function seedDuplicate(title: string, content: string, importance = 50): Promise<void> {

@@ -1,4 +1,4 @@
-import type { D1Client } from '../db/d1-client.js';
+import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { IMemoryReader } from '../repositories/memory.repository.interface.js';
 import type { MemoryScope } from '../types/memory-scope.js';
 import type { RelationType } from '../types/knowledge.js';
@@ -90,7 +90,7 @@ export class GraphService {
   }
 }
 
-export function createGraphService(db: D1Client, memoryReader: IMemoryReader): GraphService {
+export function createGraphService(db: ISqlDatabase, memoryReader: IMemoryReader): GraphService {
   const env = getEnv();
 
   return new GraphService(new D1GraphAdapter(db), memoryReader, {
