@@ -624,6 +624,22 @@ export class MockD1Client implements D1Client {
       return { results: categories.map((c) => ({ category: c })), success: true };
     }
 
+    if (
+      normalizedSql.includes(
+        'SELECT SOURCE_MEMORY_ID, TARGET_MEMORY_ID, RELATION FROM MEMORY_RELATIONS WHERE OWNER_ID = ?',
+      )
+    ) {
+      const ownerId = params[0] as string;
+      const rows = [...this.relations.values()]
+        .filter((r) => r.owner_id === ownerId)
+        .map((r) => ({
+          source_memory_id: r.source_memory_id,
+          target_memory_id: r.target_memory_id,
+          relation: r.relation,
+        }));
+      return { results: rows, success: true };
+    }
+
     if (normalizedSql.includes('SELECT * FROM MEMORY_RELATIONS WHERE ID = ? AND OWNER_ID = ?')) {
       const id = params[0] as string;
       const ownerId = params[1] as string;
