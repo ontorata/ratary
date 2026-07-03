@@ -7,6 +7,7 @@ import type {
   SimilarityMatch,
   StoredEmbedding,
 } from './embedding.store.interface.js';
+import { ValidationError } from '../types/errors.js';
 
 interface EmbeddingRow {
   id: string;
@@ -142,7 +143,7 @@ export class D1EmbeddingStore implements IEmbeddingStore {
 
   private assertVectorDimensions(vector: number[], dimensions: number): void {
     if (vector.length !== dimensions) {
-      throw new Error(`Vector length ${vector.length} does not match dimensions ${dimensions}`);
+      throw new ValidationError(`Vector length ${vector.length} does not match dimensions ${dimensions}`);
     }
   }
 }

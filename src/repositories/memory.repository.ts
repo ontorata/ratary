@@ -7,6 +7,7 @@ import {
   tagsToJson,
   keywordsToJson,
 } from '../utils/memory-mapper.js';
+import { DatabaseError } from '../types/errors.js';
 import type { Memory } from '../types/memory.js';
 import {
   formatCodename,
@@ -121,7 +122,7 @@ export class MemoryRepository implements IMemoryRepository {
 
         const memory = await this.findById(id, ownerId);
         if (!memory) {
-          throw new Error('Failed to retrieve inserted memory');
+          throw new DatabaseError('Failed to retrieve inserted memory');
         }
         return memory;
       } catch (error) {
@@ -133,7 +134,7 @@ export class MemoryRepository implements IMemoryRepository {
       }
     }
 
-    throw new Error('Failed to insert memory after codename retries');
+    throw new DatabaseError('Failed to insert memory after codename retries');
   }
 
   async update(id: string, ownerId: string, data: UpdateMemoryData): Promise<Memory | null> {

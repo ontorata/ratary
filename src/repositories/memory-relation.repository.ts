@@ -5,7 +5,9 @@ import type {
   RelationType,
   SourceType,
 } from '../types/knowledge.js';
+import type { IMemoryRelationRepository } from './memory-relation.repository.interface.js';
 import { generateId, nowISO } from '../utils/memory-mapper.js';
+import { DatabaseError } from '../types/errors.js';
 
 interface RelationRow {
   id: string;
@@ -44,7 +46,7 @@ function rowToRelation(row: RelationRow): MemoryRelation {
   };
 }
 
-export class MemoryRelationRepository {
+export class MemoryRelationRepository implements IMemoryRelationRepository {
   constructor(private readonly db: D1Client) {}
 
   async insert(data: {
@@ -83,7 +85,7 @@ export class MemoryRelationRepository {
 
     const relation = await this.findById(id, data.ownerId);
     if (!relation) {
-      throw new Error('Failed to retrieve inserted relation');
+      throw new DatabaseError('Failed to retrieve inserted relation');
     }
     return relation;
   }

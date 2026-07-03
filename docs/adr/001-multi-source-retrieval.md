@@ -1,8 +1,9 @@
 # ADR-001: Multi-Source Retrieval (Hybrid RAG)
 
-**Status:** Proposed  
+**Status:** Approved  
 **Date:** 2026-07-01  
 **Deciders:** Project owner  
+**Approved:** 2026-07-03  
 
 ---
 
@@ -87,3 +88,85 @@ Without a merge strategy, Phase 6 forces a rewrite of `ContextService` or `Retri
 - [11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
 - [POLICY.md](POLICY.md)
 - [archive/PHASE-5-EMBEDDING-DESIGN.md](../archive/PHASE-5-EMBEDDING-DESIGN.md)
+
+---
+
+## Appendix: Fusion Strategy
+
+*Added 2026-07-03 — Implementation detail for CompositeRetrievalCandidateSource.*
+
+### Problem
+
+SQL and vector sources return different score types:
+- **SQL:** `Memory[]` — ranked by lexical relevance via `RANKING_WEIGHTS`, no raw scores exposed
+- **Vector:** `Memory[]` — ranked by cosine similarity from `IEmbeddingStore.searchSimilar`
+
+These cannot be directly combined with weighted sum (different scales).
+
+### Decision
+
+**Adopt Reciprocal Rank Fusion (RRF):**
+
+```
+RRF_score(d) = Σᵢ 1 / (k + rankᵢ(d))
+```
+
+Where:
+- `d` = document (memory)
+- `k` = constant (default: 60; higher = more equal rank distribution)
+- `rankᵢ(d)` = position of `d` in source `i` (1-based; 0 = not found → term excluded)
+
+### Why RRF?
+
+| Criteria | RRF | Weighted Sum |
+|----------|-----|--------------|
+| Score scale independence | ✅ | ❌ |
+| Handles missing sources | ✅ (skips) | ❌ (needs weights) |
+| Industry standard | ✅ | ⚠️ |
+| Simple to implement | ✅ | ✅ |
+
+### Configuration
+
+```typescript
+// ranking.config.ts additions
+export const RRF_CONFIG = {
+  K: 60,                    // standard constant
+  SOURCE_CAPS: {
+    sql: 50,                // 50% of RETRIEVAL_CANDIDATE_CAP
+    vector: 50,             // 50% of RETRIEVAL_CANDIDATE_CAP
+  }
+};
+```
+
+### Merge Algorithm (CompositeRetrievalCandidateSource)
+
+```
+1. SQL source fetches top 50 candidates (by lexical relevance)
+2. Vector source fetches top 50 candidates (by similarity)
+3. For each unique memory in union:
+   - rrf_score = (sql_rank > 0 ? 1/(60+sql_rank) : 0) 
+               + (vector_rank > 0 ? 1/(60+vector_rank) : 0)
+4. Sort by rrf_score descending
+5. Dedupe by memory.id (keep first occurrence)
+6. Apply RETRIEVAL_CANDIDATE_CAP (100)
+```
+
+### Impact on Existing Code
+
+| Component | Change |
+|-----------|--------|
+| `Ranker` | **Unchanged** — applies boosts after fusion |
+| `Retriever` | **Unchanged** — takes `IRetrievalCandidateSource` |
+| `ContextService` | **Unchanged** — composition root only |
+| New: `CompositeRetrievalCandidateSource` | Handles RRF merge |
+| New: `VectorRetrievalCandidateSource` | Returns ranked memories |
+
+### Tradeoffs
+
+- **Gain:** Score-agnostic; robust to different source scales; handles missing sources gracefully
+- **Accept:** Loses score magnitude information; documents with same rank in all sources get equal scores
+- **Future:** Can add learned weights (Phase 8+) if RRF insufficient for specific use cases
+
+### References
+
+- [Cormack et al. 2009](https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf) — original RRF publication

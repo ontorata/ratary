@@ -3,6 +3,7 @@ import type {
   EmbeddingResult,
   IEmbeddingProvider,
 } from './embedding.provider.interface.js';
+import { ValidationError } from '../types/errors.js';
 
 const DEFAULT_OPENAI_BASE_URL = 'https://api.openai.com/v1';
 const DEFAULT_OPENAI_MODEL = 'text-embedding-3-small';
@@ -29,7 +30,7 @@ export class OpenAIEmbeddingProvider implements IEmbeddingProvider {
 
   constructor(options: OpenAIEmbeddingProviderOptions) {
     if (!options.apiKey) {
-      throw new Error('EMBEDDING_API_KEY is required for OpenAIEmbeddingProvider');
+      throw new ValidationError('EMBEDDING_API_KEY is required for OpenAIEmbeddingProvider');
     }
 
     this.apiKey = options.apiKey;
@@ -66,11 +67,11 @@ export class OpenAIEmbeddingProvider implements IEmbeddingProvider {
     return sorted.map((item, index) => {
       const memoryId = inputs[index]?.memoryId;
       if (!memoryId) {
-        throw new Error('OpenAI embeddings response index mismatch');
+        throw new ValidationError('OpenAI embeddings response index mismatch');
       }
 
       if (item.embedding.length !== this.dimensions) {
-        throw new Error(
+        throw new ValidationError(
           `OpenAI embedding dimension mismatch: expected ${this.dimensions}, got ${item.embedding.length}`,
         );
       }

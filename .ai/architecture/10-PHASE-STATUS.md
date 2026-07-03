@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 5 complete Â· Next: Phase 6 (blocked: ADR-001 Approved)
+**Last updated:** D-01, D-02, D-03 resolved (2026-07-03) · Phase 5 complete · Next: Phase 6 (blocked: ADR-001 Approved)
 
 ---
 
@@ -20,12 +20,12 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 152 |
+| Tests passing | 172 |
 | MCP tools | 14 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
 | Storage | Cloudflare D1 (HTTP API) |
-| Local dev | `npm run dev` â†’ `dev-server.ts` |
+| Local dev | `npm run dev` → `dev-server.ts` |
 
 ---
 
@@ -35,10 +35,10 @@ Record **live** project metrics, deployment facts, and documented technical debt
 |------|-------|
 | Active task | [TASK_PROMPT.md](../TASK_PROMPT.md) |
 | Next phase | 6 — Hybrid Retrieval |
-| Blocker | [adr/001-multi-source-retrieval.md](../../docs/adr/001-multi-source-retrieval.md) status **Proposed** |
+| Blocker | ~~ADR-001 Proposed~~ ✅ **Approved** (2026-07-03) |
 | Phase 6 ops folder | [.ai/phases/06-hybrid-retrieval/](../phases/06-hybrid-retrieval/README.md) |
 
-Strategic phase status (completed / next / future): [09-ROADMAP.md](../roadmap/09-ROADMAP.md) Â§Summary.
+Strategic phase status (completed / next / future): [09-ROADMAP.md](../roadmap/09-ROADMAP.md) §Summary.
 
 ---
 
@@ -57,16 +57,16 @@ User onboarding: [PANDUAN.md](../../docs/PANDUAN.md).
 
 # Known technical debt
 
-| ID | Item | Mitigation path |
-|----|------|-----------------|
-| D-01 | API cross-owner leak E2E tests missing | Phase 6 or hardening sprint |
-| D-02 | Duplicate `MemoryRepository` in composition roots | Phase 6 wiring |
-| D-03 | `schema.sql` drift from `migrations.ts` | Maintenance PR |
-| D-04 | ADR-001 merge policy must be unit-tested | Phase 6 |
-| — | `MemoryRepository` ~729 lines | Additive methods only; split when Postgres adapter lands |
-| — | `MemoryRelationRepository` no interface | `IMemoryRelationRepository` before Phase 8 |
-| — | Search uses `SELECT *` | Projection refactor (perf) |
-| — | NÃ— `recordAccess` on context build | Batch update (perf) |
+| ID | Item | Mitigation path | Status |
+|----|------|-----------------|--------|
+| ~~D-01~~ | ~~API cross-owner leak E2E tests missing~~ | ✅ **Resolved** — 20 security tests in `tests/api/cross-owner-leak.test.ts` (2026-07-03) |
+| ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ✅ **Resolved** — Refactored `createMemoryService/createMemoryRelationService` to accept shared repository instance (2026-07-03) |
+| ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ✅ **Resolved** — schema.sql synced with all Phase 4 indexes (2026-07-03) |
+| D-04 | ADR-001 merge policy must be unit-tested | Phase 6 (in progress) | In progress |
+| — | `MemoryRepository` ~692 lines | Additive methods only; split when Postgres adapter lands |
+| ~~—~~ | ~~`MemoryRelationRepository` no interface~~ | ✅ **Resolved** — `IMemoryRelationRepository` created (2026-07-03) |
+| — | `SELECT *` in repositories | **Investigated (2026-07-03)** — postponed; benefit minimal without content projection; revisit after Phase 6 |
+| — | N× `recordAccess` on context build | Batch update (perf) — low-medium effort |
 | — | D1 vector search in-process | Vectorize/pgvector when scale exceeds MVP ceiling |
 
 Aggregate audit: [.ai/audits/latest.md](../audits/latest.md).

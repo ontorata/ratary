@@ -17,6 +17,13 @@ CREATE TABLE IF NOT EXISTS memories (
   importance INTEGER NOT NULL DEFAULT 50,
   language TEXT NOT NULL DEFAULT 'id',
   notes TEXT NOT NULL DEFAULT '',
+  project_id TEXT NOT NULL DEFAULT '',
+  level TEXT NOT NULL DEFAULT 'note',
+  last_accessed TEXT,
+  access_count INTEGER NOT NULL DEFAULT 0,
+  embedding_id TEXT,
+  object_key TEXT,
+  semantic_hash TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -29,6 +36,13 @@ CREATE INDEX IF NOT EXISTS idx_memories_owner_id ON memories(owner_id);
 CREATE INDEX IF NOT EXISTS idx_memories_owner_category ON memories(owner_id, category);
 CREATE INDEX IF NOT EXISTS idx_memories_memory_type ON memories(memory_type);
 CREATE INDEX IF NOT EXISTS idx_memories_importance ON memories(importance);
+
+-- Phase 4 intelligence indexes
+CREATE INDEX IF NOT EXISTS idx_memories_project_id ON memories(owner_id, project_id);
+CREATE INDEX IF NOT EXISTS idx_memories_level ON memories(level);
+CREATE INDEX IF NOT EXISTS idx_memories_last_accessed ON memories(last_accessed);
+CREATE INDEX IF NOT EXISTS idx_memories_retrieval
+  ON memories(owner_id, project_id, archived, importance DESC, updated_at DESC);
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_codename
   ON memories(owner_id, codename) WHERE codename IS NOT NULL;

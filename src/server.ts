@@ -3,9 +3,8 @@ import cors from '@fastify/cors';
 import { getD1Client } from './db/index.js';
 import { MemoryRepository } from './repositories/memory.repository.js';
 import { MemoryRelationRepository } from './repositories/memory-relation.repository.js';
-import { createMemoryService } from './services/create-memory-service.js';
+import { createMemoryService, createMemoryRelationService } from './services/create-memory-service.js';
 import type { MemoryService } from './services/memory.service.js';
-import { MemoryRelationService } from './services/memory-relation.service.js';
 import { HealthService } from './services/health.service.js';
 import {
   createHealthController,
@@ -79,8 +78,8 @@ export async function buildApp(options?: {
 
   const repository = new MemoryRepository(db);
   const relationRepository = new MemoryRelationRepository(db);
-  const memoryService = createMemoryService(db);
-  const relationService = new MemoryRelationService(relationRepository, repository);
+  const memoryService = createMemoryService(db, repository);
+  const relationService = createMemoryRelationService(db, repository, relationRepository);
   const healthService = new HealthService(db);
 
   fastify.decorate('memoryService', memoryService);

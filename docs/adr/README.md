@@ -5,7 +5,7 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | ADR | Title | Status | Unblocks |
 |-----|-------|--------|----------|
 | [000-template.md](000-template.md) | Template | — | — |
-| [001-multi-source-retrieval.md](001-multi-source-retrieval.md) | Multi-source retrieval (Phase 6) | **Proposed** | Hybrid RAG |
+| [001-multi-source-retrieval.md](001-multi-source-retrieval.md) | Multi-source retrieval (Phase 6) | **Approved** | Hybrid RAG |
 | [002-workspace-identity-model.md](002-workspace-identity-model.md) | Workspace & identity model (future contract) | **Approved** | Phases 8–10 path |
 | [003-embedding-storage-mvp.md](003-embedding-storage-mvp.md) | Embedding storage MVP | **Implemented** | Phase 5 ✅ |
 | [004-repository-port-types.md](004-repository-port-types.md) | Repository port type boundaries | **Implemented** | Postgres swap |
