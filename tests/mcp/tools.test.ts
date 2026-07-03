@@ -3,11 +3,13 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import { setD1Client, resetD1Client } from '../../src/db/index.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
-import { createMemoryService } from '../../src/services/create-memory-service.js';
-import { MemoryRelationService } from '../../src/services/memory-relation.service.js';
+import {
+  createMemoryService,
+  createMemoryRelationService,
+} from '../../src/services/create-memory-service.js';
 import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
-import { ContextService } from '../../src/memory/context.service.js';
+import { createContextService } from '../../src/memory/create-context-service.js';
 import { createMcpServer } from '../../src/mcp/server.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
@@ -41,12 +43,11 @@ describe('MCP tools', () => {
     mockDb = new MockD1Client();
     setD1Client(mockDb);
 
-    const memoryService = createMemoryService(mockDb);
-    const relationService = new MemoryRelationService(
-      new MemoryRelationRepository(mockDb),
-      new MemoryRepository(mockDb),
-    );
-    const contextService = new ContextService(new MemoryRepository(mockDb));
+    const repository = new MemoryRepository(mockDb);
+    const relationRepository = new MemoryRelationRepository(mockDb);
+    const memoryService = createMemoryService(mockDb, repository);
+    const relationService = createMemoryRelationService(mockDb, repository, relationRepository);
+    const contextService = createContextService(repository);
     const server = createMcpServer(memoryService, relationService, contextService);
 
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();

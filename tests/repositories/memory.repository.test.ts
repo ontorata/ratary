@@ -264,4 +264,40 @@ describe('MemoryRepository', () => {
     expect(found?.embeddingId).toBe('emb-abc');
     expect(found?.updatedAt).toBe(memory.updatedAt);
   });
+
+  it('should exclude content body from retrieval candidate projection (O-04-2)', async () => {
+    const secretBody = 'SECRET_FULL_BODY_SHOULD_NOT_APPEAR_IN_RETRIEVAL';
+    const memory = await repository.insert({
+      title: 'Retrieval projection',
+      project: 'audit',
+      content: secretBody,
+      summary: 'summary',
+      tags: [],
+      keywords: ['audit'],
+      category: '',
+      memoryType: 'note',
+      importance: 90,
+      language: 'en',
+      notes: '',
+      codename: 'NOTE-0500',
+      slug: 'retrieval-projection',
+      favorite: false,
+      ownerId,
+    });
+
+    const candidates = await repository.findRetrievalCandidates({
+      ownerId,
+      query: 'Retrieval',
+      maxCandidates: 10,
+    });
+    const candidate = candidates.find((c) => c.id === memory.id);
+    expect(candidate).toBeDefined();
+    expect(candidate?.content).toBe('');
+
+    const byIds = await repository.findByIds([memory.id], ownerId);
+    expect(byIds[0]?.content).toBe(secretBody);
+
+    const full = await repository.findById(memory.id, ownerId);
+    expect(full?.content).toBe(secretBody);
+  });
 });
