@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** D-01, D-02, D-03 resolved (2026-07-03) · Phase 5 complete · Next: Phase 6 (blocked: ADR-001 Approved)
+**Last updated:** Phase 6 Hybrid Retrieval complete (2026-07-03) · ADR-001 Implemented · Next: Phase 7
 
 ---
 
@@ -20,7 +20,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 172 |
+| Tests passing | 192 |
 | MCP tools | 14 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
@@ -62,7 +62,7 @@ User onboarding: [PANDUAN.md](../../docs/PANDUAN.md).
 | ~~D-01~~ | ~~API cross-owner leak E2E tests missing~~ | ✅ **Resolved** — 20 security tests in `tests/api/cross-owner-leak.test.ts` (2026-07-03) |
 | ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ✅ **Resolved** — Refactored `createMemoryService/createMemoryRelationService` to accept shared repository instance (2026-07-03) |
 | ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ✅ **Resolved** — schema.sql synced with all Phase 4 indexes (2026-07-03) |
-| D-04 | ADR-001 merge policy must be unit-tested | Phase 6 (in progress) | In progress |
+| ~~D-04~~ | ~~ADR-001 merge policy must be unit-tested~~ | ✅ **Resolved** — 13 unit tests for `CompositeRetrievalCandidateSource` (2026-07-03) |
 | — | `MemoryRepository` ~692 lines | Additive methods only; split when Postgres adapter lands |
 | ~~—~~ | ~~`MemoryRelationRepository` no interface~~ | ✅ **Resolved** — `IMemoryRelationRepository` created (2026-07-03) |
 | — | `SELECT *` in repositories | **Investigated (2026-07-03)** — postponed; benefit minimal without content projection; revisit after Phase 6 |
