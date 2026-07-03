@@ -1,6 +1,6 @@
 # Task Prompt — Phase 8 Knowledge Graph
 
-**Status:** 🔲 Active — ADR gate then implementation.  
+**Status:** 🟡 Implementation complete — gate review pending.  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)
 
 **Before coding:** [core/ai-rules/11-AI-RULES.md](core/ai-rules/11-AI-RULES.md) · [core/architecture/04-ARCHITECTURE.md](core/architecture/04-ARCHITECTURE.md) · [workflow/05-WORKFLOW.md](workflow/05-WORKFLOW.md)
@@ -50,10 +50,12 @@ Implement **Phase 8 — Knowledge Graph**: `IGraphProvider` port, graph-augmente
 ## Definition of Done
 
 - [x] [ADR-006](../docs/adr/006-igraph-provider.md) IGraphProvider Approved (2026-07-03)
-- [ ] Graph retrieval source + unit tests
-- [ ] Composite wiring with env gate (if applicable)
-- [ ] `10-PHASE-STATUS.md` and `09-ROADMAP.md` consistent
-- [ ] All quality gates pass
+- [x] Graph retrieval source + unit tests (steps 1–3)
+- [x] Composite wiring with env gate (steps 4–5)
+- [x] MCP/REST graph endpoints (step 6)
+- [x] `10-PHASE-STATUS.md` and `09-ROADMAP.md` consistent
+- [x] All quality gates pass (227 tests)
+- [ ] Phase 8 gate docs (REVIEW / COMPLETION)
 - [ ] No constitution violations per [core/standards/08-REVIEW.md](core/standards/08-REVIEW.md)
 
 ---

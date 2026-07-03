@@ -26,7 +26,7 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Agent bou
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
-Future: Graph (Phase 8), Multi-AI (Phase 9), Enterprise (Phase 10). See [.ai/phases/roadmap/09-ROADMAP.md](../.ai/phases/roadmap/09-ROADMAP.md).
+Future: Multi-AI (Phase 9), Enterprise (Phase 10). **Phase 8 (Knowledge Graph)** is implemented — `IGraphProvider`, graph-augmented composite retrieval, MCP/REST graph endpoints. See [ADR-006](../docs/adr/006-igraph-provider.md) and [.ai/phases/roadmap/09-ROADMAP.md](../.ai/phases/roadmap/09-ROADMAP.md).
 
 ---
 

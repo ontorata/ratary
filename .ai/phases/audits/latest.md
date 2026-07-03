@@ -1,16 +1,16 @@
 # Audit: Latest (Aggregate)
 
 **Audit ID:** `audits/latest`  
-**Scope:** Phases 1–7 complete · Phase 8 next  
+**Scope:** Phases 1–7 complete · Phase 8 implementation complete (gate pending)  
 **Date:** 2026-07-03  
 **Auditor:** Architecture review (AI-assisted)  
-**Verdict:** **PASS** — Phases 1–7 closed; ready for Phase 8 ADR gate
+**Verdict:** **PASS (Phases 1–7)** · **Phase 8 implementation complete — gate review next**
 
 ---
 
 ## Executive summary
 
-Phases 1–7 are **complete with code evidence (Phases 1–6) and documentation gate (Phase 7)**. All tracked cross-phase debt D-01 through D-04 is resolved. Quality gates green: **196 tests**, format/lint/typecheck pass.
+Phases 1–7 are **complete with code evidence (Phases 1–6) and documentation gate (Phase 7)**. Phase 8 **ADR-006 implementation steps 1–6** are complete (graph port, adapter, retrieval source, RRF role caps, wiring, MCP/REST API). All tracked cross-phase debt D-01 through D-04 is resolved. Quality gates green: **227 tests**, format/lint/typecheck pass.
 
 | Dimension | Score |
 |-----------|-------|
@@ -18,8 +18,9 @@ Phases 1–7 are **complete with code evidence (Phases 1–6) and documentation 
 | Layer architecture | PASS |
 | Hybrid retrieval (Phase 6) | PASS |
 | Agent boundary (Phase 7) | PASS |
-| Test suite health | PASS (196 tests) |
-| ADR gates | PASS (ADR-001 Implemented) |
+| Graph retrieval (Phase 8) | **Implementation PASS** — gate docs pending |
+| Test suite health | PASS (227 tests) |
+| ADR gates | PASS (ADR-001 Implemented; ADR-006 Implemented) |
 | Cross-phase debt | **PASS** ✅ |
 
 ---
@@ -35,6 +36,7 @@ Phases 1–7 are **complete with code evidence (Phases 1–6) and documentation 
 | 5 Embedding | PASS | [phase-05.md](phase-05.md) | Async embed ports |
 | 6 Hybrid Retrieval | PASS | [06-hybrid-retrieval/COMPLETION.md](../06-hybrid-retrieval/COMPLETION.md) | RRF + wiring |
 | 7 Agent Runtime | PASS | [07-agent-runtime/COMPLETION.md](../07-agent-runtime/COMPLETION.md) | Docs-only boundary |
+| 8 Knowledge Graph | **Gate pending** | [08-knowledge-graph/](../08-knowledge-graph/README.md) | ADR-006 steps 1–6 done |
 
 ---
 
@@ -58,49 +60,31 @@ Phases 1–7 are **complete with code evidence (Phases 1–6) and documentation 
 | T-02 | `SELECT *` in non-retrieval queries | Low | Retrieval uses projection; revisit with Postgres |
 | T-03 | N× `recordAccess` on context build | Low | Batch update when perf needed |
 | T-04 | D1 in-process vector search | Medium (scale) | Vectorize/pgvector adapter |
-| T-05 | Hybrid + noop provider meaningless | Low (ops) | Documented in Phase 6 COMPLETION |
-| O-05-3 | MVP vector scale ceiling | Low | Documented; adapter swap path |
+| T-05 | D1 in-process graph BFS (MVP) | Medium (scale) | External `IGraphProvider` adapter (Phase 10) |
 
 ---
 
-## Quality metrics (2026-07-03)
+## Phase 8 implementation evidence (2026-07-03)
 
-| Metric | Value |
-|--------|-------|
-| Tests passing | **196** |
-| MCP tools | 14 |
-| format:check | ✅ Pass |
-| Storage | D1 |
+| Step | Deliverable | Status |
+|------|-------------|--------|
+| 1 | `IGraphProvider` port + types | ✅ |
+| 2 | `D1GraphAdapter` bidirectional BFS | ✅ |
+| 3 | `GraphRetrievalCandidateSource` | ✅ |
+| 4 | RRF role-based caps + `graph` source | ✅ |
+| 5 | `createContextService()` wiring matrix + env | ✅ |
+| 6 | MCP `get_graph_capabilities`, `traverse_relations`; REST graph endpoints | ✅ |
 
----
-
-## Phase 8 readiness
-
-| Prerequisite | Status |
-|--------------|--------|
-| Phase 6 composite retrieval pattern | ✅ Ready |
-| Phase 7 protocol boundary | ✅ Complete |
-| Phase 2.6 `memory_relations` data | ✅ Ready |
-| `IGraphProvider` ADR | ✅ [ADR-006 Approved](../../../docs/adr/006-igraph-provider.md) (2026-07-03) |
+**Env flags:** `GRAPH_RETRIEVAL`, `GRAPH_MAX_DEPTH`, `GRAPH_SEED_CAP`, `GRAPH_MAX_NEIGHBORS`
 
 ---
 
-## Verdict history
+## Next actions
 
-| Date | Verdict | Notes |
-|------|---------|-------|
-| 2026-07-01 | YES WITH CONDITIONS | Pre-Phase 6 |
-| 2026-07-03 (AM) | PASS | D-01–D-03 resolved; Phase 6 code |
-| 2026-07-03 (PM) | **PASS** ✅ | Phase 7 gate; 196 tests; format fixed |
+1. Phase 8 gate review — CHECKLIST, REVIEW, COMPLETION docs
+2. Push local commits (`e5332a4` … step 6) to `origin/main`
+3. Phase 9 planning when Phase 8 gate PASS
 
 ---
 
-## Next audit trigger
-
-- Phase 8 gate PASS or BLOCKER
-- Hotfix with architectural impact
-- Major ADR approval/rejection
-
----
-
-*Active document — append verdict history; do not delete debt IDs.*
+*Aggregate audit — see per-phase audits for detail.*

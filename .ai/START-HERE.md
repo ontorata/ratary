@@ -69,7 +69,7 @@ Read in order:
 | Terminology | `core/glossary/GLOSSARY.md` |
 | Prompt templates | `workflow/prompts/` |
 | Checklists | `workflow/checklists/` |
-| Current phase docs | `phases/07-agent-runtime/` (last completed) |
+| Current phase docs | `phases/08-knowledge-graph/` (implementation complete) |
 | Active task | `TASK_PROMPT.md` |
 
 ---
@@ -87,7 +87,7 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 5 Embedding | ✅ Complete |
 | 6 Hybrid Retrieval | ✅ Complete |
 | 7 Agent Runtime | ✅ Complete |
-| 8 Knowledge Graph | 🔲 **Next** |
+| 8 Knowledge Graph | 🟡 **Gate pending** (implementation complete) |
 | 9 Multi-AI | 🔲 Future |
 | 10 Enterprise | 🔲 Future |
 

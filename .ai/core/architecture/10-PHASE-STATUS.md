@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 7 Agent Runtime complete (2026-07-03) · ADR-001 Implemented · Next: Phase 8
+**Last updated:** Phase 8 Knowledge Graph implementation complete (2026-07-03) · ADR-006 Implemented · Next: Phase 8 gate review
 
 ---
 
@@ -20,8 +20,8 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 196 |
-| MCP tools | 14 |
+| Tests passing | 227 |
+| MCP tools | 16 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
 | Storage | Cloudflare D1 (HTTP API) |
@@ -34,9 +34,10 @@ Record **live** project metrics, deployment facts, and documented technical debt
 | Item | Value |
 |------|-------|
 | Active task | [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| Next phase | **8 — Knowledge Graph** |
-| Blocker | None — Phase 7 gate PASS (2026-07-03) |
+| Next phase | **8 — Knowledge Graph** (gate review) |
+| Blocker | None — ADR-006 Approved; implementation steps 1–6 complete |
 | Last completed | Phase 7 — [.ai/phases/07-agent-runtime/](../07-agent-runtime/README.md) |
+| In progress | Phase 8 — [.ai/phases/08-knowledge-graph/](../08-knowledge-graph/README.md) |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
 

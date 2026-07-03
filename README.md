@@ -471,6 +471,10 @@ Panduan setup per client: **[docs/PANDUAN.md](docs/PANDUAN.md)**
 | `list_tags` | Daftar semua tag |
 | `toggle_favorite` | Toggle favorite |
 | `archive_memory` | Archive memory |
+| `get_graph_capabilities` | Graph traversal capabilities (Phase 8) |
+| `traverse_relations` | BFS traversal from seed memory (Phase 8) |
+
+See also: `get_memory_by_codename`, `get_context`, `build_prompt`, `link_memories`, `list_relations` — full list in MCP server.
 
 ## REST API Endpoints
 
@@ -522,6 +526,8 @@ curl http://localhost:3001/api/v1/memory \
 | POST | `/api/v1/auth/token` | Issue JWT |
 | GET | `/api/v1/backup/export` | Export JSON |
 | POST | `/api/v1/backup/import` | Import JSON |
+| GET | `/api/v1/graph/capabilities` | Graph traversal capabilities (Phase 8) |
+| POST | `/api/v1/graph/traverse` | BFS traverse from seed memory (Phase 8) |
 
 ## Data Model
 
