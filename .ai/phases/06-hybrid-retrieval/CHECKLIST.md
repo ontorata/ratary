@@ -26,28 +26,28 @@ Executable gate checklist instance — one item per Phase 6 milestone or success
 
 ## Milestones
 
-- [ ] ADR-001 Approved
-- [ ] `CompositeRetrievalCandidateSource` + tests
-- [ ] `VectorRetrievalCandidateSource` via `IEmbeddingStore.searchSimilar`
-- [ ] Wire composite at composition root (`HYBRID_RETRIEVAL` flag)
-- [ ] Fusion weights in ranking config (if in scope)
-- [ ] TASK_PROMPT Phase 6 from template
-- [ ] No Retriever / ContextService rewrite
+- [x] ADR-001 Approved
+- [x] `CompositeRetrievalCandidateSource` + tests
+- [x] `VectorRetrievalCandidateSource` via `IEmbeddingStore.searchSimilar`
+- [x] Wire composite at composition root (`HYBRID_RETRIEVAL` flag)
+- [x] Fusion weights in ranking config (if in scope)
+- [x] TASK_PROMPT Phase 6 from template
+- [x] No Retriever / ContextService rewrite
 
 ## Success criteria
 
-- [ ] Semantic recall improves on fixture set (measurable)
-- [ ] `Retriever` and MCP tools unchanged
-- [ ] Dedupe by `memoryId`, cap after merge
-- [ ] Owner-scoped vector candidates
-- [ ] Quality gate green; regression suite pass
+- [x] Semantic recall improves on fixture set (measurable)
+- [x] `Retriever` and MCP tools unchanged
+- [x] Dedupe by `memoryId`, cap after merge
+- [x] Owner-scoped vector candidates
+- [x] Quality gate green; regression suite pass
 
 ## Quality gate
 
-- [ ] `npm run lint && npm run format:check && npm run typecheck && npm test` — green
+- [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — green (192 tests passed)
 - [ ] [08-REVIEW-CHECKLIST.md](../../../standards/08-REVIEW.md) satisfied
 - [ ] ARCHITECTURE.md Phase 6 row updated
-- [ ] ADR-001 marked Implemented
+- [x] ADR-001 marked Implemented
 
 ---
 

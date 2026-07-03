@@ -20,8 +20,8 @@ Higher capabilities (agents, planning, execution) integrate **externally** at pr
 ## Capability stack (current)
 
 ```
-Memory → Knowledge → Search → Embedding → (Phase 6: Hybrid Retrieval)
-  ✅        ✅          ✅         ✅              blocked (ADR-001)
+Memory → Knowledge → Search → Embedding → Hybrid Retrieval
+  ✅        ✅          ✅         ✅              ✅ (Phase 6 complete)
 ```
 
 Future: Graph (Phase 8), Multi-AI (Phase 9), Enterprise (Phase 10). See [.ai/roadmap/09-ROADMAP.md](../.ai/roadmap/09-ROADMAP.md).
@@ -58,7 +58,7 @@ Recorded in [adr/](adr/). ADR decision text is immutable; status may change (Pro
 
 | ADR | Topic |
 |-----|-------|
-| [001](adr/001-multi-source-retrieval.md) | Hybrid retrieval (Phase 6) — **Proposed** |
+| [001](adr/001-multi-source-retrieval.md) | Hybrid retrieval (Phase 6) — **Implemented** |
 | [002](adr/002-workspace-identity-model.md) | Workspace identity contract — **Approved** |
 | [003](adr/003-embedding-storage-mvp.md) | Embedding storage — **Implemented** |
 
