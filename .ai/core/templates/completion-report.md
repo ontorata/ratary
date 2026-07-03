@@ -59,4 +59,4 @@ Result: <!-- pass / fail -->
 
 ---
 
-*Template only — subordinate to [TASK_PROMPT.md](../../TASK_PROMPT.md).*
+*Template only — subordinate to [TASK_PROMPT.md](../../../TASK_PROMPT.md).*

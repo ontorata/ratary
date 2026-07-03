@@ -11,7 +11,7 @@
 **Every implementation session must begin with:**
 
 ```
-Read .ai/constitution/INDEX.md first — mandatory entry point.
+Read .ai/core/constitution/INDEX.md first — mandatory entry point.
 Follow the reading order in INDEX.md before writing code.
 Read .ai/TASK_PROMPT.md for the current task only.
 ```

@@ -12,7 +12,7 @@
 
 CRUD memories, MCP stdio server, D1 persistence, REST API skeleton, Vitest harness, layer stack establishment.
 
-**Evidence:** [phases/01-foundation/](../phases/01-foundation/README.md) · [09-ROADMAP.md](../../roadmap/09-ROADMAP.md#phase-1--foundation)
+**Evidence:** [phases/01-foundation/](../01-foundation/README.md) · [09-ROADMAP.md](../../roadmap/09-ROADMAP.md#phase-1--foundation)
 
 ---
 

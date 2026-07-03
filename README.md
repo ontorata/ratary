@@ -19,11 +19,11 @@ Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemin
 ## Arsitektur
 
 **Dokumentasi manusia:** **[docs/README.md](docs/README.md)** · **[docs/PANDUAN.md](docs/PANDUAN.md)**  
-**AI Operating System (wajib untuk assistant):** **[.ai/constitution/INDEX.md](.ai/constitution/INDEX.md)**
+**AI Operating System (wajib untuk assistant):** **[.ai/START-HERE.md](.ai/START-HERE.md)**
 
-**Konstitusi:** **[.ai/constitution/00-CONSTITUTION.md](.ai/constitution/00-CONSTITUTION.md)** · **Registry modul:** **[.ai/ai-rules/11-AI-RULES.md](.ai/ai-rules/11-AI-RULES.md)**
+**Konstitusi:** **[.ai/core/constitution/00-CONSTITUTION.md](.ai/core/constitution/00-CONSTITUTION.md)** · **Registry modul:** **[.ai/core/ai-rules/11-AI-RULES.md](.ai/core/ai-rules/11-AI-RULES.md)**
 
-**Arsitektur:** **[.ai/architecture/04-ARCHITECTURE.md](.ai/architecture/04-ARCHITECTURE.md)** · **Status fase:** **[.ai/architecture/10-PHASE-STATUS.md](.ai/architecture/10-PHASE-STATUS.md)** · **Workflow:** **[.ai/workflow/05-WORKFLOW.md](.ai/workflow/05-WORKFLOW.md)** · **Pekerjaan aktif:** **[.ai/TASK_PROMPT.md](.ai/TASK_PROMPT.md)**
+**Arsitektur:** **[.ai/core/architecture/04-ARCHITECTURE.md](.ai/core/architecture/04-ARCHITECTURE.md)** · **Status fase:** **[.ai/core/architecture/10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md)** · **Workflow:** **[.ai/workflow/05-WORKFLOW.md](.ai/workflow/05-WORKFLOW.md)** · **Pekerjaan aktif:** **[.ai/TASK_PROMPT.md](.ai/TASK_PROMPT.md)**
 
 ```
 src/
@@ -50,7 +50,9 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | **Phase 2.6 — Knowledge Foundation** | ✅ | [archive](docs/archive/) |
 | **Phase 3 — JWT/OAuth & Permissions** | ✅ | [archive](docs/archive/) |
 | **Phase 4 — Memory Intelligence** | ✅ | [archive](docs/archive/) · panduan: **[docs/PANDUAN.md](docs/PANDUAN.md)** |
-| **Phase 5 — Embedding** | ✅ | [.ai/architecture/10-PHASE-STATUS.md](.ai/architecture/10-PHASE-STATUS.md) · backfill: `npm run db:backfill-embeddings` |
+| **Phase 5 — Embedding** | ✅ | [.ai/core/architecture/10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md) · backfill: `npm run db:backfill-embeddings` |
+| **Phase 6 — Hybrid Retrieval** | ✅ | [.ai/phases/06-hybrid-retrieval/](.ai/phases/06-hybrid-retrieval/) |
+| **Phase 7 — Agent Runtime** | 🔲 Next | [.ai/TASK_PROMPT.md](.ai/TASK_PROMPT.md) |
 
 ## Quick Start
 

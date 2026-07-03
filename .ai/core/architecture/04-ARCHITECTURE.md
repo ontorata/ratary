@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants operating on this repository.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Defines system structure; operational phase status lives in [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md).
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Defines system structure; operational phase status lives in [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).
 
 ---
 
@@ -28,14 +28,14 @@ Provide AI assistants a single map for placing new code, wiring adapters, and ev
 
 ## Not Covered
 
-- Immutable constitutional law → [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md)
-- Engineering and coding rules → [01-05-WORKFLOW.md](01-05-WORKFLOW.md), [02-CODING.md](../standards/02-CODING.md)
-- Naming conventions → [03-NAMING.md](../standards/03-NAMING.md)
-- Canonical module registry (implementation names) → [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)
-- Active phase tasks and deliverables → [../TASK_PROMPT.md](../TASK_PROMPT.md)
-- ADR content and approval → [../adr/POLICY.md](../../docs/adr/POLICY.md), [adr/](../../docs/adr/)
+- Immutable constitutional law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)
+- Engineering and coding rules → [01-05-WORKFLOW.md](01-05-WORKFLOW.md), [02-CODING.md](../../core/standards/02-CODING.md)
+- Naming conventions → [03-NAMING.md](../../core/standards/03-NAMING.md)
+- Canonical module registry (implementation names) → [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
+- Active phase tasks and deliverables → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
+- ADR content and approval → [../adr/POLICY.md](../../../docs/adr/POLICY.md), [adr/](../../../docs/adr/)
 - User setup and operations → [../PANDUAN.md](../../docs/PANDUAN.md)
-- Live deployment inventory and test counts → [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md)
+- Live deployment inventory and test counts → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 
 ---
 
@@ -323,7 +323,7 @@ auth/
 
 ## Future vector layer (Phase 6)
 
-**Not yet implemented.** Requires approved [ADR-001](../../docs/adr/001-multi-source-retrieval.md).
+**Not yet implemented.** Requires approved [ADR-001](../../../docs/adr/001-multi-source-retrieval.md).
 
 **Planned extension:**
 
@@ -344,7 +344,7 @@ IRetrievalCandidateSource
 
 ## Future graph layer (Phase 8)
 
-**Not yet implemented.** Requires `IGraphProvider` per [ADR-002](../../docs/adr/002-workspace-identity-model.md) path.
+**Not yet implemented.** Requires `IGraphProvider` per [ADR-002](../../../docs/adr/002-workspace-identity-model.md) path.
 
 **Planned extension:**
 
@@ -425,7 +425,7 @@ Agents, planners, and executors consume:
 5. Keep `RankingEngine` pure — no I/O.
 6. Keep embedding and vector concerns out of metadata repository.
 7. Scope all persistence operations by owner identifier.
-8. Document new ports in [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) extension table when merged.
+8. Document new ports in [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) extension table when merged.
 9. Write ADR before implementing graph, hybrid fusion, object store, or layer boundary changes.
 10. Preserve separate Search and Retriever pipelines.
 
@@ -535,7 +535,7 @@ Agents, planners, and executors consume:
 - [ ] Extends port/adapter — not repository god-method
 - [ ] Public contracts additive
 - [ ] Composition root updated
-- [ ] [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) extension table updated
+- [ ] [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) extension table updated
 - [ ] Separate Search vs Retriever paths preserved
 
 ## Adapter implementation
@@ -547,4 +547,4 @@ Agents, planners, and executors consume:
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md). Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md). Amend only with project owner approval.*

@@ -14,8 +14,8 @@ Each file below is a registry entry pointing to the canonical document in `.ai/`
 | Security | [security.md](security.md) | [11-SECURITY-STANDARD.md](../../supplementary/SECURITY.md) | Auth, isolation, secrets |
 | Performance | [performance.md](performance.md) | [12-PERFORMANCE-STANDARD.md](../../supplementary/PERFORMANCE.md) | Budgets, caps, trade-offs |
 
-**Not listed here:** Structural architecture → [architecture/](../architecture/README.md). Process → [workflow/](../workflow/README.md).
+**Not listed here:** Structural architecture → [architecture/](../../core/architecture/README.md). Process → [workflow/](../workflow/README.md).
 
 ---
 
-*Standards inherit from [constitution](../constitution/README.md). MUST NOT contradict it.*
+*Standards inherit from [constitution](../../core/constitution/README.md). MUST NOT contradict it.*

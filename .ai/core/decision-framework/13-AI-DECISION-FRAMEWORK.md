@@ -2,7 +2,7 @@
 
 **Status:** Permanent decision framework.  
 **Audience:** AI assistants operating on this repository.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Supersedes conversational inference and tool defaults for engineering decisions.  
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Supersedes conversational inference and tool defaults for engineering decisions.  
 **Position:** Below constitution; above implementation and operational documents.
 
 ---
@@ -30,21 +30,21 @@ When sources conflict, authority MUST be applied in this order (highest first):
 | Priority | Source |
 |----------|--------|
 | 1 | Explicit owner instruction in the current session |
-| 2 | [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) |
-| 3 | [13-AI-DECISION-FRAMEWORK.md](../decision-framework/13-AI-DECISION-FRAMEWORK.md) (this document) |
-| 4 | [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) (structural law) |
-| 5 | Approved ADRs ([../adr/POLICY.md](../../docs/adr/POLICY.md), [adr/](../../docs/adr/)) |
+| 2 | [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) |
+| 3 | [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) (this document) |
+| 4 | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) (structural law) |
+| 5 | Approved ADRs ([../../../docs/adr/POLICY.md](../../../docs/adr/POLICY.md), [adr/](../../../docs/adr/)) |
 | 6 | [01-05-WORKFLOW.md](01-05-WORKFLOW.md) |
-| 7 | [02-CODING.md](../standards/02-CODING.md) |
-| 8 | [03-NAMING.md](../standards/03-NAMING.md) |
+| 7 | [02-CODING.md](../../core/standards/02-CODING.md) |
+| 8 | [03-NAMING.md](../../core/standards/03-NAMING.md) |
 | 9 | [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) |
-| 10 | [06-TESTING.md](../standards/06-TESTING.md) |
-| 11 | [07-DOCUMENTATION.md](../standards/07-DOCUMENTATION.md) |
-| 12 | [08-REVIEW.md](../standards/08-REVIEW.md) |
+| 10 | [06-TESTING.md](../../core/standards/06-TESTING.md) |
+| 11 | [07-DOCUMENTATION.md](../../core/standards/07-DOCUMENTATION.md) |
+| 12 | [08-REVIEW.md](../../core/standards/08-REVIEW.md) |
 | 13 | [09-ROADMAP.md](../roadmap/09-ROADMAP.md) |
-| 14 | [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) (canonical module registry) |
-| 15 | [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) (operational snapshot) |
-| 16 | [../TASK_PROMPT.md](../TASK_PROMPT.md) (active scoped work) |
+| 14 | [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) (canonical module registry) |
+| 15 | [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) (operational snapshot) |
+| 16 | [../../TASK_PROMPT.md](../../TASK_PROMPT.md) (active scoped work) |
 | 17 | Existing codebase (patterns in `src/`) |
 | 18 | User request (when not conflicting with 1–17) |
 | 19 | Conversational or tool-default suggestions |
@@ -57,7 +57,7 @@ When sources conflict, authority MUST be applied in this order (highest first):
   → 05-WORKFLOW → 06-TESTING → 07-DOCUMENTATION → 08-REVIEW → 09-ROADMAP
 ```
 
-Supplementary standards ([10](../ai-rules/11-AI-RULES.md)–[12](supplementary/PERFORMANCE.md), [14](supplementary/WRITING.md)) are subordinate to this chain.
+Supplementary standards ([10](../../core/ai-rules/11-AI-RULES.md)–[12](supplementary/PERFORMANCE.md), [14](supplementary/WRITING.md)) are subordinate to this chain.
 
 - Lower levels MUST NOT violate higher levels.
 - Equal-priority conflict at the same tier MUST halt implementation until clarified ([Escalation Rules](#escalation-rules)).
@@ -82,18 +82,18 @@ Explicit ordering removes arbitrary choices. Constitution and ADRs outrank conve
 | Step | Action | Authority |
 |------|--------|-----------|
 | 1 | Receive user request | Current session instruction |
-| 2 | Read constitution | [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) |
-| 3 | Read decision framework | [13-AI-DECISION-FRAMEWORK.md](../decision-framework/13-AI-DECISION-FRAMEWORK.md) |
-| 4 | Read architecture | [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) |
-| 5 | Read relevant ADRs | [adr/](../../docs/adr/) per task scope |
-| 6 | Check existing implementation | `src/`; [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) canonical owners |
+| 2 | Read constitution | [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) |
+| 3 | Read decision framework | [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) |
+| 4 | Read architecture | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) |
+| 5 | Read relevant ADRs | [adr/](../../../docs/adr/) per task scope |
+| 6 | Check existing implementation | `src/`; [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) canonical owners |
 | 6a | **YES** — extend existing code | Extend canonical module; no parallel owner |
 | 6b | **NO** — design new component | Development discussion per [05-WORKFLOW.md](../workflow/05-WORKFLOW.md); ADR if structural |
 | 7 | Check backward compatibility | [Compatibility First](#compatibility-first) |
 | 8 | Check future phase compatibility | [Future Compatibility](#future-compatibility) |
-| 9 | Generate code | [01-05-WORKFLOW.md](01-05-WORKFLOW.md), [02-CODING.md](../standards/02-CODING.md), [03-NAMING.md](../standards/03-NAMING.md) |
-| 10 | Generate tests | [06-TESTING.md](../standards/06-TESTING.md) |
-| 11 | Update documentation | [07-DOCUMENTATION.md](../standards/07-DOCUMENTATION.md) |
+| 9 | Generate code | [01-05-WORKFLOW.md](01-05-WORKFLOW.md), [02-CODING.md](../../core/standards/02-CODING.md), [03-NAMING.md](../../core/standards/03-NAMING.md) |
+| 10 | Generate tests | [06-TESTING.md](../../core/standards/06-TESTING.md) |
+| 11 | Update documentation | [07-DOCUMENTATION.md](../../core/standards/07-DOCUMENTATION.md) |
 
 ## Flow diagram
 
@@ -149,7 +149,7 @@ Enterprise memory systems fail from drift and breaches, not from lack of clever 
 
 ## Rules
 
-- AI MUST preserve documented layer boundaries and dependency direction ([04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)).
+- AI MUST preserve documented layer boundaries and dependency direction ([04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)).
 - AI MUST NOT rewrite architecture because an alternative appears aesthetically cleaner.
 - AI MUST prefer **extension** (new adapter, port method, additive field) over **replacement** (new parallel class, layer bypass).
 - Structural change MUST have an approved ADR before implementation.
@@ -169,7 +169,7 @@ Before introducing a new abstraction, AI MUST determine whether an existing abst
 
 - AI MUST prefer extending canonical services, repositories, engines, and ports.
 - AI MUST NOT create duplicate services, repositories, or utilities for the same concern.
-- AI MUST locate the canonical owner in [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) before adding modules.
+- AI MUST locate the canonical owner in [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) before adding modules.
 - If extension is infeasible, AI MUST document why in the development discussion ([05-WORKFLOW.md](../workflow/05-WORKFLOW.md)) and pursue ADR if structural.
 
 ## Rationale
@@ -252,7 +252,7 @@ Composition and extension preserve Open/Closed principle. Inheritance and rewrit
 ## Rules
 
 - Business logic MUST NOT depend on a specific database product or storage engine.
-- Persistence MUST occur only through repository and store ports ([04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)).
+- Persistence MUST occur only through repository and store ports ([04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)).
 - SQL and vendor SDK calls MUST NOT appear outside persistence adapters.
 - Future database adoption MUST require adapter replacement only — not service or domain rewrites.
 - Vector, blob, and graph storage MUST NOT be embedded in metadata repositories.
@@ -294,8 +294,8 @@ Explicit evaluation prevents reflexive file creation and layer violations common
 When two valid implementations remain after evaluation, AI MUST choose in order:
 
 1. Constitution compliance  
-2. [13-AI-DECISION-FRAMEWORK.md](../decision-framework/13-AI-DECISION-FRAMEWORK.md) principles  
-3. [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) layer and port rules  
+2. [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) principles  
+3. [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) layer and port rules  
 4. Approved ADR alignment  
 5. [01-05-WORKFLOW.md](01-05-WORKFLOW.md) consistency  
 6. Existing pattern in codebase  
@@ -324,7 +324,7 @@ Every implementation SHOULD remain compatible with planned capability phases:
 | 9 | Multi-agent | Scope expansion additive |
 | 10 | Enterprise | Org/workspace RBAC via ports |
 
-- AI MUST NOT make decisions that force rewrite in the next three phases ([00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md)).
+- AI MUST NOT make decisions that force rewrite in the next three phases ([00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)).
 - AI MUST design for at least three-phase horizon; forced rewrite requires ADR before code.
 
 ## Rationale
@@ -346,7 +346,7 @@ Refactoring MUST provide measurable benefit in at least one category:
 - Testability improvement  
 
 - Refactoring MUST NOT be performed solely for stylistic preference.
-- Refactoring scope MUST stay within task blast radius unless owner approves broader scope ([02-CODING.md](../standards/02-CODING.md)).
+- Refactoring scope MUST stay within task blast radius unless owner approves broader scope ([02-CODING.md](../../core/standards/02-CODING.md)).
 - Behavior-preserving refactors MUST keep tests green; behavior changes require tests updated first.
 
 ## Rationale
@@ -368,8 +368,8 @@ Before producing code, AI MUST verify:
 - [ ] No duplicated utilities  
 - [ ] Backward compatible (or owner-approved break)  
 - [ ] Security preserved ([supplementary/SECURITY.md](supplementary/SECURITY.md))  
-- [ ] Tests planned or updated ([06-TESTING.md](../standards/06-TESTING.md))  
-- [ ] Documentation triggers identified ([07-DOCUMENTATION.md](../standards/07-DOCUMENTATION.md))  
+- [ ] Tests planned or updated ([06-TESTING.md](../../core/standards/06-TESTING.md))  
+- [ ] Documentation triggers identified ([07-DOCUMENTATION.md](../../core/standards/07-DOCUMENTATION.md))  
 - [ ] Future phases not blocked ([09-ROADMAP.md](../roadmap/09-ROADMAP.md))  
 - [ ] Development discussion complete if multi-layer or structural ([05-WORKFLOW.md](../workflow/05-WORKFLOW.md))  
 
@@ -404,7 +404,7 @@ AI MUST NOT:
 
 ## Rationale
 
-Anti-patterns are recurring failure modes observed in multi-assistant repositories. Explicit prohibition enables automated review against [08-REVIEW.md](../standards/08-REVIEW.md).
+Anti-patterns are recurring failure modes observed in multi-assistant repositories. Explicit prohibition enables automated review against [08-REVIEW.md](../../core/standards/08-REVIEW.md).
 
 ---
 
@@ -415,7 +415,7 @@ Anti-patterns are recurring failure modes observed in multi-assistant repositori
 - Multiple AI assistants MUST produce decisions compatible with this framework and numbered standards `00–14`.
 - Written documents MUST remain authoritative over chat memory.
 - AI MUST reference existing standards — not invent parallel rules in responses.
-- When uncertain, AI MUST label `Assumption:` and cite missing evidence ([11-AI-RULES.md](../ai-rules/11-AI-RULES.md)).
+- When uncertain, AI MUST label `Assumption:` and cite missing evidence ([11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)).
 - AI MUST NOT contradict a merged decision without owner-directed amendment to governance docs.
 
 ## Rationale
@@ -436,7 +436,7 @@ AI MUST request owner clarification when:
 - Security implications are unclear  
 - Multiple architectural choices have equal validity after conflict resolution  
 - ADR is Proposed but implementation is requested  
-- Task scope exceeds [../TASK_PROMPT.md](../TASK_PROMPT.md)  
+- Task scope exceeds [../../TASK_PROMPT.md](../../TASK_PROMPT.md)  
 
 - AI MUST NOT proceed with structural implementation while escalated items are unresolved.
 
@@ -482,7 +482,7 @@ Good decisions compound; poor decisions require ADRs and migrations to unwind. T
 | **Maintainers** | Ensure operational docs do not contradict this hierarchy |
 | **Contributors** | Propose changes via PR; owner approval required for normative edits |
 
-**Canonical path:** `.ai/decision-framework/13-AI-DECISION-FRAMEWORK.md`
+**Canonical path:** `.ai/core/decision-framework/13-AI-DECISION-FRAMEWORK.md`
 
 ---
 
@@ -503,17 +503,17 @@ Good decisions compound; poor decisions require ADRs and migrations to unwind. T
 
 | Document | Role |
 |----------|------|
-| [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) | Immutable law — highest authority |
+| [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) | Immutable law — highest authority |
 | [01-05-WORKFLOW.md](01-05-WORKFLOW.md) | Layer, DI, migration rules |
-| [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) | Structural architecture |
+| [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Structural architecture |
 | [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) | Review → design → implementation gates |
-| [08-REVIEW.md](../standards/08-REVIEW.md) | Pre-merge verification |
-| [../adr/POLICY.md](../../docs/adr/POLICY.md) | Structural decision process |
-| [adr/](../../docs/adr/) | Approved structural decisions |
+| [08-REVIEW.md](../../core/standards/08-REVIEW.md) | Pre-merge verification |
+| [../adr/POLICY.md](../../../docs/adr/POLICY.md) | Structural decision process |
+| [adr/](../../../docs/adr/) | Approved structural decisions |
 | [09-ROADMAP.md](../roadmap/09-ROADMAP.md) | Phase 1–10 evolution |
-| [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) | Response structure and vocabulary |
+| [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) | Response structure and vocabulary |
 | [supplementary/WRITING.md](supplementary/WRITING.md) | Documentation form |
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Applies to all AI assistants before code modification.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Applies to all AI assistants before code modification.*

@@ -181,8 +181,8 @@ Hapus memory lewat REST/MCP otomatis membersihkan vektor terkait.
 
 | Dokumen | Isi |
 |---------|-----|
-| [.ai/ai-rules/11-AI-RULES.md](.ai/ai-rules/11-AI-RULES.md) | Aturan agent + registry modul |
-| [.ai/architecture/04-ARCHITECTURE.md](.ai/architecture/04-ARCHITECTURE.md) | Struktur, layer, extension points |
+| [.ai/core/ai-rules/11-AI-RULES.md](.ai/core/ai-rules/11-AI-RULES.md) | Aturan agent + registry modul |
+| [.ai/core/architecture/04-ARCHITECTURE.md](.ai/core/architecture/04-ARCHITECTURE.md) | Struktur, layer, extension points |
 | [.ai/workflow/05-WORKFLOW.md](.ai/workflow/05-WORKFLOW.md) | Proses Principal Engineer & format analisis |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Laporan selesai Phase 5 Embedding |
 | [.ai/workflow/12-TASK-TEMPLATE.md](.ai/workflow/12-TASK-TEMPLATE.md) | Template task untuk fase berikutnya |

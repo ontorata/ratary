@@ -54,33 +54,33 @@ ADR
 | Priority | Source | Location | Role |
 |----------|--------|----------|------|
 | 1 | Explicit owner instruction | Current session | Overrides when stated |
-| 2 | Constitution | [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) | Immutable law |
-| 3 | Decision framework | [13-AI-DECISION-FRAMEWORK.md](../decision-framework/13-AI-DECISION-FRAMEWORK.md) | How to decide |
-| 4 | Structural architecture | [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) | Layer and port law |
+| 2 | Constitution | [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) | Immutable law |
+| 3 | Decision framework | [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) | How to decide |
+| 4 | Structural architecture | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Layer and port law |
 | 5 | Approved ADRs | [decisions/accepted](decisions/accepted/README.md) | Structural decisions |
-| 6 | Engineering standard | [01-ENGINEERING-STANDARD.md](../standards/01-ENGINEERING.md) | Domain rules |
-| 7 | Coding style | [02-CODING-STYLE.md](../standards/02-CODING.md) | Format and refactor |
-| 8 | Naming convention | [03-NAMING-CONVENTION.md](../standards/03-NAMING.md) | Identifiers |
+| 6 | Engineering standard | [01-ENGINEERING-STANDARD.md](../../core/standards/01-ENGINEERING.md) | Domain rules |
+| 7 | Coding style | [02-CODING-STYLE.md](../../core/standards/02-CODING.md) | Format and refactor |
+| 8 | Naming convention | [03-NAMING-CONVENTION.md](../../core/standards/03-NAMING.md) | Identifiers |
 | 9 | Development workflow | [05-DEVELOPMENT-WORKFLOW.md](../workflow/05-WORKFLOW.md) | Process gates |
-| 10 | Testing standard | [06-TESTING-STANDARD.md](../standards/06-TESTING.md) | Verification |
-| 11 | Documentation standard | [07-DOCUMENTATION-STANDARD.md](../standards/07-DOCUMENTATION.md) | Doc triggers |
-| 12 | Review checklist | [08-REVIEW-CHECKLIST.md](../standards/08-REVIEW.md) | Pre-merge gate |
+| 10 | Testing standard | [06-TESTING-STANDARD.md](../../core/standards/06-TESTING.md) | Verification |
+| 11 | Documentation standard | [07-DOCUMENTATION-STANDARD.md](../../core/standards/07-DOCUMENTATION.md) | Doc triggers |
+| 12 | Review checklist | [08-REVIEW-CHECKLIST.md](../../core/standards/08-REVIEW.md) | Pre-merge gate |
 | 13 | Roadmap | [09-ROADMAP.md](../roadmap/09-ROADMAP.md) | Phase evolution |
-| 14 | Module registry | [AI_BRAIN_CONSTITUTION.md](../ai-rules/11-AI-RULES.md) | Canonical owners |
-| 15 | Operational snapshot | [ARCHITECTURE.md](../architecture/10-PHASE-STATUS.md) | Current phase status |
-| 16 | Active task | [TASK_PROMPT.md](../TASK_PROMPT.md) | Scoped work |
+| 14 | Module registry | [AI_BRAIN_CONSTITUTION.md](../../core/ai-rules/11-AI-RULES.md) | Canonical owners |
+| 15 | Operational snapshot | [ARCHITECTURE.md](../../core/architecture/10-PHASE-STATUS.md) | Current phase status |
+| 16 | Active task | [TASK_PROMPT.md](../../TASK_PROMPT.md) | Scoped work |
 | 17 | Existing codebase | `src/` | Established patterns |
 | 18 | User request | Session | When not conflicting |
 | 19 | Tool defaults | Model / IDE | Lowest authority |
 
-**Supplementary** (subordinate to the chain): [10](../ai-rules/11-AI-RULES.md) · [11](../supplementary/SECURITY.md) · [12](../supplementary/PERFORMANCE.md) · [14](../supplementary/WRITING.md)
+**Supplementary** (subordinate to the chain): [10](../../core/ai-rules/11-AI-RULES.md) · [11](../supplementary/SECURITY.md) · [12](../supplementary/PERFORMANCE.md) · [14](../supplementary/WRITING.md)
 
 ---
 
 ## Dependency rules
 
 - Lower priority MUST NOT violate higher priority.
-- Prompts and templates in `.ai/prompts/` and `.ai/templates/` are subordinate to the governance chain.
+- Prompts and templates in `.ai/prompts/` and `.ai/core/templates/` are subordinate to the governance chain.
 - Checklists verify compliance; they do not create new law.
 - Equal priority at the same tier → halt and escalate per [prompts/escalation.md](prompts/escalation.md).
 
@@ -115,4 +115,4 @@ constitution/INDEX.md  ← canonical reading + authority order
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md).*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md).*

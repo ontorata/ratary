@@ -12,7 +12,7 @@
 
 JWT, OAuth, API keys, bootstrap, permissions, audit bus, `/api/v1` canonical routes, owner isolation.
 
-**Evidence:** [phases/03-authorization/](../phases/03-authorization/README.md) · [docs/archive/PHASE-3.md](../../docs/archive/PHASE-3.md)
+**Evidence:** [phases/03-authorization/](../03-authorization/README.md) · [docs/archive/PHASE-3.md](../../docs/archive/PHASE-3.md)
 
 ---
 

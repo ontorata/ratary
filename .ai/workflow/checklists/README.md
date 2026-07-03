@@ -24,4 +24,4 @@
 
 ---
 
-*Verify against [workflow/decision-framework](../decision-framework/13-AI-DECISION-FRAMEWORK.md).*
+*Verify against [workflow/decision-framework](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md).*

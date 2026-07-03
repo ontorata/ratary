@@ -2,7 +2,7 @@
 
 **Purpose:** Durable architecture and phase compliance audit records.  
 **Audience:** Project owner, maintainers, AI assistants.  
-**Authority:** Evidence layer — subordinate to [constitution/INDEX.md](../constitution/INDEX.md) and Approved ADRs.
+**Authority:** Evidence layer — subordinate to [constitution/INDEX.md](../../core/constitution/INDEX.md) and Approved ADRs.
 
 ---
 

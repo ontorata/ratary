@@ -1,4 +1,4 @@
-﻿# Phase 7 — Agent Runtime
+﻿# Phase 6 — Hybrid Retrieval
 
 **Status:** ✅ Complete  
 **Roadmap:** Completed
@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Single entry point for Phase 7 governance artifacts. Summarizes scope, links all phase documents, and records status relative to [09-ROADMAP.md](../../roadmap/09-ROADMAP.md).
+Single entry point for Phase 6 governance artifacts. Summarizes scope, links all phase documents, and records status relative to [09-ROADMAP.md](../../roadmap/09-ROADMAP.md).
 
 ---
 
@@ -19,15 +19,15 @@ Single entry point for Phase 7 governance artifacts. Summarizes scope, links all
 | **Created when** | Phase folder scaffolded at roadmap definition or Readiness PASS |
 | **Updated by** | Maintainer until gate PASS; then append-only |
 | **Read-only when** | Phase gate PASS and status synced to roadmap |
-| **Roadmap relation** | Canonical index for Phase 7 row in roadmap |
+| **Roadmap relation** | Canonical index for Phase 6 row in roadmap |
 
 ---
 
 ## Scope summary
 
-See [09-ROADMAP.md — Phase 7](../../roadmap/09-ROADMAP.md).
+See [09-ROADMAP.md — Phase 6](../../roadmap/09-ROADMAP.md).
 
-No external design archive.
+See [docs/adr/](../../../docs/adr/) and .ai/adr/.
 
 ---
 
@@ -35,10 +35,10 @@ No external design archive.
 
 | Document | Responsibility | Status |
 |----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Agent boundary architecture | ✅ Complete |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ N/A |
+| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ Complete |
 | [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ N/A |
-| [TESTING.md](TESTING.md) | Verification strategy | ✅ N/A |
+| [TESTING.md](TESTING.md) | Verification strategy | ✅ Complete |
 | [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
 | [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
 | [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | Reserved |
@@ -49,15 +49,11 @@ No external design archive.
 
 ## Notes
 
-Phase 7 is primarily a **documentation phase** - defining the agent integration boundary. No new implementation in `src/`.
-
-**Key Scope:**
-- Agent loops consume MCP/REST externally (outside repo)
-- Foundation may add scope hooks per ADR-002
-- MCP tool contracts stable for agent consumers
-- Optional: `agentId` in `MemoryScope` types (Phase 9)
-
-**Dependencies:** Phase 4 context API ✅, Phase 6 hybrid ✅
+**Phase 6 Gate: PASS** (2026-07-03)
+- All milestones complete
+- 192 tests passing
+- ADR-001 Implemented
+- Ready for Phase 7
 
 ---
 

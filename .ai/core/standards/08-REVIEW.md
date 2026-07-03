@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants and human maintainers.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [07-DOCUMENTATION.md](../standards/07-DOCUMENTATION.md).  
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [07-DOCUMENTATION.md](../../core/standards/07-DOCUMENTATION.md).  
 **When:** Code review, pre-merge, pre-release.
 
 ---
@@ -11,7 +11,7 @@
 
 - [x] Change classified: additive (new sources, no existing change)
 - [x] Design gate completed before implementation (ADR-001 Approved)
-- [x] Layer assignment correct per [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)
+- [x] Layer assignment correct per [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 - [x] Canonical owner module used — no duplicate logic
 - [x] Dependency direction inward only
 - [x] No layer bypass (SQL in services, business logic in repositories)
@@ -78,8 +78,8 @@
 
 ## Documentation
 
-- [x] [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) updated
-- [x] [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) updated
+- [x] [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) updated
+- [x] [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) updated
 - [x] ADR status/index updated (ADR-001 Implemented)
 - [x] [../PANDUAN.md](../../docs/PANDUAN.md) updated if user-visible (N/A)
 - [x] [README.md](../../docs/README.md) updated if public surface changed (N/A)
@@ -142,4 +142,4 @@
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [07-DOCUMENTATION.md](../standards/07-DOCUMENTATION.md).*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [07-DOCUMENTATION.md](../../core/standards/07-DOCUMENTATION.md).*

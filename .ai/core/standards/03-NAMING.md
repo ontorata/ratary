@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants operating on this repository.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md), [01-05-WORKFLOW.md](01-05-WORKFLOW.md), and [02-CODING.md](../standards/02-CODING.md).
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md), [01-05-WORKFLOW.md](01-05-WORKFLOW.md), and [02-CODING.md](../../core/standards/02-CODING.md).
 
 ---
 
@@ -32,10 +32,10 @@ Reduce integration errors caused by vocabulary drift between layers, modules, an
 ## Not Covered
 
 - Architectural layer law → [01-05-WORKFLOW.md](01-05-WORKFLOW.md)
-- Code formatting and function size → [02-CODING.md](../standards/02-CODING.md)
-- MCP tool names and protocol schemas → [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md), `src/mcp/`
+- Code formatting and function size → [02-CODING.md](../../core/standards/02-CODING.md)
+- MCP tool names and protocol schemas → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md), `src/mcp/`
 - User-facing documentation titles → [../PANDUAN.md](../../docs/PANDUAN.md)
-- ADR file numbering → [../adr/POLICY.md](../../docs/adr/POLICY.md)
+- ADR file numbering → [../adr/POLICY.md](../../../docs/adr/POLICY.md)
 
 ---
 
@@ -529,4 +529,4 @@ Reduce integration errors caused by vocabulary drift between layers, modules, an
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md), [01-05-WORKFLOW.md](01-05-WORKFLOW.md), and [02-CODING.md](../standards/02-CODING.md). Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md), [01-05-WORKFLOW.md](01-05-WORKFLOW.md), and [02-CODING.md](../../core/standards/02-CODING.md). Amend only with project owner approval.*

@@ -19,7 +19,7 @@ Readiness Review is **not** Phase Gate. It answers: *may we begin design and cod
 ## When to execute
 
 - After phase N receives **PASS** or **PASS WITH OBSERVATIONS** on [00-PHASE-GATE.md](00-PHASE-GATE.md)
-- Before rotating [TASK_PROMPT.md](../../TASK_PROMPT.md) to phase N+1 work
+- Before rotating [TASK_PROMPT.md](../../../TASK_PROMPT.md) to phase N+1 work
 - Before any phase N+1 code merge
 
 ---
@@ -47,7 +47,7 @@ flowchart TD
 
 ### A — Governance
 
-- [ ] [constitution/INDEX.md](../constitution/INDEX.md) read for session
+- [ ] [constitution/INDEX.md](../../core/constitution/INDEX.md) read for session
 - [ ] Phase N **PASS** recorded on [00-PHASE-GATE.md](00-PHASE-GATE.md)
 - [ ] [03-PHASE-RETROSPECTIVE.md](03-PHASE-RETROSPECTIVE.md) completed for phase N
 - [ ] [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) — phase N marked ✅; phase N+1 scope read
@@ -60,12 +60,12 @@ flowchart TD
 ### C — ADR gates
 
 - [ ] Required ADRs for phase N+1 — status **Approved** (not Proposed)
-- [ ] No implementation of Proposed ADRs ([ADR-POLICY.md](../../docs/adr/POLICY.md))
+- [ ] No implementation of Proposed ADRs ([ADR-POLICY.md](../../../docs/adr/POLICY.md))
 
 ### D — Extension points
 
-- [ ] Required ports/interfaces exist in `src/` ([04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md))
-- [ ] Reuse assessment complete — extend before new module ([13-AI-DECISION-FRAMEWORK.md](../../decision-framework/13-AI-DECISION-FRAMEWORK.md))
+- [ ] Required ports/interfaces exist in `src/` ([04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md))
+- [ ] Reuse assessment complete — extend before new module ([13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md))
 - [ ] No architecture conflict logged as **BLOCKER** in retrospective
 
 ### E — Impact preview
@@ -82,7 +82,7 @@ flowchart TD
 
 ### F — Authorization
 
-- [ ] [TASK_PROMPT.md](../../TASK_PROMPT.md) ready to rotate from [template](../templates/task-prompt.md)
+- [ ] [TASK_PROMPT.md](../../../TASK_PROMPT.md) ready to rotate from [template](../templates/task-prompt.md)
 - [ ] Owner acknowledges start of phase N+1 (explicit instruction or roadmap action item)
 
 ---
@@ -146,4 +146,4 @@ flowchart TD
 
 ---
 
-*Subordinate to [00-PHASE-GATE.md](00-PHASE-GATE.md) and [constitution/INDEX.md](../constitution/INDEX.md).*
+*Subordinate to [00-PHASE-GATE.md](00-PHASE-GATE.md) and [constitution/INDEX.md](../../core/constitution/INDEX.md).*

@@ -1,7 +1,7 @@
 # Architecture Decision Policy
 
 **Status:** Active governance — applies to all structural changes.  
-**Hierarchy:** [../../.ai/constitution/00-CONSTITUTION.md](../../.ai/constitution/00-CONSTITUTION.md) → this policy → individual ADRs → implementation.
+**Hierarchy:** [../../.ai/core/constitution/00-CONSTITUTION.md](../../.ai/core/constitution/00-CONSTITUTION.md) → this policy → individual ADRs → implementation.
 
 ---
 
@@ -98,8 +98,8 @@ Agents: if no approved ADR exists → **stop and write Proposed ADR**, do not co
 
 | Document | Role |
 |----------|------|
-| [.ai/ai-rules/11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md) | Immutable rules + module registry |
-| [.ai/architecture/04-ARCHITECTURE.md](../.ai/architecture/04-ARCHITECTURE.md) | Structure, layers, extension points |
+| [.ai/core/ai-rules/11-AI-RULES.md](../.ai/core/ai-rules/11-AI-RULES.md) | Immutable rules + module registry |
+| [.ai/core/architecture/04-ARCHITECTURE.md](../.ai/core/architecture/04-ARCHITECTURE.md) | Structure, layers, extension points |
 | [.ai/workflow/05-WORKFLOW.md](../.ai/workflow/05-WORKFLOW.md) | Principal Engineer process & pre-code analysis |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Current work only (rotates per phase) |
 | [adr/README.md](adr/README.md) | ADR index |

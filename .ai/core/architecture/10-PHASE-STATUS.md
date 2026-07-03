@@ -2,7 +2,7 @@
 
 **Status:** Living operational snapshot (mutable).  
 **Audience:** AI assistants and maintainers.  
-**Authority:** Subordinate to [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../roadmap/09-ROADMAP.md) (phase narratives).
+**Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
 **Last updated:** Phase 6 Hybrid Retrieval complete (2026-07-03) · ADR-001 Implemented · Next: Phase 7
 
@@ -12,7 +12,7 @@
 
 Record **live** project metrics, deployment facts, and documented technical debt.
 
-**Not covered here:** layer boundaries, ports, dependency graphs, or capability stack — see [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md). Phase plans and narratives — see [09-ROADMAP.md](../roadmap/09-ROADMAP.md). Gate evidence — see `.ai/phases/NN-name/`.
+**Not covered here:** layer boundaries, ports, dependency graphs, or capability stack — see [04-ARCHITECTURE.md](../04-ARCHITECTURE.md). Phase plans and narratives — see [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md). Gate evidence — see `.ai/phases/NN-name/`.
 
 ---
 
@@ -33,12 +33,12 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | [TASK_PROMPT.md](../TASK_PROMPT.md) |
-| Next phase | 6 — Hybrid Retrieval |
-| Blocker | ~~ADR-001 Proposed~~ ✅ **Approved** (2026-07-03) |
-| Phase 6 ops folder | [.ai/phases/06-hybrid-retrieval/](../phases/06-hybrid-retrieval/README.md) |
+| Active task | [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| Next phase | **7 — Agent Runtime** |
+| Blocker | None — ADR-001 Implemented (2026-07-03) |
+| Last completed | Phase 6 — [.ai/phases/06-hybrid-retrieval/](../06-hybrid-retrieval/README.md) |
 
-Strategic phase status (completed / next / future): [09-ROADMAP.md](../roadmap/09-ROADMAP.md) §Summary.
+Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
 
 ---
 
@@ -69,7 +69,7 @@ User onboarding: [PANDUAN.md](../../docs/PANDUAN.md).
 | — | N× `recordAccess` on context build | Batch update (perf) — low-medium effort |
 | — | D1 vector search in-process | Vectorize/pgvector when scale exceeds MVP ceiling |
 
-Aggregate audit: [.ai/audits/latest.md](../audits/latest.md).
+Aggregate audit: [.ai/phases/audits/latest.md](../../phases/audits/latest.md).
 
 ---
 
@@ -82,7 +82,7 @@ Update this file when:
 - Deployment target changes
 - New cross-phase debt is documented
 
-Do **not** duplicate structural architecture from [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) here.
+Do **not** duplicate structural architecture from [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) here.
 
 ---
 

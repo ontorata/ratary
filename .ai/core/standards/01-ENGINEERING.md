@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants operating on this repository.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Supersedes informal or conversational instructions when they conflict with engineering practice.
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Supersedes informal or conversational instructions when they conflict with engineering practice.
 
 ---
 
@@ -31,12 +31,12 @@ Ensure consistent code quality, predictable runtime behavior, and replaceable in
 
 ## Not Covered
 
-- Immutable constitutional law → [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md)
-- Canonical module registry → [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)
-- Module layout, port inventory → [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md); live metrics → [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md)
+- Immutable constitutional law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)
+- Canonical module registry → [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
+- Module layout, port inventory → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md); live metrics → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 - Pre-code analysis workflow → [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) §Pre-implementation analysis
-- Active task scope → [../TASK_PROMPT.md](../TASK_PROMPT.md)
-- ADR lifecycle → [../adr/POLICY.md](../../docs/adr/POLICY.md)
+- Active task scope → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
+- ADR lifecycle → [../adr/POLICY.md](../../../docs/adr/POLICY.md)
 
 ---
 
@@ -440,4 +440,4 @@ Merged from archived [AI_ENGINEERING_STANDARDS.md](../../docs/archive/AI_ENGINEE
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Amend only with project owner approval.*

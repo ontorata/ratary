@@ -85,5 +85,5 @@ Phase 2 (future ADR or amendment when Postgres planned):
 
 ## References
 
-- [11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
+- [11-AI-RULES.md](../.ai/core/ai-rules/11-AI-RULES.md)
 - [POLICY.md](POLICY.md)

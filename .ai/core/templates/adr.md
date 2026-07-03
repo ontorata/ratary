@@ -1,6 +1,6 @@
 # ADR Template
 
-**Canonical:** [docs/adr/000-template.md](../../docs/adr/000-template.md)
+**Canonical:** [docs/adr/000-template.md](../../../docs/adr/000-template.md)
 
 **Single responsibility:** Blank Architecture Decision Record form.
 

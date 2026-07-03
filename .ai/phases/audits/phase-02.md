@@ -13,7 +13,7 @@
 **2.5:** API stabilization, rate limits, env validation.  
 **2.6:** Knowledge metadata, relations, ranking engine, SearchService.
 
-**Evidence:** [phases/02.5-stabilization/](../phases/02.5-stabilization/README.md) · [phases/02.6-knowledge/](../phases/02.6-knowledge/README.md) · [docs/archive/PHASE-2.6-DESIGN.md](../../docs/archive/PHASE-2.6-DESIGN.md)
+**Evidence:** [phases/02.5-stabilization/](../02.5-stabilization/README.md) · [phases/02.6-knowledge/](../02.6-knowledge/README.md) · [docs/archive/PHASE-2.6-DESIGN.md](../../docs/archive/PHASE-2.6-DESIGN.md)
 
 ---
 

@@ -19,12 +19,12 @@ It defines:
 
 Governance detail lives in linked documents. This index does not restate their rules.
 
-**Canonical registry:** [.ai/INDEX.md](../INDEX.md)  
+**Canonical registry:** [.ai/START-HERE.md](../../START-HERE.md)  
 **Amendment authority:** [OWNERSHIP.md](../OWNERSHIP.md)
 
 ---
 
-**Master index:** [.ai/README.md](../README.md) — AI Operating System entry. Human docs: [docs/README.md](../../docs/README.md).
+**Master index:** [.ai/README.md](../../README.md) — AI Operating System entry. Human docs: [docs/README.md](../../../docs/README.md).
 
 ---
 
@@ -34,18 +34,18 @@ AI assistants MUST read documents **in this order** at session start.
 
 | Step | Document | Canonical path |
 |------|----------|----------------|
-| 1 | **Constitution** | [.ai/constitution/00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md) |
-| 2 | **AI Decision Framework** | [.ai/decision-framework/13-AI-DECISION-FRAMEWORK.md](../../decision-framework/13-AI-DECISION-FRAMEWORK.md) |
-| 3 | **Architecture** | [.ai/architecture/04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md) |
-| 4 | **ADR** | [docs/adr/](../../docs/adr/) — task-relevant records only |
-| 5 | **Engineering** | [.ai/standards/01-ENGINEERING.md](../../standards/01-ENGINEERING.md) |
-| 6 | **Coding** | [.ai/standards/02-CODING.md](../../standards/02-CODING.md) |
-| 7 | **Naming** | [.ai/standards/03-NAMING.md](../../standards/03-NAMING.md) |
+| 1 | **Constitution** | [.ai/core/constitution/00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) |
+| 2 | **AI Decision Framework** | [.ai/core/decision-framework/13-AI-DECISION-FRAMEWORK.md](../decision-framework/13-AI-DECISION-FRAMEWORK.md) |
+| 3 | **Architecture** | [.ai/core/architecture/04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) |
+| 4 | **ADR** | [docs/adr/](../../../docs/adr/) — task-relevant records only |
+| 5 | **Engineering** | [.ai/core/standards/01-ENGINEERING.md](../standards/01-ENGINEERING.md) |
+| 6 | **Coding** | [.ai/core/standards/02-CODING.md](../standards/02-CODING.md) |
+| 7 | **Naming** | [.ai/core/standards/03-NAMING.md](../standards/03-NAMING.md) |
 | 8 | **Workflow** | [.ai/workflow/05-WORKFLOW.md](../../workflow/05-WORKFLOW.md) |
-| 9 | **Testing** | [.ai/standards/06-TESTING.md](../../standards/06-TESTING.md) |
-| 10 | **Documentation** | [.ai/standards/07-DOCUMENTATION.md](../../standards/07-DOCUMENTATION.md) |
-| 11 | **Review** | [.ai/standards/08-REVIEW.md](../../standards/08-REVIEW.md) |
-| 12 | **Roadmap** | [.ai/roadmap/09-ROADMAP.md](../../roadmap/09-ROADMAP.md) |
+| 9 | **Testing** | [.ai/core/standards/06-TESTING.md](../standards/06-TESTING.md) |
+| 10 | **Documentation** | [.ai/core/standards/07-DOCUMENTATION.md](../standards/07-DOCUMENTATION.md) |
+| 11 | **Review** | [.ai/core/standards/08-REVIEW.md](../standards/08-REVIEW.md) |
+| 12 | **Roadmap** | [.ai/phases/roadmap/09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) |
 
 **Governance chain:**
 
@@ -90,9 +90,9 @@ After step 12, read **task-scoped** documents only:
 
 | Document | Canonical path | When |
 |----------|----------------|------|
-| Module registry | [.ai/ai-rules/11-AI-RULES.md](../../ai-rules/11-AI-RULES.md) | Before adding or locating modules |
-| Glossary | [.ai/glossary/GLOSSARY.md](../../glossary/GLOSSARY.md) | When terminology is ambiguous |
-| Operational snapshot | [.ai/architecture/10-PHASE-STATUS.md](../../architecture/10-PHASE-STATUS.md) | For current phase and port status |
+| Module registry | [.ai/core/ai-rules/11-AI-RULES.md](../ai-rules/11-AI-RULES.md) | Before adding or locating modules |
+| Glossary | [.ai/core/glossary/GLOSSARY.md](../glossary/GLOSSARY.md) | When terminology is ambiguous |
+| Operational snapshot | [.ai/core/architecture/10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) | For current phase and port status |
 | Active task | [.ai/TASK_PROMPT.md](../../TASK_PROMPT.md) | For scoped work and definition of done |
 
 AI assistants MUST NOT skip the numbered sequence because a task appears small.
@@ -108,17 +108,17 @@ Higher priority overrides lower priority. Lower levels MUST NOT violate higher l
 | Priority | Source | Role |
 |----------|--------|------|
 | 1 | Explicit owner instruction (current session) | Stated override |
-| 2 | [Constitution](../../constitution/00-CONSTITUTION.md) | Immutable law |
-| 3 | [AI Decision Framework](../../decision-framework/13-AI-DECISION-FRAMEWORK.md) | Decision procedure and principles |
-| 4 | [Architecture](../../architecture/04-ARCHITECTURE.md) | Layer and port law |
-| 5 | Approved [ADRs](../../docs/adr/) | Structural decisions |
-| 6 | [Engineering Standards](../../standards/01-ENGINEERING.md) | Domain engineering rules |
-| 7 | [Coding Style](../../standards/02-CODING.md) | Format and refactor scope |
-| 8 | [Naming Convention](../../standards/03-NAMING.md) | Identifiers across codebase |
+| 2 | [Constitution](../constitution/00-CONSTITUTION.md) | Immutable law |
+| 3 | [AI Decision Framework](../decision-framework/13-AI-DECISION-FRAMEWORK.md) | Decision procedure and principles |
+| 4 | [Architecture](../architecture/04-ARCHITECTURE.md) | Layer and port law |
+| 5 | Approved [ADRs](../../../docs/adr/) | Structural decisions |
+| 6 | [Engineering Standards](../standards/01-ENGINEERING.md) | Domain engineering rules |
+| 7 | [Coding Style](../standards/02-CODING.md) | Format and refactor scope |
+| 8 | [Naming Convention](../standards/03-NAMING.md) | Identifiers across codebase |
 | 9 | [Development Workflow](../../workflow/05-WORKFLOW.md) | Process gates |
-| 10 | [Testing Standard](../../standards/06-TESTING.md) | Verification requirements |
-| 11 | [Documentation Standard](../../standards/07-DOCUMENTATION.md) | Doc update triggers |
-| 12 | [Review Checklist](../../standards/08-REVIEW.md) | Pre-merge pass/fail |
+| 10 | [Testing Standard](../standards/06-TESTING.md) | Verification requirements |
+| 11 | [Documentation Standard](../standards/07-DOCUMENTATION.md) | Doc update triggers |
+| 12 | [Review Checklist](../standards/08-REVIEW.md) | Pre-merge pass/fail |
 | 13 | [Roadmap](../../roadmap/09-ROADMAP.md) | Planned evolution |
 | 14 | Module registry · operational snapshot · active task | Scoped context |
 | 15 | Existing codebase (`src/`) | Established patterns |
@@ -127,12 +127,12 @@ Higher priority overrides lower priority. Lower levels MUST NOT violate higher l
 
 **Supplementary standards** (subordinate to the chain; consult when relevant):
 
-- [10-AI-COMMUNICATION.md](../../ai-rules/11-AI-RULES.md) — response structure
+- [10-AI-COMMUNICATION.md](../ai-rules/11-AI-RULES.md) — response structure
 - [11-SECURITY-STANDARD.md](../../supplementary/SECURITY.md) — security rules
 - [12-PERFORMANCE-STANDARD.md](../../supplementary/PERFORMANCE.md) — performance budgets
 - [14-WRITING-STANDARD.md](../../supplementary/WRITING.md) — documentation form
 
-Equal priority at the same tier → halt and escalate per [13-AI-DECISION-FRAMEWORK.md § Escalation](../../decision-framework/13-AI-DECISION-FRAMEWORK.md#escalation-rules).
+Equal priority at the same tier → halt and escalate per [13-AI-DECISION-FRAMEWORK.md § Escalation](../decision-framework/13-AI-DECISION-FRAMEWORK.md#escalation-rules).
 
 ---
 
@@ -271,10 +271,10 @@ flowchart TD
 | [.ai/README.md](../../docs/README.md) | Governance folder overview |
 | [.ai/DEPENDENCY-HIERARCHY.md](../DEPENDENCY-HIERARCHY.md) | Extended authority detail |
 | [.ai/READING-ORDER.md](../READING-ORDER.md) | Supplementary session sequences |
-| [docs/adr/POLICY.md](../../docs/adr/POLICY.md) | ADR lifecycle |
-| [.ai/glossary/GLOSSARY.md](../../glossary/GLOSSARY.md) | Canonical vocabulary |
-| [.ai/ai-rules/11-AI-RULES.md](../../ai-rules/11-AI-RULES.md) | Response structure |
-| [.ai/supplementary/WRITING.md](../../supplementary/WRITING.md) | Documentation form |
+| [docs/adr/POLICY.md](../../../docs/adr/POLICY.md) | ADR lifecycle |
+| [.ai/core/glossary/GLOSSARY.md](../../glossary/GLOSSARY.md) | Canonical vocabulary |
+| [.ai/core/ai-rules/11-AI-RULES.md](../ai-rules/11-AI-RULES.md) | Response structure |
+| [.ai/core/supplementary/WRITING.md](../../supplementary/WRITING.md) | Documentation form |
 
 ---
 

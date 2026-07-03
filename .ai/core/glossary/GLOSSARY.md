@@ -2,7 +2,7 @@
 
 **Status:** Permanent canonical vocabulary.  
 **Audience:** Every AI assistant and human maintainer.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md).  
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md).  
 **Rule:** This file is the **only** authoritative definition for project concepts. Other documents MUST use these terms and MUST NOT redefine them.
 
 ---
@@ -1294,9 +1294,9 @@ When a document uses a deprecated synonym, treat the canonical term as authorita
 
 | Document | Role |
 |----------|------|
-| [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) | Immutable law using these terms |
-| [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) | Structural placement of domains and ports |
-| [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) | Canonical module names (registry — not definitions) |
+| [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) | Immutable law using these terms |
+| [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Structural placement of domains and ports |
+| [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) | Canonical module names (registry — not definitions) |
 | [09-ROADMAP.md](../roadmap/09-ROADMAP.md) | Phase narratives |
 | [../README.md](../../docs/README.md) | Documentation index |
 

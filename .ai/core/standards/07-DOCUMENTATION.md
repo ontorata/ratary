@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants and human maintainers.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [06-TESTING.md](../standards/06-TESTING.md).
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [06-TESTING.md](../../core/standards/06-TESTING.md).
 
 ---
 
@@ -31,10 +31,10 @@ Prevent documentation drift, duplication of immutable rules, and contradictions 
 
 ## Not Covered
 
-- Immutable engineering law → [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) – [06-TESTING.md](../standards/06-TESTING.md)
+- Immutable engineering law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) – [06-TESTING.md](../../core/standards/06-TESTING.md)
 - When to update docs in workflow → [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) Documentation gate
-- Code comments and JSDoc → [02-CODING.md](../standards/02-CODING.md)
-- Test documentation → [06-TESTING.md](../standards/06-TESTING.md)
+- Code comments and JSDoc → [02-CODING.md](../../core/standards/02-CODING.md)
+- Test documentation → [06-TESTING.md](../../core/standards/06-TESTING.md)
 - End-user prose style for PANDUAN → [../PANDUAN.md](../../docs/PANDUAN.md) (reference example)
 
 ---
@@ -64,12 +64,12 @@ Prevent documentation drift, duplication of immutable rules, and contradictions 
 ## Document hierarchy
 
 ```
-.ai/constitution/00-CONSTITUTION.md     immutable law
-.ai/standards/01–08, 13                 permanent engineering standards
-.ai/ai-rules/11-AI-RULES.md             module registry + AI protocol
-.ai/glossary/GLOSSARY.md                canonical vocabulary (concepts only)
-.ai/architecture/10-PHASE-STATUS.md     operational metrics and debt (mutable)
-.ai/architecture/04-ARCHITECTURE.md     structural law (permanent)
+.ai/core/constitution/00-CONSTITUTION.md     immutable law
+.ai/core/standards/01–08, 13                 permanent engineering standards
+.ai/core/ai-rules/11-AI-RULES.md             module registry + AI protocol
+.ai/core/glossary/GLOSSARY.md                canonical vocabulary (concepts only)
+.ai/core/architecture/10-PHASE-STATUS.md     operational metrics and debt (mutable)
+.ai/core/architecture/04-ARCHITECTURE.md     structural law (permanent)
 .ai/workflow/05-WORKFLOW.md             workflow + pre-implementation analysis
 .ai/TASK_PROMPT.md                      active scoped work
 docs/adr/POLICY.md + docs/adr/          structural decisions (ADR text immutable)
@@ -121,8 +121,8 @@ Two layers — do not merge:
 
 | Document | Role | Update trigger |
 |----------|------|----------------|
-| [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) | Permanent structural law: layers, ports, flows | Layer boundary or port family change (owner approval) |
-| [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) | Operational snapshot: phase status, extension table, ops commands, debt | Every phase completion; port implementation; deployment change |
+| [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Permanent structural law: layers, ports, flows | Layer boundary or port family change (owner approval) |
+| [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) | Operational snapshot: phase status, extension table, ops commands, debt | Every phase completion; port implementation; deployment change |
 
 **10-PHASE-STATUS.md must include when applicable:**
 
@@ -148,9 +148,9 @@ Two layers — do not merge:
 
 ## ADR
 
-**Policy:** [../adr/POLICY.md](../../docs/adr/POLICY.md)  
-**Template:** [adr/000-template.md](../../docs/adr/000-template.md)  
-**Index:** [adr/README.md](../../docs/adr/README.md)
+**Policy:** [../adr/POLICY.md](../../../docs/adr/POLICY.md)  
+**Template:** [adr/000-template.md](../../../docs/adr/000-template.md)  
+**Index:** [adr/README.md](../../../docs/adr/README.md)
 
 **When to write:** Every structural change per ADR-POLICY. Proposed before code.
 
@@ -255,13 +255,13 @@ Two layers — do not merge:
 - Rollback steps live in ADR — not only in chat.
 - Do not document destructive DDL without ADR and owner approval.
 
-**Naming:** `migrate{Feature}{Phase}` per [03-NAMING.md](../standards/03-NAMING.md).
+**Naming:** `migrate{Feature}{Phase}` per [03-NAMING.md](../../core/standards/03-NAMING.md).
 
 ## Phase docs
 
 | Document | Role | Lifecycle |
 |----------|------|-----------|
-| [../TASK_PROMPT.md](../TASK_PROMPT.md) | Active work, requirements, definition of done | Replaced from template when phase starts |
+| [../../TASK_PROMPT.md](../../TASK_PROMPT.md) | Active work, requirements, definition of done | Replaced from template when phase starts |
 | [12-TASK-TEMPLATE.md](../workflow/12-TASK-TEMPLATE.md) | Blank phase template | Updated when process changes |
 | `docs/archive/PHASE-*.md` | Historical design for completed phases | Write-once; append errata only |
 | [archive/README.md](../../docs/archive/README.md) | Index of phase archives | Update when new archive added |
@@ -449,4 +449,4 @@ Two layers — do not merge:
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [06-TESTING.md](../standards/06-TESTING.md). Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [06-TESTING.md](../../core/standards/06-TESTING.md). Amend only with project owner approval.*

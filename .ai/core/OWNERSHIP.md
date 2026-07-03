@@ -69,4 +69,4 @@ Every normative amendment MUST:
 
 ---
 
-*Subordinate to [governance/constitution](../constitution/00-CONSTITUTION.md).*
+*Subordinate to [governance/constitution](../../core/constitution/00-CONSTITUTION.md).*

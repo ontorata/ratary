@@ -9,4 +9,4 @@
 
 ---
 
-*Policy is subordinate to [constitution](../constitution/README.md).*
+*Policy is subordinate to [constitution](../../core/constitution/README.md).*

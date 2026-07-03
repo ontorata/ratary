@@ -22,6 +22,6 @@ Dokumen historis implementasi Phase 2.5–5 dan **snapshot read-only** dokumen y
 | Topik | Path |
 |-------|------|
 | Indeks dokumentasi | [../README.md](../README.md) |
-| Arsitektur struktural | [../.ai/architecture/04-ARCHITECTURE.md](../.ai/architecture/04-ARCHITECTURE.md) |
-| Status fase / metrik | [../.ai/architecture/10-PHASE-STATUS.md](../.ai/architecture/10-PHASE-STATUS.md) |
+| Arsitektur struktural | [../.ai/core/architecture/04-ARCHITECTURE.md](../.ai/core/architecture/04-ARCHITECTURE.md) |
+| Status fase / metrik | [../.ai/core/architecture/10-PHASE-STATUS.md](../.ai/core/architecture/10-PHASE-STATUS.md) |
 | Panduan pengguna | [../PANDUAN.md](../PANDUAN.md) |

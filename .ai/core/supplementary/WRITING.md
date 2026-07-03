@@ -2,7 +2,7 @@
 
 **Status:** Permanent meta-standard for all repository documentation.  
 **Audience:** AI assistants and human maintainers authoring or revising files under `docs/`.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Governs form and style; does not override substance in `00–12`.
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Governs form and style; does not override substance in `00–12`.
 
 ---
 
@@ -155,7 +155,7 @@ Enforce predictable layout across the corpus.
 ## Rationale
 ```
 
-- Checklist-only documents (e.g. [08-REVIEW.md](../standards/08-REVIEW.md)) MAY omit per-section Rationale if each checklist group has a one-line Rationale block.
+- Checklist-only documents (e.g. [08-REVIEW.md](../../core/standards/08-REVIEW.md)) MAY omit per-section Rationale if each checklist group has a one-line Rationale block.
 - Headings MUST use ATX style (`#`). Heading levels MUST NOT skip (e.g. `##` after `#` only).
 
 ## Rationale
@@ -193,7 +193,7 @@ Ensure consistent formatting.
 
 - Files MUST be valid Markdown (.md).
 - Line length SHOULD be ≤ 100 characters where practical; tables and URLs are exempt.
-- Links to internal docs MUST use relative paths from `docs/` (e.g. `[04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)`).
+- Links to internal docs MUST use relative paths from `docs/` (e.g. `[04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)`).
 - Code blocks MUST specify language when not plain text.
 - Tables MUST use header rows. Alignment row optional.
 - Normative keywords in tables MUST be uppercase (**MUST**, **SHOULD**).
@@ -215,8 +215,8 @@ Ensure documents work across Claude, Cursor, ChatGPT, Gemini, Codex, and future 
 
 - Instructions MUST be explicit and testable — not dependent on model-specific features.
 - Documents MUST NOT reference proprietary tool UI (`Composer`, `Agent mode`) in normative text.
-- Controlled vocabularies (e.g. [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)) MUST be used for status and decisions in AI-generated responses about this repository.
-- Session start reading order MUST be documented in [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) or [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) — not redefined in every file.
+- Controlled vocabularies (e.g. [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)) MUST be used for status and decisions in AI-generated responses about this repository.
+- Session start reading order MUST be documented in [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) or [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) — not redefined in every file.
 - New standards MUST NOT require a specific model version or provider.
 
 ## Rationale
@@ -246,7 +246,7 @@ Assign writing rules per document class.
 | User guide | `PANDUAN.md` | Setup and usage |
 | README | `README.md` | Entry point and links |
 
-- ADRs MUST follow [adr/000-template.md](../../docs/adr/000-template.md).
+- ADRs MUST follow [adr/000-template.md](../../../docs/adr/000-template.md).
 - ADRs MUST use RFC 2119 in **Constraints** and **Decision** sections.
 - `TASK_PROMPT.md` MUST be replaced from template at phase start — not appended indefinitely.
 
@@ -345,7 +345,7 @@ Governance stability matters more than convenience edits. Operational docs must 
 ## Rationale
 
 Layer separation and tenant isolation are constitutional requirements.
-See [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) §Multi-tenancy.
+See [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) §Multi-tenancy.
 ```
 
 ## Bad
@@ -405,4 +405,4 @@ when possible, because that's probably a bad idea for a robust seamless architec
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Applies to all documents under `docs/` unless explicitly exempted by project owner.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Applies to all documents under `docs/` unless explicitly exempted by project owner.*

@@ -120,7 +120,7 @@ All `phases/NN-name/` documents become **read-only** (append-only addenda).
 | Artifact | Relationship |
 |----------|----------------|
 | [review/00-PHASE-GATE.md](../review/00-PHASE-GATE.md) | Normative gate |
-| [phases/PHASE-DOCUMENT-SCHEMA.md](../phases/PHASE-DOCUMENT-SCHEMA.md) | Document freeze rules |
+| [phases/PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) | Document freeze rules |
 | [audits/](../audits/README.md) | Audit trail |
 
 ---

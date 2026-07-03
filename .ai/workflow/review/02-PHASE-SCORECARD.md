@@ -49,7 +49,7 @@ Any dimension **FAIL** blocks Phase Gate **PASS** unless owner explicitly overri
 
 ### 2 — Architecture compliance
 
-- **PASS:** [04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md) preserved; extension not rewrite
+- **PASS:** [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) preserved; extension not rewrite
 - **WARN:** Known debt (e.g. god-class size) documented with mitigation path
 - **FAIL:** Layer violation, duplicate canonical owner, or `*V2` module
 

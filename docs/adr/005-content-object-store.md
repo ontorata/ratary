@@ -89,5 +89,5 @@ Storing full markdown in D1 optimizes for one backend. Moving to object storage 
 ## References
 
 - [ADR-002-workspace-identity-model.md](002-workspace-identity-model.md)
-- [11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
+- [11-AI-RULES.md](../.ai/core/ai-rules/11-AI-RULES.md)
 - [POLICY.md](POLICY.md)

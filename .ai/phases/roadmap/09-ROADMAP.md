@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md).  
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
 **Last updated:** Phase 6 complete · Next: Phase 7
 
 ---
@@ -25,9 +25,9 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 ## Not Covered
 
-- Active implementation tasks → [../TASK_PROMPT.md](../TASK_PROMPT.md)
-- Structural ADR content → [adr/](../../docs/adr/)
-- Immutable engineering law → [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) – [08-REVIEW.md](../standards/08-REVIEW.md)
+- Active implementation tasks → [../../../TASK_PROMPT.md](../../../TASK_PROMPT.md)
+- Structural ADR content → [adr/](../../../docs/adr/)
+- Immutable engineering law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) – [08-REVIEW.md](../../core/standards/08-REVIEW.md)
 - Historical phase design detail → [archive/](../../docs/archive/)
 
 ---
@@ -515,7 +515,7 @@ Organization tenant, workspace membership RBAC, enterprise audit, compliance hoo
 
 1. Treat this roadmap as the phase authority; update when phases complete.
 2. Do not start a phase without dependency phases complete and ADR gates satisfied.
-3. Update this document and [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) on phase completion.
+3. Update this document and [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) on phase completion.
 4. Mark phases ✅ only when success criteria are met.
 5. Keep agent/reasoning logic outside repo from Phase 7 onward.
 
@@ -556,4 +556,4 @@ Organization tenant, workspace membership RBAC, enterprise audit, compliance hoo
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Amend phase definitions with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Amend phase definitions with project owner approval.*

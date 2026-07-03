@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants operating on this repository.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) and [01-05-WORKFLOW.md](01-05-WORKFLOW.md). Tool configuration enforces a subset of these rules automatically.
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) and [01-05-WORKFLOW.md](01-05-WORKFLOW.md). Tool configuration enforces a subset of these rules automatically.
 
 ---
 
@@ -34,10 +34,10 @@ Prevent style drift, hidden complexity, and unreadable diffs that obscure archit
 ## Not Covered
 
 - Layer boundaries and dependency law → [01-05-WORKFLOW.md](01-05-WORKFLOW.md)
-- Constitutional and architectural law → [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md)
+- Constitutional and architectural law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)
 - Pre-code analysis workflow → [05-WORKFLOW.md](../workflow/05-WORKFLOW.md)
 - Lint and format command definitions → project `package.json` scripts
-- Active task scope → [../TASK_PROMPT.md](../TASK_PROMPT.md)
+- Active task scope → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
 
 ---
 
@@ -434,4 +434,4 @@ class MemoryAndSearchAndBackupService extends BaseService {
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) and [01-05-WORKFLOW.md](01-05-WORKFLOW.md). Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) and [01-05-WORKFLOW.md](01-05-WORKFLOW.md). Amend only with project owner approval.*

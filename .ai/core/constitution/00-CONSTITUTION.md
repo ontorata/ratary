@@ -35,12 +35,12 @@ Provide AI assistants a single authoritative source when instructions, tools, or
 
 ## Not Covered
 
-- Repository layout, module names, or technology choices → [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md); live metrics → [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md)
+- Repository layout, module names, or technology choices → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md); live metrics → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 - Session workflow, analysis templates, quality gate commands → [05-WORKFLOW.md](../workflow/05-WORKFLOW.md)
-- Active phase scope and deliverables → [../TASK_PROMPT.md](../TASK_PROMPT.md)
-- Structural decision content and lifecycle → [../adr/POLICY.md](../../docs/adr/POLICY.md), [adr/](../../docs/adr/)
+- Active phase scope and deliverables → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
+- Structural decision content and lifecycle → [../adr/POLICY.md](../../../docs/adr/POLICY.md), [adr/](../../../docs/adr/)
 - End-user onboarding and operations → [../PANDUAN.md](../../docs/PANDUAN.md)
-- Implementation-specific layer tables and canonical module registry → [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)
+- Implementation-specific layer tables and canonical module registry → [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
 
 ---
 
@@ -272,16 +272,16 @@ When documents or instructions conflict, apply this order:
 |----------|--------|------|
 | 1 | Explicit owner instruction (current session) | Overrides when stated |
 | 2 | **00-CONSTITUTION.md** (this document) | Immutable law |
-| 3 | [13-AI-DECISION-FRAMEWORK.md](../decision-framework/13-AI-DECISION-FRAMEWORK.md) | Decision procedure |
-| 4 | [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) | Structural law |
+| 3 | [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) | Decision procedure |
+| 4 | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Structural law |
 | 5 | Approved ADRs | Structural decisions |
 | 6 | [01-05-WORKFLOW.md](01-05-WORKFLOW.md) through [09-ROADMAP.md](../roadmap/09-ROADMAP.md) | Domain standards and roadmap |
-| 7 | [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) | Module registry |
-| 8 | [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) | Operational snapshot |
-| 9 | [../TASK_PROMPT.md](../TASK_PROMPT.md) | Active scoped work |
+| 7 | [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) | Module registry |
+| 8 | [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) | Operational snapshot |
+| 9 | [../../TASK_PROMPT.md](../../TASK_PROMPT.md) | Active scoped work |
 | 10 | Conversational or tool-default suggestions | Lowest authority |
 
-Full chain: [.ai/constitution/INDEX.md](../constitution/INDEX.md)
+Full chain: [.ai/core/constitution/INDEX.md](../../core/constitution/INDEX.md)
 
 Equal-priority conflict → stop and ask the owner.
 

@@ -86,4 +86,4 @@ Vectors must be stored somewhere without coupling to OpenAI or D1 metadata SQL. 
 
 - [archive/PHASE-5-EMBEDDING-DESIGN.md](../archive/PHASE-5-EMBEDDING-DESIGN.md)
 - [ADR-001-multi-source-retrieval.md](001-multi-source-retrieval.md)
-- [11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
+- [11-AI-RULES.md](../.ai/core/ai-rules/11-AI-RULES.md)

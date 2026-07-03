@@ -3,7 +3,7 @@
 **Document:** DESIGN  
 **Phase status:** Ready  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md)
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 
 ---
 
@@ -611,12 +611,12 @@ Phase 8 design enables Phase 9 integration:
 
 | Document | Relevance |
 |----------|-----------|
-| [00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md) | Immutable law; port patterns |
-| [04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md) | Layer boundaries; port pattern |
+| [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) | Immutable law; port patterns |
+| [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Layer boundaries; port pattern |
 | [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) | Phase 8 scope |
-| [ADR-001](../../docs/adr/001-multi-source-retrieval.md) | Composite pattern |
-| [ADR-002](../../docs/adr/002-workspace-identity-model.md) | Scope types |
-| [ADR-004](../../docs/adr/004-repository-port-types.md) | Port pattern |
+| [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) | Composite pattern |
+| [ADR-002](../../../docs/adr/002-workspace-identity-model.md) | Scope types |
+| [ADR-004](../../../docs/adr/004-repository-port-types.md) | Port pattern |
 
 ### Phase documents
 
@@ -635,4 +635,4 @@ Phase 8 design enables Phase 9 integration:
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md). Do not contradict Approved ADRs.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md). Do not contradict Approved ADRs.*

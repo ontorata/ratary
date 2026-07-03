@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants and human maintainers.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [supplementary/SECURITY.md](supplementary/SECURITY.md).
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [supplementary/SECURITY.md](supplementary/SECURITY.md).
 
 ---
 
@@ -28,8 +28,8 @@ Prevent unbounded work on request paths and undocumented MVP scale ceilings.
 ## Not Covered
 
 - Security rules → [supplementary/SECURITY.md](supplementary/SECURITY.md)
-- Layer architecture → [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)
-- Coding style → [02-CODING.md](../standards/02-CODING.md)
+- Layer architecture → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
+- Coding style → [02-CODING.md](../../core/standards/02-CODING.md)
 - Exact config file names in repository (budgets live in configuration modules)
 
 ---
@@ -751,4 +751,4 @@ Global budgets apply unless task ADR defines stricter NFR. Values are defaults; 
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Cross-reference [08-REVIEW.md](../standards/08-REVIEW.md) Performance section. Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Cross-reference [08-REVIEW.md](../../core/standards/08-REVIEW.md) Performance section. Amend only with project owner approval.*

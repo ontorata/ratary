@@ -66,7 +66,7 @@ None are retroactive blockers for Phases 1–5 closure.
 | Phase 5 `IEmbeddingStore.searchSimilar` | Ready |
 | ADR-001 (CompositeRetrievalCandidateSource) | **✅ Approved** |
 | Extension points in src/ | Verified |
-| Phase folder [06-hybrid-retrieval/](../phases/06-hybrid-retrieval/README.md) | Active |
+| Phase folder [06-hybrid-retrieval/](../06-hybrid-retrieval/README.md) | Active |
 
 ---
 

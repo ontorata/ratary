@@ -11,7 +11,7 @@
 Execute Phase Gate **after**:
 
 1. Design approved (ADR Approved if structural)
-2. Implementation complete per [TASK_PROMPT.md](../../TASK_PROMPT.md)
+2. Implementation complete per [TASK_PROMPT.md](../../../TASK_PROMPT.md)
 3. Tests pass quality gate
 4. Architecture Review complete
 
@@ -45,11 +45,11 @@ All MUST pass for **PASS** or **PASS WITH OBSERVATIONS**:
 - [ ] [01-PHASE-CHECKLIST.md](01-PHASE-CHECKLIST.md) — design through architecture sections complete
 - [ ] [02-PHASE-SCORECARD.md](02-PHASE-SCORECARD.md) — no dimension scored **FAIL**
 - [ ] `npm run lint && npm run format:check && npm run typecheck && npm test` — green
-- [ ] [08-REVIEW-CHECKLIST.md](../../standards/08-REVIEW.md) — pre-merge items satisfied
+- [ ] [08-REVIEW-CHECKLIST.md](../../core/standards/08-REVIEW.md) — pre-merge items satisfied
 - [ ] Phase success criteria in [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) — verified with evidence
-- [ ] [ARCHITECTURE.md](../../architecture/10-PHASE-STATUS.md) — phase row accurate
+- [ ] [ARCHITECTURE.md](../../core/architecture/10-PHASE-STATUS.md) — phase row accurate
 - [ ] Relevant ADRs — status **Implemented** if structural work shipped
-- [ ] No constitution violation per [00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md)
+- [ ] No constitution violation per [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)
 - [ ] REST/MCP contracts — backward compatible or owner-approved break
 - [ ] [03-PHASE-RETROSPECTIVE.md](03-PHASE-RETROSPECTIVE.md) — drafted (may complete immediately after gate)
 
@@ -84,9 +84,9 @@ All MUST pass for **PASS** or **PASS WITH OBSERVATIONS**:
 | Document | Role |
 |----------|------|
 | [05-DEVELOPMENT-WORKFLOW.md](../../workflow/05-WORKFLOW.md) | Release stage |
-| [07-DOCUMENTATION-STANDARD.md](../../standards/07-DOCUMENTATION.md) | Doc update triggers |
+| [07-DOCUMENTATION-STANDARD.md](../../core/standards/07-DOCUMENTATION.md) | Doc update triggers |
 | [templates/completion-report.md](../templates/completion-report.md) | Evidence template |
 
 ---
 
-*Gate authority: project owner. Subordinate to [constitution/INDEX.md](../constitution/INDEX.md).*
+*Gate authority: project owner. Subordinate to [constitution/INDEX.md](../../core/constitution/INDEX.md).*

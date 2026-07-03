@@ -102,7 +102,7 @@ Rotate `{TASK_PROMPT_PATH}` from [templates/task-prompt.md](../templates/task-pr
 |----------|----------------|
 | [phase-completion.md](phase-completion.md) | Precedes this for phase N |
 | [review/04-PHASE-READINESS.md](../review/04-PHASE-READINESS.md) | Normative process |
-| [phases/PHASE-DOCUMENT-SCHEMA.md](../phases/PHASE-DOCUMENT-SCHEMA.md) | Document lifecycle |
+| [phases/PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) | Document lifecycle |
 
 ---
 

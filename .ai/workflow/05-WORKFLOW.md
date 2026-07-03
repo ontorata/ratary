@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants and human maintainers.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md). Pre-implementation analysis: §Pre-implementation analysis below.
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md). Pre-implementation analysis: §Pre-implementation analysis below.
 
 ---
 
@@ -28,11 +28,11 @@ Ensure AI assistants and humans follow the same sequence regardless of tool, mod
 
 ## Not Covered
 
-- Immutable rules and layer law → [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) – [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)
-- Line-level coding style → [02-CODING.md](../standards/02-CODING.md)
-- Naming conventions → [03-NAMING.md](../standards/03-NAMING.md)
-- ADR content and lifecycle policy → [../adr/POLICY.md](../../docs/adr/POLICY.md)
-- Active task scope and definition of done → [../TASK_PROMPT.md](../TASK_PROMPT.md)
+- Immutable rules and layer law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) – [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
+- Line-level coding style → [02-CODING.md](../../core/standards/02-CODING.md)
+- Naming conventions → [03-NAMING.md](../../core/standards/03-NAMING.md)
+- ADR content and lifecycle policy → [../adr/POLICY.md](../../../docs/adr/POLICY.md)
+- Active task scope and definition of done → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
 - User-facing operations → [../PANDUAN.md](../../docs/PANDUAN.md)
 
 ---
@@ -83,13 +83,13 @@ No stage may be skipped. No backward transition without fixing the failing check
 ### Activities
 
 1. Read governing documents in order:
-   - [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md)
-   - [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)
+   - [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)
+   - [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
    - [01-05-WORKFLOW.md](01-05-WORKFLOW.md)
-   - [02-CODING.md](../standards/02-CODING.md)
-   - [03-NAMING.md](../standards/03-NAMING.md)
-   - [../TASK_PROMPT.md](../TASK_PROMPT.md)
-   - Relevant approved ADRs in [adr/](../../docs/adr/)
+   - [02-CODING.md](../../core/standards/02-CODING.md)
+   - [03-NAMING.md](../../core/standards/03-NAMING.md)
+   - [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
+   - Relevant approved ADRs in [adr/](../../../docs/adr/)
 2. Inspect existing code in affected modules under `src/`.
 3. Classify the change:
    - Bug fix (boundary unchanged)
@@ -103,7 +103,7 @@ No stage may be skipped. No backward transition without fixing the failing check
 | # | Criterion | Pass condition |
 |---|-----------|----------------|
 | R1 | Documents read | All applicable governing docs reviewed |
-| R2 | Task scope identified | Active [../TASK_PROMPT.md](../TASK_PROMPT.md) or explicit owner instruction |
+| R2 | Task scope identified | Active [../../TASK_PROMPT.md](../../TASK_PROMPT.md) or explicit owner instruction |
 | R3 | Change classified | Bug / additive / structural recorded |
 | R4 | ADR status | Approved ADR exists if structural; Proposed ADR written if missing |
 | R5 | No conflict | No unresolved conflict with constitution |
@@ -121,8 +121,8 @@ No stage may be skipped. No backward transition without fixing the failing check
 ### Activities
 
 1. **Architecture review (mandatory)** — complete before coding:
-   - Layer placement per [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)
-   - Canonical owner module per [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)
+   - Layer placement per [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
+   - Canonical owner module per [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
    - Port vs adapter decisions
    - REST, MCP, schema, and migration impact
    - Three-phase future compatibility
@@ -169,7 +169,7 @@ No stage may be skipped. No backward transition without fixing the failing check
 ### Activities
 
 1. Implement one concern per commit per design plan.
-2. Follow [01-05-WORKFLOW.md](01-05-WORKFLOW.md) and [02-CODING.md](../standards/02-CODING.md).
+2. Follow [01-05-WORKFLOW.md](01-05-WORKFLOW.md) and [02-CODING.md](../../core/standards/02-CODING.md).
 3. Wire concrete adapters only at composition roots.
 4. Run quality gate after each commit:
 
@@ -250,11 +250,11 @@ Update documents when applicable:
 
 | Document | Trigger |
 |----------|---------|
-| [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) | Ports, phases, deployment, extension points changed |
-| [../TASK_PROMPT.md](../TASK_PROMPT.md) | Definition of done, completion report |
+| [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) | Ports, phases, deployment, extension points changed |
+| [../../TASK_PROMPT.md](../../TASK_PROMPT.md) | Definition of done, completion report |
 | [../PANDUAN.md](../../docs/PANDUAN.md) | User-visible setup, env vars, commands |
-| [adr/*.md](../../docs/adr/) | ADR status → Implemented when structural work merges |
-| [adr/README.md](../../docs/adr/README.md) | ADR index status |
+| [adr/*.md](../../../docs/adr/) | ADR status → Implemented when structural work merges |
+| [adr/README.md](../../../docs/adr/README.md) | ADR index status |
 | [README.md](../../docs/README.md) | Public API surface change |
 | [archive/](../../docs/archive/) | Phase design history when closing a phase |
 
@@ -365,8 +365,8 @@ npm run lint && npm run format:check && npm run typecheck && npm test
    - REST: Vercel / `npm run dev`
    - MCP: `npm run mcp` / `npm run setup`
 5. Smoke test critical paths: health, auth bootstrap, memory CRUD, MCP tool invocation.
-6. Update phase status in [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) when phase completes.
-7. Rotate [../TASK_PROMPT.md](../TASK_PROMPT.md) from template when starting next phase.
+6. Update phase status in [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) when phase completes.
+7. Rotate [../../TASK_PROMPT.md](../../TASK_PROMPT.md) from template when starting next phase.
 
 ### Mandatory checkpoint — Release gate
 
@@ -538,17 +538,17 @@ Abbreviated Design still requires written layer placement — never skip D2.
 
 | # | Document | Purpose |
 |---|----------|---------|
-| 1 | [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) | Immutable law |
-| 2 | [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) | Structure, layers, extension points |
-| 3 | [10-PHASE-STATUS.md](../architecture/10-PHASE-STATUS.md) | Live metrics and debt |
-| 4 | [TASK_PROMPT.md](../TASK_PROMPT.md) | Current phase work only |
+| 1 | [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) | Immutable law |
+| 2 | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Structure, layers, extension points |
+| 3 | [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) | Live metrics and debt |
+| 4 | [TASK_PROMPT.md](../../TASK_PROMPT.md) | Current phase work only |
 | 5 | [PANDUAN.md](../../docs/PANDUAN.md) | User-facing behavior and ops |
 | 6 | [archive/](../../docs/archive/) | Historical design context |
 | 7 | Existing implementation | Inspect `src/` — verify against docs |
 
 ### 1. Current architecture
 
-Where does this feature belong? Which canonical owner from [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)?
+Where does this feature belong? Which canonical owner from [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)?
 
 ### 2. Layer impact
 
@@ -601,8 +601,8 @@ Performance, security, migration, scalability, maintainability.
 ## Test Plan
 ```
 
-See [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) §Development Discussion for multi-layer work.
+See [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) §Development Discussion for multi-layer work.
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md). Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md). Amend only with project owner approval.*

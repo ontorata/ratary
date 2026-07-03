@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants operating on this repository.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Structural law: [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md).
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Structural law: [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md).
 
 **Supersedes:** `AI_BRAIN_CONSTITUTION.md` (module registry), `10-AI-COMMUNICATION.md` (protocol). Archived snapshots: [archive/](../../docs/archive/).
 
@@ -12,7 +12,7 @@
 
 Single source for (1) **canonical module ownership** and repo-specific agent constraints, and (2) **AI communication protocol** across all tools and models.
 
-Immutable law remains in [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Layer and port law remains in [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md).
+Immutable law remains in [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Layer and port law remains in [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md).
 
 ---
 
@@ -62,7 +62,7 @@ Extend the **canonical module** — do not copy logic.
 | Rule | Requirement |
 |------|-------------|
 | Commits | Small; **one concern per commit** |
-| Scope | No architecture outside approved ADR + [TASK_PROMPT.md](../TASK_PROMPT.md) |
+| Scope | No architecture outside approved ADR + [TASK_PROMPT.md](../../TASK_PROMPT.md) |
 | Quality gate | `lint` → `format:check` → `typecheck` → `test` — stop on failure |
 | Tests | No decrease in coverage; never skip |
 | MCP | Additive tools preferred |
@@ -82,9 +82,9 @@ The user may communicate in **Indonesian**. All AI assistants MUST:
 
 1. Understand Indonesian naturally — never ask the user to rewrite prompts in English.
 2. Internally normalize requests into **technical English** before reasoning.
-3. Use repository standards ([.ai/README.md](../README.md), `.ai/constitution/*`, `.ai/standards/*`, `docs/adr/*`) as the **single source of truth**.
+3. Use repository standards ([.ai/README.md](../README.md), `.ai/core/constitution/*`, `.ai/core/standards/*`, `docs/adr/*`) as the **single source of truth**.
 4. Never infer architecture outside documented standards.
-5. Never replace existing patterns without **ADR approval** (see [adr/POLICY.md](../../docs/adr/POLICY.md)).
+5. Never replace existing patterns without **ADR approval** (see [adr/POLICY.md](../../../docs/adr/POLICY.md)).
 6. Reply to the user in **Indonesian** unless the user explicitly requests another language.
 7. Produce technical artifacts (architecture notes, analysis, plans) in **English**.
 8. Produce source code in **English**.
@@ -94,7 +94,7 @@ The user may communicate in **Indonesian**. All AI assistants MUST:
 **Code language prohibitions (MUST NOT):**
 
 11. Mix Indonesian names with English identifiers — all variables, functions, types, and files MUST use English identifiers only.
-12. Generate Indonesian code comments — comments MUST be English (why-only per [02-CODING.md](../standards/02-CODING.md)).
+12. Generate Indonesian code comments — comments MUST be English (why-only per [02-CODING.md](../../core/standards/02-CODING.md)).
 13. Translate existing source code — do not rename identifiers or rewrite comments in another language unless the owner explicitly requests a localization task.
 
 **Consistency rule:** Identifiers, layer names, port names, and protocol terms remain English in all languages.
@@ -285,7 +285,7 @@ Every architecture decision or discussion uses this structure:
 | **Recommendation** | Single clear option; label `Recommendation:` not `Decision:` unless Approved |
 | **Future Compatibility** | Impact on phases N+1 through N+3 minimum |
 
-Structural changes: write ADR using [../adr/000-template.md](../../docs/adr/000-template.md); set status **Proposed** until **Approved**.
+Structural changes: write ADR using [../adr/000-template.md](../../../docs/adr/000-template.md); set status **Proposed** until **Approved**.
 
 ---
 
@@ -319,7 +319,7 @@ Every code review response uses:
 | **Future Compatibility** | Phase 6â€“10 blockers |
 | **Action Items** | Numbered, actionable, priority ordered |
 
-Cross-check [08-REVIEW.md](../standards/08-REVIEW.md). Label blocking items `Blocked:`.
+Cross-check [08-REVIEW.md](../../core/standards/08-REVIEW.md). Label blocking items `Blocked:`.
 
 ---
 
@@ -476,5 +476,5 @@ Before sending a technical response, validate:
 
 ---
 
-*Communication protocol section. Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [09-ROADMAP.md](../roadmap/09-ROADMAP.md).*
+*Communication protocol section. Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [09-ROADMAP.md](../roadmap/09-ROADMAP.md).*
 

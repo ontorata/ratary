@@ -2,7 +2,7 @@
 
 **Purpose:** Governance artifacts for closing a phase and authorizing the next.  
 **Audience:** Project owner, AI assistants, maintainers.  
-**Authority:** Subordinate to [constitution/INDEX.md](../constitution/INDEX.md) and [.ai/roadmap/09-ROADMAP.md](../../roadmap/09-ROADMAP.md).
+**Authority:** Subordinate to [constitution/INDEX.md](../../core/constitution/INDEX.md) and [.ai/phases/roadmap/09-ROADMAP.md](../../roadmap/09-ROADMAP.md).
 
 ---
 

@@ -41,7 +41,7 @@ Executable gate checklist instance — one item per milestone or success criteri
 ### Quality gate
 
 - [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — green (existing)
-- [x] [08-REVIEW-CHECKLIST.md](../../../standards/08-REVIEW.md) satisfied — No code changes
+- [x] [08-REVIEW-CHECKLIST.md](../../core/standards/08-REVIEW.md) satisfied — No code changes
 - [ ] ARCHITECTURE.md Phase 7 row updated
 - [x] Agent boundary documentation complete — DESIGN.md, COMPLETION.md
 

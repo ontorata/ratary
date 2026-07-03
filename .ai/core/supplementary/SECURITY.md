@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants and human maintainers.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Supersedes informal security guidance in chat.
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Supersedes informal security guidance in chat.
 
 ---
 
@@ -28,9 +28,9 @@ Ensure every change is evaluated against explicit threats, isolation requirement
 
 ## Not Covered
 
-- Immutable constitutional law → [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md)
-- Layer placement and ports → [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)
-- Communication tone → [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)
+- Immutable constitutional law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)
+- Layer placement and ports → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
+- Communication tone → [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
 - Operational runbooks for specific cloud consoles
 - Legal/compliance certification programs (SOC2, ISO) — future enterprise phase
 
@@ -614,4 +614,4 @@ Verify permission after authentication, before business logic.
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md). Cross-reference [08-REVIEW.md](../standards/08-REVIEW.md) Security section. Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Cross-reference [08-REVIEW.md](../../core/standards/08-REVIEW.md) Security section. Amend only with project owner approval.*

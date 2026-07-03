@@ -45,7 +45,7 @@ Executable gate checklist instance — one item per Phase 6 milestone or success
 ## Quality gate
 
 - [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — green (192 tests passed)
-- [x] [08-REVIEW-CHECKLIST.md](../../../standards/08-REVIEW.md) satisfied — **All gates passed**
+- [x] [08-REVIEW-CHECKLIST.md](../../core/standards/08-REVIEW.md) satisfied — **All gates passed**
 - [x] ARCHITECTURE.md Phase 6 row updated
 - [x] ADR-001 marked Implemented
 

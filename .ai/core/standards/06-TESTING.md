@@ -2,7 +2,7 @@
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants and human maintainers.  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [05-WORKFLOW.md](../workflow/05-WORKFLOW.md).
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [05-WORKFLOW.md](../workflow/05-WORKFLOW.md).
 
 ---
 
@@ -29,10 +29,10 @@ Provide AI assistants objective criteria for what tests to write, where to place
 ## Not Covered
 
 - Development workflow stages → [05-WORKFLOW.md](../workflow/05-WORKFLOW.md)
-- Layer and port architecture → [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md)
-- Code style and function size → [02-CODING.md](../standards/02-CODING.md)
-- File and identifier naming → [03-NAMING.md](../standards/03-NAMING.md)
-- Active task test deliverables → [../TASK_PROMPT.md](../TASK_PROMPT.md)
+- Layer and port architecture → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
+- Code style and function size → [02-CODING.md](../../core/standards/02-CODING.md)
+- File and identifier naming → [03-NAMING.md](../../core/standards/03-NAMING.md)
+- Active task test deliverables → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
 
 ---
 
@@ -235,7 +235,7 @@ tests/
 
 ## Naming
 
-Per [03-NAMING.md](../standards/03-NAMING.md):
+Per [03-NAMING.md](../../core/standards/03-NAMING.md):
 
 | Element | Convention |
 |---------|------------|
@@ -491,4 +491,4 @@ it('should call API', async () => {
 
 ---
 
-*Inherits from [00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) through [05-WORKFLOW.md](../workflow/05-WORKFLOW.md). Amend only with project owner approval.*
+*Inherits from [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [05-WORKFLOW.md](../workflow/05-WORKFLOW.md). Amend only with project owner approval.*

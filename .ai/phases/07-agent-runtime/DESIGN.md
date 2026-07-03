@@ -3,7 +3,7 @@
 **Document:** DESIGN  
 **Phase status:** Ready  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**Authority:** Subordinate to [00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md)
+**Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 
 ---
 
@@ -1183,8 +1183,8 @@ The Phase 7 boundary design guarantees:
 
 | Document | Relevance |
 |----------|-----------|
-| [00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md) | Immutable law; boundary rules |
-| [04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md) | Layer boundaries; ports |
+| [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) | Immutable law; boundary rules |
+| [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Layer boundaries; ports |
 | [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) | Phase 7 scope |
 | [GLOSSARY.md](../../glossary/GLOSSARY.md) | Canonical terms |
 
@@ -1192,11 +1192,11 @@ The Phase 7 boundary design guarantees:
 
 | ADR | Title | Phase 7 relevance |
 |-----|-------|-------------------|
-| [ADR-001](../../docs/adr/001-multi-source-retrieval.md) | Multi-source retrieval | Enables richer context |
-| [ADR-002](../../docs/adr/002-workspace-identity-model.md) | Workspace identity | Scope contract for Phase 9+ |
-| [ADR-003](../../docs/adr/003-embedding-storage-mvp.md) | Embedding storage | Vector retrieval foundation |
-| [ADR-004](../../docs/adr/004-repository-port-types.md) | Repository ports | Storage abstraction |
-| [ADR-005](../../docs/adr/005-content-object-store.md) | Content store | Future blob offload |
+| [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) | Multi-source retrieval | Enables richer context |
+| [ADR-002](../../../docs/adr/002-workspace-identity-model.md) | Workspace identity | Scope contract for Phase 9+ |
+| [ADR-003](../../../docs/adr/003-embedding-storage-mvp.md) | Embedding storage | Vector retrieval foundation |
+| [ADR-004](../../../docs/adr/004-repository-port-types.md) | Repository ports | Storage abstraction |
+| [ADR-005](../../../docs/adr/005-content-object-store.md) | Content store | Future blob offload |
 
 ### Phase documents
 
@@ -1217,4 +1217,4 @@ The Phase 7 boundary design guarantees:
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../architecture/04-ARCHITECTURE.md). Do not contradict Approved ADRs.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md). Do not contradict Approved ADRs.*

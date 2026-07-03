@@ -12,7 +12,7 @@
 
 Async embedding backfill, `IEmbeddingProvider`, `IEmbeddingStore`, `memory_embeddings`, orphan cleanup, ADR-003 and ADR-004 Implemented.
 
-**Evidence:** [phases/05-embedding/](../phases/05-embedding/README.md) · [phases/05-embedding/COMPLETION.md](../phases/05-embedding/COMPLETION.md) · [docs/archive/PHASE-5-EMBEDDING-DESIGN.md](../../docs/archive/PHASE-5-EMBEDDING-DESIGN.md)
+**Evidence:** [phases/05-embedding/](../05-embedding/README.md) · [phases/05-embedding/COMPLETION.md](../05-embedding/COMPLETION.md) · [docs/archive/PHASE-5-EMBEDDING-DESIGN.md](../../docs/archive/PHASE-5-EMBEDDING-DESIGN.md)
 
 ---
 

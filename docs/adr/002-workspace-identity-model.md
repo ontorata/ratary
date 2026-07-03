@@ -239,7 +239,7 @@ Before merging Phase 5+ code, verify:
 
 ## References
 
-- [11-AI-RULES.md](../.ai/ai-rules/11-AI-RULES.md)
+- [11-AI-RULES.md](../.ai/core/ai-rules/11-AI-RULES.md)
 - [POLICY.md](POLICY.md)
 - [ADR-001-multi-source-retrieval.md](001-multi-source-retrieval.md)
 - [ADR-003-embedding-storage-mvp.md](003-embedding-storage-mvp.md)

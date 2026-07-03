@@ -1,5 +1,5 @@
 # Constitution
 
-**Canonical:** [.ai/constitution/00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md)
+**Canonical:** [.ai/core/constitution/00-CONSTITUTION.md](../../constitution/00-CONSTITUTION.md)
 
-Registry stub only — normative text lives in `.ai/constitution/`. Do not duplicate.
+Registry stub only — normative text lives in `.ai/core/constitution/`. Do not duplicate.

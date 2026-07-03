@@ -2,7 +2,7 @@
 
 **Purpose:** End-to-end procedural workflows for recurring engineering operations.  
 **Audience:** Project owner, maintainers, all AI assistants.  
-**Authority:** Subordinate to [constitution/INDEX.md](../constitution/INDEX.md). Orchestrates [prompts/](../prompts/PROMPT-LIBRARY.md), [review/](../review/README.md), and [phases/](../phases/README.md).
+**Authority:** Subordinate to [constitution/INDEX.md](../../core/constitution/INDEX.md). Orchestrates [prompts/](../prompts/PROMPT-LIBRARY.md), [review/](../review/README.md), and [phases/](../README.md).
 
 ---
 

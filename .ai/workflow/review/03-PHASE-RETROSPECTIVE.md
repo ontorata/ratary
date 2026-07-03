@@ -96,4 +96,4 @@ Before next-phase implementation, complete [04-PHASE-READINESS.md](04-PHASE-READ
 
 ---
 
-*Template only — subordinate to [07-DOCUMENTATION-STANDARD.md](../../standards/07-DOCUMENTATION.md).*
+*Template only — subordinate to [07-DOCUMENTATION-STANDARD.md](../../core/standards/07-DOCUMENTATION.md).*

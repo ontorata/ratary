@@ -6,7 +6,7 @@
 
 ---
 
-**Before coding:** [11-AI-RULES.md](../ai-rules/11-AI-RULES.md) · [04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) · [05-WORKFLOW.md](../workflow/05-WORKFLOW.md)
+**Before coding:** [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) · [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) · [05-WORKFLOW.md](05-WORKFLOW.md)
 
 ---
 
@@ -40,7 +40,7 @@ Implement:
 
 ## Constraints
 
-- Follow [11-AI-RULES.md](../ai-rules/11-AI-RULES.md)
+- Follow [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
 - Preserve architecture
 - Backward compatible
 - No shortcuts (`*V2`, `TODO`, `FIXME`, stubs)

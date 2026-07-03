@@ -27,4 +27,4 @@ Ungoverned edits by autonomous assistants accumulate contradictions across a 5â€
 
 ---
 
-*Subordinate to [constitution](../constitution/README.md) and [OWNERSHIP.md](../../OWNERSHIP.md).*
+*Subordinate to [constitution](../../core/constitution/README.md) and [OWNERSHIP.md](../../OWNERSHIP.md).*

@@ -24,7 +24,7 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval
   ✅        ✅          ✅         ✅              ✅ (Phase 6 complete)
 ```
 
-Future: Graph (Phase 8), Multi-AI (Phase 9), Enterprise (Phase 10). See [.ai/roadmap/09-ROADMAP.md](../.ai/roadmap/09-ROADMAP.md).
+Future: Graph (Phase 8), Multi-AI (Phase 9), Enterprise (Phase 10). See [.ai/phases/roadmap/09-ROADMAP.md](../.ai/phases/roadmap/09-ROADMAP.md).
 
 ---
 
@@ -77,7 +77,7 @@ Phase design documents before ADR approval live in [archive/](archive/). They ar
 | Need | Document |
 |------|----------|
 | Install & use | [PANDUAN.md](PANDUAN.md) |
-| AI governance | [.ai/constitution/INDEX.md](../.ai/constitution/INDEX.md) |
+| AI governance | [.ai/START-HERE.md](../.ai/START-HERE.md) |
 | Vocabulary | [.ai/core/glossary/GLOSSARY.md](../.ai/core/glossary/GLOSSARY.md) |
 
 ---

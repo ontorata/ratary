@@ -16,4 +16,4 @@
 
 ---
 
-*Execute [decision-framework](../decision-framework/13-AI-DECISION-FRAMEWORK.md) before every code change.*
+*Execute [decision-framework](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) before every code change.*
