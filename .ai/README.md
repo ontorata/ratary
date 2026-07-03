@@ -1,61 +1,123 @@
-# AI Operating System
+# AI Brain — Documentation
 
-**Purpose:** Single source of truth for all AI assistants working on this repository.  
-**Rule:** `.ai/` is the **only** implementation authority. `docs/` is human documentation and must not override `.ai/`.
-
-**Mandatory entry:** [constitution/INDEX.md](constitution/INDEX.md)
+**Purpose:** AI Brain is a Memory Foundation for AI agents.  
+**Repository:** Memory storage, knowledge enrichment, retrieval, context, and MCP tools.  
+**Not Included:** Agent planning, reasoning, execution, or orchestration (external).
 
 ---
 
-## Corpus layout
+## Structure
 
 ```
 .ai/
-├── constitution/          Immutable law + session index
-├── decision-framework/    How AI makes engineering decisions
-├── architecture/          Structural law + live phase status
-├── standards/             Engineering, coding, naming, testing, docs, review
-├── workflow/              Process gates + task template
-├── ai-rules/              Module registry + Multi-AI communication protocol
-├── roadmap/               Phase 1–10 evolution
-├── glossary/              Canonical vocabulary
-├── supplementary/         Security, performance, writing
-├── TASK_PROMPT.md         Active scoped work (rotates per phase)
-├── prompts/               Prompt library + entries/
-├── phases/                Per-phase operational artifacts
-├── checklists/            Pass/fail gates
-├── playbooks/             Multi-step procedures
-├── review/                Phase gate methodology
-└── INDEX.md               Machine registry
+├── 01-core/        # Constitution, architecture, glossary, rules
+├── 02-standards/  # Engineering, coding, testing standards
+├── 03-workflow/   # Development, prompts, playbooks, checklists
+├── 04-phases/     # Phase documents (1-10)
+├── 05-adr/        # Architecture Decision Records
+├── 06-templates/  # Templates
+└── README.md      # This file
 ```
 
 ---
 
-## Human documentation (reference only)
+## Quick Start
 
-| Path | Role |
-|------|------|
-| [docs/README.md](../docs/README.md) | Human doc index |
-| [docs/PANDUAN.md](../docs/PANDUAN.md) | User guide (Indonesian) |
-| [docs/adr/](../docs/adr/) | Architecture Decision Records |
-| [docs/archive/](../docs/archive/) | Historical designs (read-only) |
-
----
-
-## Authority hierarchy
+### For AI Assistants
 
 ```
-Owner instruction
-  → constitution/00-CONSTITUTION.md
-  → decision-framework/13-AI-DECISION-FRAMEWORK.md
-  → architecture/04-ARCHITECTURE.md
-  → docs/adr/ (approved)
-  → standards/*
-  → ai-rules/11-AI-RULES.md
-  → TASK_PROMPT.md
-  → src/
+1. Baca: 01-core/CONSTITUTION.md
+2. Baca: 01-core/ARCHITECTURE.md
+3. Baca: 01-core/GLOSSARY.md
+```
+
+### Before Any Implementation
+
+```
+1. Jalankan: 03-workflow/pre-implementation-gate.md
+2. Verify: Constitution compliance
+3. Verify: ADR compliance
 ```
 
 ---
 
-*AI Operating System. Amend per [OWNERSHIP.md](OWNERSHIP.md).*
+## Phase Roadmap
+
+| Phase | Status | Focus |
+|-------|--------|-------|
+| 1 | ✅ Complete | Foundation |
+| 2 | ✅ Complete | Knowledge |
+| 3 | ✅ Complete | Authorization |
+| 4 | ✅ Complete | Intelligence |
+| 5 | ✅ Complete | Embedding |
+| 6 | ✅ Complete | Hybrid Retrieval |
+| 7 | ✅ Complete | Agent Runtime Boundary |
+| 8 | ✅ Ready | Knowledge Graph |
+| 9 | 🔲 Future | Multi-AI |
+| 10 | 🔲 Future | Enterprise |
+
+---
+
+## Layer Boundary
+
+```
+External Agent Runtime
+        │
+        ▼
+   MCP / REST
+        │
+        ▼
+   AI Brain
+        │
+        ▼
+   Memory → Knowledge → Retrieval → Context
+```
+
+---
+
+## Core Rules
+
+1. **AI Brain = Memory Foundation** — Not Agent Framework
+2. **MCP/REST only** — No agent logic inside
+3. **Clean Architecture** — Layers inward only
+4. **Port Pattern** — Interfaces for swappable parts
+5. **Additive First** — Never breaking changes
+
+---
+
+## Key Documents
+
+| Document | Purpose |
+|----------|---------|
+| [01-core/CONSTITUTION.md](01-core/constitution/00-CONSTITUTION.md) | Immutable rules |
+| [01-core/ARCHITECTURE.md](01-core/architecture/04-ARCHITECTURE.md) | Layer patterns |
+| [01-core/GLOSSARY.md](01-core/glossary/GLOSSARY.md) | Terminology |
+| [04-phases/roadmap/09-ROADMAP.md](04-phases/roadmap/09-ROADMAP.md) | Phase timeline |
+
+---
+
+## Forbidden
+
+AI Brain does NOT contain:
+
+- Planner / Executor
+- Workflow Engine
+- Reasoning Engine
+- Autonomous Loop
+- Tool Orchestrator
+
+These belong to external agent systems.
+
+---
+
+## Reading Order
+
+1. Constitution
+2. Architecture
+3. Roadmap (current phase)
+4. Phase Design
+5. ADRs (if structural change)
+
+---
+
+*AI Brain — Memory Foundation for AI*
