@@ -23,6 +23,7 @@ Workspace-scoped memory for multiple AI clients. Additive REST headers, MCP env 
 | Sync MVP | `src/sync/accept-sync-manager.ts` |
 | Repository filters | `src/repositories/repository-scope.ts`, `MemoryRepository` + services |
 | Composition | `src/composition/create-multi-ai-ports.ts`, `src/server.ts`, `src/mcp/server.ts` |
+| Write path wiring | `src/services/memory.service.ts`, `src/services/create-memory-service.ts` |
 | REST API | `src/controllers/workspace.controller.ts`, `src/routes/v1/workspace.routes.ts` |
 | MCP tools | `list_workspaces`, `list_agents`, `register_agent` (+ per-tool scope resolve) |
 
@@ -40,13 +41,12 @@ Workspace-scoped memory for multiple AI clients. Additive REST headers, MCP env 
 
 ---
 
-## Deferred
+## Accepted deferrals (Phase 10)
 
 | Item | Notes |
 |------|-------|
-| `AcceptSyncManager` on MemoryService write path | Port wired at composition root; hook pending |
-| `last_modified_by_agent_id` on memory writes | Column migrated; population deferred |
 | Organization / RBAC | Phase 10 |
+| Advanced sync merge | MVP last-write-wins only |
 
 ---
 

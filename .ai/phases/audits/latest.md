@@ -8,7 +8,7 @@
 
 ## Executive summary
 
-Phases 1–9 are **complete with code evidence**. Phase 9 gate PASS (ADR-007 Implemented). Quality gates green: **298 tests**, format/lint/typecheck pass.
+Phases 1–9 are **complete with code evidence**. Phase 9 gate PASS at **100%** (ADR-007 Implemented). Quality gates green: **300 tests**, format/lint/typecheck pass.
 
 | Dimension | Score |
 |-----------|-------|
@@ -18,7 +18,7 @@ Phases 1–9 are **complete with code evidence**. Phase 9 gate PASS (ADR-007 Imp
 | Agent boundary (Phase 7) | PASS |
 | Graph retrieval (Phase 8) | PASS |
 | Multi-AI workspace scope (Phase 9) | **PASS** |
-| Test suite health | PASS (298 tests) |
+| Test suite health | PASS (300 tests) |
 | ADR gates | PASS (ADR-001, ADR-006, ADR-007 Implemented) |
 | Cross-phase debt | PASS (accepted deferrals documented) |
 
@@ -42,16 +42,13 @@ Phases 1–9 are **complete with code evidence**. Phase 9 gate PASS (ADR-007 Imp
 | T-03 | N× `recordAccess` on context build |
 | T-04 | D1 in-process vector search |
 | T-05 | D1 in-process graph BFS (MVP) |
-| P9-01 | `AcceptSyncManager` not on MemoryService write path |
-| P9-02 | `last_modified_by_agent_id` not populated on writes |
 
 ---
 
 ## Next actions
 
 1. Phase 10 planning (Enterprise) when scheduled
-2. Optional: wire sync manager + agent attribution on writes
 
 ---
 
-*Aggregate audit — Phase 9 complete 2026-07-03.*
+*Aggregate audit — Phase 9 100% complete 2026-07-03.*

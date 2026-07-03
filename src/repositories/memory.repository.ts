@@ -90,8 +90,8 @@ export class MemoryRepository implements IMemoryRepository {
             owner_id, created_at, updated_at,
             codename, slug, keywords, category, memory_type, importance, language, notes,
             project_id, level, last_accessed, access_count, embedding_id, object_key, semantic_hash,
-            workspace_id
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            workspace_id, last_modified_by_agent_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             id,
             data.title,
@@ -120,6 +120,7 @@ export class MemoryRepository implements IMemoryRepository {
             null,
             data.semanticHash ?? null,
             data.workspaceId ?? null,
+            data.lastModifiedByAgentId ?? null,
           ],
         );
 
@@ -190,6 +191,7 @@ export class MemoryRepository implements IMemoryRepository {
       updated.favorite ? 1 : 0,
       updated.archived ? 1 : 0,
       updated.updatedAt,
+      data.lastModifiedByAgentId ?? null,
       id,
       ownerId,
     ];
@@ -200,7 +202,7 @@ export class MemoryRepository implements IMemoryRepository {
        SET title = ?, project = ?, content = ?, summary = ?, tags = ?,
            keywords = ?, category = ?, memory_type = ?, importance = ?,
            language = ?, notes = ?, slug = ?, project_id = ?, level = ?,
-           favorite = ?, archived = ?, updated_at = ?
+           favorite = ?, archived = ?, updated_at = ?, last_modified_by_agent_id = ?
        WHERE ${updateConditions.join(' AND ')}`,
       updateParams,
     );

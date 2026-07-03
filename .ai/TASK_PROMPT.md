@@ -41,8 +41,8 @@ Implement **Phase 9 — Multi-AI** per [ADR-007](../docs/adr/007-multi-ai-worksp
 - [x] ADR-007 **Approved** (2026-07-03)
 - [x] Migration + backfill complete
 - [x] Workspace isolation E2E
-- [ ] Agent attribution on writes (`last_modified_by_agent_id` — deferred; port ready)
-- [x] Quality gates pass (298 tests)
+- [x] Agent attribution on writes (`last_modified_by_agent_id` + sync hook)
+- [x] Quality gates pass (300 tests)
 - [x] Gate docs (REVIEW, COMPLETION, TESTING)
 
 ---

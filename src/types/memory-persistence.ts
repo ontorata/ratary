@@ -27,6 +27,7 @@ export interface InsertMemoryData {
   semanticHash?: string | null;
   accessCount?: number;
   lastAccessed?: string | null;
+  lastModifiedByAgentId?: string | null;
 }
 
 export interface UpdateMemoryData {
@@ -46,6 +47,7 @@ export interface UpdateMemoryData {
   archived?: boolean;
   projectId?: string;
   level?: MemoryLevel;
+  lastModifiedByAgentId?: string | null;
 }
 
 export interface ListFilters {

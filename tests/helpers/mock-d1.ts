@@ -392,6 +392,7 @@ export class MockD1Client implements D1Client {
         object_key: (params[24] as string | null | undefined) ?? null,
         semantic_hash: (params[25] as string | null | undefined) ?? null,
         workspace_id: (params[26] as string | null | undefined) ?? null,
+        last_modified_by_agent_id: (params[27] as string | null | undefined) ?? null,
       };
       this.memories.set(row.id, row);
       return { results: [], success: true, meta: { changes: 1 } };
@@ -538,6 +539,41 @@ export class MockD1Client implements D1Client {
           existing.archived = params[0] as number;
         }
         existing.updated_at = params[1] as string;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
+      if (normalizedSql.includes('LAST_MODIFIED_BY_AGENT_ID = ?') && params.length >= 20) {
+        const hasWorkspace = normalizedSql.includes('WORKSPACE_ID = ?');
+        id = params[params.length - (hasWorkspace ? 3 : 2)] as string;
+        ownerId = params[params.length - (hasWorkspace ? 2 : 1)] as string;
+        const workspaceId = hasWorkspace ? (params[params.length - 1] as string) : undefined;
+        const existing = this.memories.get(id);
+        if (
+          !existing ||
+          existing.owner_id !== ownerId ||
+          (workspaceId !== undefined && (existing.workspace_id ?? null) !== workspaceId)
+        ) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.title = params[0] as string;
+        existing.project = params[1] as string;
+        existing.content = params[2] as string;
+        existing.summary = params[3] as string;
+        existing.tags = params[4] as string;
+        existing.keywords = params[5] as string;
+        existing.category = params[6] as string;
+        existing.memory_type = params[7] as string;
+        existing.importance = params[8] as number;
+        existing.language = params[9] as string;
+        existing.notes = params[10] as string;
+        existing.slug = params[11] as string | null;
+        existing.project_id = params[12] as string;
+        existing.level = params[13] as MemoryLevel;
+        existing.favorite = params[14] as number;
+        existing.archived = params[15] as number;
+        existing.updated_at = params[16] as string;
+        existing.last_modified_by_agent_id = (params[17] as string | null | undefined) ?? null;
         this.memories.set(id, existing);
         return { results: [], success: true, meta: { changes: 1 } };
       }
@@ -1280,5 +1316,9 @@ export class MockD1Client implements D1Client {
 
   getAuditLogCount(): number {
     return this.auditLogs.length;
+  }
+
+  getMemory(id: string): MemoryRow | undefined {
+    return this.memories.get(id);
   }
 }

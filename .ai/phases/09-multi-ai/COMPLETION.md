@@ -20,8 +20,8 @@ Multiple AI clients share workspace-scoped memory under one owner. `IScopeResolv
 | `MemoryService` core not rewritten | Extended via scope param + repository filters only |
 | Owner isolation preserved | `tests/api/cross-owner-leak.test.ts` (23) |
 | Workspace isolation enforced | `tests/api/cross-workspace-leak.test.ts` (17) |
-| Agent registry | `D1AgentIdentity`, workspace agent REST/MCP |
-| Quality gate | 298 tests green |
+| Agent attribution + sync on writes | `MemoryService.reconcileMemoryWrite`, `tests/services/memory-write-attribution.test.ts` |
+| Quality gate | 300 tests green |
 
 ---
 
@@ -45,13 +45,12 @@ Multiple AI clients share workspace-scoped memory under one owner. `IScopeResolv
 
 ---
 
-## Deferred / accepted debt
+## Accepted deferrals (Phase 10)
 
 | Item | Path |
 |------|------|
-| Sync hook on memory writes | `AcceptSyncManager` at composition root |
-| Agent column on writes | `last_modified_by_agent_id` migration only |
 | Organization RBAC | Phase 10 |
+| Advanced sync merge (beyond last-write-wins MVP) | Phase 10 |
 
 ---
 

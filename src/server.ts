@@ -97,11 +97,11 @@ export async function buildApp(options?: {
 
   const repository = new MemoryRepository(db);
   const relationRepository = new MemoryRelationRepository(db);
-  const memoryService = createMemoryService(db, repository);
-  const relationService = createMemoryRelationService(db, repository, relationRepository);
-  const healthService = new HealthService(db);
   const multiAi = createMultiAiPorts(db);
   const { scopeResolver } = multiAi;
+  const memoryService = createMemoryService(db, repository, multiAi);
+  const relationService = createMemoryRelationService(db, repository, relationRepository);
+  const healthService = new HealthService(db);
 
   fastify.decorate('memoryService', memoryService);
   fastify.decorate('multiAi', multiAi);

@@ -442,7 +442,7 @@ Shared workspace memory across agents and clients; `IScopeResolver`, `IAgentIden
 - [x] Multiple AI clients share workspace-scoped memory
 - [x] `MemoryService` core not rewritten
 - [x] Owner isolation preserved; workspace isolation enforced
-- [ ] Agent attribution on writes — deferred (column migrated)
+- [x] Agent attribution on writes — `MemoryService` + `AcceptSyncManager` wired
 
 ## Gate
 

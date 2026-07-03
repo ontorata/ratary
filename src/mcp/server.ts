@@ -411,13 +411,14 @@ export async function startMcpStdioServer(): Promise<void> {
   const db = getD1Client();
   const repository = new MemoryRepository(db);
   const relationRepository = new MemoryRelationRepository(db);
-  const memoryService = createMemoryService(db, repository);
+  const multiAi = createMultiAiPorts(db);
+  const memoryService = createMemoryService(db, repository, multiAi);
   const relationService = createMemoryRelationService(db, repository, relationRepository);
   const embeddingProvider = createEmbeddingProvider();
   const embeddingStore = new D1EmbeddingStore(db);
   const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
   const graphService = createGraphService(db, repository);
-  const { scopeResolver, agentIdentity } = createMultiAiPorts(db);
+  const { scopeResolver, agentIdentity } = multiAi;
 
   const server = createMcpServer(
     memoryService,

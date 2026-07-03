@@ -1,5 +1,6 @@
 import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import type { IEmbeddingStore } from '../embedding/embedding.store.interface.js';
+import type { IAgentIdentity } from '../agent/iagent-identity.interface.js';
 import type { KnowledgeService } from '../knowledge/knowledge.service.js';
 import type { SearchService } from '../search/search.service.js';
 import type {
@@ -15,6 +16,9 @@ import type { MemoryType } from '../types/knowledge.js';
 import { DEFAULT_MEMORY_LEVEL } from '../types/memory-level.js';
 import { NotFoundError } from '../types/errors.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
+import { hasWorkspaceScope } from '../types/memory-scope.js';
+import type { ISyncManager, MemoryWriteEvent } from '../sync/isync-manager.interface.js';
+import { generateId } from '../utils/memory-mapper.js';
 
 export class MemoryService {
   constructor(
@@ -22,7 +26,37 @@ export class MemoryService {
     private readonly knowledge: KnowledgeService,
     private readonly search: SearchService,
     private readonly embeddingStore?: IEmbeddingStore,
+    private readonly syncManager?: ISyncManager,
+    private readonly agentIdentity?: IAgentIdentity,
   ) {}
+
+  private async resolveAttributionAgentId(scope: MemoryScope): Promise<string | undefined> {
+    const hint = scope.agentId?.trim();
+    if (!hint || !this.agentIdentity || !hasWorkspaceScope(scope)) {
+      return undefined;
+    }
+
+    const agent = await this.agentIdentity.resolve(scope, hint);
+    return agent?.id;
+  }
+
+  private async reconcileMemoryWrite(
+    scope: MemoryScope,
+    memoryId: string,
+    operation: MemoryWriteEvent['operation'],
+    expectedUpdatedAt?: string | null,
+  ): Promise<void> {
+    if (!this.syncManager) {
+      return;
+    }
+
+    await this.syncManager.reconcileWrite({
+      scope,
+      memoryId,
+      operation,
+      expectedUpdatedAt,
+    });
+  }
 
   async createMemory(scope: MemoryScope, input: CreateMemoryInput): Promise<Memory> {
     const enriched = await this.knowledge.enrichForCreate(scope.ownerId, {
@@ -39,7 +73,12 @@ export class MemoryService {
       notes: input.notes,
     });
 
+    const id = generateId();
+    const agentId = await this.resolveAttributionAgentId(scope);
+    await this.reconcileMemoryWrite(scope, id, 'create');
+
     return this.repository.insert({
+      id,
       title: input.title,
       project: input.project,
       content: input.content,
@@ -58,6 +97,7 @@ export class MemoryService {
       ownerId: scope.ownerId,
       workspaceId: workspaceIdFromScope(scope),
       level: input.level ?? DEFAULT_MEMORY_LEVEL,
+      lastModifiedByAgentId: agentId ?? null,
     });
   }
 
@@ -89,6 +129,9 @@ export class MemoryService {
       },
     );
 
+    const agentId = await this.resolveAttributionAgentId(scope);
+    await this.reconcileMemoryWrite(scope, id, 'update', existing.updatedAt);
+
     const updated = await this.repository.update(
       id,
       scope.ownerId,
@@ -106,6 +149,7 @@ export class MemoryService {
         notes: enriched.notes,
         slug: enriched.slug,
         favorite: input.favorite,
+        lastModifiedByAgentId: agentId ?? null,
       },
       workspaceId,
     );
@@ -118,6 +162,13 @@ export class MemoryService {
 
   async deleteMemory(scope: MemoryScope, id: string): Promise<void> {
     const workspaceId = workspaceIdFromScope(scope);
+    const existing = await this.repository.findById(id, scope.ownerId, workspaceId);
+    if (!existing) {
+      throw new NotFoundError('Memory', id);
+    }
+
+    await this.reconcileMemoryWrite(scope, id, 'delete', existing.updatedAt);
+
     const deleted = await this.repository.delete(id, scope.ownerId, workspaceId);
     if (!deleted) {
       throw new NotFoundError('Memory', id);

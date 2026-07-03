@@ -32,6 +32,8 @@ export const memoryRowSchema = z.object({
   embedding_id: z.string().nullable().optional(),
   object_key: z.string().nullable().optional(),
   semantic_hash: z.string().nullable().optional(),
+  workspace_id: z.string().nullable().optional(),
+  last_modified_by_agent_id: z.string().nullable().optional(),
 });
 
 export type MemoryRow = z.infer<typeof memoryRowSchema>;

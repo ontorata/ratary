@@ -10,7 +10,7 @@
 npm run lint && npm run format:check && npm run typecheck && npm test
 ```
 
-**Result:** 298 tests passing (2026-07-03).
+**Result:** 300 tests passing (2026-07-03).
 
 ---
 
@@ -28,6 +28,7 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 | Cross-workspace E2E | `tests/api/cross-workspace-leak.test.ts` (17) |
 | Workspace/agent API | `tests/api/workspaces.test.ts` (5) |
 | Workspace store | `tests/scope/workspace-store.test.ts` (3) |
+| Sync + attribution | `tests/services/memory-write-attribution.test.ts` (2) |
 | MCP tools | `tests/mcp/tools.test.ts` (19 tools incl. Phase 9) |
 
 ---
