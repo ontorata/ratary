@@ -206,11 +206,21 @@ export class MemoryRepository implements IMemoryRepository {
 
   async findById(id: string, ownerId: string): Promise<Memory | null> {
     const rows = await this.db.query<MemoryRow>(
-      'SELECT * FROM memories WHERE id = ? AND owner_id = ?',
+      `SELECT ${RETRIEVAL_MEMORY_SELECT} FROM memories WHERE id = ? AND owner_id = ?`,
       [id, ownerId],
     );
     if (rows.length === 0) return null;
     return rowToMemory(rows[0]);
+  }
+
+  async findByIds(ids: string[], ownerId: string): Promise<Memory[]> {
+    if (ids.length === 0) return [];
+    const placeholders = ids.map(() => '?').join(', ');
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT ${RETRIEVAL_MEMORY_SELECT} FROM memories WHERE id IN (${placeholders}) AND owner_id = ?`,
+      [...ids, ownerId],
+    );
+    return rows.map(rowToMemory);
   }
 
   async findByCodename(ownerId: string, codename: string): Promise<Memory | null> {

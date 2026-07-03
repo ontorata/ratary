@@ -667,11 +667,27 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: existed ? 1 : 0 } };
     }
 
-    if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE ID = ? AND OWNER_ID = ?')) {
+    // Check ID-specific queries BEFORE general SELECT * handlers
+    // More specific: must have ID = ? AND OWNER_ID = ? exactly
+    if (
+      normalizedSql.includes('WHERE ID = ?') &&
+      normalizedSql.includes('OWNER_ID = ?') &&
+      !normalizedSql.includes('SELECT * FROM MEMORIES WHERE ID')
+    ) {
       const id = params[0] as string;
       const ownerId = params[1] as string;
       const row = this.memories.get(id);
       return { results: row && row.owner_id === ownerId ? [row] : [], success: true };
+    }
+
+    // IN clause handler - specific pattern for findByIds
+    if (normalizedSql.includes('WHERE ID IN (')) {
+      const ownerId = params[params.length - 1] as string;
+      const ids = params.slice(0, -1) as string[];
+      const rows = ids
+        .map((id) => this.memories.get(id))
+        .filter((row): row is MemoryRow => row !== undefined && row.owner_id === ownerId);
+      return { results: rows, success: true };
     }
 
     if (normalizedSql.includes('SELECT * FROM MEMORIES WHERE ID = ?')) {

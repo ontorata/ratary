@@ -22,6 +22,7 @@ export interface RetrievalFilters {
 export interface IMemoryReader {
   slugExists(ownerId: string, slug: string, excludeSlug?: string): Promise<boolean>;
   findById(id: string, ownerId: string): Promise<Memory | null>;
+  findByIds(ids: string[], ownerId: string): Promise<Memory[]>;
   findByCodename(ownerId: string, codename: string): Promise<Memory | null>;
   findBySlug(ownerId: string, slug: string): Promise<Memory | null>;
   findAll(filters: ListFilters): Promise<{ memories: Memory[]; total: number }>;
