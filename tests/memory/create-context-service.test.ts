@@ -8,6 +8,7 @@ import type {
   EmbeddingResult,
   IEmbeddingProvider,
 } from '../../src/embedding/embedding.provider.interface.js';
+import { MemoryRelationRepository } from '../../src/repositories/memory-relation.repository.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 
 const QUERY = 'semantic-anchor';
@@ -41,6 +42,7 @@ describe('createContextService', () => {
     vi.stubEnv('D1_API_TOKEN', 'test-token');
     vi.stubEnv('NODE_ENV', 'test');
     vi.stubEnv('HYBRID_RETRIEVAL', 'false');
+    vi.stubEnv('GRAPH_RETRIEVAL', 'false');
 
     mockDb = new MockD1Client();
     repository = new MemoryRepository(mockDb);
@@ -132,5 +134,91 @@ describe('createContextService', () => {
 
     expect(result.memories.length).toBeGreaterThan(0);
     expect(result.context).toContain('SQL match semantic-anchor');
+  });
+
+  it('should surface graph neighbors when GRAPH_RETRIEVAL is true', async () => {
+    vi.stubEnv('GRAPH_RETRIEVAL', 'true');
+    resetEnvCache();
+
+    const seed = await repository.insert({
+      title: 'JWT refresh flow',
+      project: 'auth',
+      content: 'Details about JWT refresh token rotation.',
+      summary: 'jwt refresh',
+      tags: ['auth'],
+      keywords: ['jwt', 'refresh'],
+      category: '',
+      memoryType: 'note',
+      importance: 80,
+      language: 'en',
+      notes: '',
+      codename: `NOTE-${Math.random().toString(16).slice(2, 6)}`,
+      slug: 'jwt-refresh-flow',
+      favorite: false,
+      ownerId,
+    });
+
+    const neighbor = await repository.insert({
+      title: 'Auth architecture overview',
+      project: 'auth',
+      content: 'High-level authentication system design without jwt keywords.',
+      summary: 'architecture',
+      tags: ['auth'],
+      keywords: ['architecture'],
+      category: '',
+      memoryType: 'note',
+      importance: 70,
+      language: 'en',
+      notes: '',
+      codename: `NOTE-${Math.random().toString(16).slice(2, 6)}`,
+      slug: 'auth-architecture',
+      favorite: false,
+      ownerId,
+    });
+
+    const relationRepository = new MemoryRelationRepository(mockDb);
+    await relationRepository.insert({
+      sourceMemoryId: seed.id,
+      targetMemoryId: neighbor.id,
+      relation: 'depends_on',
+      ownerId,
+    });
+
+    const service = createContextService(repository, provider, embeddingStore, mockDb);
+    const result = await service.buildContext({ ownerId }, { query: 'JWT refresh', limit: 10 });
+
+    expect(result.memories.map((memory) => memory.id)).toContain(neighbor.id);
+    expect(result.context).toContain('Auth architecture overview');
+  });
+
+  it('should fall back to SQL-only when graph is enabled but db is omitted', async () => {
+    vi.stubEnv('GRAPH_RETRIEVAL', 'true');
+    resetEnvCache();
+
+    await repository.insert({
+      title: 'Graph keyword anchor',
+      project: 'audit',
+      content: 'Lexical match only without relations.',
+      summary: 'summary',
+      tags: [],
+      keywords: [],
+      category: '',
+      memoryType: 'note',
+      importance: 80,
+      language: 'en',
+      notes: '',
+      codename: `NOTE-${Math.random().toString(16).slice(2, 6)}`,
+      slug: 'graph-keyword',
+      favorite: false,
+      ownerId,
+    });
+
+    const service = createContextService(repository);
+    const result = await service.buildContext(
+      { ownerId },
+      { query: 'Graph keyword anchor', limit: 5 },
+    );
+
+    expect(result.memories.length).toBeGreaterThan(0);
   });
 });

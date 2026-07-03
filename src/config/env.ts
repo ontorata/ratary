@@ -7,6 +7,12 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 loadDotenv({ path: resolve(projectRoot, '.env'), quiet: true });
 
 import { z } from 'zod';
+import {
+  DEFAULT_GRAPH_MAX_DEPTH,
+  DEFAULT_GRAPH_MAX_DEPTH_MVP,
+  DEFAULT_GRAPH_MAX_NEIGHBORS,
+  DEFAULT_GRAPH_SEED_CAP,
+} from '../graph/graph.config.js';
 
 const envSchema = z
   .object({
@@ -35,6 +41,20 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+
+    // Graph retrieval (Phase 8) — ADR-006 Appendix C
+    GRAPH_RETRIEVAL: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    GRAPH_MAX_DEPTH: z.coerce
+      .number()
+      .int()
+      .min(1)
+      .max(DEFAULT_GRAPH_MAX_DEPTH_MVP)
+      .default(DEFAULT_GRAPH_MAX_DEPTH),
+    GRAPH_SEED_CAP: z.coerce.number().int().positive().default(DEFAULT_GRAPH_SEED_CAP),
+    GRAPH_MAX_NEIGHBORS: z.coerce.number().int().positive().default(DEFAULT_GRAPH_MAX_NEIGHBORS),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {

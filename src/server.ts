@@ -97,7 +97,7 @@ export async function buildApp(options?: {
   const relationController = createMemoryRelationController(relationService);
   const embeddingProvider = createEmbeddingProvider();
   const embeddingStore = new D1EmbeddingStore(db);
-  const contextService = createContextService(repository, embeddingProvider, embeddingStore);
+  const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
   const contextController = createContextController(contextService);
 
   const controllers = {

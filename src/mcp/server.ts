@@ -329,7 +329,7 @@ export async function startMcpStdioServer(): Promise<void> {
   const relationService = createMemoryRelationService(db, repository, relationRepository);
   const embeddingProvider = createEmbeddingProvider();
   const embeddingStore = new D1EmbeddingStore(db);
-  const contextService = createContextService(repository, embeddingProvider, embeddingStore);
+  const contextService = createContextService(repository, embeddingProvider, embeddingStore, db);
 
   const server = createMcpServer(memoryService, relationService, contextService);
   const transport = new StdioServerTransport();
