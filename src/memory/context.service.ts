@@ -1,7 +1,6 @@
 import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import type { MemoryScope } from '../types/memory-scope.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
-import type { MemoryLevel } from '../types/memory-level.js';
 import { Retriever } from './retriever.js';
 import { SqlRetrievalCandidateSource } from './sql-retrieval-candidate-source.js';
 import type { IRetrievalCandidateSource } from './retrieval-candidate-source.interface.js';
@@ -10,6 +9,7 @@ import { ContextBuilder, type ContextBuildOptions } from './context-builder.js';
 import { PromptBuilder } from './prompt-builder.js';
 import { DEFAULT_RETRIEVAL_RANK_LIMIT } from './context.config.js';
 import type { IMemoryAccessAuditor } from '../ports/audit/imemory-access-auditor.port.js';
+import type { MemoryLevel } from '../types/memory-level.js';
 
 export interface BuildContextRequest {
   projectId?: string;
@@ -67,7 +67,12 @@ export class ContextService {
       request.limit ?? DEFAULT_RETRIEVAL_RANK_LIMIT,
     );
 
-    const context = this.contextBuilder.build(ranked, request.context);
+    const contextOptions: ContextBuildOptions = {
+      ...request.context,
+      includeSummaryOnly: request.context?.includeSummaryOnly ?? true,
+    };
+    const memoriesForContext = await this.hydrateRankedMemories(scope, ranked, contextOptions);
+    const context = this.contextBuilder.build(memoriesForContext, contextOptions);
 
     const workspaceId = workspaceIdFromScope(scope);
     const memoryIds = ranked.map((memory) => memory.id);
@@ -110,5 +115,27 @@ export class ContextService {
       system: prompt.system,
       user: prompt.user,
     };
+  }
+
+  private async hydrateRankedMemories(
+    scope: MemoryScope,
+    ranked: ScoredMemory[],
+    options: ContextBuildOptions,
+  ): Promise<ScoredMemory[]> {
+    if (options.includeSummaryOnly !== false || ranked.length === 0) {
+      return ranked;
+    }
+
+    const workspaceId = workspaceIdFromScope(scope);
+    const hydrated = await this.repository.findByIdsWithContent(
+      ranked.map((memory) => memory.id),
+      scope.ownerId,
+      workspaceId,
+    );
+    const contentById = new Map(hydrated.map((memory) => [memory.id, memory.content]));
+
+    return ranked.map((memory) =>
+      contentById.has(memory.id) ? { ...memory, content: contentById.get(memory.id)! } : memory,
+    );
   }
 }

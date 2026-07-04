@@ -65,6 +65,39 @@ describe('ContextService', () => {
     expect(result.context).toContain('Architecture note');
   });
 
+  it('should hydrate full body when includeSummaryOnly is false', async () => {
+    const bodyMarker = 'FULL_BODY_HYDRATION_MARKER';
+    await repository.insert({
+      title: 'Hydration body test',
+      project: 'mangroveapps',
+      content: 'x'.repeat(400) + bodyMarker,
+      summary: 'short summary only',
+      tags: ['hydration'],
+      keywords: ['hydration'],
+      category: '',
+      memoryType: 'note',
+      importance: 80,
+      language: 'id',
+      notes: '',
+      codename: `NOTE-${Math.random().toString(16).slice(2, 6)}`,
+      slug: 'hydration-body-test',
+      favorite: false,
+      ownerId,
+    });
+
+    const lean = await service.buildContext(
+      { ownerId },
+      { query: 'Hydration body', limit: 5, context: { includeSummaryOnly: true } },
+    );
+    expect(lean.context).not.toContain(bodyMarker);
+
+    const rich = await service.buildContext(
+      { ownerId },
+      { query: 'Hydration body', limit: 5, context: { includeSummaryOnly: false } },
+    );
+    expect(rich.context).toContain(bodyMarker);
+  });
+
   it('should emit memory access audit entries when auditor is wired', async () => {
     await seed('Audit target', 'Content for audit trail');
 

@@ -393,6 +393,9 @@ describe('MemoryRepository', () => {
     const byIds = await repository.findByIds([memory.id], ownerId);
     expect(byIds[0]?.content).toBe(secretBody);
 
+    const withContent = await repository.findByIdsWithContent([memory.id], ownerId);
+    expect(withContent[0]?.content).toBe(secretBody);
+
     const full = await repository.findById(memory.id, ownerId);
     expect(full?.content).toBe(secretBody);
   });

@@ -1054,13 +1054,14 @@ export class MockD1Client implements D1Client {
       };
     }
 
-    // IN clause handler - specific pattern for findByIds
+    // IN clause handler - specific pattern for findByIds / findByIdsWithContent
     if (normalizedSql.includes('WHERE ID IN (')) {
-      const ownerId = params[params.length - 1] as string;
-      const workspaceId = normalizedSql.includes('WORKSPACE_ID = ?')
+      const hasWorkspace = normalizedSql.includes('WORKSPACE_ID = ?');
+      const ownerId = hasWorkspace
         ? (params[params.length - 2] as string)
-        : undefined;
-      const idParams = workspaceId ? params.slice(0, -2) : params.slice(0, -1);
+        : (params[params.length - 1] as string);
+      const workspaceId = hasWorkspace ? (params[params.length - 1] as string) : undefined;
+      const idParams = hasWorkspace ? params.slice(0, -2) : params.slice(0, -1);
       const ids = idParams as string[];
       const rows = ids
         .map((id) => this.memories.get(id))

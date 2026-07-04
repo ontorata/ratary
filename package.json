@@ -39,6 +39,7 @@
     "db:backfill-neo4j:execute": "tsx scripts/backfill-neo4j.ts --execute",
     "consolidate:memories": "tsx scripts/consolidate-memories.ts",
     "consolidate:memories:execute": "tsx scripts/consolidate-memories.ts --execute",
+    "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",
     "test:integration": "tsx scripts/test-integration.ts",
     "import:backups": "tsx scripts/import-backups.ts",
     "import:backups:dry": "tsx scripts/import-backups.ts --dry-run",

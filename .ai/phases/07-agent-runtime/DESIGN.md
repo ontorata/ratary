@@ -657,8 +657,8 @@ MCP uses **JSON-RPC 2.0** over stdio. Tool invocations use `tools/call`; respons
 | `list_relations` | `{ "id" }` | `{ relations: [...] }` |
 | `toggle_favorite` | `{ "id" }` | `Memory` object |
 | `archive_memory` | `{ "id" }` | `Memory` object |
-| `get_context` | `{ "query?", "limit?", "max_chars?" }` | `{ context, memories, ... }` |
-| `build_prompt` | `{ "task", "query?", "system_role?" }` | `{ system, user, context }` |
+| `get_context` | `{ "query?", "limit?", "max_chars?", "content_mode?", "summary_only?", "include_body?" }` | `{ context, memories, ... }` |
+| `build_prompt` | `{ "task", "query?", "system_role?", "max_chars?", "summary_only?", "include_body?" }` | `{ system, user, context }` |
 | `get_graph_capabilities` | `{}` | `{ capabilities: {...} }` |
 | `traverse_relations` | `{ "memoryId", "depth?", "types?" }` | `{ memoryIds, neighbors }` |
 | `list_workspaces` | `{}` | `{ workspaces: [...] }` |

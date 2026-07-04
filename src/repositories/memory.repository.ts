@@ -254,6 +254,24 @@ export class MemoryRepository implements IMemoryRepository {
     return rows.map(rowToMemory);
   }
 
+  async findByIdsWithContent(
+    ids: string[],
+    ownerId: string,
+    workspaceId?: string,
+  ): Promise<Memory[]> {
+    if (ids.length === 0) return [];
+    const placeholders = ids.map(() => '?').join(', ');
+    const conditions = [`id IN (${placeholders})`, 'owner_id = ?'];
+    const params: unknown[] = [...ids, ownerId];
+    appendWorkspaceFilter(conditions, params, workspaceId);
+
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT ${MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')}`,
+      params,
+    );
+    return rows.map(rowToMemory);
+  }
+
   async findByCodename(
     ownerId: string,
     codename: string,

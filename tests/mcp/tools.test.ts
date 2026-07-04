@@ -185,6 +185,51 @@ describe('MCP tools', () => {
     expect(promptBody.user).toContain('Summarize context');
   });
 
+  it('get_context summary_only omits full memory body', async () => {
+    const bodyMarker = 'ONLY_IN_BODY_MARKER';
+    const content = 'x'.repeat(400) + bodyMarker;
+    await client.callTool({
+      name: 'save_memory',
+      arguments: {
+        title: 'Summary only MCP test',
+        content,
+        project: 'ai-brain',
+        tags: ['summary-only'],
+      },
+    });
+
+    const lean = await client.callTool({
+      name: 'get_context',
+      arguments: { query: 'Summary only MCP', limit: 5 },
+    });
+    expect(lean.isError).not.toBe(true);
+    const leanBody = JSON.parse((lean.content as [{ text: string }])[0].text) as {
+      context: string;
+    };
+    expect(leanBody.context).not.toContain(bodyMarker);
+
+    const rich = await client.callTool({
+      name: 'get_context',
+      arguments: { query: 'Summary only MCP', limit: 5, content_mode: 'full' },
+    });
+    expect(rich.isError).not.toBe(true);
+    const richBody = JSON.parse((rich.content as [{ text: string }])[0].text) as {
+      context: string;
+    };
+    expect(richBody.context).toContain(bodyMarker);
+    expect(leanBody.context.length).toBeLessThan(richBody.context.length);
+
+    const summary = await client.callTool({
+      name: 'get_context',
+      arguments: { query: 'Summary only MCP', limit: 5, summary_only: true },
+    });
+    expect(summary.isError).not.toBe(true);
+    const summaryBody = JSON.parse((summary.content as [{ text: string }])[0].text) as {
+      context: string;
+    };
+    expect(summaryBody.context).not.toContain(bodyMarker);
+  });
+
   it('runs list_workspaces, register_agent, and list_agents', async () => {
     const listed = await client.callTool({ name: 'list_workspaces', arguments: {} });
     expect(listed.isError).not.toBe(true);

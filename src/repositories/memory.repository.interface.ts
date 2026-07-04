@@ -24,6 +24,8 @@ export interface IMemoryReader {
   slugExists(ownerId: string, slug: string, excludeSlug?: string): Promise<boolean>;
   findById(id: string, ownerId: string, workspaceId?: string): Promise<Memory | null>;
   findByIds(ids: string[], ownerId: string, workspaceId?: string): Promise<Memory[]>;
+  /** Full row including content — for context hydration when bodies are requested. */
+  findByIdsWithContent(ids: string[], ownerId: string, workspaceId?: string): Promise<Memory[]>;
   findByCodename(ownerId: string, codename: string, workspaceId?: string): Promise<Memory | null>;
   findBySlug(ownerId: string, slug: string, workspaceId?: string): Promise<Memory | null>;
   findAll(filters: ListFilters): Promise<{ memories: Memory[]; total: number }>;

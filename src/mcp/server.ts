@@ -28,6 +28,7 @@ import { ensureDefaultWorkspace, listWorkspacesByOwner } from '../scope/workspac
 import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../types/knowledge.js';
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
+import { resolveIncludeSummaryOnly } from './context-tool-params.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -280,6 +281,18 @@ function createMcpServer(
       levels: z.array(z.enum(MEMORY_LEVELS)).optional().describe('Memory levels to include'),
       limit: z.number().int().min(1).max(20).optional().describe('Max ranked memories'),
       max_chars: z.number().int().min(500).max(24_000).optional().describe('Context char budget'),
+      content_mode: z
+        .enum(['summary', 'full'])
+        .optional()
+        .describe('summary (default, ~85–96% token savings) or full memory bodies'),
+      summary_only: z
+        .boolean()
+        .optional()
+        .describe('When true (default), omit memory bodies — title + summary only'),
+      include_body: z
+        .boolean()
+        .optional()
+        .describe('When true, hydrate full memory bodies. Overrides summary_only.'),
       format: z.enum(['markdown', 'xml']).optional().describe('Context output format'),
     },
     async (params) => {
@@ -291,6 +304,7 @@ function createMcpServer(
         limit: params.limit,
         context: {
           maxChars: params.max_chars,
+          includeSummaryOnly: resolveIncludeSummaryOnly(params),
           format: params.format,
         },
       });
@@ -311,6 +325,18 @@ function createMcpServer(
       levels: z.array(z.enum(MEMORY_LEVELS)).optional().describe('Memory levels to include'),
       limit: z.number().int().min(1).max(20).optional().describe('Max ranked memories'),
       max_chars: z.number().int().min(500).max(24_000).optional().describe('Context char budget'),
+      content_mode: z
+        .enum(['summary', 'full'])
+        .optional()
+        .describe('summary (default) or full memory bodies'),
+      summary_only: z
+        .boolean()
+        .optional()
+        .describe('When true (default), omit memory bodies — title + summary only'),
+      include_body: z
+        .boolean()
+        .optional()
+        .describe('When true, hydrate full memory bodies. Overrides summary_only.'),
       system_role: z.string().optional().describe('Custom system role prompt'),
     },
     async (params) => {
@@ -324,6 +350,7 @@ function createMcpServer(
         systemRole: params.system_role,
         context: {
           maxChars: params.max_chars,
+          includeSummaryOnly: resolveIncludeSummaryOnly(params),
         },
       });
       return {
