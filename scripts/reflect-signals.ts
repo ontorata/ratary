@@ -1,13 +1,17 @@
+import { getEnv } from '../src/config/index.js';
+
 function parseArgs(): { dryRun: boolean } {
   return { dryRun: !process.argv.includes('--execute') };
 }
 
 async function reflectSignals(): Promise<void> {
   const { dryRun } = parseArgs();
-  const enabled = process.env.RANKING_ADAPTATION_ENABLED === 'true';
+  const env = getEnv();
+  const enabled = env.RANKING_ADAPTATION_ENABLED;
 
   console.log(`Signal reflection (${dryRun ? 'dry-run' : 'execute'})...`);
   console.log(`  RANKING_ADAPTATION_ENABLED=${enabled}`);
+  console.log(`  SIGNAL_INGEST_ENABLED=${env.SIGNAL_INGEST_ENABLED}`);
 
   if (!enabled) {
     console.log('Ranking adaptation disabled — no weight changes applied.');

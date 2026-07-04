@@ -1,11 +1,11 @@
 # Phase 8.5 — Observation, Reflection & Learning — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready (Architecture Review approved 2026-07-04)  
+**Phase status:** ✅ Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) · [Phase 7 Boundary](../07-agent-runtime/DESIGN.md)  
 **Roadmap placement:** Track absorbed into **Phase 12 Event Pipeline** + memory domain extensions  
-**ADR gate (draft):** [ADR-026](../../../docs/adr/026-memory-quality-signals.md) — **Proposed**
+**ADR gate:** [ADR-026](../../../docs/adr/026-memory-quality-signals.md) — **Accepted**
 
 ---
 
@@ -39,13 +39,13 @@ Phase 8.5 does **not** add planner, executor, goal stack, or autonomous memory m
 
 | Capability | Status |
 |------------|--------|
-| `IMemorySignalIngestor` port | New |
-| `ISignalNormalizer` + adapters | New |
-| `MemoryQualitySignal` contract | New |
-| Extend `Ranker` inputs (importance delta) | Extend pure ranker |
-| Extend access tracking path | `recordAccess` / audit |
-| Lifecycle state hints on `memories` | Additive metadata optional |
-| Event publish on signal ingest | Via `IEventBus` (Phase 12, optional) |
+| `IMemorySignalIngestor` port | ✅ Implemented |
+| `ISignalNormalizer` + adapters | ✅ Implemented |
+| `MemoryQualitySignal` contract | ✅ Implemented |
+| Extend `Ranker` inputs (importance delta) | ✅ Via `bumpImportance` on ingest |
+| Extend access tracking path | ✅ `recordAccess` / audit (Phase 4) |
+| Lifecycle state hints on `memories` | 🔲 Deferred optional metadata |
+| Event publish on signal ingest | 🔲 Phase 12 optional |
 
 ### Outside this repository
 
@@ -328,15 +328,15 @@ Env:
 
 ## Success Criteria
 
-- [ ] ADR-026 **Approved** with explicit non-goals signed
-- [ ] `IMemorySignalIngestor` + normalizer implemented behind flag
-- [ ] Explicit feedback changes importance within bounded deltas
-- [ ] Idempotent ingest verified
-- [ ] Ranker behavior unchanged when `SIGNAL_INGEST_ENABLED=false`
-- [ ] No agent planner / reflection LLM code in repository
-- [ ] Constitution boundary review PASS
-- [ ] Phase 12 event schema documented for `memory.signal.received`
-- [ ] All existing tests green with flags off
+- [x] ADR-026 **Accepted** with explicit non-goals signed
+- [x] `IMemorySignalIngestor` + normalizer implemented behind flag
+- [x] Explicit feedback changes importance within bounded deltas
+- [x] Idempotent ingest verified
+- [x] Ranker behavior unchanged when `SIGNAL_INGEST_ENABLED=false`
+- [x] No agent planner / reflection LLM code in repository
+- [x] Constitution boundary review PASS
+- [ ] Phase 12 event schema documented for `memory.signal.received` (deferred)
+- [x] All existing tests green with flags off
 
 ---
 
@@ -362,7 +362,7 @@ Env:
 | [Phase 4 DESIGN](../04-memory-intelligence/DESIGN.md) | Access tracking, Ranker |
 | [ADR-017](../../../docs/adr/017-memory-access-audit.md) | Audit port |
 | [ADR-016](../../../docs/adr/016-redis-streams-event-bus.md) | Event bus |
-| [ADR-026](../../../docs/adr/026-memory-quality-signals.md) | Gate (Proposed) |
+| [ADR-026](../../../docs/adr/026-memory-quality-signals.md) | Gate (Accepted) |
 | [10-POST-ROADMAP.md §Phase 12](../roadmap/10-POST-ROADMAP.md) | Event pipeline |
 | [GLOSSARY.md](../../core/glossary/GLOSSARY.md) | Access count, importance |
 | Architecture Review 2026-07-04 | Constrained reflection/learning |

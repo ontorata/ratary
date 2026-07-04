@@ -48,6 +48,8 @@ phases/
 └── 04.7-memory-stewardship/          ✅ Implemented (ADR-045)
 └── 05.5-semantic-compression/        ✅ Implemented (ADR-023)
 └── 06.5-progressive-retrieval/       ✅ Implemented (ADR-024)
+└── 07.5-runtime-compatibility/       ✅ Implemented (ADR-025)
+└── 08.5-observation-reflection-learning/ ✅ Implemented (ADR-026)
 └── 08.6-learning-intelligence/       🔲 Design draft (ADR-057)
 └── 08.7-graph-relation-inference/    🔲 Design draft (ADR-041)
 └── 09.7-memory-evolution/            🔲 Design draft (ADR-040)
@@ -122,6 +124,8 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 04.7 Memory Stewardship | [04.7-memory-stewardship/](04.7-memory-stewardship/README.md) | ✅ Implemented | ADR-045 |
 | 05.5 Semantic Compression | [05.5-semantic-compression/](05.5-semantic-compression/README.md) | ✅ Implemented | ADR-023 |
 | 06.5 Progressive Retrieval | [06.5-progressive-retrieval/](06.5-progressive-retrieval/README.md) | ✅ Implemented | ADR-024 |
+| 07.5 Runtime Compatibility | [07.5-runtime-compatibility/](07.5-runtime-compatibility/README.md) | ✅ Implemented | ADR-025 |
+| 08.5 Quality Signals | [08.5-observation-reflection-learning/](08.5-observation-reflection-learning/README.md) | ✅ Implemented | ADR-026 |
 | 08.6 Learning Intelligence | [08.6-learning-intelligence/](08.6-learning-intelligence/README.md) | 🔲 Design draft | ADR-057 |
 | 08.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | 🔲 Design draft | ADR-041 |
 | 09.7 Memory Evolution | [09.7-memory-evolution/](09.7-memory-evolution/README.md) | 🔲 Design draft | ADR-040 |

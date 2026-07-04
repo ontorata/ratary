@@ -1,16 +1,20 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { CapabilityManifestBuilder } from '../../src/capabilities/capability-manifest-builder.js';
 import { MCP_TOOL_NAMES } from '../../src/capabilities/mcp-tool-names.js';
 import { resetEnvCache, getEnv } from '../../src/config/index.js';
 
-vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
-vi.stubEnv('D1_DATABASE_ID', 'test-database');
-vi.stubEnv('D1_API_TOKEN', 'test-token');
-vi.stubEnv('NODE_ENV', 'test');
-
 describe('CapabilityManifestBuilder', () => {
   beforeEach(() => {
+    vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
+    vi.stubEnv('D1_DATABASE_ID', 'test-database');
+    vi.stubEnv('D1_API_TOKEN', 'test-token');
+    vi.stubEnv('NODE_ENV', 'test');
     vi.stubEnv('SQL_PROVIDER', 'd1');
+    resetEnvCache();
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
     resetEnvCache();
   });
 

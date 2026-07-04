@@ -1,11 +1,11 @@
 # Phase 7.5 — Runtime Compatibility — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready (Architecture Review approved 2026-07-04)  
+**Phase status:** Implemented (2026-07-04) · ADR-025 Accepted  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [Phase 7 Agent Runtime DESIGN](../07-agent-runtime/DESIGN.md) · [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)  
-**Roadmap placement:** **Gap closure** for Phase 7 — may ship independently before Phase 12  
-**ADR gate (draft):** [ADR-025](../../../docs/adr/025-capability-discovery-api.md) — **Proposed**
+**Roadmap placement:** Extension track **07.5** — runtime capability discovery (Phase 7 gap closure)  
+**ADR gate:** [ADR-025](../../../docs/adr/025-capability-discovery-api.md) — **Accepted** (Implemented 2026-07-04)
 
 ---
 
@@ -265,15 +265,15 @@ Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (addi
 
 ## Success Criteria
 
-- [ ] ADR-025 **Approved**
-- [ ] `GET /api/v1/capabilities` implemented and in OpenAPI
-- [ ] MCP `get_capabilities` tool implemented
-- [ ] Manifest `toolNames` matches `EXPECTED_TOOLS` exactly
-- [ ] `errorCodes` and `rateLimits` populated per Phase 7 DESIGN §10
-- [ ] `supportsHybridRetrieval` reflects `HYBRID_RETRIEVAL` env
-- [ ] Default D1 deploy manifest accurate with all flags off
-- [ ] Phase 7 DESIGN §10 endpoint table marked implemented
-- [ ] No changes to `MemoryService` or retrieval logic
+- [x] ADR-025 **Accepted** and linked
+- [x] `GET /api/v1/capabilities` implemented and in OpenAPI
+- [x] MCP `get_capabilities` tool implemented
+- [x] Manifest `toolNames` matches `MCP_TOOL_NAMES` / contract tests exactly
+- [x] `errorCodes` and `rateLimits` populated per Phase 7 DESIGN §10
+- [x] `supportsHybridRetrieval` reflects `HYBRID_RETRIEVAL` + embedding env
+- [x] Default D1 deploy manifest accurate with all flags off
+- [x] `X-Protocol-Version` response header on capabilities endpoint
+- [x] No changes to `MemoryService` or retrieval logic
 
 ---
 
@@ -294,12 +294,10 @@ Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (addi
 | Document | Relevance |
 |----------|-----------|
 | [Phase 7 DESIGN](../07-agent-runtime/DESIGN.md) | §10 Capability manifest, §11 MCP, §12 OpenAPI |
-| [ADR-025](../../../docs/adr/025-capability-discovery-api.md) | Gate (Proposed) |
-| [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | MCP + REST share services |
-| `src/plugins/swagger.ts` | OpenAPI host |
-| `tests/mcp/tools.test.ts` | Tool registry contract |
-| Architecture Review 2026-07-04 | 7.5 = gap closure, not new phase |
+| [ADR-025](../../../docs/adr/025-capability-discovery-api.md) | Gate (Accepted) |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
+| [TESTING.md](TESTING.md) | Verification evidence |
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Does not implement agent runtime. Implementation deferred until ADR-025 Approved.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Does not implement agent runtime.*

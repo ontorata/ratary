@@ -209,6 +209,7 @@ MemoryService
 - Semantic compression (Phase 5.5, ADR-023): `memory/compression/` defines `ICompressionPolicy`; `MemoryConsolidator` extended for hierarchical summaries (`level=summary|canonical`), `consolidates` relations, and `compression_meta` audit. Gated by `COMPRESSION_ENABLED=false`. CLI: `compress:memories`.
 - Progressive retrieval (Phase 6.5, ADR-024): `memory/retrieval-policy/` defines `IRetrievalPolicy` / `RetrievalPlan`; `ContextService.buildContext` resolves policy after rank, gates body hydration, returns additive `retrievalPlan`. Composition: `create-progressive-retrieval-ports.ts`. Manifest: `supportsProgressiveRetrieval`.
 - Stewardship (Phase 04.7, ADR-045): `memory/stewardship/` orchestrates deterministic maintenance tasks in fixed stage order (dry-run default) behind `IMemoryStewardshipOrchestrator` / `IMaintenanceTask` / `IStewardshipRunStore`. Composes `MemoryConsolidator` + read-only audits from the outside — no planner, no agent, `MemoryService` unchanged. Gated by `MEMORY_STEWARDSHIP_ENABLED`.
+- Quality signals (Phase 8.5, ADR-026): `ingest/` defines `IMemorySignalIngestor`, `DefaultSignalNormalizer`, `ImportanceScoringPolicy`; optional `POST /api/v1/signals` and `memory_signals` audit store. Gated by `SIGNAL_INGEST_ENABLED=false`. CLI: `reflect:signals` (advisory-only).
 
 ---
 
@@ -337,6 +338,53 @@ transport/
 | REST | Public integrators, ChatGPT Actions | ✅ always |
 | MCP stdio | IDE-embedded AI clients | ✅ always |
 | gRPC | Batch ingest, streaming context, service mesh | ❌ opt-in |
+
+---
+
+## Runtime compatibility (Phase 7.5 — implemented)
+
+**Status:** Implemented — [ADR-025](../../../docs/adr/025-capability-discovery-api.md) Accepted (2026-07-04) · [07.5 DESIGN](../../phases/07.5-runtime-compatibility/DESIGN.md)
+
+**Owns:** deployment-accurate capability manifest — feature flags, limits, error/rate-limit catalogs, MCP tool registry, protocol version. **Does not** implement agent runtime.
+
+**Structure:**
+
+```
+capabilities/
+  capability-manifest-builder.ts   env → AICapabilityManifest
+  mcp-tool-names.ts                MCP tool registry SSOT
+composition/
+  create-runtime-compatibility-ports.ts
+routes/v1/capabilities.routes.ts   GET /api/v1/capabilities (public)
+transport/shared/handlers/capabilities.handlers.ts
+```
+
+**Discovery:** REST `GET /api/v1/capabilities` and MCP `get_capabilities` share one builder path. Response includes `X-Protocol-Version` header. Manifest reflects extension flags (5.5 compression, 6.5 retrieval, 04.7 stewardship, 8.5 quality signals, 10.5 transport).
+
+---
+
+## Quality signals (Phase 8.5 — implemented)
+
+**Status:** Implemented — [ADR-026](../../../docs/adr/026-memory-quality-signals.md) Accepted (2026-07-04) · [08.5 DESIGN](../../phases/08.5-observation-reflection-learning/DESIGN.md)
+
+**Owns:** scoped signal ingest, deterministic importance scoring, optional append-only audit store. **Does not** implement agent reflection, LLM introspection, or autonomous memory mutation.
+
+**Structure:**
+
+```
+ingest/
+  memory-signal-ingestor.ts        IMemorySignalIngestor implementation
+  default-signal-normalizer.ts     auth + payload validation
+  importance-scoring-policy.ts     bounded pure deltas
+infrastructure/signals/
+  sql-memory-signal-store.ts       append-only memory_signals
+composition/
+  create-signal-ingest-ports.ts
+routes/v1/signals.routes.ts        POST /api/v1/signals (gated)
+scripts/reflect-signals.ts         advisory batch (dry-run default)
+```
+
+**Gating:** `SIGNAL_INGEST_ENABLED=false` (default). Manifest `supportsQualitySignals` mirrors flag. Explicit feedback applies bounded importance delta; ranker unchanged when disabled.
 
 ---
 

@@ -72,4 +72,23 @@ describe('MemorySignalIngestor', () => {
 
     expect(duplicate.duplicate).toBe(true);
   });
+
+  it('records consolidation_hint without importance change', async () => {
+    const memoryId = await seedMemory(50);
+    const result = await ingestor.ingest(
+      { ownerId },
+      {
+        signalId: crypto.randomUUID(),
+        signalType: 'consolidation_hint',
+        memoryId,
+        ownerId,
+        observedAt: new Date().toISOString(),
+      },
+    );
+
+    expect(result.accepted).toBe(true);
+    expect(result.appliedDelta).toBe(0);
+    const updated = await repository.findById(memoryId, ownerId);
+    expect(updated?.importance).toBe(50);
+  });
 });

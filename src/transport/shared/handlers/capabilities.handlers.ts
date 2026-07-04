@@ -1,6 +1,6 @@
-import { CapabilityManifestBuilder } from '../../../capabilities/capability-manifest-builder.js';
 import type { AICapabilityManifest } from '../../../capabilities/capability-manifest.types.js';
 import type { Env } from '../../../config/env.js';
+import { createRuntimeCompatibilityPorts } from '../../../composition/create-runtime-compatibility-ports.js';
 import type { IApplicationHandler } from '../iapplication-handler.interface.js';
 
 export interface CapabilitiesHandlerDeps {
@@ -16,12 +16,12 @@ export interface CapabilitiesHandlers {
 }
 
 export function createCapabilitiesHandlers(deps: CapabilitiesHandlerDeps): CapabilitiesHandlers {
+  const compatibility = createRuntimeCompatibilityPorts(deps.env);
+
   return {
     getManifest: {
       handle: (_ctx, input) =>
-        Promise.resolve(
-          new CapabilityManifestBuilder(deps.env, { openApiUrl: input.openApiUrl }).build(),
-        ),
+        Promise.resolve(compatibility.buildManifest({ openApiUrl: input.openApiUrl })),
     },
   };
 }
