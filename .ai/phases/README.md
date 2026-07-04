@@ -37,6 +37,7 @@ phases/
 └── 10.5-transport-connectivity/      🔲 Reserved (design draft 2026-07-04)
 └── 13-protocol-layer/                🔲 Reserved (design draft 2026-07-04)
 └── 14-federation/                    🔲 Reserved (design draft 2026-07-04)
+└── 15-autonomous-agent-ecosystem/    🔲 Reserved (design draft 2026-07-04)
 ```
 
 Each `phases/NN-name/` folder:

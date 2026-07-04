@@ -401,6 +401,28 @@ federation/
 
 ---
 
+## Agent ecosystem layer (Phase 15 — planned)
+
+**Status:** Design draft — [ADR-030](../../../.ai/adr/030-autonomous-agent-ecosystem.md) Proposed · [15-autonomous-agent-ecosystem DESIGN](../../phases/15-autonomous-agent-ecosystem/DESIGN.md)  
+**Prerequisite:** Phase 7/9 ✅ · ADR-025 ✅
+
+**Owns:** external **client catalog** (Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen), ecosystem manifest, `GET /api/v1/ecosystem/clients`. Enables shared **Memory Cloud** per workspace.
+
+**Forbidden in repo:** agent runtime, planner, executor, autonomous loops, in-repo agent SDK.
+
+**Repository exposes to external agents:** REST · MCP · gRPC (Phase 13) — unchanged role.
+
+```
+ecosystem/
+  catalog/     IAgentClientCatalog — SSOT client profiles (metadata only)
+  builders/    AgentEcosystemManifestBuilder
+  protocol/    GET /api/v1/ecosystem/clients
+```
+
+External agent runtimes (outside repo) → protocol → MemoryService.
+
+---
+
 ## Auth layer
 
 **Owns:** identity resolution chain, API key and JWT validation, OAuth provider, permission enforcement, audit events, client registry.

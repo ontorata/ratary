@@ -38,7 +38,8 @@ flowchart LR
   P105 --> P13[Phase 13 Protocol Layer]
   P12 --> P13
   P13 --> P14[Phase 14 Federation]
-  P14 --> P15[Phase 15 Content Scale]
+  P14 --> P15[Phase 15 Agent Ecosystem]
+  P15 --> P17[Phase 17 Content Scale]
   P11 --> P16[Phase 16 Search Graph Prod]
   P105 --> P12
 ```
@@ -50,10 +51,11 @@ flowchart LR
 | **12** | Event Pipeline & Observability | P1 | Phase 11 staging Postgres (or parallel if event-only) |
 | **13** | Protocol Layer (REST/gRPC/WS/SSE/benchmark) | P1 | Phase 10.5 ✅ · ADR-028 Approved |
 | **14** | **Federation** (cross workspace/region/org/cloud) | P1 | Phase 9–10 ✅ · Phase 13 ✅ · ADR-029 Approved |
-| **15** | Content & Vector Scale *(renumbered)* | P1 | Phase 11 metadata · Phase 13 recommended |
-| **16** | Search & Graph Production *(renumbered from Phase 14)* | P2 | Phase 11 + backfill scripts proven |
+| **15** | **Autonomous Agent Ecosystem** (multi-client Memory Cloud) | P1 | Phase 7/9 ✅ · ADR-025 ✅ · ADR-030 Approved |
+| **16** | Search & Graph Production *(renumbered)* | P2 | Phase 11 + backfill scripts proven |
+| **17** | Content & Vector Scale *(renumbered from Phase 15)* | P1 | Phase 11 metadata · Phase 13 recommended |
 
-Phases 10.5, 12–16 may overlap **after** Phase 11 Readiness PASS. **Phase 14 requires Phase 13 Implemented** (federation transport binding).
+Phases 10.5, 12–17 may overlap **after** Phase 11 Readiness PASS. **Phase 15 requires no agent runtime in repo** (Constitution §3).
 
 ---
 
@@ -232,10 +234,48 @@ Multi-protocol access with **streaming** and **benchmark** — all protocols del
 
 ---
 
-# Phase 15 — Content & Vector Scale
+# Phase 15 — Autonomous Agent Ecosystem
 
-**Status:** 🔲 Planned *(renumbered from former Phase 13)*  
-**Folder (when open):** `.ai/phases/15-content-scale/`
+**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**  
+**Folder:** [.ai/phases/15-autonomous-agent-ecosystem/](../15-autonomous-agent-ecosystem/README.md)
+
+## Scope
+
+Enable **Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen** to share the **same Memory Cloud** via REST/MCP/gRPC. **Agent runtime outside repo** — catalog + manifest + compatibility only.
+
+| Track | Deliverable |
+|-------|-------------|
+| 15A | `AgentClientType` SSOT + client profile registry |
+| 15B | `IAgentClientCatalog` port |
+| 15C | Ecosystem manifest (extends ADR-025) |
+| 15D | `GET /api/v1/ecosystem/clients` |
+| 15E | Compatibility matrix + contract tests |
+| 15F | PANDUAN § Agent Ecosystem |
+
+## ADR gates
+
+| ADR | Title |
+|-----|-------|
+| [ADR-030](../../adr/030-autonomous-agent-ecosystem.md) | Autonomous Agent Ecosystem — **Proposed** |
+
+## Success criteria
+
+- [ ] ADR-030 **Approved**
+- [ ] Zero agent runtime code in `src/`
+- [ ] MemoryService unchanged
+- [ ] 8+ client profiles; manifest + REST accurate
+- [ ] All clients use workspace-scoped shared memory path
+
+## Non-goals
+
+- Agent planner, executor, loops, in-repo SDK
+
+---
+
+# Phase 17 — Content & Vector Scale
+
+**Status:** 🔲 Planned *(renumbered from former Phase 15)*  
+**Folder (when open):** `.ai/phases/17-content-scale/`
 
 ## Scope
 
@@ -243,21 +283,27 @@ Production-scale content and vector storage beyond inline/D1.
 
 | Track | Deliverable |
 |-------|-------------|
-| 15A | **R2/S3 content offload** — large body migration; `object_key` backfill |
-| 15B | **pgvector production** — execute backfill; hybrid retrieval on pgvector in staging |
-| 15C | **Embedding job hardening** — batch/retry metrics; gRPC client-stream ingest (uses Phase 13) |
+| 17A | **R2/S3 content offload** — large body migration; `object_key` backfill |
+| 17B | **pgvector production** — execute backfill; hybrid retrieval on pgvector in staging |
+| 17C | **Embedding job hardening** — batch/retry metrics; gRPC client-stream ingest |
 
 ## ADR gates
 
 | ADR | Title |
 |-----|-------|
-| ADR-021 | Content blob lifecycle (ADR-005 production implementation) |
+| ADR-021 | Content blob lifecycle |
 
 ## Success criteria
 
 - [ ] Backfill scripts executed in staging with evidence
 - [ ] Retrieval correctness E2E with external vector store
 - [ ] Default env unchanged
+
+---
+
+# Phase 15 (legacy note)
+
+*Former "Content & Vector Scale" renumbered to **Phase 17** (2026-07-04). Phase 15 is now **Autonomous Agent Ecosystem**.*
 
 ---
 

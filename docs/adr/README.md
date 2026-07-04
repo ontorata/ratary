@@ -30,6 +30,7 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [027-transport-connectivity-layer.md](../../.ai/adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer (Phase 10.5) | **Proposed** | gRPC opt-in, transport registry |
 | [028-protocol-layer.md](../../.ai/adr/028-protocol-layer.md) | Protocol Layer — WS/SSE/stream/benchmark (Phase 13) | **Proposed** | Multi-protocol streaming |
 | [029-federation-layer.md](../../.ai/adr/029-federation-layer.md) | Federation Layer — cross-node knowledge exchange (Phase 14) | **Proposed** | Global memory fabric |
+| [030-autonomous-agent-ecosystem.md](../../.ai/adr/030-autonomous-agent-ecosystem.md) | Autonomous Agent Ecosystem — external runtime boundary (Phase 15) | **Proposed** | Multi-client Memory Cloud |
 
 **Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-020 (event consumers), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
 
@@ -46,6 +47,8 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 **Phase 13 ADR gate:** [ADR-028](../../.ai/adr/028-protocol-layer.md) **Proposed** (2026-07-04) — requires ADR-027 Implemented.
 
 **Phase 14 ADR gate:** [ADR-029](../../.ai/adr/029-federation-layer.md) **Proposed** (2026-07-04) — requires Phase 13 Implemented.
+
+**Phase 15 ADR gate:** [ADR-030](../../.ai/adr/030-autonomous-agent-ecosystem.md) **Proposed** (2026-07-04) — agent runtime **outside** repo only.
 
 **Post–Phase 10:** [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md) — Phase 11 P0; Phase 10.5 extension parallel after 11A.
 
