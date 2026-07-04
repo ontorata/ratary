@@ -140,6 +140,10 @@ The Phase 7 DESIGN document is ready for commit.
 
 All optional P1/P2 items resolved 2026-07-04 (see REQUIRED CHANGES table).
 
+### Post-gate platform note (append-only, 2026-07-04)
+
+Gate verified **19 MCP tools**. Platform SSOT is now **22** (`src/capabilities/mcp-tool-names.ts`) via additive successor phases (7.5, 8, 9, 04.7, 5.5). Phase 7 boundary unchanged.
+
 ---
 
 *Review conducted per 08-REVIEW-CHECKLIST.md*

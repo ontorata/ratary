@@ -35,15 +35,27 @@ Map roadmap success criteria to durable evidence.
 | SC-86-02 | SQL event/artifact stores | ✅ migrateExtensionTracksPhase2 |
 | SC-86-03 | L23–L30 no-op stubs | ✅ Zero side effects when OFF |
 | SC-86-04 | CLI learning:run | ✅ Batch path only |
-| SC-86-05 | Regression suite | ✅ 689 passed | 3 skipped (default env, master flags OFF) |
+| SC-86-05 | Regression suite | ✅ 689 at gate → **722** platform snapshot (2026-07-04) |
 
 **Result:** 5/5 PASS. Phase gate closed 2026-07-04.
 
 ## Metrics at gate
 
-- **Tests:** 689 passed | 3 skipped (default env, master flags OFF)
-- **Completed:** 2026-07-04
-- **ADR:** ADR-057
+| Metric | Gate (2026-07-04) | Platform snapshot |
+|--------|-------------------|-------------------|
+| Tests | 689 passed \| 3 skipped | **722 passed** \| 3 skipped |
+| Master flag | `LEARNING_ENGINE_ENABLED=false` | unchanged default |
+
+---
+
+## Successor closure (post-gate)
+
+| Phase | Item | Outcome |
+|-------|------|---------|
+| **8.5** | Signal → learning events | ✅ `LearningEventRecorder` when both flags ON |
+| **04.7** | Batch ranking refresh | ✅ `RankingRefreshTask` at `ranking-refresh` stage |
+| **6.5** | Retrieval ranking consumer | ✅ Ranker applies snapshot multipliers in `ContextService` |
+| **12** | Bus fan-out from signals | ⏳ Via 8.5 D85-02 — learning store separate from `IEventBus` |
 
 ---
 

@@ -28,8 +28,8 @@ Executable gate checklist instance — one item per milestone or success criteri
 ### Milestones
 
 - [x] Agent runtime ADR (external system) — No internal ADR needed
-- [x] MCP tool contracts stable for agent consumers — 19 tools available (`tests/mcp/tools.test.ts`)
-- [x] Optional: `agentId` in `MemoryScope` types (undefined until Phase 9) — Deferred to Phase 9
+- [x] MCP tool contracts stable for agent consumers — 19 at gate (`tests/mcp/tools.test.ts`); SSOT 22 post-gate (`MCP_TOOL_NAMES`)
+- [x] Optional: `agentId` in `MemoryScope` types — ✅ Phase 9 landed
 - [x] Documentation for agent integration boundary — DESIGN.md created
 
 ### Success criteria

@@ -48,10 +48,23 @@
 
 ## Deferred
 
-- [ ] MCP `submit_signal` tool (optional track)
-- [ ] Phase 12 event publish `memory.signal.received`
-- [ ] `RANKING_ADAPTATION_ENABLED` batch weight mutation (advisory stub only)
-- [ ] Ranker sort-order integration test
+| ID | Item | Status | Owner / notes |
+|----|------|--------|---------------|
+| D85-01 | MCP `submit_signal` tool | ⏳ Open | **Phase 13.1 follow-up** — REST ingest sufficient for gate; remote MCP parity |
+| D85-02 | Phase 12 `IEventBus.publish('memory.signal.received')` | ⏳ Open | Topic defined in `domain-event-topics.ts`; publisher not wired on ingest |
+| D85-03 | `RANKING_ADAPTATION_ENABLED` batch weight mutation | ⏳ Open | `reflect:signals` advisory stub only — ranker weights unchanged |
+| D85-04 | Ranker sort-order integration test | ⏳ Open | Importance delta path unit-tested; E2E rank order test deferred |
+| D85-05 | REST E2E `POST /signals` with auth fixture | ⏳ Open | Route gated at boot — composition tests cover wiring |
+
+### Checklist (frozen at gate)
+
+- [ ] D85-01 — MCP `submit_signal` tool
+- [ ] D85-02 — Phase 12 event publish `memory.signal.received`
+- [ ] D85-03 — `RANKING_ADAPTATION_ENABLED` batch weight mutation (beyond advisory stub)
+- [ ] D85-04 — Ranker sort-order integration test
+- [ ] D85-05 — REST E2E signals route test
+
+**Partial bridge (post-gate):** Phase **8.6** `LearningEventRecorder` appends to learning event store when `SIGNAL_INGEST_ENABLED=true` **and** `LEARNING_ENGINE_ENABLED=true` — not the Phase 12 bus.
 
 ---
 
@@ -61,3 +74,4 @@
 |-------|-------|
 | **Verdict** | **PASS** — Implemented 2026-07-04 |
 | **ADR** | ADR-026 Accepted |
+| **Regression** | 689 at gate → **722** platform snapshot |

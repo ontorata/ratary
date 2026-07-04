@@ -34,8 +34,13 @@ Record architecture review findings and formal phase gate verdict.
 
 ## Known gaps (accepted)
 
-- Condensed manifest in MCP initialize metadata deferred
-- Remote capability negotiation deferred
+| ID | Item | Status |
+|----|------|--------|
+| D7.5-01 | Condensed manifest in MCP `initialize` metadata | Open → Phase 13.1 follow-up |
+| D7.5-02 | Client SDK | ✅ Phase 16 `@ai-brain/sdk` (ADR-031) |
+| D7.5-03 | Remote capability negotiation handshake | Open → Phase 13+ |
+
+See [CHECKLIST.md](CHECKLIST.md) deferred table.
 
 ---
 

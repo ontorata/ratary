@@ -59,9 +59,22 @@ Phase 7 is a **documentation-only boundary phase** — agent runtime external; n
 - Agent loops consume MCP/REST externally (outside repo)
 - Foundation may add scope hooks per ADR-002
 - MCP tool contracts stable for agent consumers
-- Optional: `agentId` in `MemoryScope` types (Phase 9)
+- Optional: `agentId` in `MemoryScope` types — ✅ Phase 9
 
-**Dependencies:** Phase 4 context API ✅, Phase 6 hybrid ✅
+**Dependencies:** Phase 4 context API ✅ · Phase 6 hybrid ✅ · Post-gate: Phase 7.5 capabilities ✅ · Phase 8 graph ✅ · Phase 9 multi-AI ✅
+
+### Platform snapshot (post-gate — agent integration surface)
+
+| Surface | Status | Reference |
+|---------|--------|-----------|
+| MCP tools | **22** (SSOT `MCP_TOOL_NAMES`) | `src/capabilities/mcp-tool-names.ts` |
+| Capability manifest | `get_capabilities` + REST | Phase 7.5 (ADR-025) |
+| Graph | `traverse_relations`, `get_graph_capabilities` | Phase 8 |
+| Workspace / agents | `list_workspaces`, `list_agents`, `register_agent` | Phase 9 |
+| Stewardship / compression | `run_stewardship`, `get_compression_status` | Phase 04.7 / 5.5 |
+| Regression suite | 722 passed \| 3 skipped (2026-07-04) | `npm test` |
+
+*Phase 7 gate (2026-07-03) verified **19 MCP tools** and **196 tests** with zero `src/` changes. Additive tools above preserve Phase 7 boundary — no agent planner in repo.*
 
 ---
 

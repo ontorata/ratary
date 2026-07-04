@@ -1,7 +1,22 @@
 # Phase 8.5 — Quality Signals — TESTING
 
+**Document:** TESTING  
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
+---
+
+## Quality gate
+
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Gate (2026-07-04) | Platform snapshot |
+|--------|-------------------|-------------------|
+| Total tests | 689 passed \| 3 skipped | **722 passed** \| 3 skipped |
+| Phase 8.5 new tests | signal-ingest + policy + migration | unchanged contract |
 
 ---
 
@@ -46,11 +61,19 @@ npm run reflect:signals
 
 ---
 
-## Deferred tests
+## Deferred tests (CHECKLIST D85-04 / D85-05)
 
-- [ ] REST E2E `POST /api/v1/signals` with auth fixture (route gated at boot)
-- [ ] `ranker.test.ts` extend — importance delta affects sort order deterministically
-- [ ] `cross-owner-leak.test.ts` extend — signal ingest path
-## Current regression
+| ID | Test | Status |
+|----|------|--------|
+| D85-04 | `ranker.test.ts` — importance delta affects sort order | Open |
+| D85-05 | REST E2E `POST /api/v1/signals` with auth fixture | Open |
 
-689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)
+---
+
+## Post-gate note
+
+Phase **8.6** learning event store receives signals via `LearningEventRecorder` when both ingest and learning flags are ON — tested in Phase 8.6 suite, not duplicated here.
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

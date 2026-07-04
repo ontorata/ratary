@@ -44,8 +44,8 @@ Phase 8.5 does **not** add planner, executor, goal stack, or autonomous memory m
 | `MemoryQualitySignal` contract | ✅ Implemented |
 | Extend `Ranker` inputs (importance delta) | ✅ Via `bumpImportance` on ingest |
 | Extend access tracking path | ✅ `recordAccess` / audit (Phase 4) |
-| Lifecycle state hints on `memories` | 🔲 Deferred optional metadata |
-| Event publish on signal ingest | 🔲 Phase 12 optional |
+| Lifecycle state hints on `memories` | ⏳ Deferred optional metadata |
+| Event publish on signal ingest | ⏳ Phase 12 bus — D85-02; 8.6 learning store bridge ✅ |
 
 ### Outside this repository
 
@@ -299,8 +299,8 @@ Auth: signals endpoint requires same permissions as memory write in scope.
 
 | Tool | Change |
 |------|--------|
-| All 19 existing | **Unchanged** |
-| `submit_signal` | **Optional new** — explicit feedback; gated by env |
+| All existing MCP tools | **Unchanged** |
+| `submit_signal` | **Optional new** — D85-01 deferred; REST ingest at gate |
 | `get_context` | Emits internal access signals (existing path) |
 
 Env:
@@ -335,8 +335,9 @@ Env:
 - [x] Ranker behavior unchanged when `SIGNAL_INGEST_ENABLED=false`
 - [x] No agent planner / reflection LLM code in repository
 - [x] Constitution boundary review PASS
-- [ ] Phase 12 event schema documented for `memory.signal.received` (deferred)
+- [ ] D85-02 — Phase 12 `IEventBus.publish('memory.signal.received')` on ingest
 - [x] All existing tests green with flags off
+- [x] Phase 8.6 `LearningEventRecorder` bridge when both ingest + learning flags ON
 
 ---
 
@@ -346,8 +347,10 @@ Env:
 |-------|-------------|
 | **5.5** | `consolidation_hint` triggers compression policy |
 | **6.5** | Access signals adjust progressive retrieval caps |
-| **7.5** | Manifest `supportsQualitySignals` |
-| **12** | Event bus fan-out to analytics |
+| **7.5** | Manifest `supportsQualitySignals` ✅ |
+| **8.6** ✅ | Learning event store from signal ingest (ADR-057) |
+| **12** | `memory.signal.received` bus fan-out — D85-02 open |
+| **13.1** | MCP `submit_signal` — D85-01 open |
 | **13** | Signal volume at scale — batch only |
 | **10** | Org-scoped signal quotas |
 
@@ -363,10 +366,12 @@ Env:
 | [ADR-017](../../../docs/adr/017-memory-access-audit.md) | Audit port |
 | [ADR-016](../../../docs/adr/016-redis-streams-event-bus.md) | Event bus |
 | [ADR-026](../../../docs/adr/026-memory-quality-signals.md) | Gate (Accepted) |
+| [Phase 8.6 DESIGN](../08.6-learning-intelligence/DESIGN.md) | Learning event bridge |
+| [Phase 12 DESIGN](../12-event-pipeline/DESIGN.md) | Event bus — D85-02 |
 | [10-POST-ROADMAP.md §Phase 12](../roadmap/10-POST-ROADMAP.md) | Event pipeline |
 | [GLOSSARY.md](../../core/glossary/GLOSSARY.md) | Access count, importance |
 | Architecture Review 2026-07-04 | Constrained reflection/learning |
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). **Reflection** and **learning** in this document mean deterministic signal processing only — not agent cognition. Implementation deferred until ADR-026 Approved.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). **Reflection** and **learning** in this document mean deterministic signal processing only — not agent cognition. Implemented 2026-07-04 (ADR-026 Accepted).*

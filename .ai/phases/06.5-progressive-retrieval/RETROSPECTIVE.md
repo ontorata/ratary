@@ -13,7 +13,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Delivered `DefaultRetrievalPolicy` hook in `ContextService.buildContext` producing additive `retrievalPlan`. Always-on default adapter; no master env flag.
+Delivered `DefaultRetrievalPolicy` hook in `ContextService.buildContext` producing additive `retrievalPlan`. Always-on default adapter; no master env flag. Post-gate follow-up (2026-07-04): legacy/adaptive policy adapters, one-hop relations stage expansion, admin compress REST.
 
 Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
@@ -23,7 +23,8 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 - Default adapter matches pre-6.5 summary-only behavior — backward compatible
 - Body hydration gated via `plan.hydrateBody` + `findByIdsWithContent`
-- Manifest exposes `supportsProgressiveRetrieval` and policy version
+- One-hop relations expansion when `GRAPH_RETRIEVAL=true` — `expandWithRelationNeighbors` + `RETRIEVAL_RELATION_NEIGHBOR_CAP`
+- Manifest exposes `supportsProgressiveRetrieval`, policy version, and `retrievalPolicy`
 - MCP/REST schemas unchanged; clients may ignore optional `retrievalPlan`
 
 ---
@@ -56,8 +57,9 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Recommendations
 
-- Implement relations-stage expansion before high-graph deployments
+- ~~Implement relations-stage expansion before high-graph deployments~~ ✅ done 2026-07-04 — `relations` stage + `relation-context-expander.ts`; deep BFS still via `traverse_relations` MCP
 - ~~Add token benchmark evidence to COMPLETION.md~~ ✅ done 2026-07-04
+- For high-graph production: validate `RETRIEVAL_RELATION_NEIGHBOR_CAP` and neighbor noise under real graph density (ops tuning)
 
 ---
 

@@ -13,7 +13,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-W1 + L26 ranking: `LearningOrchestrator`, behavior analytics, ranking snapshot hook on Ranker, CLI `learning:run`. Gated by `LEARNING_ENGINE_ENABLED=false`.
+W1 + L26 ranking: `LearningOrchestrator`, behavior analytics (L22), ranking snapshot hook on Ranker, CLI `learning:run`. Post-gate: Phase **04.7** `RankingRefreshTask`. Gated by `LEARNING_ENGINE_ENABLED=false`.
 
 Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
@@ -37,16 +37,31 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Accepted debt
 
-- Only L21/L22/L26 implemented — rest are stubs
-- Batch `learning:run` only — no scheduler
+| ID | Item | Mitigation | Status |
+|----|------|------------|--------|
+| D86-01 | L24 recommendation | Stub registered | Open |
+| D86-02 | L23 / L25 mining | No-op engines | Open |
+| D86-03 | L27–L30 | Roadmap W4–W5 | Open |
+| D86-05 | No standalone cron | 04.7 stewardship stage | Partial |
+
+---
+
+## Successor closure (2026-07-04)
+
+| Phase | Outcome |
+|-------|---------|
+| **8.5** | ✅ Signal ingest feeds `LearningEventRecorder` |
+| **04.7** | ✅ `RankingRefreshTask` wraps orchestrator |
+| **6.5** | ✅ Ranker snapshot consumed in `ContextService` |
 
 ---
 
 ## Recommendations
 
-- Implement L24 before client-facing learning suggestions
-- Add cron for `learning:run` after staging validation
+1. Implement D86-01 (L24) before client-facing learning suggestions.
+2. Run `RankingRefreshTask` via stewardship after staging validation (D86-05 partial).
+3. Add D86-04 E2E once signal + learning flags stable in CI fixture env.
 
 ---
 
-*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Recorded at gate 2026-07-04; successor closure appended 2026-07-04.*

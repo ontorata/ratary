@@ -32,7 +32,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Scope creep into agent orchestration | Medium | High | Clear scope: protocol boundary only | Mitigated |
 | Phase 8+ blocked by Phase 7 delay | Low | Medium | Phase 7 is documentation; minimal risk | Mitigated |
 | Agent runtime ADR needed | Low | Medium | External ADR; no internal ADR required | Accepted |
-| Capability discovery gap | Medium | Medium | Phase 7.5 capability manifest (ADR-025) | Transferred — Phase 7.5 (ADR-025) |
+| Capability discovery gap | Medium | Medium | Phase 7.5 capability manifest (ADR-025) | ✅ Mitigated — Phase 7.5 |
 
 ---
 

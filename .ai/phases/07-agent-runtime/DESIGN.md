@@ -92,7 +92,7 @@ AI Brain operates as a **stateless memory service** consumed by stateful externa
 │                                                                              │
 │  ┌───────────────────────────────────────────────────────────────────────┐   │
 │  │                     Protocol Contracts                                 │   │
-│  │  MCP Tools (14 tools)    │    REST API (/api/v1)                     │   │
+│  │  MCP Tools (22 — SSOT)   │    REST API (/api/v1)                     │   │
 │  └───────────────────────────────────────────────────────────────────────┘   │
 │                                                                              │
 │  ┌───────────────────────────────────────────────────────────────────────┐   │
@@ -322,7 +322,7 @@ External agents communicate with AI Brain through two protocol channels:
 │  │   MCP (Primary)    │      │   REST (Alternative)  │   │
 │  │   stdio transport  │      │   HTTP transport      │   │
 │  │   JSON-RPC 2.0     │      │   JSON over HTTPS     │   │
-│  │   14 tools          │      │   REST endpoints      │   │
+│  │   22 tools (SSOT)     │      │   REST endpoints      │   │
 │  └───────────────────┘      └───────────────────────┘   │
 │                                                          │
 └─────────────────────────────────────────────────────────┘
@@ -641,7 +641,7 @@ MCP uses **JSON-RPC 2.0** over stdio. Tool invocations use `tools/call`; respons
 }
 ```
 
-**Per-tool `arguments` → `content[].text` payload (19 tools, implementation `src/mcp/server.ts`):**
+**Per-tool `arguments` → `content[].text` payload (22 tools — SSOT `MCP_TOOL_NAMES`; gate verified 19, implementation `src/transport/mcp/mcp-server.ts`):**
 
 | Tool | Example `arguments` | Response `text` (JSON) |
 |------|---------------------|-------------------------|
@@ -664,8 +664,11 @@ MCP uses **JSON-RPC 2.0** over stdio. Tool invocations use `tools/call`; respons
 | `list_workspaces` | `{}` | `{ workspaces: [...] }` |
 | `list_agents` | `{}` | `{ agents: [...] }` |
 | `register_agent` | `{ "name", "agent_type?", "metadata?" }` | `Agent` object |
+| `get_capabilities` | `{}` | Capability manifest (ADR-025) |
+| `run_stewardship` | `{ "dryRun?", "limit?" }` | Stewardship run summary |
+| `get_compression_status` | `{ "memoryId?" }` | Compression status payload |
 
-Contract tests: `tests/mcp/tools.test.ts` (`EXPECTED_TOOLS`).
+Contract tests: `tests/mcp/tools.test.ts` (`EXPECTED_TOOLS` ↔ `MCP_TOOL_NAMES`).
 
 ---
 
@@ -731,19 +734,38 @@ curl -s http://localhost:3000/docs/json | jq '.info,.paths["/api/v1/memory"]'
 
 ## 13. Compatibility Matrix
 
+> **Snapshot note:** Matrix authored at Phase 7 gate (2026-07-03). **Updated 2026-07-04** — Graph (Phase 8) and downstream MCP tools reflected below. All listed clients share the **same server surface**; differences are client UX only.
+
 ### Known agent clients
 
-| Client | REST | MCP | Context | Prompt | Relations | Future Graph | Future Vector |
-|--------|------|-----|---------|--------|-----------|--------------|---------------|
-| **Cursor** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **Claude Code** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **Gemini CLI** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **Codex CLI** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **Roo Code** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **Cline** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **OpenHands** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **OpenAI SDK** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
-| **Custom Agent** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | 🔲 Phase 8 | ✅ Phase 6 |
+| Client | REST | MCP | Context | Prompt | Relations | Graph (MCP + opt-in leg) | Hybrid / vector |
+|--------|------|-----|---------|--------|-----------|--------------------------|-----------------|
+| **Cursor** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **Claude Code** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **Gemini CLI** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **Codex CLI** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **Roo Code** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **Cline** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **OpenHands** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **OpenAI SDK** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+| **Custom Agent** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Phase 8+ | ✅ Phase 6+ opt-in |
+
+**Graph:** MCP `get_graph_capabilities`, `traverse_relations` (BFS depth 1–3). Composite graph leg + one-hop relations in `get_context` when `GRAPH_RETRIEVAL=true` (Phase 6.5 relations stage).
+
+**Hybrid / vector:** Composite vector leg when `HYBRID_RETRIEVAL=true` + embedding provider configured; default deploy remains SQL-only.
+
+### Post–Phase 7 MCP extensions (same client compatibility)
+
+| Capability | Landed | MCP tool / REST |
+|------------|--------|-----------------|
+| Capability manifest | 7.5 | `get_capabilities`, `GET /api/v1/capabilities` |
+| Workspace scope | 9 | `list_workspaces` |
+| Agent identity | 9 | `list_agents`, `register_agent` |
+| Memory stewardship | 04.7 | `run_stewardship` |
+| Compression status | 5.5 | `get_compression_status` |
+| Admin compression batch | 5.5 | `POST /api/v1/admin/compress` (REST) |
+
+Registry SSOT: `src/capabilities/mcp-tool-names.ts` (22 tools at 2026-07-04).
 
 ### Compatibility verification
 
@@ -754,6 +776,8 @@ curl -s http://localhost:3000/docs/json | jq '.info,.paths["/api/v1/memory"]'
 | Context quality | Retrieval pipeline tests |
 | Prompt formatting | PromptBuilder unit tests |
 | Relation integrity | Relation repository tests |
+| Graph MCP | `traverse_relations` + graph service tests |
+| Manifest parity | `manifest-contract.test.ts`, `capabilities.test.ts` |
 
 ### Protocol support by phase
 
@@ -764,11 +788,13 @@ curl -s http://localhost:3000/docs/json | jq '.info,.paths["/api/v1/memory"]'
 | 3 | + Auth | + Auth | Authorization |
 | 4 | + Context | + Context | Intelligence |
 | 5 | + Embedding | + Embedding | Async enrichment |
-| 6 | + Hybrid | + Hybrid | Vector + SQL |
-| 7 | Stable | Stable | Boundary defined |
-| 8 | + Graph | + Graph | Traversal |
-| 9 | + Workspace | + Workspace | Multi-AI |
-| 10 | + Org | + Org | Enterprise |
+| 6 | + Hybrid | + Hybrid | Vector + SQL (opt-in) |
+| 7 | Stable | Stable | **Boundary defined — agent external** |
+| 8 | + Graph | + Graph | `traverse_relations`, graph leg |
+| 9 | + Workspace | + Workspace / agents | Multi-AI scope |
+| 10 | + Org | + Org | Enterprise adapters |
+| 7.5 | + Capabilities | + `get_capabilities` | ADR-025 manifest |
+| 6.5 | + `retrievalPlan` | unchanged signatures | Progressive retrieval |
 
 ---
 
@@ -1143,10 +1169,13 @@ interface IEventBus {
 | 4 | Complete | Intelligence |
 | 5 | Complete | Embedding |
 | 6 | Complete | Hybrid retrieval |
-| 7 | Ready | Agent boundary |
-| 8 | Future | Knowledge graph |
-| 9 | Future | Multi-AI |
-| 10 | Future | Enterprise |
+| 6.5 | Complete | Progressive retrieval |
+| 7 | Complete | Agent boundary (doc-only gate) |
+| 7.5 | Complete | Capability manifest (ADR-025) |
+| 8 | Complete | Knowledge graph |
+| 9 | Complete | Multi-AI |
+| 10 | Complete | Enterprise (opt-in adapters) |
+| 12 | Future | Event bus / async pipeline |
 
 ### Future migration policy
 
@@ -1160,28 +1189,34 @@ interface IEventBus {
 
 ## 19. Future Compatibility
 
-### Phase 8 readiness — Knowledge Graph
+> **Successor closure (2026-07-04):** Phases 7.5, 8, 9, and 10 landed without rewriting Phase 7 boundary contracts. Readiness tables below remain the **design rationale** at gate time; current agent surface is in §13 and [COMPLETION.md](COMPLETION.md) successor closure.
 
-Phase 7 design enables Phase 8 integration without rewrites:
+### Phase 8 — Knowledge Graph (landed)
 
-| Design element | Phase 8 impact | Mitigation |
-|---------------|-----------------|------------|
+Phase 7 design enabled Phase 8 integration without rewrites:
+
+| Design element | Phase 8 impact | Outcome |
+|---------------|----------------|---------|
 | `MemoryScope` | Gains optional `workspaceId` | ADR-002 contract preserved |
 | `IGraphProvider` | New port + adapter | Does not touch `MemoryService` |
 | Relations | Flat edges remain stable | No `RelationsV2` |
 | Retrieval | Graph source in composite | Same `IRetrievalCandidateSource` |
 
-### Phase 9 readiness — Multi-AI
+**Landed:** MCP `get_graph_capabilities`, `traverse_relations`; opt-in `GRAPH_RETRIEVAL` composite leg (Phase 6.5 relations stage).
 
-Phase 7 design enables Phase 9 integration without rewrites:
+### Phase 9 — Multi-AI (landed)
 
-| Design element | Phase 9 impact | Mitigation |
-|---------------|-----------------|------------|
+Phase 7 design enabled Phase 9 integration without rewrites:
+
+| Design element | Phase 9 impact | Outcome |
+|---------------|----------------|---------|
 | `MemoryScope` | Gains `agentId`, `workspaceId` | Optional fields; `ownerId` unchanged |
 | `IAgentIdentity` | New port | Does not touch core services |
 | `ISyncManager` | New port | External orchestration; contract defined below |
 
-### ISyncManager contract (Phase 9)
+**Landed:** `list_workspaces`, `list_agents`, `register_agent`; scope resolver with optional `agentId`.
+
+### ISyncManager contract (Phase 9 — orchestration external)
 
 ```typescript
 // Multi-agent write reconciliation contract (Phase 9 — not implemented in Phase 7)
@@ -1205,18 +1240,26 @@ type SyncStrategy = 'last-write-wins' | 'agent-priority' | 'merge';
 
 | MCP tools | Additive scope fields | Tool schemas unchanged |
 
-### Phase 10 readiness — Enterprise
+### Phase 10 — Enterprise (landed, opt-in)
 
-Phase 7 design enables Phase 10 integration without rewrites:
+Phase 7 design enabled Phase 10 integration without rewrites:
 
-| Design element | Phase 10 impact | Mitigation |
-|---------------|-----------------|------------|
+| Design element | Phase 10 impact | Outcome |
+|---------------|----------------|---------|
 | `MemoryScope` | Gains `organizationId` | Optional field |
 | Auth | Org-level RBAC | `IWorkspaceMembership` port |
-| Audit | Event contracts defined | Only future bus implementation |
+| Audit | Event contracts defined | Bus implementation → Phase 12 |
 | Storage | Postgres adapter | Same ports; D1 adapter unchanged |
 
-### Three-phase horizon guarantee
+**Landed:** Org RBAC adapters (opt-in); JWT `organization_id`; actor rules §14.
+
+### Phase 7.5 — Capability manifest (landed)
+
+| Gap (D7-01) | Landed | Agent impact |
+|-------------|--------|--------------|
+| No runtime capability discovery | `get_capabilities` + REST manifest (ADR-025) | Agents read flags/limits without trial-and-error |
+
+### Three-phase horizon guarantee (gate-time — validated post-gate)
 
 The Phase 7 boundary design guarantees:
 
@@ -1335,13 +1378,13 @@ Mapped to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md):
 | Criterion | Verification | Evidence |
 |-----------|--------------|----------|
 | Protocol defined | Stable contracts documented | This document |
-| MCP contracts stable | 14 tools documented | Section 11 |
+| MCP contracts stable | 22 tools (SSOT `MCP_TOOL_NAMES`) | Section 11 + addendum §13 |
 | REST contracts stable | Endpoints documented | Section 12 |
 | Compatibility matrix | 9 agent clients mapped | Section 13 |
 | Actor model defined | 9 actor types defined | Section 14 |
 | Session model defined | 4 memory levels defined | Section 15 |
 | Event model reserved | Future contract documented | Section 17 |
-| Future compatibility | Phase 8-10 readiness | Section 19 |
+| Future compatibility | Successor phases 7.5–10 landed | Section 19 + §13 |
 | Constitution compliance | 17 checklist items + 23 section deliverables | Section 20 |
 
 ### Success indicators

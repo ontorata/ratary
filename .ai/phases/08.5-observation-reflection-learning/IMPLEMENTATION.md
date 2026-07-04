@@ -61,14 +61,30 @@ createSignalIngestPorts(sql, env) → { enabled, normalizer, ingestor }
 
 REST (when enabled):
   POST /api/v1/signals → SignalsController → normalizer → ingestor
+  Optional: LearningEventRecorder when LEARNING_ENGINE_ENABLED (Phase 8.6)
 
 Access path (existing):
   recordAccess / get_context → internal access signals (Phase 4 baseline)
 
 CLI:
   npm run reflect:signals [-- --execute]
-  RANKING_ADAPTATION_ENABLED=false → advisory-only, no mutation
+  RANKING_ADAPTATION_ENABLED=false → advisory-only, no mutation (D85-03)
 ```
+
+---
+
+## Phase 8.6 bridge (post-gate)
+
+When both `SIGNAL_INGEST_ENABLED=true` and `LEARNING_ENGINE_ENABLED=true`:
+
+```typescript
+// rest-server.ts
+createSignalsController(..., {
+  eventRecorder: learningPorts.enabled ? learningPorts.eventRecorder : undefined,
+})
+```
+
+Records to **learning event store** (ADR-057) — separate from Phase 12 `IEventBus` (D85-02).
 
 ---
 
@@ -89,7 +105,7 @@ CLI:
 | `explicit_feedback` | Bounded importance delta via `ImportanceScoringPolicy` |
 | `access` | Recorded; scoring via existing access path |
 | `consolidation_hint` | Audit only (`appliedDelta: 0`); Phase 5.5 consumer |
-| `ingest_event` | Normalized metadata for Phase 12 alignment |
+| `ingest` | Normalized metadata for Phase 12 alignment |
 
 ---
 

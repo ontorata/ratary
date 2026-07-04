@@ -45,7 +45,7 @@ Phase 7.5 does **not** implement:
 
 | Capability | Location |
 |------------|----------|
-| Official SDK (npm `@ai-brain/client`) | External package (optional) |
+| Official SDK | **Phase 16** — `@ai-brain/sdk` in `packages/` (ADR-031; supersedes `@ai-brain/client` name here) |
 | Agent orchestration | External runtime |
 | Cursor / Claude MCP config | User environment |
 
@@ -54,7 +54,7 @@ Phase 7.5 does **not** implement:
 - Breaking MCP tool renames
 - Versioned duplicate endpoints (`/api/v2` not required)
 - Embedding agent health checks
-- Remote capability negotiation handshake (future)
+- Remote capability negotiation handshake (future — D7.5-03 → Phase 13+)
 
 ---
 
@@ -245,7 +245,7 @@ Optional headers:
 
 **Tool registry test:** `tests/mcp/tools.test.ts` `EXPECTED_TOOLS` ↔ manifest parity.
 
-Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (additive metadata).
+Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (additive metadata — **D7.5-01**, Phase 13.1 follow-up).
 
 ---
 
@@ -285,7 +285,9 @@ Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (addi
 | **5.5** | `supportsSemanticCompression` flag |
 | **8.5** | `supportsQualitySignals` flag |
 | **12** | `supportsEventSubscription` scoped flags |
-| **External SDK** | Consumes manifest; not in repo |
+| **13.1 follow-up** | D7.5-01 condensed manifest in MCP `initialize` `serverInfo` |
+| **13+** | D7.5-03 remote capability negotiation handshake |
+| **16** ✅ | D7.5-02 `@ai-brain/sdk` — `CapabilitiesApi.get()` consumes manifest (ADR-031) |
 
 ---
 

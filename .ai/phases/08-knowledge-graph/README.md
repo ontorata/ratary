@@ -11,6 +11,29 @@
 
 `IGraphProvider` traversal port, graph-augmented composite retrieval, additive MCP/REST graph API. Flat `memory_relations` unchanged.
 
+### Platform snapshot (post-gate — 2026-07-04)
+
+| Surface | Status | Reference |
+|---------|--------|-----------|
+| Graph port | `IGraphProvider` | `src/graph/igraph-provider.interface.ts` |
+| D1 adapter (default) | In-process BFS on flat edges | `src/infrastructure/graph/d1/d1-graph.adapter.ts` |
+| Neo4j adapter (opt-in) | `GRAPH_PROVIDER=neo4j` | `src/infrastructure/graph/neo4j/neo4j-graph-store.adapter.ts` |
+| Composite leg | sql + vector + graph | `GRAPH_RETRIEVAL=true` + wiring matrix |
+| MCP tools | `get_graph_capabilities`, `traverse_relations` | 22 tools SSOT (`MCP_TOOL_NAMES`) |
+| REST | `/api/v1/graph/capabilities`, `/graph/traverse` | `graph.routes.ts` |
+| Regression suite | **722 passed** \| 3 skipped | `npm test` |
+
+*Gate (2026-07-03): **231 tests**, D1-only MVP. Neo4j adapter, Phase 6.5 relation stage, Phase 8.7 inference, Phase 21 sync platform landed post-gate — boundary preserved.*
+
+### Successor phases (additive)
+
+| Phase | Extends Phase 8 |
+|-------|-----------------|
+| **6.5** | One-hop relation summaries in `get_context` when `GRAPH_RETRIEVAL=true` |
+| **8.7** | Async inferred edges (`RELATION_INFERENCE_ENABLED`) — feeds graph traverse |
+| **9** | Workspace/agent scope on memories (graph still owner-scoped) |
+| **21** | Search & graph production sync (`SEARCH_GRAPH_PLATFORM_ENABLED`) |
+
 ---
 
 ## Document index

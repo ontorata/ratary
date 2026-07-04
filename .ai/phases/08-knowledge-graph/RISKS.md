@@ -12,8 +12,10 @@
 | Graph traversal scope leak | Medium | Critical | Owner-scoped edge load + cross-owner tests | Mitigated |
 | Relation API rewrite | Low | High | Read-only port; CRUD unchanged | Not realized |
 | RRF cap imbalance (3 sources) | Medium | Medium | Role-based caps in ranking config | Mitigated |
-| In-process BFS at scale | Medium | Medium | Documented MVP limit; Neo4j path Phase 10+ | Accepted |
+| In-process BFS at scale | Medium | Medium | D1 default; Neo4j adapter + Phase 21 sync | Mitigated |
+| Vector graph seeds incomplete | Low | Low | `GRAPH_VECTOR_SEEDS_ENABLED` flag; leg deferred D8-02 | Accepted |
+| Inferred relation noise (8.7) | Medium | Medium | Manual relations immutable; inference opt-in | Transferred — Phase 8.7 |
 
 ---
 
-*Gate PASS 2026-07-03.*
+*Gate PASS 2026-07-03. Post-gate mitigations appended 2026-07-04.*

@@ -27,15 +27,23 @@ Record architecture review findings and formal phase gate verdict.
 
 ## Known gaps (accepted)
 
-- MCP submit_signal deferred
-- Phase 12 memory.signal.received publish deferred
+| ID | Item | Status |
+|----|------|--------|
+| D85-01 | MCP `submit_signal` | Open → Phase 13.1 |
+| D85-02 | Phase 12 `memory.signal.received` bus publish | Open |
+| D85-03 | Ranking adaptation batch mutation | Open — advisory stub only |
+| — | Phase 8.6 learning event bridge | ✅ When both ingest + learning flags ON |
+
+See [CHECKLIST.md](CHECKLIST.md) deferred table.
 
 ---
 
 **Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
+**Post-gate alignment (append-only):** Platform regression **722 passed** \| 3 skipped. Phase 8.6 recorder bridge documented; D85-01/02/03 remain open.
+
+**Evidence:** [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

@@ -25,10 +25,10 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Known gaps (accepted at gate)
+## Known gaps (accepted — by design)
 
-- `RETRIEVAL_POLICY=legacy` adapter not built — only `DefaultRetrievalPolicy` wired
-- Relations stage auto-expansion deferred — `traverse_relations` MCP for deep graph
+- **Deep BFS graph** — not inlined in `get_context`; use MCP `traverse_relations` (depth 1–3). Relations stage in context assembly is **one-hop summaries only** (`expandWithRelationNeighbors`, `RETRIEVAL_RELATION_NEIGHBOR_CAP`).
+- Legacy/adaptive policy adapters — **closed** post-gate (`RETRIEVAL_POLICY=legacy|adaptive`)
 - Token benchmark — **archived** [COMPLETION.md](COMPLETION.md) SC-65-06 (summary path 85.5%)
 
 ---

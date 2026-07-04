@@ -37,15 +37,19 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Accepted debt
 
-- Full manifest requires explicit capabilities call
-- No runtime negotiation protocol
+| ID | Item | Mitigation | Status |
+|----|------|------------|--------|
+| D7.5-01 | Full manifest requires explicit capabilities call | Optional condensed `serverInfo` snapshot | Open |
+| D7.5-02 | External SDK name drift (`@ai-brain/client`) | Phase 16 `@ai-brain/sdk` in monorepo | ✅ Closed |
+| D7.5-03 | No runtime negotiation protocol | Pull manifest; handshake deferred | Open |
 
 ---
 
 ## Recommendations
 
-- Embed condensed snapshot in MCP `initialize` serverInfo
-- Wire Phase 16 `@ai-brain/sdk` `getCapabilities()` to consume manifest
+- D7.5-01: embed condensed snapshot in MCP `initialize` `serverInfo` (Phase 13.1 follow-up)
+- D7.5-02: ✅ `@ai-brain/sdk` `CapabilitiesApi.get()` consumes manifest (Phase 16)
+- D7.5-03: define negotiation handshake in Phase 13 protocol manifest extension
 
 ---
 

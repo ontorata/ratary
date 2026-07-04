@@ -18,7 +18,10 @@ Implemented ADR-006 Option A: `IGraphProvider` port, D1 bidirectional BFS adapte
 |--------|------|------|
 | Port | `src/graph/igraph-provider.interface.ts` | Read-only traversal contract |
 | Pure BFS | `src/graph/traversal.ts` | Bidirectional BFS (unit-testable) |
-| Adapter | `src/graph/d1-graph.adapter.ts` | Owner-scoped edge load + BFS (MVP in-process) |
+| D1 adapter | `src/infrastructure/graph/d1/d1-graph.adapter.ts` | Owner-scoped edge load + in-process BFS (MVP) |
+| Neo4j adapter | `src/infrastructure/graph/neo4j/neo4j-graph-store.adapter.ts` | Opt-in external graph store (ADR-015) |
+| Provider factory | `src/infrastructure/composition/create-graph-provider.ts` | `GRAPH_PROVIDER=d1\|neo4j` |
+| Re-export | `src/graph/d1-graph.adapter.ts` | Backward-compatible shim |
 | Retrieval leg | `src/graph/graph-retrieval-candidate-source.ts` | Seeds → traverse → hydrate (Appendix F) |
 | Config defaults | `src/graph/graph.config.ts` | Depth/seed/neighbor defaults |
 | Graph service | `src/services/graph.service.ts` | Capabilities + traverse API (archived filter) |
@@ -50,10 +53,13 @@ Implemented ADR-006 Option A: `IGraphProvider` port, D1 bidirectional BFS adapte
 | Variable | Default | Effect |
 |----------|---------|--------|
 | `GRAPH_RETRIEVAL` | `false` | Enable graph leg in composite retrieval |
+| `GRAPH_PROVIDER` | `d1` | `d1` (in-process BFS) or `neo4j` |
 | `GRAPH_MAX_DEPTH` | `2` | BFS depth (max 3) |
 | `GRAPH_SEED_CAP` | `5` | Lexical seeds per query |
 | `GRAPH_MAX_NEIGHBORS` | `30` | Total neighbor budget per `findCandidates` |
+| `NEO4J_URI` / `NEO4J_USERNAME` / `NEO4J_PASSWORD` | — | Required when `GRAPH_PROVIDER=neo4j` |
 | `HYBRID_RETRIEVAL` | `false` | Independent — vector leg when true + embedding deps |
+| `GRAPH_VECTOR_SEEDS_ENABLED` | `false` | Vector seed hints for graph platform (Phase 21) |
 
 ---
 
@@ -70,8 +76,20 @@ Implemented ADR-006 Option A: `IGraphProvider` port, D1 bidirectional BFS adapte
 
 ## Accepted MVP tradeoffs
 
-- D1 adapter loads all owner edges per traverse (in-process BFS, not SQL CTE) — swap path via new `IGraphProvider` adapter.
+- D1 adapter loads all owner edges per traverse (in-process BFS, not SQL CTE) — swap via `GRAPH_PROVIDER=neo4j` or Phase 21 sync.
 - Graph recall requires `GRAPH_RETRIEVAL=true`; explore API always available via `GraphService`.
+- Deep multi-hop explore: MCP `traverse_relations` (depth 1–3); context assembly uses one-hop expansion (Phase 6.5) + composite graph leg.
+
+---
+
+## Post-gate extensions (successor phases)
+
+| Phase | Module | Role |
+|-------|--------|------|
+| **6.5** | `relation-context-expander.ts` | One-hop relation summaries in context pipeline |
+| **8.7** | `src/memory/relation-inference/` | Inferred edges augment traverse graph |
+| **21** | `src/search-graph-platform/` | Meilisearch + Neo4j index sync orchestration |
+| **04.7** | `GraphRepairTask` | Stewardship graph repair stage |
 
 ---
 

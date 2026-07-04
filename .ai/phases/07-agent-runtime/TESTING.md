@@ -42,7 +42,7 @@ Phase 7 adds no new test files. Verification combines **architecture review**, *
 |-------|--------|--------|
 | No planner/executor/orchestrator in `src/services/` | Directory + grep audit at gate | ✅ PASS |
 | No agent logic in `src/memory/` | Directory audit | ✅ PASS |
-| MCP layer is protocol adapter only | `src/mcp/` review | ✅ PASS |
+| MCP layer is protocol adapter only | `src/transport/mcp/` review | ✅ PASS |
 
 Evidence: [COMPLETION.md](COMPLETION.md) §2–3.
 
@@ -52,7 +52,9 @@ Evidence: [COMPLETION.md](COMPLETION.md) §2–3.
 |------------|----------------|--------|
 | Save memory | MCP `save_memory` · REST `POST /api/v1/memory` | ✅ Pre-Phase-7 tests green |
 | Build context | MCP / REST context endpoints | ✅ `tests/api/context*.test.ts` |
-| MCP tool catalog stable | `tests/mcp/tools.test.ts` | ✅ 19 tools at gate (196 total tests) |
+| MCP tool catalog stable | `tests/mcp/tools.test.ts` | ✅ 19 at gate → **22** SSOT (2026-07-04) |
+| Capability manifest | `tests/api/capabilities.test.ts` | ✅ Phase 7.5 |
+| Graph MCP | `traverse_relations` tests | ✅ Phase 8 |
 
 ### 4. Quality gate (unchanged codebase)
 
@@ -78,13 +80,20 @@ Evidence: [REVIEW.md](REVIEW.md) · [CHECKLIST.md](CHECKLIST.md) quality gate se
 
 ---
 
-## Post-gate note
+## Post-gate platform regression
 
-Capability discovery (`GET /api/v1/capabilities`) was identified as a gap during review and closed in **Phase 7.5** (ADR-025), not Phase 7. See [07.5-runtime-compatibility/TESTING.md](../07.5-runtime-compatibility/TESTING.md).
+| Metric | Gate (2026-07-03) | Platform snapshot (2026-07-04) |
+|--------|-------------------|--------------------------------|
+| Total tests | 196 green | **722 passed** \| 3 skipped |
+| MCP tools | 19 verified | **22** (`MCP_TOOL_NAMES`) |
+| Phase 7 new tests | 0 (by design) | 0 — additive tests belong to successor phases |
+
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+Capability discovery (`GET /api/v1/capabilities`) closed in **Phase 7.5** (ADR-025). See [07.5-runtime-compatibility/TESTING.md](../07.5-runtime-compatibility/TESTING.md).
 
 ---
 
 *Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
-## Current regression
-
-689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

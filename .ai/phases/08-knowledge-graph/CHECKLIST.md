@@ -36,7 +36,15 @@
 
 ### Quality gate
 
-- [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — **231 tests**
+- [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — **231 at gate** → **722** platform snapshot (2026-07-04)
+
+### Post-gate extensions (outside Phase 8 gate scope)
+
+- [x] Neo4j `IGraphProvider` adapter — `GRAPH_PROVIDER=neo4j` (ADR-015)
+- [x] `createGraphProvider()` composition factory — `src/infrastructure/composition/create-graph-provider.ts`
+- [x] Phase 6.5 one-hop relation expansion — `expandWithRelationNeighbors` in `ContextService`
+- [x] Phase 8.7 inferred relations — feeds graph edge set (ADR-041)
+- [x] Phase 21 search/graph sync platform — opt-in `SEARCH_GRAPH_PLATFORM_ENABLED` (ADR-022)
 
 ### Gate docs
 

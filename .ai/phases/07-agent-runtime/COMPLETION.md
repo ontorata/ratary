@@ -17,12 +17,12 @@ Document Phase 7 completion criteria. Phase 7 is a **documentation-only phase** 
 
 | Evidence | Status |
 |----------|--------|
-| MCP tools implemented | ✅ All 14 tools available |
+| MCP tools implemented | ✅ 19 at gate → **22** SSOT (additive post-gate) |
 | `get_context` endpoint | ✅ `POST /api/v1/context` |
 | `save_memory` tool | ✅ MCP and REST |
-| `build_prompt` tool | ✅ In MCP tools |
+| `build_prompt` tool | ✅ MCP and REST |
 
-**Evidence:** MCP tool definitions in `src/mcp/tools.ts`
+**Evidence:** `src/transport/mcp/mcp-server.ts` · `tests/mcp/tools.test.ts` · `MCP_TOOL_NAMES`
 
 ### 2. No agent planner code in `src/services/` or `src/memory/`
 
@@ -30,7 +30,7 @@ Document Phase 7 completion criteria. Phase 7 is a **documentation-only phase** 
 |-----------|------------|--------|
 | `src/services/` | No agent/plan/orchestrate modules | ✅ |
 | `src/memory/` | No agent/plan/orchestrate modules | ✅ |
-| `src/mcp/` | MCP tools only | ✅ |
+| `src/mcp/` | MCP transport adapter only | ✅ |
 
 **Evidence:** Directory structure preserves constitution boundary
 
@@ -39,7 +39,7 @@ Document Phase 7 completion criteria. Phase 7 is a **documentation-only phase** 
 | Rule | Evidence |
 |------|----------|
 | No planning in foundation | ✅ Agent code outside repo |
-| MCP/REST are interfaces | ✅ 14 MCP tools, REST API |
+| MCP/REST are interfaces | ✅ MCP + REST; manifest Phase 7.5 |
 | No agent orchestration | ✅ Boundary diagram in DESIGN.md |
 
 ---
@@ -49,7 +49,7 @@ Document Phase 7 completion criteria. Phase 7 is a **documentation-only phase** 
 | Criteria | Status | Notes |
 |----------|--------|-------|
 | Agent boundary documented | ✅ | DESIGN.md |
-| MCP tools stable | ✅ | 14 tools |
+| MCP tools stable | ✅ | 19 at gate; 22 SSOT (additive) |
 | No agent code in repo | ✅ | Verified |
 | Constitution preserved | ✅ | Boundary clear |
 
@@ -66,13 +66,22 @@ Phase 7 required **no code implementation**. The agent integration boundary was 
 
 ---
 
-## Future Work (Phase 8+)
+## Successor closure (post-gate — boundary preserved)
 
-| Phase | Action |
-|-------|--------|
-| Phase 8 | Graph retrieval adds `list_neighbors` pattern |
-| Phase 9 | `agentId` in `MemoryScope` for multi-agent |
-| Phase 10 | Organization scope for agent teams |
+| Phase | Planned in Phase 7 | Landed | Agent impact |
+|-------|-------------------|--------|--------------|
+| **7.5** | Capability discovery gap (D7-01) | ✅ ADR-025 `get_capabilities` | Agents discover flags/limits without trial-and-error |
+| **8** | Graph readiness §19 | ✅ `traverse_relations`, graph retrieval leg | MCP graph traverse + opt-in `GRAPH_RETRIEVAL` |
+| **9** | `agentId` / workspace (D7-02) | ✅ Multi-AI scope + agent identity tools | `list_workspaces`, `list_agents`, `register_agent` |
+| **10** | Enterprise org scope (D7-04 partial) | ✅ Org RBAC adapters (opt-in) | JWT `organization_id`; actor rules §14 |
+
+Additional additive MCP (boundary unchanged): `run_stewardship` (04.7), `get_compression_status` (5.5).
+
+---
+
+## Future Work
+
+No open Phase 7 boundary items. D7-03 event bus → Phase 12. See [DESIGN.md](DESIGN.md) §19 successor closure.
 
 ---
 

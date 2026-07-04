@@ -33,8 +33,8 @@ Applied via `migrateExtensionTracksPhase1() (signals portion)` in `src/db/migrat
 | Rollback | `SIGNAL_INGEST_ENABLED=false` — table remains; no hot-path writes when OFF |
 | Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
 | Production | Opt-in where flagged; default deploy unchanged |
-Gate evidence: migration test green at gate 2026-07-04.
 
+Gate evidence: migration test green at gate 2026-07-04.
 
 ---
 

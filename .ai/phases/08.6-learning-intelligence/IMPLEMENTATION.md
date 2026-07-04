@@ -18,7 +18,8 @@
 | CLI | `learning:run` (dry-run default) | ✅ |
 | Composition | `create-learning-ports.ts` | ✅ |
 | Manifest | `supportsLearningEngine` | ✅ |
-| L23–L25, L24, L27–L30 | No-op engine stubs registered | 🔲 Stub |
+| L23–L25, L24, L27–L30 | No-op engine stubs registered | 🔲 Stub (D86-01–03) |
+| Stewardship | `RankingRefreshTask` (Phase 04.7) | ✅ Post-gate |
 
 ---
 
@@ -42,9 +43,12 @@ src/infrastructure/learning/
 src/composition/create-learning-ports.ts
 src/memory/ranker.ts                    # optional snapshot multipliers
 src/memory/create-context-service.ts    # snapshot loader wiring
+src/memory/stewardship/tasks/ranking-refresh.task.ts  # Phase 04.7 batch hook
 scripts/run-learning.ts
 tests/learning/
 tests/composition/learning-ports.test.ts
+tests/memory/stewardship/ranking-refresh.task.test.ts
+tests/memory/ranker.test.ts
 ```
 
 ---
@@ -64,7 +68,19 @@ Context path:
 
 Batch path:
   npm run learning:run → LearningOrchestrator.run → saveRankingSnapshot
+
+Stewardship path (Phase 04.7):
+  run_stewardship / steward:memories → RankingRefreshTask at ranking-refresh stage
 ```
+
+---
+
+## Ranking snapshot rules (L26)
+
+| Constant | Value |
+|----------|-------|
+| `LEARNING_MIN_FEEDBACK_EVENTS` | 3 |
+| Multiplier bounds | 0.8 – 1.2× on `accessCountLog` weight |
 
 ---
 

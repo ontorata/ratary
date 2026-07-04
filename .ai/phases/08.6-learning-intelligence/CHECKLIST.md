@@ -16,9 +16,26 @@
 - [x] **Composition** — `create-learning-ports.ts`
 - [x] **Manifest** — `supportsLearningEngine`
 - [x] **Stubs** — No-op engines for L23–L25, L24, L27–L30
-- [ ] **L24** — Recommendation engine (deferred)
-- [ ] **L28–L29** — Dataset export + ML provider (deferred)
-- [ ] **L30** — Evaluation closed loop (deferred)
+
+---
+
+## Deferred
+
+| ID | Item | Status | Owner / notes |
+|----|------|--------|---------------|
+| D86-01 | **L24** — Recommendation engine | ⏳ Open | REST/client-facing suggestions |
+| D86-02 | **L23 / L25** — Pattern mining + knowledge discovery | ⏳ Open | Stub registered; no mining logic |
+| D86-03 | **L27–L30** — Feedback learning, context opt, dataset export, ML, eval | ⏳ Open | W4–W5 roadmap |
+| D86-04 | E2E: signal → event → orchestrator → rank order | ⏳ Open | Unit + ranker tests at gate |
+| D86-05 | Cron scheduler for `learning:run` | ⏳ Partial | Phase 04.7 `RankingRefreshTask` on `--execute` |
+
+### Checklist (frozen at gate)
+
+- [ ] D86-01 — L24 recommendation engine
+- [ ] D86-02 — L23 / L25 full implementations
+- [ ] D86-03 — L27–L30 full implementations
+- [ ] D86-04 — E2E learning pipeline test
+- [ ] D86-05 — Dedicated cron (stewardship task mitigates partially)
 
 ---
 
@@ -58,4 +75,4 @@
 |-------|-------|
 | **Verdict** | **PASS** — W1 + L26 implemented 2026-07-04 |
 | **ADR** | ADR-057 Accepted |
-| **Deferred** | L24, L27–L30 full implementations |
+| **Regression** | 689 at gate → **722** platform snapshot |

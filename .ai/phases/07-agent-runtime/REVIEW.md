@@ -30,10 +30,12 @@ Record architecture review findings and formal phase gate verdict.
 | Architecture review | [ARCHITECTURE-REVIEW.md](ARCHITECTURE-REVIEW.md) — APPROVED WITH MINOR CHANGES |
 | Minor findings (m1–m4) | ✅ Addressed in DESIGN.md (2026-07-03) |
 | Constitution compliance | PASS — no agent logic in `src/` |
-| MCP contract stability | PASS — 14 tools verified |
+| MCP contract stability | PASS — 19 tools verified at gate |
 | Quality gate | PASS — 196 tests, format/lint/typecheck green |
 
 **Gate verdict:** **PASS** (2026-07-03)
+
+**Post-gate alignment (2026-07-04, append-only):** Platform SSOT **22 MCP tools**; successor phases 7.5–10 landed without boundary rewrite. See [COMPLETION.md](COMPLETION.md) successor closure · [DESIGN.md](DESIGN.md) §13.
 
 **Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md) · [DESIGN.md](DESIGN.md)
 

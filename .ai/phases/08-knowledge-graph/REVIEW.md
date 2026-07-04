@@ -56,6 +56,8 @@
 
 Recorded: 2026-07-03
 
+**Post-gate alignment (append-only, 2026-07-04):** Neo4j adapter landed (`GRAPH_PROVIDER=neo4j`); successor phases 6.5, 8.7, 9, 21 closed without port rewrite. Platform regression **722 passed** \| 3 skipped. See [COMPLETION.md](COMPLETION.md) successor closure.
+
 ---
 
 *Verdict section immutable after gate PASS.*

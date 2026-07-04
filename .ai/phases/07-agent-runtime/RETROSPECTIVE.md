@@ -24,7 +24,7 @@ Capture lessons learned, accepted debt, and recommendations for the next phase.
 
 ## Summary
 
-Phase 7 closed as a **documentation-only boundary phase**: agent planning and execution remain external; AI Brain exposes stable MCP/REST contracts only. Gate PASS 2026-07-03 with 196 tests and no `src/` changes. The large DESIGN.md became the long-lived contract for Phases 8, 9, 15, and extension tracks.
+Phase 7 closed as a **documentation-only boundary phase**: agent planning and execution remain external; AI Brain exposes stable MCP/REST contracts only. Gate PASS 2026-07-03 with 196 tests and no `src/` changes. Successor phases 7.5, 8, 9, and 10 landed without breaking the boundary; MCP SSOT is **22 tools** (`MCP_TOOL_NAMES`, 2026-07-04).
 
 ---
 
@@ -46,7 +46,7 @@ Phase 7 closed as a **documentation-only boundary phase**: agent planning and ex
 |------|------|
 | **Capability discovery gap** | Agents still needed trial-and-error for limits/flags until **Phase 7.5** added `GET /api/v1/capabilities` (ADR-025) |
 | **Document schema vs doc-only phases** | IMPLEMENTATION/TESTING/RETROSPECTIVE scaffolds stayed “Reserved” until explicitly closed — process debt for governance hygiene |
-| **Tool count drift** | COMPLETION cited 14 tools; checklist 19 at gate — documentation needed single canonical count (resolved in CHECKLIST) |
+| **Tool count drift** | Gate cited 19 tools; early COMPLETION said 14 — resolved via `MCP_TOOL_NAMES` SSOT (22 post-gate, additive) |
 
 ---
 
@@ -57,7 +57,7 @@ Phase 7 closed as a **documentation-only boundary phase**: agent planning and ex
 | D7-01 | No runtime capability manifest | Phase 7.5 extension track | ✅ Phase 7.5 |
 | D7-02 | `agentId` not on scope types | Optional hook documented | ✅ Phase 9 |
 | D7-03 | Event subscription contract only | No bus until async pipeline | ✅ Phase 12 |
-| D7-04 | `organizationId` actor rules documented but not enforced | Enterprise RBAC | Phase 10+ |
+| D7-04 | `organizationId` actor rules documented but not enforced | Enterprise RBAC | ✅ Phase 10 (opt-in) |
 
 ---
 
@@ -67,6 +67,20 @@ Phase 7 closed as a **documentation-only boundary phase**: agent planning and ex
 2. **Split “boundary” from “discovery”** — boundary phases define what agents may call; compatibility phases (7.5) define how they learn limits.
 3. **Keep agent orchestration out of `MemoryService`** — Phase 15 ecosystem catalog extends metadata, not execution.
 4. **Reference Phase 7 DESIGN §10** when adding new protocol surfaces — preserve additive MCP/REST changes only.
+
+---
+
+## Successor closure (2026-07-04)
+
+| Phase | Debt / plan from Phase 7 | Outcome |
+|-------|--------------------------|---------|
+| **7.5** | D7-01 capability discovery | ✅ `get_capabilities` (ADR-025) |
+| **8** | Graph readiness §19 | ✅ Graph MCP + composite leg |
+| **9** | D7-02 `agentId` scope | ✅ Multi-AI tools + scope resolver |
+| **10** | D7-04 org actor rules | ✅ Org RBAC adapters (opt-in) |
+| **04.7 / 5.5** | — | ✅ Additive `run_stewardship`, `get_compression_status` |
+
+Regression at platform snapshot: **722 passed** | 3 skipped. Phase 7 boundary unchanged — no planner in `src/services/` or `src/memory/`.
 
 ---
 

@@ -21,7 +21,8 @@ Graph retrieval reuses the existing `memory_relations` table and Phase 4 relatio
 | Property | Value |
 |----------|-------|
 | Rollback | `GRAPH_RETRIEVAL=false` — instant; SQL/vector legs unchanged |
-| Neo4j scale path | Opt-in `GRAPH_PROVIDER=neo4j` (Phase 10 adapter) — separate backfill via `db:backfill-neo4j` |
+| Neo4j scale path | Opt-in `GRAPH_PROVIDER=neo4j` — `Neo4jGraphStoreAdapter` + `db:backfill-neo4j` |
+| Phase 21 sync | Opt-in `SEARCH_GRAPH_PLATFORM_ENABLED` — index orchestration (ADR-022) |
 
 Gate evidence: [REVIEW.md](REVIEW.md) — Migration **PASS** (N/A, no DDL).
 

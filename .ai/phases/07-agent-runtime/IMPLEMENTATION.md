@@ -43,7 +43,7 @@ Phase 7 is a **documentation-only boundary phase**. No new modules, migrations, 
 |------|-------------|
 | Agent planner / executor / loop in `src/` | **Forbidden** — constitution §7 |
 | New MCP tools for Phase 7 | **None** — reuse existing tool catalog |
-| `agentId` on `MemoryScope` | **Deferred** to Phase 9 (optional hook documented in DESIGN §14) |
+| `agentId` on `MemoryScope` | **Landed** Phase 9 — optional scope field |
 | Internal agent-runtime ADR | **Not required** — boundary is external-system ADR per roadmap |
 | Event bus / subscriptions | **Contract only** in DESIGN §17 — implementation Phase 12+ |
 
@@ -51,10 +51,12 @@ Phase 7 is a **documentation-only boundary phase**. No new modules, migrations, 
 
 | Surface | Role for external agents |
 |---------|--------------------------|
-| `src/mcp/tools.ts` | MCP tool contracts (`save_memory`, `get_context`, `build_prompt`, …) |
+| `src/transport/mcp/mcp-server.ts` | MCP tool dispatch (`save_memory`, `get_context`, `build_prompt`, …) |
+| `src/capabilities/mcp-tool-names.ts` | SSOT registry — 22 tools at 2026-07-04 |
 | `POST /api/v1/context` | Context assembly for agent turn |
 | `POST /api/v1/memory` | Persist handoff / knowledge |
-| `src/types/memory-scope.ts` | Scope model (`ownerId`, optional `workspaceId`) |
+| `GET /api/v1/capabilities` | Runtime manifest (Phase 7.5) |
+| `src/types/memory-scope.ts` | Scope model (`ownerId`, optional `workspaceId`, `agentId`, `organizationId`) |
 
 ### Commit sequence
 
@@ -62,13 +64,16 @@ No Phase 7–specific implementation commits. Gate evidence relies on pre-existi
 
 ---
 
-## Follow-on implementation (outside Phase 7 scope)
+## Follow-on implementation (outside Phase 7 scope — landed)
 
-| Phase | Gap closed |
-|-------|------------|
-| **7.5** Runtime Compatibility | `GET /api/v1/capabilities` manifest (ADR-025) |
-| **9** Multi-AI | `agentId` in scope types |
-| **15** Agent Ecosystem | Client catalog — extends, does not replace Phase 7 boundary |
+| Phase | Gap closed | Evidence |
+|-------|------------|----------|
+| **7.5** Runtime Compatibility | `GET /api/v1/capabilities` manifest (ADR-025) | `get_capabilities` MCP |
+| **8** Knowledge Graph | Graph traverse + retrieval leg | `traverse_relations`, `GRAPH_RETRIEVAL` |
+| **9** Multi-AI | `agentId` in scope types | `list_workspaces`, `list_agents`, `register_agent` |
+| **10** Enterprise | Org RBAC (opt-in) | JWT org scope, membership adapters |
+| **04.7 / 5.5** | Stewardship + compression observability | `run_stewardship`, `get_compression_status` |
+| **15** Agent Ecosystem | Client catalog | Extends metadata — does not replace Phase 7 boundary |
 
 ---
 

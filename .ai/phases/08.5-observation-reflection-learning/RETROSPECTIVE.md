@@ -13,7 +13,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Signal ingest pipeline: normalizer, importance policy, `MemorySignalIngestor`, SQL store, REST `/signals` when `SIGNAL_INGEST_ENABLED=true`. No agent reflection loops.
+Signal ingest pipeline: normalizer, importance policy, `MemorySignalIngestor`, SQL store, REST `/signals` when `SIGNAL_INGEST_ENABLED=true`. No agent reflection loops. Post-gate: Phase **8.6** `LearningEventRecorder` bridge when learning engine enabled.
 
 Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
@@ -38,16 +38,31 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Accepted debt
 
-- REST-only ingest when enabled
-- No automated ranker mutation
+| ID | Item | Mitigation | Status |
+|----|------|------------|--------|
+| D85-01 | REST-only ingest when enabled | MCP `submit_signal` → Phase 13.1 | Open |
+| D85-02 | No Phase 12 bus publish | Topic defined; wire on ingest | Open |
+| D85-03 | No automated ranker mutation | `reflect:signals` advisory stub | Open |
+| D85-04 | Rank order E2E test gap | Unit policy tests sufficient for gate | Open |
+
+---
+
+## Successor closure (2026-07-04)
+
+| Phase | Outcome |
+|-------|---------|
+| **8.6** | ✅ `LearningEventRecorder` — learning event store from REST ingest |
+| **12** | ⏳ `memory.signal.received` on `IEventBus` (D85-02) |
+| **13.1** | ⏳ MCP `submit_signal` for remote clients (D85-01) |
 
 ---
 
 ## Recommendations
 
-- Publish `memory.signal.received` on Phase 12 bus for Phase 8.6 feed
-- Add MCP `submit_signal` for remote MCP clients
+1. Wire D85-02 publisher after signal ingest when `EVENT_BUS_PROVIDER` active.
+2. Add D85-01 MCP tool reusing `SignalsController` handler path.
+3. Keep ranker mutation behind explicit `RANKING_ADAPTATION_ENABLED` + stewardship review.
 
 ---
 
-*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Recorded at gate 2026-07-04; successor closure appended 2026-07-04.*

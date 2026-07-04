@@ -1,7 +1,8 @@
 ﻿# Phase 8 — Knowledge Graph — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** ✅ Closed — gate PASS (2026-07-03  )  
+**Phase status:** ✅ Closed — gate PASS (2026-07-03)  
+**Platform snapshot:** 2026-07-04 — Neo4j adapter, successor phases 6.5 / 8.7 / 21 documented in §19  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 
@@ -32,24 +33,25 @@ This phase is **implementation-ready design**. The document defines the port con
 
 | Capability | Status |
 |------------|--------|
-| `IGraphProvider` port | New |
-| Graph traversal adapter (D1 CTE) | New |
-| Graph retrieval candidate source | New |
-| Composite retrieval extension | Existing (Phase 6) |
-| Flat `memory_relations` | Existing (Phase 2.6) |
+| `IGraphProvider` port | ✅ Implemented |
+| D1 in-process BFS adapter | ✅ Implemented |
+| Neo4j adapter (opt-in) | ✅ Post-gate — `GRAPH_PROVIDER=neo4j` |
+| Graph retrieval candidate source | ✅ Implemented |
+| Composite retrieval extension | ✅ Phase 6 pattern |
+| Flat `memory_relations` | ✅ Phase 2.6 unchanged |
 
 ### Outside this repository
 
 | Capability | Location |
 |------------|----------|
-| External graph database | Future adapter |
+| Neptune / Dgraph / Memgraph adapters | Future — port pattern only |
 | GraphQL API | External service |
 | Graph visualization | External tooling |
 
 ### Phase 8 deliverables
 
 1. `IGraphProvider` port contract
-2. D1 CTE traversal adapter
+2. D1 in-process BFS adapter (owner-scoped edge load)
 3. Graph retrieval candidate source
 4. Neighborhood expansion within retrieval cap
 5. Composite retrieval integration
@@ -86,7 +88,7 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 1. **Flat relations unchanged** — `memory_relations` table remains; no migration to graph-native format.
 2. **Graph is a retrieval adapter** — `GraphRetrievalCandidateSource` implements `IRetrievalCandidateSource` and wraps `IGraphProvider`.
 3. **Neighborhood expansion bounded** — Traversal depth limited by context cap.
-4. **No graph-native storage** — D1 CTE queries flat relations.
+4. **No graph-native storage** — adapters query flat `memory_relations` (in-process BFS or Neo4j index).
 5. **Port pattern preserved** — `IGraphProvider` swappable for external graph engine.
 
 ---
@@ -250,8 +252,9 @@ Phase 8 defines the `IGraphProvider` port; no external graph database is require
 │                  IGraphProvider Port                     │
 ├─────────────────────────────────────────────────────────┤
 │                                                          │
-│  Current: D1GraphAdapter (D1 CTE on flat relations)     │
-│  Future:  ExternalGraphAdapter (Neo4j, etc.)            │
+│  Current: D1GraphAdapter (in-process BFS on flat relations)     │
+│  Opt-in:  Neo4jGraphStoreAdapter (`GRAPH_PROVIDER=neo4j`)       │
+│  Future:  Neptune / Dgraph / Memgraph adapters                  │
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -260,7 +263,8 @@ Phase 8 defines the `IGraphProvider` port; no external graph database is require
 
 | Engine | Adapter | Status |
 |--------|---------|--------|
-| Neo4j | `Neo4jGraphAdapter` | Future |
+| D1 / SQL flat edges | `D1GraphAdapter` | ✅ Default (`GRAPH_PROVIDER=d1`) |
+| Neo4j | `Neo4jGraphStoreAdapter` | ✅ Opt-in (`GRAPH_PROVIDER=neo4j`) |
 | Amazon Neptune | `NeptuneGraphAdapter` | Future |
 | Dgraph | `DgraphGraphAdapter` | Future |
 | Memgraph | `MemgraphGraphAdapter` | Future |
@@ -278,8 +282,8 @@ The `IGraphProvider` port defines the graph traversal contract.
 │                    IGraphProvider Protocol                  │
 │                                                            │
 │  Interface: TypeScript port                                 │
-│  Implementation: D1 adapter (Phase 8)                     │
-│  Future: External graph adapter                            │
+│  Implementation: D1 in-process BFS (default) + Neo4j (opt-in) │
+│  Future: Additional external graph adapters                    │
 │  Contract: Traversal results only; no storage writes       │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
@@ -294,7 +298,7 @@ The `IGraphProvider` port defines the graph traversal contract.
 | Version aspect | Policy |
 |--------------|--------|
 | `IGraphProvider` | Stable once defined; no breaking changes |
-| D1 CTE algorithm | Versioned in adapter |
+| D1 BFS algorithm | Versioned in adapter |
 | External adapters | Follow adapter versioning |
 
 ### Breaking change policy
@@ -381,16 +385,19 @@ All Phase 1-7 REST endpoints remain unchanged in Phase 8.
 | 5 | ❌ None | SQL only | Embedding added |
 | 6 | ❌ None | SQL + Vector | Hybrid added |
 | **7** | ❌ None | SQL + Vector | Boundary defined |
-| **8** | ✅ D1 CTE | SQL + Vector + Graph | Phase 8 |
-| 9 | ✅ D1 CTE | SQL + Vector + Graph | + Weighted |
-| 10 | ✅ External | SQL + Vector + Graph | Enterprise |
+| **8** | ✅ D1 BFS (+ Neo4j opt-in) | SQL + Vector + Graph | Phase 8 gate |
+| **6.5** | ✅ + one-hop relations stage | Progressive retrieval plan | Context assembly |
+| **8.7** | ✅ Inferred edges | Same traverse port | ADR-041 |
+| 9 | ✅ | + workspace scope on memories | Owner-scoped traverse |
+| 10 | ✅ | + org RBAC opt-in | Adapters unchanged |
+| **21** | ✅ Sync platform | Meilisearch + Neo4j indexes | ADR-022 |
 
 ### External graph engine compatibility
 
 | Engine | REST | Adapter pattern | Status |
-|--------|------|---------------|--------|
-| D1 CTE | ✅ | Native | Phase 8 |
-| Neo4j | 🔲 Future | Driver-based | Future |
+|--------|------|-----------------|--------|
+| D1 in-process BFS | ✅ | `D1GraphAdapter` | ✅ Default |
+| Neo4j | ✅ | Driver-based | ✅ Opt-in |
 | Neptune | 🔲 Future | HTTP/Gremlin | Future |
 
 ---
@@ -460,8 +467,8 @@ Graph traversal respects `MemoryScope`:
 | Field | Graph behavior |
 |-------|---------------|
 | `ownerId` | **Required** — All traversal filtered by owner |
-| `workspaceId` | **N/A** — Phase 9 concern |
-| `agentId` | **N/A** — Phase 9 concern |
+| `workspaceId` | Filter on memory hydration (Phase 9+) |
+| `agentId` | Metadata only — no traverse state (Phase 9+) |
 
 ### Traversal boundary
 
@@ -512,24 +519,45 @@ No schema migration required for Phase 8:
 
 ## 19. Future Compatibility
 
-### Phase 9 readiness
+> **Successor closure (2026-07-04):** Phases 6.5, 8.7, 9, 10, and 21 extended graph capabilities without rewriting `IGraphProvider` or relation CRUD.
 
-Phase 8 design enables Phase 9 integration:
+### Phase 6.5 — Progressive retrieval (landed)
 
-| Design element | Phase 9 impact | Preservation |
-|---------------|----------------|--------------|
-| `IGraphProvider` | Weighted traversal | Port unchanged |
-| Traversal results | Workspace-scoped | Add filter |
-| `GraphRetrievalCandidateSource` | Add workspace scope | Adapter parameter |
+| Design element | Impact | Outcome |
+|---------------|--------|---------|
+| Relations stage | One-hop neighbor summaries in context | `expandWithRelationNeighbors` when `GRAPH_RETRIEVAL=true` |
+| Deep BFS | MCP `traverse_relations` depth 1–3 | Intentional split — not deferred debt |
 
-### Phase 10 readiness
+### Phase 8.7 — Relation inference (landed)
 
-| Design element | Phase 10 impact | Preservation |
-|---------------|----------------|--------------|
-| `IGraphProvider` | External graph engine | Swap adapter |
-| Graph events | Audit trail | Contract defined |
+| Design element | Impact | Outcome |
+|---------------|--------|---------|
+| Edge population | Inferred `memory_relations` | Async jobs; manual edges immutable (ADR-041) |
 
-### Three-phase guarantee
+### Phase 9 — Multi-AI (landed)
+
+Phase 8 design enabled Phase 9 integration:
+
+| Design element | Phase 9 impact | Outcome |
+|---------------|----------------|---------|
+| `IGraphProvider` | Workspace filter on hydration | Port unchanged |
+| Traversal results | Agent-scoped memories | Owner isolation preserved |
+
+### Phase 10 — Enterprise (landed, opt-in)
+
+| Design element | Phase 10 impact | Outcome |
+|---------------|----------------|---------|
+| `IGraphProvider` | Org RBAC on API | Adapter swap unchanged |
+| Graph events | Audit trail | Bus → Phase 12 |
+
+### Phase 21 — Search & graph production (landed)
+
+| Design element | Impact | Outcome |
+|---------------|--------|---------|
+| Index sync | Meilisearch + Neo4j orchestration | `SEARCH_GRAPH_PLATFORM_ENABLED` (ADR-022) |
+| Stewardship | `IndexRepairTask`, `GraphRepairTask` | Phase 04.7 pipeline |
+
+### Three-phase guarantee (gate-time — validated post-gate)
 
 1. **Port pattern** — `IGraphProvider` survives Phases 8-10.
 2. **Flat relations** — No graph-native storage migration.
@@ -556,7 +584,7 @@ Phase 8 design enables Phase 9 integration:
 
 | Forbidden pattern | Phase 8 prevention |
 |------------------|---------------------|
-| Graph-native storage | ✅ D1 CTE on flat relations |
+| Graph-native storage | ✅ Flat relations only; no graph DB in core schema |
 | Graph runtime | ✅ Adapter-only implementation |
 | GraphQL API | ✅ REST/MCP only |
 | Graph visualization | ✅ External tooling only |
@@ -570,21 +598,23 @@ Phase 8 design enables Phase 9 integration:
 | Criterion | Verification | Evidence |
 |-----------|--------------|----------|
 | `IGraphProvider` port defined | Interface document | Section 8 |
-| D1 CTE adapter implemented | Unit tests | TESTING.md |
+| D1 BFS adapter implemented | Unit tests | TESTING.md |
 | Graph source in composite | Integration test | TESTING.md |
 | Traversal bounded | Configurable depth cap | Section 10 |
 | No relation service changes | API compatibility test | TESTING.md |
+| MCP/REST graph API | Additive tools + endpoints | Section 11–12 |
 
 ### Deliverables
 
 | Deliverable | Status |
 |-------------|--------|
 | `IGraphProvider` port | ✅ Defined |
-| D1 CTE adapter | ⬜ Implementation |
-| Graph retrieval source | ⬜ Implementation |
-| Composite integration | ⬜ Implementation |
-| Unit tests | ⬜ Testing |
-| Integration tests | ⬜ Testing |
+| D1 BFS adapter | ✅ Implemented |
+| Neo4j adapter (opt-in) | ✅ Post-gate |
+| Graph retrieval source | ✅ Implemented |
+| Composite integration | ✅ Implemented |
+| Unit tests | ✅ TESTING.md |
+| Integration tests | ✅ TESTING.md |
 
 ---
 
@@ -594,18 +624,18 @@ Phase 8 design enables Phase 9 integration:
 
 | Risk | Likelihood | Impact | Mitigation |
 |------|-------------|--------|------------|
-| CTE performance at scale | Medium | Medium | Adapter swap path to external graph |
+| In-process BFS at scale | Medium | Medium | Neo4j adapter + Phase 21 sync |
 | Traversal depth explosion | Low | High | Configurable cap + depth limit |
-| Graph cycles (loops) | Low | Medium | Deduplication in adapter |
+| Graph cycles (loops) | Low | Medium | Visited set in BFS |
 | Memory pressure from large result sets | Medium | Medium | Strict cap enforcement |
 
 ### Mitigated risks
 
 | Risk | Mitigation |
 |------|------------|
-| CTE timeout | Depth cap + timeout config |
-| Circular relations | Visited set in CTE |
-| Missing relations | Flat relations remain; no data migration |
+| Large edge sets (D1) | `GRAPH_PROVIDER=neo4j` + backfill |
+| Circular relations | Visited set in traversal |
+| Missing relations | Flat relations remain; inference optional (8.7) |
 
 ---
 
@@ -627,7 +657,10 @@ Phase 8 design enables Phase 9 integration:
 | Phase | Document | Phase 8 relation |
 |-------|----------|-----------------|
 | 6 | [06-hybrid-retrieval/DESIGN.md](../06-hybrid-retrieval/DESIGN.md) | Composite pattern |
+| 6.5 | [06.5-progressive-retrieval/DESIGN.md](../06.5-progressive-retrieval/DESIGN.md) | Relations stage |
 | 7 | [07-agent-runtime/DESIGN.md](../07-agent-runtime/DESIGN.md) | Protocol contracts |
+| 8.7 | [08.7-graph-relation-inference/DESIGN.md](../08.7-graph-relation-inference/DESIGN.md) | Inferred edges |
+| 21 | [21-search-graph-prod/DESIGN.md](../21-search-graph-prod/DESIGN.md) | Sync platform |
 
 ### External references
 
