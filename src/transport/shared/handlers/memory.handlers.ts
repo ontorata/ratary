@@ -30,9 +30,18 @@ export interface MemoryHandlers {
   listTags: IApplicationHandler<Record<string, never>, string[]>;
   toggleFavorite: IApplicationHandler<{ id: string }, Memory>;
   archive: IApplicationHandler<{ id: string }, Memory>;
-  exportBackup: IApplicationHandler<Record<string, never>, Awaited<ReturnType<MemoryService['exportBackup']>>>;
-  importBackup: IApplicationHandler<{ input: BackupImportInput }, Awaited<ReturnType<MemoryService['importBackup']>>>;
-  replaceBackup: IApplicationHandler<{ input: BackupImportInput }, Awaited<ReturnType<MemoryService['replaceBackup']>>>;
+  exportBackup: IApplicationHandler<
+    Record<string, never>,
+    Awaited<ReturnType<MemoryService['exportBackup']>>
+  >;
+  importBackup: IApplicationHandler<
+    { input: BackupImportInput },
+    Awaited<ReturnType<MemoryService['importBackup']>>
+  >;
+  replaceBackup: IApplicationHandler<
+    { input: BackupImportInput },
+    Awaited<ReturnType<MemoryService['replaceBackup']>>
+  >;
 }
 
 export function createMemoryHandlers(deps: MemoryHandlerDeps): MemoryHandlers {

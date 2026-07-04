@@ -128,6 +128,17 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+
+    // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
+    GRPC_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    // 0 = OS-assigned ephemeral port (useful for tests/dynamic binding)
+    GRPC_PORT: z.coerce.number().int().min(0).max(65535).default(50051),
+    GRPC_HOST: z.string().min(1).default('0.0.0.0'),
+    GRPC_TLS_CERT_PATH: z.string().min(1).optional(),
+    GRPC_TLS_KEY_PATH: z.string().min(1).optional(),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {
@@ -286,6 +297,18 @@ const envSchema = z
           code: 'custom',
           path: ['NEO4J_PASSWORD'],
           message: 'NEO4J_PASSWORD is required when GRAPH_PROVIDER=neo4j',
+        });
+      }
+    }
+
+    if (env.GRPC_ENABLED) {
+      const hasCert = Boolean(env.GRPC_TLS_CERT_PATH);
+      const hasKey = Boolean(env.GRPC_TLS_KEY_PATH);
+      if (hasCert !== hasKey) {
+        ctx.addIssue({
+          code: 'custom',
+          path: [hasCert ? 'GRPC_TLS_KEY_PATH' : 'GRPC_TLS_CERT_PATH'],
+          message: 'GRPC_TLS_CERT_PATH and GRPC_TLS_KEY_PATH must be set together for mTLS',
         });
       }
     }

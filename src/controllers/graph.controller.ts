@@ -32,7 +32,5 @@ export function createGraphController(
   scopeResolver: IScopeResolver,
   handlers?: GraphHandlers,
 ): GraphController {
-  return new GraphController(
-    handlers ?? createGraphHandlers({ graphService, scopeResolver }),
-  );
+  return new GraphController(handlers ?? createGraphHandlers({ graphService, scopeResolver }));
 }

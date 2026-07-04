@@ -159,6 +159,27 @@ Tools MCP: `save_memory`, `search_memory`, `get_context`, `build_prompt`, `get_g
 
 Keduanya menulis ke **D1 yang sama**.
 
+### Transport & gRPC (Fase 10.5)
+
+Semua protokol (REST, MCP, gRPC) memanggil **handler bersama yang sama** → service yang sama. Tidak ada logika bisnis di lapisan transport.
+
+| Protokol | Untuk siapa | Default |
+|----------|-------------|---------|
+| REST `/api/v1` | Integrator publik, ChatGPT Actions | ✅ selalu aktif |
+| MCP stdio | Klien AI di IDE (Cursor, Claude, …) | ✅ selalu aktif |
+| gRPC `ai.brain.v1` | Backend internal / enterprise, streaming context | ❌ opsional |
+
+gRPC **mati secara default**. Untuk mengaktifkan (butuh Node yang berjalan lama — K8s/VM, **bukan** Vercel):
+
+```bash
+# .env
+GRPC_ENABLED=true
+GRPC_PORT=50051        # 0 = port ephemeral dari OS
+# GRPC_TLS_CERT_PATH=... dan GRPC_TLS_KEY_PATH=... untuk mTLS (isi keduanya)
+```
+
+Cek transport yang aktif lewat manifest: `GET /api/v1/capabilities` → field `transport`.
+
 ---
 
 ## 7. Opsional

@@ -1,8 +1,9 @@
 # ADR-027: Transport & Connectivity Layer (Phase 10.5)
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-04  
 **Approved:** 2026-07-04 (Lutfi Ramadhan — Phase 11 gate PASS; Phase 10.5 authorized)  
+**Implemented:** 2026-07-04 (tracks 10.5A–10.5F complete; 486 tests green at default env)  
 **Deciders:** Project owner  
 
 ---
@@ -110,6 +111,27 @@ Phase 7.5 delivered `GET /api/v1/capabilities` and MCP `get_capabilities` (ADR-0
 | 14 Search/Graph Prod | gRPC reindex triggers; no REST change |
 | Distributed fabric | Transport registry + metadata propagation via `TransportContext` |
 | External SDK | Consumes OpenAPI + `.proto` artifacts from repo |
+
+---
+
+## Implementation (2026-07-04)
+
+All six tracks landed with zero behavior change at default env (D1 + REST + MCP stdio):
+
+| Track | Delivered |
+|-------|-----------|
+| 10.5A | `transport/shared/` — `TransportContext`, `resolve-transport-scope`, `transport-errors` |
+| 10.5B | `IApplicationHandler` + ≥10 shared handlers (memory, context, capabilities, graph, relations); REST controllers and MCP tools delegate to the same handlers |
+| 10.5C | REST bootstrap moved to `transport/rest/rest-server.ts`; `src/server.ts` re-export shim; `RestTransportServer implements ITransportServer` |
+| 10.5D | MCP bootstrap moved to `transport/mcp/mcp-server.ts`; `src/mcp/server.ts` re-export shim (stdio entrypoint unchanged); `McpTransportServer` |
+| 10.5E | `transport/grpc/` — `ai.brain.v1` proto (Memory unary, Search unary, Context server-stream, Health), `GrpcTransportServer` behind `GRPC_ENABLED=false`; `@grpc/grpc-js` loaded only when enabled via dynamic import in `start-transports.ts` |
+| 10.5F | `AICapabilityManifest.transport` additive block (rest/mcp/grpc/sdk); `TransportRegistry` composition root |
+
+**New env:** `GRPC_ENABLED` (default `false`), `GRPC_PORT` (default `50051`, `0` = ephemeral), `GRPC_HOST`, `GRPC_TLS_CERT_PATH`, `GRPC_TLS_KEY_PATH` (mTLS — both or neither).
+
+**New dependencies:** `@grpc/grpc-js` + `@grpc/proto-loader` added to `package.json` / `package-lock.json` (10.5E). Loaded only when `GRPC_ENABLED=true` (dynamic import), so the default REST/MCP runtime path does not require them.
+
+**Test evidence:** handler parity (REST vs MCP), manifest transport contract, gRPC proto load + mappers + error mapping, gRPC boot on ephemeral port, and a `services/` layer-boundary lint gate (no `fastify`/`@grpc/grpc-js`/MCP SDK/transport imports). Total **486 passed, 3 skipped**; typecheck, ESLint, and Prettier clean.
 
 ---
 

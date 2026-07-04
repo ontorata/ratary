@@ -6,10 +6,7 @@ import {
   type CapabilitiesHandlers,
 } from '../transport/shared/handlers/create-transport-handlers.js';
 
-export function createCapabilitiesController(
-  env: Env,
-  handlers?: CapabilitiesHandlers,
-) {
+export function createCapabilitiesController(env: Env, handlers?: CapabilitiesHandlers) {
   const resolved = handlers ?? createCapabilitiesHandlers({ env });
 
   return {

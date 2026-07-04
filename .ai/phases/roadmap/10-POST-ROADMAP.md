@@ -70,38 +70,38 @@ flowchart LR
 
 # Phase 10.5 — Transport & Connectivity Layer
 
-**Status:** 🔄 In Progress — ADR-027 Approved (2026-07-04); track 10.5A ✅  
+**Status:** ✅ Implemented — ADR-027 Implemented (2026-07-04); tracks 10.5A–10.5F ✅; gate REVIEW/COMPLETION pending  
 **Folder:** [.ai/phases/10.5-transport-connectivity/](../10.5-transport-connectivity/README.md)
 
 ## Scope
 
 Formalize **Transport & Connectivity** as canonical outer layer. REST and MCP stdio remain default public/AI protocols. Optional gRPC for internal/enterprise workloads (batch ingest, context streaming). **Zero change** to application services, repositories, or storage ports.
 
-| Track | Deliverable |
-|-------|-------------|
-| 10.5A | `TransportContext` + unified scope resolution |
-| 10.5B | Shared `IApplicationHandler` (anti-drift) |
-| 10.5C | REST → `src/transport/rest/` (strangler re-exports) |
-| 10.5D | MCP → `src/transport/mcp/` |
-| 10.5E | gRPC v1 behind `GRPC_ENABLED=false` |
-| 10.5F | Manifest `transport` section + docs |
+| Track | Deliverable | Status |
+|-------|-------------|--------|
+| 10.5A | `TransportContext` + unified scope resolution | ✅ |
+| 10.5B | Shared `IApplicationHandler` (anti-drift) | ✅ |
+| 10.5C | REST → `src/transport/rest/` (strangler re-exports) | ✅ |
+| 10.5D | MCP → `src/transport/mcp/` | ✅ |
+| 10.5E | gRPC v1 behind `GRPC_ENABLED=false` | ✅ |
+| 10.5F | Manifest `transport` section + docs | ✅ |
 
 ## ADR gates
 
 | ADR | Title | Purpose |
 |-----|-------|---------|
-| [ADR-027](../../adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer | **Approved** (2026-07-04) |
+| [ADR-027](../../adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer | **Implemented** (2026-07-04) |
 | ADR-025 amend | Add `transport` block to manifest | Additive only |
 
 ## Success criteria
 
-- [ ] ADR-027 **Approved**
-- [ ] `src/transport/` canonical; 04-ARCHITECTURE updated
-- [ ] No `MemoryService` / `SearchService` / `KnowledgeService` logic change
-- [ ] REST v1 + MCP tool schemas unchanged
-- [ ] Handler parity ≥10 use cases
-- [ ] `GRPC_ENABLED=false` default; 457+ tests at default env
-- [ ] Manifest reports active transports
+- [x] ADR-027 **Approved** → **Implemented**
+- [x] `src/transport/` canonical; 04-ARCHITECTURE updated
+- [x] No `MemoryService` / `SearchService` / `KnowledgeService` logic change
+- [x] REST v1 + MCP tool schemas unchanged
+- [x] Handler parity ≥10 use cases
+- [x] `GRPC_ENABLED=false` default; 486 tests at default env
+- [x] Manifest reports active transports
 
 ## Non-goals
 

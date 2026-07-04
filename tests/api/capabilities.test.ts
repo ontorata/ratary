@@ -44,5 +44,9 @@ describe('Capabilities API', () => {
     expect(body.capabilities.supportsMemoryCRUD).toBe(true);
     expect(body.retrieval.defaultContentMode).toBe('summary');
     expect(body.rest.openApiUrl).toContain('/docs/json');
+    expect(body.transport.rest.enabled).toBe(true);
+    expect(body.transport.mcp.toolCount).toBe(MCP_TOOL_NAMES.length);
+    expect(body.transport.grpc.enabled).toBe(false);
+    expect(body.transport.sdk.packageName).toBe('@ai-brain/client');
   });
 });

@@ -2,9 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { HealthService } from '../services/health.service.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
 import type { MemoryService } from '../services/memory.service.js';
-import {
-  buildTransportContextFromRestRequest,
-} from '../transport/shared/resolve-transport-scope.js';
+import { buildTransportContextFromRestRequest } from '../transport/shared/resolve-transport-scope.js';
 import {
   createMemoryHandlers,
   type MemoryHandlers,
@@ -160,9 +158,7 @@ export function createMemoryController(
   scopeResolver: IScopeResolver,
   handlers?: MemoryHandlers,
 ): MemoryController {
-  return new MemoryController(
-    handlers ?? createMemoryHandlers({ memoryService, scopeResolver }),
-  );
+  return new MemoryController(handlers ?? createMemoryHandlers({ memoryService, scopeResolver }));
 }
 
 export class BackupController {
@@ -189,7 +185,5 @@ export function createBackupController(
   scopeResolver: IScopeResolver,
   handlers?: MemoryHandlers,
 ): BackupController {
-  return new BackupController(
-    handlers ?? createMemoryHandlers({ memoryService, scopeResolver }),
-  );
+  return new BackupController(handlers ?? createMemoryHandlers({ memoryService, scopeResolver }));
 }

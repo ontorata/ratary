@@ -1,9 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import rateLimit from '@fastify/rate-limit';
-import {
-  getRateLimitRedisClient,
-  rateLimitRedisOptions,
-} from './rate-limit-redis.js';
+import { getRateLimitRedisClient, rateLimitRedisOptions } from './rate-limit-redis.js';
 
 /** Rate limits for sensitive auth routes (per IP). */
 export const AUTH_RATE_LIMITS = {

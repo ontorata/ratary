@@ -32,8 +32,7 @@ export interface TransportHandlers {
 }
 
 export function createTransportHandlers(deps: TransportHandlerDeps): TransportHandlers {
-  const { memoryService, contextService, graphService, relationService, scopeResolver, env } =
-    deps;
+  const { memoryService, contextService, graphService, relationService, scopeResolver, env } = deps;
 
   return {
     memory: createMemoryHandlers({ memoryService, scopeResolver }),

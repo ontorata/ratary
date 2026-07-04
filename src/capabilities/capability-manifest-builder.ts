@@ -75,6 +75,32 @@ export class CapabilityManifestBuilder {
         version: 'v1',
         openApiUrl: this.options.openApiUrl ?? '/docs/json',
       },
+      transport: {
+        rest: {
+          enabled: true,
+          version: 'v1',
+          baseUrl: '/api/v1',
+        },
+        mcp: {
+          enabled: true,
+          transport: 'stdio',
+          toolCount: MCP_TOOL_NAMES.length,
+        },
+        grpc: {
+          enabled: this.env.GRPC_ENABLED,
+          ...(this.env.GRPC_ENABLED
+            ? {
+                port: this.env.GRPC_PORT,
+                protoVersion: 'v1',
+                tls: Boolean(this.env.GRPC_TLS_CERT_PATH && this.env.GRPC_TLS_KEY_PATH),
+              }
+            : {}),
+        },
+        sdk: {
+          packageName: '@ai-brain/client',
+          status: 'planned',
+        },
+      },
       retrieval: {
         progressivePolicyVersion: this.env.RETRIEVAL_POLICY_VERSION,
         defaultContentMode: 'summary',

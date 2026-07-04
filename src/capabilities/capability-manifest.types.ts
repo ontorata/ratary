@@ -46,6 +46,29 @@ export interface CapabilityLimits {
   maxRelationsPerMemory: number;
 }
 
+export interface TransportManifest {
+  rest: {
+    enabled: boolean;
+    version: 'v1';
+    baseUrl: string;
+  };
+  mcp: {
+    enabled: boolean;
+    transport: 'stdio';
+    toolCount: number;
+  };
+  grpc: {
+    enabled: boolean;
+    port?: number;
+    protoVersion?: string;
+    tls?: boolean;
+  };
+  sdk: {
+    packageName: '@ai-brain/client';
+    status: 'planned' | 'published';
+  };
+}
+
 export interface AICapabilityManifest {
   protocolVersion: string;
   version: string;
@@ -62,6 +85,7 @@ export interface AICapabilityManifest {
     version: 'v1';
     openApiUrl: string;
   };
+  transport: TransportManifest;
   retrieval: {
     progressivePolicyVersion: string;
     defaultContentMode: 'summary' | 'full';

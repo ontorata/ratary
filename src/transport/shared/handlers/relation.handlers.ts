@@ -11,7 +11,10 @@ export interface RelationHandlerDeps {
 }
 
 export interface RelationHandlers {
-  list: IApplicationHandler<{ memoryId: string }, Awaited<ReturnType<MemoryRelationService['listRelations']>>>;
+  list: IApplicationHandler<
+    { memoryId: string },
+    Awaited<ReturnType<MemoryRelationService['listRelations']>>
+  >;
   create: IApplicationHandler<
     { memoryId: string; input: CreateRelationInput; identityId?: string },
     Awaited<ReturnType<MemoryRelationService['createRelation']>>

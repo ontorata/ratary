@@ -299,22 +299,24 @@ scripts/backfill-embeddings.ts
 
 ---
 
-## Transport layer (Phase 10.5 — planned)
+## Transport layer (Phase 10.5 — implemented)
 
-**Status:** Design draft — [ADR-027](../../../.ai/adr/027-transport-connectivity-layer.md) Proposed · [10.5 DESIGN](../../phases/10.5-transport-connectivity/DESIGN.md)
+**Status:** Implemented — [ADR-027](../../../.ai/adr/027-transport-connectivity-layer.md) Implemented (2026-07-04) · [10.5 DESIGN](../../phases/10.5-transport-connectivity/DESIGN.md)
 
 **Owns:** protocol adapters (REST, MCP stdio, optional gRPC), `TransportContext`, shared application handlers, transport registry, manifest transport section.
 
-**Target structure:**
+**Structure:**
 
 ```
 transport/
-  shared/     TransportContext, handlers (thin), scope unify
-  rest/       Fastify bootstrap, routes, controllers
-  mcp/        stdio server, tools → handlers
-  grpc/       opt-in; GRPC_ENABLED=false default
-  registry/   ITransportServer lifecycle, startAll/stopAll
+  shared/     TransportContext, IApplicationHandler, handlers (thin), scope unify, errors
+  rest/       rest-server.ts (buildApp) + RestTransportServer   ← src/server.ts re-exports
+  mcp/        mcp-server.ts (stdio) + McpTransportServer         ← src/mcp/server.ts re-exports
+  grpc/       ai.brain.v1 proto + GrpcTransportServer (GRPC_ENABLED=false default)
+  registry/   ITransportServer, TransportRegistry, startTransports()
 ```
+
+**Composition:** `startTransports()` builds a `TransportRegistry`, always registers `RestTransportServer`, and registers `GrpcTransportServer` only when `GRPC_ENABLED=true` (dynamic import keeps `@grpc/grpc-js` off the default path). Legacy import paths `src/server.ts` and `src/mcp/server.ts` are preserved as strangler re-export shims.
 
 **Rules:**
 

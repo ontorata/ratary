@@ -11,8 +11,14 @@ export interface GraphHandlerDeps {
 }
 
 export interface GraphHandlers {
-  getCapabilities: IApplicationHandler<Record<string, never>, ReturnType<GraphService['getCapabilities']>>;
-  traverse: IApplicationHandler<TraverseGraphBody, Awaited<ReturnType<GraphService['traverseRelations']>>>;
+  getCapabilities: IApplicationHandler<
+    Record<string, never>,
+    ReturnType<GraphService['getCapabilities']>
+  >;
+  traverse: IApplicationHandler<
+    TraverseGraphBody,
+    Awaited<ReturnType<GraphService['traverseRelations']>>
+  >;
 }
 
 export function createGraphHandlers(deps: GraphHandlerDeps): GraphHandlers {
