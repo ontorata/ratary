@@ -20,7 +20,10 @@ import {
 } from '../../capabilities/capability-negotiation.js';
 import type { CapabilityNegotiationResult } from '../../capabilities/capability-negotiation.types.js';
 
-type InitializeAwareServer = McpServer['server'] & {
+/** MCP SDK Server keeps `_clientCapabilities` private — cast via unknown, do not intersect. */
+type InitializeAwareServer = {
+  setRequestHandler: McpServer['server']['setRequestHandler'];
+  getCapabilities: () => Record<string, unknown>;
   _clientCapabilities: unknown;
   _clientVersion: unknown;
 };
@@ -93,9 +96,16 @@ export function wireMcpInitializeCapabilities(
   resolveManifest: () => Promise<AICapabilityManifest> | AICapabilityManifest,
   options: McpInitializeSnapshotOptions = {},
 ): void {
-  const inner = server.server as InitializeAwareServer;
+  const inner = server.server as unknown as InitializeAwareServer;
 
-  inner.setRequestHandler(InitializeRequestSchema, async (request) => {
+  inner.setRequestHandler(InitializeRequestSchema, async (request: {
+    params: {
+      protocolVersion: string;
+      capabilities: unknown;
+      clientInfo: unknown;
+      _meta?: Record<string, unknown>;
+    };
+  }) => {
     inner._clientCapabilities = request.params.capabilities;
     inner._clientVersion = request.params.clientInfo;
 

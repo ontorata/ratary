@@ -1,5 +1,5 @@
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
-import { generateId, nowISO } from '../../utils/memory-mapper.js';
+import { nowISO } from '../../utils/memory-mapper.js';
 import { NotFoundError, ValidationError } from '../../types/errors.js';
 import type { Env } from '../../config/env.js';
 import type { IPluginManifestValidator } from '../../infrastructure-platform/ports/iplugin-manifest-validator.port.js';

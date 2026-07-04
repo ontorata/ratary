@@ -5,7 +5,6 @@ import type { IMetricsExporter } from '../observability/ports/imetrics-exporter.
 import {
   AiBrainPlatformManifestBuilder,
   HttpWebhookDispatcher,
-  NoOpWebhookDispatcher,
   WebhookDeliveryConsumer,
 } from '../ai-brain-platform/index.js';
 import {

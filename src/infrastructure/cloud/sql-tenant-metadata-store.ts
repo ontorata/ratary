@@ -1,11 +1,11 @@
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import { generateId, nowISO } from '../../utils/memory-mapper.js';
-import type { ITenantMetadataStore } from '../ports/itenant-metadata-store.port.js';
+import type { ITenantMetadataStore } from '../../cloud/ports/itenant-metadata-store.port.js';
 import type {
   ProvisionWorkspaceInput,
   TenantMetadataRecord,
   TenantMetadataStatus,
-} from '../types/tenant.types.js';
+} from '../../cloud/types/tenant.types.js';
 
 interface TenantRow {
   id: string;

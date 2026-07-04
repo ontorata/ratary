@@ -60,7 +60,7 @@ Sync orchestrator delegates to Phase 14 when `FEDERATION_ENABLED=true`. Telemetr
 | GET | `/api/v1/intelligence/manifest` | Capstone manifest |
 | GET | `/api/v1/intelligence/analytics/adoption` | Adoption KPI |
 | GET | `/api/v1/intelligence/analytics/workspace-health` | Health score |
-| GET | `/api/v1/intelligence/analytics/cost` | Cost estimate |
+| GET | `/api/v1/intelligence/analytics/cost` | Cost KPI (`source=meter` when `USAGE_METER_ENABLED`, else telemetry estimate) |
 | GET | `/api/v1/intelligence/analytics/context-effectiveness` | Context KPI |
 | GET | `/api/v1/intelligence/sync/status` | Per-tier sync cursors |
 | POST | `/api/v1/intelligence/sync` | Run tier sync (dry-run supported) |

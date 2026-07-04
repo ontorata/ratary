@@ -31,20 +31,17 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 ## What was harder than expected
 
 - No remote peer sync smoke
-- Cost KPI without Phase 18 billing integration
 
 ---
 
 ## Accepted debt
 
 - Global sync limited to in-process federation transport
-- Cost KPI estimate-only
 
 ---
 
 ## Recommendations
 
-- Integrate Phase 18 usage meter into `/intelligence/analytics/cost`
 - Remote federation transport before multi-region 5-tier sync
 
 ---

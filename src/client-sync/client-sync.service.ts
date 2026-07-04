@@ -14,6 +14,7 @@ import type {
 } from './client-sync.types.js';
 import type { IClientPlatformRegistry } from './iclient-platform-registry.interface.js';
 import type { IClientSyncService } from './iclient-sync-service.interface.js';
+import type { ISyncCursorStore } from './isync-cursor-store.port.js';
 import type { ISyncConflictStore } from './isync-conflict-store.port.js';
 import type { Memory } from '../types/memory.js';
 import type { IMemoryMergePolicy } from '../evolution/imemory-merge-policy.interface.js';

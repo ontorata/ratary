@@ -1,6 +1,6 @@
 import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import type { MemoryScope } from '../types/memory-scope.js';
-import type { ICompressionSummarizer } from './compression/compression-summarizer.interface.js';
+import type { ICompressionSummarizer } from '../memory/compression/compression-summarizer.interface.js';
 
 export interface SummaryEnrichmentOptions {
   dryRun?: boolean;

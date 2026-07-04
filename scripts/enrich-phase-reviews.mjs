@@ -457,7 +457,7 @@ const PHASES = [
       [`Regression suite at gate`, `✅ ${REGRESSION}`],
     ],
     adrGate: ['ADR-036/037/038/043 Implemented', 'Rollback: disable GLOBAL_INTELLIGENCE_PLATFORM_ENABLED'],
-    deferred: ['No remote peer sync smoke', 'Cost KPI without Phase 18 billing integration', 'Global sync limited to in-process transport'],
+    deferred: ['No remote peer sync smoke', 'Global sync limited to in-process transport'],
   },
 ];
 

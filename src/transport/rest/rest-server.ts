@@ -189,6 +189,10 @@ export async function buildApp(options?: {
     platform.sql,
     env,
     observabilityPorts.metricsExporter,
+    {
+      usageMeter: cloudPorts.usageMeter,
+      usageMeterEnabled: cloudPorts.usageMeterEnabled,
+    },
   );
   const eventConsumers = [
     ...cloudPorts.eventConsumers,

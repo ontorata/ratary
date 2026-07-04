@@ -12,7 +12,7 @@ export class HttpWebhookDispatcher implements IWebhookDispatcher {
     event: EventEnvelope<unknown>,
   ): Promise<WebhookDispatchResult> {
     const body = JSON.stringify({
-      id: event.id,
+      id: event.correlationId ?? `${event.topic}:${event.occurredAt}`,
       topic: event.topic,
       occurredAt: event.occurredAt,
       correlationId: event.correlationId,

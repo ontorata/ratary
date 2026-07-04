@@ -21,6 +21,7 @@ interface WorkspaceRow {
   slug: string;
   created_at: string;
   organization_id?: string | null;
+  [key: string]: unknown;
 }
 
 interface OrganizationRow {
@@ -50,6 +51,7 @@ interface AgentRow {
   metadata: string;
   created_at: string;
   active: number;
+  [key: string]: unknown;
 }
 
 interface MemoryEmbeddingRow {
@@ -98,8 +100,6 @@ export class MockD1Client implements D1Client {
   private intelligenceSyncState: Map<string, Record<string, unknown>> = new Map();
   private intelligenceOfflineJournal: Map<string, Record<string, unknown>> = new Map();
   private stewardshipRuns: Map<string, Record<string, unknown>> = new Map();
-  private memoryEmbeddingsTableReady = false;
-  private inTransaction = false;
   async query<T = Record<string, unknown>>(sql: string, params: unknown[] = []): Promise<T[]> {
     const result = await this.execute(sql, params);
     return result.results as T[];
@@ -109,9 +109,6 @@ export class MockD1Client implements D1Client {
     const normalizedSql = sql.trim().toUpperCase();
 
     if (normalizedSql.startsWith('CREATE TABLE') || normalizedSql.startsWith('CREATE INDEX')) {
-      if (normalizedSql.includes('MEMORY_EMBEDDINGS')) {
-        this.memoryEmbeddingsTableReady = true;
-      }
       return { results: [], success: true, meta: { changes: 0 } };
     }
 
@@ -159,8 +156,6 @@ export class MockD1Client implements D1Client {
       normalizedSql === 'COMMIT' ||
       normalizedSql === 'ROLLBACK'
     ) {
-      if (normalizedSql === 'BEGIN IMMEDIATE') this.inTransaction = true;
-      if (normalizedSql === 'COMMIT' || normalizedSql === 'ROLLBACK') this.inTransaction = false;
       return { results: [], success: true, meta: { changes: 0 } };
     }
 

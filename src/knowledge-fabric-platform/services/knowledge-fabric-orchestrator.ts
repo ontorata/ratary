@@ -151,6 +151,7 @@ export class KnowledgeFabricOrchestrator implements IKnowledgeFabricOrchestrator
               project: normalized.project,
               notes: normalized.notes,
               level: 'note',
+              favorite: false,
             });
             await this.refStore.upsert({
               connectorId: input.connectorId,

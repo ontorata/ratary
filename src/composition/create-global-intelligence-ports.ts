@@ -3,6 +3,7 @@ import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { IEventConsumer } from '../events/ievent-consumer.interface.js';
 import type { IMetricsExporter } from '../observability/ports/imetrics-exporter.port.js';
 import type { IKnowledgeExchangeService } from '../federation/ports/iknowledge-exchange.port.js';
+import type { IUsageMeter } from '../cloud/ports/iusage-meter.port.js';
 import type { MemoryService } from '../services/memory.service.js';
 import {
   DefaultTelemetryRedactor,
@@ -42,10 +43,16 @@ export interface GlobalIntelligencePorts {
  * Composition root for Phase 25 global AI intelligence capstone (ADR-036).
  * Gated by GLOBAL_INTELLIGENCE_PLATFORM_ENABLED — default off preserves pre-Phase-25 behavior.
  */
+export interface GlobalIntelligencePortDeps {
+  usageMeter?: IUsageMeter;
+  usageMeterEnabled?: boolean;
+}
+
 export function createGlobalIntelligencePorts(
   sql: ISqlDatabase,
   env: Env,
   metricsExporter?: IMetricsExporter,
+  deps?: GlobalIntelligencePortDeps,
 ): GlobalIntelligencePorts {
   const noopStore = new NoOpIntelligenceStore();
   const noop: GlobalIntelligencePorts = {
@@ -84,7 +91,11 @@ export function createGlobalIntelligencePorts(
     true,
   );
 
-  const analyticsService = new UsageAnalyticsService(store);
+  const analyticsService = new UsageAnalyticsService(
+    store,
+    deps?.usageMeter,
+    deps?.usageMeterEnabled ?? false,
+  );
   const syncOrchestrator = new GlobalSyncOrchestrator(null, store, env.FEDERATION_NODE_ID);
   const offlineJournal = new SqlOfflineJournal(sql);
   const manifestBuilder = new GlobalIntelligenceManifestBuilder(env, store);

@@ -1,5 +1,4 @@
 import type { Env } from '../../config/env.js';
-import type { IFabricExternalRefStore } from '../ports/ifabric-external-ref-store.port.js';
 import type { IKnowledgeFabricIngestStore } from '../ports/iknowledge-fabric-ingest-store.port.js';
 import type { IKnowledgeConnector } from '../ports/iknowledge-connector.port.js';
 import type { KnowledgeFabricPlatformManifest } from '../types/ingest.types.js';

@@ -1,5 +1,4 @@
 import type { AICapabilityManifest, CapabilityLimits } from './capability-manifest.types.js';
-import { MCP_CAPABILITIES_META_KEY } from './capability-manifest.constants.js';
 
 export type CondensedMcpTransport = AICapabilityManifest['mcp']['transport'] | 'streamable-http';
 

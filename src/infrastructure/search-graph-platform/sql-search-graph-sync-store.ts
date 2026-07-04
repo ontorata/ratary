@@ -1,11 +1,11 @@
 import { generateId, nowISO } from '../../utils/memory-mapper.js';
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
-import type { ISearchGraphSyncStore } from '../ports/isearch-graph-sync-store.port.js';
+import type { ISearchGraphSyncStore } from '../../search-graph-platform/ports/isearch-graph-sync-store.port.js';
 import type {
   SearchGraphSyncRun,
   SearchGraphSyncState,
   SearchGraphSyncTarget,
-} from '../types/sync.types.js';
+} from '../../search-graph-platform/types/sync.types.js';
 
 interface RunRow {
   id: string;

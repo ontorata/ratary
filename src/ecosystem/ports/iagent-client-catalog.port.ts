@@ -5,4 +5,6 @@ export interface IAgentClientCatalog {
   listProfiles(): Promise<AgentClientProfile[]>;
   getProfile(clientType: AgentClientType): Promise<AgentClientProfile | null>;
   listCompatibleProfiles(deployment: DeploymentProtocolFlags): Promise<AgentClientProfile[]>;
+  /** Sync variant for manifest builders that must not await. */
+  listCompatibleProfilesSync(deployment?: DeploymentProtocolFlags): AgentClientProfile[];
 }

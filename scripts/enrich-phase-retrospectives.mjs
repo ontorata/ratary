@@ -627,10 +627,9 @@ const PHASES = [
       'Sync delegates to Phase 14 when federation enabled',
       'ADR-036/037/038/043 Implemented; 689 tests green flag off',
     ],
-    harderOrDeferred: ['No remote peer sync smoke', 'Cost KPI without Phase 18 billing integration'],
-    acceptedDebt: ['Global sync limited to in-process federation transport', 'Cost KPI estimate-only'],
+    harderOrDeferred: ['No remote peer sync smoke'],
+    acceptedDebt: ['Global sync limited to in-process federation transport'],
     recommendations: [
-      'Integrate Phase 18 usage meter into `/intelligence/analytics/cost`',
       'Remote federation transport before multi-region 5-tier sync',
     ],
   },

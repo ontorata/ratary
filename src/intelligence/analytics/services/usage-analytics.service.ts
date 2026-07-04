@@ -1,4 +1,5 @@
 import type { MemoryScope } from '../../../types/memory-scope.js';
+import type { IUsageCostMeter } from '../ports/iusage-cost-meter.port.js';
 import type {
   AdoptionReport,
   ContextReport,
@@ -9,12 +10,49 @@ import type {
 } from '../ports/iusage-analytics.port.js';
 import type { IIntelligenceStore } from '../../sync/ports/iglobal-sync.port.js';
 
+const TELEMETRY_TOKEN_ESTIMATE_PER_INVOCATION = 512;
+
 function inWindow(iso: string, window: TimeWindow): boolean {
   return iso >= window.from && iso <= window.to;
 }
 
+function scopeToMeterQuery(scope: MemoryScope, window: TimeWindow) {
+  return {
+    ownerId: scope.ownerId,
+    workspaceId: scope.workspaceId,
+    organizationId: scope.organizationId,
+    periodStart: window.from,
+    periodEnd: window.to,
+  };
+}
+
+function buildMeterCostReport(aggregates: Array<{ metricType: string; totalQuantity: number }>): CostReport {
+  const usageByMetric: Record<string, number> = {};
+  let totalUsageUnits = 0;
+
+  for (const aggregate of aggregates) {
+    usageByMetric[aggregate.metricType] =
+      (usageByMetric[aggregate.metricType] ?? 0) + aggregate.totalQuantity;
+    totalUsageUnits += aggregate.totalQuantity;
+  }
+
+  const embeddingRequests = usageByMetric['embedding.request'] ?? 0;
+
+  return {
+    source: 'meter',
+    estimatedTokens: 0,
+    modelInvocations: embeddingRequests,
+    totalUsageUnits,
+    usageByMetric,
+  };
+}
+
 export class UsageAnalyticsService implements IUsageAnalyticsService {
-  constructor(private readonly store: IIntelligenceStore) {}
+  constructor(
+    private readonly store: IIntelligenceStore,
+    private readonly usageMeter?: IUsageCostMeter,
+    private readonly usageMeterEnabled = false,
+  ) {}
 
   async adoption(scope: MemoryScope, window: TimeWindow): Promise<AdoptionReport> {
     const eventCount = await this.store.countTelemetry(scope, window.from);
@@ -50,13 +88,19 @@ export class UsageAnalyticsService implements IUsageAnalyticsService {
   }
 
   async cost(scope: MemoryScope, window: TimeWindow): Promise<CostReport> {
+    if (this.usageMeterEnabled && this.usageMeter) {
+      const aggregates = await this.usageMeter.aggregate(scopeToMeterQuery(scope, window));
+      return buildMeterCostReport(aggregates);
+    }
+
     const modelInvocations = await this.store.countTelemetryByType(
       scope,
       'ModelInvoked',
       window.from,
     );
     return {
-      estimatedTokens: modelInvocations * 512,
+      source: 'telemetry_estimate',
+      estimatedTokens: modelInvocations * TELEMETRY_TOKEN_ESTIMATE_PER_INVOCATION,
       modelInvocations,
     };
   }
@@ -82,7 +126,11 @@ export class NoOpUsageAnalyticsService implements IUsageAnalyticsService {
   }
 
   async cost(): Promise<CostReport> {
-    return { estimatedTokens: 0, modelInvocations: 0 };
+    return {
+      source: 'telemetry_estimate',
+      estimatedTokens: 0,
+      modelInvocations: 0,
+    };
   }
 
   async contextEffectiveness(): Promise<ContextReport> {

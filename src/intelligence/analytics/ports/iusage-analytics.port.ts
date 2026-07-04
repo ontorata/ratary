@@ -18,9 +18,19 @@ export interface HealthScore {
   retrievalSuccess: number;
 }
 
+export type CostReportSource = 'meter' | 'telemetry_estimate';
+
 export interface CostReport {
+  /** `meter` when Phase 18 usage meter is enabled; otherwise telemetry heuristic. */
+  source: CostReportSource;
+  /** Heuristic token estimate (telemetry ModelInvoked × 512 when source=telemetry_estimate). */
   estimatedTokens: number;
+  /** Model/embedding invocation count from telemetry or meter `embedding.request`. */
   modelInvocations: number;
+  /** Sum of meter quantities when source=meter. */
+  totalUsageUnits?: number;
+  /** Phase 18 meter breakdown when source=meter. */
+  usageByMetric?: Record<string, number>;
 }
 
 export interface ContextReport {

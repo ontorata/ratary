@@ -39,8 +39,11 @@ Record architecture review findings and formal phase gate verdict.
 ## Known gaps (accepted)
 
 - No remote peer sync smoke
-- Cost KPI without Phase 18 billing integration
 - Global sync limited to in-process transport
+
+## Post-gate follow-up (2026-07-05)
+
+- ✅ Phase 18 usage meter integrated into `/intelligence/analytics/cost` (`source=meter` when `USAGE_METER_ENABLED`)
 
 ---
 

@@ -31,7 +31,7 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 |------|----------|
 | `tests/global-intelligence/global-intelligence-ports.test.ts` | Noop when flag off |
 | `tests/global-intelligence/manifest-builder.test.ts` | Capstone manifest |
-| `tests/global-intelligence/usage-analytics.service.test.ts` | Adoption KPI from fixtures |
+| `tests/global-intelligence/usage-analytics.service.test.ts` | Adoption + cost KPI (meter vs telemetry estimate) |
 | `tests/global-intelligence/migration.test.ts` | Telemetry/sync/journal DDL |
 | `tests/api/global-intelligence.test.ts` | REST `/intelligence/*` |
 
@@ -43,11 +43,13 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 - [x] Redactor default off content sampling
 - [x] Telemetry consumer on Phase 12 domain events when both enabled
 - [x] Sync orchestrator delegates to Phase 14 when federation on
+- [x] Cost KPI uses Phase 18 meter when `USAGE_METER_ENABLED` (`source=meter`); telemetry heuristic otherwise
 
 ## Manual verification
 
 ```bash
 $env:GLOBAL_INTELLIGENCE_PLATFORM_ENABLED='true'; GET /api/v1/intelligence/status; POST /intelligence/sync with dryRun
+$env:CONTROL_PLANE_ENABLED='true'; $env:USAGE_METER_ENABLED='true'; GET /api/v1/intelligence/analytics/cost  # source=meter
 ```
 
 ---

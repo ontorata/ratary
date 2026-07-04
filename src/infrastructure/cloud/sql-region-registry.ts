@@ -1,12 +1,12 @@
 import { randomUUID } from 'node:crypto';
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import { generateId, nowISO } from '../../utils/memory-mapper.js';
-import type { IRegionRegistry } from '../ports/iregion-registry.port.js';
+import type { IRegionRegistry } from '../../cloud/ports/iregion-registry.port.js';
 import type {
   AssignRegionInput,
   CloudRegion,
   WorkspaceRegionAssignment,
-} from '../types/region.types.js';
+} from '../../cloud/types/region.types.js';
 
 interface RegionRow {
   id: string;
