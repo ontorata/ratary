@@ -104,6 +104,7 @@ interface IContextStreamSource {
 | WebSocket | **New** — subscribe + unary RPC-over-WS envelope |
 | SSE | **New** — context stream, optional event stream (Phase 12) |
 | MCP stdio | **Unchanged** — not a streaming HTTP protocol |
+| MCP remote HTTP/SSE | **Phase 13.1** — ChatGPT Server URL; see [13.1 DESIGN](../../phases/13.1-remote-mcp-clients/DESIGN.md) |
 
 ### 1.8 Testing impact
 

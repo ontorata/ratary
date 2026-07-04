@@ -33,7 +33,7 @@ Enterprise adoption requires **developer-grade tooling**: typed SDKs, CLI, insta
 | **SDK — Go, Python, Java, Rust, C#, PHP** | Generated + thin runtime wrapper |
 | **CLI** | `@ai-brain/cli` — **uses TypeScript SDK only** |
 | **Dashboard** | `apps/dashboard/` — **uses TypeScript SDK only** (optional SPA) |
-| **Installable MCP Server** | `@ai-brain/mcp-server` — remote MCP via HTTP/SSE; **uses SDK** |
+| **Installable MCP Server** | `@ai-brain/mcp-server` — remote MCP via HTTP/SSE; **uses SDK**; may target [Phase 13.1](../13.1-remote-mcp-clients/DESIGN.md) server endpoint |
 | **Remote MCP** | MCP transport adapter calling REST/gRPC through SDK |
 | **Starter templates** | `templates/` — Cursor, Node bot, Python agent |
 | **Examples** | `examples/` — CRUD, context, handoff |

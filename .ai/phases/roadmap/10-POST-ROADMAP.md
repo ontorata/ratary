@@ -239,7 +239,42 @@ Multi-protocol access with **streaming** and **benchmark** — all protocols del
 
 ## Non-goals
 
-- GraphQL; MCP HTTP; agent runtime; repository changes
+- GraphQL; agent runtime; repository changes
+- **Remote MCP HTTP** → [Phase 13.1 Remote MCP Clients](../13.1-remote-mcp-clients/README.md) (ChatGPT Server URL)
+
+---
+
+# Phase 13.1 — Remote MCP Clients (ChatGPT & Web)
+
+**Status:** 🔲 Planned — design draft (2026-07-04)  
+**Folder:** [.ai/phases/13.1-remote-mcp-clients/](../13.1-remote-mcp-clients/README.md)
+
+## Scope
+
+Enable **ChatGPT New App → Server URL** and other cloud MCP hosts via HTTPS MCP (Streamable HTTP / SSE). Same 20 tools as stdio; auth via `aic_...` API key.
+
+| Track | Deliverable |
+|-------|-------------|
+| 13.1A | `McpRemoteTransportServer` — route `/mcp` (`REMOTE_MCP_ENABLED=false`) |
+| 13.1B | API-key auth at MCP boundary |
+| 13.1C | ChatGPT runbook; Custom GPT Actions remains interim fallback |
+| 13.1D | OAuth (deferred → Phase 17) |
+
+## ADR gates
+
+| ADR | Title |
+|-----|-------|
+| [ADR-048](../../adr/048-remote-mcp-transport.md) | Remote MCP transport — **Proposed** |
+
+## Success criteria
+
+- [ ] ChatGPT Server URL connects to staging `/mcp`
+- [ ] Tool parity with MCP stdio
+- [ ] Default OFF; Vercel SSE limitation documented
+
+## Interim (no code)
+
+Custom GPT **Actions** + REST OpenAPI — see [PANDUAN.md](../../../docs/PANDUAN.md) § ChatGPT.
 
 ---
 

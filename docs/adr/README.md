@@ -44,6 +44,8 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 
 **Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
 
+**Extension ADR (Proposed):** [ADR-048 Remote MCP transport](../../.ai/adr/048-remote-mcp-transport.md) — Phase 13.1 ChatGPT / web MCP clients.
+
 **Rule:** No implementation of Proposed/Draft ADRs until owner marks **Approved**.
 
 **Phases 1–10 ADR closure:** ADR-001–017 **Implemented** (2026-07-03).

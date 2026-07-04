@@ -37,6 +37,7 @@ phases/
 └── 10.5-transport-connectivity/      ✅ Implemented (ADR-027)
 └── 12-event-pipeline/                ✅ Implemented (ADR-020)
 └── 13-protocol-layer/                🔲 Reserved (design draft 2026-07-04)
+└── 13.1-remote-mcp-clients/          🔲 Planned (design draft 2026-07-04)
 └── 14-federation/                    🔲 Reserved (design draft 2026-07-04)
 └── 15-autonomous-agent-ecosystem/    🔲 Reserved
 └── 16-developer-platform/            🔲 Enterprise (2026-07-04)
@@ -120,6 +121,7 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 10.5 Transport & Connectivity | [10.5-transport-connectivity/](10.5-transport-connectivity/README.md) | ✅ Implemented | ADR-027 |
 | 12 Event Pipeline | [12-event-pipeline/](12-event-pipeline/README.md) | ✅ Implemented | ADR-020 |
 | 13 Protocol Layer | [13-protocol-layer/](13-protocol-layer/README.md) | 🔲 Design draft | ADR-028 |
+| 13.1 Remote MCP (ChatGPT) | [13.1-remote-mcp-clients/](13.1-remote-mcp-clients/README.md) | 🔲 Planned | ADR-048 (Proposed) |
 | 14 Federation | [14-federation/](14-federation/README.md) | 🔲 Design draft | ADR-029 |
 | 15 Autonomous Agent Ecosystem | [15-autonomous-agent-ecosystem/](15-autonomous-agent-ecosystem/README.md) | 🔲 Design draft | ADR-030 |
 | 16–20 Enterprise evolution | [roadmap/11-ENTERPRISE-ROADMAP.md](../roadmap/11-ENTERPRISE-ROADMAP.md) | 🔲 Design draft | ADR-031–035 |

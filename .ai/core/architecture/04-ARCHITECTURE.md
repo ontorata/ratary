@@ -573,6 +573,8 @@ protocol/
 
 **Streaming:** `IContextStreamSource` yields chunks from existing `ContextService` output — ranking/budget logic not duplicated in adapters.
 
+**Remote MCP (Phase 13.1):** ChatGPT and web MCP clients connect via HTTPS `/mcp` (Streamable HTTP/SSE) — distinct from stdio; gated by `REMOTE_MCP_ENABLED=false`. Interim: Custom GPT REST Actions ([PANDUAN.md](../../../docs/PANDUAN.md) §6.1).
+
 **Additive API:** `GET /api/v1/context/stream` (SSE). Existing REST v1 unary endpoints unchanged.
 
 ---

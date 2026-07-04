@@ -23,6 +23,8 @@ Complete **multi-protocol access** with streaming and measurable benchmarks. All
 
 **Hard dependency:** Phase 10.5 ✅ (or ADR-027 Implemented) · Phase 12 recommended (event fan-out for WS/SSE subscriptions)
 
+**Extension:** [Phase 13.1 Remote MCP Clients](../13.1-remote-mcp-clients/README.md) — ChatGPT Server URL (ADR-048 Proposed)
+
 ---
 
 ## Documents

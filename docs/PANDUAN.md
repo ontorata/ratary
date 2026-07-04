@@ -92,7 +92,33 @@ Jangan commit atau share file `.env`.
 | Memory kosong | Normal di DB baru — simpan dulu |
 | MCP error production | Set `MCP_OWNER_ID` di `.env`, atau pastikan `.env` punya `NODE_ENV=development` untuk dev lokal (stdio memuat `.env` dengan override). Reload MCP. |
 | Claude pending approval | `claude` di folder repo → approve |
-| ChatGPT | MCP stdio tidak didukung — pakai REST API + `aic_...` key |
+| ChatGPT | MCP stdio tidak didukung — lihat §6.1 (Actions sekarang; Remote MCP Phase 13.1) |
+
+---
+
+## 6.1 ChatGPT
+
+ChatGPT **tidak** menjalankan MCP stdio lokal seperti Cursor. Dua jalur:
+
+### A — Sekarang: Custom GPT + REST Actions (disarankan)
+
+1. Deploy API publik (mis. Vercel) atau tunnel ke `npm run dev`
+2. Bootstrap → simpan API key `aic_...`
+3. **Custom GPT** → Configure → **Actions** → Import OpenAPI dari `https://<host>/docs/json`
+4. Authentication: API Key → `Authorization: Bearer aic_...`
+5. Instruksi GPT: cari memory by project, `POST /context` untuk task, simpan handoff via `POST /memory`
+
+Detail endpoint: [README.md](../README.md) § REST API.
+
+### B — Rencana: New App → Server URL (Phase 13.1)
+
+Form **New App** di ChatGPT membutuhkan URL MCP remote (`https://host/mcp`) — **belum diimplementasi**.
+
+- Design: [.ai/phases/13.1-remote-mcp-clients/](../.ai/phases/13.1-remote-mcp-clients/README.md)
+- ADR: [ADR-048](../.ai/adr/048-remote-mcp-transport.md) (Proposed)
+- Butuh host **long-running** (Railway/VPS) — SSE MCP sulit di Vercel serverless
+
+**Jangan** tempel URL REST (`/api/v1`) ke field Server URL MCP — protokol berbeda.
 
 ---
 
@@ -166,7 +192,8 @@ Semua protokol (REST, MCP, gRPC) memanggil **handler bersama yang sama** → ser
 | Protokol | Untuk siapa | Default |
 |----------|-------------|---------|
 | REST `/api/v1` | Integrator publik, ChatGPT Actions | ✅ selalu aktif |
-| MCP stdio | Klien AI di IDE (Cursor, Claude, …) | ✅ selalu aktif |
+| MCP stdio | AI clients di IDE (Cursor, Claude, …) | ✅ selalu aktif |
+| MCP remote (ChatGPT URL) | Cloud MCP hosts | 🔲 Phase 13.1 — [design](../.ai/phases/13.1-remote-mcp-clients/README.md) |
 | gRPC `ai.brain.v1` | Backend internal / enterprise, streaming context | ❌ opsional |
 
 gRPC **mati secara default**. Untuk mengaktifkan (butuh Node yang berjalan lama — K8s/VM, **bukan** Vercel):
