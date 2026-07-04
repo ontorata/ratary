@@ -37,6 +37,7 @@ export interface CapabilityFlags {
   supportsQualitySignals: boolean;
   supportsEventSubscription: boolean;
   supportsProgressiveRetrieval: boolean;
+  supportsSelfManagement: boolean;
 }
 
 export interface CapabilityLimits {

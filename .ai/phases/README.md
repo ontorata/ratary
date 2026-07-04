@@ -45,7 +45,7 @@ phases/
 └── 20-ai-infrastructure/             🔲 Enterprise
 
 # Extension & platform design drafts (2026-07-04) — awaiting owner approval
-└── 04.7-memory-stewardship/          🔲 Design draft (ADR-045)
+└── 04.7-memory-stewardship/          ✅ Implemented (ADR-045)
 └── 08.6-learning-intelligence/       🔲 Design draft (ADR-057)
 └── 08.7-graph-relation-inference/    🔲 Design draft (ADR-041)
 └── 09.7-memory-evolution/            🔲 Design draft (ADR-040)
@@ -117,7 +117,7 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 14 Federation | [14-federation/](14-federation/README.md) | 🔲 Design draft | ADR-029 |
 | 15 Autonomous Agent Ecosystem | [15-autonomous-agent-ecosystem/](15-autonomous-agent-ecosystem/README.md) | 🔲 Design draft | ADR-030 |
 | 16–20 Enterprise evolution | [roadmap/11-ENTERPRISE-ROADMAP.md](../roadmap/11-ENTERPRISE-ROADMAP.md) | 🔲 Design draft | ADR-031–035 |
-| 04.7 Memory Stewardship | [04.7-memory-stewardship/](04.7-memory-stewardship/README.md) | 🔲 Design draft | ADR-045 |
+| 04.7 Memory Stewardship | [04.7-memory-stewardship/](04.7-memory-stewardship/README.md) | ✅ Implemented | ADR-045 |
 | 08.6 Learning Intelligence | [08.6-learning-intelligence/](08.6-learning-intelligence/README.md) | 🔲 Design draft | ADR-057 |
 | 08.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | 🔲 Design draft | ADR-041 |
 | 09.7 Memory Evolution | [09.7-memory-evolution/](09.7-memory-evolution/README.md) | 🔲 Design draft | ADR-040 |

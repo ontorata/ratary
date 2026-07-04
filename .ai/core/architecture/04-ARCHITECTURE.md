@@ -206,6 +206,7 @@ MemoryService
 - `ContextService` owns budget enforcement; config in `context.config.ts`.
 - Consolidation runs via script/job — not on every read path.
 - `semantic_hash` and intelligence fields are metadata — not reasoning state.
+- Stewardship (Phase 04.7, ADR-045): `memory/stewardship/` orchestrates deterministic maintenance tasks in fixed stage order (dry-run default) behind `IMemoryStewardshipOrchestrator` / `IMaintenanceTask` / `IStewardshipRunStore`. Composes `MemoryConsolidator` + read-only audits from the outside — no planner, no agent, `MemoryService` unchanged. Gated by `MEMORY_STEWARDSHIP_ENABLED`.
 
 ---
 

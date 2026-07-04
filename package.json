@@ -43,6 +43,8 @@
     "compress:memories:execute": "tsx scripts/compress-memories.ts --execute",
     "reflect:signals": "tsx scripts/reflect-signals.ts",
     "reflect:signals:execute": "tsx scripts/reflect-signals.ts --execute",
+    "steward:memories": "tsx scripts/steward-memories.ts",
+    "steward:memories:execute": "tsx scripts/steward-memories.ts --execute",
     "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",
     "test:integration": "tsx scripts/test-integration.ts",
     "import:backups": "tsx scripts/import-backups.ts",

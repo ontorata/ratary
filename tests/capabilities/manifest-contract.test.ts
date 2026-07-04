@@ -40,6 +40,7 @@ const baseEnv = {
   GRPC_ENABLED: false,
   GRPC_PORT: 50051,
   GRPC_HOST: '0.0.0.0',
+  MEMORY_STEWARDSHIP_ENABLED: false,
 } as Env;
 
 describe('Capability manifest contract', () => {
@@ -57,6 +58,7 @@ describe('Capability manifest contract', () => {
     expect(manifest.protocolVersion).toBeTruthy();
     expect(manifest.capabilities.supportsMemoryCRUD).toBe(true);
     expect(manifest.capabilities.supportsOwnerScope).toBe(true);
+    expect(manifest.capabilities.supportsSelfManagement).toBe(false);
     expect(manifest.limits.maxContextTokens).toBeGreaterThan(0);
     expect(manifest.errorCodes.length).toBe(STANDARD_ERROR_CODES.length);
     expect(manifest.rest.version).toBe('v1');

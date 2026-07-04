@@ -129,6 +129,12 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
 
+    // Self-managing memory stewardship (Phase 04.7) — ADR-045, deterministic maintenance pipeline
+    MEMORY_STEWARDSHIP_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+
     // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
     GRPC_ENABLED: z
       .enum(['true', 'false'])
