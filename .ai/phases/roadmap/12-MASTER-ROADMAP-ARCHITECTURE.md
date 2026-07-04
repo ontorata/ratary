@@ -26,6 +26,8 @@
 
 | Track | Phase | ADR (draft) |
 |-------|-------|-------------|
+| Runtime compatibility | 07.5 | ADR-025 |
+| Agent Forge (workflow) | 07.1 | — (Phase 7 extension) |
 | Observation | 08.5 | ADR-026 |
 | Semantic compression | 05.5 | ADR-023 |
 | Progressive retrieval | 06.5 | ADR-024 |

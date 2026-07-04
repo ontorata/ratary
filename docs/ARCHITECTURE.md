@@ -26,6 +26,8 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Graph →
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
+**Phase 07.1 Agent Forge** defines the **contributor workflow** for this repo (Cursor skills + MCP Recall/Remember) — not server runtime. See [.ai/phases/07.1-agent-forge/](../.ai/phases/07.1-agent-forge/README.md) and [PANDUAN.md § 2.1](PANDUAN.md#21-agent-forge-kontributor-di-repo-ini).
+
 **Phase 10 (Enterprise):** storage-agnostic infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) wired at the composition root with opt-in env flags. Default deployment remains D1-centric. See [ADR-008–016](adr/README.md) and [.ai/phases/10-enterprise/](../.ai/phases/10-enterprise/README.md).
 
 ---
@@ -84,6 +86,7 @@ Phase design documents before ADR approval live in [archive/](archive/). They ar
 | Install & use | [PANDUAN.md](PANDUAN.md) |
 | New dev environment | [README.md § Instalasi](../README.md#instalasi-pada-lingkungan-pengembangan-baru) |
 | AI governance | [.ai/START-HERE.md](../.ai/START-HERE.md) |
+| Contributor workflow | [.ai/phases/07.1-agent-forge/](../.ai/phases/07.1-agent-forge/README.md) |
 | Vocabulary | [.ai/core/glossary/GLOSSARY.md](../.ai/core/glossary/GLOSSARY.md) |
 
 ---

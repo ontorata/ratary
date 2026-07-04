@@ -12,10 +12,10 @@
 
 ## Debt accepted
 
-- No automated test for skill activation (agent-side behavior)
+- Skill activation timing is agent-side (not enforceable in CI beyond manifest/rule checks)
 - Skills rely on Cursor discovering `.cursor/skills/` — other IDEs need manual prompt import
 
-## Recommendation
+## Done (closure)
 
-- Reference Phase 07.1 from [07-agent-runtime](../07-agent-runtime/README.md) README
-- On major pipeline change, bump `manifest.json` version and append CHECKLIST addendum
+- Cross-referenced from [START-HERE.md](../../START-HERE.md), [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md), [PANDUAN.md](../../../docs/PANDUAN.md)
+- [07-agent-runtime](../07-agent-runtime/COMPLETION.md) successor table includes 07.1

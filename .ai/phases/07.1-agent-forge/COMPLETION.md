@@ -19,4 +19,5 @@
 
 - Skills: 13
 - Pipeline stages: 9 core + 4 supporting
-- Product tests affected: 0
+- Automated test: `tests/agent-forge/manifest.test.ts` (manifest ↔ skills ↔ rule)
+- Product tests affected: 0 (761 total after closure)

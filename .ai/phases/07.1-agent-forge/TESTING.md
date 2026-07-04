@@ -1,6 +1,16 @@
 # Phase 07.1 — Agent Forge — TESTING
 
-**Status:** Manual verification (docs-only phase)
+**Status:** Automated manifest validation + manual smoke
+
+---
+
+## Automated
+
+| Test | Path |
+|------|------|
+| Manifest ↔ skills ↔ rule | `tests/agent-forge/manifest.test.ts` |
+
+Run: `npm test -- tests/agent-forge/manifest.test.ts`
 
 ---
 
@@ -18,4 +28,4 @@
 2. Trigger "how does forge work" → `forge-intro` description match
 3. End session → `save_memory` handoff per `forge-remember`
 
-No automated test suite — behavior is agent-side, not server-side.
+Behavior is agent-side for activation; manifest integrity is covered by automated test above.

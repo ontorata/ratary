@@ -20,7 +20,8 @@
 ## Quality
 
 - [x] Skills reference `.ai/workflow/prompts/` by ID (no duplication)
-- [x] Stale `.ai/agent-forge/` removed — SSOT is this folder
+- [x] Legacy `.ai/agent-forge/` stub redirects to this folder
+- [x] Automated manifest test — `tests/agent-forge/manifest.test.ts`
 
 ## Gate decision
 

@@ -71,6 +71,7 @@ Phase 7 required **no code implementation**. The agent integration boundary was 
 | Phase | Planned in Phase 7 | Landed | Agent impact |
 |-------|-------------------|--------|--------------|
 | **7.5** | Capability discovery gap (D7-01) | ✅ ADR-025 `get_capabilities` | Agents discover flags/limits without trial-and-error |
+| **7.1** | Contributor workflow (extension) | ✅ Agent Forge pipeline | Cursor skills + MCP Recall/Remember — [07.1-agent-forge](../07.1-agent-forge/README.md) |
 | **8** | Graph readiness §19 | ✅ `traverse_relations`, graph retrieval leg | MCP graph traverse + opt-in `GRAPH_RETRIEVAL` |
 | **9** | `agentId` / workspace (D7-02) | ✅ Multi-AI scope + agent identity tools | `list_workspaces`, `list_agents`, `register_agent` |
 | **10** | Enterprise org scope (D7-04 partial) | ✅ Org RBAC adapters (opt-in) |

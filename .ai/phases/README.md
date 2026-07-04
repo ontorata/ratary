@@ -23,7 +23,7 @@ Each phase directory contains **ten documents**, each with a **single responsibi
 | Group | Folders | Status |
 |-------|---------|--------|
 | **Core 1–11** | `01-foundation` … `11-production-ops` | ✅ Closed / Implemented |
-| **Extension tracks** | `04.7`, `05.5`–`09.8` | ✅ Implemented (opt-in) |
+| **Extension tracks** | `04.7`, `05.5`–`09.8`, **`07.1-agent-forge`** | ✅ Implemented (opt-in / workflow) |
 | **Transport** | `10.5-transport-connectivity`, `12-event-pipeline`, `13-protocol-layer`, `13.1-remote-mcp-clients` | ✅ Implemented (opt-in) |
 | **Enterprise 14–20** | `14-federation` … `20-ai-infrastructure` | ✅ Implemented (opt-in) |
 | **Scale 21–24** | `21-search-graph-prod` … `24-ai-brain-platform` | ✅ Implemented (opt-in) |
@@ -77,7 +77,6 @@ Full lifecycle: [PHASE-DOCUMENT-SCHEMA.md](PHASE-DOCUMENT-SCHEMA.md).
 | 5 Embedding | [05-embedding/](05-embedding/README.md) | ✅ | [ADR-003](../adr/003-embedding-storage-mvp.md) |
 | 6 Hybrid Retrieval | [06-hybrid-retrieval/](06-hybrid-retrieval/README.md) | ✅ | [ADR-001](../adr/001-multi-source-retrieval.md) |
 | 7 Agent Runtime | [07-agent-runtime/](07-agent-runtime/README.md) | ✅ | Doc-only boundary |
-| **7.1 Agent Forge** | [07.1-agent-forge/](07.1-agent-forge/README.md) | ✅ | Cursor skills pipeline |
 | 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | ✅ | [ADR-006](../adr/006-igraph-provider.md) |
 | 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | ✅ | [ADR-007](../adr/007-multi-ai-workspace-scope.md) |
 | 9.5 Platform Architecture | [09.5-platform-architecture/](09.5-platform-architecture/README.md) | ✅ | [ADR-008](../adr/008-platform-architecture.md) |

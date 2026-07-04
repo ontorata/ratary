@@ -51,6 +51,27 @@ AI otomatis memilih cuplikan memory yang paling relevan — bukan dump semua cat
 
 ---
 
+## 2.1 Agent Forge (kontributor di repo ini)
+
+**Phase 07.1** mendefinisikan alur wajib saat AI mengubah kode di repo `ai-brain` — bukan runtime di server, melainkan **workflow Cursor** (skills + rule).
+
+| Tahap | Skill | Kapan |
+|-------|-------|-------|
+| Recall | `forge-recall` | Awal sesi — `search_memory` via MCP |
+| Intent | `forge-intent` | Sebelum desain/kode non-trivial |
+| Isolate | `forge-isolate` | Branch/worktree terpisah |
+| Blueprint | `forge-blueprint` | Rencana task sebelum implement |
+| Execute | `forge-execute` | Implementasi |
+| Prove / Inspect | `forge-prove`, `forge-inspect` | Test + review antar task |
+| Land | `forge-land` | Merge / PR / discard |
+| Remember | `forge-remember` | Akhir sesi — `save_memory` handoff |
+
+**SSOT:** [.ai/phases/07.1-agent-forge/](../.ai/phases/07.1-agent-forge/README.md) · rule: `.cursor/rules/agent-forge.mdc` · skills: `.cursor/skills/forge-*`
+
+Untuk fitur multi-file atau struktural, jangan lewati **Intent → Isolate → Blueprint**. Draft desain sementara: `.ai/designs/drafts/`.
+
+---
+
 ## 3. Keamanan
 
 | Situasi | `MCP_OWNER_ID` di `.env` |

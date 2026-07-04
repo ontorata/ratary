@@ -34,7 +34,9 @@
 
 ## Commit
 
-`ced71d0` — initial Forge + MCP listing folder; relocated to `phases/07.1-agent-forge/` in follow-up.
+- `ced71d0` — initial Forge skills + MCP listing folder
+- `fe6bfba` — relocate SSOT to `phases/07.1-agent-forge/`
+- *(closure)* — doc cross-reference sync + `tests/agent-forge/manifest.test.ts`
 
 ## No `src/` changes
 

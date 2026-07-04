@@ -1,10 +1,10 @@
-# 10 ó Phase Status
+# 10 ù Phase Status
 
 **Status:** Living operational snapshot (mutable).  
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase governance doc sync (2026-07-04)
+**Last updated:** Phase 07.1 Agent Forge gate PASS (2026-07-05)
 
 ---
 
@@ -12,7 +12,7 @@
 
 Record **live** project metrics, deployment facts, and documented technical debt.
 
-**Not covered here:** layer boundaries, ports, dependency graphs, or capability stack ó see [04-ARCHITECTURE.md](../04-ARCHITECTURE.md). Phase plans and narratives ó see [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md). Gate evidence ó see `.ai/phases/NN-name/`.
+**Not covered here:** layer boundaries, ports, dependency graphs, or capability stack ù see [04-ARCHITECTURE.md](../04-ARCHITECTURE.md). Phase plans and narratives ù see [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md). Gate evidence ù see `.ai/phases/NN-name/`.
 
 ---
 
@@ -22,12 +22,14 @@ Record **live** project metrics, deployment facts, and documented technical debt
 |--------|-------|
 | Tests passing | 757 (760 total, 3 skipped) |
 | MCP tools | 27 |
+| Agent Forge skills | 13 (`.cursor/skills/forge-*`) |
+| Agent Forge rule | `.cursor/rules/agent-forge.mdc` |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
 | Remote MCP | `REMOTE_MCP_ENABLED` ? `/mcp` (Phase 13.1) |
 | Storage (default) | Cloudflare D1 (HTTP API) |
 | Local dev | `npm run dev` ? `dev-server.ts` |
-| Platform adapters | Opt-in via env ó see [ADR-008ñ048](../../adr/README.md) |
+| Platform adapters | Opt-in via env ù see [ADR-008ù048](../../adr/README.md) |
 
 ---
 
@@ -35,15 +37,15 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| **Core memory path** | Phases 1ñ11 ? ó default deploy unchanged |
-| **Enterprise platform** | Phases 10.5ñ25 ? Implemented ó **all default OFF** |
-| **Extension tracks** | 04.7, 05.5ñ09.8 ? Implemented ó opt-in |
+| **Core memory path** | Phases 1ù11 ? ù default deploy unchanged |
+| **Enterprise platform** | Phases 10.5ù25 ? Implemented ù **all default OFF** |
+| **Extension tracks** | 04.7, 05.5ù09.8, **07.1 Agent Forge** ? ù opt-in / workflow |
 | **Last platform gate** | Phase 25 Global Intelligence (2026-07-04) |
-| **Active task** | Maintenance / POST-ROADMAP ó see [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| **Governance index** | [phases/README.md](../../phases/README.md) ó phases 1ñ25 |
+| **Active task** | Maintenance / POST-ROADMAP ù see [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| **Governance index** | [phases/README.md](../../phases/README.md) ù phases 1ù25 |
 | **Blocker** | None |
 
-Strategic phase status: [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) ∑ POST-ROADMAP: [10-POST-ROADMAP.md](../../phases/roadmap/10-POST-ROADMAP.md).
+Strategic phase status: [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) ù POST-ROADMAP: [10-POST-ROADMAP.md](../../phases/roadmap/10-POST-ROADMAP.md).
 
 ---
 
@@ -62,7 +64,7 @@ Strategic phase status: [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) ∑ PO
 | `npm run consolidate:memories` | Memory consolidation (dry-run default) |
 
 User onboarding: [PANDUAN.md](../../../docs/PANDUAN.md).  
-New dev environment: [README.md ß Instalasi](../../../README.md#instalasi-pada-lingkungan-pengembangan-baru).
+New dev environment: [README.md ù Instalasi](../../../README.md#instalasi-pada-lingkungan-pengembangan-baru).
 
 ---
 
@@ -70,15 +72,15 @@ New dev environment: [README.md ß Instalasi](../../../README.md#instalasi-pada-l
 
 | ID | Item | Mitigation path | Status |
 |----|------|-----------------|--------|
-| ~~D-01~~ | ~~API cross-owner leak E2E tests missing~~ | ? **Resolved** ó 20 security tests in `tests/api/cross-owner-leak.test.ts` (2026-07-03) |
-| ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ? **Resolved** ó shared repository instance (2026-07-03) |
-| ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ? **Resolved** ó schema.sql synced (2026-07-03) |
-| ~~D-04~~ | ~~ADR-001 merge policy must be unit-tested~~ | ? **Resolved** ó 13 unit tests (2026-07-03) |
-| ó | `MemoryRepository` ~622 lines | Additive methods only; split when Postgres adapter lands |
-| ~~O-04-2~~ | ~~Retrieval projection content exclusion~~ | ? **Resolved** ó regression test (2026-07-03) |
-| ~~ó~~ | ~~N◊ `recordAccess` on context build~~ | ? **Resolved** ó `recordAccessBatch` (2026-07-03) |
-| ~~ó~~ | ~~D1 vector search in-process~~ | ? **Mitigated** ó pgvector adapter (ADR-011) |
-| D-GOV | Phase governance scaffolds (Reserved/N/A) | ? **Mitigated** ó backfill script + manual close 2026-07-04 |
+| ~~D-01~~ | ~~API cross-owner leak E2E tests missing~~ | ? **Resolved** ù 20 security tests in `tests/api/cross-owner-leak.test.ts` (2026-07-03) |
+| ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ? **Resolved** ù shared repository instance (2026-07-03) |
+| ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ? **Resolved** ù schema.sql synced (2026-07-03) |
+| ~~D-04~~ | ~~ADR-001 merge policy must be unit-tested~~ | ? **Resolved** ù 13 unit tests (2026-07-03) |
+| ù | `MemoryRepository` ~622 lines | Additive methods only; split when Postgres adapter lands |
+| ~~O-04-2~~ | ~~Retrieval projection content exclusion~~ | ? **Resolved** ù regression test (2026-07-03) |
+| ~~ù~~ | ~~Nù `recordAccess` on context build~~ | ? **Resolved** ù `recordAccessBatch` (2026-07-03) |
+| ~~ù~~ | ~~D1 vector search in-process~~ | ? **Mitigated** ù pgvector adapter (ADR-011) |
+| D-GOV | Phase governance scaffolds (Reserved/N/A) | ? **Mitigated** ù backfill script + manual close 2026-07-04 |
 
 Aggregate audit: [.ai/phases/audits/latest.md](../../phases/audits/latest.md).
 

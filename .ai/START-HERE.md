@@ -54,7 +54,8 @@ Read in order:
 │   └── review/                — Phase gate methodology
 │
 └── phases/                    ← Phase-specific evidence
-    ├── 01-foundation/ … 10-enterprise/
+    ├── 01-foundation/ … 11-production-ops/
+    ├── 07.1-agent-forge/      ← Contributor workflow (Cursor skills)
     ├── roadmap/               — 09-ROADMAP.md
     └── audits/                — Phase audit records
 ```
@@ -74,6 +75,7 @@ Read in order:
 | Terminology | `core/glossary/GLOSSARY.md` |
 | Prompt templates | `workflow/prompts/` |
 | Checklists | `workflow/checklists/` |
+| Agent Forge pipeline | [phases/07.1-agent-forge/](phases/07.1-agent-forge/) · `.cursor/skills/forge-*` |
 | Current phase docs | [11-production-ops/](phases/11-production-ops/) · [10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md) |
 | Design-draft phases | [phases/README.md](phases/README.md) — reserved & extension/platform drafts (incl. Phase 25) |
 | Platform vision | [core/vision/](core/vision/) — charter, OS map, intelligence pipeline |
@@ -94,6 +96,7 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 5 Embedding | ✅ Complete |
 | 6 Hybrid Retrieval | ✅ Complete |
 | 7 Agent Runtime | ✅ Complete |
+| **7.1 Agent Forge** | ✅ Complete — [07.1-agent-forge/](phases/07.1-agent-forge/) · contributor workflow |
 | 8 Knowledge Graph | ✅ Complete |
 | 9 Multi-AI | ✅ Complete (ADR-007 Implemented 2026-07-03) |
 | 9.5 Platform Architecture | ✅ Complete (ADR-008 2026-07-03) |
@@ -131,7 +134,7 @@ External Agent Runtime
 - ❌ Autonomous Loop
 - ❌ Tool Orchestrator
 
-These belong to **external** agent systems (Phase 7+ boundary).
+These belong to **external** agent systems (Phase 7+ boundary). **Exception:** Phase **07.1 Agent Forge** defines contributor workflow law in `.cursor/skills/` and `.ai/phases/07.1-agent-forge/` — not runtime code in `src/`.
 
 ---
 

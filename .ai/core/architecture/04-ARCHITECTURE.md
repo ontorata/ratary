@@ -776,12 +776,18 @@ IRetrievalCandidateSource
 
 ## Future agent layer (Phase 7+)
 
-**Outside this repository.**
+**Outside this repository** — runtime loops, planners, and executors live in Cursor, Claude Code, or custom hosts.
 
-Agents, planners, and executors consume:
+Agents consume MCP tools and REST `/api/v1/*`. **Phase 07.1 Agent Forge** ([DESIGN](../../phases/07.1-agent-forge/DESIGN.md)) defines the **mandatory contributor workflow** for this repo:
 
-- MCP tools (`save_memory`, `get_context`, `search_memory`, …)
-- REST `/api/v1/*`
+| Artifact | Location |
+|----------|----------|
+| Pipeline stages | `.ai/phases/07.1-agent-forge/PIPELINE.md`, `manifest.json` |
+| Cursor skills | `.cursor/skills/forge-*` (13 skills) |
+| Mandatory rule | `.cursor/rules/agent-forge.mdc` |
+| Design drafts | `.ai/designs/drafts/` |
+
+Recall/Remember bookends use MCP `search_memory` / `save_memory`. No Forge logic in `src/`.
 
 **Rules:**
 

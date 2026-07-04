@@ -13,6 +13,7 @@
 | [decision-framework.md](decision-framework.md) | Decision flow, principles, anti-patterns |
 | [development-workflow.md](development-workflow.md) | Review → design → implementation → release |
 | [engineering-analysis.md](engineering-analysis.md) | Pre-code analysis output format |
+| [../phases/07.1-agent-forge/PIPELINE.md](../phases/07.1-agent-forge/PIPELINE.md) | **Agent Forge** — mandatory contributor pipeline (Cursor skills) |
 
 ---
 
