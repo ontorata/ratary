@@ -39,19 +39,19 @@ Progressive retrieval (`IRetrievalPolicy`) dan capability manifest (`GET /api/v1
 | **Self-host & data sovereignty** | ✅ D1/Postgres milik Anda | ⚠️ SaaS / cloud vendor | ❌ Terikat Cursor | ⚠️ Tergantung stack |
 | **MCP native (Cursor, Claude Code, …)** | ✅ 20 tools + stdio | ✅ (Mem0 MCP) | ✅ (hanya Cursor) | ❌ Perlu glue code |
 | **REST + OpenAPI + auth** | ✅ API key, RBAC, audit | ✅ (berbayar tier) | ❌ | ⚠️ DIY |
-| **Owner / workspace isolation** | ✅ ADR-governed, 457 tests | ⚠️ Tenant model vendor | ❌ Single user | ⚠️ DIY |
+| **Owner / workspace isolation** | ✅ ADR-governed, 688 tests | ⚠️ Tenant model vendor | ❌ Single user | ⚠️ DIY |
 | **Knowledge graph + relasi** | ✅ BFS traverse, hybrid retrieval | ⚠️ Graph di Zep | ❌ | ❌ |
 | **Token-efficient context default** | ✅ Summary-first ~85%+ | ⚠️ Bervariasi | ⚠️ Tidak terukur | ❌ Sering dump full chunk |
 | **Agent runtime di repo** | ❌ By design (boundary jelas) | ⚠️ Kadang bundled | ✅ | N/A |
-| **Arsitektur & ADR** | ✅ 26 ADR, fase 1–10 + tracks | ⚠️ Closed source / docs terbatas | ❌ | ❌ |
+| **Arsitektur & ADR** | ✅ 40+ ADR, fase 1–25 (enterprise opt-in) | ⚠️ Closed source / docs terbatas | ❌ | ❌ |
 
 ### Analisis SWOT
 
 | | |
 |---|---|
-| **Strengths (Kekuatan)** | Memory foundation matang (fase 1–10 ✅); **MCP + REST satu codebase**; default **summary-only ~85% hemat token**; hybrid retrieval (SQL + vector + graph); multi-AI workspace; **457 automated tests**; manifest capability untuk agent; self-host Cloudflare D1 (free tier) atau Postgres enterprise |
+| **Strengths (Kekuatan)** | Memory foundation matang (fase 1–11 ✅); **platform enterprise 10.5–25** (opt-in, default OFF); **MCP + REST + gRPC** satu codebase; default **summary-only ~85% hemat token**; hybrid retrieval (SQL + vector + graph); multi-AI workspace; **688 automated tests**; manifest capability untuk agent; self-host Cloudflare D1 atau Postgres enterprise |
 | **Weaknesses (Kelemahan)** | Butuh setup D1/env sendiri (bukan plug-and-play SaaS); tidak ada UI dashboard siap pakai; embedding OpenAI opsional (noop default); dokumentasi orientasi developer/architect |
-| **Opportunities (Peluang)** | Tim multi-AI (Cursor + Claude Code + custom bot) sharing satu brain; cutover Postgres/R2/pgvector (fase 11); semantic compression & quality signals (tracks 5.5–8.5); integrasi CI/handoff otomatis via MCP |
+| **Opportunities (Peluang)** | Tim multi-AI (Cursor + Claude Code + ChatGPT MCP) sharing satu brain; federation & cloud control plane (fase 14–18); observability + global intelligence capstone (fase 19–25); semantic compression & quality signals (tracks 5.5–8.5); integrasi CI/handoff otomatis via MCP |
 | **Threats (Ancaman)** | Vendor memory SaaS (Mem0, Zep) bergerak cepat; Cursor/IDE menambah memory native yang “cukup baik” untuk solo dev; risiko scope creep ke agent runtime (dicegah konstitusi) |
 
 **Kapan pilih AI Brain?** Anda butuh **memori coding persisten, portable antar AI client, terukur token-nya, dan under your control** — bukan sekadar chat history atau RAG dokumen generik.
@@ -105,29 +105,40 @@ Default deploy = **D1-only** (tanpa adapter eksternal). Adapter di bawah aktif v
 | Analytics | none, **DuckDB** (dev ref) | none | `ANALYTICS_PROVIDER=duckdb` |
 | Embedding | noop, **OpenAI** | noop | `EMBEDDING_PROVIDER=openai` |
 
-#### Roadmap platform (berikutnya 🔲)
+#### Platform enterprise (opt-in ✅, default OFF)
 
-| Fase | Fokus | Platform / capability baru |
-|------|-------|----------------------------|
-| **11 — Production Ops** 🔄 | Cutover metadata | **Postgres produksi** (ADR-018), staging harness, runbook rollback |
-| **12 — Event Pipeline** 🔲 | Async & observability | **Redis Streams consumers**, audit fan-out, OTel runbook |
-| **13 — Content Scale** 🔲 | Skala konten & vektor | **R2/S3** body offload, **pgvector** produksi, embedding job hardening |
-| **14 — Search & Graph Prod** 🔲 | Index & graph skala | **Meilisearch** + **Neo4j** produksi, backfill terbukti di staging |
-| **External** 🔲 | Ekosistem | npm **`@ai-brain/client` SDK** (di luar repo), MCP `submit_signal` (env-gated) |
+Semua modul di bawah **sudah diimplementasi** — aktifkan via env; tanpa flag, perilaku tetap fase 1–11.
 
-Detail timeline: [.ai/phases/roadmap/10-POST-ROADMAP.md](.ai/phases/roadmap/10-POST-ROADMAP.md) · status live: [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md)
+| Fase | Fokus | Master flag (contoh) |
+|------|-------|----------------------|
+| **10.5** Transport | gRPC, transport registry | `GRPC_ENABLED` |
+| **12** Event Pipeline | Redis consumers, fan-out | `EVENT_CONSUMERS_ENABLED` |
+| **13** Protocol | SSE, WebSocket, streaming | `SSE_ENABLED`, `WEBSOCKET_ENABLED` |
+| **13.1** Remote MCP | ChatGPT Server URL + OAuth | `REMOTE_MCP_ENABLED`, `REMOTE_MCP_OAUTH_ENABLED` |
+| **14** Federation | Cross-node memory exchange | `FEDERATION_ENABLED` |
+| **15** Agent Ecosystem | Client catalog & manifest | (always on REST `/ecosystem/*`) |
+| **16** Developer Platform | SDK, CLI, OpenAPI | `packages/sdk`, `packages/cli` |
+| **17** Enterprise Security | SSO, OPA, quota | `ENTERPRISE_SECURITY_V2` |
+| **18** Cloud Platform | Control plane, metering | `CONTROL_PLANE_ENABLED` |
+| **19** Observability | OTel, Prometheus, SLO | `OBSERVABILITY_PLATFORM` |
+| **20** AI Infrastructure | Plugin marketplace | `PLUGIN_MARKETPLACE_ENABLED` |
+| **21** Search & Graph Prod | Meilisearch/Neo4j sync ops | `SEARCH_GRAPH_PLATFORM_ENABLED` |
+| **22** Content Scale | R2/S3 offload, pgvector jobs | `CONTENT_SCALE_PLATFORM_ENABLED` |
+| **23** Knowledge Fabric | External connector ingest | `KNOWLEDGE_FABRIC_ENABLED` |
+| **24** AI-Brain Platform | Umbrella manifest + webhooks | `AI_BRAIN_PLATFORM_ENABLED` |
+| **25** Global Intelligence | Telemetry, analytics, sync | `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED` |
 
-#### Visi platform (desain jangka panjang 🔲)
+Indeks lengkap: [.ai/phases/README.md](.ai/phases/README.md) · POST-ROADMAP: [.ai/phases/roadmap/10-POST-ROADMAP.md](.ai/phases/roadmap/10-POST-ROADMAP.md)
 
-Arah evolusi AI-Brain menjadi **Collaborative Memory Intelligence Platform** terdokumentasi sebagai desain (belum diimplementasi, menunggu approval owner):
+#### Capstone & visi (✅ implemented, opt-in)
 
 | Desain | Fokus | Referensi |
 |--------|-------|-----------|
-| **Vision charter** | Identitas platform, prinsip knowledge independence & team ownership | [.ai/core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md](.ai/core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) |
-| **Phase 25 — Global AI Intelligence Platform** | AI telemetry, usage analytics, cloud-connected ecosystem, federasi 5-tier (Workspace → Org → Cloud → Edge → Developer) | [.ai/phases/25-global-ai-intelligence/DESIGN.md](.ai/phases/25-global-ai-intelligence/DESIGN.md) · ADR-036/037/038/043 |
-| **Indeks fase & drafts** | Seluruh fase reserved + extension design drafts | [.ai/phases/README.md](.ai/phases/README.md) |
+| **Vision charter** | Knowledge independence, team ownership, immutable SSOT | [.ai/core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md](.ai/core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) |
+| **Phase 25 — Global AI Intelligence** | Telemetry, analytics, 5-tier sync, offline journal | [.ai/phases/25-global-ai-intelligence/](.ai/phases/25-global-ai-intelligence/README.md) · ADR-036/037/038/043 |
+| **Indeks fase 1–25** | Gate evidence & IMPLEMENTATION docs | [.ai/phases/README.md](.ai/phases/README.md) |
 
-Semua desain di atas berstatus **draft** — tanpa perubahan `MemoryService`, semua kapabilitas default OFF.
+Semua kapabilitas enterprise **default OFF** — `MemoryService` unchanged, flags additive.
 
 ## Tech Stack
 
@@ -176,6 +187,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 
 | Fase | Status | Evidence |
 |------|--------|----------|
+| **Core foundation** | | |
 | 1 — Foundation | ✅ | [.ai/phases/01-foundation/](.ai/phases/01-foundation/) |
 | 2.5 — Stabilization | ✅ | [.ai/phases/02.5-stabilization/](.ai/phases/02.5-stabilization/) |
 | 2.6 — Knowledge Foundation | ✅ | [.ai/phases/02.6-knowledge/](.ai/phases/02.6-knowledge/) |
@@ -188,10 +200,29 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 9 — Multi-AI | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · [ADR-007](docs/adr/007-multi-ai-workspace-scope.md) |
 | 9.5 — Platform Architecture | ✅ | [.ai/phases/09.5-platform-architecture/](.ai/phases/09.5-platform-architecture/) · [ADR-008](docs/adr/008-platform-architecture.md) |
 | 10 — Enterprise | ✅ | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-008–016](docs/adr/README.md) |
-| 11 — Production Ops | 🔲 In Progress | [.ai/phases/11-production-ops/](.ai/phases/11-production-ops/) · [ADR-018](docs/adr/018-production-postgres-cutover.md) |
-| 5.5–8.5 — Extension tracks | ✅ | Compression · Progressive retrieval · Capability API · Quality signals · [ADR-023–026](docs/adr/README.md) |
+| 11 — Production Ops | ✅ | [.ai/phases/11-production-ops/](.ai/phases/11-production-ops/) · [ADR-018](docs/adr/018-production-postgres-cutover.md) |
+| **Extension tracks** | | |
+| 5.5–9.8 | ✅ | Compression · Progressive retrieval · Capability API · Quality signals · Learning · Evolution · Sync · [ADR-023–026](docs/adr/README.md) |
+| **Transport & protocol (opt-in)** | | |
+| 10.5 — Transport | ✅ | [.ai/phases/10.5-transport-connectivity/](.ai/phases/10.5-transport-connectivity/) · [ADR-027](.ai/adr/027-transport-connectivity-layer.md) |
+| 12 — Event Pipeline | ✅ | [.ai/phases/12-event-pipeline/](.ai/phases/12-event-pipeline/) · [ADR-020](docs/adr/020-event-consumer-architecture.md) |
+| 13 — Protocol Layer | ✅ | [.ai/phases/13-protocol-layer/](.ai/phases/13-protocol-layer/) · [ADR-028](.ai/adr/028-protocol-layer.md) |
+| 13.1 — Remote MCP | ✅ | [.ai/phases/13.1-remote-mcp-clients/](.ai/phases/13.1-remote-mcp-clients/) · [ADR-048](.ai/adr/048-remote-mcp-transport.md) |
+| **Enterprise platform (opt-in)** | | |
+| 14 — Federation | ✅ | [.ai/phases/14-federation/](.ai/phases/14-federation/) · [ADR-029](.ai/adr/029-federation-layer.md) |
+| 15 — Agent Ecosystem | ✅ | [.ai/phases/15-autonomous-agent-ecosystem/](.ai/phases/15-autonomous-agent-ecosystem/) · [ADR-030](.ai/adr/030-autonomous-agent-ecosystem.md) |
+| 16 — Developer Platform | ✅ | [.ai/phases/16-developer-platform/](.ai/phases/16-developer-platform/) · [ADR-031](.ai/adr/031-developer-platform.md) |
+| 17 — Enterprise Security | ✅ | [.ai/phases/17-enterprise-security/](.ai/phases/17-enterprise-security/) · [ADR-032](.ai/adr/032-enterprise-security.md) |
+| 18 — Cloud Platform | ✅ | [.ai/phases/18-cloud-platform/](.ai/phases/18-cloud-platform/) · [ADR-033](.ai/adr/033-cloud-platform.md) |
+| 19 — Observability | ✅ | [.ai/phases/19-observability-platform/](.ai/phases/19-observability-platform/) · [ADR-034](.ai/adr/034-observability-platform.md) |
+| 20 — AI Infrastructure | ✅ | [.ai/phases/20-ai-infrastructure/](.ai/phases/20-ai-infrastructure/) · [ADR-035](.ai/adr/035-ai-infrastructure-platform.md) |
+| 21 — Search & Graph Prod | ✅ | [.ai/phases/21-search-graph-prod/](.ai/phases/21-search-graph-prod/) · [ADR-022](docs/adr/022-search-graph-production-platform.md) |
+| 22 — Content Scale | ✅ | [.ai/phases/22-content-scale/](.ai/phases/22-content-scale/) · [ADR-021](docs/adr/021-content-vector-scale-platform.md) |
+| 23 — Knowledge Fabric | ✅ | [.ai/phases/23-enterprise-knowledge-fabric/](.ai/phases/23-enterprise-knowledge-fabric/) · [ADR-047](docs/adr/047-enterprise-knowledge-fabric.md) |
+| 24 — AI-Brain Platform | ✅ | [.ai/phases/24-ai-brain-platform/](.ai/phases/24-ai-brain-platform/) · [ADR-044](docs/adr/044-ai-brain-platform-architecture.md) |
+| 25 — Global Intelligence | ✅ | [.ai/phases/25-global-ai-intelligence/](.ai/phases/25-global-ai-intelligence/) · [ADR-036](docs/adr/036-global-ai-intelligence-platform.md) |
 
-*Desain historis (read-only): [docs/archive/](docs/archive/). Perintah backfill/migrate: lihat [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
+*688 tests green (default flags OFF). Desain historis: [docs/archive/](docs/archive/). Ops & backfill: [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
 
 ## Quick Start
 
@@ -568,7 +599,7 @@ curl https://ai-brain-beryl.vercel.app/api/v1/memory?limit=3 \
 
 ```bash
 npm run dev                    # Server lokal
-npm run test                   # Unit + E2E (457 tests)
+npm run test                   # Unit + E2E (688 tests)
 npm run benchmark:context-tokens  # Token savings benchmark
 npm run test:integration       # Verifikasi D1 live
 npm run mcp                    # MCP standalone
@@ -760,7 +791,7 @@ Lihat [Langkah 7 — Folder cadangan chat](#langkah-7--folder-cadangan-chat-opsi
 npm run dev          # Start dev server (disarankan, graceful shutdown)
 npm run build:local  # Compile TypeScript → dist/
 npm start            # Jalankan dist/ (butuh build:local dulu)
-npm run test         # Run tests (457 unit + E2E)
+npm run test         # Run tests (688 unit + E2E)
 npm run benchmark:context-tokens  # Context token benchmark
 npm run lint         # ESLint
 npm run format       # Prettier
@@ -811,6 +842,28 @@ Default: D1 metadata, inline storage, noop cache/events/analytics. Provider ekst
 | `ENTERPRISE_RBAC` | `false` | RBAC workspace (Fase 10) |
 | `MEMORY_ACCESS_AUDIT` | `false` | Audit `memory.accessed` on context build (ADR-017) |
 | `OTEL_ENABLED` | `false` | OpenTelemetry HTTP tracing |
+
+### Platform enterprise (Fase 10.5–25 — opt-in)
+
+Master flags (semua default `false`). Rincian per fase: [.ai/phases/README.md](.ai/phases/README.md) · contoh lengkap: [.env.example](.env.example).
+
+| Variable | Fase | Deskripsi |
+|----------|------|-----------|
+| `GRPC_ENABLED` | 10.5 | gRPC server |
+| `EVENT_CONSUMERS_ENABLED` | 12 | Redis event consumers |
+| `SSE_ENABLED` / `WEBSOCKET_ENABLED` | 13 | Streaming context |
+| `REMOTE_MCP_ENABLED` | 13.1 | ChatGPT MCP URL (`/mcp`) |
+| `REMOTE_MCP_OAUTH_ENABLED` | 13.1D | OAuth discovery + OIDC bearer |
+| `FEDERATION_ENABLED` | 14 | Cross-node exchange |
+| `ENTERPRISE_SECURITY_V2` | 17 | SSO, OPA, quota |
+| `CONTROL_PLANE_ENABLED` | 18 | Cloud control plane |
+| `OBSERVABILITY_PLATFORM` | 19 | Metrics, SLO, dashboards |
+| `PLUGIN_MARKETPLACE_ENABLED` | 20 | Plugin registry |
+| `SEARCH_GRAPH_PLATFORM_ENABLED` | 21 | Meilisearch/Neo4j sync |
+| `CONTENT_SCALE_PLATFORM_ENABLED` | 22 | R2/pgvector scale ops |
+| `KNOWLEDGE_FABRIC_ENABLED` | 23 | External connectors |
+| `AI_BRAIN_PLATFORM_ENABLED` | 24 | Umbrella + webhooks |
+| `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED` | 25 | Telemetry + analytics + sync |
 
 Backfill provider eksternal (dry-run default): `db:backfill-pgvector`, `db:backfill-meilisearch`, `db:backfill-neo4j` — lihat [PANDUAN.md](docs/PANDUAN.md). Postgres metadata cutover: [.ai/phases/11-production-ops/MIGRATION.md](.ai/phases/11-production-ops/MIGRATION.md).
 
