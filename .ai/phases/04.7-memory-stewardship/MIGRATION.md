@@ -14,7 +14,9 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ## Migrations
 
-**N/A — no DDL — stewardship uses `InMemoryStewardshipRunStore` MVP. Batch tasks mutate existing memories via `MemoryService` only**
+**Optional DDL** — `stewardship_runs` table when `MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER=sql` (`migrateExtensionTracksPhase7`). Default in-memory store needs no migration.
+
+Batch tasks mutate existing memories via `MemoryService` only (no new memory schema).
 
 | Property | Value |
 |----------|-------|

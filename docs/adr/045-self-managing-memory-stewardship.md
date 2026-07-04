@@ -20,8 +20,10 @@ Adopt `IMemoryStewardshipOrchestrator` with fixed-order maintenance tasks (async
 
 - **Ports** (`src/memory/stewardship/`): `IMaintenanceTask`, `IMemoryStewardshipOrchestrator`, `IStewardshipRunStore`.
 - **Orchestrator** `MemoryStewardshipOrchestrator`: sorts tasks by `STEWARDSHIP_STAGE_ORDER`, runs them in that fixed order, isolates per-task failures, aggregates a `StewardshipRunReport`, persists it to the run store. Dry-run is the default.
-- **Tasks**: `MetadataAuditTask`, `ConsolidationTask` (wraps `MemoryConsolidator`), `GraphRepairTask` (wraps Phase 8.7 relation inference), `EmbeddingAuditTask`, `RetrievalOptimizationTask`. Index repair stage reserved for Phase 21.
-- **Run store**: `InMemoryStewardshipRunStore` (default, swappable).
+- **Tasks**: `MetadataAuditTask`, `ConsolidationTask`, `GraphRepairTask`, `EmbeddingAuditTask`, `IndexRepairTask`, `RankingRefreshTask`, `RetrievalOptimizationTask`.
+- **Run store**: `InMemoryStewardshipRunStore` (default) or `SqlStewardshipRunStore` when `MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER=sql`.
+- **Scheduler**: `LocalStewardshipScheduler` when `MEMORY_STEWARDSHIP_SCHEDULER=local`.
+- **MCP**: `run_stewardship` tool (dry-run default).
 - **Composition**: `src/composition/create-memory-stewardship-ports.ts`, gated by `MEMORY_STEWARDSHIP_ENABLED`.
 - **CLI**: `steward:memories` / `steward:memories:execute`.
 - **Manifest**: `capabilities.supportsSelfManagement` reflects the flag.

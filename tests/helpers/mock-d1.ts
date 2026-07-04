@@ -97,6 +97,7 @@ export class MockD1Client implements D1Client {
   private intelligenceTelemetryEvents: Map<string, Record<string, unknown>> = new Map();
   private intelligenceSyncState: Map<string, Record<string, unknown>> = new Map();
   private intelligenceOfflineJournal: Map<string, Record<string, unknown>> = new Map();
+  private stewardshipRuns: Map<string, Record<string, unknown>> = new Map();
   private memoryEmbeddingsTableReady = false;
   private inTransaction = false;
   async query<T = Record<string, unknown>>(sql: string, params: unknown[] = []): Promise<T[]> {
@@ -1576,6 +1577,36 @@ export class MockD1Client implements D1Client {
       const key = `${params[0]}:${params[1]}`;
       const row = this.pluginAllowList.get(key);
       return { results: row ? [{ allowed: row.allowed }] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO STEWARDSHIP_RUNS')) {
+      const row = {
+        run_id: params[0] as string,
+        owner_id: params[1] as string,
+        project_id: params[2] as string | null,
+        dry_run: params[3] as number,
+        started_at: params[4] as string,
+        finished_at: params[5] as string,
+        duration_ms: params[6] as number,
+        report_json: params[7] as string,
+        had_errors: params[8] as number,
+      };
+      this.stewardshipRuns.set(row.run_id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM STEWARDSHIP_RUNS') &&
+      normalizedSql.includes('WHERE OWNER_ID = ?') &&
+      normalizedSql.includes('ORDER BY STARTED_AT DESC')
+    ) {
+      const ownerId = params[0] as string;
+      const limit = params[1] as number;
+      const rows = [...this.stewardshipRuns.values()]
+        .filter((r) => r.owner_id === ownerId)
+        .sort((a, b) => String(b.started_at).localeCompare(String(a.started_at)))
+        .slice(0, limit);
+      return { results: rows, success: true };
     }
 
     if (normalizedSql.startsWith('INSERT INTO SEARCH_GRAPH_SYNC_RUNS')) {

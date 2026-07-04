@@ -23,5 +23,7 @@ export { InMemoryStewardshipRunStore } from './in-memory-stewardship-run-store.j
 export { MetadataAuditTask } from './tasks/metadata-audit.task.js';
 export { ConsolidationTask } from './tasks/consolidation.task.js';
 export { GraphRepairTask } from './tasks/graph-repair.task.js';
+export { IndexRepairTask } from './tasks/index-repair.task.js';
+export { RankingRefreshTask } from './tasks/ranking-refresh.task.js';
 export { EmbeddingAuditTask } from './tasks/embedding-audit.task.js';
 export { RetrievalOptimizationTask } from './tasks/retrieval-optimization.task.js';

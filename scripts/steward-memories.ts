@@ -19,12 +19,15 @@ async function stewardMemories(): Promise<void> {
   if (!env.MEMORY_STEWARDSHIP_ENABLED) {
     console.log('Note: MEMORY_STEWARDSHIP_ENABLED=false — running as manual operator action.');
   }
+  if (env.MEMORY_STEWARDSHIP_SCHEDULER === 'local') {
+    console.log('Note: MEMORY_STEWARDSHIP_SCHEDULER=local — using scheduler.enqueue per owner.');
+  }
 
   const client = getD1Client();
   await runMigrations(client);
 
   const sql = sqlFromD1Client(client);
-  const { orchestrator } = createMemoryStewardshipPorts(sql, env);
+  const { orchestrator, scheduler, runStore } = createMemoryStewardshipPorts(sql, env);
 
   const owners = await client.query<{ owner_id: string }>(
     'SELECT DISTINCT owner_id FROM memories WHERE owner_id != ?',
@@ -37,7 +40,21 @@ async function stewardMemories(): Promise<void> {
   }
 
   for (const { owner_id: ownerId } of owners) {
-    const report = await orchestrator.run({ ownerId }, { dryRun, projectId });
+    const scope = { ownerId };
+    const options = { dryRun, projectId };
+
+    let report;
+    if (scheduler) {
+      await scheduler.enqueue(scope, options);
+      report = await runStore.latest(ownerId);
+      if (!report) {
+        console.log(`Owner ${ownerId}: no run report persisted.`);
+        continue;
+      }
+    } else {
+      report = await orchestrator.run(scope, options);
+    }
+
     console.log(`\nOwner ${ownerId} — run ${report.runId} (${report.durationMs}ms):`);
     for (const task of report.tasks) {
       const flag = task.status === 'error' ? '✗' : task.status === 'skipped' ? '–' : '✓';

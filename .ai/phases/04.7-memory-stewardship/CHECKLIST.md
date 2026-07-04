@@ -35,7 +35,7 @@
 - [x] Orchestrator unit tests (ordering, dry-run, error isolation, run store)
 - [x] Task integration tests (SQL harness, dedup, execute)
 - [x] Manifest contract test updated
-- [x] Quality gate: typecheck + lint + format + 493 tests green
+- [x] Quality gate: typecheck + lint + format + 710 tests green
 
 ### E — Documentation
 
@@ -51,11 +51,11 @@
 ### F — Deferred (future phases)
 
 - [x] Graph repair task (Phase 08.7) — `GraphRepairTask` wraps `infer:relations`
-- [ ] Index repair task (Phase 21 — search-graph-prod)
-- [ ] Ranking refresh task
-- [ ] SQL-backed run store
-- [ ] Optional MCP tool `run_stewardship`
-- [ ] Scheduled/cron stewardship job
+- [x] Index repair task (Phase 21) — `IndexRepairTask` wraps search-graph sync
+- [x] Ranking refresh task — `RankingRefreshTask` wraps `learning:run`
+- [x] SQL-backed run store — `SqlStewardshipRunStore` + `MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER=sql`
+- [x] Optional MCP tool `run_stewardship`
+- [x] Scheduled/cron stewardship job — `LocalStewardshipScheduler` + `MEMORY_STEWARDSHIP_SCHEDULER=local` (external cron → `steward:memories:execute`)
 
 ---
 

@@ -31,17 +31,28 @@ Map roadmap success criteria to durable evidence.
 
 | ID | Criterion | Evidence |
 |----|-----------|----------|
-| SC-04.7-01 | Orchestrator + four default tasks | ✅ MetadataAudit, Consolidation, EmbeddingAudit, RetrievalOptimization |
+| SC-04.7-01 | Orchestrator + seven maintenance tasks | ✅ Full pipeline (see IMPLEMENTATION.md) |
 | SC-04.7-02 | dryRun default true | ✅ CLI `--execute` opt-in only |
 | SC-04.7-03 | MemoryService signatures unchanged | ✅ Composition root wiring only |
 | SC-04.7-04 | CLI steward:memories | ✅ Operator entry point |
-| SC-04.7-05 | Default flag OFF regression | ✅ 689 passed | 3 skipped (default env, master flags OFF) |
+| SC-04.7-05 | Default flag OFF regression | ✅ 710 passed | 3 skipped |
 
 **Result:** 5/5 PASS. Phase gate closed 2026-07-04.
 
+## Addendum — deferred tasks closed (2026-07-04)
+
+| Item | Evidence |
+|------|----------|
+| GraphRepairTask | `tasks/graph-repair.task.ts` |
+| IndexRepairTask | `tasks/index-repair.task.ts` |
+| RankingRefreshTask | `tasks/ranking-refresh.task.ts` |
+| SQL run store | `SqlStewardshipRunStore` + `stewardship_runs` migration |
+| MCP `run_stewardship` | `mcp-tool-names.ts`, `mcp-server.ts` |
+| Scheduler | `LocalStewardshipScheduler` + env flag |
+
 ## Metrics at gate
 
-- **Tests:** 689 passed | 3 skipped (default env, master flags OFF)
+- **Tests:** 710 passed | 3 skipped (default env, master flags OFF)
 - **Completed:** 2026-07-04
 - **ADR:** ADR-045
 

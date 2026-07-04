@@ -20,7 +20,10 @@ Record architecture review findings and formal phase gate verdict.
 | Orchestrator per-task isolation | ✅ Failed task does not abort run |
 | dryRun default true | ✅ CLI `--execute` opt-in only |
 | MemoryService signatures unchanged | ✅ Hooks via composition root only |
-| Four default tasks | ✅ consolidate, archive, dedupe, importance refresh |
+| Seven maintenance tasks | ✅ Full pipeline registered |
+| SQL run store | ✅ `SqlStewardshipRunStore` opt-in |
+| MCP `run_stewardship` | ✅ Dry-run default |
+| Local scheduler | ✅ `MEMORY_STEWARDSHIP_SCHEDULER=local` |
 | Constitution — no agent loop | ✅ Batch tasks only |
 
 ---
@@ -29,15 +32,26 @@ Record architecture review findings and formal phase gate verdict.
 
 - ADR-045 Implemented
 - ADR-045 Accepted — stewardship orchestrator pattern documented
-- Rollback: disable flag; run history in-memory only
+- Rollback: disable flags; run history in-memory or SQL (opt-in)
+
+---
+
+## Post-gate follow-up (2026-07-04)
+
+| Item | Status |
+|------|--------|
+| `GraphRepairTask` (Phase 8.7) | ✅ |
+| `IndexRepairTask` (Phase 21) | ✅ |
+| `RankingRefreshTask` (Phase 8.6) | ✅ |
+| `SqlStewardshipRunStore` | ✅ |
+| MCP `run_stewardship` | ✅ |
+| `LocalStewardshipScheduler` | ✅ |
 
 ---
 
 ## Known gaps (accepted)
 
-- Graph repair task wired via `GraphRepairTask` (Phase 08.7 orchestrator)
-- SQL run store deferred — `InMemoryStewardshipRunStore` MVP
-- MCP `run_stewardship` not built
+*(none — CHECKLIST section F closed)*
 
 ---
 

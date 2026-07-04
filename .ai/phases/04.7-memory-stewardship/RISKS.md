@@ -17,7 +17,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
 | Stewardship mutates prod without dry-run | Medium | Critical | dryRun default true; CLI --execute opt-in | Mitigated |
-| Run history lost on restart | High | Low | InMemory run store MVP; SQL adapter deferred (D47-02) | Accepted |
+| Run history lost on restart | High | Low | `SqlStewardshipRunStore` when `MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER=sql`; in-memory default | Mitigated |
 | Task error aborts whole run | Medium | Medium | Per-task error isolation in orchestrator | Mitigated |
 | Scope creep into agent planning | Low | Critical | Batch tasks only; no agent loop | Mitigated |
 
@@ -25,7 +25,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | ID | Risk | Mitigation path |
 |----|------|-----------------|
-| D47-02 | SQL run store | Post-MVP adapter |
+| — | *(none — D47-02 closed)* | `SqlStewardshipRunStore` + env `MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER=sql` |
 
 ---
 

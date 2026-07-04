@@ -944,6 +944,29 @@ export async function migrateExtensionTracksPhase6(client: ISqlDatabase): Promis
   }
 }
 
+/** Extension track 04.7 — stewardship run history (ADR-045). */
+const STEWARDSHIP_RUNS_SQL = `
+CREATE TABLE IF NOT EXISTS stewardship_runs (
+  run_id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  project_id TEXT,
+  dry_run INTEGER NOT NULL DEFAULT 1,
+  started_at TEXT NOT NULL,
+  finished_at TEXT NOT NULL,
+  duration_ms INTEGER NOT NULL,
+  report_json TEXT NOT NULL,
+  had_errors INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_stewardship_runs_owner ON stewardship_runs(owner_id, started_at DESC);
+`;
+
+export async function migrateExtensionTracksPhase7(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(STEWARDSHIP_RUNS_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: ISqlDatabase): Promise<void> {
   await client.execute(
@@ -1000,6 +1023,7 @@ export async function runSchemaMigrations(
   await migrateExtensionTracksPhase4(client);
   await migrateExtensionTracksPhase5(client);
   await migrateExtensionTracksPhase6(client);
+  await migrateExtensionTracksPhase7(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

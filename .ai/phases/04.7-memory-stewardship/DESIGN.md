@@ -69,7 +69,7 @@ flowchart LR
 |-------|--------------|
 | Phase 5.5 | Compression policy wired when `COMPRESSION_ENABLED=true` |
 | Phase 8.7 | `GraphRepairTask` registered at `graph-repair` (wraps `IRelationInferenceOrchestrator`) |
-| Phase 21 | Index repair task slot reserved (Meilisearch/Neo4j sync) |
+| Phase 21 | `IndexRepairTask` registered at `index-repair` (Meilisearch/Neo4j sync) ✅ |
 
 #### Forward dependencies (future phases plug into 04.7)
 
@@ -113,8 +113,8 @@ flowchart LR
 | 4 | `archive` | *(via ConsolidationTask)* | Yes when `--execute` |
 | 5 | `graph-repair` | `GraphRepairTask` | Yes when `--execute` + `RELATION_INFERENCE_ENABLED` |
 | 6 | `embedding-repair` | `EmbeddingAuditTask` | Read-only audit |
-| 7 | `index-repair` | *(reserved)* | Future Phase 21 |
-| 8 | `ranking-refresh` | *(reserved)* | Future |
+| 7 | `index-repair` | `IndexRepairTask` | Yes when `--execute` + `SEARCH_GRAPH_PLATFORM_ENABLED` |
+| 8 | `ranking-refresh` | `RankingRefreshTask` | Yes when `--execute` + `LEARNING_ENGINE_ENABLED` |
 | 9 | `retrieval-optimization` | `RetrievalOptimizationTask` | Read-only report |
 
 The orchestrator sorts registered tasks by `STAGE_INDEX` — registration order is irrelevant; execution is reproducible.
@@ -270,11 +270,9 @@ ConsolidationTask.run(ctx)
 | Surface | Change |
 |---------|--------|
 | REST `/api/v1/*` | **None** — no new endpoints required |
-| MCP tools | **None** — existing 20 tools unchanged |
-| Capability manifest | **Additive** — `supportsSelfManagement` flag |
-| CLI | **New** — `steward:memories` / `steward:memories:execute` |
-
-Optional future: MCP tool `run_stewardship` (deferred — CLI sufficient for gate).
+| MCP tools | **Additive** — `run_stewardship` (21st tool) + `supportsSelfManagement` manifest flag |
+| CLI | `steward:memories` / `steward:memories:execute` |
+| Scheduler | `MEMORY_STEWARDSHIP_SCHEDULER=local` → `LocalStewardshipScheduler` |
 
 ---
 
@@ -283,8 +281,8 @@ Optional future: MCP tool `run_stewardship` (deferred — CLI sufficient for gat
 - Planner or autonomous agent loop
 - LLM-based merge or summarization
 - `MemoryService` signature changes
-- New persistence schema (run store in-memory by default)
-- Automatic scheduling (cron) — operator or future scheduler invokes CLI
+- Optional SQL run store (`stewardship_runs` table) — default in-memory
+- In-process scheduler only — external cron invokes CLI
 
 ---
 
@@ -303,8 +301,8 @@ Optional future: MCP tool `run_stewardship` (deferred — CLI sufficient for gat
 - [x] CLI `steward:memories` (dry-run) and `steward:memories:execute`
 - [x] Manifest `supportsSelfManagement` reflects flag
 - [x] Zero changes to `MemoryService` method signatures
-- [x] Tests green (493+ total; 7 new stewardship tests)
-- [x] Graph/index/ranking stages — graph repair registered; index (Phase 21) and ranking reserved
+- [x] Tests green (710 total; stewardship + MCP + SQL store tests)
+- [x] All seven stages registered; CHECKLIST section F closed
 
 ---
 
@@ -313,7 +311,8 @@ Optional future: MCP tool `run_stewardship` (deferred — CLI sufficient for gat
 | Phase | Interaction |
 |-------|-------------|
 | **08.7** | `GraphRepairTask` at `graph-repair` stage ✅ |
-| **21** | Register `IndexRepairTask` at `index-repair` stage (search-graph-prod) |
+| **21** | `IndexRepairTask` at `index-repair` stage ✅ |
+| **8.6** | `RankingRefreshTask` at `ranking-refresh` stage ✅ |
 | **08.6** | Quality recommendations feed into stewardship triggers |
 | **09.7** | Memory evolution distinct from duplicate rollup (04.7) |
 | **25** | Telemetry on stewardship runs via event bus |

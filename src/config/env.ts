@@ -189,6 +189,8 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+    MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER: z.enum(['memory', 'sql']).default('memory'),
+    MEMORY_STEWARDSHIP_SCHEDULER: z.enum(['none', 'local']).default('none'),
 
     // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
     GRPC_ENABLED: z

@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
-**Quality gate:** typecheck ✅ · lint ✅ · format ✅ · **493 tests passed** (7 new)
+**Quality gate:** typecheck ✅ · lint ✅ · format ✅ · **710 tests passed** | 3 skipped
 
 ---
 
@@ -10,9 +10,14 @@
 
 | File | Coverage |
 |------|----------|
-| `tests/memory/stewardship/orchestrator.test.ts` | Fixed stage order regardless of registration order; dry-run default; per-task error isolation; run-store persistence |
-| `tests/memory/stewardship/tasks.test.ts` | Real tasks via SQL harness: duplicate detection (dry-run), archive-on-execute, composition flag wiring |
-| `tests/memory/stewardship/graph-repair.task.test.ts` | `GraphRepairTask` skip when disabled; delegates to inference orchestrator |
+| `tests/memory/stewardship/orchestrator.test.ts` | Stage order, dry-run default, error isolation, run-store persistence |
+| `tests/memory/stewardship/tasks.test.ts` | Full 7-stage pipeline integration (SQL harness) |
+| `tests/memory/stewardship/graph-repair.task.test.ts` | Graph inference delegation + skip |
+| `tests/memory/stewardship/index-repair.task.test.ts` | Search/graph sync + per-target errors |
+| `tests/memory/stewardship/ranking-refresh.task.test.ts` | Learning orchestrator delegation |
+| `tests/infrastructure/stewardship/sql-stewardship-run-store.test.ts` | SQL run history persist/list |
+| `tests/jobs/local-stewardship-scheduler.test.ts` | Scheduler enqueue → orchestrator |
+| `tests/mcp/tools.test.ts` | `run_stewardship` dry-run + tool registry (21 tools) |
 | `tests/capabilities/manifest-contract.test.ts` | `supportsSelfManagement: false` when flag off |
 
 ---
@@ -21,54 +26,35 @@
 
 ### Orchestrator
 
-- [x] Tasks run in `STEWARDSHIP_STAGE_ORDER` even when registered out of order
-- [x] `dryRun` defaults to `true` and propagates to task context
-- [x] Failing task gets `status: 'error'`; remaining tasks still complete
-- [x] `StewardshipRunReport` aggregates `totalScanned`, `totalChanged`, `hadErrors`
-- [x] Run persisted to `InMemoryStewardshipRunStore`
+- [x] Tasks run in `STEWARDSHIP_STAGE_ORDER` regardless of registration order
+- [x] `dryRun` defaults to `true`
+- [x] Failing task isolated; pipeline completes
+- [x] Run persisted to in-memory or SQL store
 
 ### Tasks (SQL harness)
 
-- [x] `MetadataAuditTask` scans owner memories
-- [x] `ConsolidationTask` detects duplicates in dry-run (`totalChanged: 0`)
-- [x] `ConsolidationTask` archives duplicates on `--execute` (`changed > 0`)
-- [x] `GraphRepairTask` skipped when `RELATION_INFERENCE_ENABLED=false`
-- [x] Pipeline includes `graph-repair` stage between merge-compress and embedding-repair
-- [x] `EmbeddingAuditTask` reports memories without embedding
-- [x] `RetrievalOptimizationTask` reports level distribution + policy version
-- [x] `createMemoryStewardshipPorts` returns `enabled: false` by default
+- [x] Consolidation duplicate detect + archive on execute
+- [x] `GraphRepairTask`, `IndexRepairTask`, `RankingRefreshTask` → `skipped` when flags OFF
+- [x] Full stage list: metadata → merge → graph → embedding → index → ranking → retrieval
+
+### MCP
+
+- [x] `run_stewardship` returns `StewardshipRunReport` with `dryRun: true`
 
 ---
 
 ## Manual verification
 
 ```bash
-# Dry-run (default — no mutations)
 npm run steward:memories
-
-# Execute (mutates — archives duplicates, etc.)
 npm run steward:memories:execute
-
-# Optional project filter
 npm run steward:memories -- --project=my-project
 ```
 
----
-
-## Non-regression
-
-- All 486+ pre-existing tests pass with `MEMORY_STEWARDSHIP_ENABLED=false`
-- `MemoryService` contract tests unchanged
-- Consolidator tests unchanged
+MCP: call `run_stewardship` with `{ "dry_run": true }`.
 
 ---
-
-## Future test additions
-
-- [ ] Index repair task when Phase 21 registers
-- [ ] SQL-backed `IStewardshipRunStore` adapter
-- [ ] Optional scheduled stewardship job integration test
 
 ## Current regression
 
-689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)
+**710 passed** | 3 skipped (default env, all master flags OFF)

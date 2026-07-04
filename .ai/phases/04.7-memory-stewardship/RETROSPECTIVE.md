@@ -13,7 +13,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Delivered `MemoryStewardshipOrchestrator` with four default tasks, in-memory run store, and CLI `steward:memories`. Gated by `MEMORY_STEWARDSHIP_ENABLED=false`.
+Delivered `MemoryStewardshipOrchestrator` with **seven** maintenance tasks, optional SQL run store, MCP `run_stewardship`, and local scheduler. Gated by `MEMORY_STEWARDSHIP_ENABLED=false`.
 
 Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
@@ -21,33 +21,32 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## What worked well
 
-- Orchestrator isolates per-task errors and persists `StewardshipRunReport` via `IStewardshipRunStore`
-- ConsolidationTask reuses Phase 4 `MemoryConsolidator` + Phase 5.5 compression when enabled
-- `create-memory-stewardship-ports.ts` wires tasks without changing `MemoryService` signatures
-- 493 tests green with flag off; ADR-045 Accepted
+- Orchestrator isolates per-task errors and persists `StewardshipRunReport`
+- Task wrappers reuse existing Phase 4 / 8.6 / 8.7 / 21 orchestrators — no duplicate business logic
+- Skip pattern (`status: skipped`) keeps pipeline running when optional flags are OFF
+- **710** tests green with master flags OFF
 
 ---
 
 ## What was harder than expected
 
-- `GraphRepairTask` registered (Phase 08.7 follow-up); index repair deferred to Phase 21
-- SQL run store, MCP `run_stewardship`, and scheduled job not built
-- Reserved stages `graph-repair`, `index-repair`, `ranking-refresh` registered but not implemented
+- Cross-phase composition (`createSearchGraphPorts`, `createLearningPorts`) in stewardship root — watch import cycles
+- MockD1 needed `stewardship_runs` handlers for SQL store tests
 
 ---
 
 ## Accepted debt
 
-- Run history only in `InMemoryStewardshipRunStore` — lost on restart
-- CLI-only — no MCP or REST surface
+- External cron wiring is operator responsibility (no in-repo Vercel/K8s job manifest)
+- In-process scheduler runs immediately — not a durable job queue
 
 ---
 
 ## Recommendations
 
-- Promote run store to SQL before enabling cron stewardship in production
-- Wire Phase 08.7 `infer:relations` into a `graph-repair` stewardship task
+- Use `MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER=sql` in production for audit trail
+- Schedule `steward:memories:execute` via platform cron for routine hygiene
 
 ---
 
-*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Gate PASS 2026-07-04. CHECKLIST section F closed same release train.*

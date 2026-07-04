@@ -249,4 +249,18 @@ describe('MCP tools', () => {
     expect(manifest.mcp.toolCount).toBe(EXPECTED_TOOLS.length);
     expect(manifest.mcp.toolNames).toContain('get_capabilities');
   });
+
+  it('runs run_stewardship in dry-run mode', async () => {
+    const result = await client.callTool({
+      name: 'run_stewardship',
+      arguments: { dry_run: true },
+    });
+    expect(result.isError).not.toBe(true);
+    const report = JSON.parse((result.content as [{ text: string }])[0].text) as {
+      dryRun: boolean;
+      tasks: Array<{ stage: string }>;
+    };
+    expect(report.dryRun).toBe(true);
+    expect(report.tasks.length).toBeGreaterThan(0);
+  });
 });

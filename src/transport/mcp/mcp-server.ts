@@ -30,6 +30,7 @@ import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../../types/kn
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from '../../mcp/context-tool-params.js';
+import { createMemoryStewardshipPorts } from '../../composition/create-memory-stewardship-ports.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -381,6 +382,29 @@ function createMcpServer(
       const manifest = await handlers.capabilities.getManifest.handle(mcpCtx(), {});
       return {
         content: [{ type: 'text', text: JSON.stringify(manifest, null, 2) }],
+      };
+    },
+  );
+
+  server.tool(
+    'run_stewardship',
+    'Run the memory stewardship maintenance pipeline (dry-run by default)',
+    {
+      dry_run: z
+        .boolean()
+        .optional()
+        .describe('When true (default), report intended actions without mutations'),
+      project: z.string().optional().describe('Optional project filter'),
+    },
+    async (params) => {
+      const env = getEnv();
+      const { orchestrator } = createMemoryStewardshipPorts(sql, env);
+      const report = await orchestrator.run(await mcpScope(), {
+        dryRun: params.dry_run ?? true,
+        projectId: params.project,
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(report, null, 2) }],
       };
     },
   );

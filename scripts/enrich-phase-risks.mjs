@@ -81,13 +81,11 @@ const PHASES = [
     gateDate: '2026-07-04',
     risks: [
       ['Stewardship mutates prod without dry-run', 'Medium', 'Critical', 'dryRun default true; CLI --execute opt-in', 'Mitigated'],
-      ['Run history lost on restart', 'High', 'Low', 'InMemory run store MVP; SQL adapter deferred (D47-02)', 'Accepted'],
+      ['Run history lost on restart', 'High', 'Low', 'SqlStewardshipRunStore when MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER=sql', 'Mitigated'],
       ['Task error aborts whole run', 'Medium', 'Medium', 'Per-task error isolation in orchestrator', 'Mitigated'],
       ['Scope creep into agent planning', 'Low', 'Critical', 'Batch tasks only; no agent loop', 'Mitigated'],
     ],
-    deferred: [
-      ['D47-02', 'SQL run store', 'Post-MVP adapter'],
-    ],
+    deferred: [],
   },
   {
     dir: '05.5-semantic-compression',

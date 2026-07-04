@@ -16,7 +16,13 @@ import { ConsolidationTask } from '../../../src/memory/stewardship/tasks/consoli
 import { EmbeddingAuditTask } from '../../../src/memory/stewardship/tasks/embedding-audit.task.js';
 import { RetrievalOptimizationTask } from '../../../src/memory/stewardship/tasks/retrieval-optimization.task.js';
 import { GraphRepairTask } from '../../../src/memory/stewardship/tasks/graph-repair.task.js';
+import { IndexRepairTask } from '../../../src/memory/stewardship/tasks/index-repair.task.js';
+import { RankingRefreshTask } from '../../../src/memory/stewardship/tasks/ranking-refresh.task.js';
 import { NoOpRelationInferenceOrchestrator } from '../../../src/inference/noop-relation-inference-orchestrator.js';
+import { NoOpLearningOrchestrator } from '../../../src/learning/noop-learning-orchestrator.js';
+import { SearchGraphOrchestrator } from '../../../src/search-graph-platform/services/search-graph-orchestrator.js';
+import { NoOpSearchIndexSyncer, NoOpGraphIndexSyncer } from '../../../src/search-graph-platform/index.js';
+import { NoOpSearchGraphSyncStore } from '../../../src/infrastructure/search-graph-platform/sql-search-graph-sync-store.js';
 import { createMemoryStewardshipPorts } from '../../../src/composition/create-memory-stewardship-ports.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
@@ -77,12 +83,19 @@ describe('stewardship tasks (Phase 04.7)', () => {
     const repository = createTestMemoryRepository(mockDb);
     const relationRepository = createTestRelationRepository(mockDb);
     const consolidator = new MemoryConsolidator(repository, relationRepository);
+    const searchGraphOrchestrator = new SearchGraphOrchestrator(
+      new NoOpSearchIndexSyncer(),
+      new NoOpGraphIndexSyncer(),
+      new NoOpSearchGraphSyncStore(),
+    );
     return new MemoryStewardshipOrchestrator(
       [
         new MetadataAuditTask(repository),
         new ConsolidationTask(consolidator),
         new GraphRepairTask(new NoOpRelationInferenceOrchestrator(), false),
         new EmbeddingAuditTask(repository),
+        new IndexRepairTask(searchGraphOrchestrator, false),
+        new RankingRefreshTask(new NoOpLearningOrchestrator(), false),
         new RetrievalOptimizationTask(repository, '1'),
       ],
       { runStore: new InMemoryStewardshipRunStore() },
@@ -97,6 +110,8 @@ describe('stewardship tasks (Phase 04.7)', () => {
       'merge-compress',
       'graph-repair',
       'embedding-repair',
+      'index-repair',
+      'ranking-refresh',
       'retrieval-optimization',
     ]);
     expect(report.dryRun).toBe(true);
@@ -107,6 +122,12 @@ describe('stewardship tasks (Phase 04.7)', () => {
 
     const graph = report.tasks.find((t) => t.stage === 'graph-repair');
     expect(graph?.status).toBe('skipped');
+
+    const index = report.tasks.find((t) => t.stage === 'index-repair');
+    expect(index?.status).toBe('skipped');
+
+    const ranking = report.tasks.find((t) => t.stage === 'ranking-refresh');
+    expect(ranking?.status).toBe('skipped');
 
     const embedding = report.tasks.find((t) => t.stage === 'embedding-repair');
     expect(embedding?.findings.join(' ')).toMatch(/without embedding/);

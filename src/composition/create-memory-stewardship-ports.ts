@@ -6,20 +6,28 @@ import { MemoryConsolidator } from '../memory/consolidator.js';
 import { RuleBasedCompressionPolicy } from '../memory/compression/rule-based-compression-policy.js';
 import { createCompressionSummarizer } from './create-compression-summarizer.js';
 import { createRelationInferencePorts } from './create-relation-inference-ports.js';
+import { createSearchGraphPorts } from './create-search-graph-ports.js';
+import { createLearningPorts } from './create-learning-ports.js';
 import { MemoryStewardshipOrchestrator } from '../memory/stewardship/memory-stewardship-orchestrator.js';
 import { InMemoryStewardshipRunStore } from '../memory/stewardship/in-memory-stewardship-run-store.js';
+import { SqlStewardshipRunStore } from '../infrastructure/stewardship/sql-stewardship-run-store.js';
 import { MetadataAuditTask } from '../memory/stewardship/tasks/metadata-audit.task.js';
 import { ConsolidationTask } from '../memory/stewardship/tasks/consolidation.task.js';
 import { GraphRepairTask } from '../memory/stewardship/tasks/graph-repair.task.js';
 import { EmbeddingAuditTask } from '../memory/stewardship/tasks/embedding-audit.task.js';
+import { IndexRepairTask } from '../memory/stewardship/tasks/index-repair.task.js';
+import { RankingRefreshTask } from '../memory/stewardship/tasks/ranking-refresh.task.js';
 import { RetrievalOptimizationTask } from '../memory/stewardship/tasks/retrieval-optimization.task.js';
+import { LocalStewardshipScheduler } from '../jobs/local-stewardship-scheduler.js';
 import type { IMemoryStewardshipOrchestrator } from '../memory/stewardship/imemory-stewardship-orchestrator.interface.js';
 import type { IStewardshipRunStore } from '../memory/stewardship/istewardship-run-store.interface.js';
+import type { IStewardshipScheduler } from '../ports/stewardship/istewardship-scheduler.port.js';
 
 export interface MemoryStewardshipPorts {
   enabled: boolean;
   orchestrator: IMemoryStewardshipOrchestrator;
   runStore: IStewardshipRunStore;
+  scheduler?: IStewardshipScheduler;
 }
 
 /**
@@ -38,18 +46,32 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
     summarizer,
   });
 
-  const runStore = new InMemoryStewardshipRunStore();
+  const runStore =
+    env.MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER === 'sql'
+      ? new SqlStewardshipRunStore(sql)
+      : new InMemoryStewardshipRunStore();
+
   const relationInference = createRelationInferencePorts(sql, env);
+  const searchGraph = createSearchGraphPorts(sql, env);
+  const learning = createLearningPorts(sql, env);
+
   const orchestrator = new MemoryStewardshipOrchestrator(
     [
       new MetadataAuditTask(repository),
       new ConsolidationTask(consolidator),
       new GraphRepairTask(relationInference.orchestrator, relationInference.enabled),
       new EmbeddingAuditTask(repository),
+      new IndexRepairTask(searchGraph.orchestrator, searchGraph.enabled),
+      new RankingRefreshTask(learning.orchestrator, learning.enabled),
       new RetrievalOptimizationTask(repository, env.RETRIEVAL_POLICY_VERSION),
     ],
     { runStore },
   );
 
-  return { enabled: env.MEMORY_STEWARDSHIP_ENABLED, orchestrator, runStore };
+  const scheduler =
+    env.MEMORY_STEWARDSHIP_SCHEDULER === 'local'
+      ? new LocalStewardshipScheduler(orchestrator)
+      : undefined;
+
+  return { enabled: env.MEMORY_STEWARDSHIP_ENABLED, orchestrator, runStore, scheduler };
 }
