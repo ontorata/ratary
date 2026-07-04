@@ -285,11 +285,12 @@ All changes **additive**. Default deploy: compression job disabled; behavior ide
 | Tool | Change |
 |------|--------|
 | All 19 existing tools | Signatures **unchanged** |
+| `get_compression_status` | **Optional** — owner-scoped compression counts, pending duplicates, env flags |
 | `save_memory` | Response may include optional `compressionMeta` when populated |
 | `get_context` | No change (`content_mode`, `summary_only` already token-efficient) |
 | `get_memory` | Optional `compressionMeta` field in JSON |
 
-**No new MCP tools required** for gate PASS. Optional future: `get_compression_status` (deferred).
+**No new MCP tools required** for gate PASS. Optional: `get_compression_status` — **Implemented** (tool #22; `ICompressionStatusReader`).
 
 Env flags (composition root):
 
@@ -326,7 +327,7 @@ Env flags (composition root):
 - [x] Dry-run script default; execute path documented
 - [x] Zero changes to `MemoryService` method signatures
 - [x] All existing tests green with compression disabled
-- [ ] Token benchmark documents ≥80% median savings (summary path vs full dump) — optional evidence via `benchmark:context-tokens`
+- [x] Token benchmark documents ≥80% median savings (summary path vs full dump) — optional evidence via `benchmark:context-tokens`; archived [COMPLETION.md](COMPLETION.md) (summary-only **85.5%**, 2026-07-04)
 
 ---
 

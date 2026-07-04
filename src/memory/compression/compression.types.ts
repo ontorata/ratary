@@ -39,3 +39,27 @@ export interface CompressionJobReport {
   compressed: number;
   dryRun: boolean;
 }
+
+export interface CompressionStatusQuery {
+  projectId?: string;
+}
+
+export interface CompressionOwnerStatus {
+  ownerId: string;
+  projectId: string | null;
+  compressionEnabled: boolean;
+  compressionPolicy: string;
+  compressionScheduler: string;
+  counts: {
+    activeNotesAndRaw: number;
+    summaryMemories: number;
+    canonicalMemories: number;
+    withCompressionMeta: number;
+    archivedMemories: number;
+  };
+  pending: {
+    duplicateMemories: number;
+    compressibleClusters: number;
+  };
+  lastCompressedAt: string | null;
+}

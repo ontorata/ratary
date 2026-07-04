@@ -31,6 +31,7 @@ import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from '../../mcp/context-tool-params.js';
 import { createMemoryStewardshipPorts } from '../../composition/create-memory-stewardship-ports.js';
+import { createCompressionPorts } from '../../composition/create-compression-ports.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -405,6 +406,23 @@ function createMcpServer(
       });
       return {
         content: [{ type: 'text', text: JSON.stringify(report, null, 2) }],
+      };
+    },
+  );
+
+  server.tool(
+    'get_compression_status',
+    'Report semantic compression status and pending duplicate clusters for the MCP owner',
+    {
+      project: z.string().optional().describe('Optional project filter'),
+    },
+    async (params) => {
+      const { statusReader } = createCompressionPorts(sql, getEnv());
+      const status = await statusReader.getStatus(await mcpScope(), {
+        projectId: params.project,
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(status, null, 2) }],
       };
     },
   );

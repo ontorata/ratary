@@ -14,6 +14,8 @@
 | `tests/jobs/compression-job-runner.test.ts` | Disabled runner, candidate reporting, composition flag |
 | `tests/db/extension-tracks-migration.test.ts` | `compression_meta`, `compression_version` migration DDL |
 | `tests/capabilities/manifest-builder.test.ts` | `supportsSemanticCompression: false` when flag off |
+| `tests/memory/compression-status-reader.test.ts` | Owner counts, pending duplicates, compression meta |
+| `tests/mcp/tools.test.ts` | `get_compression_status` MCP handler |
 
 ---
 
@@ -44,7 +46,7 @@ COMPRESSION_ENABLED=true npm run compress:memories:execute
 npm run benchmark:context-tokens
 ```
 
-Documents token savings for summary-first context vs full body hydration.
+Documents token savings for summary-first context vs full body hydration. **Recorded 2026-07-04:** summary-only strategy **85.5%** vs naive dump (≥80% target) — see [COMPLETION.md](COMPLETION.md#token-benchmark-evidence-optional--sc-55-06).
 ## Current regression
 
 689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

@@ -27,13 +27,13 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| ADR-001 not Approved before code | High | Blocker | Halt implementation; owner approves ADR | **Open** |
-| Latency from parallel SQL + vector sources | Medium | Medium | Per-source caps; parallel fetch with timeout | Identified |
-| Merge policy ambiguity | Medium | High | Document in ADR-001; unit test dedupe/cap | Identified |
-| Ranking engine coupling | Low | Medium | Fusion in pure `RankingEngine`; no service logic | Identified |
-| Owner scope leak in vector candidates | Low | Critical | Filter `ownerId` in `VectorRetrievalCandidateSource`; E2E tests | Identified |
-| MVP vector scale ceiling (~5–10k/owner) | Medium | Medium | Documented in Phase 5; adapter swap path | Deferred to Phase 8+ |
-| Composition root duplicate `MemoryRepository` | Medium | Medium | Unify during Phase 6 wiring (audit debt) | Identified |
+| ADR-001 not Approved before code | High | Blocker | Halt implementation; owner approves ADR | Mitigated |
+| Latency from parallel SQL + vector sources | Medium | Medium | Per-source caps; parallel fetch with timeout | Accepted |
+| Merge policy ambiguity | Medium | High | Document in ADR-001; unit test dedupe/cap | Resolved |
+| Ranking engine coupling | Low | Medium | Fusion in pure `RankingEngine`; no service logic | Mitigated |
+| Owner scope leak in vector candidates | Low | Critical | Filter `ownerId` in `VectorRetrievalCandidateSource`; E2E tests | Resolved |
+| MVP vector scale ceiling (~5–10k/owner) | Medium | Medium | Documented Phase 5; pgvector path Phase 10 (ADR-011) | Transferred — Phase 10 (ADR-011) |
+| Composition root duplicate `MemoryRepository` | Medium | Medium | Unify factory wiring | Resolved — Phase 9 (D-02) |
 
 ---
 

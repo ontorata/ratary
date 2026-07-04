@@ -2078,6 +2078,19 @@ export class MockD1Client implements D1Client {
       });
     }
 
+    if (upperSql.includes('COMPRESSION_META IS NOT NULL')) {
+      handlers.push({
+        position: pos('COMPRESSION_META IS NOT NULL'),
+        run: () => {
+          results = results.filter(
+            (m) =>
+              (m as Record<string, unknown>).compression_meta != null &&
+              (m as Record<string, unknown>).compression_meta !== '',
+          );
+        },
+      });
+    }
+
     if (upperSql.includes('PROJECT_ID = ?')) {
       handlers.push({
         position: pos('PROJECT_ID = ?'),

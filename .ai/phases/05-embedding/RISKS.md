@@ -19,7 +19,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Sync embed blocks CRUD hot path | Medium | Critical | Async job runner only; ADR-003 | Mitigated |
 | Vector SQL in MemoryRepository | Medium | High | IEmbeddingStore port boundary | Mitigated |
 | OpenAI cost runaway | Medium | Medium | noop default; backfill dry-run | Mitigated |
-| D1 vector scale ceiling | High | Medium | Document MVP limit; pgvector path Phase 10 | Deferred — ADR-011 |
+| D1 vector scale ceiling | High | Medium | MVP limit documented; scale path `VECTOR_PROVIDER=pgvector` (ADR-011, Phase 10) | Transferred — Phase 10 (ADR-011) |
 
 ---
 

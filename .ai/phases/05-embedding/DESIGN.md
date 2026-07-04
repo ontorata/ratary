@@ -61,8 +61,8 @@ IMemoryRepository.setEmbeddingId (pointer on memories row)
 
 ## Non-goals
 
-- Hybrid SQL+vector fusion ranking (Phase 6)
-- Content offload to R2 (`object_key` wiring deferred)
+- ~~Hybrid SQL+vector fusion ranking~~ — **landed Phase 6** (ADR-001)
+- ~~Content offload to R2 (`object_key`)~~ — **landed Phase 10/22** (ADR-005, ADR-021)
 - Real-time embed-on-every-read
 - New MCP tools (contract unchanged at Phase 5 close)
 

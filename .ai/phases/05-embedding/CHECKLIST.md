@@ -90,8 +90,8 @@ Executable gate checklist — async embedding layer, `memory_embeddings` store, 
 
 - Synchronous embed on memory create/update
 - ~~pgvector production store (Phase 10 / ADR-011)~~ — **landed Phase 10** (`VECTOR_PROVIDER=pgvector` opt-in; default D1 unchanged)
-- R2 content offload (`object_key`) — later phase
-- Retriever ranking changes — Phase 6
+- ~~R2 content offload (`object_key`)~~ — **landed Phase 10/22** (ADR-005 column + R2/S3 adapter; Phase 22 `IContentOffloadSyncer` opt-in)
+- ~~Retriever ranking changes~~ — **landed Phase 6** (ADR-001 hybrid retrieval; fusion weights in ranking config)
 
 ## Deferred observation O-05-3 (resolved)
 

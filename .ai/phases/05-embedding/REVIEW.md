@@ -43,9 +43,9 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Known gaps (accepted)
+## Known gaps (accepted at gate)
 
-- D1 vector scale ceiling — pgvector path deferred to Phase 10 (ADR-011)
+- D1 vector scale ceiling — accepted for default D1 deploy; **successor closed** Phase 10 (ADR-011 `PgVectorStoreAdapter`, O-05-3 — see [CHECKLIST.md](CHECKLIST.md))
 
 ---
 

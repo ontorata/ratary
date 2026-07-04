@@ -20,6 +20,8 @@
 | Env | `COMPRESSION_ENABLED`, `COMPRESSION_POLICY`, `COMPRESSION_SCHEDULER` | ✅ |
 | CLI | `compress:memories` / `compress:memories:execute` (dry-run default) | ✅ |
 | Manifest | `capabilities.supportsSemanticCompression` | ✅ |
+| Status reader | `ICompressionStatusReader` + `CompressionStatusReader` | ✅ |
+| MCP | `get_compression_status` (tool #22) | ✅ |
 
 ---
 
@@ -29,18 +31,22 @@
 src/memory/compression/
   compression.types.ts
   compression-policy.interface.ts
+  compression-status-reader.ts
   rule-based-compression-policy.ts
 src/memory/consolidator.ts              # extended — compression path
 src/jobs/compression-job-runner.ts
 src/jobs/local-compression-scheduler.ts
 src/ports/compression/icompression-scheduler.port.ts
+src/ports/compression/icompression-status-reader.port.ts
 src/composition/create-compression-ports.ts
 scripts/compress-memories.ts
 src/db/migrations.ts                    # compression_meta, compression_version
 src/types/knowledge.ts                  # consolidates relation type
 tests/memory/rule-based-compression-policy.test.ts
 tests/memory/compression-consolidator.test.ts
+tests/memory/compression-status-reader.test.ts
 tests/jobs/compression-job-runner.test.ts
+tests/mcp/tools.test.ts                  # get_compression_status
 tests/db/extension-tracks-migration.test.ts
 ```
 

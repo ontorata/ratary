@@ -9,6 +9,8 @@ import type { ICompressionPolicy } from '../memory/compression/compression-polic
 import type { ICompressionSummarizer } from '../memory/compression/compression-summarizer.interface.js';
 import type { ICompressionScheduler } from '../ports/compression/icompression-scheduler.port.js';
 import { createCompressionSummarizer } from './create-compression-summarizer.js';
+import { CompressionStatusReader } from '../memory/compression/compression-status-reader.js';
+import type { ICompressionStatusReader } from '../ports/compression/icompression-status-reader.port.js';
 
 export interface CompressionPorts {
   enabled: boolean;
@@ -16,6 +18,7 @@ export interface CompressionPorts {
   runner: CompressionJobRunner;
   scheduler?: ICompressionScheduler;
   summarizer: ICompressionSummarizer;
+  statusReader: ICompressionStatusReader;
 }
 
 /**
@@ -36,6 +39,13 @@ export function createCompressionPorts(sql: ISqlDatabase, env: Env): Compression
   );
   const scheduler =
     env.COMPRESSION_SCHEDULER === 'local' ? new LocalCompressionScheduler(runner) : undefined;
+  const statusReader = new CompressionStatusReader(
+    sql,
+    repository,
+    relationRepository,
+    env,
+    policy,
+  );
 
-  return { enabled: env.COMPRESSION_ENABLED, policy, runner, scheduler, summarizer };
+  return { enabled: env.COMPRESSION_ENABLED, policy, runner, scheduler, summarizer, statusReader };
 }

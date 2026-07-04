@@ -263,4 +263,19 @@ describe('MCP tools', () => {
     expect(report.dryRun).toBe(true);
     expect(report.tasks.length).toBeGreaterThan(0);
   });
+
+  it('returns compression status from get_compression_status', async () => {
+    const result = await client.callTool({ name: 'get_compression_status', arguments: {} });
+    expect(result.isError).not.toBe(true);
+    const status = JSON.parse((result.content as [{ text: string }])[0].text) as {
+      ownerId: string;
+      compressionEnabled: boolean;
+      counts: { activeNotesAndRaw: number };
+      pending: { duplicateMemories: number };
+    };
+    expect(status.ownerId).toBe('mcp-test-owner');
+    expect(status.compressionEnabled).toBe(false);
+    expect(status.counts.activeNotesAndRaw).toBeGreaterThanOrEqual(0);
+    expect(status.pending.duplicateMemories).toBeGreaterThanOrEqual(0);
+  });
 });

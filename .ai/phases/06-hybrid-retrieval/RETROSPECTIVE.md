@@ -57,10 +57,18 @@ Gate PASS recorded 2026-07-03 — 192 tests at close (196 cited in COMPLETION af
 
 | ID | Item | Mitigation path | Resolved in |
 |----|------|-----------------|-------------|
-| T-04 | D1 in-process vector search | Vectorize / pgvector when scale exceeds MVP | Open — Phase 10+ |
+| T-04 | D1 in-process vector search | `VECTOR_PROVIDER=pgvector` opt-in (ADR-011); D1 default for small deploys | ✅ Phase 10 (ADR-011) |
 | — | `HYBRID_RETRIEVAL` off by default | Ops must opt in + backfill embeddings | By design |
 | — | Duplicate `MemoryRepository` in composition roots | Unify factory wiring | ✅ Phase 9 (D-02) |
 | — | ADR-001 merge policy unit tests | 13 tests in `composite-retrieval-candidate-source.test.ts` | ✅ Phase 6 close |
+
+---
+
+## Successor closure (2026-07-04)
+
+| ID | Item | Closed by |
+|----|------|-----------|
+| T-04 | D1 in-process vector scale ceiling | Phase 10 — ADR-011 `PgVectorStoreAdapter`, `createVectorStore()`, `npm run db:backfill-pgvector` (see Phase 5 O-05-3, [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)) |
 
 ---
 
@@ -72,8 +80,8 @@ Gate PASS recorded 2026-07-03 — 192 tests at close (196 cited in COMPLETION af
 | Latency from parallel SQL + vector | **Accepted** — per-source caps; no timeout breach in gate tests |
 | Merge policy ambiguity | **Resolved** — RRF documented + unit tested |
 | Owner scope leak in vector candidates | **Resolved** — filter + E2E regression |
-| MVP vector scale ceiling | **Deferred** — documented; adapter swap path in Phase 5/10 |
-| Composition root duplicate repository | **Deferred** → resolved Phase 9 |
+| MVP vector scale ceiling | **Transferred — Phase 10 (ADR-011)** — pgvector opt-in; D1 default retained for MVP |
+| Composition root duplicate repository | **Resolved** — Phase 9 (D-02) |
 
 ---
 
@@ -94,7 +102,7 @@ Gate PASS recorded 2026-07-03 — 192 tests at close (196 cited in COMPLETION af
 | **7 Agent Runtime** | Context API unchanged; external agents consume same retrieval stack |
 | **8 Knowledge Graph** | `GraphRetrievalCandidateSource` added to composite; RRF merge reused |
 | **9 Multi-AI** | Workspace filters added to retrieval sources without Retriever rewrite |
-| **10 Enterprise** | Vector scale path (T-04) and optional reranking remain open |
+| **10 Enterprise** | Vector scale path (T-04) closed via ADR-011; hybrid composite unchanged |
 
 ---
 

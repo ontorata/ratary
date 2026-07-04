@@ -21,6 +21,7 @@ export const MCP_TOOL_NAMES = [
   'register_agent',
   'get_capabilities',
   'run_stewardship',
+  'get_compression_status',
 ] as const;
 
 export type McpToolName = (typeof MCP_TOOL_NAMES)[number];
