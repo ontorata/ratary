@@ -49,6 +49,33 @@ import { createMultiAiPorts } from '../../composition/create-multi-ai-ports.js';
 import type { MultiAiPorts } from '../../composition/create-multi-ai-ports.js';
 import { createWorkspaceMembershipMiddleware } from '../../auth/workspace-membership.middleware.js';
 import type { PlatformAdapters } from '../../infrastructure/composition/create-platform-adapters.js';
+import { createTransportHandlers, type TransportHandlers } from '../shared/handlers/create-transport-handlers.js';
+import { createCapabilitiesHandlers } from '../shared/handlers/capabilities.handlers.js';
+import { createFederationPorts } from '../../composition/create-federation-ports.js';
+import { createSecurityPorts } from '../../composition/create-security-ports.js';
+import { createFederationController } from '../../controllers/federation.controller.js';
+import { createEcosystemController } from '../../controllers/ecosystem.controller.js';
+import {
+  createSecurityController,
+  createSsoController,
+} from '../../controllers/security.controller.js';
+import { createCloudPorts } from '../../composition/create-cloud-ports.js';
+import { createCloudController } from '../../controllers/cloud.controller.js';
+import { createObservabilityPorts } from '../../composition/create-observability-ports.js';
+import { createObservabilityController } from '../../controllers/observability.controller.js';
+import { createInfrastructurePlatformPorts } from '../../composition/create-infrastructure-platform-ports.js';
+import { createInfrastructureController } from '../../controllers/infrastructure.controller.js';
+import { createSearchGraphPorts } from '../../composition/create-search-graph-ports.js';
+import { createSearchGraphController } from '../../controllers/search-graph.controller.js';
+import { createContentScalePorts } from '../../composition/create-content-scale-ports.js';
+import { createContentScaleController } from '../../controllers/content-scale.controller.js';
+import { createKnowledgeFabricPorts } from '../../composition/create-knowledge-fabric-ports.js';
+import { createKnowledgeFabricController } from '../../controllers/knowledge-fabric.controller.js';
+import { createAiBrainPlatformPorts } from '../../composition/create-ai-brain-platform-ports.js';
+import { createAiBrainPlatformController } from '../../controllers/ai-brain-platform.controller.js';
+import { createGlobalIntelligencePorts } from '../../composition/create-global-intelligence-ports.js';
+import { createGlobalIntelligenceController } from '../../controllers/global-intelligence.controller.js';
+import { EmbeddingJobRunner } from '../../embedding/embedding-job.runner.js';
 
 export interface AppDependencies {
   memoryService: MemoryService;
@@ -98,6 +125,12 @@ export async function buildApp(options?: {
 
   await fastify.register(errorHandlerPlugin);
 
+  const observabilityPorts = createObservabilityPorts(env);
+  if (observabilityPorts.enabled) {
+    observabilityPorts.registerMiddleware(fastify);
+    observabilityPorts.registerMetricsRoute(fastify);
+  }
+
   if (enableLogger) {
     await fastify.register(observabilityPlugin);
   }
@@ -109,7 +142,10 @@ export async function buildApp(options?: {
   const injectedSql = getPostgresSqlDatabase();
   const d1 = injectedSql ? null : env.SQL_PROVIDER === 'd1' ? getD1Client() : null;
   const platform = createPlatformAdapters(d1, env, injectedSql ?? undefined);
+  const infrastructurePorts = await createInfrastructurePlatformPorts(platform.sql, env);
+  const searchGraphPorts = createSearchGraphPorts(platform.sql, env);
   const authLayer = createAuthLayer(platform.sql);
+  const securityPorts = createSecurityPorts(platform.sql, env);
 
   if (!options?.skipAuth) {
     fastify.addHook('onRequest', authLayer.authenticate);
@@ -119,6 +155,10 @@ export async function buildApp(options?: {
         'onRequest',
         createWorkspaceMembershipMiddleware(platform.workspaceMembership),
       );
+    }
+    if (securityPorts.enabled) {
+      fastify.addHook('onRequest', securityPorts.policyMiddleware);
+      fastify.addHook('onRequest', securityPorts.quotaMiddleware);
     }
   }
 
@@ -133,7 +173,31 @@ export async function buildApp(options?: {
   const multiAi = createMultiAiPorts(platform.sql, env);
   const { scopeResolver } = multiAi;
   const evolutionPorts = createMemoryEvolutionPorts(platform.sql, env);
-  const eventPipeline = createEventPipelinePorts(env, platform.eventBus, platform.analyticsStore);
+  let memoryServiceRef: MemoryService | null = null;
+  const cloudPorts = createCloudPorts(platform.sql, env, {
+    identityService: authLayer.identityService,
+    exportBackup: (scope) => {
+      if (!memoryServiceRef) return Promise.resolve({ memories: [] });
+      return memoryServiceRef.exportBackup(scope);
+    },
+  });
+  const aiBrainPlatformPorts = createAiBrainPlatformPorts(platform.sql, env);
+  const globalIntelligencePorts = createGlobalIntelligencePorts(
+    platform.sql,
+    env,
+    observabilityPorts.metricsExporter,
+  );
+  const eventConsumers = [
+    ...cloudPorts.eventConsumers,
+    ...(aiBrainPlatformPorts.webhookConsumer ? [aiBrainPlatformPorts.webhookConsumer] : []),
+    ...(globalIntelligencePorts.telemetryConsumer ? [globalIntelligencePorts.telemetryConsumer] : []),
+  ];
+  const eventPipeline = createEventPipelinePorts(
+    env,
+    platform.eventBus,
+    platform.analyticsStore,
+    eventConsumers,
+  );
   const memoryService = createMemoryService(
     platform.sql,
     repository,
@@ -141,6 +205,7 @@ export async function buildApp(options?: {
     evolutionPorts.coordinator,
     eventPipeline.coordinator,
   );
+  memoryServiceRef = memoryService;
   const clientSyncService = multiAi.bindClientSyncService(memoryService);
   const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
   const healthService = new HealthService(platform.sql);
@@ -155,6 +220,18 @@ export async function buildApp(options?: {
   const knowledgeController = createKnowledgeController(memoryService, scopeResolver);
   const relationController = createMemoryRelationController(relationService, scopeResolver);
   const embeddingProvider = createEmbeddingProvider();
+  const embeddingJobRunner = new EmbeddingJobRunner(
+    repository,
+    repository,
+    embeddingProvider,
+    platform.embeddingStore,
+  );
+  const contentScalePorts = createContentScalePorts(platform.sql, env, {
+    objectStorage: platform.objectStorage,
+    vectorStore: platform.vectorStore,
+    embeddingJobRunner,
+  });
+  const knowledgeFabricPorts = createKnowledgeFabricPorts(platform.sql, env, memoryService);
   const memoryAccessAuditor = eventPipeline.wrapMemoryAccessAuditor(
     createMemoryAccessAuditor(env, platform.sql),
   );
@@ -172,7 +249,18 @@ export async function buildApp(options?: {
     scopeResolver,
     multiAi.agentIdentity,
   );
-  const capabilitiesController = createCapabilitiesController(env);
+  const capabilitiesController = createCapabilitiesController(
+    env,
+    createCapabilitiesHandlers({
+      env,
+      infrastructurePorts,
+      searchGraphPorts,
+      contentScalePorts,
+      knowledgeFabricPorts,
+      aiBrainPlatformPorts,
+      globalIntelligencePorts,
+    }),
+  );
   const signalPorts = createSignalIngestPorts(platform.sql, env);
   const learningPorts = createLearningPorts(platform.sql, env);
   const signalsController = signalPorts.enabled
@@ -188,6 +276,66 @@ export async function buildApp(options?: {
     ? createClientSyncController(scopeResolver, clientSyncService)
     : undefined;
 
+  const federationPorts = createFederationPorts(platform.sql, env);
+  const federationService = federationPorts.createService(memoryService);
+  if (globalIntelligencePorts.enabled) {
+    globalIntelligencePorts.bindExchange(memoryService, () => federationService);
+  }
+  const federationController = federationPorts.enabled
+    ? createFederationController(scopeResolver, federationService)
+    : undefined;
+  const ecosystemController = createEcosystemController(env);
+  const securityController = securityPorts.enabled
+    ? createSecurityController(env, securityPorts)
+    : undefined;
+  const ssoController = securityPorts.enabled ? createSsoController(securityPorts) : undefined;
+  const cloudController = cloudPorts.enabled
+    ? createCloudController(env, cloudPorts, scopeResolver)
+    : undefined;
+  const observabilityController = observabilityPorts.enabled
+    ? createObservabilityController(env, observabilityPorts)
+    : undefined;
+  const infrastructureController = infrastructurePorts.enabled
+    ? createInfrastructureController(env, infrastructurePorts, observabilityPorts.metricsExporter)
+    : undefined;
+  const searchGraphController = searchGraphPorts.enabled
+    ? createSearchGraphController(env, searchGraphPorts, observabilityPorts.metricsExporter)
+    : undefined;
+  const contentScaleController = contentScalePorts.enabled
+    ? createContentScaleController(env, contentScalePorts, observabilityPorts.metricsExporter)
+    : undefined;
+  const knowledgeFabricController = knowledgeFabricPorts.enabled
+    ? createKnowledgeFabricController(
+        env,
+        knowledgeFabricPorts,
+        scopeResolver,
+        observabilityPorts.metricsExporter,
+      )
+    : undefined;
+  const aiBrainPlatformController = aiBrainPlatformPorts.enabled
+    ? createAiBrainPlatformController(env, aiBrainPlatformPorts, scopeResolver)
+    : undefined;
+  const globalIntelligenceController = globalIntelligencePorts.enabled
+    ? createGlobalIntelligenceController(env, globalIntelligencePorts, scopeResolver)
+    : undefined;
+
+  const transportHandlers = createTransportHandlers({
+    memoryService,
+    contextService,
+    graphService,
+    relationService,
+    scopeResolver,
+    env,
+    infrastructurePorts,
+    searchGraphPorts,
+    contentScalePorts,
+    knowledgeFabricPorts,
+    aiBrainPlatformPorts,
+    globalIntelligencePorts,
+  });
+
+  fastify.decorate('transportHandlers', transportHandlers);
+
   const controllers = {
     health: healthController,
     memory: memoryController,
@@ -202,14 +350,56 @@ export async function buildApp(options?: {
     signals: signalsController,
     evolution: evolutionController,
     clientSync: clientSyncController,
+    federation: federationController,
+    ecosystem: ecosystemController,
+    security: securityController,
+    sso: ssoController,
+    cloud: cloudController,
+    observability: observabilityController,
+    infrastructure: infrastructureController,
+    searchGraph: searchGraphController,
+    contentScale: contentScaleController,
+    knowledgeFabric: knowledgeFabricController,
+    aiBrainPlatform: aiBrainPlatformController,
+    globalIntelligence: globalIntelligenceController,
   };
 
   await fastify.register(
     async (instance) => {
       await registerV1Routes(instance, controllers);
+      if (env.SSE_ENABLED) {
+        const { registerSseRoutes } = await import('../sse/register-sse-routes.js');
+        await registerSseRoutes(instance, { handlers: transportHandlers.context });
+      }
     },
     { prefix: '/api/v1' },
   );
+
+  if (env.REMOTE_MCP_ENABLED) {
+    const { registerRemoteMcpRoutes } = await import('../mcp/remote/register-remote-mcp-routes.js');
+    await registerRemoteMcpRoutes(fastify, {
+      handlers: transportHandlers,
+      scopeResolver,
+      agentIdentity: multiAi.agentIdentity,
+      sql: platform.sql,
+      path: env.REMOTE_MCP_PATH,
+      corsOrigins: env.REMOTE_MCP_CORS_ORIGINS,
+    });
+  }
+
+  if (env.WEBSOCKET_ENABLED) {
+    const { WebSocketTransportServer } = await import('../websocket/websocket-transport-server.js');
+    const wsServer = new WebSocketTransportServer(fastify.server, {
+      handlers: transportHandlers,
+      scopeResolver,
+    });
+    fastify.addHook('onReady', async () => {
+      await wsServer.start();
+    });
+    fastify.addHook('onClose', async () => {
+      await wsServer.stop();
+    });
+  }
 
   await fastify.register(async (instance) => {
     await healthRoutes(instance, healthController);
@@ -229,5 +419,6 @@ declare module 'fastify' {
   interface FastifyInstance {
     memoryService: MemoryService;
     multiAi: MultiAiPorts;
+    transportHandlers: TransportHandlers;
   }
 }

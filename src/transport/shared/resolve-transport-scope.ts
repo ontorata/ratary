@@ -110,6 +110,10 @@ export async function resolveMemoryScopeFromTransportContext(
     });
   }
 
+  if (ctx.source === 'mcp-remote' && ctx.auth?.ownerId) {
+    return scopeResolver.resolveFromRequest(ctx.auth, scopeHintsFromTransportContext(ctx));
+  }
+
   if (!ctx.auth?.ownerId) {
     return { ownerId: ctx.ownerId };
   }

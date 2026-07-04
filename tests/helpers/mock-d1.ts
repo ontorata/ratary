@@ -79,6 +79,24 @@ export class MockD1Client implements D1Client {
   private memorySignals: Map<string, Record<string, unknown>> = new Map();
   private settings: Map<string, string> = new Map();
   private auditLogs: unknown[] = [];
+  private cloudRegions: Map<string, Record<string, unknown>> = new Map();
+  private cloudTenantMetadata: Map<string, Record<string, unknown>> = new Map();
+  private cloudWorkspaceRegions: Map<string, Record<string, unknown>> = new Map();
+  private cloudUsageRecords: Map<string, Record<string, unknown>> = new Map();
+  private cloudDrSchedules: Map<string, Record<string, unknown>> = new Map();
+  private pluginRegistry: Map<string, Record<string, unknown>> = new Map();
+  private pluginAllowList: Map<string, Record<string, unknown>> = new Map();
+  private searchGraphSyncRuns: Map<string, Record<string, unknown>> = new Map();
+  private searchGraphSyncState: Map<string, Record<string, unknown>> = new Map();
+  private contentScaleSyncRuns: Map<string, Record<string, unknown>> = new Map();
+  private contentScaleSyncState: Map<string, Record<string, unknown>> = new Map();
+  private knowledgeFabricIngestRuns: Map<string, Record<string, unknown>> = new Map();
+  private knowledgeFabricConnectorState: Map<string, Record<string, unknown>> = new Map();
+  private knowledgeFabricExternalRefs: Map<string, Record<string, unknown>> = new Map();
+  private platformWebhookSubscriptions: Map<string, Record<string, unknown>> = new Map();
+  private intelligenceTelemetryEvents: Map<string, Record<string, unknown>> = new Map();
+  private intelligenceSyncState: Map<string, Record<string, unknown>> = new Map();
+  private intelligenceOfflineJournal: Map<string, Record<string, unknown>> = new Map();
   private memoryEmbeddingsTableReady = false;
   private inTransaction = false;
   async query<T = Record<string, unknown>>(sql: string, params: unknown[] = []): Promise<T[]> {
@@ -1296,6 +1314,676 @@ export class MockD1Client implements D1Client {
       return { results, success: true };
     }
 
+    if (normalizedSql.startsWith('INSERT INTO CLOUD_REGIONS')) {
+      const row = {
+        id: params[0] as string,
+        code: params[1] as string,
+        display_name: params[2] as string,
+        cloud_provider: params[3] as string | null,
+        is_active: 1,
+        created_at: params[4] as string,
+      };
+      this.cloudRegions.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('FROM CLOUD_REGIONS WHERE CODE = ?')) {
+      const code = params[0] as string;
+      const row = [...this.cloudRegions.values()].find((r) => r.code === code);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('FROM CLOUD_REGIONS WHERE ID = ?')) {
+      const id = params[0] as string;
+      const row = this.cloudRegions.get(id);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM CLOUD_REGIONS') &&
+      normalizedSql.includes('WHERE IS_ACTIVE = 1')
+    ) {
+      const rows = [...this.cloudRegions.values()].filter((r) => r.is_active === 1);
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO CLOUD_TENANT_METADATA')) {
+      const row = {
+        id: params[0] as string,
+        organization_id: params[1] as string,
+        workspace_id: params[2] as string,
+        owner_id: params[3] as string,
+        department_id: params[4] as string | null,
+        tenant_project_id: params[5] as string | null,
+        primary_region_id: params[6] as string,
+        secondary_region_id: params[7] as string | null,
+        status: 'active',
+        created_at: params[8] as string,
+        updated_at: params[9] as string,
+      };
+      const key = `${row.organization_id}:${row.workspace_id}`;
+      this.cloudTenantMetadata.set(key, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM CLOUD_TENANT_METADATA') &&
+      normalizedSql.includes('ORGANIZATION_ID = ?') &&
+      normalizedSql.includes('WORKSPACE_ID = ?')
+    ) {
+      const key = `${params[0]}:${params[1]}`;
+      const row = this.cloudTenantMetadata.get(key);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('UPDATE CLOUD_TENANT_METADATA')) {
+      const key = `${params[params.length - 2]}:${params[params.length - 1]}`;
+      const row = this.cloudTenantMetadata.get(key);
+      if (!row) return { results: [], success: true, meta: { changes: 0 } };
+      if (normalizedSql.includes('SET STATUS = ?')) {
+        row.status = params[0] as string;
+        row.updated_at = params[1] as string;
+      } else if (normalizedSql.includes('SET PRIMARY_REGION_ID = ?')) {
+        row.primary_region_id = params[0] as string;
+        row.secondary_region_id = params[1] as string | null;
+        row.updated_at = params[2] as string;
+      } else {
+        row.owner_id = params[0] as string;
+        row.department_id = params[1] as string | null;
+        row.tenant_project_id = params[2] as string | null;
+        row.primary_region_id = params[3] as string;
+        row.secondary_region_id = params[4] as string | null;
+        row.status = params[5] as string;
+        row.updated_at = params[6] as string;
+      }
+      this.cloudTenantMetadata.set(key, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO CLOUD_WORKSPACE_REGIONS')) {
+      const row = {
+        workspace_id: params[0] as string,
+        owner_id: params[1] as string,
+        primary_region_id: params[2] as string,
+        secondary_region_id: params[3] as string | null,
+        read_preference: params[4] as string,
+        updated_at: params[5] as string,
+      };
+      this.cloudWorkspaceRegions.set(row.workspace_id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('UPDATE CLOUD_WORKSPACE_REGIONS')) {
+      const workspaceId = params[4] as string;
+      const row = this.cloudWorkspaceRegions.get(workspaceId);
+      if (!row) return { results: [], success: true, meta: { changes: 0 } };
+      row.primary_region_id = params[0] as string;
+      row.secondary_region_id = params[1] as string | null;
+      row.read_preference = params[2] as string;
+      row.updated_at = params[3] as string;
+      this.cloudWorkspaceRegions.set(workspaceId, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('FROM CLOUD_WORKSPACE_REGIONS WHERE WORKSPACE_ID = ?')) {
+      const workspaceId = params[0] as string;
+      const row = this.cloudWorkspaceRegions.get(workspaceId);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO CLOUD_USAGE_RECORDS')) {
+      const row = {
+        id: params[0] as string,
+        owner_id: params[1] as string,
+        workspace_id: params[2] as string | null,
+        organization_id: params[3] as string | null,
+        metric_type: params[4] as string,
+        quantity: params[5] as number,
+        occurred_at: params[6] as string,
+        correlation_id: params[7] as string | null,
+        metadata: params[8] as string,
+      };
+      this.cloudUsageRecords.set(row.id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO CLOUD_DR_SCHEDULES')) {
+      const row = {
+        id: params[0] as string,
+        workspace_id: params[1] as string,
+        owner_id: params[2] as string,
+        cron_expression: params[3] as string | null,
+        enabled: 1,
+        last_run_at: null,
+        created_at: params[4] as string,
+      };
+      this.cloudDrSchedules.set(row.id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('FROM CLOUD_DR_SCHEDULES WHERE ID = ?')) {
+      const id = params[0] as string;
+      const row = this.cloudDrSchedules.get(id);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('UPDATE CLOUD_DR_SCHEDULES SET LAST_RUN_AT = ?')) {
+      const id = params[1] as string;
+      const row = this.cloudDrSchedules.get(id);
+      if (row) row.last_run_at = params[0] as string;
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO PLUGIN_REGISTRY')) {
+      const row = {
+        id: params[0] as string,
+        plugin_type: params[1] as string,
+        manifest_json: params[2] as string,
+        status: params[3] as string,
+        registered_at: params[4] as string,
+        updated_at: params[5] as string,
+        enabled_at: params[6] as string | null,
+      };
+      this.pluginRegistry.set(row.id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('UPDATE PLUGIN_REGISTRY SET MANIFEST_JSON = ?')) {
+      const id = params[3] as string;
+      const row = this.pluginRegistry.get(id);
+      if (row) {
+        row.manifest_json = params[0] as string;
+        row.plugin_type = params[1] as string;
+        row.updated_at = params[2] as string;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.includes("UPDATE PLUGIN_REGISTRY SET STATUS = 'DISABLED'") && normalizedSql.includes('WHERE ID = ?')) {
+      const id = params[1] as string;
+      const row = this.pluginRegistry.get(id);
+      if (row) {
+        row.status = 'disabled';
+        row.updated_at = params[0] as string;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.includes("UPDATE PLUGIN_REGISTRY SET STATUS = 'DISABLED'") && normalizedSql.includes('PLUGIN_TYPE = ?')) {
+      const type = params[1] as string;
+      const excludeId = params[2] as string;
+      for (const [id, row] of this.pluginRegistry) {
+        if (row.plugin_type === type && row.status === 'enabled' && id !== excludeId) {
+          row.status = 'disabled';
+          row.updated_at = params[0] as string;
+        }
+      }
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes("UPDATE PLUGIN_REGISTRY SET STATUS = 'ENABLED'")) {
+      const id = params[2] as string;
+      const row = this.pluginRegistry.get(id);
+      if (row) {
+        row.status = 'enabled';
+        row.enabled_at = params[0] as string;
+        row.updated_at = params[1] as string;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.startsWith('UPDATE PLUGIN_REGISTRY SET STATUS = ?')) {
+      const id = params[2] as string;
+      const row = this.pluginRegistry.get(id);
+      if (row) {
+        row.status = params[0] as string;
+        row.updated_at = params[1] as string;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.includes('FROM PLUGIN_REGISTRY WHERE ID = ?')) {
+      const id = params[0] as string;
+      const row = this.pluginRegistry.get(id);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('FROM PLUGIN_REGISTRY') && normalizedSql.includes('PLUGIN_TYPE = ?')) {
+      const type = params[0] as string;
+      const rows = [...this.pluginRegistry.values()].filter((r) => r.plugin_type === type);
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('FROM PLUGIN_REGISTRY ORDER BY')) {
+      const rows = [...this.pluginRegistry.values()].sort((a, b) =>
+        String(a.plugin_type).localeCompare(String(b.plugin_type)),
+      );
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('INSERT INTO PLUGIN_ALLOW_LIST')) {
+      const key = `${params[0]}:${params[1]}`;
+      this.pluginAllowList.set(key, {
+        organization_id: params[0] as string,
+        plugin_id: params[1] as string,
+        allowed: params[2] as number,
+        updated_at: params[3] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('FROM PLUGIN_ALLOW_LIST') && normalizedSql.includes('ORGANIZATION_ID = ?') && normalizedSql.includes('PLUGIN_ID = ?')) {
+      const key = `${params[0]}:${params[1]}`;
+      const row = this.pluginAllowList.get(key);
+      return { results: row ? [{ allowed: row.allowed }] : [], success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO SEARCH_GRAPH_SYNC_RUNS')) {
+      const row = {
+        id: params[0] as string,
+        target: params[1] as string,
+        mode: params[2] as string,
+        status: params[3] as string,
+        owner_id: params[4] as string | null,
+        stats_json: params[5] as string,
+        started_at: params[6] as string,
+        finished_at: null as string | null,
+        error_message: null as string | null,
+      };
+      this.searchGraphSyncRuns.set(row.id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('UPDATE SEARCH_GRAPH_SYNC_RUNS SET STATUS = ?')) {
+      const id = params[4] as string;
+      const row = this.searchGraphSyncRuns.get(id);
+      if (row) {
+        row.status = params[0] as string;
+        row.stats_json = params[1] as string;
+        row.finished_at = params[2] as string;
+        row.error_message = params[3] as string | null;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.includes('FROM SEARCH_GRAPH_SYNC_RUNS') && normalizedSql.includes('WHERE TARGET = ?')) {
+      const target = params[0] as string;
+      const rows = [...this.searchGraphSyncRuns.values()]
+        .filter((r) => r.target === target)
+        .sort((a, b) => String(b.started_at).localeCompare(String(a.started_at)));
+      return { results: rows.slice(0, 1), success: true };
+    }
+
+    if (normalizedSql.includes('FROM SEARCH_GRAPH_SYNC_RUNS') && normalizedSql.includes('ORDER BY STARTED_AT DESC')) {
+      const rows = [...this.searchGraphSyncRuns.values()].sort((a, b) =>
+        String(b.started_at).localeCompare(String(a.started_at)),
+      );
+      const limit = params[0] as number;
+      return { results: rows.slice(0, limit), success: true };
+    }
+
+    if (normalizedSql.includes('FROM SEARCH_GRAPH_SYNC_STATE WHERE TARGET = ?')) {
+      const target = params[0] as string;
+      const row = this.searchGraphSyncState.get(target);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('INSERT INTO SEARCH_GRAPH_SYNC_STATE')) {
+      const target = params[0] as string;
+      this.searchGraphSyncState.set(target, {
+        target,
+        last_watermark: params[1] as string,
+        last_run_id: params[2] as string | null,
+        updated_at: params[3] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO CONTENT_SCALE_SYNC_RUNS')) {
+      const row = {
+        id: params[0] as string,
+        target: params[1] as string,
+        mode: params[2] as string,
+        status: params[3] as string,
+        owner_id: params[4] as string | null,
+        stats_json: params[5] as string,
+        started_at: params[6] as string,
+        finished_at: null as string | null,
+        error_message: null as string | null,
+      };
+      this.contentScaleSyncRuns.set(row.id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('UPDATE CONTENT_SCALE_SYNC_RUNS SET STATUS = ?')) {
+      const id = params[4] as string;
+      const row = this.contentScaleSyncRuns.get(id);
+      if (row) {
+        row.status = params[0] as string;
+        row.stats_json = params[1] as string;
+        row.finished_at = params[2] as string;
+        row.error_message = params[3] as string | null;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (normalizedSql.includes('FROM CONTENT_SCALE_SYNC_RUNS') && normalizedSql.includes('WHERE TARGET = ?')) {
+      const target = params[0] as string;
+      const rows = [...this.contentScaleSyncRuns.values()]
+        .filter((r) => r.target === target)
+        .sort((a, b) => String(b.started_at).localeCompare(String(a.started_at)));
+      return { results: rows.slice(0, 1), success: true };
+    }
+
+    if (normalizedSql.includes('FROM CONTENT_SCALE_SYNC_RUNS') && normalizedSql.includes('ORDER BY STARTED_AT DESC')) {
+      const rows = [...this.contentScaleSyncRuns.values()].sort((a, b) =>
+        String(b.started_at).localeCompare(String(a.started_at)),
+      );
+      const limit = params[0] as number;
+      return { results: rows.slice(0, limit), success: true };
+    }
+
+    if (normalizedSql.includes('FROM CONTENT_SCALE_SYNC_STATE WHERE TARGET = ?')) {
+      const target = params[0] as string;
+      const row = this.contentScaleSyncState.get(target);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('INSERT INTO CONTENT_SCALE_SYNC_STATE')) {
+      const target = params[0] as string;
+      this.contentScaleSyncState.set(target, {
+        target,
+        last_watermark: params[1] as string,
+        last_run_id: params[2] as string | null,
+        updated_at: params[3] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO KNOWLEDGE_FABRIC_INGEST_RUNS')) {
+      const row = {
+        id: params[0] as string,
+        connector_id: params[1] as string,
+        mode: params[2] as string,
+        status: params[3] as string,
+        owner_id: params[4] as string | null,
+        workspace_id: params[5] as string | null,
+        stats_json: params[6] as string,
+        started_at: params[7] as string,
+        finished_at: null as string | null,
+        error_message: null as string | null,
+      };
+      this.knowledgeFabricIngestRuns.set(row.id as string, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('UPDATE KNOWLEDGE_FABRIC_INGEST_RUNS SET STATUS = ?')) {
+      const id = params[4] as string;
+      const row = this.knowledgeFabricIngestRuns.get(id);
+      if (row) {
+        row.status = params[0] as string;
+        row.stats_json = params[1] as string;
+        row.finished_at = params[2] as string;
+        row.error_message = params[3] as string | null;
+      }
+      return { results: [], success: true, meta: { changes: row ? 1 : 0 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM KNOWLEDGE_FABRIC_INGEST_RUNS') &&
+      normalizedSql.includes('WHERE CONNECTOR_ID = ?')
+    ) {
+      const connectorId = params[0] as string;
+      const rows = [...this.knowledgeFabricIngestRuns.values()]
+        .filter((r) => r.connector_id === connectorId)
+        .sort((a, b) => String(b.started_at).localeCompare(String(a.started_at)));
+      return { results: rows.slice(0, 1), success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM KNOWLEDGE_FABRIC_INGEST_RUNS') &&
+      normalizedSql.includes('ORDER BY STARTED_AT DESC')
+    ) {
+      const rows = [...this.knowledgeFabricIngestRuns.values()].sort((a, b) =>
+        String(b.started_at).localeCompare(String(a.started_at)),
+      );
+      const limit = params[0] as number;
+      return { results: rows.slice(0, limit), success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM KNOWLEDGE_FABRIC_EXTERNAL_REFS') &&
+      normalizedSql.includes('CONNECTOR_ID = ?')
+    ) {
+      const connectorId = params[0] as string;
+      const externalId = params[1] as string;
+      const ownerId = params[2] as string;
+      const workspaceId = params[3] as string | null;
+      const row = [...this.knowledgeFabricExternalRefs.values()].find(
+        (r) =>
+          r.connector_id === connectorId &&
+          r.external_id === externalId &&
+          r.owner_id === ownerId &&
+          (r.workspace_id ?? null) === workspaceId,
+      );
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('INSERT INTO KNOWLEDGE_FABRIC_EXTERNAL_REFS')) {
+      const connectorId = params[1] as string;
+      const externalId = params[2] as string;
+      const ownerId = params[4] as string;
+      const workspaceId = params[5] as string | null;
+      const key = `${connectorId}:${externalId}:${ownerId}:${workspaceId ?? ''}`;
+      this.knowledgeFabricExternalRefs.set(key, {
+        id: params[0] as string,
+        connector_id: connectorId,
+        external_id: externalId,
+        memory_id: params[3] as string,
+        owner_id: ownerId,
+        workspace_id: workspaceId,
+        external_updated_at: params[6] as string,
+        updated_at: params[7] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM KNOWLEDGE_FABRIC_CONNECTOR_STATE') &&
+      normalizedSql.includes('CONNECTOR_ID = ?')
+    ) {
+      const connectorId = params[0] as string;
+      const ownerId = params[1] as string;
+      const workspaceId = params[2] as string | null;
+      const key = `${connectorId}:${ownerId}:${workspaceId ?? ''}`;
+      const row = this.knowledgeFabricConnectorState.get(key);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (normalizedSql.includes('INSERT INTO KNOWLEDGE_FABRIC_CONNECTOR_STATE')) {
+      const connectorId = params[0] as string;
+      const ownerId = params[1] as string;
+      const workspaceId = params[2] as string | null;
+      const key = `${connectorId}:${ownerId}:${workspaceId ?? ''}`;
+      this.knowledgeFabricConnectorState.set(key, {
+        connector_id: connectorId,
+        owner_id: ownerId,
+        workspace_id: workspaceId,
+        last_cursor: params[3] as string,
+        last_run_id: params[4] as string | null,
+        updated_at: params[5] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO PLATFORM_WEBHOOK_SUBSCRIPTIONS')) {
+      const id = params[0] as string;
+      const ownerId = params[1] as string;
+      const workspaceId = params[2] as string | null;
+      const key = `${ownerId}:${workspaceId ?? ''}:${id}`;
+      this.platformWebhookSubscriptions.set(key, {
+        id,
+        owner_id: ownerId,
+        workspace_id: workspaceId,
+        url: params[3] as string,
+        secret: params[4] as string | null,
+        topics_json: params[5] as string,
+        active: params[6] as number,
+        created_at: params[7] as string,
+        updated_at: params[8] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM PLATFORM_WEBHOOK_SUBSCRIPTIONS') &&
+      normalizedSql.includes('WHERE ID = ?')
+    ) {
+      const id = params[0] as string;
+      const ownerId = params[1] as string;
+      const workspaceId = params[2] as string | null;
+      const key = `${ownerId}:${workspaceId ?? ''}:${id}`;
+      const row = this.platformWebhookSubscriptions.get(key);
+      return { results: row ? [row] : [], success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM PLATFORM_WEBHOOK_SUBSCRIPTIONS') &&
+      normalizedSql.includes('WHERE OWNER_ID = ?') &&
+      normalizedSql.includes('ACTIVE = 1')
+    ) {
+      const ownerId = params[0] as string;
+      const rows = [...this.platformWebhookSubscriptions.values()].filter(
+        (r) => r.owner_id === ownerId && r.active === 1,
+      );
+      return { results: rows, success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM PLATFORM_WEBHOOK_SUBSCRIPTIONS') &&
+      normalizedSql.includes('WHERE OWNER_ID = ?') &&
+      normalizedSql.includes('ORDER BY CREATED_AT DESC')
+    ) {
+      const ownerId = params[0] as string;
+      const workspaceId = params[1] as string | null;
+      const rows = [...this.platformWebhookSubscriptions.values()]
+        .filter(
+          (r) => r.owner_id === ownerId && (r.workspace_id ?? null) === workspaceId,
+        )
+        .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('DELETE FROM PLATFORM_WEBHOOK_SUBSCRIPTIONS')) {
+      const id = params[0] as string;
+      const ownerId = params[1] as string;
+      const workspaceId = params[2] as string | null;
+      const key = `${ownerId}:${workspaceId ?? ''}:${id}`;
+      this.platformWebhookSubscriptions.delete(key);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('INSERT INTO INTELLIGENCE_TELEMETRY_EVENTS')) {
+      const id = params[0] as string;
+      this.intelligenceTelemetryEvents.set(id, {
+        id,
+        event_type: params[1] as string,
+        owner_id: params[2] as string,
+        workspace_id: params[3] as string | null,
+        node_id: params[4] as string,
+        envelope_json: params[5] as string,
+        occurred_at: params[6] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('FROM INTELLIGENCE_TELEMETRY_EVENTS')) {
+      if (normalizedSql.includes('COUNT(*)')) {
+        const ownerId = params[0] as string;
+        let rows = [...this.intelligenceTelemetryEvents.values()].filter((r) => r.owner_id === ownerId);
+        if (normalizedSql.includes('EVENT_TYPE = ?')) {
+          const type = params[3] as string;
+          rows = rows.filter((r) => r.event_type === type);
+          if (normalizedSql.includes('OCCURRED_AT >=')) {
+            const since = params[4] as string;
+            rows = rows.filter((r) => String(r.occurred_at) >= since);
+          }
+        } else if (normalizedSql.includes('OCCURRED_AT >=')) {
+          const since = params[3] as string;
+          rows = rows.filter((r) => String(r.occurred_at) >= since);
+        }
+        return { results: [{ count: rows.length }], success: true };
+      }
+
+      const rows = [...this.intelligenceTelemetryEvents.values()];
+      return { results: [{ count: rows.length }], success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO INTELLIGENCE_SYNC_STATE')) {
+      const scopeKey = params[0] as string;
+      this.intelligenceSyncState.set(scopeKey, {
+        scope_key: scopeKey,
+        tier: params[1] as string,
+        owner_id: params[2] as string,
+        workspace_id: params[3] as string | null,
+        last_cursor: params[4] as string | null,
+        last_run_id: params[5] as string | null,
+        updated_at: params[6] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('FROM INTELLIGENCE_SYNC_STATE')) {
+      const ownerId = params[0] as string;
+      const workspaceId = params[1] as string | null;
+      const rows = [...this.intelligenceSyncState.values()].filter(
+        (r) => r.owner_id === ownerId && (r.workspace_id ?? null) === workspaceId,
+      );
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.startsWith('INSERT INTO INTELLIGENCE_OFFLINE_JOURNAL')) {
+      const id = params[0] as string;
+      this.intelligenceOfflineJournal.set(id, {
+        id,
+        owner_id: params[1] as string,
+        workspace_id: params[2] as string | null,
+        entry_json: params[3] as string,
+        status: 'pending',
+        created_at: params[4] as string,
+        applied_at: null,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('FROM INTELLIGENCE_OFFLINE_JOURNAL') &&
+      normalizedSql.includes("STATUS = 'PENDING'")
+    ) {
+      const ownerId = params[0] as string;
+      const workspaceId = params[1] as string | null;
+      const rows = [...this.intelligenceOfflineJournal.values()]
+        .filter(
+          (r) =>
+            r.owner_id === ownerId &&
+            (r.workspace_id ?? null) === workspaceId &&
+            r.status === 'pending',
+        )
+        .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('UPDATE INTELLIGENCE_OFFLINE_JOURNAL')) {
+      const appliedAt = params[0] as string;
+      const id = params[1] as string;
+      const row = this.intelligenceOfflineJournal.get(id);
+      if (row) {
+        row.status = 'applied';
+        row.applied_at = appliedAt;
+      }
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
     return { results: [], success: true };
   }
 
@@ -1588,6 +2276,21 @@ export class MockD1Client implements D1Client {
     this.agents.clear();
     this.settings.clear();
     this.auditLogs = [];
+    this.cloudRegions.clear();
+    this.cloudTenantMetadata.clear();
+    this.cloudWorkspaceRegions.clear();
+    this.cloudUsageRecords.clear();
+    this.cloudDrSchedules.clear();
+    this.pluginRegistry.clear();
+    this.pluginAllowList.clear();
+    this.searchGraphSyncRuns.clear();
+    this.searchGraphSyncState.clear();
+    this.contentScaleSyncRuns.clear();
+    this.contentScaleSyncState.clear();
+    this.knowledgeFabricIngestRuns.clear();
+    this.knowledgeFabricConnectorState.clear();
+    this.knowledgeFabricExternalRefs.clear();
+    this.platformWebhookSubscriptions.clear();
   }
 
   getAuditLogCount(): number {

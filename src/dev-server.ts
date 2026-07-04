@@ -31,6 +31,15 @@ async function main(): Promise<void> {
   if (env.GRPC_ENABLED) {
     console.log(`gRPC listening on ${env.GRPC_HOST}:${env.GRPC_PORT}`);
   }
+  if (env.SSE_ENABLED) {
+    console.log('SSE context stream at GET /api/v1/context/stream');
+  }
+  if (env.WEBSOCKET_ENABLED) {
+    console.log(`WebSocket at ${env.WEBSOCKET_PATH}`);
+  }
+  if (env.REMOTE_MCP_ENABLED) {
+    console.log(`Remote MCP at ${env.REMOTE_MCP_PATH}`);
+  }
 }
 
 main();

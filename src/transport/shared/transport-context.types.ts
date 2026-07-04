@@ -1,7 +1,13 @@
 import type { AuthUser } from '../../auth/auth.types.js';
 
-/** Inbound protocol that created this context — ADR-027 Phase 10.5. */
-export type TransportSource = 'rest' | 'mcp-stdio' | 'grpc';
+/** Inbound protocol that created this context — ADR-027 Phase 10.5, ADR-028 Phase 13. */
+export type TransportSource =
+  | 'rest'
+  | 'mcp-stdio'
+  | 'mcp-remote'
+  | 'grpc'
+  | 'websocket'
+  | 'sse';
 
 /**
  * Cross-protocol request context at the transport edge.

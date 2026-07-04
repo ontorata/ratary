@@ -109,6 +109,25 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+
+    // Enterprise security (Phase 17) — ADR-032; default off preserves Phase 10 behavior
+    ENTERPRISE_SECURITY_V2: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    POLICY_ENGINE: z.enum(['none', 'allow-all', 'opa', 'rule-based']).default('none'),
+    OPA_URL: z.string().url().optional(),
+    SSO_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    OIDC_ISSUER_URL: z.string().url().optional(),
+    OIDC_CLIENT_ID: z.string().min(1).optional(),
+    OIDC_CLIENT_SECRET: z.string().optional(),
+    QUOTA_ENFORCER: z.enum(['none', 'memory']).default('none'),
+    QUOTA_MAX_REQUESTS_PER_MINUTE: z.coerce.number().int().positive().default(1000),
+    QUOTA_MAX_WRITES_PER_DAY: z.coerce.number().int().positive().default(10_000),
+
     MEMORY_ACCESS_AUDIT: z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
@@ -178,6 +197,143 @@ const envSchema = z
     GRPC_HOST: z.string().min(1).default('0.0.0.0'),
     GRPC_TLS_CERT_PATH: z.string().min(1).optional(),
     GRPC_TLS_KEY_PATH: z.string().min(1).optional(),
+
+    // Protocol layer (Phase 13) — ADR-028; additive streaming adapters, default off
+    SSE_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    WEBSOCKET_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    WEBSOCKET_PATH: z.string().min(1).default('/api/v1/ws'),
+
+    // Remote MCP (Phase 13.1) — ADR-048; ChatGPT Server URL, default off
+    REMOTE_MCP_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    REMOTE_MCP_PATH: z.string().min(1).default('/mcp'),
+    REMOTE_MCP_CORS_ORIGINS: z.string().default('*'),
+    REMOTE_MCP_PUBLIC_URL: z.string().url().optional(),
+
+    // Federation layer (Phase 14) — ADR-029; cross-node knowledge exchange, default off
+    FEDERATION_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    FEDERATION_NODE_ID: z.string().uuid().default('00000000-0000-4000-8000-000000000001'),
+    FEDERATION_NODE_DISPLAY_NAME: z.string().default('ai-memory-cloud'),
+    FEDERATION_NODE_REGION: z.string().optional(),
+    FEDERATION_NODE_CLOUD: z.string().optional(),
+    FEDERATION_NODE_BASE_URL: z.string().url().optional(),
+    FEDERATION_PEERS_JSON: z.string().default('[]'),
+    FEDERATION_REGISTRY_PROVIDER: z.enum(['static']).default('static'),
+    FEDERATION_TRANSPORT_PROVIDER: z.enum(['in-process', 'grpc', 'rest']).default('in-process'),
+    FEDERATION_TRUST_PROVIDER: z.enum(['noop', 'file']).default('noop'),
+    FEDERATION_POLICY_PROVIDER: z.enum(['rule-based']).default('rule-based'),
+    FEDERATION_METADATA_PROVIDER: z.enum(['none', 'sql']).default('none'),
+
+    // Cloud platform (Phase 18) — ADR-033; control plane metadata orchestration, default off
+    CONTROL_PLANE_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    USAGE_METER_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    DR_PLATFORM_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    CLOUD_DEFAULT_REGION: z.string().min(1).default('local'),
+    CLOUD_PROVISIONER: z.enum(['none', 'manual']).default('manual'),
+    USAGE_METER_STORE: z.enum(['memory', 'sql']).default('memory'),
+
+    // Observability platform (Phase 19) — ADR-034; exporters + dashboard packs, default off
+    OBSERVABILITY_PLATFORM: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    OBS_METRICS_PATH: z.string().min(1).default('/metrics'),
+    OBS_LOG_SHIPPER: z.enum(['none', 'stdout', 'loki']).default('stdout'),
+    OBS_LOKI_PUSH_URL: z.string().url().optional(),
+
+    // AI infrastructure platform (Phase 20) — ADR-035; plugin marketplace, default off
+    PLUGIN_MARKETPLACE_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    PLUGIN_SIGNATURE_REQUIRED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    PLUGIN_MARKETPLACE_SOURCE: z.enum(['local', 'remote']).default('local'),
+    PLUGIN_FEDERATION_CATALOG_SYNC: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+
+    // Search & graph production platform (Phase 21) — ADR-022; Meilisearch/Neo4j sync ops, default off
+    SEARCH_GRAPH_PLATFORM_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    GRAPH_VECTOR_SEEDS_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+
+    // Content & vector scale platform (Phase 22) — ADR-021; R2/pgvector/embedding ops, default off
+    CONTENT_SCALE_PLATFORM_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    CONTENT_OFFLOAD_MIN_BYTES: z.coerce.number().int().min(0).default(8192),
+    CONTENT_OFFLOAD_CLEAR_INLINE: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+
+    // Enterprise knowledge fabric (Phase 23) — ADR-047; external connector ingest, default off
+    KNOWLEDGE_FABRIC_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    KNOWLEDGE_FABRIC_CATALOG_JSON: z.string().default('{}'),
+    SLACK_BOT_TOKEN: z.string().optional(),
+    GITHUB_TOKEN: z.string().optional(),
+    GITLAB_TOKEN: z.string().optional(),
+    JIRA_API_TOKEN: z.string().optional(),
+    CONFLUENCE_API_TOKEN: z.string().optional(),
+    GOOGLE_DRIVE_CREDENTIALS_JSON: z.string().optional(),
+    SHAREPOINT_CLIENT_SECRET: z.string().optional(),
+    FABRIC_EMAIL_IMAP_URL: z.string().optional(),
+    TEAMS_WEBHOOK_URL: z.string().optional(),
+    NOTION_API_TOKEN: z.string().optional(),
+
+    // AI-Brain platform umbrella (Phase 24) — ADR-044; edition + webhooks, default off
+    AI_BRAIN_PLATFORM_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    AI_BRAIN_PLATFORM_EDITION: z.enum(['core', 'standard', 'enterprise']).default('core'),
+    PLATFORM_WEBHOOKS_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+
+    // Global AI intelligence capstone (Phase 25) — ADR-036; telemetry + analytics + sync, default off
+    GLOBAL_INTELLIGENCE_PLATFORM_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    TELEMETRY_CONTENT_SAMPLING: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {

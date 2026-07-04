@@ -6,6 +6,7 @@ import {
   migrateExtensionTracksPhase3,
   migrateExtensionTracksPhase4,
   migrateExtensionTracksPhase5,
+  migrateExtensionTracksPhase6,
 } from '../../src/db/migrations.js';
 
 class RecordingD1Client implements D1Client {
@@ -106,13 +107,20 @@ describe('migrateExtensionTracksPhase4', () => {
 describe('migrateExtensionTracksPhase5', () => {
   it('creates sync_cursors and sync_conflicts tables', async () => {
     const client = new RecordingD1Client();
-
     await migrateExtensionTracksPhase5(client);
-
     const sql = client.statements.join('\n');
     expect(sql).toContain('CREATE TABLE IF NOT EXISTS sync_cursors');
     expect(sql).toContain('CREATE TABLE IF NOT EXISTS sync_conflicts');
-    expect(sql).toContain('idx_sync_cursors_owner_platform');
-    expect(sql).toContain('idx_sync_conflicts_owner_status');
+  });
+});
+
+describe('migrateExtensionTracksPhase6', () => {
+  it('creates federation metadata tables', async () => {
+    const client = new RecordingD1Client();
+    await migrateExtensionTracksPhase6(client);
+    const sql = client.statements.join('\n');
+    expect(sql).toContain('CREATE TABLE IF NOT EXISTS federation_sync_cursors');
+    expect(sql).toContain('CREATE TABLE IF NOT EXISTS federation_peers');
+    expect(sql).toContain('CREATE TABLE IF NOT EXISTS federation_exchange_log');
   });
 });

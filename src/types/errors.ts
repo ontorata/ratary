@@ -54,3 +54,15 @@ export class SyncConflictError extends AppError {
     super(message, 409, 'SYNC_CONFLICT');
   }
 }
+
+export class QuotaExceededError extends AppError {
+  constructor(message = 'Quota exceeded') {
+    super(message, 429, 'QUOTA_EXCEEDED');
+  }
+}
+
+export class PolicyDeniedError extends AppError {
+  constructor(message = 'Policy denied') {
+    super(message, 403, 'POLICY_DENIED');
+  }
+}

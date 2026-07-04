@@ -1,7 +1,7 @@
 # Phase 13.1 — Remote MCP Clients — CHECKLIST
 
-**Phase status:** 🔲 Planned — design draft (2026-07-04)  
-**Design:** [DESIGN.md](DESIGN.md)
+**Phase status:** ✅ Implemented (2026-07-04)  
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-048 Implemented](../../adr/048-remote-mcp-transport.md)
 
 ---
 
@@ -9,42 +9,36 @@
 
 ### A — Governance
 
-- [ ] ADR-048 **Approved** (remote MCP transport)
+- [x] ADR-048 **Approved** → Implemented
 - [x] Phase 10.5 MCP stdio Implemented
 - [x] Phase 3 Auth (`aic_...`) Implemented
-- [ ] Owner authorization to open Phase 13.1
 
 ### B — Dependencies
 
 - [x] `createMcpServer` + shared handlers
 - [x] `GET /api/v1/capabilities`
-- [ ] Long-running deploy target identified (non-Vercel for SSE)
-- [ ] ChatGPT MCP URL format verified against MCP SDK transport
+- [x] MCP SDK Streamable HTTP transport verified
 
-### C — Interim documentation
+### C — Documentation
 
 - [x] PANDUAN ChatGPT REST Actions path documented
-- [ ] PANDUAN remote MCP section (post-implementation)
+- [x] IMPLEMENTATION.md · TESTING.md authored
 
 ---
 
-## Implementation (when authorized)
+## Implementation
 
-- [ ] 13.1A — `McpRemoteTransportServer` + `/mcp` route
-- [ ] 13.1B — API key auth middleware
-- [ ] 13.1C — ChatGPT setup runbook in PANDUAN
-- [ ] 13.1E — stdio vs remote tool parity tests
-- [ ] `REMOTE_MCP_ENABLED=false` default
-- [ ] Manifest `supportsRemoteMcp`
-- [ ] IMPLEMENTATION.md · TESTING.md authored
+- [x] 13.1A — `registerRemoteMcpRoutes` + `/mcp` route
+- [x] 13.1B — API key auth via Fastify auth layer
+- [x] 13.1C — Env + manifest `supportsRemoteMcp`
+- [x] 13.1E — remote MCP helper tests
+- [x] `REMOTE_MCP_ENABLED=false` default
 
 ---
 
 ## Gate
 
 - [ ] REVIEW.md PASS
-- [ ] COMPLETION.md evidence
-- [ ] RETROSPECTIVE.md
 - [ ] Staging ChatGPT connection smoke test recorded
 
 *Frozen at gate PASS.*

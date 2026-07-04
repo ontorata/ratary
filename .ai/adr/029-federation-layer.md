@@ -1,8 +1,6 @@
 # ADR-029: Federation Layer — Cross-Node Knowledge Exchange (Phase 14)
 
-**Status:** Proposed  
-**Date:** 2026-07-04  
-**Deciders:** Project owner  
+**Status:** Implemented  
 
 ---
 

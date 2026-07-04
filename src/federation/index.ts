@@ -1,0 +1,11 @@
+export type * from './types/index.js';
+export type * from './ports/iknowledge-exchange.port.js';
+export type * from './ports/ifederation-registry.port.js';
+export type * from './ports/ifederation-transport.port.js';
+export type * from './ports/ifederation-trust-store.port.js';
+export type * from './ports/ifederation-policy.port.js';
+export type * from './ports/ifederation-scope-mapper.port.js';
+export type * from './ports/ifederation-conflict-resolver.port.js';
+export type * from './ports/ifederation-metadata-store.port.js';
+export { KnowledgeExchangeService } from './knowledge-exchange.service.js';
+export { NoOpKnowledgeExchangeService } from './noop-knowledge-exchange.service.js';

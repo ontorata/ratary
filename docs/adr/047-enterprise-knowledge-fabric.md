@@ -1,21 +1,10 @@
 # ADR-047: Enterprise Knowledge Fabric (Phase 23)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
-**Deciders:** Project owner  
 
----
+See authoritative copy: [.ai/adr/047-enterprise-knowledge-fabric.md](../../.ai/adr/047-enterprise-knowledge-fabric.md)
 
-## Context
+## Summary
 
-Enterprise knowledge lives in Slack, GitHub, Jira, etc. Phase 23 adds connector plane with provenance into MemoryService SSOT.
-
-Design: [.ai/phases/23-enterprise-knowledge-fabric/DESIGN.md](../../.ai/phases/23-enterprise-knowledge-fabric/DESIGN.md)
-
-## Decision
-
-Adopt `IKnowledgeConnector` adapters + fabric orchestrator; async ingest; `KNOWLEDGE_FABRIC_ENABLED=false` default.
-
-## Rollback
-
-Disable flag; connector configs dormant.
+Connector plane for Slack, GitHub, Notion, and other enterprise sources — orchestrated ingest into MemoryService SSOT with provenance and external-ref dedup. Gated by `KNOWLEDGE_FABRIC_ENABLED=false` (default).

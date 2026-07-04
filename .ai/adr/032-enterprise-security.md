@@ -1,6 +1,6 @@
 # ADR-032: Enterprise Security — RBAC, ABAC, SSO, and Policy Engine (Phase 17)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
 **Deciders:** Project owner  
 

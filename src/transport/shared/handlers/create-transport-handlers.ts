@@ -32,12 +32,12 @@ export interface TransportHandlers {
 }
 
 export function createTransportHandlers(deps: TransportHandlerDeps): TransportHandlers {
-  const { memoryService, contextService, graphService, relationService, scopeResolver, env } = deps;
+  const { memoryService, contextService, graphService, relationService, scopeResolver, env, infrastructurePorts, searchGraphPorts, contentScalePorts, knowledgeFabricPorts, aiBrainPlatformPorts, globalIntelligencePorts } = deps;
 
   return {
     memory: createMemoryHandlers({ memoryService, scopeResolver }),
     context: createContextHandlers({ contextService, scopeResolver }),
-    capabilities: createCapabilitiesHandlers({ env }),
+    capabilities: createCapabilitiesHandlers({ env, infrastructurePorts, searchGraphPorts, contentScalePorts, knowledgeFabricPorts, aiBrainPlatformPorts, globalIntelligencePorts }),
     graph: createGraphHandlers({ graphService, scopeResolver }),
     relations: createRelationHandlers({ relationService, scopeResolver }),
   };

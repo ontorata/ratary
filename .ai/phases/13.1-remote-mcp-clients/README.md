@@ -1,10 +1,10 @@
 # Phase 13.1 — Remote MCP Clients (ChatGPT & Web)
 
-**Status:** 🔲 Planned — design draft (2026-07-04)  
+**Status:** ✅ Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Parent:** [Phase 13 Protocol Layer](../13-protocol-layer/README.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 13.1  
-**ADR gate:** [ADR-048](../../adr/048-remote-mcp-transport.md) — **Proposed**
+**ADR:** [ADR-048 Implemented](../../adr/048-remote-mcp-transport.md)
 
 ---
 
@@ -44,7 +44,8 @@ PANDUAN currently states: *"ChatGPT — MCP stdio tidak didukung — pakai REST 
 | [CHECKLIST.md](CHECKLIST.md) | Gate checklist |
 | [RISKS.md](RISKS.md) | Risk register |
 
-**Not yet created:** IMPLEMENTATION.md · TESTING.md · MIGRATION.md · REVIEW.md · COMPLETION.md
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
+| [TESTING.md](TESTING.md) | Test plan + smoke |
 
 ---
 
@@ -55,7 +56,7 @@ PANDUAN currently states: *"ChatGPT — MCP stdio tidak didukung — pakai REST 
 | Phase 10.5 Transport (`createMcpServer`, shared handlers) | ✅ Implemented |
 | Phase 3 Auth (`aic_...` API keys) | ✅ Implemented |
 | Phase 7.5 Capabilities manifest | ✅ Implemented |
-| Phase 13 Protocol Layer (SSE foundation) | 🔲 Recommended parallel — 13.1B SSE patterns |
+| Phase 13 Protocol Layer (SSE, WS, stream) | ✅ Implemented |
 | Phase 17 Enterprise Security (OAuth) | 🔲 Optional — 13.1D deferred |
 
 ---
@@ -72,4 +73,4 @@ Phase 16 MCP package MAY wrap 13.1 endpoint or REST; 13.1 is the **server-side t
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). No implementation until ADR-048 **Approved**.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md).*

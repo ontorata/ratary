@@ -1,0 +1,192 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AI Memory Cloud API — SDK v1 surface",
+    "description": "Curated OpenAPI SSOT for @ai-brain/sdk generation (Phase 16). Full spec at GET /docs/json.",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:3000/api/v1" }],
+  "security": [{ "BearerAuth": [] }, { "ApiKeyAuth": [] }],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer" },
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "X-API-Key" }
+    },
+    "schemas": {
+      "Memory": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "content": { "type": "string" },
+          "summary": { "type": "string" },
+          "project": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "favorite": { "type": "boolean" },
+          "archived": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CreateMemoryRequest": {
+        "type": "object",
+        "required": ["title", "content"],
+        "properties": {
+          "title": { "type": "string" },
+          "content": { "type": "string" },
+          "summary": { "type": "string" },
+          "project": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "UpdateMemoryRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "content": { "type": "string" },
+          "summary": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "BuildContextRequest": {
+        "type": "object",
+        "required": ["task"],
+        "properties": {
+          "task": { "type": "string" },
+          "maxTokens": { "type": "integer" },
+          "project": { "type": "string" }
+        }
+      },
+      "BuildContextResponse": {
+        "type": "object",
+        "properties": {
+          "context": { "type": "string" },
+          "prompt": { "type": "string" },
+          "memoryCount": { "type": "integer" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "tags": ["Health"],
+        "security": [],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/capabilities": {
+      "get": {
+        "operationId": "getCapabilities",
+        "tags": ["Capabilities"],
+        "security": [],
+        "responses": { "200": { "description": "Capability manifest" } }
+      }
+    },
+    "/ecosystem/clients": {
+      "get": {
+        "operationId": "listEcosystemClients",
+        "tags": ["Ecosystem"],
+        "security": [],
+        "responses": { "200": { "description": "Client catalog" } }
+      }
+    },
+    "/ecosystem/clients/{type}": {
+      "get": {
+        "operationId": "getEcosystemClient",
+        "tags": ["Ecosystem"],
+        "security": [],
+        "parameters": [
+          { "name": "type", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Client profile" } }
+      }
+    },
+    "/memory": {
+      "get": {
+        "operationId": "listMemories",
+        "tags": ["Memory"],
+        "parameters": [
+          { "name": "project", "in": "query", "schema": { "type": "string" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          { "name": "offset", "in": "query", "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "Memory list" } }
+      },
+      "post": {
+        "operationId": "createMemory",
+        "tags": ["Memory"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateMemoryRequest" } }
+          }
+        },
+        "responses": { "201": { "description": "Created memory" } }
+      }
+    },
+    "/memory/{id}": {
+      "get": {
+        "operationId": "getMemory",
+        "tags": ["Memory"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "200": { "description": "Memory" } }
+      },
+      "put": {
+        "operationId": "updateMemory",
+        "tags": ["Memory"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateMemoryRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "Updated memory" } }
+      },
+      "delete": {
+        "operationId": "deleteMemory",
+        "tags": ["Memory"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }
+        ],
+        "responses": { "204": { "description": "Deleted" } }
+      }
+    },
+    "/search": {
+      "get": {
+        "operationId": "searchMemories",
+        "tags": ["Search"],
+        "parameters": [
+          { "name": "q", "in": "query", "required": true, "schema": { "type": "string" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "Search results" } }
+      }
+    },
+    "/context": {
+      "post": {
+        "operationId": "buildContext",
+        "tags": ["Context"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/BuildContextRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "Context bundle" } }
+      }
+    },
+    "/federation/peers": {
+      "get": {
+        "operationId": "listFederationPeers",
+        "tags": ["Federation"],
+        "responses": { "200": { "description": "Peer list" } }
+      }
+    }
+  }
+}

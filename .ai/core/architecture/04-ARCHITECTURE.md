@@ -609,39 +609,79 @@ federation/
 
 ---
 
-## Agent ecosystem layer (Phase 15 — planned)
+## Cloud platform layer (Phase 18 — implemented)
 
-**Status:** Design draft — [ADR-030](../../../.ai/adr/030-autonomous-agent-ecosystem.md) Proposed · [15-autonomous-agent-ecosystem DESIGN](../../phases/15-autonomous-agent-ecosystem/DESIGN.md)  
+**Status:** Implemented (2026-07-04) — [ADR-033](../../../.ai/adr/033-cloud-platform.md) · [18-cloud-platform IMPLEMENTATION](../../phases/18-cloud-platform/IMPLEMENTATION.md)  
+**Prerequisite:** Phase 14 ✅ · Phase 17 ✅
+
+**Owns:** control plane metadata orchestration — workspace provisioning records, region registry, usage metering export, DR orchestration. **`MemoryService` unchanged** — DR calls `exportBackup`; control plane never touches repositories.
+
+```
+src/cloud/
+  ports/       IControlPlane, IUsageMeter, IDisasterRecovery, IRegionRegistry, …
+  services/    ControlPlaneService
+  adapters/    noop, manual provisioner, local DR, usage meter
+  consumers/   UsageMeterEventConsumer → Phase 12 bus
+src/routes/v1/cloud.routes.ts   GET/POST /api/v1/cloud/* when CONTROL_PLANE_ENABLED=true
+```
+
+**Default:** `CONTROL_PLANE_ENABLED=false`, `USAGE_METER_ENABLED=false`, `DR_PLATFORM_ENABLED=false`.
+
+---
+
+## Observability platform layer (Phase 19 — implemented)
+
+**Status:** Implemented (2026-07-04) — [ADR-034](../../../.ai/adr/034-observability-platform.md) · [19-observability-platform IMPLEMENTATION](../../phases/19-observability-platform/IMPLEMENTATION.md)  
+**Prerequisite:** Phase 12 ✅ · Phase 13 ✅
+
+**Owns:** metrics/traces/logs export at middleware boundary — Prometheus scrape, OTel trace bridge, Loki log shipper, Grafana dashboard packs, SLO/Alertmanager templates. **`MemoryService` unchanged** — no observability handler on Phase 12 business bus.
+
+```
+src/observability/
+  ports/       IMetricsExporter, ITraceExporter, ILogShipper, IDashboardPack, ISloRegistry
+  middleware/  request duration + counter instrumentation
+observability/dashboards/   Grafana JSON (6 packs)
+observability/slo/          SLO + Alertmanager templates
+GET /metrics                Prometheus scrape when OBSERVABILITY_PLATFORM=true
+```
+
+**Default:** `OBSERVABILITY_PLATFORM=false`.
+
+---
+
+## Agent ecosystem layer (Phase 15 — implemented)
+
+**Status:** Implemented (2026-07-04) — [ADR-030](../../../.ai/adr/030-autonomous-agent-ecosystem.md) · [15-autonomous-agent-ecosystem IMPLEMENTATION](../../phases/15-autonomous-agent-ecosystem/IMPLEMENTATION.md)  
 **Prerequisite:** Phase 7/9 ✅ · ADR-025 ✅
 
-**Owns:** external **client catalog** (Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen), ecosystem manifest, `GET /api/v1/ecosystem/clients`. Enables shared **Memory Cloud** per workspace.
+**Owns:** external **client catalog** (12 profiles: Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen, …), ecosystem manifest, `GET /api/v1/ecosystem/clients`. Enables shared **Memory Cloud** per workspace.
 
 **Forbidden in repo:** agent runtime, planner, executor, autonomous loops, in-repo agent SDK.
 
 **Repository exposes to external agents:** REST · MCP · gRPC (Phase 13) — unchanged role.
 
 ```
-ecosystem/
+src/ecosystem/
   catalog/     IAgentClientCatalog — SSOT client profiles (metadata only)
   builders/    AgentEcosystemManifestBuilder
-  protocol/    GET /api/v1/ecosystem/clients
+src/routes/v1/ecosystem.routes.ts   GET /api/v1/ecosystem/clients
 ```
 
 External agent runtimes (outside repo) → protocol → MemoryService.
 
 ---
 
-## Enterprise platform layers (Phases 16–20 — planned)
+## Enterprise platform layers (Phases 16–20)
 
 **Authority:** [11-ENTERPRISE-ROADMAP.md](../../phases/roadmap/11-ENTERPRISE-ROADMAP.md)
 
-| Phase | Layer | Server `src/` impact |
-|-------|-------|---------------------|
-| 16 Developer Platform | `packages/` SDK, CLI, MCP — **clients only** | None (OpenAPI additive) |
-| 17 Enterprise Security | Auth edge: OPA, SSO, hierarchy, quota | Edge middleware only |
-| 18 Cloud Platform | Control plane ports: provision, meter, DR | Orchestration ports |
-| 19 Observability | Exporters, Grafana packs, SLO | Sidecar adapters |
-| 20 AI Infrastructure | Plugin registry, marketplace metadata | Composition root wiring |
+| Phase | Layer | Server `src/` impact | Status |
+|-------|-------|---------------------|--------|
+| 16 Developer Platform | `packages/` SDK, CLI, MCP — **clients only** | None (OpenAPI additive) | ✅ Implemented — [IMPLEMENTATION](../../phases/16-developer-platform/IMPLEMENTATION.md) |
+| 17 Enterprise Security | Auth edge: OPA, SSO, hierarchy, quota | Edge middleware only | ✅ Implemented — [IMPLEMENTATION](../../phases/17-enterprise-security/IMPLEMENTATION.md) |
+| 18 Cloud Platform | Control plane ports: provision, meter, DR | Orchestration ports | ✅ Implemented — [IMPLEMENTATION](../../phases/18-cloud-platform/IMPLEMENTATION.md) |
+| 19 Observability | Exporters, Grafana packs, SLO | Sidecar adapters | ✅ Implemented — [IMPLEMENTATION](../../phases/19-observability-platform/IMPLEMENTATION.md) |
+| 20 AI Infrastructure | Plugin registry, marketplace metadata | Composition root wiring | Planned |
 
 **Capstone (20):** AI Memory **Infrastructure** — not Memory API only. All providers remain ADR-008 ports.
 

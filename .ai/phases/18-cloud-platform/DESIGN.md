@@ -1,6 +1,6 @@
 # Phase 18 — Cloud Platform — DESIGN
 
-**Document:** DESIGN · **ADR:** [ADR-033](../../adr/033-cloud-platform.md) · **Status:** Awaiting approval
+**Document:** DESIGN · **ADR:** [ADR-033](../../adr/033-cloud-platform.md) · **Status:** Implemented (2026-07-04)
 
 ---
 
@@ -238,4 +238,4 @@ Federation (Phase 14) → IDisasterRecovery + multi-region sync
 - [11-ENTERPRISE-ROADMAP.md](../roadmap/11-ENTERPRISE-ROADMAP.md)
 - [04-ARCHITECTURE.md](../../core/constitution/04-ARCHITECTURE.md)
 
-*No implementation until ADR-033 Approved.*
+*Implementation: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md).*

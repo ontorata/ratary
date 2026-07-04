@@ -1,6 +1,6 @@
 # ADR-037: AI Telemetry Event Model (Phase 25)
 
-**Status:** Proposed
+**Status:** Implemented
 **Date:** 2026-07-04
 **Deciders:** Project owner
 

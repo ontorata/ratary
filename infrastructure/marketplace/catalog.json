@@ -1,0 +1,105 @@
+{
+  "catalogVersion": "1.0.0",
+  "source": "local",
+  "entries": [
+    {
+      "id": "storage-d1",
+      "type": "storage",
+      "displayName": "Cloudflare D1 SQL",
+      "description": "Default D1 SQL storage adapter",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "ISqlDatabase",
+      "curated": true,
+      "tags": ["storage"]
+    },
+    {
+      "id": "storage-postgres",
+      "type": "storage",
+      "displayName": "PostgreSQL SQL",
+      "description": "PostgreSQL storage adapter",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "ISqlDatabase",
+      "curated": true,
+      "tags": ["storage"]
+    },
+    {
+      "id": "embedding-noop",
+      "type": "embedding",
+      "displayName": "No-op Embedding",
+      "description": "No-op embedding provider for dev/test",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "IEmbeddingProvider",
+      "curated": true,
+      "tags": ["embedding"]
+    },
+    {
+      "id": "embedding-openai",
+      "type": "embedding",
+      "displayName": "OpenAI Embeddings",
+      "description": "OpenAI embedding provider",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "IEmbeddingProvider",
+      "curated": true,
+      "tags": ["embedding"]
+    },
+    {
+      "id": "vector-d1",
+      "type": "vector",
+      "displayName": "D1 Vector Store",
+      "description": "D1-backed vector store bridge",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "IVectorStore",
+      "curated": true,
+      "tags": ["vector"]
+    },
+    {
+      "id": "vector-pgvector",
+      "type": "vector",
+      "displayName": "pgvector Store",
+      "description": "PostgreSQL pgvector adapter",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "IVectorStore",
+      "curated": true,
+      "tags": ["vector"]
+    },
+    {
+      "id": "graph-d1",
+      "type": "graph",
+      "displayName": "D1 Graph Adapter",
+      "description": "SQL-backed graph adapter",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "IGraphStore",
+      "curated": true,
+      "tags": ["graph"]
+    },
+    {
+      "id": "graph-neo4j",
+      "type": "graph",
+      "displayName": "Neo4j Graph Store",
+      "description": "Neo4j graph adapter",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "IGraphStore",
+      "curated": true,
+      "tags": ["graph"]
+    },
+    {
+      "id": "llm-openai-inference",
+      "type": "llm",
+      "displayName": "OpenAI Inference (embedding boundary)",
+      "description": "LLM inference port for embedding/completion boundary only — not agent runtime",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "ILLMInferenceProvider",
+      "curated": true,
+      "tags": ["llm"]
+    }
+  ]
+}

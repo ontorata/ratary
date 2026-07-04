@@ -17,8 +17,7 @@ import { createEventPipelinePorts } from '../../composition/create-event-pipelin
 import { getEnv } from '../../config/index.js';
 import { createGraphService } from '../../services/graph.service.js';
 import { assertMcpOwnerConfigured } from '../../types/memory-scope.js';
-import type { IScopeResolver } from '../../scope/iscope-resolver.interface.js';
-import { buildTransportContextFromMcpEnv } from '../shared/resolve-transport-scope.js';
+import { createStdioMcpBinding, type McpContextBinding } from './mcp-context-binding.js';
 import {
   createTransportHandlers,
   type TransportHandlers,
@@ -31,7 +30,6 @@ import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../../types/kn
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from '../../mcp/context-tool-params.js';
-import { resolveMcpMemoryScope } from '../../scope/resolve-request-scope.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -44,12 +42,12 @@ const metadataSchema = z.object({
 
 function createMcpServer(
   handlers: TransportHandlers,
-  scopeResolver: IScopeResolver,
+  binding: McpContextBinding,
   agentIdentity: IAgentIdentity,
   sql: ISqlDatabase,
 ): McpServer {
-  const mcpCtx = () => buildTransportContextFromMcpEnv();
-  const mcpScope = () => resolveMcpMemoryScope(scopeResolver);
+  const mcpCtx = () => binding.getTransportContext();
+  const mcpScope = () => binding.resolveMemoryScope();
   const server = new McpServer({
     name: 'ai-memory-cloud',
     version: '1.0.0',
@@ -497,7 +495,12 @@ export async function startMcpStdioServer(): Promise<void> {
     env,
   });
 
-  const server = createMcpServer(handlers, scopeResolver, agentIdentity, platform.sql);
+  const server = createMcpServer(
+    handlers,
+    createStdioMcpBinding(scopeResolver),
+    agentIdentity,
+    platform.sql,
+  );
   const transport = new StdioServerTransport();
 
   if (eventPipeline.runner) {
@@ -510,3 +513,5 @@ export async function startMcpStdioServer(): Promise<void> {
 }
 
 export { createMcpServer };
+export type { McpContextBinding } from './mcp-context-binding.js';
+export { createStdioMcpBinding, createRemoteMcpBinding } from './mcp-context-binding.js';

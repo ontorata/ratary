@@ -36,15 +36,19 @@ phases/
 └── 11-production-ops/                ✅ Implemented (ADR-018)
 └── 10.5-transport-connectivity/      ✅ Implemented (ADR-027)
 └── 12-event-pipeline/                ✅ Implemented (ADR-020)
-└── 13-protocol-layer/                🔲 Reserved (design draft 2026-07-04)
-└── 13.1-remote-mcp-clients/          🔲 Planned (design draft 2026-07-04)
-└── 14-federation/                    🔲 Reserved (design draft 2026-07-04)
-└── 15-autonomous-agent-ecosystem/    🔲 Reserved
-└── 16-developer-platform/            🔲 Enterprise (2026-07-04)
-└── 17-enterprise-security/           🔲 Enterprise
-└── 18-cloud-platform/                🔲 Enterprise
-└── 19-observability-platform/        🔲 Enterprise
-└── 20-ai-infrastructure/             🔲 Enterprise
+└── 13-protocol-layer/                ✅ Implemented (ADR-028)
+└── 13.1-remote-mcp-clients/          ✅ Implemented (ADR-048)
+└── 14-federation/                    ✅ Implemented (ADR-029)
+└── 15-autonomous-agent-ecosystem/    ✅ Implemented (ADR-030)
+└── 16-developer-platform/            ✅ Implemented (ADR-031)
+└── 17-enterprise-security/           ✅ Implemented (ADR-032)
+└── 18-cloud-platform/                ✅ Implemented (ADR-033)
+└── 19-observability-platform/        ✅ Implemented (ADR-034)
+└── 20-ai-infrastructure/             ✅ Implemented (ADR-035)
+└── 21-search-graph-prod/             ✅ Implemented (ADR-022)
+└── 22-content-scale/                 ✅ Implemented (ADR-021)
+└── 23-enterprise-knowledge-fabric/   ✅ Implemented (ADR-047)
+└── 24-ai-brain-platform/             ✅ Implemented (ADR-044)
 
 # Extension & platform design drafts (2026-07-04) — awaiting owner approval
 └── 04.7-memory-stewardship/          ✅ Implemented (ADR-045)
@@ -56,9 +60,7 @@ phases/
 └── 08.7-graph-relation-inference/    ✅ Implemented (ADR-041)
 └── 09.7-memory-evolution/            ✅ Implemented (ADR-040)
 └── 09.8-multi-client-sync/           ✅ Implemented (ADR-042)
-└── 23-enterprise-knowledge-fabric/   🔲 Design draft (ADR-047)
-└── 24-ai-brain-platform/             🔲 Design draft (ADR-044)
-└── 25-global-ai-intelligence/        🔲 Design draft — capstone (ADR-036/037/038/043)
+└── 25-global-ai-intelligence/        ✅ Implemented (ADR-036/037/038/043)
 ```
 
 Each `phases/NN-name/` folder:
@@ -120,10 +122,10 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 |-------|--------|--------|----------|
 | 10.5 Transport & Connectivity | [10.5-transport-connectivity/](10.5-transport-connectivity/README.md) | ✅ Implemented | ADR-027 |
 | 12 Event Pipeline | [12-event-pipeline/](12-event-pipeline/README.md) | ✅ Implemented | ADR-020 |
-| 13 Protocol Layer | [13-protocol-layer/](13-protocol-layer/README.md) | 🔲 Design draft | ADR-028 |
-| 13.1 Remote MCP (ChatGPT) | [13.1-remote-mcp-clients/](13.1-remote-mcp-clients/README.md) | 🔲 Planned | ADR-048 (Proposed) |
-| 14 Federation | [14-federation/](14-federation/README.md) | 🔲 Design draft | ADR-029 |
-| 15 Autonomous Agent Ecosystem | [15-autonomous-agent-ecosystem/](15-autonomous-agent-ecosystem/README.md) | 🔲 Design draft | ADR-030 |
+| 13 Protocol Layer | [13-protocol-layer/](13-protocol-layer/README.md) | ✅ Implemented | ADR-028 |
+| 13.1 Remote MCP (ChatGPT) | [13.1-remote-mcp-clients/](13.1-remote-mcp-clients/README.md) | ✅ Implemented | ADR-048 |
+| 14 Federation | [14-federation/](14-federation/README.md) | ✅ Implemented | ADR-029 |
+| 15 Autonomous Agent Ecosystem | [15-autonomous-agent-ecosystem/](15-autonomous-agent-ecosystem/README.md) | ✅ Implemented | ADR-030 |
 | 16–20 Enterprise evolution | [roadmap/11-ENTERPRISE-ROADMAP.md](../roadmap/11-ENTERPRISE-ROADMAP.md) | 🔲 Design draft | ADR-031–035 |
 | 04.7 Memory Stewardship | [04.7-memory-stewardship/](04.7-memory-stewardship/README.md) | ✅ Implemented | ADR-045 |
 | 05.5 Semantic Compression | [05.5-semantic-compression/](05.5-semantic-compression/README.md) | ✅ Implemented | ADR-023 |
@@ -134,9 +136,9 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 08.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | ✅ Implemented | ADR-041 |
 | 09.7 Memory Evolution | [09.7-memory-evolution/](09.7-memory-evolution/README.md) | ✅ Implemented | ADR-040 |
 | 09.8 Multi-client Sync | [09.8-multi-client-sync/](09.8-multi-client-sync/README.md) | ✅ Implemented | ADR-042 |
-| 23 Enterprise Knowledge Fabric | [23-enterprise-knowledge-fabric/](23-enterprise-knowledge-fabric/README.md) | 🔲 Design draft | ADR-047 |
-| 24 AI-Brain Platform | [24-ai-brain-platform/](24-ai-brain-platform/README.md) | 🔲 Design draft | ADR-044 |
-| **25 Global AI Intelligence Platform** | [25-global-ai-intelligence/](25-global-ai-intelligence/README.md) | 🔲 Design draft — capstone | ADR-036 / 037 / 038 / 043 |
+| 23 Enterprise Knowledge Fabric | [23-enterprise-knowledge-fabric/](23-enterprise-knowledge-fabric/README.md) | ✅ Implemented | ADR-047 |
+| 24 AI-Brain Platform | [24-ai-brain-platform/](24-ai-brain-platform/README.md) | ✅ Implemented | ADR-044 |
+| **25 Global AI Intelligence Platform** | [25-global-ai-intelligence/](25-global-ai-intelligence/README.md) | ✅ Implemented | ADR-036 / 037 / 038 / 043 |
 
 *Design-draft phases carry no implementation until their ADR gate is **Approved**.*
 

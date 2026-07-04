@@ -9,12 +9,34 @@ import {
   STANDARD_ERROR_CODES,
   STANDARD_RATE_LIMITS,
 } from './capability-manifest.constants.js';
+import { AgentEcosystemManifestBuilder } from '../ecosystem/builders/agent-ecosystem-manifest-builder.js';
 import type { AICapabilityManifest } from './capability-manifest.types.js';
+import type { InfrastructurePlatformManifest } from '../infrastructure-platform/types/marketplace.types.js';
+import type { SearchGraphPlatformManifest } from '../search-graph-platform/types/sync.types.js';
+import type { ContentScalePlatformManifest } from '../content-scale-platform/types/sync.types.js';
+import type { KnowledgeFabricPlatformManifest } from '../knowledge-fabric-platform/types/ingest.types.js';
+import type { AiBrainPlatformManifest } from '../ai-brain-platform/types/platform.types.js';
+import type { GlobalIntelligencePlatformManifest } from '../intelligence/sync/types/sync.types.js';
 import { MCP_TOOL_NAMES } from './mcp-tool-names.js';
+
+function parsePeerCount(raw: string): number {
+  try {
+    const parsed = JSON.parse(raw) as unknown[];
+    return Array.isArray(parsed) ? parsed.length : 0;
+  } catch {
+    return 0;
+  }
+}
 
 export interface CapabilityManifestBuilderOptions {
   openApiUrl?: string;
   packageVersion?: string;
+  infrastructure?: InfrastructurePlatformManifest;
+  searchGraph?: SearchGraphPlatformManifest;
+  contentScale?: ContentScalePlatformManifest;
+  knowledgeFabric?: KnowledgeFabricPlatformManifest;
+  aiBrainPlatform?: AiBrainPlatformManifest;
+  globalIntelligence?: GlobalIntelligencePlatformManifest;
 }
 
 export class CapabilityManifestBuilder {
@@ -63,6 +85,20 @@ export class CapabilityManifestBuilder {
         supportsMemoryEvolution: this.env.MEMORY_EVOLUTION_ENABLED,
         supportsMultiClientSync: this.env.MULTI_CLIENT_SYNC_ENABLED,
         supportsEventConsumers: this.env.EVENT_CONSUMERS_ENABLED,
+        supportsRemoteMcp: this.env.REMOTE_MCP_ENABLED,
+        supportsContextStream: this.env.SSE_ENABLED || this.env.GRPC_ENABLED || this.env.WEBSOCKET_ENABLED,
+        supportsFederation: this.env.FEDERATION_ENABLED,
+        supportsAgentEcosystem: true,
+        supportsDeveloperPlatform: true,
+        supportsEnterpriseSecurityV2: this.env.ENTERPRISE_SECURITY_V2,
+        supportsCloudPlatform: this.env.CONTROL_PLANE_ENABLED,
+        supportsObservabilityPlatform: this.env.OBSERVABILITY_PLATFORM,
+        supportsPluginMarketplace: this.env.PLUGIN_MARKETPLACE_ENABLED,
+        supportsSearchGraphPlatform: this.env.SEARCH_GRAPH_PLATFORM_ENABLED,
+        supportsContentScalePlatform: this.env.CONTENT_SCALE_PLATFORM_ENABLED,
+        supportsKnowledgeFabric: this.env.KNOWLEDGE_FABRIC_ENABLED,
+        supportsAiBrainPlatform: this.env.AI_BRAIN_PLATFORM_ENABLED,
+        supportsGlobalIntelligencePlatform: this.env.GLOBAL_INTELLIGENCE_PLATFORM_ENABLED,
       },
       limits: {
         maxContextTokens: Math.floor(MAX_CONTEXT_MAX_CHARS / 4) || MANIFEST_MAX_CONTEXT_TOKENS,
@@ -86,14 +122,27 @@ export class CapabilityManifestBuilder {
           enabled: true,
           version: 'v1',
           baseUrl: '/api/v1',
+          streaming: this.env.SSE_ENABLED,
         },
         mcp: {
           enabled: true,
           transport: 'stdio',
           toolCount: MCP_TOOL_NAMES.length,
+          remote: {
+            enabled: this.env.REMOTE_MCP_ENABLED,
+            ...(this.env.REMOTE_MCP_ENABLED
+              ? {
+                  path: this.env.REMOTE_MCP_PATH,
+                  ...(this.env.REMOTE_MCP_PUBLIC_URL
+                    ? { publicUrl: this.env.REMOTE_MCP_PUBLIC_URL }
+                    : {}),
+                }
+              : {}),
+          },
         },
         grpc: {
           enabled: this.env.GRPC_ENABLED,
+          streaming: this.env.GRPC_ENABLED,
           ...(this.env.GRPC_ENABLED
             ? {
                 port: this.env.GRPC_PORT,
@@ -102,11 +151,85 @@ export class CapabilityManifestBuilder {
               }
             : {}),
         },
+        ...(this.env.WEBSOCKET_ENABLED
+          ? { websocket: { enabled: true, path: this.env.WEBSOCKET_PATH } }
+          : {}),
+        ...(this.env.SSE_ENABLED
+          ? { sse: { enabled: true, path: '/api/v1/context/stream' } }
+          : {}),
         sdk: {
-          packageName: '@ai-brain/client',
-          status: 'planned',
+          packageName: '@ai-brain/sdk',
+          status: 'published',
+          languages: ['typescript', 'go', 'python', 'java', 'rust', 'csharp', 'php'],
+          cliPackage: '@ai-brain/cli',
+          mcpServerPackage: '@ai-brain/mcp-server',
+          openApiSpec: 'packages/openapi/ai-brain-v1.openapi.json',
+        },
+        benchmark: {
+          cliCommand: 'npm run benchmark:protocols',
         },
       },
+      ...(this.env.FEDERATION_ENABLED
+        ? {
+            federation: {
+              enabled: true,
+              nodeId: this.env.FEDERATION_NODE_ID,
+              ...(this.env.FEDERATION_NODE_REGION
+                ? { region: this.env.FEDERATION_NODE_REGION }
+                : {}),
+              ...(this.env.FEDERATION_NODE_CLOUD ? { cloud: this.env.FEDERATION_NODE_CLOUD } : {}),
+              peerCount: parsePeerCount(this.env.FEDERATION_PEERS_JSON),
+              transportProvider: this.env.FEDERATION_TRANSPORT_PROVIDER,
+              supportsPull: true,
+              supportsPush: true,
+              supportsSubscribe: false,
+            },
+          }
+        : {}),
+      ...(this.env.ENTERPRISE_SECURITY_V2
+        ? {
+            security: {
+              enabled: true,
+              policyEngine: this.env.POLICY_ENGINE,
+              ssoEnabled: this.env.SSO_ENABLED,
+              quotaEnforcer: this.env.QUOTA_ENFORCER,
+              hierarchyEnabled: true,
+              supportedIdpProviders: ['azure-ad', 'okta', 'keycloak', 'google-workspace'],
+            },
+          }
+        : {}),
+      ...(this.env.CONTROL_PLANE_ENABLED
+        ? {
+            cloud: {
+              enabled: true,
+              usageMeterEnabled: this.env.USAGE_METER_ENABLED,
+              drEnabled: this.env.DR_PLATFORM_ENABLED,
+              defaultRegion: this.env.CLOUD_DEFAULT_REGION,
+              cloudProvisioner: this.env.CLOUD_PROVISIONER,
+              usageMeterStore: this.env.USAGE_METER_STORE,
+            },
+          }
+        : {}),
+      ...(this.env.OBSERVABILITY_PLATFORM
+        ? {
+            observability: {
+              enabled: true,
+              metricsPath: this.env.OBS_METRICS_PATH,
+              logShipper: this.env.OBS_LOG_SHIPPER,
+              otelEnabled: this.env.OTEL_ENABLED,
+              dashboardPacks: ['overview', 'memory', 'embedding', 'graph', 'federation', 'cost'],
+            },
+          }
+        : {}),
+      ...(this.options.infrastructure
+        ? { infrastructure: this.options.infrastructure }
+        : {}),
+      ...(this.options.searchGraph ? { searchGraph: this.options.searchGraph } : {}),
+      ...(this.options.contentScale ? { contentScale: this.options.contentScale } : {}),
+      ...(this.options.knowledgeFabric ? { knowledgeFabric: this.options.knowledgeFabric } : {}),
+      ...(this.options.aiBrainPlatform ? { aiBrainPlatform: this.options.aiBrainPlatform } : {}),
+      ...(this.options.globalIntelligence ? { globalIntelligence: this.options.globalIntelligence } : {}),
+      ecosystem: new AgentEcosystemManifestBuilder(this.env).buildSync(),
       retrieval: {
         progressivePolicyVersion: this.env.RETRIEVAL_POLICY_VERSION,
         defaultContentMode: 'summary',

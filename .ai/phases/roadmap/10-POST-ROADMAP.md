@@ -63,6 +63,8 @@ flowchart LR
 | **20** | **AI Infrastructure Platform** (marketplace) | P1 capstone | Phase 16–19 · ADR-035 |
 | **21** | Search & Graph Production *(renumbered)* | P2 | Phase 11 · ADR-022 |
 | **22** | Content & Vector Scale *(renumbered)* | P1 | Phase 11 · ADR-021 |
+| **23** | Enterprise Knowledge Fabric | P1 | Phase 11 · ADR-047 |
+| **24** | AI-Brain Platform (umbrella) | P1 | Phases 16–23 · ADR-044 |
 
 **Enterprise roadmap:** [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md) · Phases 1–15 scopes **unchanged**.
 
@@ -280,8 +282,8 @@ Custom GPT **Actions** + REST OpenAPI — see [PANDUAN.md](../../../docs/PANDUAN
 
 # Phase 15 — Autonomous Agent Ecosystem
 
-**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**  
-**Folder:** [.ai/phases/15-autonomous-agent-ecosystem/](../15-autonomous-agent-ecosystem/README.md)
+**Status:** ✅ Implemented (2026-07-04)  
+**Folder:** [.ai/phases/15-autonomous-agent-ecosystem/](../15-autonomous-agent-ecosystem/README.md) · [IMPLEMENTATION](../15-autonomous-agent-ecosystem/IMPLEMENTATION.md)
 
 ## Scope
 
@@ -334,7 +336,7 @@ All enterprise phases: **additive**, **MemoryService unchanged**, agent runtime 
 
 # Phase 25 — Global AI Intelligence Platform (capstone)
 
-**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**
+**Status:** ✅ Implemented (2026-07-04)
 **Folder:** [.ai/phases/25-global-ai-intelligence/](../25-global-ai-intelligence/README.md)
 
 ## Scope
@@ -352,25 +354,25 @@ Distributed-intelligence **composition capstone** above Phases 14/18/19/20/23/24
 
 | ADR | Title |
 |-----|-------|
-| ADR-036 | Global AI Intelligence Platform (umbrella) — **Proposed** |
-| ADR-037 | AI Telemetry Event Model — **Proposed** |
-| ADR-038 | Usage Analytics Engine — **Proposed** |
-| ADR-043 | Cloud Federation Sync Topology — **Proposed** |
+| ADR-036 | Global AI Intelligence Platform (umbrella) — **Implemented** |
+| ADR-037 | AI Telemetry Event Model — **Implemented** |
+| ADR-038 | Usage Analytics Engine — **Implemented** |
+| ADR-043 | Cloud Federation Sync Topology — **Implemented** |
 
 ## Success criteria
 
-- [ ] ADR-036/037/038/043 **Approved**
-- [ ] Zero `MemoryService` logic change; analytics never writes SSOT
-- [ ] No `switch(cloud)`/`switch(tier)` in services
-- [ ] No content collection by default; privacy redaction enforced
-- [ ] `GLOBAL_INTELLIGENCE_PLATFORM=false` default; full regression green
+- [x] ADR-036/037/038/043 **Implemented**
+- [x] Zero `MemoryService` logic change; analytics never writes SSOT
+- [x] No `switch(cloud)`/`switch(tier)` in services
+- [x] No content collection by default; privacy redaction enforced
+- [x] `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false` default; full regression green (682 tests)
 
 ---
 
 # Phase 21 — Search & Graph Production
 
-**Status:** 🔲 Planned *(renumbered from former Phase 16)*  
-**Folder (when open):** `.ai/phases/21-search-graph-prod/`
+**Status:** ✅ Implemented (2026-07-04)  
+**Folder:** [.ai/phases/21-search-graph-prod/](../21-search-graph-prod/README.md)
 
 ## Scope
 
@@ -395,8 +397,8 @@ ADR-022
 
 # Phase 22 — Content & Vector Scale
 
-**Status:** 🔲 Planned *(renumbered from former Phase 17)*  
-**Folder (when open):** `.ai/phases/22-content-scale/`
+**Status:** ✅ Implemented (2026-07-04) *(renumbered from former Phase 17)*  
+**Folder:** [.ai/phases/22-content-scale/](../22-content-scale/README.md)
 
 ## Scope
 
@@ -410,13 +412,70 @@ Production-scale content and vector storage beyond inline/D1.
 
 ## ADR gates
 
-ADR-021
+[ADR-021 Implemented](../../adr/021-content-vector-scale-platform.md)
 
 ## Success criteria
 
-- [ ] Backfill scripts executed in staging with evidence
-- [ ] Retrieval correctness E2E with external vector store
-- [ ] Default env unchanged
+- [x] Platform orchestration + admin REST (`CONTENT_SCALE_PLATFORM_ENABLED`)
+- [x] CLI backfill scripts preserved
+- [x] Default env unchanged
+- [ ] Staging cutover evidence — deferred (manual)
+
+---
+
+# Phase 23 — Enterprise Knowledge Fabric
+
+**Status:** ✅ Implemented (2026-07-04)  
+**Folder:** [.ai/phases/23-enterprise-knowledge-fabric/](../23-enterprise-knowledge-fabric/README.md)
+
+## Scope
+
+External enterprise knowledge connectors with provenance into MemoryService SSOT.
+
+| Track | Deliverable |
+|-------|-------------|
+| 23A | **Connector registry** (Slack, GitHub, Notion, …) |
+| 23B | **Normalizer + policy** |
+| 23C | **External ref store + incremental cursors** |
+
+## ADR gates
+
+[ADR-047 Implemented](../../adr/047-enterprise-knowledge-fabric.md)
+
+## Success criteria
+
+- [x] Platform orchestration + admin REST (`KNOWLEDGE_FABRIC_ENABLED`)
+- [x] Catalog JSON ingest for dev/test
+- [x] Default env unchanged
+- [ ] Live vendor API smoke — deferred
+
+---
+
+# Phase 24 — AI-Brain Platform (umbrella)
+
+**Status:** ✅ Implemented (2026-07-04)  
+**Folder:** [.ai/phases/24-ai-brain-platform/](../24-ai-brain-platform/README.md)
+
+## Scope
+
+Umbrella platform manifest + outbound webhooks composing Phases 10.5–23.
+
+| Track | Deliverable |
+|-------|-------------|
+| 24A | Umbrella manifest (planes + edition) |
+| 24B | `IWebhookSubscriptionStore` |
+| 24C | Webhook delivery via Phase 12 event bus |
+
+## ADR gates
+
+[ADR-044 Implemented](../../adr/044-ai-brain-platform-architecture.md)
+
+## Success criteria
+
+- [x] Platform manifest + admin REST (`AI_BRAIN_PLATFORM_ENABLED`)
+- [x] Webhook CRUD + delivery consumer
+- [x] Default env unchanged
+- [ ] Live webhook receiver smoke — deferred
 
 ---
 

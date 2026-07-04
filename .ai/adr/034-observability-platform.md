@@ -1,6 +1,6 @@
 # ADR-034: Observability Platform — OTel, Metrics, Dashboards (Phase 19)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
 **Deciders:** Project owner  
 
@@ -33,6 +33,10 @@ Phase 12 delivers event pipeline. Phase 13 adds protocol benchmark. Enterprise S
 ## Rollback
 
 `OBSERVABILITY_PLATFORM=false` — Phase 12 noop bus unchanged.
+
+## Implementation
+
+See [Phase 19 IMPLEMENTATION](../phases/19-observability-platform/IMPLEMENTATION.md).
 
 ## References
 

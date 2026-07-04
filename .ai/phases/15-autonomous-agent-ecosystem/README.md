@@ -1,9 +1,9 @@
 # Phase 15 — Autonomous Agent Ecosystem
 
-**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**  
+**Status:** ✅ Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 15  
-**ADR gate:** [ADR-030](../../adr/030-autonomous-agent-ecosystem.md) — **Proposed**
+**ADR gate:** [ADR-030 Implemented](../../adr/030-autonomous-agent-ecosystem.md)
 
 ---
 
@@ -17,8 +17,6 @@ Enable **Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen** (and successors
 
 **Renumbering:** Former Phase 15 *Content & Vector Scale* → **Phase 17**.
 
-**Hard dependency:** Phase 7 ✅ · Phase 9 ✅ · Phase 7.5 ✅ · Phase 13 recommended · Phase 14 optional
-
 ---
 
 ## Documents
@@ -26,6 +24,8 @@ Enable **Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen** (and successors
 | Document | Purpose |
 |----------|---------|
 | [DESIGN.md](DESIGN.md) | Full design |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
+| [TESTING.md](TESTING.md) | Test coverage |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Implementation prompt |
 | [CHECKLIST.md](CHECKLIST.md) | Gate checklist |
 | [COMPLETION_TEMPLATE.md](COMPLETION_TEMPLATE.md) | Closure form |

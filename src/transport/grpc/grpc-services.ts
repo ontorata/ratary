@@ -10,6 +10,7 @@ import { MEMORY_LEVELS, type MemoryLevel } from '../../types/memory-level.js';
 import type { CreateMemoryInput, SearchQuery } from '../../types/memory.js';
 import { grpcMetadataToTransport, toProtoMemory, type ProtoMemory } from './grpc-mappers.js';
 import { toGrpcError } from './grpc-error.js';
+import { chunksFromBuildContextResult } from '../shared/streaming/stream-context-chunks.js';
 
 interface CreateMemoryRequest {
   title: string;
@@ -233,14 +234,11 @@ export function createGrpcServiceImplementations(handlers: TransportHandlers): {
           },
         })
         .then((result) => {
-          call.write({
-            kind: 'meta',
-            payload: JSON.stringify({ totalCandidates: result.totalCandidates }),
-          });
-          for (const scored of result.memories) {
-            call.write({ kind: 'memory', payload: JSON.stringify(scored) });
+          for (const chunk of chunksFromBuildContextResult(result)) {
+            const kind =
+              chunk.type === 'metadata' ? 'meta' : chunk.type === 'memory' ? 'memory' : 'done';
+            call.write({ kind, payload: JSON.stringify(chunk.payload) });
           }
-          call.write({ kind: 'done', payload: JSON.stringify({ context: result.context }) });
           call.end();
         })
         .catch((error: unknown) => call.destroy(toGrpcError(error)));

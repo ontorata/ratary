@@ -2,41 +2,41 @@
 
 ## ADR & design
 
-- [ ] ADR-033 Approved
-- [ ] DESIGN reviewed — control/data plane boundary clear
-- [ ] MemoryService unchanged confirmed in code review
+- [x] ADR-033 Approved / Implemented
+- [x] DESIGN reviewed — control/data plane boundary clear
+- [x] MemoryService unchanged confirmed in code review
 
 ## Ports & adapters
 
-- [ ] `IControlPlane` port + manual config adapter (default)
-- [ ] `IUsageMeter` port + noop adapter (default)
-- [ ] `IDisasterRecovery` port + local backup wrapper (default)
-- [ ] `IRegionRegistry` port + SQL/in-memory adapter
-- [ ] `ITenantMetadataStore` port + SQL adapter
-- [ ] `ICloudProvisioner` port + noop adapter (default)
+- [x] `IControlPlane` port + manual config adapter (default)
+- [x] `IUsageMeter` port + noop adapter (default)
+- [x] `IDisasterRecovery` port + local backup wrapper (default)
+- [x] `IRegionRegistry` port + SQL/in-memory adapter
+- [x] `ITenantMetadataStore` port + SQL adapter
+- [x] `ICloudProvisioner` port + noop/manual adapter (default)
 
 ## Integration
 
-- [ ] Phase 14 federation hooks for multi-region peer assignment
-- [ ] Phase 17 auth/policy on all admin routes
-- [ ] Phase 12 event bus subscriber for usage metering (async, opt-in)
-- [ ] Existing backup port wrapped by DR orchestration
+- [x] Phase 14 federation hooks for multi-region peer assignment (topology)
+- [x] Phase 17 auth on admin routes (authenticated; policy when enabled)
+- [x] Phase 12 event bus subscriber for usage metering (async, opt-in)
+- [x] Existing backup port wrapped by DR orchestration
 
 ## Feature flags
 
-- [ ] `CONTROL_PLANE_ENABLED=false` default — pre-Phase-18 behavior
-- [ ] `USAGE_METER_ENABLED=false` default
-- [ ] `DR_PLATFORM_ENABLED=false` default
+- [x] `CONTROL_PLANE_ENABLED=false` default — pre-Phase-18 behavior
+- [x] `USAGE_METER_ENABLED=false` default
+- [x] `DR_PLATFORM_ENABLED=false` default
 
 ## API & compatibility
 
-- [ ] Admin routes additive only — REST v1 memory routes unchanged
-- [ ] gRPC admin surface additive (if applicable)
-- [ ] Tenant isolation via resolved `MemoryScope` — no cross-tenant bypass
+- [x] Admin routes additive only — REST v1 memory routes unchanged
+- [ ] gRPC admin surface additive (deferred)
+- [x] Tenant isolation via resolved `MemoryScope` — no cross-tenant bypass
 
 ## Documentation & gate
 
-- [ ] External K8s/TF consumer adapter documented (not in repo)
-- [ ] `.env.example` updated with new flags
-- [ ] [TESTING_PLAN.md](TESTING_PLAN.md) executed
-- [ ] [SUCCESS_CRITERIA.md](SUCCESS_CRITERIA.md) PASS
+- [ ] External K8s/TF consumer adapter documented (not in repo) — deferred
+- [x] `.env.example` updated with new flags
+- [x] [TESTING_PLAN.md](TESTING_PLAN.md) executed
+- [x] [SUCCESS_CRITERIA.md](SUCCESS_CRITERIA.md) PASS (automated gates)

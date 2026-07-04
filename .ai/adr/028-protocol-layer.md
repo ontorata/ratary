@@ -1,8 +1,6 @@
 # ADR-028: Protocol Layer — Multi-Protocol Streaming & Benchmark (Phase 13)
 
-**Status:** Proposed  
-**Date:** 2026-07-04  
-**Deciders:** Project owner  
+**Status:** Implemented  
 
 ---
 

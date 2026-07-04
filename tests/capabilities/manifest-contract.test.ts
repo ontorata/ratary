@@ -41,6 +41,21 @@ const baseEnv = {
   GRPC_PORT: 50051,
   GRPC_HOST: '0.0.0.0',
   MEMORY_STEWARDSHIP_ENABLED: false,
+  SSE_ENABLED: false,
+  WEBSOCKET_ENABLED: false,
+  WEBSOCKET_PATH: '/api/v1/ws',
+  REMOTE_MCP_ENABLED: false,
+  REMOTE_MCP_PATH: '/mcp',
+  REMOTE_MCP_CORS_ORIGINS: '*',
+  FEDERATION_ENABLED: false,
+  FEDERATION_NODE_ID: '00000000-0000-4000-8000-000000000001',
+  FEDERATION_NODE_DISPLAY_NAME: 'ai-memory-cloud',
+  FEDERATION_PEERS_JSON: '[]',
+  FEDERATION_REGISTRY_PROVIDER: 'static',
+  FEDERATION_TRANSPORT_PROVIDER: 'in-process',
+  FEDERATION_TRUST_PROVIDER: 'noop',
+  FEDERATION_POLICY_PROVIDER: 'rule-based',
+  FEDERATION_METADATA_PROVIDER: 'none',
 } as Env;
 
 describe('Capability manifest contract', () => {
@@ -68,15 +83,23 @@ describe('Capability manifest contract', () => {
   it('transport section reports REST, MCP, gRPC (off), and SDK (Phase 10.5F)', () => {
     const manifest = new CapabilityManifestBuilder(baseEnv).build();
 
-    expect(manifest.transport.rest).toEqual({ enabled: true, version: 'v1', baseUrl: '/api/v1' });
+    expect(manifest.transport.rest).toEqual({
+      enabled: true,
+      version: 'v1',
+      baseUrl: '/api/v1',
+      streaming: false,
+    });
     expect(manifest.transport.mcp).toEqual({
       enabled: true,
       transport: 'stdio',
       toolCount: MCP_TOOL_NAMES.length,
+      remote: { enabled: false },
     });
     expect(manifest.transport.grpc.enabled).toBe(false);
     expect(manifest.transport.grpc.port).toBeUndefined();
-    expect(manifest.transport.sdk).toEqual({ packageName: '@ai-brain/client', status: 'planned' });
+    expect(manifest.transport.sdk.packageName).toBe('@ai-brain/sdk');
+    expect(manifest.transport.sdk.status).toBe('published');
+    expect(manifest.capabilities.supportsDeveloperPlatform).toBe(true);
   });
 
   it('transport section surfaces gRPC when GRPC_ENABLED', () => {

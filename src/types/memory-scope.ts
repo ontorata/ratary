@@ -14,6 +14,10 @@ export interface MemoryScope {
   projectId?: string;
   /** Enterprise tenant — Phase 10+. */
   organizationId?: string;
+  /** Enterprise department — Phase 17+. */
+  departmentId?: string;
+  /** Enterprise project (security boundary) — Phase 17+. */
+  tenantProjectId?: string;
 }
 
 /** True when workspace-scoped queries should apply (post-migration). */

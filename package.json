@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "AI Memory Cloud - Second brain for AI coding assistants powered by Cloudflare D1",
   "type": "module",
+  "workspaces": [
+    "packages/sdk",
+    "packages/cli",
+    "packages/mcp-server"
+  ],
   "engines": {
     "node": "24.x"
   },
@@ -52,6 +57,7 @@
     "steward:memories": "tsx scripts/steward-memories.ts",
     "steward:memories:execute": "tsx scripts/steward-memories.ts --execute",
     "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",
+    "benchmark:protocols": "tsx scripts/benchmark-protocols.ts",
     "test:integration": "tsx scripts/test-integration.ts",
     "import:backups": "tsx scripts/import-backups.ts",
     "import:backups:dry": "tsx scripts/import-backups.ts --dry-run",
@@ -61,7 +67,14 @@
     "sync:backups:watch": "tsx scripts/sync-backups.ts --watch",
     "sync:backups:poll": "tsx scripts/sync-backups.ts --poll",
     "sync:file": "tsx scripts/sync-backups.ts --file",
-    "setup": "tsx scripts/setup-mcp.ts"
+    "setup": "tsx scripts/setup-mcp.ts",
+    "snapshot:openapi": "tsx scripts/snapshot-openapi.ts",
+    "generate:sdks": "tsx scripts/generate-sdks.ts",
+    "build:sdk": "npm run build -w @ai-brain/sdk",
+    "build:cli": "npm run build -w @ai-brain/cli",
+    "build:mcp-server": "npm run build -w @ai-brain/mcp-server",
+    "build:packages": "npm run build:sdk && npm run build:cli && npm run build:mcp-server",
+    "test:packages": "vitest run packages/sdk/tests tests/packages"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1079.0",
@@ -86,6 +99,7 @@
     "pg": "^8.22.0",
     "pino": "^9.7.0",
     "pino-pretty": "^13.0.0",
+    "ws": "^8.21.0",
     "zod": "^3.25.56"
   },
   "devDependencies": {
@@ -93,6 +107,7 @@
     "@types/ioredis": "^4.28.10",
     "@types/node": "^22.15.29",
     "@types/pg": "^8.20.0",
+    "@types/ws": "^8.18.1",
     "@vercel/node": "^5.3.0",
     "@vitest/coverage-v8": "^3.2.6",
     "eslint": "^9.28.0",

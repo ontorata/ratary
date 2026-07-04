@@ -1,9 +1,9 @@
 # Phase 13 — Protocol Layer
 
-**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**  
+**Status:** ✅ Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 13  
-**ADR gate:** [ADR-028](../../adr/028-protocol-layer.md) — **Proposed**
+**ADR:** [ADR-028 Implemented](../../adr/028-protocol-layer.md)
 
 ---
 
@@ -23,7 +23,7 @@ Complete **multi-protocol access** with streaming and measurable benchmarks. All
 
 **Hard dependency:** Phase 10.5 ✅ (or ADR-027 Implemented) · Phase 12 recommended (event fan-out for WS/SSE subscriptions)
 
-**Extension:** [Phase 13.1 Remote MCP Clients](../13.1-remote-mcp-clients/README.md) — ChatGPT Server URL (ADR-048 Proposed)
+**Extension:** [Phase 13.1 Remote MCP Clients](../13.1-remote-mcp-clients/README.md) — ChatGPT Server URL (ADR-048 Implemented)
 
 ---
 
@@ -34,7 +34,8 @@ Complete **multi-protocol access** with streaming and measurable benchmarks. All
 | [DESIGN.md](DESIGN.md) | Full design |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Implementation prompt (post-approval) |
 | [CHECKLIST.md](CHECKLIST.md) | Gate checklist |
-| [COMPLETION_TEMPLATE.md](COMPLETION_TEMPLATE.md) | Closure form |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
+| [TESTING.md](TESTING.md) | Test plan + smoke |
 | [RISKS.md](RISKS.md) | Risk register |
 
 ---
@@ -48,4 +49,4 @@ Protocol adapters  →  Application handlers  →  Services  →  Repository por
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). No implementation until ADR-028 **Approved**.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md).*

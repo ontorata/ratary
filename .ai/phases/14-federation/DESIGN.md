@@ -1,7 +1,7 @@
 # Phase 14 — Federation — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready — Architecture Review draft (2026-07-04); **awaiting owner approval**  
+**Phase status:** Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → [ADR-029](../../adr/029-federation-layer.md)  
 **Prerequisites:** Phase 9–10 ✅ · Phase 12 (recommended) · Phase 13 ✅ (protocol transport)

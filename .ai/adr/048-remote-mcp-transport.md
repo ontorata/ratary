@@ -1,9 +1,6 @@
 # ADR-048: Remote MCP Transport (ChatGPT & Web Clients)
 
-**Status:** Proposed  
-**Date:** 2026-07-04  
-**Deciders:** Project owner  
-**Phase:** [13.1 Remote MCP Clients](../phases/13.1-remote-mcp-clients/DESIGN.md)
+**Status:** Implemented
 
 ---
 

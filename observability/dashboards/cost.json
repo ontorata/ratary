@@ -1,0 +1,22 @@
+{
+  "title": "AI Brain — Cost",
+  "uid": "ai-brain-cost",
+  "description": "Embedding spend estimate and storage growth",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["ai-brain", "cost"],
+  "panels": [
+    {
+      "id": 1,
+      "title": "Embedding Cost Estimate (USD)",
+      "type": "timeseries",
+      "targets": [{ "expr": "ai_brain_cost_embedding_estimate_usd" }]
+    },
+    {
+      "id": 2,
+      "title": "Storage Bytes",
+      "type": "timeseries",
+      "targets": [{ "expr": "ai_brain_cost_storage_bytes" }]
+    }
+  ]
+}

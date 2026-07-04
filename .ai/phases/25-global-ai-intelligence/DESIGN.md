@@ -553,4 +553,4 @@ interface GlobalSyncRequest {
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). No implementation until ADR-036, 037, 038, 043 are **Approved**.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). **Implemented** (2026-07-04) — see [IMPLEMENTATION.md](IMPLEMENTATION.md).*

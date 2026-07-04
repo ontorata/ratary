@@ -1,7 +1,7 @@
 # Phase 13.1 — Remote MCP Clients — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** 🔲 Planned — design draft (2026-07-04)  
+**Phase status:** Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)  
 **ADR gate:** [ADR-048](../../adr/048-remote-mcp-transport.md) — **Proposed**

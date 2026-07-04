@@ -1,6 +1,6 @@
 # ADR-035: AI Infrastructure Platform — Marketplace, Plugins, Provider Registry (Phase 20)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
 **Deciders:** Project owner  
 

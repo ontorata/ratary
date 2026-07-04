@@ -1,9 +1,9 @@
 # Phase 14 — Federation
 
-**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**  
+**Status:** ✅ Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 14  
-**ADR gate:** [ADR-029](../../adr/029-federation-layer.md) — **Proposed**
+**ADR:** [ADR-029 Implemented](../../adr/029-federation-layer.md)
 
 ---
 
@@ -13,7 +13,7 @@ Enable **multiple AI Brain nodes** to exchange knowledge across workspace, regio
 
 | Dimension | Supported via |
 |-----------|---------------|
-| Cross Workspace | `FederationScopeRef` + policy |
+| Cross Workspace | `FederationScopeRef` + in-process transport |
 | Cross Region | `FederationNodeDescriptor.region` |
 | Cross Organization | `IFederationPolicy` + trust store |
 | Cross Cloud | Provider-agnostic transport/registry ports |
@@ -22,8 +22,6 @@ Enable **multiple AI Brain nodes** to exchange knowledge across workspace, regio
 
 **Renumbering:** Former Phase 14 *Search & Graph Production* → **Phase 16**.
 
-**Hard dependency:** Phase 9 ✅ · Phase 10 ✅ · Phase 13 ✅ (protocol transport) · Phase 12 recommended (async replication)
-
 ---
 
 ## Documents
@@ -31,9 +29,9 @@ Enable **multiple AI Brain nodes** to exchange knowledge across workspace, regio
 | Document | Purpose |
 |----------|---------|
 | [DESIGN.md](DESIGN.md) | Full design |
-| [TASK_PROMPT.md](TASK_PROMPT.md) | Implementation prompt |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
+| [TESTING.md](TESTING.md) | Test plan + smoke |
 | [CHECKLIST.md](CHECKLIST.md) | Gate checklist |
-| [COMPLETION_TEMPLATE.md](COMPLETION_TEMPLATE.md) | Closure form |
 | [RISKS.md](RISKS.md) | Risk register |
 
 ---
@@ -48,4 +46,4 @@ Federation adapters  →  IKnowledgeExchangeService  →  MemoryService (unchang
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). No implementation until ADR-029 **Approved**.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md).*

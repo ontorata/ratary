@@ -37,12 +37,22 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [033-cloud-platform.md](../../.ai/adr/033-cloud-platform.md) | Cloud Platform (Phase 18) | **Proposed** | Control plane, metering |
 | [034-observability-platform.md](../../.ai/adr/034-observability-platform.md) | Observability Platform (Phase 19) | **Proposed** | OTel, Grafana |
 | [035-ai-infrastructure-platform.md](../../.ai/adr/035-ai-infrastructure-platform.md) | AI Infrastructure Platform (Phase 20) | **Proposed** | Plugin marketplace |
-| [036-global-ai-intelligence-platform.md](036-global-ai-intelligence-platform.md) | Global AI Intelligence Platform — capstone (Phase 25) | **Proposed** | Distributed telemetry/analytics/sync |
-| [037-ai-telemetry-event-model.md](037-ai-telemetry-event-model.md) | AI Telemetry Event Model (Phase 25) | **Proposed** | Semantic OTLP telemetry |
-| [038-usage-analytics-engine.md](038-usage-analytics-engine.md) | Usage Analytics Engine (Phase 25) | **Proposed** | Quality/adoption/cost KPIs |
-| [043-cloud-federation-sync-topology.md](043-cloud-federation-sync-topology.md) | Cloud Federation Sync Topology (Phase 25) | **Proposed** | 5-tier global sync |
+| [044-ai-brain-platform-architecture.md](044-ai-brain-platform-architecture.md) | AI-Brain Platform Architecture (Phase 24) | **Implemented** | Umbrella manifest + webhooks |
+| [047-enterprise-knowledge-fabric.md](047-enterprise-knowledge-fabric.md) | Enterprise Knowledge Fabric (Phase 23) | **Implemented** | External connector ingest |
+| [021-content-vector-scale-platform.md](021-content-vector-scale-platform.md) | Content & Vector Scale Platform (Phase 22) | **Implemented** | R2/pgvector/embedding sync ops |
+| [022-search-graph-production-platform.md](022-search-graph-production-platform.md) | Search & Graph Production Platform (Phase 21) | **Implemented** | Meilisearch/Neo4j sync ops |
+| [036-global-ai-intelligence-platform.md](036-global-ai-intelligence-platform.md) | Global AI Intelligence Platform — capstone (Phase 25) | **Implemented** | Distributed telemetry/analytics/sync |
+| [037-ai-telemetry-event-model.md](037-ai-telemetry-event-model.md) | AI Telemetry Event Model (Phase 25) | **Implemented** | Semantic OTLP telemetry |
+| [038-usage-analytics-engine.md](038-usage-analytics-engine.md) | Usage Analytics Engine (Phase 25) | **Implemented** | Quality/adoption/cost KPIs |
+| [043-cloud-federation-sync-topology.md](043-cloud-federation-sync-topology.md) | Cloud Federation Sync Topology (Phase 25) | **Implemented** | 5-tier global sync |
 
-**Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
+**Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
+
+**Phase 22 ADR gate:** [ADR-021](021-content-vector-scale-platform.md) **Implemented** (2026-07-04).
+
+**Phase 23 ADR gate:** [ADR-047](047-enterprise-knowledge-fabric.md) **Implemented** (2026-07-04).
+
+**Phase 24 ADR gate:** [ADR-044](044-ai-brain-platform-architecture.md) **Implemented** (2026-07-04).
 
 **Extension ADR (Proposed):** [ADR-048 Remote MCP transport](../../.ai/adr/048-remote-mcp-transport.md) — Phase 13.1 ChatGPT / web MCP clients.
 

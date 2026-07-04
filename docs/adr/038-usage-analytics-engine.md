@@ -1,6 +1,6 @@
 # ADR-038: Usage Analytics Engine (Phase 25)
 
-**Status:** Proposed
+**Status:** Implemented
 **Date:** 2026-07-04
 **Deciders:** Project owner
 

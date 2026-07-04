@@ -1,6 +1,6 @@
 # Phase 25 — Global AI Intelligence Platform
 
-**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**
+**Status:** ✅ Implemented (2026-07-04)
 **Role:** Distributed-intelligence capstone — composes Phases 14, 18, 19, 20, 23, 24 into a globally distributed, privacy-preserving AI Intelligence Platform.
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → [01-COLLABORATIVE-MEMORY-PLATFORM.md](../../core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md)
 
@@ -19,7 +19,7 @@ Phase 25 lets AI-Brain **observe how it is used** and **synchronize knowledge ac
 
 **Umbrella gate:** [ADR-036](../../../docs/adr/036-global-ai-intelligence-platform.md) — Global AI Intelligence Platform.
 
-**Master flag:** `GLOBAL_INTELLIGENCE_PLATFORM=false` (default) — zero behavior change, zero export overhead target.
+**Master flag:** `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false` (default) — zero behavior change, zero export overhead target.
 
 ---
 
@@ -43,6 +43,9 @@ Phase 25 lets AI-Brain **observe how it is used** and **synchronize knowledge ac
 | Document | Purpose |
 |----------|---------|
 | [DESIGN.md](DESIGN.md) | Full architecture, event flow, ports, interfaces, sync/telemetry/analytics/security/privacy models, testing, ADR requirements |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Deliverables, file map, env flags, REST endpoints |
+| [TESTING.md](TESTING.md) | Test suites and coverage gate |
+| [CHECKLIST.md](CHECKLIST.md) | Implementation checklist |
 
 ---
 
@@ -69,4 +72,4 @@ Phase 12 ✅ (event pipeline) · Phase 13 ✅ (protocol) · Phase 14 (federation
 
 ---
 
-*Subordinate to the constitution. No implementation until ADR-036, 037, 038, 043 are **Approved**.*
+*Subordinate to the constitution. Implemented under ADR-036, 037, 038, 043 (2026-07-04).*

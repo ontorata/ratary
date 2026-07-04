@@ -8,20 +8,32 @@ import type { BuildContextBody } from '../../../types/context.js';
 import type { IScopeResolver } from '../../../scope/iscope-resolver.interface.js';
 import type { TransportContext } from '../transport-context.types.js';
 import type { IApplicationHandler } from '../iapplication-handler.interface.js';
+import type { ContextChunk } from '../streaming/context-chunk.types.js';
+import type { IContextStreamSource } from '../streaming/icontext-stream-source.interface.js';
+import type { IStreamPublisher } from '../streaming/istream-publisher.interface.js';
+import { DefaultContextStreamSource } from '../streaming/default-context-stream-source.js';
 import { resolveHandlerScope } from './resolve-handler-scope.js';
 
 export interface ContextHandlerDeps {
   contextService: ContextService;
   scopeResolver: IScopeResolver;
+  streamSource?: IContextStreamSource;
+}
+
+export interface ContextStreamInput extends BuildContextRequest {
+  publisher: IStreamPublisher<ContextChunk>;
 }
 
 export interface ContextHandlers {
   buildContext: IApplicationHandler<BuildContextRequest, BuildContextResult>;
   buildPrompt: IApplicationHandler<BuildContextBody, BuildPromptResult>;
+  streamContext: IApplicationHandler<ContextStreamInput, void>;
 }
 
 export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers {
   const scope = (ctx: TransportContext) => resolveHandlerScope(ctx, deps.scopeResolver);
+  const streamSource =
+    deps.streamSource ?? new DefaultContextStreamSource(deps.contextService);
 
   return {
     buildContext: {
@@ -39,6 +51,21 @@ export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers
           task: body.task,
           systemRole: body.systemRole,
         }),
+    },
+    streamContext: {
+      handle: async (ctx, input) => {
+        const { publisher, ...request } = input;
+        const resolvedScope = await scope(ctx);
+        try {
+          for await (const chunk of streamSource.stream(request, resolvedScope)) {
+            await publisher.publish(chunk);
+          }
+          await publisher.close();
+        } catch (error) {
+          await publisher.close(error instanceof Error ? error.message : 'stream failed');
+          throw error;
+        }
+      },
     },
   };
 }

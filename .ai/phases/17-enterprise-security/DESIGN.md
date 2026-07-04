@@ -1,6 +1,6 @@
 # Phase 17 — Enterprise Security — DESIGN
 
-**ADR:** [ADR-032](../../adr/032-enterprise-security.md)
+**ADR:** [ADR-032](../../adr/032-enterprise-security.md) · **Status:** Implemented (2026-07-04)
 
 ## Mengapa diperlukan?
 

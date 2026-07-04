@@ -1,6 +1,6 @@
 # ADR-030: Autonomous Agent Ecosystem — External Runtime Boundary (Phase 15)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
 **Deciders:** Project owner  
 

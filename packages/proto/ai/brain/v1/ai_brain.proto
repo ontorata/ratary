@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+// AI-Brain transport wire contract v1 (ADR-027 Phase 10.5E).
+// Breaking changes MUST introduce a new package (ai.brain.v2).
+package ai.brain.v1;
+
+// ---------------------------------------------------------------------------
+// Common messages
+// ---------------------------------------------------------------------------
+
+message Memory {
+  string id = 1;
+  string codename = 2;
+  string slug = 3;
+  string title = 4;
+  string project = 5;
+  string content = 6;
+  string summary = 7;
+  repeated string tags = 8;
+  repeated string keywords = 9;
+  string category = 10;
+  string memory_type = 11;
+  int32 importance = 12;
+  string language = 13;
+  bool favorite = 14;
+  bool archived = 15;
+  string owner_id = 16;
+  string project_id = 17;
+  string level = 18;
+  string created_at = 19;
+  string updated_at = 20;
+}
+
+// ---------------------------------------------------------------------------
+// MemoryService — unary CRUD (maps to MemoryService application service)
+// ---------------------------------------------------------------------------
+
+message CreateMemoryRequest {
+  string title = 1;
+  string content = 2;
+  string project = 3;
+  string summary = 4;
+  repeated string tags = 5;
+  bool favorite = 6;
+  string category = 7;
+  string memory_type = 8;
+  repeated string keywords = 9;
+  int32 importance = 10;
+  string language = 11;
+  string notes = 12;
+  string level = 13;
+}
+
+message GetMemoryRequest {
+  string id = 1;
+}
+
+message UpdateMemoryRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  string project = 4;
+  string summary = 5;
+  repeated string tags = 6;
+  bool favorite = 7;
+}
+
+message DeleteMemoryRequest {
+  string id = 1;
+}
+
+message DeleteMemoryResponse {
+  bool deleted = 1;
+}
+
+message ListMemoriesRequest {
+  string project = 1;
+  bool favorite = 2;
+  bool archived = 3;
+  int32 limit = 4;
+  int32 offset = 5;
+}
+
+message ListMemoriesResponse {
+  repeated Memory memories = 1;
+  int32 total = 2;
+}
+
+service MemoryService {
+  rpc CreateMemory(CreateMemoryRequest) returns (Memory);
+  rpc GetMemory(GetMemoryRequest) returns (Memory);
+  rpc UpdateMemory(UpdateMemoryRequest) returns (Memory);
+  rpc DeleteMemory(DeleteMemoryRequest) returns (DeleteMemoryResponse);
+  rpc ListMemories(ListMemoriesRequest) returns (ListMemoriesResponse);
+}
+
+// ---------------------------------------------------------------------------
+// SearchService — unary search (maps to SearchService)
+// ---------------------------------------------------------------------------
+
+message SearchRequest {
+  string q = 1;
+  string tag = 2;
+  string project = 3;
+  string category = 4;
+  string memory_type = 5;
+  int32 importance_min = 6;
+  bool favorite = 7;
+  bool archived = 8;
+  int32 limit = 9;
+  int32 offset = 10;
+}
+
+message SearchResponse {
+  repeated Memory results = 1;
+  int32 total = 2;
+}
+
+service SearchService {
+  rpc Search(SearchRequest) returns (SearchResponse);
+}
+
+// ---------------------------------------------------------------------------
+// ContextService — server-streaming context assembly (maps to ContextService)
+// ---------------------------------------------------------------------------
+
+message BuildContextRequest {
+  string query = 1;
+  string project_id = 2;
+  repeated string tags = 3;
+  repeated string levels = 4;
+  int32 limit = 5;
+  int32 max_chars = 6;
+  bool summary_only = 7;
+  string format = 8;
+}
+
+message ContextChunk {
+  string kind = 1;   // "meta" | "memory" | "done"
+  string payload = 2; // JSON-encoded slice of the context result
+}
+
+service ContextService {
+  rpc BuildContext(BuildContextRequest) returns (stream ContextChunk);
+}
+
+// ---------------------------------------------------------------------------
+// HealthService — liveness (gRPC-native health pattern)
+// ---------------------------------------------------------------------------
+
+message HealthCheckRequest {
+  string service = 1;
+}
+
+message HealthCheckResponse {
+  enum ServingStatus {
+    UNKNOWN = 0;
+    SERVING = 1;
+    NOT_SERVING = 2;
+  }
+  ServingStatus status = 1;
+}
+
+service HealthService {
+  rpc Check(HealthCheckRequest) returns (HealthCheckResponse);
+}

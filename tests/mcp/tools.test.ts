@@ -16,7 +16,7 @@ import { createContextService } from '../../src/memory/create-context-service.js
 import { createGraphService } from '../../src/services/graph.service.js';
 import { DefaultScopeResolver } from '../../src/scope/default-scope-resolver.js';
 import { D1AgentIdentity } from '../../src/agent/d1-agent-identity.js';
-import { createMcpServer } from '../../src/mcp/server.js';
+import { createMcpServer, createStdioMcpBinding } from '../../src/transport/mcp/mcp-server.js';
 import { getEnv } from '../../src/config/index.js';
 import { createTransportHandlers } from '../../src/transport/shared/handlers/create-transport-handlers.js';
 
@@ -56,7 +56,7 @@ describe('MCP tools', () => {
       scopeResolver,
       env: getEnv(),
     });
-    const server = createMcpServer(handlers, scopeResolver, agentIdentity, sql);
+    const server = createMcpServer(handlers, createStdioMcpBinding(scopeResolver), agentIdentity, sql);
 
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await server.connect(serverTransport);

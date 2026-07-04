@@ -402,6 +402,338 @@ export async function migrateEnterprisePhase1(
   }
 }
 
+/** Phase 17 — enterprise security hierarchy + policy bindings (ADR-032). */
+const ENTERPRISE_SECURITY_V2_SQL = `
+CREATE TABLE IF NOT EXISTS departments (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE (organization_id, slug),
+  FOREIGN KEY (organization_id) REFERENCES organizations(id)
+);
+
+CREATE TABLE IF NOT EXISTS tenant_projects (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL,
+  department_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE (department_id, slug),
+  FOREIGN KEY (organization_id) REFERENCES organizations(id),
+  FOREIGN KEY (department_id) REFERENCES departments(id)
+);
+
+CREATE TABLE IF NOT EXISTS workspace_hierarchy_bindings (
+  workspace_id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL,
+  department_id TEXT,
+  tenant_project_id TEXT,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (workspace_id) REFERENCES workspaces(id),
+  FOREIGN KEY (organization_id) REFERENCES organizations(id),
+  FOREIGN KEY (department_id) REFERENCES departments(id),
+  FOREIGN KEY (tenant_project_id) REFERENCES tenant_projects(id)
+);
+
+CREATE TABLE IF NOT EXISTS policy_bindings (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL,
+  policy_package TEXT NOT NULL,
+  effect TEXT NOT NULL DEFAULT 'allow',
+  resource_pattern TEXT NOT NULL DEFAULT '*',
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (organization_id) REFERENCES organizations(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_departments_org ON departments(organization_id);
+CREATE INDEX IF NOT EXISTS idx_tenant_projects_dept ON tenant_projects(department_id);
+CREATE INDEX IF NOT EXISTS idx_policy_bindings_org ON policy_bindings(organization_id);
+`;
+
+export async function migrateEnterprisePhase2(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(ENTERPRISE_SECURITY_V2_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Cloud platform metadata (Phase 18) — ADR-033. */
+const CLOUD_PLATFORM_SQL = `
+CREATE TABLE IF NOT EXISTS cloud_regions (
+  id TEXT PRIMARY KEY,
+  code TEXT NOT NULL UNIQUE,
+  display_name TEXT NOT NULL,
+  cloud_provider TEXT,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cloud_tenant_metadata (
+  id TEXT PRIMARY KEY,
+  organization_id TEXT NOT NULL,
+  workspace_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  department_id TEXT,
+  tenant_project_id TEXT,
+  primary_region_id TEXT NOT NULL,
+  secondary_region_id TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  UNIQUE(organization_id, workspace_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_cloud_tenant_metadata_org ON cloud_tenant_metadata(organization_id);
+
+CREATE TABLE IF NOT EXISTS cloud_workspace_regions (
+  workspace_id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  primary_region_id TEXT NOT NULL,
+  secondary_region_id TEXT,
+  read_preference TEXT NOT NULL DEFAULT 'primary',
+  updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS cloud_usage_records (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  organization_id TEXT,
+  metric_type TEXT NOT NULL,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  occurred_at TEXT NOT NULL,
+  correlation_id TEXT,
+  metadata TEXT NOT NULL DEFAULT '{}'
+);
+
+CREATE INDEX IF NOT EXISTS idx_cloud_usage_owner ON cloud_usage_records(owner_id, occurred_at DESC);
+
+CREATE TABLE IF NOT EXISTS cloud_dr_schedules (
+  id TEXT PRIMARY KEY,
+  workspace_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  cron_expression TEXT,
+  enabled INTEGER NOT NULL DEFAULT 1,
+  last_run_at TEXT,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_cloud_dr_schedules_owner ON cloud_dr_schedules(owner_id, workspace_id);
+`;
+
+export async function migrateCloudPlatformPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(CLOUD_PLATFORM_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** AI infrastructure platform (Phase 20) — ADR-035. */
+const INFRASTRUCTURE_PLATFORM_SQL = `
+CREATE TABLE IF NOT EXISTS plugin_registry (
+  id TEXT PRIMARY KEY,
+  plugin_type TEXT NOT NULL,
+  manifest_json TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'registered',
+  registered_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  enabled_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_plugin_registry_type ON plugin_registry(plugin_type, status);
+
+CREATE TABLE IF NOT EXISTS plugin_allow_list (
+  organization_id TEXT NOT NULL,
+  plugin_id TEXT NOT NULL,
+  allowed INTEGER NOT NULL DEFAULT 1,
+  updated_at TEXT NOT NULL,
+  PRIMARY KEY (organization_id, plugin_id)
+);
+`;
+
+export async function migrateInfrastructurePlatformPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(INFRASTRUCTURE_PLATFORM_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Search & graph production platform (Phase 21) — ADR-022. */
+const SEARCH_GRAPH_PLATFORM_SQL = `
+CREATE TABLE IF NOT EXISTS search_graph_sync_runs (
+  id TEXT PRIMARY KEY,
+  target TEXT NOT NULL,
+  mode TEXT NOT NULL,
+  status TEXT NOT NULL,
+  owner_id TEXT,
+  stats_json TEXT NOT NULL DEFAULT '{}',
+  started_at TEXT NOT NULL,
+  finished_at TEXT,
+  error_message TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_search_graph_sync_runs_target ON search_graph_sync_runs(target, started_at DESC);
+
+CREATE TABLE IF NOT EXISTS search_graph_sync_state (
+  target TEXT PRIMARY KEY,
+  last_watermark TEXT NOT NULL,
+  last_run_id TEXT,
+  updated_at TEXT NOT NULL
+);
+`;
+
+export async function migrateSearchGraphPlatformPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(SEARCH_GRAPH_PLATFORM_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Content & vector scale platform (Phase 22) — ADR-021. */
+const CONTENT_SCALE_PLATFORM_SQL = `
+CREATE TABLE IF NOT EXISTS content_scale_sync_runs (
+  id TEXT PRIMARY KEY,
+  target TEXT NOT NULL,
+  mode TEXT NOT NULL,
+  status TEXT NOT NULL,
+  owner_id TEXT,
+  stats_json TEXT NOT NULL DEFAULT '{}',
+  started_at TEXT NOT NULL,
+  finished_at TEXT,
+  error_message TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_content_scale_sync_runs_target ON content_scale_sync_runs(target, started_at DESC);
+
+CREATE TABLE IF NOT EXISTS content_scale_sync_state (
+  target TEXT PRIMARY KEY,
+  last_watermark TEXT NOT NULL,
+  last_run_id TEXT,
+  updated_at TEXT NOT NULL
+);
+`;
+
+export async function migrateContentScalePlatformPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(CONTENT_SCALE_PLATFORM_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Enterprise knowledge fabric (Phase 23) — ADR-047. */
+const KNOWLEDGE_FABRIC_PLATFORM_SQL = `
+CREATE TABLE IF NOT EXISTS knowledge_fabric_ingest_runs (
+  id TEXT PRIMARY KEY,
+  connector_id TEXT NOT NULL,
+  mode TEXT NOT NULL,
+  status TEXT NOT NULL,
+  owner_id TEXT,
+  workspace_id TEXT,
+  stats_json TEXT NOT NULL DEFAULT '{}',
+  started_at TEXT NOT NULL,
+  finished_at TEXT,
+  error_message TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_knowledge_fabric_ingest_runs_connector ON knowledge_fabric_ingest_runs(connector_id, started_at DESC);
+
+CREATE TABLE IF NOT EXISTS knowledge_fabric_connector_state (
+  connector_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  last_cursor TEXT NOT NULL,
+  last_run_id TEXT,
+  updated_at TEXT NOT NULL,
+  PRIMARY KEY (connector_id, owner_id, workspace_id)
+);
+
+CREATE TABLE IF NOT EXISTS knowledge_fabric_external_refs (
+  id TEXT PRIMARY KEY,
+  connector_id TEXT NOT NULL,
+  external_id TEXT NOT NULL,
+  memory_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  external_updated_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
+  UNIQUE(connector_id, external_id, owner_id, workspace_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_knowledge_fabric_external_refs_memory ON knowledge_fabric_external_refs(memory_id);
+`;
+
+export async function migrateKnowledgeFabricPlatformPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(KNOWLEDGE_FABRIC_PLATFORM_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** AI-Brain platform umbrella (Phase 24) — ADR-044. */
+const AI_BRAIN_PLATFORM_SQL = `
+CREATE TABLE IF NOT EXISTS platform_webhook_subscriptions (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  url TEXT NOT NULL,
+  secret TEXT,
+  topics_json TEXT NOT NULL DEFAULT '[]',
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_platform_webhook_subscriptions_owner ON platform_webhook_subscriptions(owner_id, workspace_id);
+`;
+
+export async function migrateAiBrainPlatformPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(AI_BRAIN_PLATFORM_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+const GLOBAL_INTELLIGENCE_SQL = `
+CREATE TABLE IF NOT EXISTS intelligence_telemetry_events (
+  id TEXT PRIMARY KEY,
+  event_type TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  node_id TEXT NOT NULL,
+  envelope_json TEXT NOT NULL,
+  occurred_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_intelligence_telemetry_owner ON intelligence_telemetry_events(owner_id, workspace_id, occurred_at DESC);
+CREATE INDEX IF NOT EXISTS idx_intelligence_telemetry_type ON intelligence_telemetry_events(event_type, occurred_at DESC);
+
+CREATE TABLE IF NOT EXISTS intelligence_sync_state (
+  scope_key TEXT PRIMARY KEY,
+  tier TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  last_cursor TEXT,
+  last_run_id TEXT,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_intelligence_sync_owner ON intelligence_sync_state(owner_id, workspace_id);
+
+CREATE TABLE IF NOT EXISTS intelligence_offline_journal (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  entry_json TEXT NOT NULL,
+  status TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  applied_at TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_intelligence_offline_journal_owner ON intelligence_offline_journal(owner_id, workspace_id, status);
+`;
+
+export async function migrateGlobalIntelligencePhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(GLOBAL_INTELLIGENCE_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Extension tracks 5.5 / 8.5 — compression metadata + quality signals (ADR-023, ADR-026). */
 const EXTENSION_TRACK_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
   { name: 'compression_meta', ddl: 'ALTER TABLE memories ADD COLUMN compression_meta TEXT' },
@@ -525,6 +857,42 @@ CREATE INDEX IF NOT EXISTS idx_sync_conflicts_owner_status
   ON sync_conflicts(owner_id, status);
 `;
 
+const FEDERATION_SQL = `
+CREATE TABLE IF NOT EXISTS federation_sync_cursors (
+  id TEXT PRIMARY KEY,
+  peer_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  cursor_value TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_federation_sync_cursors_peer_scope
+  ON federation_sync_cursors(peer_id, owner_id, workspace_id);
+
+CREATE TABLE IF NOT EXISTS federation_peers (
+  peer_id TEXT NOT NULL,
+  organization_id TEXT NOT NULL DEFAULT '',
+  trusted INTEGER NOT NULL DEFAULT 0,
+  updated_at TEXT NOT NULL,
+  PRIMARY KEY (peer_id, organization_id)
+);
+
+CREATE TABLE IF NOT EXISTS federation_exchange_log (
+  id TEXT PRIMARY KEY,
+  peer_id TEXT NOT NULL,
+  direction TEXT NOT NULL,
+  accepted INTEGER NOT NULL DEFAULT 0,
+  rejected INTEGER NOT NULL DEFAULT 0,
+  bundle_id TEXT,
+  cursor_value TEXT,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_federation_exchange_log_peer
+  ON federation_exchange_log(peer_id, created_at);
+`;
+
 export async function migrateExtensionTracksPhase1(
   client: ISqlDatabase,
   dialect: MigrationDialect = 'sqlite',
@@ -565,6 +933,13 @@ export async function migrateExtensionTracksPhase4(client: ISqlDatabase): Promis
 /** Extension track 09.8 — multi-client sync cursors and conflict queue (ADR-042). */
 export async function migrateExtensionTracksPhase5(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(MULTI_CLIENT_SYNC_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Extension track 14 — federation metadata (ADR-029). */
+export async function migrateExtensionTracksPhase6(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(FEDERATION_SQL)) {
     await client.execute(sql);
   }
 }
@@ -611,11 +986,20 @@ export async function runSchemaMigrations(
   await migrateEmbeddingPhase1(client);
   await migrateMultiAiPhase1(client, dialect);
   await migrateEnterprisePhase1(client, dialect);
+  await migrateEnterprisePhase2(client);
+  await migrateCloudPlatformPhase1(client);
+  await migrateInfrastructurePlatformPhase1(client);
+  await migrateSearchGraphPlatformPhase1(client);
+  await migrateContentScalePlatformPhase1(client);
+  await migrateKnowledgeFabricPlatformPhase1(client);
+  await migrateAiBrainPlatformPhase1(client);
+  await migrateGlobalIntelligencePhase1(client);
   await migrateExtensionTracksPhase1(client, dialect);
   await migrateExtensionTracksPhase2(client);
   await migrateExtensionTracksPhase3(client);
   await migrateExtensionTracksPhase4(client);
   await migrateExtensionTracksPhase5(client);
+  await migrateExtensionTracksPhase6(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

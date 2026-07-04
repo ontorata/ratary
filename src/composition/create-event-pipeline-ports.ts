@@ -2,6 +2,7 @@ import type { Env } from '../config/env.js';
 import type { IEventBus } from '../ports/events/ievent-bus.port.js';
 import type { IAnalyticsStore } from '../ports/analytics/ianalytics-store.port.js';
 import type { IMemoryAccessAuditor } from '../ports/audit/imemory-access-auditor.port.js';
+import type { IEventConsumer } from '../events/ievent-consumer.interface.js';
 import { DomainEventPublisher } from '../events/domain-event-publisher.js';
 import { EventConsumerRegistry } from '../events/event-consumer-registry.js';
 import { EventConsumerRunner } from '../events/event-consumer-runner.js';
@@ -28,6 +29,7 @@ export function createEventPipelinePorts(
   env: Env,
   eventBus: IEventBus,
   analyticsStore: IAnalyticsStore,
+  additionalConsumers: IEventConsumer[] = [],
 ): EventPipelinePorts {
   const passthroughAuditor = (auditor: IMemoryAccessAuditor): IMemoryAccessAuditor => auditor;
 
@@ -46,6 +48,10 @@ export function createEventPipelinePorts(
 
   if (env.ANALYTICS_PROVIDER !== 'none') {
     registry.register(new MemoryAccessAnalyticsConsumer(analyticsStore));
+  }
+
+  for (const consumer of additionalConsumers) {
+    registry.register(consumer);
   }
 
   const runner = new EventConsumerRunner(eventBus, registry);

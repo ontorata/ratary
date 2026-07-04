@@ -1,6 +1,6 @@
 # ADR-036: Global AI Intelligence Platform (Phase 25)
 
-**Status:** Proposed
+**Status:** Implemented
 **Date:** 2026-07-04
 **Deciders:** Project owner
 

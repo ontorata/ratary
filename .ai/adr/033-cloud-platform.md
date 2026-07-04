@@ -1,6 +1,6 @@
 # ADR-033: Cloud Platform — Multi-Region, Control Plane, Metering (Phase 18)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
 **Deciders:** Project owner  
 
@@ -34,6 +34,10 @@ Data plane **unchanged**.
 ## Rollback
 
 `CONTROL_PLANE_ENABLED=false`.
+
+## Implementation
+
+See [Phase 18 IMPLEMENTATION](../phases/18-cloud-platform/IMPLEMENTATION.md).
 
 ## References
 

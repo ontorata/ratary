@@ -1,9 +1,10 @@
 # Phase 16 — CHECKLIST
 
-- [ ] ADR-031 Approved
-- [ ] OpenAPI gen pipeline CI
-- [ ] SDK TS + 6 languages generated
-- [ ] CLI uses SDK only
-- [ ] MCP server uses SDK only
-- [ ] Server MemoryService unchanged
-- [ ] [SUCCESS_CRITERIA.md](SUCCESS_CRITERIA.md) PASS
+- [x] ADR-031 Implemented
+- [x] OpenAPI gen pipeline (`snapshot:openapi`, `generate:sdks`)
+- [x] SDK TS reference + 6 language wrappers
+- [x] CLI uses SDK only
+- [x] MCP server uses SDK only
+- [x] Server MemoryService unchanged
+- [ ] Dashboard SPA (deferred)
+- [ ] [SUCCESS_CRITERIA.md](SUCCESS_CRITERIA.md) REVIEW gate

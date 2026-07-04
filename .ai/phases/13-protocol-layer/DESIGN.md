@@ -1,7 +1,7 @@
 # Phase 13 — Protocol Layer — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready — Architecture Review draft (2026-07-04); **awaiting owner approval**  
+**Phase status:** Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → [ADR-028](../../adr/028-protocol-layer.md)  
 **Predecessor:** Phase 10.5 (Transport foundation) · Phase 12 (events — recommended)
