@@ -16,7 +16,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 Streaming: SSE `/context/stream`, WebSocket `/api/v1/ws`, gRPC stream reuse, benchmark CLI. Gated by `SSE_ENABLED` / `WEBSOCKET_ENABLED` default off.
 
-Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
+Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 

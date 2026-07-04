@@ -11,6 +11,148 @@ const PHASES_DIR = path.join(ROOT, '.ai', 'phases');
 
 const PHASES = [
   {
+    dir: '01-foundation',
+    title: 'Phase 1 — Foundation',
+    gateDate: '2026-06-28',
+    summary:
+      'Established D1-backed persistence, `IMemoryRepository` port, unified `MemoryService`, and dual transport (REST + MCP stdio) with semantic parity. Gate PASS 2026-06-28.',
+    workedWell: [
+      'Repository port (`IMemoryRepository`) isolated SQL from services — enabled MockD1 tests and later Postgres cutover (Phase 11)',
+      'Single `MemoryService` for MCP and REST — no duplicate business rules',
+      'Forward-only `runMigrations()` + canonical `MIGRATION_SQL` — idempotent deploys',
+      'MockD1 harness — deterministic unit tests without live Cloudflare D1',
+    ],
+    harderOrDeferred: [
+      'No authentication on REST at close — explicitly deferred to Phase 3',
+      'Transport layer still monolithic (`server.ts`) — strangler to `transport/` completed later',
+      'D1 vendor coupling accepted until Phase 10 abstraction work',
+    ],
+    acceptedDebt: [
+      'Unauthenticated REST endpoints — mitigated in Phase 3',
+      'Single D1 adapter — no Postgres path yet',
+    ],
+    recommendations: [
+      'Phase 2.5: stabilize CI and test harness before adding auth complexity',
+      'Phase 3: bind owner via identity table — do not trust client-supplied owner headers',
+    ],
+  },
+  {
+    dir: '02.5-stabilization',
+    title: 'Phase 2.5 — Stabilization',
+    gateDate: '2026-06-29',
+    summary:
+      'Quality-only phase: CI gate (lint + typecheck + format), flaky test fixes, and `.ai/phases/` governance schema. No new domain features. Gate PASS 2026-06-29; deferrals closed 2026-07-04.',
+    workedWell: [
+      'Mandatory CI quality gate before merge — caught regressions early',
+      'MockD1 harness hardened — stable baseline without live D1',
+      '`.ai/phases/PHASE-DOCUMENT-SCHEMA.md` — single responsibility per governance doc',
+      'Zero feature creep — tests and docs only',
+    ],
+    harderOrDeferred: [
+      'Some CHECKLIST deferrals (PANDUAN ecosystem, staging smoke) closed after original gate date',
+      'Phase folder backfill for closed phases happened later (2026-07 governance sprint)',
+    ],
+    acceptedDebt: ['Governance docs scaffolded before per-phase enrichment scripts existed'],
+    recommendations: [
+      'Run enrichment scripts after each gate — avoid empty RETROSPECTIVE/COMPLETION templates',
+      'Keep stabilization phases feature-free — quality debt pays compound interest',
+    ],
+  },
+  {
+    dir: '02.6-knowledge',
+    title: 'Phase 2.6 — Knowledge Foundation',
+    gateDate: '2026-06-30',
+    summary:
+      'Delivered knowledge metadata columns, pure generators, `KnowledgeService` orchestrator, and `memory_relations` graph edge store. ADR-002 Implemented. Gate PASS 2026-06-30.',
+    workedWell: [
+      'Pure generators (codename, slug, summary, keywords) — testable without DB',
+      '`memory_relations` table — reused by Phase 8 graph without schema rewrite',
+      'Backfill scripts dry-run default — safe operator path',
+      '≥6 cross-owner isolation tests — leak prevention before intelligence layer',
+    ],
+    harderOrDeferred: [
+      'UNIQUE indexes required backfill before migration — `migrateKnowledgeFoundationPhase3` ordering',
+      'Design archive in `docs/archive/` — phase folder DESIGN is summary + pointer',
+    ],
+    acceptedDebt: ['Rule-based summary/keywords only — no LLM enrichment path yet'],
+    recommendations: [
+      'Phase 4: add retrieval projection (`MEMORY_SELECT`) before scaling candidate sets',
+      'Phase 8: reuse `memory_relations` — do not introduce parallel edge store',
+    ],
+  },
+  {
+    dir: '03-authorization',
+    title: 'Phase 3 — Authorization',
+    gateDate: '2026-06-30',
+    summary:
+      'Delivered API key auth on REST via `AuthService` provider chain, identity binding to `owner_id`, and documented MCP owner anchor. Reused Phase 1 identities schema — no new DDL. Gate PASS 2026-06-30.',
+    workedWell: [
+      'Provider chain pattern — extensible without rewriting middleware',
+      'Hash/compare via `secret_hash` only — no raw secrets in logs',
+      'Reused Phase 1 `identities` table — zero migration risk',
+      '`MCP_OWNER_ID` documented — production MCP anchor without REST key on stdio',
+    ],
+    harderOrDeferred: [
+      'OAuth/JWT scope deferred — API keys sufficient for v1',
+      'RBAC and quota layers deferred to Phase 17',
+    ],
+    acceptedDebt: ['API key only — no OAuth, no fine-grained RBAC at this gate'],
+    recommendations: [
+      'Phase 4+: always test cross-owner isolation after auth changes',
+      'Phase 17: add RBAC pipeline without changing `MemoryService` signatures',
+    ],
+  },
+  {
+    dir: '04-memory-intelligence',
+    title: 'Phase 4 — Memory Intelligence',
+    gateDate: '2026-07-01',
+    summary:
+      'Delivered Retriever + Ranker + ContextBuilder pipeline, `recordAccessBatch`, `MEMORY_SELECT` projection, importance scoring, and `MemoryConsolidator`. Gate PASS 2026-07-01.',
+    workedWell: [
+      '`recordAccessBatch` — single UPDATE replaced N× write amplification',
+      '`MEMORY_SELECT` — no full body in retrieval hot path',
+      'Bounded candidate retrieval — predictable latency before hybrid/vector phases',
+      'Consolidator batch path — foundation for Phase 5.5 compression',
+    ],
+    harderOrDeferred: [
+      'Intelligence column backfill required dry-run operator discipline',
+      'Graph-aware retrieval deferred to Phase 8',
+    ],
+    acceptedDebt: [
+      'Rule-based importance only — no learning loop until Phase 8.6',
+      'Consolidator rule-based — LLM compression deferred to Phase 5.5',
+    ],
+    recommendations: [
+      'Phase 5: isolate vector SQL in dedicated store — keep `MemoryRepository` clean',
+      'Phase 5.5: extend consolidator rather than fork compression logic',
+    ],
+  },
+  {
+    dir: '05-embedding',
+    title: 'Phase 5 — Embedding',
+    gateDate: '2026-07-01',
+    summary:
+      'Delivered async `EmbeddingJobRunner`, `D1EmbeddingStore` (vector SQL isolated from `MemoryRepository`), idempotent backfill with `content_hash` skip. ADR-003/004 Implemented. 152 tests at gate.',
+    workedWell: [
+      'No sync embed on CRUD — async job runner keeps write path fast',
+      'Vector SQL in `D1EmbeddingStore` — ADR-003 boundary enforced',
+      'Idempotent backfill with content_hash skip — safe re-runs',
+      'REST/MCP contracts unchanged — zero client breakage',
+    ],
+    harderOrDeferred: [
+      'Provider abstraction for multiple embed models deferred',
+      'Large corpus backfill timing not benchmarked at gate',
+    ],
+    acceptedDebt: [
+      'Single embed provider path — no model routing yet',
+      'D1 vector store — Postgres/pgvector deferred to Phase 11/22',
+    ],
+    recommendations: [
+      'Phase 6: composite retrieval sources — do not rewrite Retriever',
+      'Phase 11: cutover vector store to Postgres without touching MemoryService',
+    ],
+  },
+  {
     dir: '04.7-memory-stewardship',
     title: 'Phase 04.7 — Self-Managing Memory Stewardship',
     gateDate: '2026-07-04',
@@ -517,7 +659,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ${p.summary}
 
-Gate PASS ${p.gateDate}. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
+Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 

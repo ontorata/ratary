@@ -1,10 +1,10 @@
 # Phase 19 — Observability Platform — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** ADR-034
 **Master flag:** `OBSERVABILITY_PLATFORM=false` (default OFF — zero behavior change without opt-in)
+
 
 ---
 
@@ -48,7 +48,7 @@ Map roadmap success criteria to durable evidence.
 
 ## Rollback
 
-Disable `OBSERVABILITY_PLATFORM=false` (default). See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
+Set `OBSERVABILITY_PLATFORM=false`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 
 ---

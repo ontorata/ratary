@@ -16,7 +16,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 Federation layer: `KnowledgeExchangeService`, in-process transport, REST exchange API, `federation_*` tables. Gated by `FEDERATION_ENABLED=false`.
 
-Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
+Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 

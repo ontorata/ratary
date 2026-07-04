@@ -16,7 +16,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 Prometheus metrics, OTel traces, log shipper, 6 Grafana dashboard packs, SLO templates. Gated by `OBSERVABILITY_PLATFORM=false`.
 
-Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
+Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 

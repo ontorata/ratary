@@ -1,8 +1,8 @@
 # Phase 3 — Authorization — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-06-30  
+**Phase status:** ✅ Closed — gate PASS (2026-06-30)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
 ---
 
 ## Purpose

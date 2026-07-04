@@ -16,7 +16,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 `@ai-brain/sdk`, `@ai-brain/cli`, `@ai-brain/mcp-server`, OpenAPI SSOT, thin multi-language wrappers. ADR-031 Implemented.
 
-Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
+Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 

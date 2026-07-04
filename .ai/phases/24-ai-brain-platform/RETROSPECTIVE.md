@@ -16,7 +16,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 Umbrella manifest (edition planes), HMAC webhooks, Phase 12 delivery consumer, REST `/platform/*`. Gated by `AI_BRAIN_PLATFORM_ENABLED=false`.
 
-Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
+Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 

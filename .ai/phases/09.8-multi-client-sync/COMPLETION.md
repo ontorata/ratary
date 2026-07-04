@@ -1,10 +1,10 @@
 # Phase 09.8 — Multi-Client Sync — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** ADR-042
 **Master flag:** `MULTI_CLIENT_SYNC_ENABLED=false` (default OFF — zero behavior change without opt-in)
+
 
 ---
 
@@ -49,7 +49,7 @@ Map roadmap success criteria to durable evidence.
 
 ## Rollback
 
-Disable `MULTI_CLIENT_SYNC_ENABLED=false` (default). See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
+Set `MULTI_CLIENT_SYNC_ENABLED=false`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 
 ---

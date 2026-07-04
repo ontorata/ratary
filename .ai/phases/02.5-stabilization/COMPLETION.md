@@ -1,8 +1,8 @@
 # Phase 2.5 — Stabilization — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-06-29  
+**Phase status:** ✅ Closed — gate PASS (2026-06-29)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
 ---
 
 ## Purpose

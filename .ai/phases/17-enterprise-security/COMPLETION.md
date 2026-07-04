@@ -1,10 +1,10 @@
 # Phase 17 — Enterprise Security — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** ADR-032
 **Master flag:** `ENTERPRISE_SECURITY_V2=false` (default OFF — zero behavior change without opt-in)
+
 
 ---
 
@@ -49,7 +49,7 @@ Map roadmap success criteria to durable evidence.
 
 ## Rollback
 
-Disable `ENTERPRISE_SECURITY_V2=false` (default). See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
+Set `ENTERPRISE_SECURITY_V2=false`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 
 ---

@@ -1,10 +1,10 @@
 # Phase 5.5 — Semantic Compression — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** ADR-023
 **Master flag:** `COMPRESSION_ENABLED=false` (default OFF — zero behavior change without opt-in)
+
 
 ---
 
@@ -49,7 +49,7 @@ Map roadmap success criteria to durable evidence.
 
 ## Rollback
 
-Disable `COMPRESSION_ENABLED=false` (default). See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
+Set `COMPRESSION_ENABLED=false`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 
 ---

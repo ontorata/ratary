@@ -1,8 +1,8 @@
 # Phase 1 — Foundation — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-06-28  
+**Phase status:** ✅ Closed — gate PASS (2026-06-28)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
 ---
 
 ## Purpose

@@ -453,8 +453,7 @@ function render(p) {
 
   return `# ${p.title} — COMPLETION
 
-**Phase status:** Closed  
-**Gate:** PASS ${p.gateDate}  
+**Phase status:** ✅ Closed — gate PASS (${p.gateDate})  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)${adrBlock}${flagBlock}
 
 ---
@@ -495,12 +494,30 @@ ${p.flag ? `Set \`${p.flag}\`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTAT
 ${FOOTER(p.gateDate)}`;
 }
 
+const fixHeaders = process.argv.includes('--fix-headers');
+
 let updated = 0;
 let skipped = 0;
 
 for (const p of PHASES) {
   const file = path.join(PHASES_DIR, p.dir, 'COMPLETION.md');
   const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+  if (fixHeaders) {
+    if (SKIP.has(p.dir) && isRich(existing)) {
+      console.log('skip (rich content)', p.dir);
+      skipped++;
+      continue;
+    }
+    if (existing.includes('**Gate:** PASS')) {
+      fs.writeFileSync(file, render(p));
+      updated++;
+      console.log('header fixed', p.dir);
+    } else {
+      console.log('skip (no legacy header)', p.dir);
+      skipped++;
+    }
+    continue;
+  }
   if (SKIP.has(p.dir) && isRich(existing)) {
     console.log('skip (rich content)', p.dir);
     skipped++;
