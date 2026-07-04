@@ -30,7 +30,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## What was harder than expected
 
-- Graph repair deferred to Phase 08.7; index repair to Phase 14
+- `GraphRepairTask` registered (Phase 08.7 follow-up); index repair deferred to Phase 21
 - SQL run store, MCP `run_stewardship`, and scheduled job not built
 - Reserved stages `graph-repair`, `index-repair`, `ranking-refresh` registered but not implemented
 

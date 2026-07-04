@@ -25,7 +25,7 @@
 
 - [x] **04.7A** — Ports & types (`STEWARDSHIP_STAGE_ORDER`, interfaces)
 - [x] **04.7B** — Orchestrator + in-memory run store
-- [x] **04.7C** — Default tasks (metadata, consolidation, embedding, retrieval)
+- [x] **04.7C** — Default tasks (metadata, consolidation, graph repair, embedding, retrieval)
 - [x] **04.7D** — Composition root + env flag
 - [x] **04.7E** — CLI scripts
 - [x] **04.7F** — Manifest capability + docs
@@ -50,8 +50,8 @@
 
 ### F — Deferred (future phases)
 
-- [ ] Graph repair task (Phase 08.7)
-- [ ] Index repair task (Phase 14)
+- [x] Graph repair task (Phase 08.7) — `GraphRepairTask` wraps `infer:relations`
+- [ ] Index repair task (Phase 21 — search-graph-prod)
 - [ ] Ranking refresh task
 - [ ] SQL-backed run store
 - [ ] Optional MCP tool `run_stewardship`

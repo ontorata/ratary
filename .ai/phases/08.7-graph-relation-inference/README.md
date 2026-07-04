@@ -62,4 +62,4 @@ Deferred: semantic similarity (embeddings), conversation, dependency extraction.
 ## Related
 
 - Phase 8 Knowledge Graph: [08-knowledge-graph](../08-knowledge-graph/README.md)
-- Phase 04.7 graph-repair task (future): [04.7-memory-stewardship](../04.7-memory-stewardship/README.md)
+- Phase 04.7 graph-repair task: [04.7-memory-stewardship](../04.7-memory-stewardship/README.md) — `GraphRepairTask` ✅

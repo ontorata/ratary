@@ -15,7 +15,7 @@
 | Types | `STEWARDSHIP_STAGE_ORDER`, `STAGE_INDEX`, `StewardshipRunReport` | ✅ |
 | Orchestrator | `MemoryStewardshipOrchestrator` — sort, run, isolate errors, persist | ✅ |
 | Run store | `InMemoryStewardshipRunStore` (cap 50 runs/owner) | ✅ |
-| Tasks | MetadataAudit, Consolidation, EmbeddingAudit, RetrievalOptimization | ✅ |
+| Tasks | MetadataAudit, Consolidation, GraphRepair, EmbeddingAudit, RetrievalOptimization | ✅ |
 | Composition | `create-memory-stewardship-ports.ts` | ✅ |
 | Env | `MEMORY_STEWARDSHIP_ENABLED=false` in `src/config/env.ts` | ✅ |
 | CLI | `steward:memories` / `steward:memories:execute` | ✅ |
@@ -36,6 +36,7 @@ src/memory/stewardship/
   in-memory-stewardship-run-store.ts
   tasks/metadata-audit.task.ts
   tasks/consolidation.task.ts
+  tasks/graph-repair.task.ts
   tasks/embedding-audit.task.ts
   tasks/retrieval-optimization.task.ts
   index.ts
@@ -43,6 +44,7 @@ src/composition/create-memory-stewardship-ports.ts
 scripts/steward-memories.ts
 tests/memory/stewardship/orchestrator.test.ts
 tests/memory/stewardship/tasks.test.ts
+tests/memory/stewardship/graph-repair.task.test.ts
 ```
 
 ---
@@ -56,6 +58,7 @@ createMemoryStewardshipPorts(sql, env) → {
   orchestrator: MemoryStewardshipOrchestrator([
     MetadataAuditTask,
     ConsolidationTask(consolidator),  // wraps MemoryConsolidator
+    GraphRepairTask(relationInference),  // wraps Phase 8.7 infer:relations
     EmbeddingAuditTask,
     RetrievalOptimizationTask,
   ], { runStore }),
@@ -71,8 +74,8 @@ Consolidator receives `RuleBasedCompressionPolicy` when `COMPRESSION_ENABLED=tru
 
 | Stage | Future owner |
 |-------|--------------|
-| `graph-repair` | Phase 08.7 |
-| `index-repair` | Phase 14 |
+| `graph-repair` | ✅ `GraphRepairTask` (Phase 08.7) |
+| `index-repair` | Phase 21 (search-graph-prod) |
 | `ranking-refresh` | Ranking adaptation phase |
 | `duplicate-detection`, `archive` | Covered inside ConsolidationTask today |
 

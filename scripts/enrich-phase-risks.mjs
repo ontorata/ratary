@@ -16,8 +16,8 @@ const PHASES = [
     title: 'Phase 1 — Foundation',
     gateDate: '2026-06-28',
     risks: [
-      ['D1 vendor coupling', 'Medium', 'High', 'Repository port abstraction; migration scripts', 'Accepted — mitigated in Phase 10'],
-      ['No authentication on REST', 'High', 'Critical', 'Phase 3 authorization scope', 'Resolved — Phase 3'],
+      ['D1 vendor coupling', 'Medium', 'High', 'Repository port abstraction; migration scripts; Postgres path Phase 10', 'Mitigated'],
+      ['No authentication on REST', 'High', 'Critical', 'Phase 3 authorization scope', 'Transferred — Phase 3'],
       ['MCP/REST semantic drift', 'Medium', 'High', 'Shared MemoryService; single repository', 'Mitigated'],
       ['Schema migration on live data', 'Medium', 'High', 'Forward-only migrations; idempotent runner', 'Mitigated'],
     ],
@@ -38,7 +38,7 @@ const PHASES = [
     gateDate: '2026-06-30',
     risks: [
       ['Slug/codename collision', 'Medium', 'Medium', 'Unique constraints; generator unit tests', 'Mitigated'],
-      ['Summary quality variance', 'Medium', 'Low', 'Rule-based generator; optional LLM later', 'Accepted'],
+      ['Summary quality variance', 'Medium', 'Low', 'Rule-based on CRUD; async LLM via COMPRESSION_POLICY=llm + enrich:summaries', 'Mitigated'],
       ['Keyword normalization false positives', 'Low', 'Low', 'Normalizer tests; manual review path', 'Mitigated'],
     ],
   },
@@ -81,12 +81,11 @@ const PHASES = [
     gateDate: '2026-07-04',
     risks: [
       ['Stewardship mutates prod without dry-run', 'Medium', 'Critical', 'dryRun default true; CLI --execute opt-in', 'Mitigated'],
-      ['Run history lost on restart', 'High', 'Low', 'InMemory run store MVP', 'Accepted — SQL store deferred'],
+      ['Run history lost on restart', 'High', 'Low', 'InMemory run store MVP; SQL adapter deferred (D47-02)', 'Accepted'],
       ['Task error aborts whole run', 'Medium', 'Medium', 'Per-task error isolation in orchestrator', 'Mitigated'],
       ['Scope creep into agent planning', 'Low', 'Critical', 'Batch tasks only; no agent loop', 'Mitigated'],
     ],
     deferred: [
-      ['D47-01', 'Graph repair task missing', 'Phase 08.7 infer:relations'],
       ['D47-02', 'SQL run store', 'Post-MVP adapter'],
     ],
   },
@@ -163,7 +162,7 @@ const PHASES = [
     title: 'Phase 9.5 — Platform Architecture',
     gateDate: '2026-07-03',
     risks: [
-      ['Ports without adapters — dead code feel', 'Medium', 'Low', 'Phase 10 implements adapters', 'Resolved'],
+      ['Ports without adapters — dead code feel', 'Medium', 'Low', 'Phase 10 implements adapters', 'Transferred — Phase 10'],
       ['Duplicate port definitions', 'Medium', 'High', 'Re-export existing ports; platform-ports.test.ts', 'Mitigated'],
       ['Premature adapter in domain layer', 'Low', 'Critical', 'No implementations in 9.5', 'Mitigated'],
     ],

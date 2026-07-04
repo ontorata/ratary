@@ -2,12 +2,13 @@ import type { IMemoryRepository } from '../repositories/memory.repository.interf
 import type { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
 import type { MemoryScope } from '../types/memory-scope.js';
 import type { Memory } from '../types/memory.js';
-import { generateSummary } from '../knowledge/summary.generator.js';
 import { slugify } from '../knowledge/slug.generator.js';
 import { resolveCodenamePrefix } from '../knowledge/codename.generator.js';
 import { computeSemanticHash, normalizeTitleForDedup } from './semantic-hash.js';
 import type { ICompressionPolicy } from './compression/compression-policy.interface.js';
+import type { ICompressionSummarizer } from './compression/compression-summarizer.interface.js';
 import type { CompressionMetadata } from './compression/compression.types.js';
+import { RuleBasedCompressionSummarizer } from './compression/rule-based-compression-summarizer.js';
 import { MANIFEST_MAX_MEMORY_CONTENT_BYTES } from '../capabilities/capability-manifest.constants.js';
 
 export interface ConsolidationOptions {
@@ -22,6 +23,7 @@ export interface ConsolidationOptions {
 export interface ConsolidationDeps {
   compressionPolicy?: ICompressionPolicy;
   compressionEnabled?: boolean;
+  summarizer?: ICompressionSummarizer;
 }
 
 export interface ConsolidationAction {
@@ -47,6 +49,7 @@ const DEFAULT_IMPORTANCE_BUMP = 5;
 export class MemoryConsolidator {
   private readonly compressionPolicy?: ICompressionPolicy;
   private readonly compressionEnabled: boolean;
+  private readonly summarizer: ICompressionSummarizer;
 
   constructor(
     private readonly repository: IMemoryRepository,
@@ -55,6 +58,14 @@ export class MemoryConsolidator {
   ) {
     this.compressionPolicy = deps.compressionPolicy;
     this.compressionEnabled = deps.compressionEnabled ?? false;
+    this.summarizer = deps.summarizer ?? new RuleBasedCompressionSummarizer();
+  }
+
+  private async buildSummary(
+    content: string,
+    ctx: { title: string; project?: string },
+  ): Promise<string> {
+    return this.summarizer.summarize(content, ctx);
   }
 
   async run(scope: MemoryScope, options: ConsolidationOptions = {}): Promise<ConsolidationReport> {
@@ -106,15 +117,25 @@ export class MemoryConsolidator {
         });
 
         if (!dryRun) {
-          const summaryContent = group
-            .map((m) => `${m.title}: ${m.summary || generateSummary(m.content)}`)
-            .join('\n\n');
+          const parts: string[] = [];
+          for (const m of group) {
+            const lineSummary =
+              m.summary ||
+              (await this.buildSummary(m.content, { title: m.title, project: m.project }));
+            parts.push(`${m.title}: ${lineSummary}`);
+          }
+          const summaryContent = parts.join('\n\n');
           const summaryTitle = `Summary: ${canonical.title}`;
           const targetLevel =
             this.compressionPolicy?.targetLevel({
               memory: canonical,
               duplicateClusterSize: group.length,
             }) ?? 'summary';
+
+          const summaryField = await this.buildSummary(summaryContent, {
+            title: summaryTitle,
+            project: canonical.project,
+          });
 
           const codename = await this.repository.allocateCodename(
             scope.ownerId,
@@ -128,7 +149,7 @@ export class MemoryConsolidator {
             title: summaryTitle,
             project: canonical.project,
             content: summaryContent,
-            summary: generateSummary(summaryContent),
+            summary: summaryField,
             tags: canonical.tags,
             keywords: canonical.keywords,
             category: canonical.category,
@@ -142,11 +163,7 @@ export class MemoryConsolidator {
             ownerId: scope.ownerId,
             projectId: canonical.projectId,
             level: targetLevel,
-            semanticHash: computeSemanticHash(
-              summaryTitle,
-              generateSummary(summaryContent),
-              summaryContent,
-            ),
+            semanticHash: computeSemanticHash(summaryTitle, summaryField, summaryContent),
           });
           targetId = summaryMemory.id;
           report.summariesCreated++;
@@ -154,7 +171,7 @@ export class MemoryConsolidator {
           if (this.compressionEnabled && this.compressionPolicy) {
             const charsBefore = group.reduce((sum, m) => sum + m.content.length, 0);
             const meta: CompressionMetadata = {
-              algorithm: this.compressionPolicy.algorithmId(),
+              algorithm: `${this.compressionPolicy.algorithmId()}+${this.summarizer.algorithmId}`,
               version: this.compressionPolicy.policyVersion(),
               sourceMemoryIds: sourceIds,
               charRatio: summaryContent.length / Math.max(charsBefore, 1),

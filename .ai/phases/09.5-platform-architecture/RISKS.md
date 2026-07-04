@@ -16,7 +16,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Ports without adapters — dead code feel | Medium | Low | Phase 10 implements adapters | Resolved |
+| Ports without adapters — dead code feel | Medium | Low | Phase 10 implements adapters | Transferred — Phase 10 |
 | Duplicate port definitions | Medium | High | Re-export existing ports; platform-ports.test.ts | Mitigated |
 | Premature adapter in domain layer | Low | Critical | No implementations in 9.5 | Mitigated |
 

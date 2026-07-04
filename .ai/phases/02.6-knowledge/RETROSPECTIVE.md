@@ -37,7 +37,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Accepted debt
 
-- Rule-based summary/keywords only — no LLM enrichment path yet
+- *(none — async LLM summarizer shipped via Phase 5.5 follow-up)*
 
 ---
 

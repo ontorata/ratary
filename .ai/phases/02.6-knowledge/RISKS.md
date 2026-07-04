@@ -17,7 +17,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
 | Slug/codename collision | Medium | Medium | Unique constraints; generator unit tests | Mitigated |
-| Summary quality variance | Medium | Low | Rule-based generator; optional LLM later | Accepted |
+| Summary quality variance | Medium | Low | Rule-based on CRUD; async LLM via `COMPRESSION_POLICY=llm` + `npm run enrich:summaries` / consolidation jobs; OpenAI fallback to rule | Mitigated |
 | Keyword normalization false positives | Low | Low | Normalizer tests; manual review path | Mitigated |
 
 ---

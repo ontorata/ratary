@@ -141,6 +141,9 @@ const envSchema = z
       .default('false'),
     COMPRESSION_POLICY: z.enum(['rule', 'llm']).default('rule'),
     COMPRESSION_SCHEDULER: z.enum(['none', 'local']).default('none'),
+    SUMMARIZER_API_KEY: z.string().optional(),
+    SUMMARIZER_MODEL: z.string().default('gpt-4o-mini'),
+    SUMMARIZER_BASE_URL: z.string().url().optional(),
 
     SIGNAL_INGEST_ENABLED: z
       .enum(['true', 'false'])

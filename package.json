@@ -46,6 +46,8 @@
     "consolidate:memories:execute": "tsx scripts/consolidate-memories.ts --execute",
     "compress:memories": "tsx scripts/compress-memories.ts",
     "compress:memories:execute": "tsx scripts/compress-memories.ts --execute",
+    "enrich:summaries": "tsx scripts/enrich-summaries.ts",
+    "enrich:summaries:execute": "tsx scripts/enrich-summaries.ts --execute",
     "reflect:signals": "tsx scripts/reflect-signals.ts",
     "reflect:signals:execute": "tsx scripts/reflect-signals.ts --execute",
     "learning:run": "tsx scripts/run-learning.ts",

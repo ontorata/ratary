@@ -44,7 +44,7 @@ phases/
 | **COMPLETION.md** | Closure evidence: success criteria mapping, metrics, TASK_PROMPT archive pointer |
 | **RETROSPECTIVE.md** | Lessons learned: what worked, debt accepted, recommendations for next phase |
 | **CHECKLIST.md** | Executable gate checklist instance derived from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md) |
-| **RISKS.md** | Phase-specific risks: identified, mitigated, realized, deferred |
+| **RISKS.md** | Phase-specific risks: identified, mitigated, transferred, deferred — see [RISK register status values](#risk-register-status-values-risksmd) |
 
 ---
 
@@ -93,6 +93,30 @@ flowchart LR
 | **Review** | Code complete; gate pending | TESTING, REVIEW, CHECKLIST |
 | **Closed** | Gate PASS | All — append-only addenda only |
 | **Superseded** | Phase split or renamed (rare) | Frozen; pointer in README |
+
+---
+
+## RISK register status values (`RISKS.md`)
+
+The **Status** column in every phase `RISKS.md` MUST use one of the values below. At gate PASS, every row MUST be a **closed** status (`Mitigated`, `Resolved`, `Transferred`, `Deferred`, `Accepted`, or `Realized`) — not `Identified`.
+
+| Status | Meaning | Example |
+|--------|---------|---------|
+| **Mitigated** | Controls implemented in this phase; residual risk remains at reduced likelihood or impact | dry-run default; feature flag OFF; regression tests |
+| **Resolved** | Root cause **eliminated in this phase**; no material residual exposure | N× writes replaced by batch API; projection excludes full body |
+| **Transferred** | Ownership moved to a **named successor** phase or ADR — not eliminated here | `Transferred — Phase 3`, `Transferred — Phase 7.5 (ADR-025)` |
+| **Deferred** | Not treated in this phase; tracked in CHECKLIST **Deferred** section or successor `RISKS.md` | `Deferred — ADR-011`; optional deferred-risk ID table |
+| **Accepted** | Residual risk consciously accepted; no further mitigation planned in this phase scope | in-memory MVP; manual operator batch only |
+| **Identified** | Pre-gate only — mitigation planned or partial; MUST be upgraded before gate PASS | token benchmark not yet run |
+| **Realized** | Risk materialized before or at gate — summarize outcome in `RETROSPECTIVE.md` | production incident during phase |
+
+### Usage rules
+
+1. **`Resolved` vs `Mitigated`** — Both count as handled for gate purposes. Use **Resolved** only when the exposure is fully removed in **this** phase. Use **Mitigated** when controls reduce but do not eliminate residual risk.
+2. **Never `Resolved — Phase N`** — Successor ownership is **Transferred**, not Resolved. Wrong: `Resolved — Phase 3`. Right: `Transferred — Phase 3`.
+3. **Never `Resolved — ADR-NNN` alone** — Prefer `Transferred — Phase N (ADR-NNN)` when an ADR in another phase closes the risk.
+4. **Deferred vs Transferred** — **Transferred** means a successor phase **owns closure** of this risk. **Deferred** means this phase explicitly punts without naming closure evidence yet (often with a deferred-risk ID).
+5. **Suffix clutter** — Avoid `Mitigated — gate PASS` or `Accepted — SQL store deferred` at gate close. Put detail in the **Mitigation** column or the deferred-risk table; keep **Status** to one canonical token (optional ` — Phase N` / ` — ADR-NNN` only for **Transferred** and **Deferred**).
 
 ---
 

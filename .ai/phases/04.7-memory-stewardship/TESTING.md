@@ -12,6 +12,7 @@
 |------|----------|
 | `tests/memory/stewardship/orchestrator.test.ts` | Fixed stage order regardless of registration order; dry-run default; per-task error isolation; run-store persistence |
 | `tests/memory/stewardship/tasks.test.ts` | Real tasks via SQL harness: duplicate detection (dry-run), archive-on-execute, composition flag wiring |
+| `tests/memory/stewardship/graph-repair.task.test.ts` | `GraphRepairTask` skip when disabled; delegates to inference orchestrator |
 | `tests/capabilities/manifest-contract.test.ts` | `supportsSelfManagement: false` when flag off |
 
 ---
@@ -31,6 +32,8 @@
 - [x] `MetadataAuditTask` scans owner memories
 - [x] `ConsolidationTask` detects duplicates in dry-run (`totalChanged: 0`)
 - [x] `ConsolidationTask` archives duplicates on `--execute` (`changed > 0`)
+- [x] `GraphRepairTask` skipped when `RELATION_INFERENCE_ENABLED=false`
+- [x] Pipeline includes `graph-repair` stage between merge-compress and embedding-repair
 - [x] `EmbeddingAuditTask` reports memories without embedding
 - [x] `RetrievalOptimizationTask` reports level distribution + policy version
 - [x] `createMemoryStewardshipPorts` returns `enabled: false` by default
@@ -62,10 +65,10 @@ npm run steward:memories -- --project=my-project
 
 ## Future test additions
 
-- [ ] Graph repair task when Phase 08.7 registers
-- [ ] Index repair task when Phase 14 registers
+- [ ] Index repair task when Phase 21 registers
 - [ ] SQL-backed `IStewardshipRunStore` adapter
 - [ ] Optional scheduled stewardship job integration test
+
 ## Current regression
 
 689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

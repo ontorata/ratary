@@ -16,8 +16,8 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| D1 vendor coupling | Medium | High | Repository port abstraction; migration scripts | Accepted — mitigated in Phase 10 |
-| No authentication on REST | High | Critical | Phase 3 authorization scope | Resolved — Phase 3 |
+| D1 vendor coupling | Medium | High | Repository port abstraction; migration scripts; Postgres path Phase 10 | Mitigated |
+| No authentication on REST | High | Critical | Phase 3 authorization scope | Transferred — Phase 3 |
 | MCP/REST semantic drift | Medium | High | Shared MemoryService; single repository | Mitigated |
 | Schema migration on live data | Medium | High | Forward-only migrations; idempotent runner | Mitigated |
 

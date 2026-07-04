@@ -40,7 +40,7 @@ Phase 04.7 does **not** add agent reasoning, LLM merge, or changes to `MemorySer
 | Dimension | Assessment |
 |-----------|------------|
 | **Predecessors** | Phase 4 ✅ (consolidator), Phase 5.5 ✅ (compression policy), Phase 8.5 ✅ (access signals) |
-| **Successors** | Phase 08.7 (graph repair task), Phase 14 (index repair task), Phase 08.6 (quality recommendations feed) |
+| **Successors** | Phase 08.7 (graph repair task ✅), Phase 21 (index repair task), Phase 08.6 (quality recommendations feed) |
 | **Priority** | **P1 extension** — hygiene automation; not blocking core CRUD |
 | **Placement rationale** | Numbered 04.7 because it **orchestrates Phase 4 domain maintenance** without rewriting memory intelligence |
 
@@ -48,8 +48,8 @@ Phase 04.7 does **not** add agent reasoning, LLM merge, or changes to `MemorySer
 flowchart LR
   P4[Phase 4 Consolidator ✅] --> P047[Phase 04.7 Stewardship]
   P55[Phase 5.5 Compression ✅] --> P047
-  P047 --> P87[Phase 08.7 Graph repair task]
-  P047 --> P14[Phase 14 Index repair task]
+  P047 --> P87[Phase 08.7 Graph repair task ✅]
+  P047 --> P21[Phase 21 Index repair task]
   P047 --> P86[Phase 08.6 Quality feed]
 ```
 
@@ -68,15 +68,15 @@ flowchart LR
 | Phase | Relationship |
 |-------|--------------|
 | Phase 5.5 | Compression policy wired when `COMPRESSION_ENABLED=true` |
-| Phase 8.7 | Graph repair task slot reserved in stage order |
-| Phase 14 | Index repair task slot reserved |
+| Phase 8.7 | `GraphRepairTask` registered at `graph-repair` (wraps `IRelationInferenceOrchestrator`) |
+| Phase 21 | Index repair task slot reserved (Meilisearch/Neo4j sync) |
 
 #### Forward dependencies (future phases plug into 04.7)
 
 | Future need | Extension enabled |
 |-------------|-------------------|
-| Graph orphan repair | Register `GraphRepairTask` at stage `graph-repair` |
-| Search index sync | Register `IndexRepairTask` at stage `index-repair` |
+| Graph orphan repair | `GraphRepairTask` at stage `graph-repair` ✅ |
+| Search index sync | Register `IndexRepairTask` at stage `index-repair` (Phase 21) |
 | Ranking refresh | Register `RankingRefreshTask` at stage `ranking-refresh` |
 | SQL run history | Swap `InMemoryStewardshipRunStore` for SQL adapter |
 
@@ -111,9 +111,9 @@ flowchart LR
 | 2 | `duplicate-detection` | *(via ConsolidationTask)* | Dry-run reports |
 | 3 | `merge-compress` | `ConsolidationTask` | Yes when `--execute` |
 | 4 | `archive` | *(via ConsolidationTask)* | Yes when `--execute` |
-| 5 | `graph-repair` | *(reserved)* | Future Phase 08.7 |
+| 5 | `graph-repair` | `GraphRepairTask` | Yes when `--execute` + `RELATION_INFERENCE_ENABLED` |
 | 6 | `embedding-repair` | `EmbeddingAuditTask` | Read-only audit |
-| 7 | `index-repair` | *(reserved)* | Future Phase 14 |
+| 7 | `index-repair` | *(reserved)* | Future Phase 21 |
 | 8 | `ranking-refresh` | *(reserved)* | Future |
 | 9 | `retrieval-optimization` | `RetrievalOptimizationTask` | Read-only report |
 
@@ -299,12 +299,12 @@ Optional future: MCP tool `run_stewardship` (deferred — CLI sufficient for gat
 - [x] ADR-045 **Accepted** and linked
 - [x] Three ports implemented (`IMaintenanceTask`, `IMemoryStewardshipOrchestrator`, `IStewardshipRunStore`)
 - [x] Fixed-order orchestrator with dry-run default and error isolation
-- [x] Four default tasks wired in composition root
+- [x] Five default tasks wired in composition root (incl. `GraphRepairTask`)
 - [x] CLI `steward:memories` (dry-run) and `steward:memories:execute`
 - [x] Manifest `supportsSelfManagement` reflects flag
 - [x] Zero changes to `MemoryService` method signatures
 - [x] Tests green (493+ total; 7 new stewardship tests)
-- [x] Graph/index/ranking stages reserved for future task registration
+- [x] Graph/index/ranking stages — graph repair registered; index (Phase 21) and ranking reserved
 
 ---
 
@@ -312,8 +312,8 @@ Optional future: MCP tool `run_stewardship` (deferred — CLI sufficient for gat
 
 | Phase | Interaction |
 |-------|-------------|
-| **08.7** | Register `GraphRepairTask` at `graph-repair` stage |
-| **14** | Register `IndexRepairTask` at `index-repair` stage |
+| **08.7** | `GraphRepairTask` at `graph-repair` stage ✅ |
+| **21** | Register `IndexRepairTask` at `index-repair` stage (search-graph-prod) |
 | **08.6** | Quality recommendations feed into stewardship triggers |
 | **09.7** | Memory evolution distinct from duplicate rollup (04.7) |
 | **25** | Telemetry on stewardship runs via event bus |

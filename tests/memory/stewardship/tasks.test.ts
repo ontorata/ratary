@@ -15,6 +15,8 @@ import { MetadataAuditTask } from '../../../src/memory/stewardship/tasks/metadat
 import { ConsolidationTask } from '../../../src/memory/stewardship/tasks/consolidation.task.js';
 import { EmbeddingAuditTask } from '../../../src/memory/stewardship/tasks/embedding-audit.task.js';
 import { RetrievalOptimizationTask } from '../../../src/memory/stewardship/tasks/retrieval-optimization.task.js';
+import { GraphRepairTask } from '../../../src/memory/stewardship/tasks/graph-repair.task.js';
+import { NoOpRelationInferenceOrchestrator } from '../../../src/inference/noop-relation-inference-orchestrator.js';
 import { createMemoryStewardshipPorts } from '../../../src/composition/create-memory-stewardship-ports.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
@@ -79,6 +81,7 @@ describe('stewardship tasks (Phase 04.7)', () => {
       [
         new MetadataAuditTask(repository),
         new ConsolidationTask(consolidator),
+        new GraphRepairTask(new NoOpRelationInferenceOrchestrator(), false),
         new EmbeddingAuditTask(repository),
         new RetrievalOptimizationTask(repository, '1'),
       ],
@@ -92,6 +95,7 @@ describe('stewardship tasks (Phase 04.7)', () => {
     expect(report.tasks.map((t) => t.stage)).toEqual([
       'metadata-repair',
       'merge-compress',
+      'graph-repair',
       'embedding-repair',
       'retrieval-optimization',
     ]);
@@ -100,6 +104,9 @@ describe('stewardship tasks (Phase 04.7)', () => {
 
     const merge = report.tasks.find((t) => t.stage === 'merge-compress');
     expect(merge?.scanned).toBeGreaterThanOrEqual(2);
+
+    const graph = report.tasks.find((t) => t.stage === 'graph-repair');
+    expect(graph?.status).toBe('skipped');
 
     const embedding = report.tasks.find((t) => t.stage === 'embedding-repair');
     expect(embedding?.findings.join(' ')).toMatch(/without embedding/);

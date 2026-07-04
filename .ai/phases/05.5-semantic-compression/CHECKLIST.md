@@ -38,7 +38,7 @@
 
 ## Deferred
 
-- [ ] `ICompressionSummarizer` LLM adapter (async only)
+- [x] `ICompressionSummarizer` LLM adapter (async only) — `OpenAICompressionSummarizer`, `npm run enrich:summaries`
 - [ ] `POST /api/v1/admin/compress` REST endpoint
 - [ ] MCP tool `get_compression_status`
 - [ ] Token benchmark evidence archived in COMPLETION.md

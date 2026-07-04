@@ -35,7 +35,7 @@ Record architecture review findings and formal phase gate verdict.
 
 ## Known gaps (accepted)
 
-- Graph repair task deferred to Phase 08.7
+- Graph repair task wired via `GraphRepairTask` (Phase 08.7 orchestrator)
 - SQL run store deferred — `InMemoryStewardshipRunStore` MVP
 - MCP `run_stewardship` not built
 

@@ -1,5 +1,7 @@
 import { getD1Client } from '../src/db/index.js';
 import { runMigrations } from '../src/db/migrations.js';
+import { getEnv } from '../src/config/index.js';
+import { createCompressionSummarizer } from '../src/composition/create-compression-summarizer.js';
 import { MemoryRepository } from '../src/repositories/memory.repository.js';
 import { MemoryRelationRepository } from '../src/repositories/memory-relation.repository.js';
 import { MemoryConsolidator } from '../src/memory/consolidator.js';
@@ -22,7 +24,11 @@ async function consolidateMemories(): Promise<void> {
   const sql = sqlFromD1Client(client);
   const repository = new MemoryRepository(sql);
   const relationRepository = new MemoryRelationRepository(sql);
-  const consolidator = new MemoryConsolidator(repository, relationRepository);
+  const env = getEnv();
+  const summarizer = createCompressionSummarizer(env);
+  const consolidator = new MemoryConsolidator(repository, relationRepository, {
+    summarizer,
+  });
 
   const owners = await client.query<{ owner_id: string }>(
     'SELECT DISTINCT owner_id FROM memories WHERE owner_id != ?',

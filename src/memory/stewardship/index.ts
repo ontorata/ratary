@@ -22,5 +22,6 @@ export {
 export { InMemoryStewardshipRunStore } from './in-memory-stewardship-run-store.js';
 export { MetadataAuditTask } from './tasks/metadata-audit.task.js';
 export { ConsolidationTask } from './tasks/consolidation.task.js';
+export { GraphRepairTask } from './tasks/graph-repair.task.js';
 export { EmbeddingAuditTask } from './tasks/embedding-audit.task.js';
 export { RetrievalOptimizationTask } from './tasks/retrieval-optimization.task.js';

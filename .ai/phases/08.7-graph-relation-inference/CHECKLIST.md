@@ -46,7 +46,7 @@
 ## Deferred
 
 - [ ] Semantic similarity inference source
-- [ ] Phase 04.7 `graph-repair` stewardship task
+- [x] Phase 04.7 `graph-repair` stewardship task — `GraphRepairTask` in `create-memory-stewardship-ports`
 - [ ] Conversation / dependency sources
 
 ---

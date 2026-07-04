@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MemoryConsolidator } from '../../src/memory/consolidator.js';
 import { RuleBasedCompressionPolicy } from '../../src/memory/compression/rule-based-compression-policy.js';
+import type { ICompressionSummarizer } from '../../src/memory/compression/compression-summarizer.interface.js';
 import { MockD1Client } from '../helpers/mock-d1.js';
 import {
   createTestMemoryRepository,
@@ -72,5 +73,28 @@ describe('MemoryConsolidator with semantic compression (Phase 5.5)', () => {
     expect(report.dryRun).toBe(true);
     expect(report.summariesCreated).toBe(0);
     expect(report.duplicatesArchived).toBe(0);
+  });
+
+  it('uses injected summarizer for consolidated summary memory', async () => {
+    const mockSummarizer: ICompressionSummarizer = {
+      algorithmId: 'mock_v1',
+      summarize: async () => 'MOCK_SUMMARY',
+    };
+
+    consolidator = new MemoryConsolidator(repository, relationRepository, {
+      compressionPolicy: new RuleBasedCompressionPolicy(),
+      compressionEnabled: true,
+      summarizer: mockSummarizer,
+    });
+
+    await seedDuplicate('Mock summary topic', 'identical body');
+    await seedDuplicate('Mock summary topic', 'identical body', 40);
+
+    const report = await consolidator.run({ ownerId }, { dryRun: false, generateSummary: true });
+
+    expect(report.summariesCreated).toBeGreaterThan(0);
+    const all = await repository.findAllByOwner(ownerId);
+    const summary = all.find((m) => m.title.startsWith('Summary:'));
+    expect(summary?.summary).toBe('MOCK_SUMMARY');
   });
 });

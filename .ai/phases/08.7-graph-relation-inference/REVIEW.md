@@ -28,7 +28,7 @@ Record architecture review findings and formal phase gate verdict.
 ## Known gaps (accepted)
 
 - Semantic similarity source deferred
-- Phase 04.7 graph-repair task not wired
+- Phase 04.7 `graph-repair` task wired via `GraphRepairTask`
 
 ---
 

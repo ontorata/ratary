@@ -66,4 +66,4 @@ IGraphProvider traverses memory_relations (existing Phase 8)
 - [x] Evidence audit store (optional SQL)
 - [x] Flag off = zero regression
 - [ ] Semantic similarity source (deferred)
-- [ ] Stewardship `graph-repair` task registration (Phase 04.7)
+- [x] Stewardship `graph-repair` task registration (Phase 04.7) — `GraphRepairTask`

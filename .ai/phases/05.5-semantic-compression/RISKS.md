@@ -17,7 +17,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
 | Irreversible archive of wrong cluster | Medium | High | dry-run default; rule-based policy tests | Mitigated |
-| LLM summarizer on hot path | Low | Critical | No sync summarizer; async adapter deferred | Mitigated |
+| LLM summarizer on hot path | Low | Critical | No sync summarizer; `ICompressionSummarizer` async-only in jobs | Mitigated |
 | Compression enabled by default | Low | High | COMPRESSION_ENABLED=false | Mitigated |
 | Consolidator breaks Phase 4 paths | Medium | High | Extended consolidator; regression suite | Mitigated |
 
@@ -25,7 +25,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | ID | Risk | Mitigation path |
 |----|------|-----------------|
-| D55-01 | ICompressionSummarizer LLM adapter | Async job queue ADR follow-up |
+| — | *(none — D55-01 closed)* | `OpenAICompressionSummarizer` + `createCompressionSummarizer`; `npm run enrich:summaries` |
 
 ---
 
