@@ -14,11 +14,12 @@ import type {
 } from '../types/memory.js';
 import type { MemoryType } from '../types/knowledge.js';
 import { DEFAULT_MEMORY_LEVEL } from '../types/memory-level.js';
-import { NotFoundError } from '../types/errors.js';
+import { NotFoundError, SyncConflictError } from '../types/errors.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 import { hasWorkspaceScope } from '../types/memory-scope.js';
 import type { ISyncManager, MemoryWriteEvent } from '../sync/isync-manager.interface.js';
 import type { IMemoryEvolutionCoordinator } from '../evolution/memory-evolution-coordinator.js';
+import type { IMemoryDomainEventCoordinator } from '../events/memory-domain-event-coordinator.js';
 import { generateId } from '../utils/memory-mapper.js';
 
 export class MemoryService {
@@ -30,6 +31,7 @@ export class MemoryService {
     private readonly syncManager?: ISyncManager,
     private readonly agentIdentity?: IAgentIdentity,
     private readonly evolution?: IMemoryEvolutionCoordinator,
+    private readonly domainEvents?: IMemoryDomainEventCoordinator,
   ) {}
 
   private async resolveAttributionAgentId(scope: MemoryScope): Promise<string | undefined> {
@@ -52,12 +54,15 @@ export class MemoryService {
       return;
     }
 
-    await this.syncManager.reconcileWrite({
+    const result = await this.syncManager.reconcileWrite({
       scope,
       memoryId,
       operation,
       expectedUpdatedAt,
     });
+    if (result === 'reject') {
+      throw new SyncConflictError('Memory write rejected due to sync conflict');
+    }
   }
 
   async createMemory(scope: MemoryScope, input: CreateMemoryInput): Promise<Memory> {
@@ -106,6 +111,10 @@ export class MemoryService {
       await this.evolution.onMemoryCreated(scope, memory);
     }
 
+    if (this.domainEvents?.enabled) {
+      void this.domainEvents.onMemoryCreated(scope, memory);
+    }
+
     return memory;
   }
 
@@ -138,7 +147,12 @@ export class MemoryService {
     );
 
     const agentId = await this.resolveAttributionAgentId(scope);
-    await this.reconcileMemoryWrite(scope, id, 'update', existing.updatedAt);
+    await this.reconcileMemoryWrite(
+      scope,
+      id,
+      'update',
+      input.expectedUpdatedAt ?? existing.updatedAt,
+    );
 
     if (this.evolution?.enabled) {
       await this.evolution.onMemoryUpdated(scope, existing, agentId ?? null);
@@ -169,17 +183,31 @@ export class MemoryService {
     if (!updated) {
       throw new NotFoundError('Memory', id);
     }
+
+    if (this.domainEvents?.enabled) {
+      void this.domainEvents.onMemoryUpdated(scope, updated);
+    }
+
     return updated;
   }
 
-  async deleteMemory(scope: MemoryScope, id: string): Promise<void> {
+  async deleteMemory(
+    scope: MemoryScope,
+    id: string,
+    expectedUpdatedAt?: string | null,
+  ): Promise<void> {
     const workspaceId = workspaceIdFromScope(scope);
     const existing = await this.repository.findById(id, scope.ownerId, workspaceId);
     if (!existing) {
       throw new NotFoundError('Memory', id);
     }
 
-    await this.reconcileMemoryWrite(scope, id, 'delete', existing.updatedAt);
+    await this.reconcileMemoryWrite(
+      scope,
+      id,
+      'delete',
+      expectedUpdatedAt ?? existing.updatedAt,
+    );
 
     const deleted = await this.repository.delete(id, scope.ownerId, workspaceId);
     if (!deleted) {
@@ -188,6 +216,10 @@ export class MemoryService {
 
     if (this.embeddingStore) {
       await this.embeddingStore.deleteByMemoryId(id, scope.ownerId);
+    }
+
+    if (this.domainEvents?.enabled) {
+      void this.domainEvents.onMemoryDeleted(scope, id);
     }
   }
 

@@ -45,3 +45,12 @@ export class ForbiddenError extends AppError {
     super(message, 403, 'FORBIDDEN');
   }
 }
+
+export class SyncConflictError extends AppError {
+  constructor(
+    message = 'Memory write rejected due to sync conflict',
+    public readonly details?: unknown,
+  ) {
+    super(message, 409, 'SYNC_CONFLICT');
+  }
+}

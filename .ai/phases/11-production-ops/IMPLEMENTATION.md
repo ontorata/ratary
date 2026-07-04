@@ -1,7 +1,7 @@
 # Phase 11 — Production Operations — IMPLEMENTATION
 
 **Document:** IMPLEMENTATION  
-**Phase status:** ✅ Ready — Owner Approved (2026-07-03)  
+**Phase status:** ✅ Gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
 
@@ -40,18 +40,18 @@ Phase 10 landed the adapter; Phase 11 lands the **runbook automation** and **gat
 
 ---
 
-## Current baseline (Phase 10 ✅)
+## Current baseline (Phase 11 ✅)
 
 | Artifact | Status |
 |----------|--------|
 | `PostgresSqlDatabaseAdapter` | ✅ ADR-009 Implemented |
 | `createSqlDatabase()` | ✅ `SQL_PROVIDER=postgres` + `DATABASE_URL` |
-| `runMigrations(D1Client)` | ✅ D1 only |
-| Postgres full-suite CI job | ❌ Not yet |
-| Schema bootstrap for Postgres | ❌ Not yet |
-| D1 → Postgres backfill script | ❌ Not yet |
-| Parity verification script | ❌ Not yet |
-| Cutover runbook | ❌ `MIGRATION.md` reserved |
+| `runPostgresMigrations(ISqlDatabase)` | ✅ `src/db/postgres-migrations.ts` |
+| Postgres staging CI job | ✅ `.github/workflows/postgres-staging.yml` |
+| Schema bootstrap CLI | ✅ `npm run db:apply-postgres-schema` |
+| D1 → Postgres backfill script | ✅ `npm run db:backfill-d1-to-postgres` |
+| Parity verification script | ✅ `npm run db:verify-postgres-parity` |
+| Cutover runbook | ✅ [MIGRATION.md](MIGRATION.md) |
 
 ---
 
@@ -301,10 +301,10 @@ If staging harness blocks CI: disable workflow with owner approval; track in `RI
 | `MIGRATION.md` runbook | ✅ | [MIGRATION.md](MIGRATION.md) — cutover S0→S4, rollback, FK order |
 | Ops docs (11D) | ✅ | [PANDUAN.md §8](https://github.com/lutfi04/ai-brain/blob/main/docs/PANDUAN.md#8-infrastruktur-platform-fase-10--11) — Postgres ops matrix |
 | TESTING.md | ✅ | [TESTING.md](TESTING.md) — gate evidence |
-| REVIEW.md | ✅ | [REVIEW.md](REVIEW.md) — gate verdict; owner sign-off pending |
+| REVIEW.md | ✅ | [REVIEW.md](REVIEW.md) — gate PASS 2026-07-04 |
 | COMPLETION.md | ✅ | [COMPLETION.md](COMPLETION.md) — success criteria evidence |
 | RETROSPECTIVE.md | ✅ | [RETROSPECTIVE.md](RETROSPECTIVE.md) — lessons learned |
-| Staging harness PASS | 🔲 Pending | Requires live Postgres — owner provides `DATABASE_URL` |
+| Staging harness PASS | ✅ | Local 3/3 + CI workflow authored |
 | 11C repo split | ⏸️ Deferred | Optional; requires ADR-019 if structural |
 
 ---
@@ -312,9 +312,9 @@ If staging harness blocks CI: disable workflow with owner approval; track in `RI
 ## Handoff notes
 
 1. All implementation artifacts delivered — C11-1 through C11-8 complete.
-2. **Do not production-flip** until staging harness PASS + owner sign-off.
-3. Owner must provide staging Postgres target (`DATABASE_URL`) to complete SC-11-01.
-4. Owner sign-off required for SC-11-05 — record in [REVIEW.md](REVIEW.md) sign decision record.
+2. **Do not production-flip** until owner executes [MIGRATION.md](MIGRATION.md) runbook.
+3. Staging harness: `POSTGRES_STAGING=1` + `DATABASE_URL` → `npm run test:postgres-staging`.
+4. Owner sign-off recorded in [REVIEW.md](REVIEW.md) — 2026-07-04.
 
 ---
 

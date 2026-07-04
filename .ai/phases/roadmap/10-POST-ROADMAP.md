@@ -147,7 +147,7 @@ Move from *adapters exist* to *adapters proven in staging/production* for metada
 
 - [x] Staging harness green on live Postgres *(local 3/3 PASS 2026-07-04 — [TESTING.md](../11-production-ops/TESTING.md))*
 - [x] Documented cutover + rollback; owner sign-off ✅ *(MIGRATION.md + REVIEW.md sign-off 2026-07-04)*
-- [x] Default D1 deploy unchanged; Postgres opt-in only *(457 tests green at default env — 2026-07-04)*
+- [x] Default D1 deploy unchanged; Postgres opt-in only *(546 tests green at default env — 2026-07-04)*
 - [x] No `MemoryService` / `Retriever` rewrite *(verified — no pg imports outside infrastructure)*
 
 ## Risks
@@ -161,8 +161,8 @@ Move from *adapters exist* to *adapters proven in staging/production* for metada
 
 # Phase 12 — Event Pipeline & Observability
 
-**Status:** 🔲 Planned  
-**Folder (when open):** `.ai/phases/12-event-pipeline/`
+**Status:** 🔲 Planned — design draft (2026-07-04)  
+**Folder:** [.ai/phases/12-event-pipeline/](../12-event-pipeline/README.md)
 
 ## Scope
 

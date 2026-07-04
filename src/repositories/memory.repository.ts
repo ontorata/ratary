@@ -691,6 +691,33 @@ export class MemoryRepository implements IMemoryRepository {
     return rows.map(rowToMemory);
   }
 
+  async findUpdatedSince(filters: {
+    ownerId: string;
+    workspaceId?: string;
+    since: string;
+    limit: number;
+  }): Promise<Memory[]> {
+    const conditions = ['owner_id = ?', 'archived = 0'];
+    const params: unknown[] = [filters.ownerId];
+    appendWorkspaceFilter(conditions, params, filters.workspaceId);
+
+    if (filters.since) {
+      conditions.push('updated_at > ?');
+      params.push(filters.since);
+    }
+
+    params.push(filters.limit);
+
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT ${MEMORY_SELECT} FROM memories
+       WHERE ${conditions.join(' AND ')}
+       ORDER BY updated_at ASC
+       LIMIT ?`,
+      params,
+    );
+    return rows.map(rowToMemory);
+  }
+
   async bumpImportance(
     id: string,
     ownerId: string,

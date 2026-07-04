@@ -81,7 +81,9 @@ export const createMemorySchema = z
   })
   .merge(knowledgeMetadataSchema);
 
-export const updateMemorySchema = createMemorySchema.partial();
+export const updateMemorySchema = createMemorySchema.partial().extend({
+  expectedUpdatedAt: z.string().optional(),
+});
 
 export const listMemoriesQuerySchema = z.object({
   project: z.string().optional(),

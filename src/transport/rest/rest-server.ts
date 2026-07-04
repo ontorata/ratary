@@ -28,7 +28,9 @@ import { createSignalsController } from '../../controllers/signals.controller.js
 import { createSignalIngestPorts } from '../../composition/create-signal-ingest-ports.js';
 import { createLearningPorts } from '../../composition/create-learning-ports.js';
 import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
+import { createEventPipelinePorts } from '../../composition/create-event-pipeline-ports.js';
 import { createEvolutionController } from '../../controllers/evolution.controller.js';
+import { createClientSyncController } from '../../controllers/client-sync.controller.js';
 import { createGraphService } from '../../services/graph.service.js';
 import { createContextService } from '../../memory/create-context-service.js';
 import { createMemoryAccessAuditor } from '../../infrastructure/composition/create-memory-access-auditor.js';
@@ -128,15 +130,18 @@ export async function buildApp(options?: {
 
   const repository = new MemoryRepository(platform.sql);
   const relationRepository = new MemoryRelationRepository(platform.sql);
-  const multiAi = createMultiAiPorts(platform.sql);
+  const multiAi = createMultiAiPorts(platform.sql, env);
   const { scopeResolver } = multiAi;
   const evolutionPorts = createMemoryEvolutionPorts(platform.sql, env);
+  const eventPipeline = createEventPipelinePorts(env, platform.eventBus, platform.analyticsStore);
   const memoryService = createMemoryService(
     platform.sql,
     repository,
     multiAi,
     evolutionPorts.coordinator,
+    eventPipeline.coordinator,
   );
+  const clientSyncService = multiAi.bindClientSyncService(memoryService);
   const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
   const healthService = new HealthService(platform.sql);
 
@@ -150,7 +155,9 @@ export async function buildApp(options?: {
   const knowledgeController = createKnowledgeController(memoryService, scopeResolver);
   const relationController = createMemoryRelationController(relationService, scopeResolver);
   const embeddingProvider = createEmbeddingProvider();
-  const memoryAccessAuditor = createMemoryAccessAuditor(env, platform.sql);
+  const memoryAccessAuditor = eventPipeline.wrapMemoryAccessAuditor(
+    createMemoryAccessAuditor(env, platform.sql),
+  );
   const contextService = createContextService(repository, {
     embeddingProvider,
     vectorStore: platform.vectorStore,
@@ -177,6 +184,9 @@ export async function buildApp(options?: {
     evolutionPorts.enabled && evolutionPorts.service
       ? createEvolutionController(scopeResolver, evolutionPorts.service)
       : undefined;
+  const clientSyncController = multiAi.clientSync.enabled
+    ? createClientSyncController(scopeResolver, clientSyncService)
+    : undefined;
 
   const controllers = {
     health: healthController,
@@ -191,6 +201,7 @@ export async function buildApp(options?: {
     capabilities: capabilitiesController,
     signals: signalsController,
     evolution: evolutionController,
+    clientSync: clientSyncController,
   };
 
   await fastify.register(
@@ -203,6 +214,13 @@ export async function buildApp(options?: {
   await fastify.register(async (instance) => {
     await healthRoutes(instance, healthController);
   });
+
+  if (eventPipeline.runner) {
+    await eventPipeline.runner.start();
+    fastify.addHook('onClose', async () => {
+      await eventPipeline.runner!.stop();
+    });
+  }
 
   return fastify;
 }

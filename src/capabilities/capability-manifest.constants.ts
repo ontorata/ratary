@@ -34,6 +34,11 @@ export const STANDARD_ERROR_CODES: ErrorCodeDescriptor[] = [
     when: 'Memory/relation/workspace not found or cross-owner scope',
   },
   {
+    code: 'SYNC_CONFLICT',
+    httpStatus: 409,
+    when: 'Multi-client sync rejected stale write (ADR-042)',
+  },
+  {
     code: 'DATABASE_ERROR',
     httpStatus: 500,
     when: 'D1/Postgres persistence failure',

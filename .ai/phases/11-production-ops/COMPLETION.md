@@ -14,7 +14,7 @@
 |----|-----------|--------|----------|
 | SC-11-01 | Full test suite passes on Postgres staging harness | ✅ | Local harness 3/3 PASS 2026-07-04 — [TESTING.md](TESTING.md) |
 | SC-11-02 | Cutover + rollback documented with data boundaries | ✅ | [MIGRATION.md](MIGRATION.md) — S0–S4 states, FK-safe order, rollback limits |
-| SC-11-03 | Default D1 deploy unchanged; 457 tests at default env | ✅ | `npm run typecheck && npm test` → 457 pass (2026-07-04) |
+| SC-11-03 | Default D1 deploy unchanged; 546 tests at default env | ✅ | `npm run typecheck && npm test` → 546 pass (2026-07-04) |
 | SC-11-04 | No `MemoryService` / `Retriever` rewrite | ✅ | Zero `pg` imports outside `src/infrastructure/` |
 | SC-11-05 | Owner sign-off on cutover strategy | ✅ | [REVIEW.md](REVIEW.md) — Lutfi Ramadhan, 2026-07-04 |
 | SC-11-06 | ADR-018 **Approved** before merge | ✅ | ADR-018 Approved 2026-07-03 |
@@ -69,7 +69,7 @@ $ npm run typecheck && npm test   # 2026-07-04
   ✅ 0 errors
 
 > test
-  ✅ 457 passed | 3 skipped (460 total)
+  ✅ 546 passed | 3 skipped (549 total)
   Duration: 5.66s
 ```
 

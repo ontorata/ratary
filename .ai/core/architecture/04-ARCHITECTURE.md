@@ -213,6 +213,9 @@ MemoryService
 - Learning intelligence (Phase 8.6, ADR-057): `learning/` orchestrates async policy snapshots from signal events; `DefaultRankingLearningEngine` produces bounded retrieval weight multipliers; `ContextService` loads active snapshot. Gated by `LEARNING_ENGINE_ENABLED=false`. CLI: `learning:run`.
 - Graph relation inference (Phase 8.7, ADR-041): `inference/` orchestrates batch inferred edges into `memory_relations` (`source_type=inferred`); manual edges never overwritten. Gated by `RELATION_INFERENCE_ENABLED=false`. CLI: `infer:relations`.
 - Memory evolution (Phase 09.7, ADR-040): `evolution/` archives pre-update snapshots to `memory_versions`; `memories` remains Current head. Gated by `MEMORY_EVOLUTION_ENABLED=false`. CLI: `evolution:history`.
+- Multi-client sync (Phase 09.8, ADR-042): `client-sync/` pull/push with conflict resolution; extends `ISyncManager`. Gated by `MULTI_CLIENT_SYNC_ENABLED=false`. CLI: `sync:status`.
+- Event pipeline (Phase 12, ADR-020): `events/` domain publishers + consumer registry; post-commit fan-out via `IEventBus`. Gated by `EVENT_CONSUMERS_ENABLED=false`. Requires `EVENT_BUS_PROVIDER=redis` when ON.
+- Production ops (Phase 11, ADR-018): Postgres schema bootstrap, D1→Postgres backfill/parity scripts, staging harness. Default `SQL_PROVIDER=d1`. CLI: `db:apply-postgres-schema`, `db:backfill-d1-to-postgres`, `db:verify-postgres-parity`.
 
 ---
 
@@ -344,6 +347,30 @@ transport/
 
 ---
 
+## Production operations (Phase 11 — implemented)
+
+**Status:** Implemented — [ADR-018](../../../docs/adr/018-production-postgres-cutover.md) Approved (2026-07-03) · Gate PASS (2026-07-04) · [11 DESIGN](../../phases/11-production-ops/DESIGN.md)
+
+**Owns:** Postgres metadata cutover **operational proof** — schema bootstrap, D1→Postgres backfill, parity verification, staging harness. **Does not** rewrite application services.
+
+**Structure:**
+
+```
+src/db/postgres-migrations.ts       runPostgresMigrations(ISqlDatabase)
+scripts/
+  apply-postgres-schema.ts          npm run db:apply-postgres-schema
+  backfill-d1-to-postgres.ts        npm run db:backfill-d1-to-postgres
+  verify-postgres-parity.ts         npm run db:verify-postgres-parity
+  lib/d1-to-postgres-backfill.ts    FK-safe table order, batch upsert
+  lib/postgres-parity.ts            count-based parity check
+.github/workflows/postgres-staging.yml
+tests/db/postgres-staging.integration.test.ts
+```
+
+**Gating:** `SQL_PROVIDER=d1` default unchanged. Postgres opt-in: `SQL_PROVIDER=postgres` + `DATABASE_URL`. Cutover runbook: [MIGRATION.md](../../phases/11-production-ops/MIGRATION.md).
+
+---
+
 ## Runtime compatibility (Phase 7.5 — implemented)
 
 **Status:** Implemented — [ADR-025](../../../docs/adr/025-capability-discovery-api.md) Accepted (2026-07-04) · [07.5 DESIGN](../../phases/07.5-runtime-compatibility/DESIGN.md)
@@ -463,6 +490,54 @@ routes/v1/evolution.routes.ts
 ```
 
 **Gating:** `MEMORY_EVOLUTION_ENABLED=false` (default). Current content always in `memories`; versions are append-only archives.
+
+---
+
+## Multi-client sync (Phase 09.8 — implemented)
+
+**Status:** Implemented — [ADR-042](../../../docs/adr/042-multi-client-memory-sync.md) Accepted (2026-07-04) · [09.8 DESIGN](../../phases/09.8-multi-client-sync/DESIGN.md)
+
+**Owns:** client-to-hub pull/push sync, per-platform cursors, conflict resolution strategies. **Distinct from** Phase 14 federation (node-to-node).
+
+**Structure:**
+
+```
+client-sync/
+  conflict-aware-sync-manager.ts     replaces accept-only when flag ON
+  client-sync.service.ts             pull/push/status
+  conflict-resolvers.ts              lww | field_merge | manual_queue
+infrastructure/client-sync/
+  sql-sync-cursor-store.ts
+  sql-sync-conflict-store.ts
+composition/create-multi-client-sync-ports.ts
+routes/v1/client-sync.routes.ts
+```
+
+**Gating:** `MULTI_CLIENT_SYNC_ENABLED=false` (default). Flag off → Phase 9 `AcceptSyncManager` only. CLI: `sync:status`.
+
+---
+
+## Event pipeline (Phase 12 — implemented)
+
+**Status:** Implemented — [ADR-020](../../../docs/adr/020-event-consumer-architecture.md) Implemented (2026-07-04) · [12 DESIGN](../../phases/12-event-pipeline/DESIGN.md)
+
+**Owns:** async domain event fan-out on `IEventBus` — consumer registry, post-commit publishers, analytics sink. **Distinct from** Phase 19 observability (operational telemetry).
+
+**Structure:**
+
+```
+events/
+  domain-event-publisher.ts          fire-and-forget publish via IEventBus
+  memory-domain-event-coordinator.ts post-commit hooks (MemoryService)
+  event-consumer-registry.ts
+  event-consumer-runner.ts
+  consumers/memory-access-analytics.consumer.ts
+infrastructure/audit/
+  event-publishing-memory-access-auditor.ts
+composition/create-event-pipeline-ports.ts
+```
+
+**Gating:** `EVENT_CONSUMERS_ENABLED=false` (default). When ON: requires `EVENT_BUS_PROVIDER=redis`. Optional analytics fan-out when `ANALYTICS_PROVIDER=duckdb`. Manifest: `supportsEventConsumers`.
 
 ---
 

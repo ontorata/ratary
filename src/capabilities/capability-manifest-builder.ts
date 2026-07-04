@@ -61,6 +61,8 @@ export class CapabilityManifestBuilder {
         supportsLearningEngine: this.env.LEARNING_ENGINE_ENABLED,
         supportsRelationInference: this.env.RELATION_INFERENCE_ENABLED,
         supportsMemoryEvolution: this.env.MEMORY_EVOLUTION_ENABLED,
+        supportsMultiClientSync: this.env.MULTI_CLIENT_SYNC_ENABLED,
+        supportsEventConsumers: this.env.EVENT_CONSUMERS_ENABLED,
       },
       limits: {
         maxContextTokens: Math.floor(MAX_CONTEXT_MAX_CHARS / 4) || MANIFEST_MAX_CONTEXT_TOKENS,

@@ -13,6 +13,7 @@ import { createMemoryAccessAuditor } from '../../infrastructure/composition/crea
 import { createEmbeddingProvider } from '../../embedding/create-embedding-provider.js';
 import { createPlatformAdapters } from '../../infrastructure/composition/create-platform-adapters.js';
 import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
+import { createEventPipelinePorts } from '../../composition/create-event-pipeline-ports.js';
 import { createGraphService } from '../../services/graph.service.js';
 import { createMultiAiPorts } from '../../composition/create-multi-ai-ports.js';
 import { createTransportHandlers } from '../shared/handlers/create-transport-handlers.js';
@@ -30,6 +31,7 @@ export class GrpcTransportServer implements ITransportServer {
   private server: Server | null = null;
   private serving = false;
   private boundPort = 0;
+  private eventRunnerStop: (() => Promise<void>) | null = null;
 
   async start(): Promise<void> {
     if (this.serving) return;
@@ -39,13 +41,15 @@ export class GrpcTransportServer implements ITransportServer {
     const platform = createPlatformAdapters(d1, env);
     const repository = new MemoryRepository(platform.sql);
     const relationRepository = new MemoryRelationRepository(platform.sql);
-    const multiAi = createMultiAiPorts(platform.sql);
+    const multiAi = createMultiAiPorts(platform.sql, env);
     const evolutionPorts = createMemoryEvolutionPorts(platform.sql, env);
+    const eventPipeline = createEventPipelinePorts(env, platform.eventBus, platform.analyticsStore);
     const memoryService = createMemoryService(
       platform.sql,
       repository,
       multiAi,
       evolutionPorts.coordinator,
+      eventPipeline.coordinator,
     );
     const relationService = createMemoryRelationService(
       platform.sql,
@@ -53,7 +57,9 @@ export class GrpcTransportServer implements ITransportServer {
       relationRepository,
     );
     const embeddingProvider = createEmbeddingProvider();
-    const memoryAccessAuditor = createMemoryAccessAuditor(env, platform.sql);
+    const memoryAccessAuditor = eventPipeline.wrapMemoryAccessAuditor(
+      createMemoryAccessAuditor(env, platform.sql),
+    );
     const contextService = createContextService(repository, {
       embeddingProvider,
       vectorStore: platform.vectorStore,
@@ -61,6 +67,11 @@ export class GrpcTransportServer implements ITransportServer {
       memoryAccessAuditor,
     });
     const graphService = createGraphService(platform.sql, repository);
+
+    if (eventPipeline.runner) {
+      await eventPipeline.runner.start();
+      this.eventRunnerStop = () => eventPipeline.runner!.stop();
+    }
 
     const handlers = createTransportHandlers({
       memoryService,
@@ -98,6 +109,11 @@ export class GrpcTransportServer implements ITransportServer {
   }
 
   async stop(): Promise<void> {
+    if (this.eventRunnerStop) {
+      await this.eventRunnerStop();
+      this.eventRunnerStop = null;
+    }
+
     const server = this.server;
     if (!server) {
       this.serving = false;

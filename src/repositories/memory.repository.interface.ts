@@ -51,6 +51,12 @@ export interface IMemoryReader {
     minAccessCount: number;
     olderThanDays: number;
   }): Promise<Memory[]>;
+  findUpdatedSince(filters: {
+    ownerId: string;
+    workspaceId?: string;
+    since: string;
+    limit: number;
+  }): Promise<Memory[]>;
 }
 
 /** Write and maintenance memory persistence operations. */

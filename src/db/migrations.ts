@@ -497,6 +497,34 @@ CREATE TABLE IF NOT EXISTS memory_heads (
 CREATE INDEX IF NOT EXISTS idx_memory_heads_owner ON memory_heads(owner_id);
 `;
 
+const MULTI_CLIENT_SYNC_SQL = `
+CREATE TABLE IF NOT EXISTS sync_cursors (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  platform_id TEXT NOT NULL,
+  cursor_value TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sync_cursors_owner_platform
+  ON sync_cursors(owner_id, platform_id, workspace_id);
+
+CREATE TABLE IF NOT EXISTS sync_conflicts (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  platform_id TEXT NOT NULL,
+  memory_id TEXT NOT NULL,
+  payload TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_sync_conflicts_owner_status
+  ON sync_conflicts(owner_id, status);
+`;
+
 export async function migrateExtensionTracksPhase1(
   client: ISqlDatabase,
   dialect: MigrationDialect = 'sqlite',
@@ -530,6 +558,13 @@ export async function migrateExtensionTracksPhase3(client: ISqlDatabase): Promis
 /** Extension track 09.7 — memory evolution version store (ADR-040). */
 export async function migrateExtensionTracksPhase4(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(MEMORY_EVOLUTION_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Extension track 09.8 — multi-client sync cursors and conflict queue (ADR-042). */
+export async function migrateExtensionTracksPhase5(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(MULTI_CLIENT_SYNC_SQL)) {
     await client.execute(sql);
   }
 }
@@ -580,6 +615,7 @@ export async function runSchemaMigrations(
   await migrateExtensionTracksPhase2(client);
   await migrateExtensionTracksPhase3(client);
   await migrateExtensionTracksPhase4(client);
+  await migrateExtensionTracksPhase5(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

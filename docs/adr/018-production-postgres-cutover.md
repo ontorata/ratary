@@ -1,8 +1,9 @@
 # ADR-018: Production Postgres Cutover
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-03  
 **Approved:** 2026-07-03  
+**Implemented:** 2026-07-04 (Phase 11 gate PASS)  
 **Deciders:** Project owner  
 **Phase:** 11 — Production Operations
 
@@ -10,7 +11,7 @@
 
 ## Context
 
-Phase 10 shipped `PostgresSqlDatabaseAdapter` ([ADR-009](009-postgresql-metadata-adapter.md)) behind `SQL_PROVIDER=postgres`. Repositories depend on `ISqlDatabase`; default production remains D1 with **405+ tests** at default env.
+Phase 10 shipped `PostgresSqlDatabaseAdapter` ([ADR-009](009-postgresql-metadata-adapter.md)) behind `SQL_PROVIDER=postgres`. Repositories depend on `ISqlDatabase`; default production remains D1 with **546+ tests** at default env.
 
 ADR-009 covers **adapter mechanics** (placeholder translation, factory wiring). It defers steps 2–5 of metadata migration (schema apply on Postgres, backfill, production flip, operational rollback) to a separate ADR.
 
@@ -239,4 +240,4 @@ Reuse patterns: `scripts/lib/backfill-sql.ts`, `scripts/lib/backfill-cli.ts`.
 
 ---
 
-*Approved 2026-07-03. Implementation of cutover scripts authorized after Phase 11 Readiness PASS.*
+*Approved 2026-07-03. Implemented 2026-07-04 — Phase 11 gate PASS. See [.ai/phases/11-production-ops/COMPLETION.md](../../.ai/phases/11-production-ops/COMPLETION.md).*

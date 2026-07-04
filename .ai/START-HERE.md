@@ -95,8 +95,9 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 9 Multi-AI | ✅ Complete (ADR-007 Implemented 2026-07-03) |
 | 9.5 Platform Architecture | ✅ Complete (ADR-008 2026-07-03) |
 | 10 Enterprise | ✅ Complete (2026-07-03) |
-| 11 Production Ops | 🔄 In Progress — [11-production-ops/](phases/11-production-ops/) · [10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md) |
-| 10.5 · 12–25 (+ extension tracks) | 🔲 Design draft — awaiting owner approval · [phases/README.md](phases/README.md) |
+| 11 Production Ops | ✅ Implemented — [11-production-ops/](phases/11-production-ops/) · ADR-018 |
+| 10.5 Transport & Connectivity | ✅ Implemented — [10.5-transport-connectivity/](phases/10.5-transport-connectivity/) · ADR-027 |
+| 12 Event Pipeline | ✅ Implemented — [12-event-pipeline/](phases/12-event-pipeline/) · ADR-020 |
 
 **Platform vision & capstone:** [core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md](core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) · [Phase 25 Global AI Intelligence Platform](phases/25-global-ai-intelligence/DESIGN.md) (ADR-036/037/038/043 Proposed).
 

@@ -1,6 +1,6 @@
 # Task Prompt — Phase 10.5 Transport & Connectivity Layer
 
-**Status:** ✅ Implemented — ADR-027 Implemented (2026-07-04); tracks 10.5A–10.5F ✅; gate REVIEW/COMPLETION pending  
+**Status:** ✅ Implemented — ADR-027 Implemented (2026-07-04); tracks 10.5A–10.5F ✅; gate PASS  
 **Template:** [workflow/12-TASK-TEMPLATE.md](../../workflow/12-TASK-TEMPLATE.md)  
 **Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-027](../../adr/027-transport-connectivity-layer.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 10.5
@@ -80,7 +80,7 @@ Implement **Phase 10.5 — Transport & Connectivity Layer**: formalize `src/tran
 | **Migration** | None (schema) — folder strangler only | ✅ |
 | **Scripts** | None required | ✅ |
 | **Documentation** | 04-ARCHITECTURE, PANDUAN § transport, POST-ROADMAP, ADR-027 Implemented, `.env.example` | ✅ |
-| **Completion** | [COMPLETION_TEMPLATE.md](COMPLETION_TEMPLATE.md) filled → COMPLETION.md | ⬜ pending gate |
+| **Completion** | [COMPLETION_TEMPLATE.md](COMPLETION_TEMPLATE.md) filled → COMPLETION.md | ✅ |
 
 ---
 
@@ -95,7 +95,7 @@ Implement **Phase 10.5 — Transport & Connectivity Layer**: formalize `src/tran
 | 5 | `refactor(transport): move MCP to transport/mcp with re-exports` | 10.5D | ✅ |
 | 6 | `feat(transport): add gRPC server behind GRPC_ENABLED flag` | 10.5E | ✅ |
 | 7 | `feat(capabilities): extend manifest transport section` | 10.5F | ✅ |
-| 8 | `docs(phase): Phase 10.5 gate evidence` | TESTING, REVIEW, COMPLETION | ⬜ pending gate |
+| 8 | `docs(phase): Phase 10.5 gate evidence` | TESTING, REVIEW, COMPLETION | ✅ |
 
 **Quality gate (every commit):**
 
@@ -115,8 +115,8 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 - [x] Handler parity suite ≥10 use cases
 - [x] No service/repository logic diff (services untouched; layer-boundary lint gate enforces it)
 - [x] Manifest reports transport accurately
-- [ ] CHECKLIST.md gate PASS (SC-10.5-08 — REVIEW.md/COMPLETION.md pending)
-- [ ] REVIEW.md records owner authorization
+- [x] CHECKLIST.md gate PASS (SC-10.5-08 — REVIEW.md/COMPLETION.md)
+- [x] REVIEW.md records gate verdict
 
 ---
 

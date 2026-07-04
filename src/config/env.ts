@@ -82,6 +82,10 @@ const envSchema = z
     RATE_LIMIT_REDIS_URL: z.string().url().optional(),
     REDIS_KEY_PREFIX: z.string().default('ai-brain:cache:'),
     EVENT_BUS_PROVIDER: z.enum(['none', 'noop', 'redis']).default('none'),
+    EVENT_CONSUMERS_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
     REDIS_STREAM_PREFIX: z.string().default('ai-brain:events:'),
     REDIS_STREAM_CONSUMER_GROUP: z.string().default('ai-brain-consumers'),
     REDIS_STREAM_CONSUMER_NAME: z.string().default('ai-brain-worker'),
@@ -149,6 +153,14 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
     MEMORY_EVOLUTION_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+
+    // Multi-client memory sync (Phase 09.8) — ADR-042
+    MULTI_CLIENT_SYNC_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    MULTI_CLIENT_SYNC_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+    MULTI_CLIENT_SYNC_STRATEGY: z.enum(['lww', 'field_merge', 'manual_queue']).default('lww'),
 
     // Self-managing memory stewardship (Phase 04.7) — ADR-045, deterministic maintenance pipeline
     MEMORY_STEWARDSHIP_ENABLED: z
@@ -270,6 +282,14 @@ const envSchema = z
         code: 'custom',
         path: ['REDIS_URL'],
         message: 'REDIS_URL is required when EVENT_BUS_PROVIDER=redis',
+      });
+    }
+
+    if (env.EVENT_CONSUMERS_ENABLED && env.EVENT_BUS_PROVIDER !== 'redis') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['EVENT_BUS_PROVIDER'],
+        message: 'EVENT_BUS_PROVIDER=redis is required when EVENT_CONSUMERS_ENABLED=true',
       });
     }
 

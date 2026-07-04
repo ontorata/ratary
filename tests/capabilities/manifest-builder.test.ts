@@ -34,6 +34,8 @@ describe('CapabilityManifestBuilder', () => {
     expect(manifest.capabilities.supportsLearningEngine).toBe(false);
     expect(manifest.capabilities.supportsRelationInference).toBe(false);
     expect(manifest.capabilities.supportsMemoryEvolution).toBe(false);
+    expect(manifest.capabilities.supportsMultiClientSync).toBe(false);
+    expect(manifest.capabilities.supportsEventConsumers).toBe(false);
     expect(manifest.deployment.sqlProvider).toBe('d1');
     expect(manifest.retrieval.defaultContentMode).toBe('summary');
   });

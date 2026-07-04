@@ -13,6 +13,7 @@ import { createMemoryAccessAuditor } from '../../infrastructure/composition/crea
 import { createEmbeddingProvider } from '../../embedding/create-embedding-provider.js';
 import { createPlatformAdapters } from '../../infrastructure/composition/create-platform-adapters.js';
 import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
+import { createEventPipelinePorts } from '../../composition/create-event-pipeline-ports.js';
 import { getEnv } from '../../config/index.js';
 import { createGraphService } from '../../services/graph.service.js';
 import { assertMcpOwnerConfigured } from '../../types/memory-scope.js';
@@ -463,17 +464,21 @@ export async function startMcpStdioServer(): Promise<void> {
   const platform = createPlatformAdapters(d1, env);
   const repository = new MemoryRepository(platform.sql);
   const relationRepository = new MemoryRelationRepository(platform.sql);
-  const multiAi = createMultiAiPorts(platform.sql);
+  const multiAi = createMultiAiPorts(platform.sql, env);
   const evolutionPorts = createMemoryEvolutionPorts(platform.sql, env);
+  const eventPipeline = createEventPipelinePorts(env, platform.eventBus, platform.analyticsStore);
   const memoryService = createMemoryService(
     platform.sql,
     repository,
     multiAi,
     evolutionPorts.coordinator,
+    eventPipeline.coordinator,
   );
   const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
   const embeddingProvider = createEmbeddingProvider();
-  const memoryAccessAuditor = createMemoryAccessAuditor(env, platform.sql);
+  const memoryAccessAuditor = eventPipeline.wrapMemoryAccessAuditor(
+    createMemoryAccessAuditor(env, platform.sql),
+  );
   const contextService = createContextService(repository, {
     embeddingProvider,
     vectorStore: platform.vectorStore,
@@ -494,6 +499,13 @@ export async function startMcpStdioServer(): Promise<void> {
 
   const server = createMcpServer(handlers, scopeResolver, agentIdentity, platform.sql);
   const transport = new StdioServerTransport();
+
+  if (eventPipeline.runner) {
+    await eventPipeline.runner.start();
+    process.on('SIGINT', () => void eventPipeline.runner!.stop());
+    process.on('SIGTERM', () => void eventPipeline.runner!.stop());
+  }
+
   await server.connect(transport);
 }
 

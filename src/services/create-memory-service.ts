@@ -9,6 +9,7 @@ import { SearchService } from '../search/search.service.js';
 import { MemoryService } from './memory.service.js';
 import { MemoryRelationService } from './memory-relation.service.js';
 import type { IMemoryEvolutionCoordinator } from '../evolution/memory-evolution-coordinator.js';
+import type { IMemoryDomainEventCoordinator } from '../events/memory-domain-event-coordinator.js';
 
 /**
  * Creates MemoryService with a shared repository instance.
@@ -19,6 +20,7 @@ export function createMemoryService(
   repository?: IMemoryRepository,
   multiAi?: Pick<MultiAiPorts, 'syncManager' | 'agentIdentity'>,
   evolution?: IMemoryEvolutionCoordinator,
+  domainEvents?: IMemoryDomainEventCoordinator,
 ): MemoryService {
   const memRepo = repository ?? new MemoryRepository(db);
   const knowledge = new KnowledgeService(memRepo);
@@ -32,6 +34,7 @@ export function createMemoryService(
     multiAi?.syncManager,
     multiAi?.agentIdentity,
     evolution,
+    domainEvents,
   );
 }
 

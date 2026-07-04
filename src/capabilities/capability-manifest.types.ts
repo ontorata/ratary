@@ -41,6 +41,8 @@ export interface CapabilityFlags {
   supportsLearningEngine: boolean;
   supportsRelationInference: boolean;
   supportsMemoryEvolution: boolean;
+  supportsMultiClientSync: boolean;
+  supportsEventConsumers: boolean;
 }
 
 export interface CapabilityLimits {

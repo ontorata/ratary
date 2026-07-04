@@ -1,9 +1,8 @@
 # Phase 10.5 — Transport & Connectivity Layer
 
-**Status:** 🔄 In Progress — ADR-027 Approved (2026-07-04); track 10.5A ✅  
+**Status:** ✅ Implemented (2026-07-04) · ADR-027 Implemented  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 10.5  
-**ADR gate:** [ADR-027](../../adr/027-transport-connectivity-layer.md) — **Approved**
+**Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 10.5
 
 ---
 
@@ -20,34 +19,53 @@ Formalize **Transport & Connectivity** as a canonical outer layer. REST and MCP 
 | 10.5E | gRPC opt-in (`GRPC_ENABLED=false` default) |
 | 10.5F | Manifest + documentation |
 
-**Hard dependency:** Phase 10 ✅ · Phase 7.5 ✅ (`GET /api/v1/capabilities`)  
-**Parallel OK with:** Phase 11 (after 11A runbook exists) — **must not block** SC-11-01 / SC-11-05
-
 ---
 
 ## Documents
 
 | Document | Purpose |
 |----------|---------|
-| [DESIGN.md](DESIGN.md) | Approved design intent (this phase) |
-| [TASK_PROMPT.md](TASK_PROMPT.md) | Implementation prompt (activate after ADR-027 Approved) |
+| [DESIGN.md](DESIGN.md) | Approved design intent |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Modules, wiring, file map |
+| [MIGRATION.md](MIGRATION.md) | Strangler re-exports (no DDL) |
+| [TESTING.md](TESTING.md) | Verification strategy |
 | [CHECKLIST.md](CHECKLIST.md) | Gate checklist |
-| [COMPLETION_TEMPLATE.md](COMPLETION_TEMPLATE.md) | Closure evidence form |
+| [REVIEW.md](REVIEW.md) | Gate verdict |
+| [COMPLETION.md](COMPLETION.md) | Closure evidence |
+| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned |
 | [RISKS.md](RISKS.md) | Phase risk register |
 
-**Not yet created (post-approval):** IMPLEMENTATION.md · MIGRATION.md · TESTING.md · REVIEW.md · COMPLETION.md · RETROSPECTIVE.md
+**ADR:** [ADR-027](../../adr/027-transport-connectivity-layer.md)
+
+---
+
+## Quick start
+
+```bash
+# Default — REST + MCP only (no change)
+npm run dev
+
+# Optional gRPC (long-running Node, not Vercel)
+GRPC_ENABLED=true
+GRPC_PORT=50051
+npm run dev
+
+# Check active transports
+curl http://localhost:3000/api/v1/capabilities | jq .transport
+```
 
 ---
 
 ## Non-goals
 
-- Business logic changes in `MemoryService`, `SearchService`, `KnowledgeService`
+- Business logic changes in application services
 - Repository or storage port changes
 - Breaking REST v1 or MCP tool schemas
-- Agent runtime inside repo
-- GraphQL (deferred)
-- SDK npm package inside repo (`@ai-brain/client` remains external)
+- In-repo `@ai-brain/client` SDK
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Implementation blocked until ADR-027 **Approved**.*
+## Related
+
+- Phase 13 Protocol Layer (extends streaming): [13-protocol-layer](../13-protocol-layer/README.md)
+- Phase 7.5 capabilities discovery: [07.5-runtime-compatibility](../07.5-runtime-compatibility/README.md)

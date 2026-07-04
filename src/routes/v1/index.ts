@@ -11,6 +11,7 @@ import type { WorkspaceController } from '../../controllers/workspace.controller
 import type { CapabilitiesController } from '../../controllers/capabilities.controller.js';
 import type { SignalsController } from '../../controllers/signals.controller.js';
 import type { EvolutionController } from '../../controllers/evolution.controller.js';
+import type { ClientSyncController } from '../../controllers/client-sync.controller.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from '../index.js';
 import { authRoutes } from './auth.routes.js';
 import { knowledgeRoutes } from './knowledge.routes.js';
@@ -20,6 +21,7 @@ import { workspaceRoutes } from './workspace.routes.js';
 import { capabilitiesRoutes } from './capabilities.routes.js';
 import { signalsRoutes } from './signals.routes.js';
 import { evolutionRoutes } from './evolution.routes.js';
+import { clientSyncRoutes } from './client-sync.routes.js';
 
 export async function registerV1Routes(
   fastify: FastifyInstance,
@@ -36,6 +38,7 @@ export async function registerV1Routes(
     capabilities: CapabilitiesController;
     signals?: SignalsController;
     evolution?: EvolutionController;
+    clientSync?: ClientSyncController;
   },
 ): Promise<void> {
   await healthRoutes(fastify, controllers.health);
@@ -45,6 +48,9 @@ export async function registerV1Routes(
   }
   if (controllers.evolution) {
     await evolutionRoutes(fastify, controllers.evolution);
+  }
+  if (controllers.clientSync) {
+    await clientSyncRoutes(fastify, controllers.clientSync);
   }
   await knowledgeRoutes(fastify, controllers.knowledge);
   await contextRoutes(fastify, controllers.context);

@@ -22,12 +22,13 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [015-neo4j-graph-store-adapter.md](015-neo4j-graph-store-adapter.md) | Neo4j graph store adapter | **Implemented** | Graph scale |
 | [016-redis-streams-event-bus.md](016-redis-streams-event-bus.md) | Redis Streams event bus | **Implemented** | Async events |
 | [017-memory-access-audit.md](017-memory-access-audit.md) | Memory access audit (opt-in) | **Implemented** | Compliance trail |
-| [018-production-postgres-cutover.md](018-production-postgres-cutover.md) | Production Postgres cutover | **Approved** | Phase 11 |
+| [018-production-postgres-cutover.md](018-production-postgres-cutover.md) | Production Postgres cutover | **Implemented** | Phase 11 gate PASS |
+| [020-event-consumer-architecture.md](020-event-consumer-architecture.md) | Event consumer architecture (Phase 12) | **Implemented** | Analytics fan-out, Phase 13 events |
 | [023-semantic-compression-policy.md](023-semantic-compression-policy.md) | Semantic compression policy (Phase 5.5) | **Implemented** | Token scale / consolidation |
 | [024-progressive-retrieval-policy.md](024-progressive-retrieval-policy.md) | Progressive retrieval policy (Phase 6.5) | **Implemented** | Context budget / staged hydration |
 | [025-capability-discovery-api.md](025-capability-discovery-api.md) | Capability discovery API (Phase 7.5) | **Implemented** | `GET /capabilities`, MCP manifest |
 | [026-memory-quality-signals.md](026-memory-quality-signals.md) | Memory quality signals — ingest not agent learning (Phase 8.5) | **Implemented** | Ranking adaptation / Phase 12 |
-| [027-transport-connectivity-layer.md](../../.ai/adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer (Phase 10.5) | **Approved** | gRPC opt-in, transport registry |
+| [027](../../.ai/adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer (Phase 10.5) | **Implemented** | gRPC opt-in, transport registry |
 | [028-protocol-layer.md](../../.ai/adr/028-protocol-layer.md) | Protocol Layer — WS/SSE/stream/benchmark (Phase 13) | **Proposed** | Multi-protocol streaming |
 | [029-federation-layer.md](../../.ai/adr/029-federation-layer.md) | Federation Layer — cross-node knowledge exchange (Phase 14) | **Proposed** | Global memory fabric |
 | [030-autonomous-agent-ecosystem.md](../../.ai/adr/030-autonomous-agent-ecosystem.md) | Autonomous Agent Ecosystem (Phase 15) | **Proposed** | Multi-client Memory Cloud |
@@ -41,17 +42,19 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [038-usage-analytics-engine.md](038-usage-analytics-engine.md) | Usage Analytics Engine (Phase 25) | **Proposed** | Quality/adoption/cost KPIs |
 | [043-cloud-federation-sync-topology.md](043-cloud-federation-sync-topology.md) | Cloud Federation Sync Topology (Phase 25) | **Proposed** | 5-tier global sync |
 
-**Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-020 (event consumers), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
+**Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
 
 **Rule:** No implementation of Proposed/Draft ADRs until owner marks **Approved**.
 
 **Phases 1–10 ADR closure:** ADR-001–017 **Implemented** (2026-07-03).
 
-**Phase 11 ADR gate:** [ADR-018](018-production-postgres-cutover.md) **Approved** (2026-07-03) — implementation authorized after Readiness PASS.
+**Phase 11 ADR gate:** [ADR-018](018-production-postgres-cutover.md) **Implemented** (gate PASS 2026-07-04).
 
 **Extension tracks (5.5–8.5):** ADR-023–026 **Implemented** (2026-07-04).
 
-**Phase 10.5 ADR gate:** [ADR-027](../../.ai/adr/027-transport-connectivity-layer.md) **Approved** (2026-07-04) — Phase 10.5 in progress (10.5A).
+**Phase 10.5 ADR gate:** [ADR-027](../../.ai/adr/027-transport-connectivity-layer.md) **Implemented** (2026-07-04).
+
+**Phase 12 ADR gate:** [ADR-020](020-event-consumer-architecture.md) **Implemented** (2026-07-04).
 
 **Phase 13 ADR gate:** [ADR-028](../../.ai/adr/028-protocol-layer.md) **Proposed** (2026-07-04) — requires ADR-027 Implemented.
 

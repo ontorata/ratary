@@ -1,6 +1,6 @@
 # Phase 10.5 — Transport & Connectivity — CHECKLIST
 
-**Phase status:** 🔄 In Progress — ADR-027 Implemented (2026-07-04); tracks 10.5A–10.5F ✅; gate REVIEW/COMPLETION pending  
+**Phase status:** ✅ Gate PASS — ADR-027 Implemented (2026-07-04); tracks 10.5A–10.5F ✅  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-027](../../adr/027-transport-connectivity-layer.md)
 
@@ -137,16 +137,16 @@
 - [x] Handler parity suite (`tests/transport/handler-parity.test.ts`)
 - [x] Transport contract tests (manifest transport; gRPC proto load + mappers)
 - [x] Layer lint: no transport imports in `services/` (`tests/transport/layer-boundaries.test.ts`)
-- [x] Default `npm test` — 486 pass (3 skipped)
+- [x] Default `npm test` — 546 pass (3 skipped)
 - [x] Registry + gRPC boot tests authored at implementation
 
 ## §4 — Gate
 
-- [ ] [REVIEW.md](REVIEW.md) architecture review PASS
-- [ ] [COMPLETION.md](COMPLETION.md) evidence filled
-- [ ] [RETROSPECTIVE.md](RETROSPECTIVE.md) within 7 days of gate
+- [x] [REVIEW.md](REVIEW.md) architecture review PASS
+- [x] [COMPLETION.md](COMPLETION.md) evidence filled
+- [x] [RETROSPECTIVE.md](RETROSPECTIVE.md) within 7 days of gate
 - [x] ADR-027 status → **Implemented**
-- [ ] [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) updated if metrics change
+- [x] [IMPLEMENTATION.md](IMPLEMENTATION.md), [TESTING.md](TESTING.md), [MIGRATION.md](MIGRATION.md) authored
 
 ---
 
