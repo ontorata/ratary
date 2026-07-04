@@ -37,7 +37,12 @@ phases/
 └── 10.5-transport-connectivity/      🔲 Reserved (design draft 2026-07-04)
 └── 13-protocol-layer/                🔲 Reserved (design draft 2026-07-04)
 └── 14-federation/                    🔲 Reserved (design draft 2026-07-04)
-└── 15-autonomous-agent-ecosystem/    🔲 Reserved (design draft 2026-07-04)
+└── 15-autonomous-agent-ecosystem/    🔲 Reserved
+└── 16-developer-platform/            🔲 Enterprise (2026-07-04)
+└── 17-enterprise-security/           🔲 Enterprise
+└── 18-cloud-platform/                🔲 Enterprise
+└── 19-observability-platform/        🔲 Enterprise
+└── 20-ai-infrastructure/             🔲 Enterprise
 ```
 
 Each `phases/NN-name/` folder:

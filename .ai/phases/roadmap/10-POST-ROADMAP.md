@@ -38,24 +38,33 @@ flowchart LR
   P105 --> P13[Phase 13 Protocol Layer]
   P12 --> P13
   P13 --> P14[Phase 14 Federation]
-  P14 --> P15[Phase 15 Agent Ecosystem]
-  P15 --> P17[Phase 17 Content Scale]
-  P11 --> P16[Phase 16 Search Graph Prod]
+  P15 --> P16[Phase 16 Developer Platform]
+  P16 --> P17[Phase 17 Enterprise Security]
+  P17 --> P18[Phase 18 Cloud Platform]
+  P18 --> P19[Phase 19 Observability]
+  P19 --> P20[Phase 20 AI Infrastructure]
+  P20 --> P21[Phase 21 Search Graph]
+  P20 --> P22[Phase 22 Content Scale]
   P105 --> P12
 ```
 
 | Phase | Name | Priority | Hard dependency |
 |-------|------|----------|-----------------|
-| **11** | Production Operations | **P0 — start here** | Phase 10 ✅ |
-| **10.5** | Transport & Connectivity Layer | **P1 extension** | Phase 10 ✅ · ADR-025 ✅ · ADR-027 Approved |
-| **12** | Event Pipeline & Observability | P1 | Phase 11 staging Postgres (or parallel if event-only) |
-| **13** | Protocol Layer (REST/gRPC/WS/SSE/benchmark) | P1 | Phase 10.5 ✅ · ADR-028 Approved |
-| **14** | **Federation** (cross workspace/region/org/cloud) | P1 | Phase 9–10 ✅ · Phase 13 ✅ · ADR-029 Approved |
-| **15** | **Autonomous Agent Ecosystem** (multi-client Memory Cloud) | P1 | Phase 7/9 ✅ · ADR-025 ✅ · ADR-030 Approved |
-| **16** | Search & Graph Production *(renumbered)* | P2 | Phase 11 + backfill scripts proven |
-| **17** | Content & Vector Scale *(renumbered from Phase 15)* | P1 | Phase 11 metadata · Phase 13 recommended |
+| **11** | Production Operations | **P0** | Phase 10 ✅ |
+| **10.5** | Transport & Connectivity | P1 extension | Phase 10 ✅ · ADR-027 |
+| **12** | Event Pipeline | P1 | Phase 11 |
+| **13** | Protocol Layer | P1 | Phase 10.5 · ADR-028 |
+| **14** | Federation | P1 | Phase 9–10 · Phase 13 · ADR-029 |
+| **15** | Autonomous Agent Ecosystem | P1 | Phase 7/9 · ADR-030 |
+| **16** | **Developer Platform** (SDK, CLI, MCP) | P1 | Phase 13 · ADR-031 |
+| **17** | **Enterprise Security** (SSO, OPA, ABAC) | P0 enterprise | Phase 10 · ADR-032 |
+| **18** | **Cloud Platform** (control plane, metering) | P1 | Phase 14 · 17 · ADR-033 |
+| **19** | **Observability Platform** (OTel, Grafana) | P1 | Phase 12 · 13 · ADR-034 |
+| **20** | **AI Infrastructure Platform** (marketplace) | P1 capstone | Phase 16–19 · ADR-035 |
+| **21** | Search & Graph Production *(renumbered)* | P2 | Phase 11 · ADR-022 |
+| **22** | Content & Vector Scale *(renumbered)* | P1 | Phase 11 · ADR-021 |
 
-Phases 10.5, 12–17 may overlap **after** Phase 11 Readiness PASS. **Phase 15 requires no agent runtime in repo** (Constitution §3).
+**Enterprise roadmap:** [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md) · Phases 1–15 scopes **unchanged**.
 
 ---
 
@@ -272,10 +281,52 @@ Enable **Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen** to share the **
 
 ---
 
-# Phase 17 — Content & Vector Scale
+# Enterprise Evolution — Phases 16–20
 
-**Status:** 🔲 Planned *(renumbered from former Phase 15)*  
-**Folder (when open):** `.ai/phases/17-content-scale/`
+**Full specification:** [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md)
+
+| Phase | Folder | ADR | Summary |
+|-------|--------|-----|---------|
+| **16** Developer Platform | [16-developer-platform/](../16-developer-platform/) | ADR-031 | SDK (7 langs), CLI, remote MCP, dashboard — **no business logic in clients** |
+| **17** Enterprise Security | [17-enterprise-security/](../17-enterprise-security/) | ADR-032 | SSO, OPA, ABAC, hierarchy, quota, compliance |
+| **18** Cloud Platform | [18-cloud-platform/](../18-cloud-platform/) | ADR-033 | Control plane, metering, multi-region, DR |
+| **19** Observability Platform | [19-observability-platform/](../19-observability-platform/) | ADR-034 | OTel, Prometheus, Grafana, Loki, alerts |
+| **20** AI Infrastructure | [20-ai-infrastructure/](../20-ai-infrastructure/) | ADR-035 | Plugin marketplace, provider registry capstone |
+
+All enterprise phases: **additive**, **MemoryService unchanged**, agent runtime **external**.
+
+---
+
+# Phase 21 — Search & Graph Production
+
+**Status:** 🔲 Planned *(renumbered from former Phase 16)*  
+**Folder (when open):** `.ai/phases/21-search-graph-prod/`
+
+## Scope
+
+External search index and graph engine for scale (optional per deployment).
+
+| Track | Deliverable |
+|-------|-------------|
+| 21A | **Meilisearch** — incremental sync / reindex strategy |
+| 21B | **Neo4j** — replace D1 in-process BFS in production graph path |
+| 21C | **Graph vector seeds** (optional) |
+
+## ADR gates
+
+ADR-022
+
+## Success criteria
+
+- [ ] `SEARCH_PROVIDER=meilisearch` and `GRAPH_PROVIDER=neo4j` validated in staging
+- [ ] D1 graph adapter remains default
+
+---
+
+# Phase 22 — Content & Vector Scale
+
+**Status:** 🔲 Planned *(renumbered from former Phase 17)*  
+**Folder (when open):** `.ai/phases/22-content-scale/`
 
 ## Scope
 
@@ -283,15 +334,13 @@ Production-scale content and vector storage beyond inline/D1.
 
 | Track | Deliverable |
 |-------|-------------|
-| 17A | **R2/S3 content offload** — large body migration; `object_key` backfill |
-| 17B | **pgvector production** — execute backfill; hybrid retrieval on pgvector in staging |
-| 17C | **Embedding job hardening** — batch/retry metrics; gRPC client-stream ingest |
+| 22A | **R2/S3 content offload** |
+| 22B | **pgvector production** |
+| 22C | **Embedding job hardening** |
 
 ## ADR gates
 
-| ADR | Title |
-|-----|-------|
-| ADR-021 | Content blob lifecycle |
+ADR-021
 
 ## Success criteria
 
@@ -301,15 +350,14 @@ Production-scale content and vector storage beyond inline/D1.
 
 ---
 
-# Phase 15 (legacy note)
+# Legacy renumbering notes
 
-*Former "Content & Vector Scale" renumbered to **Phase 17** (2026-07-04). Phase 15 is now **Autonomous Agent Ecosystem**.*
-
----
-
-# Phase 14 (legacy note)
-
-*Former "Phase 13 — Content & Vector Scale" renumbered to **Phase 15** (2026-07-04). Phase 13 is now **Protocol Layer**.*
+| Note | Detail |
+|------|--------|
+| Phase 15 | Was Content Scale → now Agent Ecosystem |
+| Phase 13 | Was Content Scale → now Protocol Layer |
+| Phase 16–17 (2026-07-04) | Were Search/Content → now **21/22**; **16–20** = Enterprise Evolution |
+| Phase 14 | Was Search Graph → now Federation |
 
 ---
 
@@ -348,37 +396,9 @@ Multiple AI Brain nodes exchange knowledge across **workspace, region, organizat
 
 ---
 
-# Phase 16 — Search & Graph Production
+# Phase 16 — Search & Graph (superseded)
 
-**Status:** 🔲 Planned *(renumbered from former Phase 14)*  
-**Folder (when open):** `.ai/phases/16-search-graph-prod/`
-
-## Scope
-
-External search index and graph engine for scale (optional per deployment).
-
-| Track | Deliverable |
-|-------|-------------|
-| 16A | **Meilisearch** — incremental sync / reindex strategy |
-| 16B | **Neo4j** — replace D1 in-process BFS in production graph path |
-| 16C | **Graph vector seeds** (optional) — vector-derived graph seeds post-MVP |
-
-## ADR gates
-
-| ADR | Title |
-|-----|-------|
-| ADR-022 | External search/graph cutover |
-
-## Success criteria
-
-- [ ] `SEARCH_PROVIDER=meilisearch` and `GRAPH_PROVIDER=neo4j` validated in staging
-- [ ] D1 graph adapter remains default
-
----
-
-# Phase 14 — Search & Graph Production (superseded)
-
-*Renumbered to **Phase 16** (2026-07-04). Phase 14 is now **Federation**.*
+*Renumbered to **Phase 21**. Phase 16 is now **Developer Platform** — see [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md).*
 
 ---
 
@@ -387,7 +407,7 @@ External search index and graph engine for scale (optional per deployment).
 | ID | Item | Target phase | Status |
 |----|------|--------------|--------|
 | T-01 | `MemoryRepository` ~622 lines | 11C | Open |
-| T-05 | D1 in-process graph BFS | 16B | Open |
+| T-05 | D1 in-process graph BFS | 21B | Open |
 | T-06 | Audit identity at context.build | 12C | Open |
 | T-07 | `GET /memory/:id` audit | 12C or ADR-017 amend | Open |
 | ~~T-02~~ | ~~SELECT * queries~~ | — | ✅ Resolved |

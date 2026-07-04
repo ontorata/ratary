@@ -423,6 +423,22 @@ External agent runtimes (outside repo) → protocol → MemoryService.
 
 ---
 
+## Enterprise platform layers (Phases 16–20 — planned)
+
+**Authority:** [11-ENTERPRISE-ROADMAP.md](../../phases/roadmap/11-ENTERPRISE-ROADMAP.md)
+
+| Phase | Layer | Server `src/` impact |
+|-------|-------|---------------------|
+| 16 Developer Platform | `packages/` SDK, CLI, MCP — **clients only** | None (OpenAPI additive) |
+| 17 Enterprise Security | Auth edge: OPA, SSO, hierarchy, quota | Edge middleware only |
+| 18 Cloud Platform | Control plane ports: provision, meter, DR | Orchestration ports |
+| 19 Observability | Exporters, Grafana packs, SLO | Sidecar adapters |
+| 20 AI Infrastructure | Plugin registry, marketplace metadata | Composition root wiring |
+
+**Capstone (20):** AI Memory **Infrastructure** — not Memory API only. All providers remain ADR-008 ports.
+
+---
+
 ## Auth layer
 
 **Owns:** identity resolution chain, API key and JWT validation, OAuth provider, permission enforcement, audit events, client registry.
