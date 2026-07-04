@@ -40,7 +40,8 @@ function scoredMemory(content: string, index: number): ScoredMemory {
 describe('context token benchmark', () => {
   it('summary-only should cut tokens by at least 85% vs naive dump', () => {
     const content =
-      '# Auth\nJWT middleware and scope rules.\n' + 'Detail line with jwt scope ownerId.\n'.repeat(120);
+      '# Auth\nJWT middleware and scope rules.\n' +
+      'Detail line with jwt scope ownerId.\n'.repeat(120);
     const memories = Array.from({ length: 20 }, (_, i) => scoredMemory(content, i + 1));
     const naive = memories.map((m) => `${m.title}\n${m.content}`).join('\n\n');
     const context = new ContextBuilder().build(memories, { includeSummaryOnly: true });
@@ -53,9 +54,7 @@ describe('context token benchmark', () => {
     const content = 'word '.repeat(400);
     const memories = Array.from({ length: 20 }, (_, i) => scoredMemory(content, i + 1));
     const naive = memories.map((m) => `${m.title}\n${m.content}`).join('\n\n');
-    const index = memories
-      .map((m) => `- ${m.codename}: ${m.title}`)
-      .join('\n');
+    const index = memories.map((m) => `- ${m.codename}: ${m.title}`).join('\n');
 
     const saved = reductionPercent(estimateTokens(naive), estimateTokens(index));
     expect(saved).toBeGreaterThanOrEqual(90);

@@ -53,8 +53,8 @@ export class CapabilityManifestBuilder {
         supportsOwnerScope: true,
         supportsWorkspaceScope: true,
         supportsAgentAttribution: true,
-        supportsSemanticCompression: false,
-        supportsQualitySignals: false,
+        supportsSemanticCompression: this.env.COMPRESSION_ENABLED,
+        supportsQualitySignals: this.env.SIGNAL_INGEST_ENABLED,
         supportsEventSubscription: this.env.EVENT_BUS_PROVIDER !== 'none',
         supportsProgressiveRetrieval: true,
       },
@@ -76,7 +76,7 @@ export class CapabilityManifestBuilder {
         openApiUrl: this.options.openApiUrl ?? '/docs/json',
       },
       retrieval: {
-        progressivePolicyVersion: '1',
+        progressivePolicyVersion: this.env.RETRIEVAL_POLICY_VERSION,
         defaultContentMode: 'summary',
       },
       deployment: {

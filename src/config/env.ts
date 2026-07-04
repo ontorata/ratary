@@ -109,6 +109,25 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+
+    RETRIEVAL_POLICY_VERSION: z.string().default('1'),
+
+    COMPRESSION_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    COMPRESSION_POLICY: z.enum(['rule', 'llm']).default('rule'),
+    COMPRESSION_SCHEDULER: z.enum(['none', 'local']).default('none'),
+
+    SIGNAL_INGEST_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    SIGNAL_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+    RANKING_ADAPTATION_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {

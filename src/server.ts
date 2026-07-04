@@ -24,6 +24,8 @@ import { createContextController } from './controllers/context.controller.js';
 import { createGraphController } from './controllers/graph.controller.js';
 import { createWorkspaceController } from './controllers/workspace.controller.js';
 import { createCapabilitiesController } from './controllers/capabilities.controller.js';
+import { createSignalsController } from './controllers/signals.controller.js';
+import { createSignalIngestPorts } from './composition/create-signal-ingest-ports.js';
 import { createGraphService } from './services/graph.service.js';
 import { createContextService } from './memory/create-context-service.js';
 import { createMemoryAccessAuditor } from './infrastructure/composition/create-memory-access-auditor.js';
@@ -154,6 +156,10 @@ export async function buildApp(options?: {
     multiAi.agentIdentity,
   );
   const capabilitiesController = createCapabilitiesController(env);
+  const signalPorts = createSignalIngestPorts(platform.sql, env);
+  const signalsController = signalPorts.enabled
+    ? createSignalsController(scopeResolver, signalPorts.normalizer, signalPorts.ingestor)
+    : undefined;
 
   const controllers = {
     health: healthController,
@@ -166,6 +172,7 @@ export async function buildApp(options?: {
     graph: graphController,
     workspace: workspaceController,
     capabilities: capabilitiesController,
+    signals: signalsController,
   };
 
   await fastify.register(
