@@ -1,7 +1,7 @@
 # Phase 23 — Enterprise Knowledge Fabric — DESIGN
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** [ADR-047 Implemented](../../adr/047-enterprise-knowledge-fabric.md)
 
 ---
@@ -55,6 +55,20 @@ REST /api/v1/knowledge-fabric/*  (KNOWLEDGE_FABRIC_ENABLED)
 | Phase 14 | AI-Brain node ↔ node federation |
 | Phase 09.8 | AI client sync (Cursor, MCP) |
 | Phase 23 | Enterprise SaaS connectors → SSOT |
+
+## Boundaries
+
+- All writes via `MemoryService.createMemory` / `updateMemory` — connectors never touch repository SQL
+- Provenance in `notes` JSON and `fabric:*` tags only
+- Admin REST gated by `KNOWLEDGE_FABRIC_ENABLED=false` default
+- Distinct from Phase 14 peer exchange and Phase 09.8 client sync
+
+## Non-goals
+
+- Live vendor SDK pull (Slack/GitHub API clients) at gate — registry scaffold only
+- Per-connector OAuth (defer to Phase 17 SSO integration)
+- Async webhook/event-driven ingest pipeline
+- In-repo workflow engine for connector scheduling
 
 ## Deferred
 

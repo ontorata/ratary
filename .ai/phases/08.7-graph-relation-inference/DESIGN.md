@@ -38,6 +38,13 @@ IGraphProvider traverses memory_relations (existing Phase 8)
 | `IRelationScoringPolicy` | `DefaultRelationScoringPolicy` | ✅ |
 | `IRelationEvidenceStore` | `SqlRelationEvidenceStore` | ✅ |
 
+## Boundaries
+
+- Inference runs batch-only via CLI — never on CRUD hot path
+- `upsertInferred` updates `source_type=inferred` edges only — manual edges immutable
+- Phase 8 `IGraphProvider` reads `memory_relations` — no parallel edge store
+- Scoring policy filters confidence below 0.3 — no LLM extraction in repository
+
 ## Invariants
 
 - Manual `source_type` edges are **never** updated or deleted by inference

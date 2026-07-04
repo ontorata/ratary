@@ -1,8 +1,7 @@
 ﻿# Phase 8 — Knowledge Graph — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-03  
+**Phase status:** ✅ Closed — gate PASS (2026-07-03  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 

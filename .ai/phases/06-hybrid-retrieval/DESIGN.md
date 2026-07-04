@@ -1,8 +1,7 @@
 ﻿# Phase 6 — Hybrid Retrieval — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-03  
+**Phase status:** ✅ Closed — gate PASS (2026-07-03  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---

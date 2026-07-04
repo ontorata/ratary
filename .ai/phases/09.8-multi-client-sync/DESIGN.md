@@ -1,5 +1,7 @@
 # Phase 09.8 — Multi-Client Sync — DESIGN
 
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR gate:** ADR-042 Accepted · **Extends:** Phase 9 `ISyncManager`
 
 ## Purpose
@@ -30,6 +32,12 @@ Phase 14 federation (node-to-node exchange). Phase 09.8 is **client-to-hub** syn
 
 Optional branch merge via Phase 09.7 evolution is deferred — evolution archives remain independent.
 
+## Boundaries
+
+- Hub remains SSOT — clients sync via REST pull/push; no node federation
+- Side stores (`sync_cursors`, `sync_conflicts`) supplement but never replace `memories` authority
+- Flag off → `AcceptSyncManager` only; flag on → resolver enforced (see **Invariants**)
+
 ## Side stores
 
 - `sync_cursors` — `(owner_id, workspace_id, platform_id) → cursor_value`
@@ -41,6 +49,13 @@ Optional branch merge via Phase 09.7 evolution is deferred — evolution archive
 - Manual `memory_relations` edges never overwritten (unchanged)
 - Flag off → `AcceptSyncManager` only (audit, always accept)
 - Flag on → `ConflictAwareSyncManager` enforces resolver
+
+## Non-goals
+
+- Phase 14 node-to-node federation (peer exchange)
+- Hub-to-hub replication or multi-master SSOT
+- Per-client OAuth — reuse Phase 3/17 identity paths
+- Real-time websocket bidirectional sync (REST pull/push at gate)
 
 ## REST (gated)
 

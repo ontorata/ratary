@@ -1,8 +1,6 @@
 # Phase 17 — Enterprise Security — DESIGN
 
-**ADR:** [ADR-032](../../adr/032-enterprise-security.md) · **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
-
+**ADR:** [ADR-032](../../adr/032-enterprise-security.md) · **Phase status:** ✅ Closed — gate PASS (2026-07-04)  
 ## Mengapa diperlukan?
 
 Phase 10 RBAC is **workspace-level**. Enterprise needs **department/project hierarchy**, ABAC, OPA policies, SSO (SAML/OIDC/LDAP), IdP integrations, compliance audit, quota/billing scope — without rewriting MemoryService.

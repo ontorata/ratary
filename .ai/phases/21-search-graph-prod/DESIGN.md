@@ -1,7 +1,6 @@
 # Phase 21 — Search & Graph Production — DESIGN
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Phase status:** ✅ Closed — gate PASS (2026-07-04  )  
 **ADR:** [ADR-022 Implemented](../../adr/022-search-graph-production-platform.md)
 
 ---

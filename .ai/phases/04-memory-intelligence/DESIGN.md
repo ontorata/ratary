@@ -1,7 +1,6 @@
 # Phase 4 — Memory Intelligence — DESIGN
 
-**Phase status:** Closed  
-**Gate:** PASS 2026-07-01  
+**Phase status:** ✅ Closed — gate PASS (2026-07-01  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** [ADR-004 Repository Port Types](../../../docs/adr/004-repository-port-types.md)
 

@@ -264,6 +264,13 @@ function adrLine(adr) {
   return `  \n**ADR:** ${link}`;
 }
 
+function fixLegacyDesignHeader(content) {
+  return content.replace(
+    /(\*\*Phase status:\*\*) Closed[ \t]*\r?\n\*\*Gate:\*\* PASS ([^\r\n]+)\s*\r?\n/g,
+    '$1 ✅ Closed — gate PASS ($2)  \n',
+  );
+}
+
 function renderClassic(p) {
   const portRows = p.ports.length
     ? `\n## Ports & modules\n\n| Port / module | Responsibility |\n|---------------|----------------|\n${p.ports.map(([a, b]) => `| ${a} | ${b} |`).join('\n')}\n`
@@ -274,8 +281,7 @@ function renderClassic(p) {
 
   return `# ${p.title} — DESIGN
 
-**Phase status:** Closed  
-**Gate:** PASS ${p.gateDate}  
+**Phase status:** ✅ Closed — gate PASS (${p.gateDate})  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)${adrLine(p.adr)}${archiveBlock}
 
 ---
@@ -366,6 +372,30 @@ function isStalePhase6(content) {
 
 let updated = 0;
 let skipped = 0;
+
+if (process.argv.includes('--fix-headers')) {
+  const dirs = fs
+    .readdirSync(PHASES_DIR)
+    .filter((d) => {
+      const p = path.join(PHASES_DIR, d);
+      return fs.statSync(p).isDirectory() && !['roadmap', 'audits'].includes(d);
+    })
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+  for (const dir of dirs) {
+    const file = path.join(PHASES_DIR, dir, 'DESIGN.md');
+    if (!fs.existsSync(file)) continue;
+    const existing = fs.readFileSync(file, 'utf8');
+    if (!existing.includes('**Gate:** PASS')) continue;
+    const next = fixLegacyDesignHeader(existing);
+    if (next === existing) continue;
+    fs.writeFileSync(file, next);
+    updated++;
+    console.log('header fixed', dir);
+  }
+  console.log(`\nFixed ${updated} DESIGN.md headers.`);
+  process.exit(0);
+}
 
 for (const p of PHASES) {
   const file = path.join(PHASES_DIR, p.dir, 'DESIGN.md');

@@ -42,6 +42,13 @@ Foundation (L21–L22) and adaptive ranking (L26) implemented; remaining engines
 
 **None** — signature unchanged.
 
+## Non-goals
+
+- ML training or batch mining on CRUD hot path
+- Auto-mutation of memory content without stewardship / evolution gates
+- Full L24–L30 engine implementations in W1 (stubs registered only)
+- RankerV2 rewrite — snapshot hook only via L26
+
 ## Success criteria
 
 - [x] ADR-057 Accepted

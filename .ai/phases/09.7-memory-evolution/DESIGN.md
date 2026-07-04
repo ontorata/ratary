@@ -33,6 +33,13 @@ Enable memories to evolve over time with immutable versions and a Current head p
 
 Facade hook when enabled — **signatures unchanged** when disabled.
 
+## Boundaries
+
+- Current head remains in `memories`; `memory_versions` is append-only side store
+- Distinct from Phase 04.7 duplicate rollup and Phase 14 federation merge
+- REST list/diff endpoints gated — no REST API v2
+- Branch merge execute and restore-to-version deferred post-gate
+
 ## Success criteria
 
 - [x] ADR-040 Accepted
