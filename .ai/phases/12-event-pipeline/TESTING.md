@@ -37,3 +37,6 @@ Default env (`EVENT_CONSUMERS_ENABLED=false`) must pass full suite with no Redis
 ```bash
 npm run typecheck && npm run lint && npm test
 ```
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

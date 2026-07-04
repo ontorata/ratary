@@ -1,32 +1,53 @@
-﻿# Phase 1 — Foundation — CHECKLIST
+# Phase 1 — Foundation — CHECKLIST
 
-**Document:** CHECKLIST  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-28  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
 ## Purpose
 
-Executable gate checklist instance — one item per milestone or success criterion.
+Executable gate checklist — one item per milestone or success criterion.
 
 ---
 
-## Lifecycle
+## Core deliverables
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Phase open (Readiness PASS) from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md) |
-| **Updated by** | Assistant during phase; owner signs at gate |
-| **Read-only when** | Phase gate PASS — frozen snapshot |
-| **Roadmap relation** | Each item traces to milestone or success criterion |
-
----
-
-## Phase checklist (frozen)
-
-Derived from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md). All items checked at gate.
+- [x] D1 schema — `memories`, `identities`, `clients`, `audit_logs`, `settings`
+- [x] `runMigrations()` forward-only runner + `schema.sql` snapshot
+- [x] `IMemoryRepository` port + D1 adapter
+- [x] `MemoryService` CRUD orchestration
+- [x] REST Fastify server — `/api/v1/memory`, health
+- [x] MCP stdio server — memory tools catalog
+- [x] MockD1 test harness
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+## Quality gate
+
+- [x] lint + typecheck + format green
+- [x] Baseline Vitest suite green at gate
+- [x] MCP + REST semantic parity verified
+
+---
+
+## Documentation
+
+- [x] Phase folder governance docs closed
+- [x] [DESIGN.md](DESIGN.md) · [IMPLEMENTATION.md](IMPLEMENTATION.md) · [COMPLETION.md](COMPLETION.md)
+
+---
+
+## Gate decision
+
+| Field | Value |
+|-------|-------|
+| **Verdict** | **PASS** — 2026-06-28 |
+| **Regression** | baseline suite green at gate |
+| **Review** | [REVIEW.md](REVIEW.md) PASS |
+
+
+---
+
+*Frozen at gate PASS. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

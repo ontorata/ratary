@@ -1,7 +1,7 @@
 # Phase 6.5 — Progressive Retrieval — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,41 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+Delivered `DefaultRetrievalPolicy` hook in `ContextService.buildContext` producing additive `retrievalPlan`. Always-on default adapter; no master env flag.
+
+Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- Default adapter matches pre-6.5 summary-only behavior — backward compatible
+- Body hydration gated via `plan.hydrateBody` + `findByIdsWithContent`
+- Manifest exposes `supportsProgressiveRetrieval` and policy version
+- MCP/REST schemas unchanged; clients may ignore optional `retrievalPlan`
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- `RETRIEVAL_POLICY=legacy` alternate adapter not built
+- Relations stage auto-expansion deferred
+- ML adaptive policy and token benchmarks deferred
+
+---
+
+## Accepted debt
+
+- Single default policy — no legacy/ML adapters
+- Relations stage not auto-expanded
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Implement relations-stage expansion before high-graph deployments
+- Add token benchmark evidence to COMPLETION.md
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

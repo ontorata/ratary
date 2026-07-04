@@ -12,20 +12,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-025 Implemented |
+| Check | Result |
+|-------|--------|
+| CapabilityManifestBuilder | ✅ Reads live deployment flags |
+| GET /api/v1/capabilities | ✅ REST manifest endpoint |
+| MCP get_capabilities | ✅ Identical JSON to REST |
+| MCP_TOOL_NAMES SSOT | ✅ 20 tools; contract parity tests |
+| No new env vars | ✅ Discovery only — closes Phase 7 debt D7-01 |
+| MemoryService unchanged | ✅ Read-only manifest builder |
 
+---
+
+## ADR gate
+
+- ADR-025 Implemented
+- ADR-025 Accepted — capability discovery formalized
+
+---
+
+## Known gaps (accepted)
+
+- Condensed manifest in MCP initialize metadata deferred
+- Remote capability negotiation deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

@@ -12,28 +12,29 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
+## Schema changes (additive)
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+Applied via `migrateEnterprisePhase2()` in `src/db/migrations.ts` (ADR-032).
+
+### Objects
+
+- `departments`, `tenant_projects` — org hierarchy
+- `workspace_hierarchy_bindings` — workspace → dept/project links
+- `policy_bindings` — OPA policy attachment metadata
 
 ---
 
-## Migrations
+## Verification
 
-Phase introduces additive DDL in `src/db/migrations.ts`. Verification: [`tests/db/enterprise-security-migration.test.ts`](../../../tests/db/enterprise-security-migration.test.ts).
+[`tests/db/enterprise-security-migration.test.ts`](../../../tests/db/enterprise-security-migration.test.ts)
 
 | Property | Value |
 |----------|-------|
-| Rollback | Disable master env flag — tables remain; no hot-path dependency when OFF |
-| Idempotency | Migration runner applies forward-only steps |
-| Production | Opt-in; default deploy unchanged |
-
+| Rollback | `ENTERPRISE_SECURITY_V2=false` — tables remain; security pipeline bypassed when OFF |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
 Gate evidence: migration test green at gate 2026-07-04.
+
 
 ---
 

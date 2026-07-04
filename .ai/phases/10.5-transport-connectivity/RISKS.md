@@ -1,4 +1,4 @@
-# Phase 10.5 — Transport & Connectivity Layer — RISKS
+# Phase 10.5 — Transport & Connectivity — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,17 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| REST/MCP handler drift | Medium | Critical | Shared handlers + handler-parity.test.ts | Mitigated |
+| gRPC on Vercel serverless | High | High | GRPC_ENABLED=false default; PANDUAN warning | Mitigated |
+| Transport imports in services/ | Medium | Critical | layer-boundaries.test.ts | Mitigated |
+| Breaking stdio MCP spawn | Medium | Critical | Strangler re-exports; mcp/server.ts unchanged path | Mitigated |
+
+## Deferred risks (carried forward)
+
+| ID | Risk | Mitigation path |
+|----|------|-----------------|
+| D105-01 | Full gRPC E2E client test | Post-gate |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

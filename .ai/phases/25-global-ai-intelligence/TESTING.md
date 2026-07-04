@@ -1,35 +1,55 @@
 # Phase 25 — Global AI Intelligence — TESTING
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
+---
+
+## Purpose
+
+Record verification strategy and evidence: unit, integration, E2E, fixtures, quality gate.
+
+---
+
+## Quality gate
+
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-07-04) | 682 (+9 phase tests) tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
 
 ---
 
 ## Test suites
 
-| Suite | File | Verifies |
-|-------|------|----------|
-| Ports composition | `tests/global-intelligence/global-intelligence-ports.test.ts` | Noop when flag off; telemetry consumer when on |
-| Manifest builder | `tests/global-intelligence/manifest-builder.test.ts` | Capstone manifest + composed phases |
-| Analytics service | `tests/global-intelligence/usage-analytics.service.test.ts` | Adoption KPI from telemetry fixtures |
-| Migration | `tests/global-intelligence/migration.test.ts` | SQL migration idempotent |
-| REST API | `tests/api/global-intelligence.test.ts` | Status, manifest, analytics, sync dry-run |
+| File | Coverage |
+|------|----------|
+| `tests/global-intelligence/global-intelligence-ports.test.ts` | Noop when flag off |
+| `tests/global-intelligence/manifest-builder.test.ts` | Capstone manifest |
+| `tests/global-intelligence/usage-analytics.service.test.ts` | Adoption KPI from fixtures |
+| `tests/global-intelligence/migration.test.ts` | Telemetry/sync/journal DDL |
+| `tests/api/global-intelligence.test.ts` | REST `/intelligence/*` |
 
 ---
 
-## Coverage gate
+## Scenarios verified
 
-682 tests green with `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false` (default). +9 Phase 25 tests when enabled.
+- [x] Analytics read-only — never writes memories
+- [x] Redactor default off content sampling
+- [x] Telemetry consumer on Phase 12 domain events when both enabled
+- [x] Sync orchestrator delegates to Phase 14 when federation on
 
----
+## Manual verification
 
-## Manual smoke (optional)
-
-```powershell
-$env:GLOBAL_INTELLIGENCE_PLATFORM_ENABLED='true'
-$env:EVENT_CONSUMERS_ENABLED='true'
-npm start
-# GET /api/v1/intelligence/status
-# GET /api/v1/intelligence/manifest
-# POST /api/v1/intelligence/sync { "tier": "workspace", "dryRun": true }
+```bash
+$env:GLOBAL_INTELLIGENCE_PLATFORM_ENABLED='true'; GET /api/v1/intelligence/status; POST /intelligence/sync with dryRun
 ```
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

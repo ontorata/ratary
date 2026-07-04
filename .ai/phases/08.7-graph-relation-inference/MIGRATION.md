@@ -1,4 +1,4 @@
-# Phase 8.7 — Automatic Graph Relation Inference — MIGRATION
+# Phase 8.7 — Graph Relation Inference — MIGRATION
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,28 +12,27 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
+## Schema changes (additive)
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+Applied via `migrateExtensionTracksPhase3()` in `src/db/migrations.ts` (ADR-041).
+
+### Objects
+
+- `relation_inference_evidence` — audit trail for inferred edges
 
 ---
 
-## Migrations
+## Verification
 
-Phase introduces additive DDL in `src/db/migrations.ts`. Verification: [`tests/db/extension-tracks-migration.test.ts`](../../../tests/db/extension-tracks-migration.test.ts).
+[`tests/db/extension-tracks-migration.test.ts`](../../../tests/db/extension-tracks-migration.test.ts)
 
 | Property | Value |
 |----------|-------|
-| Rollback | Disable master env flag — tables remain; no hot-path dependency when OFF |
-| Idempotency | Migration runner applies forward-only steps |
-| Production | Opt-in; default deploy unchanged |
-
+| Rollback | `RELATION_INFERENCE_ENABLED=false` — inferred edges persist; no hot-path inference when OFF |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
 Gate evidence: migration test green at gate 2026-07-04.
+
 
 ---
 

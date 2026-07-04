@@ -47,3 +47,6 @@ RELATION_INFERENCE_ENABLED=true npm run infer:relations:execute
 - [ ] Shared tag + temporal source unit tests
 - [ ] Graph traverse includes inferred edges E2E
 - [ ] Semantic similarity source (embedding-based)
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

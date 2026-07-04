@@ -1,47 +1,48 @@
-# Phase 20 — AI Infrastructure Platform — TESTING
+# Phase 20 — AI Infrastructure — TESTING
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Automated
+## Purpose
 
-| Suite | File | Coverage |
-|-------|------|----------|
-| Composition gate | `tests/infrastructure-platform/infrastructure-ports.test.ts` | enabled/disabled ports |
-| Manifest validator | `tests/infrastructure-platform/manifest-validator.test.ts` | schema + signature gate |
-| Plugin registry | `tests/infrastructure-platform/plugin-registry.test.ts` | register/enable/bootstrap |
-| Marketplace | `tests/infrastructure-platform/marketplace.test.ts` | catalog.json load/search |
-| Migration | `tests/db/infrastructure-platform-migration.test.ts` | plugin_registry tables |
-| Admin REST | `tests/api/infrastructure.test.ts` | marketplace, lifecycle, capabilities |
-| Server regression | full `npm test` | MemoryService unchanged |
-
----
-
-## Manual smoke
-
-```bash
-PLUGIN_MARKETPLACE_ENABLED=true npm run dev
-
-curl http://localhost:3000/api/v1/infrastructure/marketplace
-curl -H "Authorization: Bearer aic_..." http://localhost:3000/api/v1/infrastructure/plugins
-curl -H "Authorization: Bearer aic_..." -X POST http://localhost:3000/api/v1/infrastructure/plugins/storage-postgres/enable
-curl http://localhost:3000/api/v1/capabilities
-```
-
-With tenant allow-list (Phase 18):
-
-```bash
-PLUGIN_MARKETPLACE_ENABLED=true CONTROL_PLANE_ENABLED=true npm run dev
-```
+Record verification strategy and evidence: unit, integration, E2E, fixtures, quality gate.
 
 ---
 
 ## Quality gate
 
-- [x] Default regression (`PLUGIN_MARKETPLACE_ENABLED=false`)
-- [x] Infrastructure API subset with flags ON
-- [x] Public marketplace browse without auth
-- [x] Capabilities infrastructure section when enabled
-- [x] Allow-list deny path when `CONTROL_PLANE_ENABLED=true`
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-07-04) | 620+ tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
+
+---
+
+## Test suites
+
+| File | Coverage |
+|------|----------|
+| `tests/infrastructure-platform/infrastructure-ports.test.ts` | Marketplace composition |
+| `tests/infrastructure-platform/plugin-registry.test.ts` | Enable/disable lifecycle |
+| `tests/infrastructure-platform/marketplace.test.ts` | Catalog validation |
+| `tests/db/infrastructure-platform-migration.test.ts` | Plugin registry DDL |
+| `tests/api/infrastructure.test.ts` | REST `/infrastructure/*` |
+
+---
+
+## Scenarios verified
+
+- [x] Default env preserves Phase 10 adapter selection
+- [x] Plugin enable requires restart — no hot-swap
+- [x] Allow-list hook integrates Phase 18 tenant metadata
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

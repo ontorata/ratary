@@ -1,4 +1,4 @@
-# Phase 25 — Global AI Intelligence Platform — REVIEW
+# Phase 25 — Global AI Intelligence — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,42 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-037 Implemented |
+| Check | Result |
+|-------|--------|
+| GLOBAL_INTELLIGENCE_PLATFORM_ENABLED default false | ✅ Capstone opt-in |
+| Analytics read-only — no memory writes | ✅ Tests assert no write path |
+| Telemetry redactor + content sampling off | ✅ Privacy default safe |
+| IntelligenceTelemetryConsumer on Phase 12 | ✅ Event bus integration |
+| 5-tier sync delegates Phase 14 | ✅ In-process federation MVP |
+| Regression suite at gate | ✅ 689 passed | 3 skipped (default env, master flags OFF) |
 
+---
+
+## ADR gate
+
+- ADR-036 Implemented
+- ADR-037 Implemented
+- ADR-038 Implemented
+- ADR-043 Implemented
+- ADR-036/037/038/043 Implemented
+- Rollback: disable GLOBAL_INTELLIGENCE_PLATFORM_ENABLED
+
+---
+
+## Known gaps (accepted)
+
+- No remote peer sync smoke
+- Cost KPI without Phase 18 billing integration
+- Global sync limited to in-process transport
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

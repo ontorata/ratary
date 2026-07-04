@@ -1,7 +1,7 @@
-# Phase 8.7 — Automatic Graph Relation Inference — RETROSPECTIVE
+# Phase 8.7 — Graph Relation Inference — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,41 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+Batch relation inference: three deterministic sources, `upsertInferred`, evidence store, CLI `infer:relations`. Gated by `RELATION_INFERENCE_ENABLED=false`.
+
+Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- `upsertInferred` manual-safe — only touches `source_type=inferred` edges
+- Evidence audit trail with SQL migration
+- No LLM; no hot-path inference on CRUD
+- Manifest `supportsRelationInference`
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- Semantic similarity source not built
+- Phase 04.7 graph-repair task not wired
+- Conversation/dependency sources deferred
+
+---
+
+## Accepted debt
+
+- Rule-based sources only
+- Inferred edges persist when flag off
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Register graph-repair task in 04.7 orchestrator
+- Add embedding-based similarity source for scale
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

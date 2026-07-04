@@ -27,3 +27,19 @@
 - [x] `MemoryService` diff = 0
 - [x] Default flag off — full regression green (682 tests)
 - [x] Analytics read-only — no SSOT writes
+
+---
+
+## Gate decision
+
+| Field | Value |
+|-------|-------|
+| **Verdict** | **PASS** — 2026-07-04 |
+| **ADR** | ADR-036/037/038/043 |
+| **Master flag** | `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false` (default OFF) |
+| **Regression** | 689 passed, 3 skipped (default env) |
+| **Review** | [REVIEW.md](REVIEW.md) PASS |
+
+---
+
+*Frozen at gate PASS. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

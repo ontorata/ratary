@@ -1,4 +1,4 @@
-# Phase 20 — AI Infrastructure Platform — REVIEW
+# Phase 20 — AI Infrastructure — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-035 Implemented |
+| Check | Result |
+|-------|--------|
+| PLUGIN_MARKETPLACE_ENABLED default false | ✅ Opt-in registry |
+| Curated catalog → ADR-008 ports | ✅ 9 plugins mapped |
+| Validator schema-only MVP | ✅ Enable/disable lifecycle tested |
+| Phase 18 allow-list governs enable | ✅ Cross-module guard |
+| Phase 19 metrics on enable | ✅ Observability hook present |
+| MemoryService unchanged | ✅ Admin REST only |
 
+---
+
+## ADR gate
+
+- ADR-035 Implemented
+- ADR-035 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- ed25519 verification deferred
+- Hot-swap deferred — restart required
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

@@ -12,20 +12,38 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-022 Implemented |
+| Check | Result |
+|-------|--------|
+| SEARCH_GRAPH_PLATFORM_ENABLED default false | ✅ Opt-in sync API |
+| SearchGraphOrchestrator | ✅ Reads SSOT — MemoryService unchanged |
+| Meilisearch + Neo4j syncers | ✅ Reuses backfill scripts |
+| Watermark per target | ✅ Tracking tested |
+| D1/SQL remain defaults | ✅ Platform targets opt-in only |
+| REST /search-graph/* | ✅ Admin POST-trigger only |
 
+---
+
+## ADR gate
+
+- ADR-022 Implemented
+- ADR-022 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- Staging cutover evidence manual
+- Graph vector seeds (21C) not built
+- No background scheduler
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

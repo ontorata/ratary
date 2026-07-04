@@ -1,4 +1,4 @@
-# Phase 09.8 — Multi-Client Memory Synchronization — REVIEW
+# Phase 09.8 — Multi-Client Sync — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,38 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-042 Implemented |
+| Check | Result |
+|-------|--------|
+| MULTI_CLIENT_SYNC_ENABLED default false | ✅ Opt-in sync REST |
+| ConflictAwareSyncManager | ✅ LWW / field-merge / manual-queue resolvers |
+| Stale write rejection | ✅ MemoryService enforces when configured |
+| SQL cursors + conflicts | ✅ Migration tests green |
+| CLI sync:status | ✅ Operator path |
+| createMultiClientSyncPorts wiring | ✅ Composition root only |
 
+---
+
+## ADR gate
+
+- ADR-042 Implemented
+- ADR-042 Accepted
+
+---
+
+## Known gaps (accepted)
+
+- REST E2E two-client sync test deferred
+- MCP pull/push deferred
+- 09.7 branch merge integration deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

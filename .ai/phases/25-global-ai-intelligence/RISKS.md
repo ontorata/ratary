@@ -1,4 +1,4 @@
-# Phase 25 — Global AI Intelligence Platform — RISKS
+# Phase 25 — Global AI Intelligence — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,12 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Telemetry captures user content | Medium | Critical | Redactor; TELEMETRY_CONTENT_SAMPLING=false | Mitigated |
+| Analytics writes memories | Low | Critical | Read-only KPI service; tests assert no writes | Mitigated |
+| Global sync without remote transport | High | Medium | Delegates Phase 14; in-process MVP | Accepted |
+| Cost KPI misleading | Medium | Medium | Estimate until Phase 18 meter integrated | Deferred |
+| Default platform ON overhead | Low | High | GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false | Mitigated |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

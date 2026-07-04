@@ -1,48 +1,48 @@
-# Phase 22 — Content & Vector Scale — TESTING
+# Phase 22 — Content Scale — TESTING
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Automated
+## Purpose
 
-| Suite | File | Coverage |
-|-------|------|----------|
-| Orchestrator | `tests/content-scale-platform/orchestrator.test.ts` | run lifecycle, watermark |
-| Composition gate | `tests/content-scale-platform/content-scale-ports.test.ts` | enabled/disabled |
-| Backfill lib | `tests/content-scale-platform/content-offload-backfill.test.ts` | dry-run offload count |
-| Migration | `tests/db/content-scale-platform-migration.test.ts` | sync tables |
-| Admin REST | `tests/api/content-scale.test.ts` | status, manifest, dry-run sync |
-| Server regression | full `npm test` (655 tests) | MemoryService unchanged |
-
----
-
-## Manual smoke
-
-```bash
-CONTENT_SCALE_PLATFORM_ENABLED=true \
-OBJECT_STORAGE_PROVIDER=r2 R2_BUCKET=... R2_ACCESS_KEY_ID=... R2_SECRET_ACCESS_KEY=... \
-VECTOR_PROVIDER=pgvector PGVECTOR_DATABASE_URL=postgresql://... \
-EMBEDDING_PROVIDER=openai EMBEDDING_API_KEY=sk-... \
-npm run dev
-
-curl -H "Authorization: Bearer aic_..." http://localhost:3000/api/v1/content-scale/status
-curl -H "Authorization: Bearer aic_..." -X POST http://localhost:3000/api/v1/content-scale/sync/content \
-  -H "Content-Type: application/json" -d '{"mode":"full","dryRun":true}'
-```
-
-CLI backfill still available:
-
-```bash
-npm run db:backfill-pgvector:execute
-npm run db:backfill-embeddings:execute
-```
+Record verification strategy and evidence: unit, integration, E2E, fixtures, quality gate.
 
 ---
 
 ## Quality gate
 
-- [x] Default regression (`CONTENT_SCALE_PLATFORM_ENABLED=false`)
-- [x] Dry-run content sync without external R2 call (orchestrator + API)
-- [x] Capabilities `contentScale` section when enabled
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-07-04) | 640+ tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
+
+---
+
+## Test suites
+
+| File | Coverage |
+|------|----------|
+| `tests/content-scale-platform/orchestrator.test.ts` | Offload + pgvector + embedding sync |
+| `tests/content-scale-platform/content-scale-ports.test.ts` | Composition gate |
+| `tests/content-scale-platform/content-offload-backfill.test.ts` | R2/S3 offload script |
+| `tests/db/content-scale-platform-migration.test.ts` | Watermark DDL |
+| `tests/api/content-scale.test.ts` | Admin sync REST |
+
+---
+
+## Scenarios verified
+
+- [x] Inline storage + D1 vector defaults unchanged
+- [x] Offload respects `CONTENT_OFFLOAD_MIN_BYTES` threshold
+- [x] Reuses pgvector/embedding backfill scripts
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

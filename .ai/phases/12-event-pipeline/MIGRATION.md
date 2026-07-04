@@ -1,4 +1,4 @@
-# Phase 12 — Event Pipeline & Observability — MIGRATION
+# Phase 12 — Event Pipeline — MIGRATION
 
 **Phase status:** Closed (N/A — no migrations)  
 **Gate:** PASS 2026-07-04  
@@ -12,24 +12,18 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
-
----
-
 ## Migrations
 
-**N/A — no schema or data migration required**, or migrations are covered by an earlier phase.
+**N/A — no DDL — in-process `IEventBus` with consumer registry. Business events are ephemeral; persistence deferred to downstream phases (8.6, 19, 24)**
 
-Opt-in platform modules default OFF; disabling the master env flag is the rollback path with no data loss on hot path.
+| Property | Value |
+|----------|-------|
+| Rollback | `EVENT_BUS_PROVIDER=none` or `EVENT_CONSUMERS_ENABLED=false` |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
 
-Gate evidence: [REVIEW.md](REVIEW.md) — Migration **PASS** (N/A or covered by prior phase).
+Gate evidence: [REVIEW.md](REVIEW.md) — Migration **PASS** (N/A, no DDL).
+
 
 ---
 

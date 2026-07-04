@@ -1,14 +1,17 @@
-﻿# Phase 4 — Memory Intelligence — DESIGN
+# Phase 4 — Memory Intelligence — DESIGN
 
-**Document:** DESIGN  
 **Phase status:** Closed  
-**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+**Gate:** PASS 2026-07-01  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
+**ADR:** [ADR-004 Repository Port Types](../../../docs/adr/004-repository-port-types.md)
+
+**Design archive:** [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) (full narrative)
 
 ---
 
 ## Purpose
 
-Record approved design intent: boundaries, ports, ADR links, and non-goals. MUST NOT contain implementation steps or code.
+Intelligent retrieval pipeline: bounded candidate retrieval, ranking, token-budget context assembly, and background consolidation — without loading full corpus into LLM context.
 
 ---
 
@@ -19,15 +22,55 @@ Record approved design intent: boundaries, ports, ADR links, and non-goals. MUST
 | **Created when** | Design phase begins — before implementation commits |
 | **Updated by** | AI assistant drafts; owner approves; ADR author if structural |
 | **Read-only when** | Phase gate PASS — frozen as historical design record |
-| **Roadmap relation** | Captures scope and architecture evolution row for Phase 4 |
+| **Roadmap relation** | Captures scope and architecture evolution row |
 
 ---
 
-## Design record
+## Architecture
 
-Canonical detail: [docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md).
+```
+REST /api/v1/context  ·  MCP get_context / build_prompt
+       │
+       ▼
+ContextService.buildContext
+       │
+  Retriever → IRetrievalCandidateSource → IMemoryRepository (SQL projection)
+       │
+  Ranker → RankingEngine (pure)
+       │
+  ContextBuilder (token budget) → PromptBuilder
+       │
+MemoryConsolidator (batch CLI — dedupe, archive, stale promotion)
+```
 
-Summarize approved boundaries, ports, and non-goals here. Full narrative remains in archive.
+---
+
+## Boundaries
+
+- `MEMORY_SELECT` explicit projection — no full body in retrieval hot path (O-04-2)
+- `recordAccessBatch` — single UPDATE for access tracking
+- Importance scoring on write path; backfill script dry-run default
+- Reserved columns (`embedding_id`, `object_key`) for Phases 5+ — no behavior yet
+
+## Ports & modules
+
+| Port / module | Responsibility |
+|---------------|----------------|
+| `IRetrievalCandidateSource` | Candidate discovery contract (SQL leg in Phase 4) |
+| `Retriever` | Orchestrates source + filters + cap |
+| `Ranker` | Wraps pure RankingEngine |
+| `ContextBuilder` / `PromptBuilder` | Token-efficient assembly |
+| `MemoryConsolidator` | Batch hygiene — no HTTP |
+
+---
+
+## Non-goals
+
+- Embeddings and vector retrieval (Phase 5–6)
+- PostgreSQL / R2 / pgvector adapters (Phase 10+)
+- Semantic compression (Phase 5.5)
+- Hard delete — archive only
+
 
 ---
 

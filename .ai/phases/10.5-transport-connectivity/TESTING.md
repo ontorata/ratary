@@ -11,7 +11,8 @@
 npm run lint && npm run format:check && npm run typecheck && npm test
 ```
 
-**Last gate (2026-07-04):** 546 passed, 3 skipped (default env)
+
+**Current regression:** 689 passed | 3 skipped (default env, 2026-07-04)
 
 ---
 

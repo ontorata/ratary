@@ -1,7 +1,7 @@
-# Phase 8.6 — Learning Intelligence Engine — RETROSPECTIVE
+# Phase 8.6 — Learning Intelligence — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,40 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+W1 + L26 ranking: `LearningOrchestrator`, behavior analytics, ranking snapshot hook on Ranker, CLI `learning:run`. Gated by `LEARNING_ENGINE_ENABLED=false`.
+
+Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- SQL event/artifact stores with migration
+- `rankingSnapshotLoader` in `create-context-service.ts` applies multipliers at build time
+- Hot path: signals → ingest → `LearningEventRecorder` when 8.5+8.6 on
+- No-op stubs for L23–L30 — zero side effects when disabled
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- L24 recommendation engine deferred
+- L28–L30 dataset/ML/eval deferred
+
+---
+
+## Accepted debt
+
+- Only L21/L22/L26 implemented — rest are stubs
+- Batch `learning:run` only — no scheduler
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Implement L24 before client-facing learning suggestions
+- Add cron for `learning:run` after staging validation
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

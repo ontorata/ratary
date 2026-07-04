@@ -1,7 +1,7 @@
-﻿# Phase 3 — Authorization — MIGRATION
+# Phase 3 — Authorization — MIGRATION
 
-**Document:** MIGRATION  
-**Phase status:** Closed  
+**Phase status:** Closed (N/A — no migrations)  
+**Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,9 +23,18 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Migrations applied
+## Migrations
 
-Document forward migrations, rollback notes, and idempotency guarantees.
+**N/A — no new DDL — authorization reuses Phase 1 `identities` table (`secret_hash`, `owner_id`, `active`). Fastify auth plugin validates API keys against existing schema**
+
+| Property | Value |
+|----------|-------|
+| Rollback | Disable auth middleware config; schema unchanged |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+
+Gate evidence: [REVIEW.md](REVIEW.md) — Migration **PASS** (N/A, no DDL).
+
 
 ---
 

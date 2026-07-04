@@ -12,20 +12,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-031 Implemented |
+| Check | Result |
+|-------|--------|
+| @ai-brain/sdk package | ✅ OpenAPI SSOT consumer |
+| @ai-brain/cli + @ai-brain/mcp-server | ✅ SDK boundary — no direct fetch in CLI |
+| snapshot:openapi + build:packages | ✅ CI pipeline wired |
+| 7-language thin wrappers | ✅ Manifest transport.sdk accurate |
+| Examples + Cursor/Node templates | ✅ Onboarding artifacts present |
+| MemoryService unchanged | ✅ Client packages only |
 
+---
+
+## ADR gate
+
+- ADR-031 Implemented
+- ADR-031 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- Dashboard SPA deferred
+- SDK admin methods for Phase 20/24 deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

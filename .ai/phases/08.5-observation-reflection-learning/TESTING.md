@@ -51,3 +51,6 @@ npm run reflect:signals
 - [ ] REST E2E `POST /api/v1/signals` with auth fixture (route gated at boot)
 - [ ] `ranker.test.ts` extend — importance delta affects sort order deterministically
 - [ ] `cross-owner-leak.test.ts` extend — signal ingest path
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

@@ -1,7 +1,7 @@
-﻿# Phase 2.5 — Stabilization — RISKS
+# Phase 2.5 — Stabilization — RISKS
 
-**Document:** RISKS  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-29  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -12,23 +12,14 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 ---
 
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Design phase — initial risk register |
-| **Updated by** | Assistant during phase; owner validates at gate |
-| **Read-only when** | Gate PASS — realized risks locked; deferred risks noted |
-| **Roadmap relation** | Phase slice of roadmap cross-phase and phase-specific risks |
-
----
-
 ## Risk register
 
-| Risk | Status | Mitigation |
-|------|--------|------------|
-| _see roadmap_ | Mitigated | _record_ |
+| Risk | Likelihood | Impact | Mitigation | Status |
+|------|------------|--------|------------|--------|
+| Flaky test harness | Medium | High | MockD1 isolation; deterministic fixtures | Mitigated |
+| Lint/type drift | Medium | Medium | CI gate: lint + typecheck mandatory | Mitigated |
+| Documentation rot | Low | Medium | Phase folder schema; roadmap sync | Mitigated |
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Gate PASS 2026-06-29 — realized risks locked; deferred items tracked above or in CHECKLIST.*

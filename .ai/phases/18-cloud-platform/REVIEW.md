@@ -12,20 +12,38 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-033 Implemented |
+| Check | Result |
+|-------|--------|
+| CONTROL_PLANE / USAGE_METER / DR flags default off | ✅ Three independent toggles |
+| Admin metadata only | ✅ Data plane CRUD unchanged |
+| Tenant manifest + federation topology | ✅ REST /cloud/* tested |
+| Usage meter consumer | ✅ In-memory store MVP |
+| DR wraps existing backup port | ✅ No new write path on restore MVP |
+| MemoryService unchanged | ✅ Control plane layer only |
 
+---
+
+## ADR gate
+
+- ADR-033 Implemented
+- ADR-033 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- gRPC admin deferred
+- SQL-backed usage meter deferred
+- Full restore write-path deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

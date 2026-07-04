@@ -1,4 +1,4 @@
-# Phase 23 — Enterprise Knowledge Fabric — RISKS
+# Phase 23 — Knowledge Fabric — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Unvetted external content ingest | Medium | High | RuleBasedFabricPolicy; provenance tags | Mitigated |
+| Connector token in logs | Medium | Critical | Never log tokens; presence check only in MVP | Mitigated |
+| Fabric vs federation confusion | Medium | Low | Separate modules and ADRs | Mitigated |
+| Live vendor API not tested | High | Medium | MVP catalog JSON path only | Accepted |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

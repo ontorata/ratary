@@ -85,3 +85,6 @@ Capability discovery (`GET /api/v1/capabilities`) was identified as a gap during
 ---
 
 *Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

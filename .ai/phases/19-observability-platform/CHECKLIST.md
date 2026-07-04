@@ -35,3 +35,19 @@
 - [x] `.env.example` updated
 - [x] [TESTING_PLAN.md](TESTING_PLAN.md) executed
 - [ ] External stack setup guide (Prometheus/Grafana/Tempo/Loki) — deferred
+
+---
+
+## Gate decision
+
+| Field | Value |
+|-------|-------|
+| **Verdict** | **PASS** — 2026-07-04 |
+| **ADR** | ADR-034 |
+| **Master flag** | `OBSERVABILITY_PLATFORM=false` (default OFF) |
+| **Regression** | 689 passed, 3 skipped (default env) |
+| **Review** | [REVIEW.md](REVIEW.md) PASS |
+
+---
+
+*Frozen at gate PASS. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

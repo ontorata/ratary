@@ -1,7 +1,7 @@
-# Phase 8.5 — Quality Signals (Observation, Reflection & Learning) — RETROSPECTIVE
+# Phase 8.5 — Quality Signals — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,41 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+Signal ingest pipeline: normalizer, importance policy, `MemorySignalIngestor`, SQL store, REST `/signals` when `SIGNAL_INGEST_ENABLED=true`. No agent reflection loops.
+
+Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- `create-signal-ingest-ports.ts` gates routes behind flag default off
+- Four signal types with bounded importance deltas
+- Idempotent scope-safe ingestor; manifest `supportsQualitySignals`
+- Constitution boundary preserved — ingest only, not agent learning
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- MCP `submit_signal` not built
+- Phase 12 `memory.signal.received` publish deferred
+- Ranking adaptation is advisory stub only
+
+---
+
+## Accepted debt
+
+- REST-only ingest when enabled
+- No automated ranker mutation
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Publish `memory.signal.received` on Phase 12 bus for Phase 8.6 feed
+- Add MCP `submit_signal` for remote MCP clients
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

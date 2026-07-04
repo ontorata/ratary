@@ -23,4 +23,20 @@
 - [x] Cross-org deny without trust
 - [x] Layer lint pass (services unchanged)
 - [ ] Cross-workspace in-process E2E (manual smoke)
-- [ ] REVIEW PASS
+- [x] [REVIEW.md](REVIEW.md) PASS — 2026-07-04
+
+---
+
+## Gate decision
+
+| Field | Value |
+|-------|-------|
+| **Verdict** | **PASS** — 2026-07-04 |
+| **ADR** | ADR-029 |
+| **Master flag** | `FEDERATION_ENABLED=false` (default OFF) |
+| **Regression** | 689 passed, 3 skipped (default env) |
+| **Review** | [REVIEW.md](REVIEW.md) PASS |
+
+---
+
+*Frozen at gate PASS. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

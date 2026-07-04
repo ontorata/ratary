@@ -1,7 +1,7 @@
-# Phase 25 — Global AI Intelligence Platform — RETROSPECTIVE
+# Phase 25 — Global AI Intelligence — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,40 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+Capstone: telemetry recorder, read-only analytics KPIs, offline journal, 5-tier sync orchestrator over Phase 14. Gated by `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false`.
+
+Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- Analytics never writes memories; redactor default off content sampling
+- `IntelligenceTelemetryConsumer` on Phase 12 events
+- Sync delegates to Phase 14 when federation enabled
+- ADR-036/037/038/043 Implemented; 689 tests green flag off
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- No remote peer sync smoke
+- Cost KPI without Phase 18 billing integration
+
+---
+
+## Accepted debt
+
+- Global sync limited to in-process federation transport
+- Cost KPI estimate-only
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Integrate Phase 18 usage meter into `/intelligence/analytics/cost`
+- Remote federation transport before multi-region 5-tier sync
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

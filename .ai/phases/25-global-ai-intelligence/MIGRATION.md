@@ -1,4 +1,4 @@
-# Phase 25 — Global AI Intelligence Platform — MIGRATION
+# Phase 25 — Global AI Intelligence — MIGRATION
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,28 +12,29 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
+## Schema changes (additive)
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+Applied via `migrateGlobalIntelligencePhase1()` in `src/db/migrations.ts` (ADR-036, ADR-037, ADR-038, ADR-043).
+
+### Objects
+
+- `intelligence_telemetry_events` — redacted telemetry envelope store
+- `intelligence_sync_state` — 5-tier sync cursor metadata
+- `intelligence_offline_journal` — offline replay journal
 
 ---
 
-## Migrations
+## Verification
 
-Phase introduces additive DDL in `src/db/migrations.ts`. Verification: [`tests/global-intelligence/migration.test.ts`](../../../tests/global-intelligence/migration.test.ts).
+[`tests/global-intelligence/migration.test.ts`](../../../tests/global-intelligence/migration.test.ts)
 
 | Property | Value |
 |----------|-------|
-| Rollback | Disable master env flag — tables remain; no hot-path dependency when OFF |
-| Idempotency | Migration runner applies forward-only steps |
-| Production | Opt-in; default deploy unchanged |
-
+| Rollback | `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false` — analytics read-only; no memory writes |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
 Gate evidence: migration test green at gate 2026-07-04.
+
 
 ---
 

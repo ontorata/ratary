@@ -1,14 +1,14 @@
-﻿# Phase 3 — Authorization — DESIGN
+# Phase 3 — Authorization — DESIGN
 
-**Document:** DESIGN  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
 ## Purpose
 
-Record approved design intent: boundaries, ports, ADR links, and non-goals. MUST NOT contain implementation steps or code.
+Secure REST API with API-key authentication bound to owner identity. Fail closed on missing/invalid credentials. MCP process anchored via `MCP_OWNER_ID`.
 
 ---
 
@@ -19,15 +19,50 @@ Record approved design intent: boundaries, ports, ADR links, and non-goals. MUST
 | **Created when** | Design phase begins — before implementation commits |
 | **Updated by** | AI assistant drafts; owner approves; ADR author if structural |
 | **Read-only when** | Phase gate PASS — frozen as historical design record |
-| **Roadmap relation** | Captures scope and architecture evolution row for Phase 3 |
+| **Roadmap relation** | Captures scope and architecture evolution row |
 
 ---
 
-## Design record
+## Architecture
 
-Canonical detail: [docs/archive/PHASE-3.md](../../docs/archive/PHASE-3.md).
+```
+HTTP Request
+    │
+    ▼
+auth.middleware (Fastify preHandler)
+    │
+    ▼
+AuthService → IdentityProvider chain → IdentityRepository
+    │
+    ▼
+AuthUser { ownerId, identityId, clientId } → handlers
+```
 
-Summarize approved boundaries, ports, and non-goals here. Full narrative remains in archive.
+---
+
+## Boundaries
+
+- Reuses Phase 1 `identities` schema — no new DDL
+- Never log raw API keys — hash/compare only via `secret_hash`
+- Owner bound on identity — no header override for owner_id spoofing
+- 401 on missing auth; 403 on insufficient scope (future RBAC hooks)
+
+## Ports & modules
+
+| Port / module | Responsibility |
+|---------------|----------------|
+| `AuthService` | Provider chain; updates last_used on success |
+| `IdentityProvider` | Pluggable auth (API key MVP) |
+| `IdentityRepository` | CRUD on Phase 1 `identities` table |
+
+---
+
+## Non-goals
+
+- OAuth / OIDC / SSO (Phases 17, 13.1)
+- Workspace-scoped RBAC (Phase 9–10)
+- OPA policy engine (Phase 17)
+
 
 ---
 

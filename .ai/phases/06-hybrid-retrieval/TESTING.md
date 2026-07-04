@@ -1,4 +1,4 @@
-﻿# Phase 6 — Hybrid Retrieval — TESTING
+# Phase 6 — Hybrid Retrieval — TESTING
 
 **Document:** TESTING  
 **Phase status:** Closed  
@@ -49,6 +49,8 @@ Record verification strategy and evidence: unit, integration, E2E, fixtures, qua
 | Lint / format / typecheck | Green |
 
 Evidence: [COMPLETION.md](COMPLETION.md) · [REVIEW.md](REVIEW.md) · [RETROSPECTIVE.md](RETROSPECTIVE.md)
+
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
 
 ---
 

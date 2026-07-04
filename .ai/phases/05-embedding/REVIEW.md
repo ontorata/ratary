@@ -1,7 +1,7 @@
-﻿# Phase 5 — Embedding — REVIEW
+# Phase 5 — Embedding — REVIEW
 
-**Document:** REVIEW  
 **Phase status:** Closed  
+**Gate:** PASS 2026-07-01  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,14 +23,46 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Field | Value |
-|-------|-------|
-| Architecture review | _record_ |
-| Phase gate verdict | PASS |
-| Date | _record_ |
-| Owner | Project owner |
+| Check | Result |
+|-------|--------|
+| ADR-003 async embed only | ✅ No sync embed on CRUD hot path |
+| IEmbeddingStore port | ✅ No vector SQL in MemoryRepository |
+| Default noop provider | ✅ Zero external API cost when disabled |
+| Backfill dry-run | ✅ CLI `--dry-run` default |
+| HYBRID_RETRIEVAL wiring prep | ✅ Vector source ready for Phase 6 |
+| Quality gate | ✅ Embedding unit + migration tests green |
+
+---
+
+## ADR gate
+
+- ADR-003 Implemented
+
+
+---
+
+## Known gaps (accepted)
+
+- D1 vector scale ceiling — pgvector path deferred to Phase 10 (ADR-011)
+
+---
+
+## Verdict
+
+| Gate | Verdict |
+|------|---------|
+| Architecture | **PASS** |
+| Security | **PASS** |
+| Testing | **PASS** |
+| Documentation | **PASS** |
+| Migration | **PASS** (N/A or covered) |
+| Breaking changes | **PASS** (additive) |
+
+**Overall: ✅ PASS** (2026-07-01)
+
+**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md) · [TESTING.md](TESTING.md) · [IMPLEMENTATION.md](IMPLEMENTATION.md)
 
 ---
 

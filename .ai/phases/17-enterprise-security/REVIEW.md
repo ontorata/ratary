@@ -12,20 +12,30 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-032 Implemented |
+| Check | Result |
+|-------|--------|
+| ENTERPRISE_SECURITY_V2 default false | ✅ Opt-in security pipeline |
+| Pipeline Auth → RBAC → policy → quota | ✅ Fail closed 403/429 |
+| SSO/OIDC routes + admin REST | ✅ Security module isolated |
+| OPA policy engine hook | ✅ Composition root wiring |
+| MemoryService unchanged | ✅ Middleware + admin only |
+| Bridges Phase 13.1 MCP OAuth | ✅ OIDC provider shared |
 
+---
+
+## Known gaps (accepted)
+
+- IdP connectors stubs — no live vendor tests
+- OPA policy examples not bundled
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

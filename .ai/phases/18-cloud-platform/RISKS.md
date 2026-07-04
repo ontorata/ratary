@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Control plane mutates memories | Low | Critical | Metadata only; no CRUD in control plane | Mitigated |
+| Usage meter memory growth | Medium | Medium | In-memory default; SQL store option | Accepted |
+| DR restore partial write | Medium | High | Restore count-only MVP; manual import | Accepted |
+| Tenant topology stale | Medium | Low | Manual refresh; federation integration | Identified |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

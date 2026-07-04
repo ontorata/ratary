@@ -1,7 +1,7 @@
-﻿# Phase 3 — Authorization — RISKS
+# Phase 3 — Authorization — RISKS
 
-**Document:** RISKS  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -12,23 +12,15 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 ---
 
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Design phase — initial risk register |
-| **Updated by** | Assistant during phase; owner validates at gate |
-| **Read-only when** | Gate PASS — realized risks locked; deferred risks noted |
-| **Roadmap relation** | Phase slice of roadmap cross-phase and phase-specific risks |
-
----
-
 ## Risk register
 
-| Risk | Status | Mitigation |
-|------|--------|------------|
-| _see roadmap_ | Mitigated | _record_ |
+| Risk | Likelihood | Impact | Mitigation | Status |
+|------|------------|--------|------------|--------|
+| API key leak in logs | Medium | Critical | Never log raw keys; hash/compare only | Mitigated |
+| Missing auth on new routes | Medium | Critical | Fastify auth plugin; E2E 401 tests | Mitigated |
+| Owner ID spoofing | Low | Critical | Key binds owner; no header override | Mitigated |
+| MCP env owner misconfiguration | Medium | High | Document MCP_OWNER_ID required in prod | Mitigated |
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Gate PASS 2026-06-30 — realized risks locked; deferred items tracked above or in CHECKLIST.*

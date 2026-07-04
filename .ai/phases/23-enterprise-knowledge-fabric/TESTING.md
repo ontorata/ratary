@@ -1,39 +1,51 @@
 # Phase 23 — Enterprise Knowledge Fabric — TESTING
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Automated
+## Purpose
 
-| Suite | File | Coverage |
-|-------|------|----------|
-| Orchestrator | `tests/knowledge-fabric-platform/orchestrator.test.ts` | dry-run ingest lifecycle |
-| Composition gate | `tests/knowledge-fabric-platform/knowledge-fabric-ports.test.ts` | enabled/disabled |
-| Migration | `tests/db/knowledge-fabric-platform-migration.test.ts` | fabric tables |
-| Admin REST | `tests/api/knowledge-fabric.test.ts` | status, manifest, dry-run ingest |
-| Server regression | full `npm test` (664 tests) | MemoryService unchanged |
-
----
-
-## Manual smoke
-
-```bash
-KNOWLEDGE_FABRIC_ENABLED=true \
-KNOWLEDGE_FABRIC_CATALOG_JSON='{"notion":[{"externalId":"p1","title":"Doc","body":"Hello","updatedAt":"2026-07-04T00:00:00.000Z","metadata":{}}]}' \
-npm run dev
-
-curl -H "Authorization: Bearer aic_..." http://localhost:3000/api/v1/knowledge-fabric/status
-curl -H "Authorization: Bearer aic_..." http://localhost:3000/api/v1/knowledge-fabric/connectors
-curl -H "Authorization: Bearer aic_..." -X POST http://localhost:3000/api/v1/knowledge-fabric/ingest/notion \
-  -H "Content-Type: application/json" -d '{"mode":"full","dryRun":true}'
-```
+Record verification strategy and evidence: unit, integration, E2E, fixtures, quality gate.
 
 ---
 
 ## Quality gate
 
-- [x] Default regression (`KNOWLEDGE_FABRIC_ENABLED=false`)
-- [x] Dry-run ingest via catalog JSON without external API
-- [x] Capabilities `knowledgeFabric` section when enabled
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-07-04) | 650+ tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
+
+---
+
+## Test suites
+
+| File | Coverage |
+|------|----------|
+| `tests/knowledge-fabric-platform/orchestrator.test.ts` | Ingest orchestration |
+| `tests/knowledge-fabric-platform/knowledge-fabric-ports.test.ts` | Composition gate |
+| `tests/db/knowledge-fabric-platform-migration.test.ts` | External ref DDL |
+| `tests/api/knowledge-fabric.test.ts` | POST `/knowledge-fabric/ingest/*` |
+
+---
+
+## Scenarios verified
+
+- [x] All writes via MemoryService with `fabric:<connectorId>` provenance
+- [x] Catalog JSON ingest path validated in tests
+- [x] Distinct from Phase 14 peer exchange
+
+## Deferred tests
+
+- [ ] Live Slack/GitHub/Notion API smoke
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

@@ -1,4 +1,4 @@
-# Phase 22 — Content & Vector Scale — REVIEW
+# Phase 22 — Content Scale — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-021 Implemented |
+| Check | Result |
+|-------|--------|
+| CONTENT_SCALE_PLATFORM_ENABLED default false | ✅ Opt-in orchestrator |
+| Content offload + pgvector + embedding sync | ✅ Three-target watermark |
+| Reuses backfill scripts | ✅ No duplicate ETL logic |
+| Inline storage + D1 vector defaults | ✅ Unchanged when flag off |
+| CONTENT_OFFLOAD_CLEAR_INLINE=false default | ✅ Safe rollback |
+| MemoryService unchanged | ✅ Orchestrator reads SSOT only |
 
+---
+
+## ADR gate
+
+- ADR-021 Implemented
+- ADR-021 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- Admin-triggered sync only
+- Event-driven incremental via Phase 12 deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

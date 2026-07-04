@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Policy engine bypass | Low | Critical | Middleware order; fail closed 403 | Mitigated |
+| Quota false positives block writes | Medium | Medium | Memory quota enforcer; tunable limits | Mitigated |
+| IdP stub in production | High | Critical | Document stub vs prod IdP wiring | Accepted |
+| SSO redirect open redirect | Medium | High | Allowlist redirectUri validation | Mitigated |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

@@ -1,4 +1,4 @@
-# Phase 8.6 — Learning Intelligence Engine — RISKS
+# Phase 8.6 — Learning Intelligence — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Ranking snapshot wrong owner | Medium | Critical | Scope on snapshot loader; context tests | Mitigated |
+| Stub engines side effects | Low | High | No-op stubs L23–L30 when disabled | Mitigated |
+| Batch learning stale data | Medium | Medium | Manual learning:run; no cron yet | Accepted |
+| Requires signal ingest ON | Medium | Medium | Document dependency on Phase 8.5 | Mitigated |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

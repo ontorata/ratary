@@ -1,4 +1,4 @@
-# Phase 04.7 — Self-Managing Memory Stewardship — RISKS
+# Phase 04.7 — Memory Stewardship — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,18 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Stewardship mutates prod without dry-run | Medium | Critical | dryRun default true; CLI --execute opt-in | Mitigated |
+| Run history lost on restart | High | Low | InMemory run store MVP | Accepted — SQL store deferred |
+| Task error aborts whole run | Medium | Medium | Per-task error isolation in orchestrator | Mitigated |
+| Scope creep into agent planning | Low | Critical | Batch tasks only; no agent loop | Mitigated |
+
+## Deferred risks (carried forward)
+
+| ID | Risk | Mitigation path |
+|----|------|-----------------|
+| D47-01 | Graph repair task missing | Phase 08.7 infer:relations |
+| D47-02 | SQL run store | Post-MVP adapter |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

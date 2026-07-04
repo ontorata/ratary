@@ -1,4 +1,4 @@
-# Phase 21 — Search & Graph Production — RISKS
+# Phase 21 — Search & Graph Prod — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Index drift from D1 SSOT | Medium | High | Watermark sync; admin-triggered jobs | Mitigated |
+| Meilisearch exposes wrong owner docs | Low | Critical | Owner filter on backfill/sync | Mitigated |
+| Neo4j relation leak | Low | Critical | Owner-scoped backfill; cross-owner tests | Mitigated |
+| Default search/graph provider changed | Low | Critical | SEARCH/GRAPH provider defaults unchanged | Mitigated |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

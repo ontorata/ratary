@@ -1,12 +1,26 @@
 # Phase 13 — Protocol Layer — RISKS
 
-| ID | Risk | Severity | Mitigation |
-|----|------|----------|------------|
-| R-13-01 | Stream logic duplicated in adapters | High | `IContextStreamSource` single path |
-| R-13-02 | Controller imports repository | High | Handler-only DI; lint gate |
-| R-13-03 | Service imports ws/gRPC | High | Layer lint in CI |
-| R-13-04 | WS/SSE on Vercel serverless | Medium | Document long-running Node only |
-| R-13-05 | Protocol benchmark flaky CI | Low | Optional job; fixed fixtures |
-| R-13-06 | 10.5 not done — rework | Medium | Hard prerequisite ADR-027 |
-| R-13-07 | Roadmap renumber confusion | Low | POST-ROADMAP amendment + README |
-| R-13-08 | Event subscribe before Phase 12 | Low | Stub returns not-enabled |
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
+---
+
+## Purpose
+
+Phase-specific risk register: identified, mitigated, realized, and deferred risks.
+
+---
+
+## Risk register
+
+| Risk | Likelihood | Impact | Mitigation | Status |
+|------|------------|--------|------------|--------|
+| Streaming duplicates ranking logic | Medium | High | Reuse chunksFromBuildContextResult | Mitigated |
+| WebSocket auth bypass | Medium | Critical | Same auth middleware as REST | Mitigated |
+| SSE connection exhaustion | Medium | Medium | Rate limits; ops guidance | Identified |
+| All protocols default ON | Low | Critical | SSE/WS flags false default | Mitigated |
+
+---
+
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

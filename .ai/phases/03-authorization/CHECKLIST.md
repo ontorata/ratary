@@ -1,32 +1,53 @@
-﻿# Phase 3 — Authorization — CHECKLIST
+# Phase 3 — Authorization — CHECKLIST
 
-**Document:** CHECKLIST  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
 ## Purpose
 
-Executable gate checklist instance — one item per milestone or success criterion.
+Executable gate checklist — one item per milestone or success criterion.
 
 ---
 
-## Lifecycle
+## Implementation
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Phase open (Readiness PASS) from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md) |
-| **Updated by** | Assistant during phase; owner signs at gate |
-| **Read-only when** | Phase gate PASS — frozen snapshot |
-| **Roadmap relation** | Each item traces to milestone or success criterion |
-
----
-
-## Phase checklist (frozen)
-
-Derived from [review/01-PHASE-CHECKLIST.md](../review/01-PHASE-CHECKLIST.md). All items checked at gate.
+- [x] `AuthService` + provider chain
+- [x] API key provider — hash/compare via `identities.secret_hash`
+- [x] Fastify `auth.middleware` on protected routes
+- [x] `IdentityRepository` last_used tracking
+- [x] REST `/api/v1/auth/*` key management
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+## Security
+
+- [x] 401 on missing/invalid credentials
+- [x] Owner binding — no header override spoofing
+- [x] Never log raw API keys
+- [x] Reuses Phase 1 schema — no new DDL
+
+---
+
+## Quality gate
+
+- [x] Auth E2E regression tests green
+- [x] `MCP_OWNER_ID` documented for production MCP
+- [x] Governance docs closed at gate
+
+---
+
+## Gate decision
+
+| Field | Value |
+|-------|-------|
+| **Verdict** | **PASS** — 2026-06-30 |
+| **Regression** | auth regression suite green |
+| **Review** | [REVIEW.md](REVIEW.md) PASS |
+
+
+---
+
+*Frozen at gate PASS. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

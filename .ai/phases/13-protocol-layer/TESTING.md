@@ -37,3 +37,5 @@ npm run benchmark:protocols
 ## Quality gate
 
 557 tests green at default env (flags off).
+
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |

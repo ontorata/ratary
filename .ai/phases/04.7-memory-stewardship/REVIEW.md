@@ -1,4 +1,4 @@
-# Phase 04.7 — Self-Managing Memory Stewardship — REVIEW
+# Phase 04.7 — Memory Stewardship — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,39 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-045 Implemented |
+| Check | Result |
+|-------|--------|
+| Master flag default OFF | ✅ `MEMORY_STEWARDSHIP_ENABLED=false` |
+| Orchestrator per-task isolation | ✅ Failed task does not abort run |
+| dryRun default true | ✅ CLI `--execute` opt-in only |
+| MemoryService signatures unchanged | ✅ Hooks via composition root only |
+| Four default tasks | ✅ consolidate, archive, dedupe, importance refresh |
+| Constitution — no agent loop | ✅ Batch tasks only |
 
+---
+
+## ADR gate
+
+- ADR-045 Implemented
+- ADR-045 Accepted — stewardship orchestrator pattern documented
+- Rollback: disable flag; run history in-memory only
+
+---
+
+## Known gaps (accepted)
+
+- Graph repair task deferred to Phase 08.7
+- SQL run store deferred — `InMemoryStewardshipRunStore` MVP
+- MCP `run_stewardship` not built
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

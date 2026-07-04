@@ -1,7 +1,7 @@
-# Phase 9.5 — Platform Architecture — README — RETROSPECTIVE
+# Phase 9.5 — Platform Architecture — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-03  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,39 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+Canonical port registry at `src/ports/` — `ISqlDatabase`, `IVectorStore`, `IGraphStore`, `IObjectStorage`, `ICache`, `IEventBus`, `IAnalyticsStore`. Zero runtime change.
+
+Gate PASS 2026-07-03. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- Barrel export SSOT per ADR-008
+- No provider implementations — pure structural phase
+- 310 tests green; explicit adapter placement under `src/infrastructure/`
+- Re-exports preserve existing repository port locations
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- No adapters in this phase — Phase 10 scope
+- Composition roots still inject concrete repos
+
+---
+
+## Accepted debt
+
+- Ports declared but runtime uses legacy paths until Phase 10 wiring
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Implement first adapters in Phase 10 enterprise track incrementally
+- Migrate composition roots one port at a time
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-03. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

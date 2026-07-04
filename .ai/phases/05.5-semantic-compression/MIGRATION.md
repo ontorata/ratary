@@ -1,49 +1,40 @@
 # Phase 5.5 — Semantic Compression — MIGRATION
 
-**Status:** Implemented (2026-07-04)  
-**Schema impact:** Additive columns on `memories` — no new tables
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Columns added
+## Purpose
 
-| Column | Type | Purpose |
-|--------|------|---------|
-| `compression_meta` | TEXT NULL (JSON) | `CompressionMetadata` audit trail |
-| `compression_version` | INTEGER NULL | Policy version applied |
-| `lifecycle_state` | TEXT NULL | Lifecycle tracking (extension track) |
-
-Migration: `src/db/migrations.ts` — idempotent `ALTER TABLE` when column missing.
-
-Canonical schema: `schema.sql` includes all three columns.
+Record schema and data migrations: forward path, rollback, idempotency, and production notes.
 
 ---
 
-## Relation type
+## Schema changes (additive)
 
-| Relation | Semantics |
-|----------|-----------|
-| `consolidates` | Summary memory → source memory (added to `RELATION_TYPES`) |
+Applied via `migrateExtensionTracksPhase1() (compression columns portion)` in `src/db/migrations.ts` (ADR-023).
 
----
+### Objects
 
-## Forward path
-
-1. `npm run db:migrate` — applies columns on D1/Postgres
-2. Existing rows: `compression_meta` null (no backfill required)
-3. Optional execute: `npm run compress:memories:execute` per owner scope
-4. Re-embed summary rows: `npm run db:backfill-embeddings:execute`
+- `memories` columns: compression_meta, compression_version, lifecycle_state
+- Note: same migration step also creates `memory_signals` (Phase 8.5 scope)
 
 ---
 
-## Rollback
+## Verification
 
-1. Set `COMPRESSION_ENABLED=false` — stops new compression
-2. Summary memories remain valid — no data loss
-3. Column drop deferred (append-only migration policy)
+[`tests/db/extension-tracks-migration.test.ts`](../../../tests/db/extension-tracks-migration.test.ts)
+
+| Property | Value |
+|----------|-------|
+| Rollback | `COMPRESSION_ENABLED=false` — columns remain; no hot-path reads when OFF |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+Gate evidence: migration test green at gate 2026-07-04.
+
 
 ---
 
-## Postgres parity
-
-Phase 11 production ops includes these columns in Postgres schema apply path.
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

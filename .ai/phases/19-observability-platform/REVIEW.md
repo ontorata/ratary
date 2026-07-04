@@ -12,20 +12,38 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-034 Implemented |
+| Check | Result |
+|-------|--------|
+| OBSERVABILITY_PLATFORM default false | ✅ Opt-in metrics/traces/logs |
+| Separated from Phase 12 business bus | ✅ No OTLP on memory events |
+| 6 Grafana dashboard packs | ✅ overview, memory, embedding, graph, federation, cost |
+| REST middleware instrumentation | ✅ Integrates OTEL_ENABLED |
+| SLO templates | ✅ Documented thresholds |
+| Default deploy unchanged | ✅ External Prometheus/Grafana only |
 
+---
+
+## ADR gate
+
+- ADR-034 Implemented
+- ADR-034 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- gRPC/MCP dedicated hooks deferred
+- Cost dashboard gauges not populated
+- No bundled docker-compose stack
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

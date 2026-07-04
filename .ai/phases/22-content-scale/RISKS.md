@@ -1,4 +1,4 @@
-# Phase 22 — Content & Vector Scale — RISKS
+# Phase 22 — Content Scale — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| R2 offload orphan inline content | Medium | Medium | CONTENT_OFFLOAD_CLEAR_INLINE opt-in | Accepted |
+| pgvector sync partial failure | Medium | High | Watermark + dry-run backfill scripts | Mitigated |
+| Embedding job overload | Medium | Medium | Batch jobs; rate limits | Identified |
+| Object storage credentials exposure | Low | Critical | Env-only secrets; never in manifest | Mitigated |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

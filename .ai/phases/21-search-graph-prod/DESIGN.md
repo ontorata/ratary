@@ -42,3 +42,21 @@ REST /api/v1/search-graph/*  (SEARCH_GRAPH_PLATFORM_ENABLED)
 - Automatic post-commit index hooks (event-driven sync)
 - Graph vector seed materialization (21C runtime)
 - OpenSearch adapter
+
+---
+
+## Env flags
+
+| Env | Default | Purpose |
+|-----|---------|---------|
+| `SEARCH_GRAPH_PLATFORM_ENABLED` | false | Master gate for sync orchestrator REST |
+
+---
+
+## Non-goals
+
+- Replacing Phase 10 runtime `SEARCH_PROVIDER` / `GRAPH_PROVIDER` selection
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

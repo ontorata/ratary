@@ -247,3 +247,6 @@ All suites must pass on the Postgres staging harness before cutover.
 ---
 
 *Gate evidence updated 2026-07-04 (local Postgres staging verification). Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

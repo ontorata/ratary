@@ -38,3 +38,6 @@ npm run lint && npm run typecheck && npm test
 ---
 
 *Do not contradict [ADR-008](../../../docs/adr/008-platform-architecture.md).*
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

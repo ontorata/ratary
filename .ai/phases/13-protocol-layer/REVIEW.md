@@ -12,20 +12,38 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-028 Implemented |
+| Check | Result |
+|-------|--------|
+| SSE_ENABLED / WEBSOCKET_ENABLED default off | ✅ REST unary unchanged |
+| Shared streaming module | ✅ `transport/shared/streaming/` — no adapter logic drift |
+| gRPC stream reuse | ✅ `chunksFromBuildContextResult` shared path |
+| Layer boundaries | ✅ No service logic in protocol adapters |
+| Benchmark CLI | ✅ Local latency tooling present |
+| Default deploy unchanged | ✅ All streaming protocols opt-in |
 
+---
+
+## ADR gate
+
+- ADR-028 Implemented
+- ADR-028 Implemented
+- Rollback: disable SSE/WEBSOCKET flags
+
+---
+
+## Known gaps (accepted)
+
+- No archived production latency benchmarks
+- Phase 12 event subscribe stub partial
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

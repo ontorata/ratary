@@ -1,4 +1,4 @@
-# Phase 11 — Production Operations — RISKS
+# Phase 11 — Production Ops — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Postgres cutover data loss | Medium | Critical | S0–S4 runbook; parity scripts; rollback | Mitigated |
+| Default D1 deploy broken | Low | Critical | SQL_PROVIDER=d1 unchanged default | Mitigated |
+| Staging harness false positive | Medium | High | postgres-staging.integration.test.ts (skipped CI) | Mitigated |
+| Repository split scope creep | Medium | Medium | 11C deferred optional ADR-019 | Deferred |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

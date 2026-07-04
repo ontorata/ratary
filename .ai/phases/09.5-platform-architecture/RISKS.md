@@ -1,7 +1,14 @@
 # Phase 9.5 — Platform Architecture — RISKS
 
-**Status:** Closed (gate PASS 2026-07-03)  
-**ADR:** [ADR-008](../../../docs/adr/008-platform-architecture.md)
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-03  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
+---
+
+## Purpose
+
+Phase-specific risk register: identified, mitigated, realized, and deferred risks.
 
 ---
 
@@ -9,13 +16,10 @@
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Port drift — duplicate conflicting interfaces | Medium | High | Single barrel `src/ports/index.ts`; ADR-008 registry table | Mitigated |
-| Developers bypass ports and import D1 directly | High | Medium | Code review; Phase 10 lint rule (future); document in DESIGN | Accepted |
-| Dual naming confusion (`IEmbeddingStore` vs `IVectorStore`) | Medium | Low | JSDoc on legacy ports; migration table in MIGRATION.md | Accepted |
-| Over-engineering unused ports (event bus, analytics) | Low | Medium | Interfaces only — no wiring until enterprise ADR | Accepted |
-| Premature Postgres adapter without tests | Medium | High | **Blocked** until Phase 10 ADR + harness | Deferred |
-| `ISqlDatabase` too SQL-centric for ORMs | Low | Medium | Port stays minimal (`query`/`execute`); ORM adapters wrap internally | Identified |
+| Ports without adapters — dead code feel | Medium | Low | Phase 10 implements adapters | Resolved |
+| Duplicate port definitions | Medium | High | Re-export existing ports; platform-ports.test.ts | Mitigated |
+| Premature adapter in domain layer | Low | Critical | No implementations in 9.5 | Mitigated |
 
 ---
 
-*Cross-phase debt: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).*
+*Gate PASS 2026-07-03 — realized risks locked; deferred items tracked above or in CHECKLIST.*

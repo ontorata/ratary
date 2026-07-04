@@ -12,20 +12,38 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-023 Implemented |
+| Check | Result |
+|-------|--------|
+| COMPRESSION_ENABLED default false | ✅ Opt-in only |
+| RuleBasedCompressionPolicy | ✅ No LLM on hot path |
+| Extended consolidator | ✅ Phase 4 paths preserved |
+| Append-only migration | ✅ Rollback is flag-off |
+| CLI compress:memories | ✅ dry-run default |
+| Manifest supportsSemanticCompression | ✅ Capability discovery accurate |
 
+---
+
+## ADR gate
+
+- ADR-023 Implemented
+- ADR-023 Accepted
+- Rollback: `COMPRESSION_ENABLED=false`
+
+---
+
+## Known gaps (accepted)
+
+- ICompressionSummarizer LLM adapter deferred
+- Admin REST `/admin/compress` deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

@@ -32,3 +32,6 @@ REST pull/push with `X-API-Key` + optional `X-Workspace-Id` when enterprise RBAC
 - REST E2E pull/push integration test
 - MCP sync tools (future)
 - Branch merge via 09.7 evolution on conflict
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

@@ -1,46 +1,52 @@
 # Phase 21 — Search & Graph Production — TESTING
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Automated
+## Purpose
 
-| Suite | File | Coverage |
-|-------|------|----------|
-| Orchestrator | `tests/search-graph-platform/orchestrator.test.ts` | run lifecycle, watermark |
-| Composition gate | `tests/search-graph-platform/search-graph-ports.test.ts` | enabled/disabled |
-| Migration | `tests/db/search-graph-platform-migration.test.ts` | sync tables |
-| Admin REST | `tests/api/search-graph.test.ts` | status, manifest, dry-run sync |
-| Server regression | full `npm test` (644 tests) | MemoryService unchanged |
-
----
-
-## Manual smoke
-
-```bash
-SEARCH_GRAPH_PLATFORM_ENABLED=true \
-MEILISEARCH_HOST=http://127.0.0.1:7700 MEILISEARCH_INDEX=memories \
-NEO4J_URI=bolt://localhost:7687 NEO4J_USERNAME=neo4j NEO4J_PASSWORD=secret \
-npm run dev
-
-curl -H "Authorization: Bearer aic_..." http://localhost:3000/api/v1/search-graph/status
-curl -H "Authorization: Bearer aic_..." -X POST http://localhost:3000/api/v1/search-graph/sync/search \
-  -H "Content-Type: application/json" -d '{"mode":"full","dryRun":true}'
-```
-
-CLI backfill still available:
-
-```bash
-npm run db:backfill-meilisearch:execute
-npm run db:backfill-neo4j:execute
-```
+Record verification strategy and evidence: unit, integration, E2E, fixtures, quality gate.
 
 ---
 
 ## Quality gate
 
-- [x] Default regression (`SEARCH_GRAPH_PLATFORM_ENABLED=false`)
-- [x] Dry-run search sync without external Meilisearch call
-- [x] Capabilities `searchGraph` section when enabled
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-07-04) | 630+ tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
+
+---
+
+## Test suites
+
+| File | Coverage |
+|------|----------|
+| `tests/search-graph-platform/orchestrator.test.ts` | Sync orchestration |
+| `tests/search-graph-platform/search-graph-ports.test.ts` | Composition gate |
+| `tests/db/search-graph-platform-migration.test.ts` | Watermark DDL |
+| `tests/api/search-graph.test.ts` | Admin sync REST |
+
+---
+
+## Scenarios verified
+
+- [x] D1 graph + SQL search remain defaults when platform off
+- [x] Meilisearch/Neo4j sync reads SSOT only
+- [x] Watermark state per target
+
+## Deferred tests
+
+- [ ] Staging Meilisearch+Neo4j cutover evidence archived
+- [ ] Background incremental scheduler
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

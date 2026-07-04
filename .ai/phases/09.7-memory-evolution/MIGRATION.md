@@ -1,4 +1,4 @@
-# Phase 09.7 — Memory Evolution & Version Control — MIGRATION
+# Phase 09.7 — Memory Evolution — MIGRATION
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,28 +12,28 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
+## Schema changes (additive)
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+Applied via `migrateExtensionTracksPhase4()` in `src/db/migrations.ts` (ADR-040).
+
+### Objects
+
+- `memory_versions` — append-only version snapshots
+- `memory_heads` — current head pointer per memory
 
 ---
 
-## Migrations
+## Verification
 
-Phase introduces additive DDL in `src/db/migrations.ts`. Verification: [`tests/db/extension-tracks-migration.test.ts`](../../../tests/db/extension-tracks-migration.test.ts).
+[`tests/db/extension-tracks-migration.test.ts`](../../../tests/db/extension-tracks-migration.test.ts)
 
 | Property | Value |
 |----------|-------|
-| Rollback | Disable master env flag — tables remain; no hot-path dependency when OFF |
-| Idempotency | Migration runner applies forward-only steps |
-| Production | Opt-in; default deploy unchanged |
-
+| Rollback | `MEMORY_EVOLUTION_ENABLED=false` — version history preserved; hooks no-op when OFF |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
 Gate evidence: migration test green at gate 2026-07-04.
+
 
 ---
 

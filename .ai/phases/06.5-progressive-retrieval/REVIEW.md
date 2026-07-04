@@ -12,20 +12,30 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-024 Implemented |
+| Check | Result |
+|-------|--------|
+| DefaultRetrievalPolicy backward compatible | ✅ Matches pre-6.5 summary-only behavior |
+| Additive retrievalPlan field | ✅ Clients may ignore optional response |
+| Body hydration gated | ✅ `plan.hydrateBody` + `findByIdsWithContent` |
+| No master env flag | ✅ Always-on default adapter — zero deploy change |
+| MCP/REST schemas unchanged | ✅ Contract stability preserved |
+| Manifest supportsProgressiveRetrieval | ✅ Policy version exposed |
 
+---
+
+## Known gaps (accepted)
+
+- RETRIEVAL_POLICY=legacy adapter not built
+- Relations stage auto-expansion deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

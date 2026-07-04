@@ -1,7 +1,7 @@
-﻿# Phase 1 — Foundation — MIGRATION
+# Phase 1 — Foundation — MIGRATION
 
-**Document:** MIGRATION  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-28  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,9 +23,41 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Migrations applied
+## Schema changes (additive)
 
-Document forward migrations, rollback notes, and idempotency guarantees.
+Applied via `runMigrations() / MIGRATION_SQL` in `src/db/migrations.ts`.
+
+### Objects
+
+- `memories` — core CRUD table + indexes
+- `identities` — API key / identity store (`secret_hash` unique partial index)
+- `clients` — registered client metadata
+- `audit_logs` — security audit trail
+- `settings` — key/value config
+
+---
+
+## Verification
+
+[`tests/db/postgres-migrations.test.ts`](../../../tests/db/postgres-migrations.test.ts)
+
+| Property | Value |
+|----------|-------|
+| Rollback | Revert release; forward-fix only — no column drops in production |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+
+## Rollout steps
+
+| Step | Action | Production impact |
+|------|--------|-------------------|
+| 1 | Deploy application | Runs `runMigrations()` on startup |
+| 2 | Verify schema | Canonical snapshot: `schema.sql` at repo root |
+
+---
+
+Gate evidence: migration test green at gate 2026-06-28.
+
 
 ---
 

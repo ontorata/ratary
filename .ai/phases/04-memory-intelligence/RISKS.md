@@ -1,7 +1,7 @@
-﻿# Phase 4 — Memory Intelligence — RISKS
+# Phase 4 — Memory Intelligence — RISKS
 
-**Document:** RISKS  
 **Phase status:** Closed  
+**Gate:** PASS 2026-07-01  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -12,23 +12,15 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 ---
 
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Design phase — initial risk register |
-| **Updated by** | Assistant during phase; owner validates at gate |
-| **Read-only when** | Gate PASS — realized risks locked; deferred risks noted |
-| **Roadmap relation** | Phase slice of roadmap cross-phase and phase-specific risks |
-
----
-
 ## Risk register
 
-| Risk | Status | Mitigation |
-|------|--------|------------|
-| _see roadmap_ | Mitigated | _record_ |
+| Risk | Likelihood | Impact | Mitigation | Status |
+|------|------------|--------|------------|--------|
+| N× recordAccess on context build | Medium | Medium | recordAccessBatch — single UPDATE | Resolved |
+| Full body in retrieval projection | Medium | High | Explicit MEMORY_SELECT; regression test | Resolved |
+| Backfill corrupts importance | Low | High | Dry-run default; idempotent script | Mitigated |
+| Index migration lock on D1 | Low | Medium | Online DDL; staged deploy | Mitigated |
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+*Gate PASS 2026-07-01 — realized risks locked; deferred items tracked above or in CHECKLIST.*

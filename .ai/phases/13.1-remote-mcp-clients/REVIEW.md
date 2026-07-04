@@ -1,4 +1,4 @@
-# Phase 13.1 — Remote MCP Clients (ChatGPT & Web) — REVIEW
+# Phase 13.1 — Remote MCP Clients — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,38 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-048 Implemented |
+| Check | Result |
+|-------|--------|
+| REMOTE_MCP_ENABLED default false | ✅ Streamable HTTP at `/mcp` opt-in |
+| McpContextBinding stdio vs remote | ✅ Same 20 tools — no fork |
+| API-key + OAuth RFC 9728 | ✅ Reuses Phase 17 OIDC provider |
+| CORS + AsyncLocalStorage session | ✅ Remote context binding tested |
+| Constitution — transport only | ✅ No tool logic changes |
+| ChatGPT Server URL path documented | ✅ ADR-048 remote transport |
 
+---
+
+## ADR gate
+
+- ADR-048 Implemented
+- ADR-048 Implemented
+- Requires long-running Node — not Vercel serverless default
+
+---
+
+## Known gaps (accepted)
+
+- ChatGPT staging smoke not in CI
+- OAuth cross-depends on Phase 17 OIDC env
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

@@ -1,7 +1,7 @@
-﻿# Phase 3 — Authorization — TESTING
+# Phase 3 — Authorization — TESTING
 
-**Document:** TESTING  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -12,20 +12,35 @@ Record verification strategy and evidence: unit, integration, E2E, fixtures, qua
 
 ---
 
-## Lifecycle
+## Quality gate
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Test plan drafted — parallel with implementation |
-| **Updated by** | Implementing assistant; evidence attached before gate |
-| **Read-only when** | Phase gate PASS |
-| **Roadmap relation** | Proves roadmap success criteria requiring verification |
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-06-30) | ~130 tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
 
 ---
 
-## Test evidence
+## Test suites
 
-Document unit, integration, and E2E coverage proving success criteria.
+| File | Coverage |
+|------|----------|
+| `tests/auth/auth.service.test.ts` | API key validation, HMAC, owner binding |
+| `tests/api/auth.test.ts` | 401/403 on missing or invalid credentials |
+| `tests/api.test.ts` | Protected routes require auth |
+
+---
+
+## Scenarios verified
+
+- [x] Invalid API key → 401 on protected routes
+- [x] Valid `aic_...` key resolves to stable ownerId
+- [x] MCP stdio uses env-scoped owner without REST key header
+- [x] No cross-owner access without correct credentials
 
 ---
 

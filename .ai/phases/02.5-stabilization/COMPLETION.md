@@ -1,32 +1,47 @@
-﻿# Phase 2.5 — Stabilization — COMPLETION
+# Phase 2.5 — Stabilization — COMPLETION
 
-**Document:** COMPLETION  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-29  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
-
 ---
 
 ## Purpose
 
-Map roadmap success criteria to concrete evidence and archive pointers.
+Map roadmap success criteria to durable evidence.
 
 ---
 
-## Lifecycle
+## Evidence index
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Implementation complete; pre-gate evidence assembly |
-| **Updated by** | Owner or maintainer before gate |
-| **Read-only when** | Phase gate PASS |
-| **Roadmap relation** | Maps each success criterion to concrete evidence |
-
----
-
-## Completion evidence
-
-Map each roadmap success criterion to test output, metrics, or ADR Implemented status.
+| Artifact | Link |
+|----------|------|
+| Design | [DESIGN.md](DESIGN.md) |
+| Implementation | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
+| Verification | [TESTING.md](TESTING.md) |
+| Gate checklist | [CHECKLIST.md](CHECKLIST.md) |
+| Review verdict | [REVIEW.md](REVIEW.md) |
+| Migration | [MIGRATION.md](MIGRATION.md) |
 
 ---
 
-*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
+## Success criteria
+
+| ID | Criterion | Evidence |
+|----|-----------|----------|
+| SC-01 | CI quality gate mandatory | ✅ lint + typecheck + format in CI |
+| SC-02 | Flaky tests remediated | ✅ Stable baseline count |
+| SC-03 | Phase governance schema | ✅ `.ai/phases/` folder structure |
+| SC-04 | No domain feature creep | ✅ Tests/docs only |
+
+**Result:** 4/4 PASS. Phase gate closed 2026-06-29.
+
+---
+
+## Rollback
+
+Forward-fix only; see phase MIGRATION.md for persistence notes.
+
+
+---
+
+*Gate closed 2026-06-29. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

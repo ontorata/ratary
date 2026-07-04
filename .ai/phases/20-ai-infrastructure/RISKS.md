@@ -1,4 +1,4 @@
-# Phase 20 — AI Infrastructure Platform — RISKS
+# Phase 20 — AI Infrastructure — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Unsigned plugin manifest | High | Critical | Schema check only MVP; ed25519 deferred | Deferred |
+| Plugin enable hot-swap race | Medium | High | Restart required on enable | Accepted |
+| Third-party plugin vendor lock | Medium | Medium | Port mapping to ADR-008 adapters | Mitigated |
+| Marketplace default ON | Low | Critical | PLUGIN_MARKETPLACE_ENABLED=false | Mitigated |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

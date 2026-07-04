@@ -12,20 +12,39 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-029 Implemented |
+| Check | Result |
+|-------|--------|
+| FEDERATION_ENABLED default false | ✅ Opt-in exchange API |
+| KnowledgeExchangeService | ✅ createMemory/updateMemory only — MemoryService unchanged |
+| Cross-org denied without trust | ✅ Fail closed |
+| federation_* tables | ✅ Migration tests green |
+| In-process transport MVP | ✅ Peer config via FEDERATION_PEERS_JSON |
+| Foundation for Phase 25 sync | ✅ Orchestrator port defined |
 
+---
+
+## ADR gate
+
+- ADR-029 Implemented
+- ADR-029 Implemented
+- Rollback: `FEDERATION_ENABLED=false`
+
+---
+
+## Known gaps (accepted)
+
+- No remote HTTP/gRPC peer transport
+- Trust store not persisted in SQL
+- Cross-workspace E2E smoke manual only
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

@@ -12,28 +12,29 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
+## Schema changes (additive)
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+Applied via `migrateCloudPlatformPhase1()` in `src/db/migrations.ts` (ADR-033).
+
+### Objects
+
+- `cloud_regions`, `cloud_tenant_metadata`, `cloud_workspace_regions`
+- `cloud_usage_records` — usage meter events
+- `cloud_dr_schedules` — DR schedule metadata
 
 ---
 
-## Migrations
+## Verification
 
-Phase introduces additive DDL in `src/db/migrations.ts`. Verification: [`tests/db/cloud-platform-migration.test.ts`](../../../tests/db/cloud-platform-migration.test.ts).
+[`tests/db/cloud-platform-migration.test.ts`](../../../tests/db/cloud-platform-migration.test.ts)
 
 | Property | Value |
 |----------|-------|
-| Rollback | Disable master env flag — tables remain; no hot-path dependency when OFF |
-| Idempotency | Migration runner applies forward-only steps |
-| Production | Opt-in; default deploy unchanged |
-
+| Rollback | Disable `CONTROL_PLANE_ENABLED`, `USAGE_METER_ENABLED`, `DR_PLATFORM_ENABLED` independently |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
 Gate evidence: migration test green at gate 2026-07-04.
+
 
 ---
 

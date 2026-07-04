@@ -1,7 +1,7 @@
-﻿# Phase 3 — Authorization — REVIEW
+# Phase 3 — Authorization — REVIEW
 
-**Document:** REVIEW  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,14 +23,33 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Field | Value |
-|-------|-------|
-| Architecture review | _record_ |
-| Phase gate verdict | PASS |
-| Date | _record_ |
-| Owner | Project owner |
+| Check | Result |
+|-------|--------|
+| API key authentication | ✅ Fastify auth plugin; hash/compare only |
+| Owner binding on key | ✅ No header override; fail closed |
+| 401/403 E2E coverage | ✅ Unauthorized routes rejected |
+| MCP owner configuration | ✅ `MCP_OWNER_ID` documented for prod |
+| No raw key in logs | ✅ Security review — never log secrets |
+| Quality gate | ✅ Auth regression suite green |
+
+---
+
+## Verdict
+
+| Gate | Verdict |
+|------|---------|
+| Architecture | **PASS** |
+| Security | **PASS** |
+| Testing | **PASS** |
+| Documentation | **PASS** |
+| Migration | **PASS** (N/A or covered) |
+| Breaking changes | **PASS** (additive) |
+
+**Overall: ✅ PASS** (2026-06-30)
+
+**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md) · [TESTING.md](TESTING.md) · [IMPLEMENTATION.md](IMPLEMENTATION.md)
 
 ---
 

@@ -59,3 +59,6 @@ Baseline at default env (`ENTERPRISE_RBAC=false`): **unchanged regression surfac
 ---
 
 *Evidence captured at commit gate. Re-run `npm test` before production deploy.*
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

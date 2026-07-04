@@ -1,4 +1,4 @@
-# Phase 13.1 — Remote MCP Clients (ChatGPT & Web) — RISKS
+# Phase 13.1 — Remote MCP Clients — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,17 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Public /mcp without auth | Low | Critical | API key or OAuth required when ON | Mitigated |
+| Session fixation / hijack | Medium | High | Session binding; CORS allowlist | Mitigated |
+| Vercel serverless SSE break | High | High | Document long-running Node requirement | Mitigated |
+| OAuth misconfiguration exposes owner | Medium | Critical | OIDC_MCP_OWNER_ID required when OAuth ON | Mitigated |
+
+## Deferred risks (carried forward)
+
+| ID | Risk | Mitigation path |
+|----|------|-----------------|
+| D131-01 | ChatGPT CI smoke | Staging manual record |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

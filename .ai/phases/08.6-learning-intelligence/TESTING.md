@@ -48,3 +48,6 @@ curl http://localhost:3000/api/v1/capabilities  # supportsLearningEngine: true
 - [ ] End-to-end: signal ingest → event → orchestrator → context rank order change
 - [ ] REST recommendation endpoint (L24)
 - [ ] Dataset export CLI (L28)
+## Current regression
+
+689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

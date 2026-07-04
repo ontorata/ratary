@@ -1,58 +1,66 @@
-﻿# Phase 6 — Hybrid Retrieval — IMPLEMENTATION
+# Phase 6 — Hybrid Retrieval — IMPLEMENTATION
 
-**Document:** IMPLEMENTATION  
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-03  
-**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+  
+**ADR:** [ADR-001 Implemented](../../../docs/adr/001-multi-source-retrieval.md)
 
 ---
 
-## Purpose
+## Deliverables
 
-Record planned build sequence, modules, and composition wiring for Phase 6.
-
----
-
-## Lifecycle
-
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Implementation planning starts (TASK_PROMPT active) |
-| **Updated by** | Implementing AI assistant; maintainer on handoff |
-| **Read-only when** | Phase gate PASS |
-| **Roadmap relation** | Tracks milestone checkboxes in roadmap Phase 6 section |
+| Track | Deliverable | Status |
+|-------|-------------|--------|
+| Composite source | `CompositeRetrievalCandidateSource` — SQL + vector fusion | ✅ |
+| Vector leg | `VectorRetrievalCandidateSource` — embedding similarity candidates | ✅ |
+| SQL leg | Existing `SqlRetrievalCandidateSource` unchanged | ✅ |
+| Fusion weights | `src/search/ranking.config.ts` — configurable RRF weights | ✅ |
+| Env flag | `HYBRID_RETRIEVAL=false` default — SQL-only when OFF | ✅ |
+| Composition | `create-context-service.ts` wires composite or SQL-only | ✅ |
+| Owner isolation | 20 cross-owner-leak regression tests | ✅ |
 
 ---
 
-## Implementation plan (draft)
+## File map
 
-**Prerequisite:** ADR-001 Approved; `TASK_PROMPT.md` rotated to Phase 6.
-
-### Planned commit sequence
-
-| # | Deliverable |
-|---|-------------|
-| 1 | Governance: ADR-001 Approved, TASK_PROMPT rotation |
-| 2 | `CompositeRetrievalCandidateSource` + unit tests |
-| 3 | `VectorRetrievalCandidateSource` + unit tests |
-| 4 | Factory + `HYBRID_RETRIEVAL` env flag |
-| 5 | Composition root wiring (`server.ts`, `mcp/server.ts`) |
-| 6 | Integration tests |
-| 7 | Optional fusion weights in `RankingEngine` |
-| 8 | Documentation updates |
-
-### Extension points (existing)
-
-- `src/memory/retrieval-candidate-source.interface.ts`
-- `src/memory/sql-retrieval-candidate-source.ts`
-- `src/memory/retriever.ts`, `src/memory/context.service.ts`
-- `src/embedding/embedding.store.interface.ts` (`searchSimilar`)
-- `src/services/create-memory-service.ts`
-
-### Wiring invariant
-
-Single `IRetrievalCandidateSource` injected into `Retriever` at composition root — composite or SQL-only based on env.
+```
+src/memory/
+  composite-retrieval-candidate-source.ts
+  vector-retrieval-candidate-source.ts
+  sql-retrieval-candidate-source.ts
+  retrieval-candidate-source.interface.ts
+  create-context-service.ts              HYBRID_RETRIEVAL wiring
+  retriever.ts                           single IRetrievalCandidateSource inject
+src/search/ranking.config.ts             fusion weights
+src/config/env.ts                        HYBRID_RETRIEVAL flag
+tests/memory/composite-retrieval*.test.ts
+tests/security/cross-owner-leak.test.ts
+```
 
 ---
 
-*Activate when ADR-001 is Approved.*
+## Env flags
+
+| Env | Default | Purpose |
+|-----|---------|---------|
+| `HYBRID_RETRIEVAL` | false | Enable SQL + vector composite retrieval |
+| `EMBEDDING_PROVIDER` | noop | Vector leg requires non-noop embed store |
+
+---
+
+## Invariants
+
+- Single `IRetrievalCandidateSource` injected into `Retriever` at composition root
+- `Retriever`, `ContextService`, `MemoryRepository` unchanged
+- Default env = pre-Phase-6 SQL-only behavior
+
+---
+
+## Rollback
+
+`HYBRID_RETRIEVAL=false` — instant; no DDL to reverse
+
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

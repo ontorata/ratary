@@ -1,4 +1,4 @@
-# Phase 8.7 — Automatic Graph Relation Inference — REVIEW
+# Phase 8.7 — Graph Relation Inference — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,30 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-041 Implemented |
+| Check | Result |
+|-------|--------|
+| RELATION_INFERENCE_ENABLED default false | ✅ Batch CLI only |
+| upsertInferred manual-safe | ✅ Only touches source_type=inferred edges |
+| Evidence audit trail | ✅ SQL migration for inference records |
+| Three deterministic sources | ✅ No LLM; no hot-path inference |
+| Manifest supportsRelationInference | ✅ Accurate |
+| Graph SQL not in MemoryRepository | ✅ Port boundary preserved |
 
+---
+
+## Known gaps (accepted)
+
+- Semantic similarity source deferred
+- Phase 04.7 graph-repair task not wired
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

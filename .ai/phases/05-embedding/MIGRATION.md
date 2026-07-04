@@ -1,7 +1,7 @@
-﻿# Phase 5 — Embedding — MIGRATION
+# Phase 5 — Embedding — MIGRATION
 
-**Document:** MIGRATION  
 **Phase status:** Closed  
+**Gate:** PASS 2026-07-01  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,9 +23,35 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Migrations applied
+## Schema changes (additive)
 
-Document forward migrations, rollback notes, and idempotency guarantees.
+Applied via `migrateEmbeddingPhase1()` in `src/db/migrations.ts` (ADR-003).
+
+### Objects
+
+- `memory_embeddings` — vector storage table (dimensions, model, owner_id)
+- Indexes on memory_embeddings for owner + memory lookup
+
+---
+
+## Verification
+
+[`tests/db/embedding-migration.test.ts`](../../../tests/db/embedding-migration.test.ts)
+
+| Property | Value |
+|----------|-------|
+| Rollback | `EMBEDDING_PROVIDER=noop` — tables remain; no hot-path dependency when disabled |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+
+## Data backfill
+
+`scripts/backfill-embeddings.ts` — async job; dry-run default.
+
+---
+
+Gate evidence: migration test green at gate 2026-07-01.
+
 
 ---
 

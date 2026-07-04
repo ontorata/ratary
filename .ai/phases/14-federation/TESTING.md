@@ -1,37 +1,59 @@
 # Phase 14 — Federation — TESTING
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
-## Automated
+## Purpose
 
-| Suite | File | Coverage |
-|-------|------|----------|
-| Federation composition | `tests/federation/knowledge-exchange.test.ts` | ports gate, cross-org deny, peer list |
-| Migration Phase 6 | `tests/db/extension-tracks-migration.test.ts` | federation_* tables |
-| Manifest | `tests/capabilities/manifest-contract.test.ts` | supportsFederation flag |
-| Layer boundaries | `tests/transport/layer-boundaries.test.ts` | no federation in services/ |
-
----
-
-## Manual smoke
-
-```bash
-FEDERATION_ENABLED=true FEDERATION_METADATA_PROVIDER=sql npm run dev
-
-# List peers
-curl -H "Authorization: Bearer aic_..." http://localhost:3000/api/v1/federation/peers
-
-# Pull from local node (cross-workspace in-process)
-curl -X POST -H "Authorization: Bearer aic_..." -H "Content-Type: application/json" \
-  -d '{"peerId":"<LOCAL_NODE_ID>","sourceNodeId":"<LOCAL_NODE_ID>","sourceOwnerId":"owner-id","sourceWorkspaceId":"<WS_A>","targetWorkspaceId":"<WS_B>"}' \
-  http://localhost:3000/api/v1/federation/exchange/pull
-```
+Record verification strategy and evidence: unit, integration, E2E, fixtures, quality gate.
 
 ---
 
 ## Quality gate
 
-562 tests green at default env.
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-07-04) | 562 tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
+
+---
+
+## Test suites
+
+| File | Coverage |
+|------|----------|
+| `tests/federation/knowledge-exchange.test.ts` | Ports gate, cross-org deny, peer list |
+| `tests/db/extension-tracks-migration.test.ts` | `federation_*` tables |
+| `tests/capabilities/manifest-contract.test.ts` | `supportsFederation` flag |
+| `tests/transport/layer-boundaries.test.ts` | No federation imports in services/ |
+
+---
+
+## Scenarios verified
+
+- [x] Cross-org exchange denied without trust link
+- [x] `FEDERATION_ENABLED=false` — routes not mounted
+- [x] In-process transport MVP for same-node workspaces
+- [x] Orchestrator uses MemoryService create/update only
+
+## Manual verification
+
+```bash
+See IMPLEMENTATION.md smoke — pull/push between workspaces with federation env on
+```
+
+## Deferred tests
+
+- [ ] Cross-workspace in-process E2E recorded in CI
+- [ ] Remote HTTP peer transport
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

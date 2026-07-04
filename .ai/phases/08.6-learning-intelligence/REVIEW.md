@@ -1,4 +1,4 @@
-# Phase 8.6 — Learning Intelligence Engine — REVIEW
+# Phase 8.6 — Learning Intelligence — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,31 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-057 Implemented |
+| Check | Result |
+|-------|--------|
+| LEARNING_ENGINE_ENABLED default false | ✅ Opt-in orchestrator |
+| rankingSnapshotLoader hook | ✅ Multipliers at context build time only |
+| SQL event/artifact stores | ✅ Migration + rollback via flag-off |
+| L23–L30 no-op stubs | ✅ Zero side effects when disabled |
+| CLI learning:run | ✅ Batch path only |
+| Hot path: 8.5 signals → LearningEventRecorder | ✅ Wired when both flags on |
 
+---
+
+## Known gaps (accepted)
+
+- L24 recommendation engine deferred
+- L28–L30 ML/eval deferred
+- No scheduler — batch CLI only
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

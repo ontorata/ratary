@@ -12,20 +12,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-047 Implemented |
+| Check | Result |
+|-------|--------|
+| KNOWLEDGE_FABRIC_ENABLED default false | ✅ Opt-in ingest API |
+| All writes via MemoryService | ✅ Provenance tags on ingest |
+| Distinct from Phase 14 peer exchange | ✅ Separate module + ADR |
+| 10 connector types catalog | ✅ Token presence validation in tests |
+| RuleBasedFabricPolicy | ✅ Unvetted content gated |
+| REST /knowledge-fabric/ingest/* | ✅ Admin surface only |
 
+---
+
+## ADR gate
+
+- ADR-047 Implemented
+- ADR-047 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- Live Slack/GitHub/Notion API smoke deferred
+- Webhook-triggered ingest deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

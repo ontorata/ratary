@@ -1,7 +1,7 @@
-﻿# Phase 4 — Memory Intelligence — MIGRATION
+# Phase 4 — Memory Intelligence — MIGRATION
 
-**Document:** MIGRATION  
 **Phase status:** Closed  
+**Gate:** PASS 2026-07-01  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,9 +23,35 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Migrations applied
+## Schema changes (additive)
 
-Document forward migrations, rollback notes, and idempotency guarantees.
+Applied via `migrateMemoryIntelligencePhase1() + migrateMemoryIntelligencePhase3()` in `src/db/migrations.ts`.
+
+### Objects
+
+- `memories` columns: project_id, level, last_accessed, access_count, embedding_id, object_key, semantic_hash
+- Retrieval indexes: idx_memories_project_id, idx_memories_level, idx_memories_last_accessed, idx_memories_retrieval
+
+---
+
+## Verification
+
+[`tests/db/postgres-migrations.test.ts`](../../../tests/db/postgres-migrations.test.ts)
+
+| Property | Value |
+|----------|-------|
+| Rollback | Forward-fix only; importance backfill via CLI dry-run default |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+
+## Data backfill
+
+`scripts/backfill-importance.ts` — dry-run default; idempotent importance scoring.
+
+---
+
+Gate evidence: migration test green at gate 2026-07-01.
+
 
 ---
 

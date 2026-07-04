@@ -43,3 +43,21 @@ REST /api/v1/content-scale/*  (CONTENT_SCALE_PLATFORM_ENABLED)
 - Automatic post-write content offload hooks (event-driven)
 - Inline content clearing policy beyond `CONTENT_OFFLOAD_CLEAR_INLINE` flag
 - Cross-region object storage replication
+
+---
+
+## Env flags
+
+| Env | Default | Purpose |
+|-----|---------|---------|
+| `CONTENT_SCALE_PLATFORM_ENABLED` | false | Master gate for content/vector sync REST |
+
+---
+
+## Non-goals
+
+- Changing MemoryService write signatures or inline-first default behavior
+
+---
+
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

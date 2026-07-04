@@ -16,11 +16,17 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Irreversible archive of wrong cluster | Medium | High | dry-run default; rule-based policy tests | Mitigated |
+| LLM summarizer on hot path | Low | Critical | No sync summarizer; async adapter deferred | Mitigated |
+| Compression enabled by default | Low | High | COMPRESSION_ENABLED=false | Mitigated |
+| Consolidator breaks Phase 4 paths | Medium | High | Extended consolidator; regression suite | Mitigated |
+
+## Deferred risks (carried forward)
+
+| ID | Risk | Mitigation path |
+|----|------|-----------------|
+| D55-01 | ICompressionSummarizer LLM adapter | Async job queue ADR follow-up |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform Architecture (umbrella) — REVIEW
+# Phase 24 — AI-Brain Platform — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -12,20 +12,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-044 Implemented |
+| Check | Result |
+|-------|--------|
+| AI_BRAIN_PLATFORM_ENABLED default false | ✅ Umbrella manifest opt-in |
+| Manifest aggregates child flags only | ✅ No false capability claims |
+| HMAC webhook CRUD + delivery | ✅ Signed payload tests |
+| Phase 12 delivery consumer | ✅ Requires EVENT_CONSUMERS + Redis documented |
+| Edition planes in manifest | ✅ Read-only aggregation |
+| Workflow engine external | ✅ Constitution — no in-repo orchestration |
 
+---
+
+## ADR gate
+
+- ADR-044 Implemented
+- ADR-044 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- Live webhook smoke needs receiver URL
+- SDK platform client for webhook CRUD deferred
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

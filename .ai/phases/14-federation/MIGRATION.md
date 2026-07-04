@@ -1,6 +1,6 @@
 # Phase 14 — Federation — MIGRATION
 
-**Phase status:** Closed (N/A — no migrations)  
+**Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
@@ -12,24 +12,29 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
+## Schema changes (additive)
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+Applied via `migrateExtensionTracksPhase6()` in `src/db/migrations.ts` (ADR-029).
+
+### Objects
+
+- `federation_peers` — peer registry metadata
+- `federation_sync_cursors` — per-peer sync watermark
+- `federation_exchange_log` — exchange audit log
 
 ---
 
-## Migrations
+## Verification
 
-**N/A — no schema or data migration required**, or migrations are covered by an earlier phase.
+[`tests/db/extension-tracks-migration.test.ts`](../../../tests/db/extension-tracks-migration.test.ts)
 
-Opt-in platform modules default OFF; disabling the master env flag is the rollback path with no data loss on hot path.
+| Property | Value |
+|----------|-------|
+| Rollback | `FEDERATION_ENABLED=false` — metadata tables remain; exchange API disabled when OFF |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+Gate evidence: migration test green at gate 2026-07-04.
 
-Gate evidence: [REVIEW.md](REVIEW.md) — Migration **PASS** (N/A or covered by prior phase).
 
 ---
 

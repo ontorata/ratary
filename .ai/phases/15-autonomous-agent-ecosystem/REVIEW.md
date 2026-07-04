@@ -12,20 +12,37 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Review record
+## Architecture compliance
 
-| Item | Result |
-|------|--------|
-| Design compliance | [DESIGN.md](DESIGN.md) — scope and boundaries satisfied |
-| Implementation evidence | [IMPLEMENTATION.md](IMPLEMENTATION.md) |
-| Test evidence | [TESTING.md](TESTING.md) |
-| Checklist | [CHECKLIST.md](CHECKLIST.md) |
-| Constitution / layer lint | PASS — `MemoryService` unchanged unless phase scope requires additive hooks only |
-| ADR gate | ADR-030 Implemented |
+| Check | Result |
+|-------|--------|
+| 12 AgentClientType profiles SSOT | ✅ Protocol filtering by live env flags |
+| REST /ecosystem/* | ✅ Catalog metadata only |
+| Extended capabilities manifest | ✅ ecosystem block additive |
+| Constitution §7 verified | ✅ No planner/executor in src/ |
+| Compatibility filtering tests | ✅ New flags must update profiles |
+| Zero agent runtime in repo | ✅ By design — external loops only |
 
+---
+
+## ADR gate
+
+- ADR-030 Implemented
+- ADR-030 Implemented
+
+---
+
+## Known gaps (accepted)
+
+- PANDUAN § ecosystem docs incomplete
+- Catalog only — no runtime orchestration
+
+---
+
+**Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Evidence:** [COMPLETION.md](COMPLETION.md) · [CHECKLIST.md](CHECKLIST.md)
+**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

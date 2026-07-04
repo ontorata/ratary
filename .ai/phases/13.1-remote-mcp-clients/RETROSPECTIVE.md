@@ -1,7 +1,7 @@
-# Phase 13.1 — Remote MCP Clients (ChatGPT & Web) — RETROSPECTIVE
+# Phase 13.1 — Remote MCP Clients — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,40 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+Streamable HTTP MCP at `/mcp`, API-key auth, OAuth RFC 9728 + OIDC bearer (13.1D). Same 20 tools; gated by `REMOTE_MCP_ENABLED=false`.
+
+Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- `McpContextBinding` — stdio vs remote without forking tools
+- OAuth discovery bridge reuses Phase 17 OIDC provider
+- CORS + session via AsyncLocalStorage
+- ADR-048 Implemented; enables ChatGPT Server URL
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- ChatGPT staging smoke not in CI
+- Requires long-running Node not Vercel serverless
+
+---
+
+## Accepted debt
+
+- OAuth cross-depends on Phase 17 OIDC env
+- No automated remote client smoke in CI
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Record ChatGPT remote MCP smoke against staging
+- CI test for `/.well-known/oauth-protected-resource/*`
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

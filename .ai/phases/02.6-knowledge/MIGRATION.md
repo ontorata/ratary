@@ -1,7 +1,7 @@
-﻿# Phase 2.6 — Knowledge Foundation — MIGRATION
+# Phase 2.6 — Knowledge Foundation — MIGRATION
 
-**Document:** MIGRATION  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,9 +23,37 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Migrations applied
+## Schema changes (additive)
 
-Document forward migrations, rollback notes, and idempotency guarantees.
+Applied via `migrateKnowledgeFoundationPhase1() + migrateKnowledgeFoundationPhase3()` in `src/db/migrations.ts` (ADR-002 knowledge columns).
+
+### Objects
+
+- `memories` columns: codename, slug, keywords, category, memory_type, importance, language, notes
+- `memory_relations` — graph edge store (used by Phase 8)
+- Indexes: idx_memories_owner_category, idx_memories_memory_type, idx_memories_importance
+- Unique partial indexes: idx_memories_owner_codename, idx_memories_owner_slug (Phase 3 backfill)
+
+---
+
+## Verification
+
+[`tests/db/postgres-migrations.test.ts`](../../../tests/db/postgres-migrations.test.ts)
+
+| Property | Value |
+|----------|-------|
+| Rollback | Forward-fix only; nullable/additive columns |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+
+## Data backfill
+
+Slug/codename uniqueness requires backfill before unique indexes (M3). Scripts in Phase 2.6 IMPLEMENTATION.
+
+---
+
+Gate evidence: migration test green at gate 2026-06-30.
+
 
 ---
 

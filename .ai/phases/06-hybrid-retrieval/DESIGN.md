@@ -26,7 +26,7 @@ Record approved design intent for Phase 6: hybrid SQL + vector retrieval via por
 
 ## Design record
 
-**ADR:** [ADR-001 Multi-Source Retrieval](../../../docs/adr/001-multi-source-retrieval.md) — **Proposed** (must be **Approved** before code).
+**ADR:** [ADR-001 Multi-Source Retrieval](../../../docs/adr/001-multi-source-retrieval.md) — **Approved** · Implemented
 
 ### Decision (Option B)
 
@@ -62,5 +62,6 @@ Introduce `CompositeRetrievalCandidateSource` implementing `IRetrievalCandidateS
 Fusion weights may extend `RankingEngine` / `ranking.config.ts` — engine remains pure.
 
 ---
+---
 
-*Blocked until ADR-001 status is Approved. Do not contradict [09-ROADMAP.md](../../../roadmap/09-ROADMAP.md).*
+*Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

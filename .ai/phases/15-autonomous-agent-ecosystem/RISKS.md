@@ -1,9 +1,25 @@
-# Phase 15 — RISKS
+# Phase 15 — Agent Ecosystem — RISKS
 
-| ID | Risk | Severity | Mitigation |
-|----|------|----------|------------|
-| R-15-01 | Agent runtime creep into repo | Critical | ADR-030 + REVIEW boundary lint |
-| R-15-02 | Catalog drift from reality | Medium | Contract tests vs PANDUAN |
-| R-15-03 | Vendor API coupling | High | Profiles are connection metadata only |
-| R-15-04 | Confusion with Phase 7 | Low | Phase 15 extends catalog; Phase 7 boundary unchanged |
-| R-15-05 | MCP tool proliferation | Low | Prefer manifest embed over new tools |
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
+
+---
+
+## Purpose
+
+Phase-specific risk register: identified, mitigated, realized, and deferred risks.
+
+---
+
+## Risk register
+
+| Risk | Likelihood | Impact | Mitigation | Status |
+|------|------------|--------|------------|--------|
+| Agent runtime in repo | Low | Critical | Catalog metadata only; grep gate | Mitigated |
+| False client compatibility claims | Medium | High | Filter profiles by live env flags | Mitigated |
+| Confusion with Phase 7 boundary | Medium | Low | Docs: Phase 15 extends catalog not execution | Mitigated |
+
+---
+
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

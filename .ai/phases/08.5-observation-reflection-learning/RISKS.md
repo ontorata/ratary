@@ -1,4 +1,4 @@
-# Phase 8.5 — Quality Signals (Observation, Reflection & Learning) — RISKS
+# Phase 8.5 — Quality Signals — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,17 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Agent learning loop in repo | Low | Critical | Ingest only; constitution §55 | Mitigated |
+| Importance score manipulation | Medium | Medium | Bounded deltas; auth on REST ingest | Mitigated |
+| Signal store PII growth | Medium | Medium | Typed signals; no raw chat dump | Mitigated |
+| Ranking auto-mutation | Medium | High | RANKING_ADAPTATION_ENABLED=false default | Mitigated |
+
+## Deferred risks (carried forward)
+
+| ID | Risk | Mitigation path |
+|----|------|-----------------|
+| D85-01 | MCP submit_signal | Phase 13.1 remote path |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

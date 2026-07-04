@@ -12,28 +12,28 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Lifecycle
+## Schema changes (additive)
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | First schema or data migration identified for phase |
-| **Updated by** | Implementing assistant; owner for production deploy |
-| **Read-only when** | Phase gate PASS; post-close hotfixes append addenda only |
-| **Roadmap relation** | Documents persistence changes required by phase dependencies |
+Applied via `migrateSearchGraphPlatformPhase1()` in `src/db/migrations.ts` (ADR-022).
+
+### Objects
+
+- `search_graph_sync_runs` — sync job history
+- `search_graph_sync_state` — watermark per target (Meilisearch/Neo4j)
 
 ---
 
-## Migrations
+## Verification
 
-Phase introduces additive DDL in `src/db/migrations.ts`. Verification: [`tests/db/search-graph-platform-migration.test.ts`](../../../tests/db/search-graph-platform-migration.test.ts).
+[`tests/db/search-graph-platform-migration.test.ts`](../../../tests/db/search-graph-platform-migration.test.ts)
 
 | Property | Value |
 |----------|-------|
-| Rollback | Disable master env flag — tables remain; no hot-path dependency when OFF |
-| Idempotency | Migration runner applies forward-only steps |
-| Production | Opt-in; default deploy unchanged |
-
+| Rollback | `SEARCH_GRAPH_PLATFORM_ENABLED=false` — D1/SQL remain SSOT |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
 Gate evidence: migration test green at gate 2026-07-04.
+
 
 ---
 

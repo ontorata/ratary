@@ -1,7 +1,7 @@
 # Phase 04.7 — Self-Managing Memory Stewardship — RETROSPECTIVE
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Recorded:** 2026-07-04  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -14,32 +14,41 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Phase implemented as opt-in platform capability (default OFF). Gate PASS 2026-07-04. See [IMPLEMENTATION.md](IMPLEMENTATION.md) for deliverables.
+Delivered `MemoryStewardshipOrchestrator` with four default tasks, in-memory run store, and CLI `steward:memories`. Gated by `MEMORY_STEWARDSHIP_ENABLED=false`.
+
+Gate PASS 2026-07-04. Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 
 ---
 
 ## What worked well
 
-| Area | Outcome |
-|------|---------|
-| **Ports & adapters** | New capability behind composition root; core services unchanged |
-| **Feature flags** | Master env default `false` preserved backward compatibility |
-| **Test gate** | [TESTING.md](TESTING.md) evidence attached before close |
+- Orchestrator isolates per-task errors and persists `StewardshipRunReport` via `IStewardshipRunStore`
+- ConsolidationTask reuses Phase 4 `MemoryConsolidator` + Phase 5.5 compression when enabled
+- `create-memory-stewardship-ports.ts` wires tasks without changing `MemoryService` signatures
+- 493 tests green with flag off; ADR-045 Accepted
 
 ---
 
-## Accepted debt / deferrals
+## What was harder than expected
 
-Items explicitly deferred in [CHECKLIST.md](CHECKLIST.md) or [IMPLEMENTATION.md](IMPLEMENTATION.md) — carry forward to POST-ROADMAP or later phases only with ADR.
+- Graph repair deferred to Phase 08.7; index repair to Phase 14
+- SQL run store, MCP `run_stewardship`, and scheduled job not built
+- Reserved stages `graph-repair`, `index-repair`, `ranking-refresh` registered but not implemented
+
+---
+
+## Accepted debt
+
+- Run history only in `InMemoryStewardshipRunStore` — lost on restart
+- CLI-only — no MCP or REST surface
 
 ---
 
 ## Recommendations
 
-1. Close all ten schema documents at gate (not Reserved scaffolds).
-2. Keep additive MCP/REST changes only when extending agent-facing surfaces.
-3. Reference [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md) for next phase folder.
+- Promote run store to SQL before enabling cron stewardship in production
+- Wire Phase 08.7 `infer:relations` into a `graph-repair` stewardship task
 
 ---
 
-*Recorded at gate 2026-07-04.*
+*Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

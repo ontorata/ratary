@@ -1,7 +1,7 @@
-﻿# Phase 2.5 — Stabilization — MIGRATION
+# Phase 2.5 — Stabilization — MIGRATION
 
-**Document:** MIGRATION  
-**Phase status:** Closed  
+**Phase status:** Closed (N/A — no migrations)  
+**Gate:** PASS 2026-06-29  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -23,9 +23,18 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ---
 
-## Migrations applied
+## Migrations
 
-Document forward migrations, rollback notes, and idempotency guarantees.
+**N/A — no schema or data migration — quality gate and test harness stabilization only**
+
+| Property | Value |
+|----------|-------|
+| Rollback | N/A — no persistence changes |
+| Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
+| Production | Opt-in where flagged; default deploy unchanged |
+
+Gate evidence: [REVIEW.md](REVIEW.md) — Migration **PASS** (N/A, no DDL).
+
 
 ---
 

@@ -1,7 +1,7 @@
-﻿# Phase 2.5 — Stabilization — TESTING
+# Phase 2.5 — Stabilization — TESTING
 
-**Document:** TESTING  
 **Phase status:** Closed  
+**Gate:** PASS 2026-06-29  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -12,20 +12,34 @@ Record verification strategy and evidence: unit, integration, E2E, fixtures, qua
 
 ---
 
-## Lifecycle
+## Quality gate
 
-| Attribute | Value |
-|-----------|-------|
-| **Created when** | Test plan drafted — parallel with implementation |
-| **Updated by** | Implementing assistant; evidence attached before gate |
-| **Read-only when** | Phase gate PASS |
-| **Roadmap relation** | Proves roadmap success criteria requiring verification |
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
+
+| Metric | Value |
+|--------|-------|
+| Phase gate (2026-06-29) | ~100 tests green |
+| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
 
 ---
 
-## Test evidence
+## Test suites
 
-Document unit, integration, and E2E coverage proving success criteria.
+| File | Coverage |
+|------|----------|
+| Full `npm test` | Regression after Phase 2 churn |
+| `npm run lint` / `npm run typecheck` | CI quality gate established |
+| `tests/api.test.ts` | API contract stability |
+
+---
+
+## Scenarios verified
+
+- [x] Test harness stable — no flaky D1 mock leaks
+- [x] ESLint + Prettier + TypeScript strict pass
+- [x] Documentation links and phase folder scaffold validated
 
 ---
 

@@ -38,7 +38,7 @@
 
 ## Gate
 
-- [ ] REVIEW.md PASS
+- [x] [REVIEW.md](REVIEW.md) PASS — 2026-07-04
 - [ ] Staging ChatGPT connection smoke test recorded
 
 *Frozen at gate PASS.*

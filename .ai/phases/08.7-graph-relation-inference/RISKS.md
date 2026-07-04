@@ -1,4 +1,4 @@
-# Phase 8.7 — Automatic Graph Relation Inference — RISKS
+# Phase 8.7 — Graph Relation Inference — RISKS
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,11 +16,11 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | Risk | Likelihood | Impact | Mitigation | Status |
 |------|------------|--------|------------|--------|
-| Scope creep into agent runtime | Low | Critical | Constitution §7; MemoryService boundary | Mitigated |
-| Default-on regression | Low | High | Master env flag default `false` | Mitigated |
-| Vendor lock-in | Medium | Medium | Ports/adapters pattern | Mitigated |
-| Incomplete gate docs | Medium | Low | PHASE-DOCUMENT-SCHEMA compliance | Mitigated at close |
+| Inferred edge overwrites manual | Low | Critical | upsertInferred skips manual edges | Mitigated |
+| Inference runaway O(n²) | Medium | Medium | Batch CLI only; caps in orchestrator | Mitigated |
+| False positive relations | Medium | Medium | Rule-based sources; evidence store audit | Accepted |
+| Stale inferred edges when OFF | Medium | Low | No auto cleanup when flag disabled | Accepted |
 
 ---
 
-*Gate PASS 2026-07-04 — realized risks locked; deferred items in CHECKLIST.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*
