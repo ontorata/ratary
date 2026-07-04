@@ -17,7 +17,7 @@ Enable **cloud AI clients** (ChatGPT Custom MCP, Claude.ai web, future remote MC
 | **13.1A** | MCP Streamable HTTP / SSE transport on server | `REMOTE_MCP_ENABLED=false` |
 | **13.1B** | API-key auth at MCP boundary (reuse `aic_...`) | required when ON |
 | **13.1C** | ChatGPT setup runbook + OpenAPI Actions interim path | docs |
-| **13.1D** | OAuth discovery stub (Phase 17 hook) | deferred |
+| **13.1D** | MCP OAuth discovery + OIDC bearer at `/mcp` (Phase 17 bridge) | ✅ |
 
 **Interim (no code):** Custom GPT **Actions** via REST + `aic_...` — documented in [PANDUAN.md](../../../docs/PANDUAN.md) until 13.1 ships.
 
@@ -57,7 +57,7 @@ PANDUAN currently states: *"ChatGPT — MCP stdio tidak didukung — pakai REST 
 | Phase 3 Auth (`aic_...` API keys) | ✅ Implemented |
 | Phase 7.5 Capabilities manifest | ✅ Implemented |
 | Phase 13 Protocol Layer (SSE, WS, stream) | ✅ Implemented |
-| Phase 17 Enterprise Security (OAuth) | 🔲 Optional — 13.1D deferred |
+| Phase 17 Enterprise Security (OIDC SSO) | ✅ REST `/auth/sso/*` + MCP OAuth bridge (13.1D) |
 
 ---
 

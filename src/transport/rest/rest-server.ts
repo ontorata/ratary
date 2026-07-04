@@ -378,6 +378,7 @@ export async function buildApp(options?: {
   if (env.REMOTE_MCP_ENABLED) {
     const { registerRemoteMcpRoutes } = await import('../mcp/remote/register-remote-mcp-routes.js');
     await registerRemoteMcpRoutes(fastify, {
+      env,
       handlers: transportHandlers,
       scopeResolver,
       agentIdentity: multiAi.agentIdentity,
@@ -385,6 +386,12 @@ export async function buildApp(options?: {
       path: env.REMOTE_MCP_PATH,
       corsOrigins: env.REMOTE_MCP_CORS_ORIGINS,
     });
+    if (env.REMOTE_MCP_OAUTH_ENABLED) {
+      const { registerRemoteMcpOAuthRoutes } = await import(
+        '../mcp/remote/register-remote-mcp-oauth-routes.js'
+      );
+      await registerRemoteMcpOAuthRoutes(fastify, env);
+    }
   }
 
   if (env.WEBSOCKET_ENABLED) {

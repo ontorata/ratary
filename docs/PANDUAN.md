@@ -92,7 +92,7 @@ Jangan commit atau share file `.env`.
 | Memory kosong | Normal di DB baru — simpan dulu |
 | MCP error production | Set `MCP_OWNER_ID` di `.env`, atau pastikan `.env` punya `NODE_ENV=development` untuk dev lokal (stdio memuat `.env` dengan override). Reload MCP. |
 | Claude pending approval | `claude` di folder repo → approve |
-| ChatGPT | MCP stdio tidak didukung — lihat §6.1 (Actions sekarang; Remote MCP Phase 13.1) |
+| ChatGPT | MCP stdio tidak didukung — lihat §6.1 (Actions, Remote MCP, OAuth) |
 
 ---
 
@@ -110,13 +110,28 @@ ChatGPT **tidak** menjalankan MCP stdio lokal seperti Cursor. Dua jalur:
 
 Detail endpoint: [README.md](../README.md) § REST API.
 
-### B — Rencana: New App → Server URL (Phase 13.1)
+### B — Remote MCP: New App → Server URL (Phase 13.1 ✅)
 
-Form **New App** di ChatGPT membutuhkan URL MCP remote (`https://host/mcp`) — **belum diimplementasi**.
+Form **New App** di ChatGPT → **Server URL** → `https://<host>/mcp` (bukan URL REST `/api/v1`).
 
-- Design: [.ai/phases/13.1-remote-mcp-clients/](../.ai/phases/13.1-remote-mcp-clients/README.md)
-- ADR: [ADR-048](../.ai/adr/048-remote-mcp-transport.md) (Proposed)
-- Butuh host **long-running** (Railway/VPS) — SSE MCP sulit di Vercel serverless
+**Env (host long-running — Railway/VPS/Fly; SSE MCP sulit di Vercel serverless):**
+
+```bash
+REMOTE_MCP_ENABLED=true
+REMOTE_MCP_PATH=/mcp
+REMOTE_MCP_PUBLIC_URL=https://your-host.example.com/mcp
+REMOTE_MCP_CORS_ORIGINS=*
+```
+
+**Auth:**
+
+| Metode | Env tambahan | Catatan |
+|--------|--------------|---------|
+| API key | — | `Authorization: Bearer aic_...` atau `X-API-Key` |
+| OAuth (ChatGPT dropdown) | `REMOTE_MCP_OAUTH_ENABLED=true`, `OIDC_ISSUER_URL`, `OIDC_MCP_OWNER_ID` | Phase 17 OIDC; discovery di `/.well-known/oauth-protected-resource/mcp` |
+
+- Implementasi: [.ai/phases/13.1-remote-mcp-clients/](../.ai/phases/13.1-remote-mcp-clients/README.md)
+- ADR: [ADR-048 Implemented](../.ai/adr/048-remote-mcp-transport.md)
 
 **Jangan** tempel URL REST (`/api/v1`) ke field Server URL MCP — protokol berbeda.
 
@@ -193,7 +208,7 @@ Semua protokol (REST, MCP, gRPC) memanggil **handler bersama yang sama** → ser
 |----------|-------------|---------|
 | REST `/api/v1` | Integrator publik, ChatGPT Actions | ✅ selalu aktif |
 | MCP stdio | AI clients di IDE (Cursor, Claude, …) | ✅ selalu aktif |
-| MCP remote (ChatGPT URL) | Cloud MCP hosts | 🔲 Phase 13.1 — [design](../.ai/phases/13.1-remote-mcp-clients/README.md) |
+| MCP remote (ChatGPT URL) | Cloud MCP hosts | ✅ opt-in — `REMOTE_MCP_ENABLED=true` · [13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) |
 | gRPC `ai.brain.v1` | Backend internal / enterprise, streaming context | ❌ opsional |
 
 gRPC **mati secara default**. Untuk mengaktifkan (butuh Node yang berjalan lama — K8s/VM, **bukan** Vercel):

@@ -8,9 +8,10 @@ import { IdentityService } from './identity.service.js';
 import { ClientService } from './client.service.js';
 import { AuthService } from './auth.service.js';
 import { JwtService } from './jwt.service.js';
-import { ApiKeyProvider, JwtProvider, OAuthProvider } from './providers/index.js';
+import { ApiKeyProvider, JwtProvider, OAuthProvider, OidcAccessTokenProvider } from './providers/index.js';
 import { createAuthenticateMiddleware } from './auth.middleware.js';
 import { createPermissionMiddleware } from './permission.middleware.js';
+import { getEnv } from '../config/index.js';
 
 export interface AuthLayer {
   authService: AuthService;
@@ -39,9 +40,13 @@ export function createAuthLayer(db: ISqlDatabase): AuthLayer {
     jwtService,
   );
 
+  const env = getEnv();
   const providers = [
     new ApiKeyProvider(identityRepository),
     new OAuthProvider(identityRepository),
+    ...(env.REMOTE_MCP_OAUTH_ENABLED
+      ? [new OidcAccessTokenProvider({ env })]
+      : []),
     new JwtProvider(jwtService, identityRepository),
   ];
 

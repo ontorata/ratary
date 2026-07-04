@@ -260,7 +260,7 @@ Enable **ChatGPT New App → Server URL** and other cloud MCP hosts via HTTPS MC
 | 13.1A | `McpRemoteTransportServer` — route `/mcp` (`REMOTE_MCP_ENABLED=false`) |
 | 13.1B | API-key auth at MCP boundary |
 | 13.1C | ChatGPT runbook; Custom GPT Actions remains interim fallback |
-| 13.1D | OAuth (deferred → Phase 17) |
+| 13.1D | MCP OAuth discovery + OIDC bearer bridge (Phase 17) | ✅ |
 
 ## ADR gates
 

@@ -1,3 +1,5 @@
+import { getEnv } from '../config/index.js';
+
 export const PERMISSIONS = {
   MEMORY_READ: 'memory.read',
   MEMORY_WRITE: 'memory.write',
@@ -38,7 +40,11 @@ function isPublicOrAuthPath(path: string): boolean {
   if (path.startsWith('/api/v1/infrastructure/marketplace')) return true;
   if (path.startsWith('/api/v1/auth/sso/')) return true;
   if (path === '/metrics' || path.startsWith('/metrics?')) return true;
+  if (path.startsWith('/.well-known/oauth-protected-resource')) return true;
   if (path.startsWith('/docs')) return true;
   if (path.startsWith('/api/v1/auth/')) return true;
+  const env = getEnv();
+  const mcpPath = env.REMOTE_MCP_PATH.startsWith('/') ? env.REMOTE_MCP_PATH : `/${env.REMOTE_MCP_PATH}`;
+  if (path === mcpPath) return true;
   return false;
 }

@@ -217,6 +217,12 @@ const envSchema = z
     REMOTE_MCP_PATH: z.string().min(1).default('/mcp'),
     REMOTE_MCP_CORS_ORIGINS: z.string().default('*'),
     REMOTE_MCP_PUBLIC_URL: z.string().url().optional(),
+    REMOTE_MCP_OAUTH_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    /** Maps validated OIDC access tokens to an existing owner scope for remote MCP OAuth. */
+    OIDC_MCP_OWNER_ID: z.string().uuid().optional(),
 
     // Federation layer (Phase 14) — ADR-029; cross-node knowledge exchange, default off
     FEDERATION_ENABLED: z
@@ -529,6 +535,30 @@ const envSchema = z
           code: 'custom',
           path: ['MEILISEARCH_INDEX'],
           message: 'MEILISEARCH_INDEX is required when SEARCH_PROVIDER=meilisearch',
+        });
+      }
+    }
+
+    if (env.REMOTE_MCP_OAUTH_ENABLED) {
+      if (!env.REMOTE_MCP_ENABLED) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['REMOTE_MCP_OAUTH_ENABLED'],
+          message: 'REMOTE_MCP_ENABLED must be true when REMOTE_MCP_OAUTH_ENABLED=true',
+        });
+      }
+      if (!env.OIDC_ISSUER_URL) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['OIDC_ISSUER_URL'],
+          message: 'OIDC_ISSUER_URL is required when REMOTE_MCP_OAUTH_ENABLED=true',
+        });
+      }
+      if (!env.OIDC_MCP_OWNER_ID) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['OIDC_MCP_OWNER_ID'],
+          message: 'OIDC_MCP_OWNER_ID is required when REMOTE_MCP_OAUTH_ENABLED=true',
         });
       }
     }

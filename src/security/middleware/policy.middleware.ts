@@ -12,6 +12,7 @@ function isPublicPath(url: string): boolean {
   if (path.startsWith('/api/v1/ecosystem/')) return true;
   if (path === '/api/v1/health' || path === '/health' || path === '/') return true;
   if (path.startsWith('/api/v1/auth/sso/')) return true;
+  if (path.startsWith('/.well-known/oauth-protected-resource')) return true;
   return false;
 }
 

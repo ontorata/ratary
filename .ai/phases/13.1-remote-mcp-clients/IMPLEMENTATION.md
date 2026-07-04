@@ -14,6 +14,7 @@
 | 13.1B | `McpContextBinding` — stdio vs remote scope | ✅ |
 | 13.1C | Env + manifest `supportsRemoteMcp` | ✅ |
 | 13.1E | Remote MCP helper tests | ✅ |
+| 13.1D | MCP OAuth discovery + OIDC bearer bridge | ✅ |
 
 ---
 
@@ -26,7 +27,13 @@ src/transport/mcp/
   remote/
     mcp-remote-context.ts             AsyncLocalStorage session + initialize detect
     register-remote-mcp-routes.ts     Fastify /mcp GET|POST|DELETE + CORS
-tests/transport/remote-mcp.test.ts
+    mcp-oauth-metadata.ts             RFC 9728 protected resource metadata
+    register-remote-mcp-oauth-routes.ts  /.well-known/oauth-protected-resource/*
+src/auth/providers/
+  oidc-access-token.provider.ts       OIDC bearer validation for MCP OAuth
+tests/transport/mcp-oauth-metadata.test.ts
+tests/auth/oidc-access-token.provider.test.ts
+tests/api/remote-mcp-oauth.test.ts
 ```
 
 ---
@@ -38,7 +45,11 @@ tests/transport/remote-mcp.test.ts
 | `REMOTE_MCP_ENABLED` | `false` | Master switch — route not mounted when off |
 | `REMOTE_MCP_PATH` | `/mcp` | HTTP mount path |
 | `REMOTE_MCP_CORS_ORIGINS` | `*` | CORS allowlist for browser MCP clients |
-| `REMOTE_MCP_PUBLIC_URL` | — | Optional canonical URL in manifest |
+| `REMOTE_MCP_PUBLIC_URL` | — | Canonical URL in manifest + OAuth metadata |
+| `REMOTE_MCP_OAUTH_ENABLED` | `false` | RFC 9728 discovery + OIDC bearer at MCP boundary |
+| `OIDC_MCP_OWNER_ID` | — | Owner scope for validated OIDC access tokens (required when OAuth ON) |
+
+Requires `OIDC_ISSUER_URL` (Phase 17) when `REMOTE_MCP_OAUTH_ENABLED=true`.
 
 ---
 
@@ -48,7 +59,7 @@ tests/transport/remote-mcp.test.ts
 2. Set `REMOTE_MCP_ENABLED=true`
 3. Issue `aic_...` API key
 4. ChatGPT → New App → Server URL → `https://your-host/mcp`
-5. Auth: Bearer `aic_...` (custom header if UI supports)
+5. Auth: Bearer `aic_...` **or** OAuth (when `REMOTE_MCP_OAUTH_ENABLED=true` + Phase 17 OIDC)
 
 **Fallback:** Custom GPT Actions + OpenAPI `/docs/json` — unchanged.
 

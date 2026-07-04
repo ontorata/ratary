@@ -2,7 +2,12 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { randomUUID } from 'node:crypto';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { Env } from '../../../config/env.js';
 import type { TransportHandlers } from '../../shared/handlers/create-transport-handlers.js';
+import {
+  buildMcpOAuthMetadataContext,
+  buildMcpUnauthorizedHeaders,
+} from './mcp-oauth-metadata.js';
 import {
   buildTransportContextFromRestRequest,
   resolveMemoryScopeFromTransportContext,
@@ -25,6 +30,7 @@ interface McpRemoteSessionEntry {
 const sessions = new Map<string, McpRemoteSessionEntry>();
 
 export interface RemoteMcpRouteDeps {
+  env: Env;
   handlers: TransportHandlers;
   scopeResolver: IScopeResolver;
   agentIdentity: IAgentIdentity;
@@ -63,6 +69,17 @@ export async function registerRemoteMcpRoutes(
     applyCors(reply, corsOrigins, request.headers.origin);
 
     if (!request.user?.ownerId) {
+      const oauthCtx = buildMcpOAuthMetadataContext(deps.env, request.headers.origin);
+      if (deps.env.REMOTE_MCP_OAUTH_ENABLED && oauthCtx) {
+        reply
+          .code(401)
+          .headers(buildMcpUnauthorizedHeaders(oauthCtx))
+          .send({
+            error: 'Unauthorized',
+            message: 'OAuth authentication required — see WWW-Authenticate resource_metadata',
+          });
+        return;
+      }
       reply.code(401).send({ error: 'Unauthorized — Bearer aic_... or X-API-Key required' });
       return;
     }
@@ -117,7 +134,7 @@ export async function registerRemoteMcpRoutes(
     applyCors(reply, corsOrigins, request.headers.origin);
     reply
       .header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
-      .header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key, mcp-session-id')
+      .header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-API-Key, mcp-session-id, MCP-Protocol-Version')
       .code(204)
       .send();
   });

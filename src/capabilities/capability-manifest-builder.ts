@@ -136,6 +136,8 @@ export class CapabilityManifestBuilder {
                   ...(this.env.REMOTE_MCP_PUBLIC_URL
                     ? { publicUrl: this.env.REMOTE_MCP_PUBLIC_URL }
                     : {}),
+                  oauthEnabled:
+                    this.env.REMOTE_MCP_OAUTH_ENABLED && Boolean(this.env.OIDC_ISSUER_URL),
                 }
               : {}),
           },

@@ -74,7 +74,7 @@ Progressive retrieval (`IRetrievalPolicy`) dan capability manifest (`GET /api/v1
 | **Windsurf / IDE MCP-compatible** | MCP stdio | ✅ Didukung* | *Setara MCP stdio generik |
 | **Custom bot / CI** | REST API | ✅ Didukung | `Authorization: Bearer aic_...` |
 | **ChatGPT / Actions** | REST API | ✅ Didukung | MCP stdio **tidak** didukung ChatGPT |
-| **ChatGPT New App (MCP URL)** | MCP remote HTTPS | 🔲 Phase 13.1 | [Design](.ai/phases/13.1-remote-mcp-clients/README.md) |
+| **ChatGPT New App (MCP URL)** | MCP remote HTTPS | ✅ Opt-in (`REMOTE_MCP_ENABLED=true`) | [13.1](.ai/phases/13.1-remote-mcp-clients/README.md) · OAuth: `REMOTE_MCP_OAUTH_ENABLED` |
 | **Agent runtime eksternal** | REST + MCP | ✅ Didukung | `GET /api/v1/capabilities`, 20 MCP tools |
 
 Semua client MCP di atas **menulis ke D1/Postgres yang sama** — memory portable antar AI.
@@ -286,7 +286,7 @@ Contoh konfigurasi (sesuaikan path):
 
 **Windows:** jika MCP gagal connect, pakai `"command": "cmd"` — detail di [PANDUAN.md](docs/PANDUAN.md).
 
-**ChatGPT:** MCP stdio tidak didukung — gunakan **REST API** + API key (Custom GPT Actions). Remote MCP URL → Phase [13.1](.ai/phases/13.1-remote-mcp-clients/README.md). Lihat [PANDUAN.md](docs/PANDUAN.md) §6.1.
+**ChatGPT:** MCP stdio tidak didukung. Tiga jalur: **Custom GPT Actions** (REST + `aic_...`), **Remote MCP** (`https://host/mcp` + API key, `REMOTE_MCP_ENABLED=true`), atau **OAuth** (`REMOTE_MCP_OAUTH_ENABLED=true` + Phase 17 OIDC). Host long-running (Railway/VPS) — bukan Vercel serverless untuk SSE MCP. Detail: [PANDUAN.md](docs/PANDUAN.md) §6.1.
 
 Setelah simpan config:
 1. Reload / restart client AI
