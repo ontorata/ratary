@@ -1,7 +1,8 @@
 # ADR-023: Semantic Compression Policy
 
-**Status:** Proposed  
+**Status:** Approved  
 **Date:** 2026-07-04  
+**Approved:** 2026-07-04 (owner — DESIGN + implementation plan)  
 **Deciders:** Project owner  
 
 ---
@@ -69,7 +70,7 @@ Without an ADR, Phase 5.5 risks a parallel `compressed_memories` table, destruct
 
 1. **Ports:** `ICompressionPolicy` (pure), `ICompressionScheduler` (job), optional `ICompressionSummarizer` (async LLM adapter).
 2. **Schema (additive):** `memories.compression_meta` (JSON), `memories.compression_version` (INTEGER NULL).
-3. **Hierarchy:** New summary rows use `level=summary|canonical`; link sources via `memory_relations` (`consolidates`).
+3. **Hierarchy:** New summary rows use `level=summary|canonical`; link sources via `memory_relations` relation type **`consolidates`** (canonical; `derived_from` not used).
 4. **Raw handling:** Archive duplicates (`archived=1`); never hard-delete user content.
 5. **CLI:** `npm run compress:memories` — dry-run default (mirror `consolidate:memories`).
 6. **Env:** `COMPRESSION_ENABLED=false` default; `COMPRESSION_POLICY=rule` default.

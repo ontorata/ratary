@@ -1,7 +1,8 @@
 # ADR-026: Memory Quality Signals (Ingest, Not Agent Learning)
 
-**Status:** Proposed  
+**Status:** Approved  
 **Date:** 2026-07-04  
+**Approved:** 2026-07-04 (owner — DESIGN + implementation plan)  
 **Deciders:** Project owner  
 
 ---

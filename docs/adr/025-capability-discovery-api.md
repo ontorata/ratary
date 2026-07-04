@@ -1,7 +1,8 @@
 # ADR-025: Capability Discovery API
 
-**Status:** Proposed  
+**Status:** Approved  
 **Date:** 2026-07-04  
+**Approved:** 2026-07-04 (owner — DESIGN + implementation plan)  
 **Deciders:** Project owner  
 
 ---
@@ -69,7 +70,7 @@ External agent runtimes (Cursor, Claude Code, custom bots) need discovery **with
 
 1. **`CapabilityManifestBuilder`** at composition root — inputs: env, adapter registry, MCP tool list.
 2. **`GET /api/v1/capabilities`** — returns `AICapabilityManifest` (Phase 7 §10 shape + extensions for 5.5/6.5).
-3. **MCP tool `get_capabilities`** — same JSON in `content[].text`.
+3. **MCP tool `get_capabilities`** (canonical name; supersedes Phase 7 draft `capabilities`) — same JSON in `content[].text`.
 4. **OpenAPI:** register response schema under tag `Capabilities`.
 5. **Contract test:** manifest tool count/names === `tests/mcp/tools.test.ts` `EXPECTED_TOOLS`.
 6. **Optional:** `X-Protocol-Version` response header (additive track).
