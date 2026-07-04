@@ -492,43 +492,43 @@ Legacy mount (`/memory`, dll.) **tidak** mendapat endpoint knowledge baru.
 ## Checklist Implementasi (Commits)
 
 ### Commit 1 — Types & migration M1a
-- [ ] `src/types/knowledge.ts`
-- [ ] Extend `memory.ts` schemas
-- [ ] `migrateKnowledgeFoundationPhase1()`
-- [ ] Sync `schema.sql`
+- [x] `src/types/knowledge.ts`
+- [x] Extend `memory.ts` schemas
+- [x] `migrateKnowledgeFoundationPhase1()`
+- [x] Sync `schema.sql`
 
 ### Commit 2 — Knowledge pure modules + tests
-- [ ] `src/knowledge/*.ts`
-- [ ] Generator unit tests
+- [x] `src/knowledge/*.ts`
+- [x] Generator unit tests
 
 ### Commit 3 — Repository
-- [ ] Extend `MemoryRepository`
-- [ ] `MemoryRelationRepository`
-- [ ] `memory-mapper.ts`
-- [ ] `MockD1Client` update
+- [x] Extend `MemoryRepository`
+- [x] `MemoryRelationRepository`
+- [x] `memory-mapper.ts`
+- [x] `MockD1Client` update
 
 ### Commit 4 — Search layer
-- [ ] `ranking.config.ts`, `ranking.engine.ts`, `search.service.ts`
-- [ ] Ranking tests
+- [x] `ranking.config.ts`, `ranking.engine.ts`, `search.service.ts`
+- [x] Ranking tests
 
 ### Commit 5 — Service integration
-- [ ] `MemoryService`, `MemoryRelationService`
-- [ ] `server.ts`, `mcp/server.ts` wiring
+- [x] `MemoryService`, `MemoryRelationService`
+- [x] `server.ts`, `mcp/server.ts` wiring
 
 ### Commit 6 — API
-- [ ] Controllers, routes, Swagger
-- [ ] E2E + leak tests
+- [x] Controllers, routes, Swagger
+- [x] E2E + leak tests
 
 ### Commit 7 — MCP tools
-- [ ] Updated + new tools
+- [x] Updated + new tools
 
 ### Commit 8 — Backfill & migration M3
-- [ ] `scripts/backfill-knowledge.ts`
-- [ ] `migrateKnowledgeFoundationPhase3()`
+- [x] `scripts/backfill-knowledge.ts`
+- [x] `migrateKnowledgeFoundationPhase3()`
 
 ### Commit 9 — Docs & gate
-- [ ] README, ARCHITECTURE.md
-- [ ] `lint` + `format:check` + `typecheck` + `test` ≥75
+- [x] README, ARCHITECTURE.md
+- [x] `lint` + `format:check` + `typecheck` + `test` ≥75
 
 ---
 
