@@ -7,6 +7,12 @@ export {
 } from './d1-client.js';
 
 export {
+  getPostgresSqlDatabase,
+  setPostgresSqlDatabase,
+  resetPostgresSqlDatabase,
+} from './postgres-client.js';
+
+export {
   runMigrations,
   runSchemaMigrations,
   executeTransaction,

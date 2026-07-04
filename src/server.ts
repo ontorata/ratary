@@ -1,6 +1,6 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
-import { getD1Client } from './db/index.js';
+import { getD1Client, getPostgresSqlDatabase } from './db/index.js';
 import { MemoryRepository } from './repositories/memory.repository.js';
 import { MemoryRelationRepository } from './repositories/memory-relation.repository.js';
 import { createPlatformAdapters } from './infrastructure/composition/create-platform-adapters.js';
@@ -101,8 +101,9 @@ export async function buildApp(options?: {
     await fastify.register(openTelemetryFastifyPlugin);
   }
 
-  const d1 = env.SQL_PROVIDER === 'd1' ? getD1Client() : null;
-  const platform = createPlatformAdapters(d1, env);
+  const injectedSql = getPostgresSqlDatabase();
+  const d1 = injectedSql ? null : env.SQL_PROVIDER === 'd1' ? getD1Client() : null;
+  const platform = createPlatformAdapters(d1, env, injectedSql ?? undefined);
   const authLayer = createAuthLayer(platform.sql);
 
   if (!options?.skipAuth) {

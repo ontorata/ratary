@@ -35,8 +35,9 @@ export interface PlatformAdapters {
 export function createPlatformAdapters(
   d1Client: D1Client | null,
   env: Env = getEnv(),
+  injectedSql?: ISqlDatabase,
 ): PlatformAdapters {
-  const sql = createSqlDatabase(d1Client, env);
+  const sql = injectedSql ?? createSqlDatabase(d1Client, env);
   const embeddingStore = new D1EmbeddingStore(sql);
   const vectorStore = createVectorStore(env, sql, embeddingStore);
 

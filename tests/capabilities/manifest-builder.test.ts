@@ -10,6 +10,7 @@ vi.stubEnv('NODE_ENV', 'test');
 
 describe('CapabilityManifestBuilder', () => {
   beforeEach(() => {
+    vi.stubEnv('SQL_PROVIDER', 'd1');
     resetEnvCache();
   });
 
