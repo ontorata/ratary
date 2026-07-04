@@ -261,13 +261,15 @@ Phase 8 defines the `IGraphProvider` port; no external graph database is require
 
 ### Future external graph engines
 
-| Engine | Adapter | Status |
-|--------|---------|--------|
-| D1 / SQL flat edges | `D1GraphAdapter` | ✅ Default (`GRAPH_PROVIDER=d1`) |
-| Neo4j | `Neo4jGraphStoreAdapter` | ✅ Opt-in (`GRAPH_PROVIDER=neo4j`) |
-| Amazon Neptune | `NeptuneGraphAdapter` | Future |
-| Dgraph | `DgraphGraphAdapter` | Future |
-| Memgraph | `MemgraphGraphAdapter` | Future |
+| Engine | Adapter | Wire | Status | Track |
+|--------|---------|------|--------|-------|
+| D1 / SQL flat edges | `D1GraphAdapter` | SQL | ✅ Default (`GRAPH_PROVIDER=d1`) | Phase 8 |
+| Neo4j | `Neo4jGraphStoreAdapter` | Bolt / Cypher | ✅ Opt-in (`GRAPH_PROVIDER=neo4j`) | Post-gate |
+| Amazon Neptune | `NeptuneGraphAdapter` | HTTP / Gremlin | 🔲 Future | **D8-03** |
+| Dgraph | `DgraphGraphAdapter` | gRPC / GraphQL± | 🔲 Future | **D8-03** |
+| Memgraph | `MemgraphGraphAdapter` | Bolt | 🔲 Future | **D8-03** |
+
+New engines implement `IGraphProvider` and register in `createGraphProvider()` — no changes to `GraphService`, composite retrieval, or relation CRUD.
 
 ---
 
@@ -390,15 +392,31 @@ All Phase 1-7 REST endpoints remain unchanged in Phase 8.
 | **8.7** | ✅ Inferred edges | Same traverse port | ADR-041 |
 | 9 | ✅ | + workspace scope on memories | Owner-scoped traverse |
 | 10 | ✅ | + org RBAC opt-in | Adapters unchanged |
-| **21** | ✅ Sync platform | Meilisearch + Neo4j indexes | ADR-022 |
+| **21** | ✅ Sync platform | Meilisearch + Neo4j indexes | ADR-022; vector seeds reserved 21C |
 
 ### External graph engine compatibility
 
-| Engine | REST | Adapter pattern | Status |
-|--------|------|-----------------|--------|
-| D1 in-process BFS | ✅ | `D1GraphAdapter` | ✅ Default |
-| Neo4j | ✅ | Driver-based | ✅ Opt-in |
-| Neptune | 🔲 Future | HTTP/Gremlin | Future |
+| Engine | REST / MCP traverse | Adapter (planned or live) | Wire protocol | `IGraphProvider` | Status | Owner / notes |
+|--------|---------------------|---------------------------|---------------|------------------|--------|---------------|
+| D1 in-process BFS | ✅ | `D1GraphAdapter` | SQL flat edges | ✅ Implemented | ✅ **Default** | `GRAPH_PROVIDER=d1` |
+| Neo4j | ✅ | `Neo4jGraphStoreAdapter` | Bolt / Cypher | ✅ Implemented | ✅ **Opt-in** | `GRAPH_PROVIDER=neo4j` + credentials |
+| Amazon Neptune | ✅ (via same graph API) | `NeptuneGraphAdapter` | HTTP / Gremlin | 🔲 Not built | 🔲 **Future** | **D8-03** — port pattern only |
+| Dgraph | ✅ (via same graph API) | `DgraphGraphAdapter` | gRPC / GraphQL± | 🔲 Not built | 🔲 **Future** | **D8-03** — port pattern only |
+| Memgraph | ✅ (via same graph API) | `MemgraphGraphAdapter` | Bolt (Neo4j-compatible) | 🔲 Not built | 🔲 **Future** | **D8-03** — port pattern only |
+
+**Runtime factory:** `createGraphProvider()` in `src/infrastructure/composition/create-graph-provider.ts` — implements `d1` and `neo4j` only; unknown `GRAPH_PROVIDER` values fail fast at startup.
+
+**Mitigation while D8-03 open:** production scale → Neo4j adapter + Phase 21 sync (`IndexRepairTask` / `GraphRepairTask`); zero-ops → D1 default.
+
+### Deferred track (post-gate)
+
+| ID | Item | Status | Mitigation / continuation |
+|----|------|--------|---------------------------|
+| **D8-01** | D1 in-process BFS scale ceiling | ✅ Mitigated | Neo4j adapter + Phase 21 sync ops |
+| **D8-02** | Vector seeds for composite graph leg | ⏳ **Open** | `GRAPH_VECTOR_SEEDS_ENABLED` flag + manifest `graphVectorSeedsEnabled`; **no runtime seed leg yet** → **Phase 21C** materialization |
+| **D8-03** | Alternate engines (Neptune, Dgraph, Memgraph) | ⏳ **Open** | `IGraphProvider` port + factory swap; only D1 + Neo4j adapters shipped |
+
+See [COMPLETION.md](COMPLETION.md) deferred table · [RETROSPECTIVE.md](RETROSPECTIVE.md) accepted debt.
 
 ---
 
@@ -556,6 +574,14 @@ Phase 8 design enabled Phase 9 integration:
 |---------------|--------|---------|
 | Index sync | Meilisearch + Neo4j orchestration | `SEARCH_GRAPH_PLATFORM_ENABLED` (ADR-022) |
 | Stewardship | `IndexRepairTask`, `GraphRepairTask` | Phase 04.7 pipeline |
+| Vector seeds (21C) | `GRAPH_VECTOR_SEEDS_ENABLED` flag reserved | **D8-02 open** — manifest only; runtime seed leg not built |
+
+### Open deferred (D8-02 / D8-03)
+
+| ID | Item | Continuation |
+|----|------|--------------|
+| **D8-02** | Vector seeds for graph composite leg | Phase **21C** — materialize vector-derived traversal seeds when flag enabled |
+| **D8-03** | Neptune / Dgraph / Memgraph adapters | New `IGraphProvider` implementations; Neptune via HTTP/Gremlin first candidate |
 
 ### Three-phase guarantee (gate-time — validated post-gate)
 

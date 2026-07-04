@@ -27,12 +27,15 @@ Record architecture review findings and formal phase gate verdict.
 
 ## Known gaps (accepted)
 
-| ID | Item | Status |
-|----|------|--------|
-| D85-01 | MCP `submit_signal` | Open → Phase 13.1 |
-| D85-02 | Phase 12 `memory.signal.received` bus publish | Open |
-| D85-03 | Ranking adaptation batch mutation | Open — advisory stub only |
-| — | Phase 8.6 learning event bridge | ✅ When both ingest + learning flags ON |
+| ID | Item | Status | Mitigation |
+|----|------|--------|------------|
+| D85-01 | MCP `submit_signal` | ⏳ Open | REST `POST /api/v1/signals` → Phase **13.1** |
+| D85-02 | Phase 12 bus publish | ⏳ Open | **8.6** `LearningEventRecorder`; topic defined |
+| D85-03 | Batch ranker mutation | ⏳ Open | Hot-path `bumpImportance`; `reflect:signals` dry-run |
+| D85-04 | Rank order E2E test | ⏳ Open | Unit policy + ingest tests |
+| D85-05 | REST E2E signals | ⏳ Open | Composition ports test |
+| D85-06 | `lifecycleState` GET | ⏳ Open | Column migrated |
+| — | Phase 8.6 learning bridge | ✅ | When both ingest + learning flags ON |
 
 See [CHECKLIST.md](CHECKLIST.md) deferred table.
 
@@ -41,7 +44,7 @@ See [CHECKLIST.md](CHECKLIST.md) deferred table.
 **Reviewer:** AI implementer + project owner authorization  
 **Gate verdict:** **PASS** (2026-07-04)
 
-**Post-gate alignment (append-only):** Platform regression **722 passed** \| 3 skipped. Phase 8.6 recorder bridge documented; D85-01/02/03 remain open.
+**Post-gate alignment (append-only):** Platform regression **736 passed** \| 3 skipped (2026-07-05). Phase 8.6 recorder bridge ✅; D85-01–06 open with mitigations in DESIGN § Compatibility.
 
 **Evidence:** [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 

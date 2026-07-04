@@ -40,10 +40,12 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 | ID | Item | Mitigation | Status |
 |----|------|------------|--------|
-| D85-01 | REST-only ingest when enabled | MCP `submit_signal` → Phase 13.1 | Open |
-| D85-02 | No Phase 12 bus publish | Topic defined; wire on ingest | Open |
-| D85-03 | No automated ranker mutation | `reflect:signals` advisory stub | Open |
-| D85-04 | Rank order E2E test gap | Unit policy tests sufficient for gate | Open |
+| D85-01 | REST-only ingest when enabled | ⏳ Open | REST `POST /api/v1/signals` → Phase **13.1** MCP |
+| D85-02 | No Phase 12 bus publish on ingest | ⏳ Open | **8.6** `LearningEventRecorder` + topic defined |
+| D85-03 | No automated ranker batch mutation | ⏳ Open | Hot-path `bumpImportance`; `reflect:signals` dry-run |
+| D85-04 | Rank order E2E test gap | ⏳ Open | Unit policy + ingest tests |
+| D85-05 | REST E2E signals route | ⏳ Open | Composition ports test |
+| D85-06 | `lifecycleState` GET field | ⏳ Open | Column exists; use importance/access_count |
 
 ---
 

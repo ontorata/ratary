@@ -15,7 +15,7 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 
 | Metric | Gate (2026-07-04) | Platform snapshot |
 |--------|-------------------|-------------------|
-| Total tests | 689 passed \| 3 skipped | **722 passed** \| 3 skipped |
+| Total tests | 689 passed \| 3 skipped | **736 passed** \| 3 skipped |
 | Phase 8.5 new tests | signal-ingest + policy + migration | unchanged contract |
 
 ---
@@ -63,10 +63,16 @@ npm run reflect:signals
 
 ## Deferred tests (CHECKLIST D85-04 / D85-05)
 
-| ID | Test | Status |
-|----|------|--------|
-| D85-04 | `ranker.test.ts` — importance delta affects sort order | Open |
-| D85-05 | REST E2E `POST /api/v1/signals` with auth fixture | Open |
+| ID | Test | Status | Mitigation |
+|----|------|--------|------------|
+| D85-04 | `ranker.test.ts` — importance delta affects sort order | ⏳ Open | `importance-scoring-policy.test.ts` + manual search/context verify |
+| D85-05 | REST E2E `POST /api/v1/signals` with auth fixture | ⏳ Open | `signal-ingest-ports.test.ts` + staging with flag ON |
+
+---
+
+## Current regression
+
+736 passed | 3 skipped (default env, 2026-07-05) (full suite, all master flags OFF)
 
 ---
 

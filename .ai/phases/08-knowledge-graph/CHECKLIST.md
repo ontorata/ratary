@@ -54,4 +54,16 @@
 
 ---
 
-*Frozen at gate PASS.*
+*Frozen at gate PASS. Deferred D8-02 / D8-03 tracked in DESIGN §13 and COMPLETION.md.*
+
+---
+
+## Deferred (post-gate)
+
+| ID | Item | Status | Owner / notes |
+|----|------|--------|---------------|
+| D8-02 | Vector seeds for graph composite leg | ⏳ Open | `GRAPH_VECTOR_SEEDS_ENABLED` flag; runtime leg → **Phase 21C** |
+| D8-03 | Neptune / Dgraph / Memgraph adapters | ⏳ Open | `IGraphProvider` port; Neptune HTTP/Gremlin first candidate |
+
+**Mitigation:** D8-01 mitigated via Neo4j + Phase 21 sync; use `GRAPH_PROVIDER=neo4j` at scale.
+

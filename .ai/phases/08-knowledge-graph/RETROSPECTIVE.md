@@ -26,9 +26,9 @@ Phase 8 added graph-augmented retrieval as a third composite leg without rewriti
 
 | ID | Item | Mitigation | Status |
 |----|------|------------|--------|
-| D8-01 | D1 in-process BFS scale ceiling | Neo4j adapter + Phase 21 sync ops | Mitigated |
-| D8-02 | Vector seeds for graph leg | `GRAPH_VECTOR_SEEDS_ENABLED` flag | Open |
-| D8-03 | Alternate engines (Neptune, Dgraph) | `IGraphProvider` port | Open |
+| D8-01 | D1 in-process BFS scale ceiling | ✅ Mitigated | Neo4j adapter + Phase 21 sync ops |
+| D8-02 | Vector seeds for graph leg | ⏳ Open | `GRAPH_VECTOR_SEEDS_ENABLED` flag + manifest; runtime leg → **Phase 21C** |
+| D8-03 | Alternate engines (Neptune, Dgraph, Memgraph) | ⏳ Open | `IGraphProvider` port; D1 + Neo4j only — Neptune HTTP/Gremlin future |
 
 ---
 

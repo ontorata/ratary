@@ -2,6 +2,7 @@
 
 **Document:** DESIGN  
 **Phase status:** ✅ Implemented (2026-07-04)  
+**Platform snapshot:** 2026-07-05 — **736 tests**; Phase 8.6 learning bridge ✅; D85-01–05 open with documented mitigations  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) · [Phase 7 Boundary](../07-agent-runtime/DESIGN.md)  
 **Roadmap placement:** Track absorbed into **Phase 12 Event Pipeline** + memory domain extensions  
@@ -37,15 +38,16 @@ Phase 8.5 does **not** add planner, executor, goal stack, or autonomous memory m
 
 ### Inside this repository
 
-| Capability | Status |
-|------------|--------|
-| `IMemorySignalIngestor` port | ✅ Implemented |
-| `ISignalNormalizer` + adapters | ✅ Implemented |
-| `MemoryQualitySignal` contract | ✅ Implemented |
-| Extend `Ranker` inputs (importance delta) | ✅ Via `bumpImportance` on ingest |
-| Extend access tracking path | ✅ `recordAccess` / audit (Phase 4) |
-| Lifecycle state hints on `memories` | ⏳ Deferred optional metadata |
-| Event publish on signal ingest | ⏳ Phase 12 bus — D85-02; 8.6 learning store bridge ✅ |
+| Capability | Status | Mitigation while deferred |
+|------------|--------|---------------------------|
+| `IMemorySignalIngestor` port | ✅ Implemented | — |
+| `ISignalNormalizer` + adapters | ✅ Implemented | — |
+| `MemoryQualitySignal` contract | ✅ Implemented | — |
+| Extend `Ranker` inputs (importance delta) | ✅ Via `bumpImportance` on ingest | Hot path importance delta live |
+| Extend access tracking path | ✅ `recordAccess` / audit (Phase 4) | Implicit observation via context |
+| Lifecycle state hints on `memories` | ⏳ Open | Column migrated; **no GET field yet** — use `importance` / `access_count` |
+| Event publish on signal ingest | ⏳ **D85-02** Open | **8.6** `LearningEventRecorder` when ingest + learning ON; topic `memory.signal.received` defined |
+| MCP `submit_signal` | ⏳ **D85-01** Open | **REST** `POST /api/v1/signals` — same controller path |
 
 ### Outside this repository
 
@@ -91,9 +93,12 @@ Phase 8.5 does **not** add planner, executor, goal stack, or autonomous memory m
                                 ▼
         ┌───────────────────────┼───────────────────────┐
         ▼                       ▼                       ▼
-   Ranker weights          Consolidator triggers    IEventBus (Phase 12)
-   (ranking.config)        (Phase 5.5 policy)       memory.signal.received
+   Ranker weights          Consolidator triggers    Learning store (8.6 ✅)
+   (importance delta       (Phase 5.5 policy)       + IEventBus fan-out
+    on ingest — live)                              (D85-02 ⏳ open)
 ```
+
+**Event split:** Phase **8.6** `LearningEventRecorder` persists learning events when `SIGNAL_INGEST_ENABLED=true` **and** `LEARNING_ENGINE_ENABLED=true`. Phase **12** `IEventBus.publish('memory.signal.received')` on ingest remains **D85-02** — topic defined in `domain-event-topics.ts`; publisher not wired in `MemorySignalIngestor`.
 
 ### Pipeline stages (approved stack)
 
@@ -300,8 +305,8 @@ Auth: signals endpoint requires same permissions as memory write in scope.
 | Tool | Change |
 |------|--------|
 | All existing MCP tools | **Unchanged** |
-| `submit_signal` | **Optional new** — D85-01 deferred; REST ingest at gate |
-| `get_context` | Emits internal access signals (existing path) |
+| `submit_signal` | ⏳ **D85-01 Open** | **Mitigation:** `POST /api/v1/signals` (REST) with same auth scope; Phase 13.1 MCP parity |
+| `get_context` | ✅ Unchanged | Emits internal access signals (existing path) |
 
 Env:
 
@@ -309,9 +314,32 @@ Env:
 |-----|---------|---------|
 | `SIGNAL_INGEST_ENABLED` | `false` | Master switch |
 | `SIGNAL_STORE_PROVIDER` | `none` | `sql` \| `analytics` \| `none` |
-| `RANKING_ADAPTATION_ENABLED` | `false` | Batch reflection job |
+| `RANKING_ADAPTATION_ENABLED` | `false` | Batch reflection job — **D85-03 open**; keep `false`; use per-ingest `bumpImportance` |
 
 ---
+
+## Compatibility & ingest matrix
+
+| Ingest path | Auth | Status | Notes |
+|-------------|------|--------|-------|
+| REST `POST /api/v1/signals` | Memory write scope | ✅ Gate | Gated `SIGNAL_INGEST_ENABLED=true` |
+| MCP `submit_signal` | MCP owner scope | ⏳ D85-01 | Use REST until Phase 13.1 |
+| Context `recordAccess` | Implicit | ✅ Phase 4 | No new endpoint |
+| `reflect:signals` CLI | Local env | ✅ Advisory | **D85-03** — dry-run default; no weight mutation |
+
+### Deferred track (post-gate)
+
+| ID | Item | Status | Mitigation / continuation |
+|----|------|--------|---------------------------|
+| **D85-01** | MCP `submit_signal` tool | ⏳ Open | REST ingest + `SignalsController`; wire MCP tool reusing handler → **Phase 13.1** |
+| **D85-02** | `IEventBus.publish('memory.signal.received')` on ingest | ⏳ Open | **8.6** learning store bridge live; topic + webhook consumer registered → wire publisher in ingest → **Phase 12** alignment |
+| **D85-03** | `RANKING_ADAPTATION_ENABLED` batch weight mutation | ⏳ Open | Per-signal `ImportanceScoringPolicy` + `bumpImportance` on hot path; `reflect:signals` reports only until batch weights implemented |
+| **D85-04** | Ranker sort-order integration test | ⏳ Open | `importance-scoring-policy.test.ts` + `signal-ingest.test.ts` cover bounds; manual verify via search/context ordering |
+| **D85-05** | REST E2E `POST /signals` with auth fixture | ⏳ Open | `signal-ingest-ports.test.ts` + unit ingest; enable flag in staging for manual E2E |
+| **D85-06** | `lifecycle_state` on GET memory | ⏳ Open | Column + repository setter exist; ops use `importance` / stewardship until API field exposed |
+
+See [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md) deferred table.
+
 
 ## Testing
 
@@ -343,18 +371,38 @@ Env:
 
 ## Future Phase
 
-| Phase | Interaction |
-|-------|-------------|
-| **5.5** | `consolidation_hint` triggers compression policy |
-| **6.5** | Access signals adjust progressive retrieval caps |
-| **7.5** | Manifest `supportsQualitySignals` ✅ |
-| **8.6** ✅ | Learning event store from signal ingest (ADR-057) |
-| **12** | `memory.signal.received` bus fan-out — D85-02 open |
-| **13.1** | MCP `submit_signal` — D85-01 open |
-| **13** | Signal volume at scale — batch only |
-| **10** | Org-scoped signal quotas |
+Phase 8.5 core gate closed **2026-07-04** (ADR-026). Deferred **D85-01–06** remain open with documented mitigations below — no blocking debt for downstream phases.
 
----
+### D85 deferred (open — mitigated)
+
+| ID | Item | Mitigation today | Continuation |
+|----|------|------------------|--------------|
+| **D85-01** | MCP `submit_signal` | REST `POST /api/v1/signals` | Phase **13.1** remote MCP |
+| **D85-02** | Phase 12 bus publish on ingest | **8.6** `LearningEventRecorder` + SQL learning store | Wire `IEventBus` in ingest path |
+| **D85-03** | Batch ranker weight mutation | Hot-path `bumpImportance`; `reflect:signals` dry-run | Implement weight snapshot writer |
+| **D85-04** | Ranker E2E sort-order test | Unit policy + ingest tests | Add `ranker.test.ts` ordering case |
+| **D85-05** | REST E2E signals route | Composition + unit tests | Auth fixture E2E when flag ON |
+| **D85-06** | `lifecycleState` on GET memory | `importance`, `access_count`, stewardship | Optional API field when needed |
+
+### Successor phases (closed / partial)
+
+| Phase | Interaction | Status |
+|-------|-------------|--------|
+| **5.5** | `consolidation_hint` → compression policy | ✅ Hint ingest path |
+| **6.5** | Access signals → progressive caps | ⏳ Partial — ingest landed; cap adjustment deferred |
+| **7.5** | Manifest `supportsQualitySignals` | ✅ |
+| **8.6** ✅ | `LearningEventRecorder` from signal ingest (ADR-057) | ✅ When both flags ON |
+| **12** | `memory.signal.received` bus fan-out | ⏳ **D85-02** — Phase 12 implemented; publisher bridge open |
+| **13.1** | MCP `submit_signal` | ⏳ **D85-01** |
+| **10** | Org-scoped signal quotas | Future — enterprise RBAC exists |
+
+### Open evolution (no D85 ID)
+
+| Item | Notes |
+|------|-------|
+| Analytics-only signal store | `SIGNAL_STORE_PROVIDER=analytics` — not built; SQL store default when enabled |
+| Signal volume at scale | Batch reflection + event bus (Phase 12/13) |
+
 
 ## References
 

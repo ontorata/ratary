@@ -1,22 +1,22 @@
 # Phase 8.5 — Quality Signals (Observation, Reflection & Learning)
 
-**Status:** ✅ Implemented (2026-07-04) · ADR-026 Accepted  
+**Status:** ✅ Implemented (2026-07-04) · ADR-026 Accepted · **D85-01–06 open with mitigations**  
 **Capability:** Scoped signal ingest, deterministic importance scoring, optional audit store. **No agent reflection loops in repo.**
 
 **Flag:** `SIGNAL_INGEST_ENABLED=false` (default)
 
-### Platform snapshot (post-gate — 2026-07-04)
+### Platform snapshot (2026-07-05)
 
 | Surface | Status | Reference |
 |---------|--------|-----------|
-| REST ingest | `POST /api/v1/signals` (gated) | `signals.routes.ts` |
+| REST ingest | `POST /api/v1/signals` (gated) | **Mitigates D85-01** until MCP tool |
 | Signal store | `memory_signals` (SQL opt-in) | ADR-026 migration |
-| Importance deltas | Bounded pure policy | `ImportanceScoringPolicy` |
+| Importance deltas | Bounded pure policy + `bumpImportance` | **Mitigates D85-03** hot path |
 | Manifest | `supportsQualitySignals` | Phase 7.5 capability builder |
-| Learning bridge | `LearningEventRecorder` when **8.6** also ON | `rest-server.ts` wiring |
-| Regression suite | **722 passed** \| 3 skipped | `npm test` |
+| Learning bridge | `LearningEventRecorder` when **8.6** also ON | **Mitigates D85-02** partial |
+| Regression suite | **736 passed** \| 3 skipped | `npm test` |
 
-*Gate (2026-07-04): **689 tests**. MCP `submit_signal` and Phase 12 `IEventBus` publish remain deferred — see CHECKLIST D85-xx.*
+*Deferred: MCP `submit_signal` (D85-01), bus publish (D85-02), batch rank weights (D85-03) — see [DESIGN.md § Compatibility](DESIGN.md).*
 
 ### Successor phases
 

@@ -74,9 +74,9 @@ Graph-augmented retrieval via `IGraphProvider` and third composite leg. Flat `me
 
 | ID | Item | Status | Notes |
 |----|------|--------|-------|
-| D8-01 | Full owner edge load per traverse (D1) | Accepted | Mitigated by Neo4j adapter + Phase 21 sync |
-| D8-02 | Vector seeds for graph retrieval | Open | `GRAPH_VECTOR_SEEDS_ENABLED` flag exists; full leg → future |
-| D8-03 | Neptune / Dgraph / Memgraph adapters | Open | Port pattern ready; only D1 + Neo4j implemented |
+| D8-01 | Full owner edge load per traverse (D1) | ✅ Mitigated | Neo4j adapter + Phase 21 sync |
+| D8-02 | Vector seeds for graph retrieval | ⏳ Open | `GRAPH_VECTOR_SEEDS_ENABLED` flag + manifest; full leg → **Phase 21C** |
+| D8-03 | Neptune / Dgraph / Memgraph adapters | ⏳ Open | `IGraphProvider` port ready; Neptune HTTP/Gremlin first future engine |
 
 ---
 
