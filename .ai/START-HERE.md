@@ -17,6 +17,7 @@ Read in order:
 | 2 | [core/constitution/00-CONSTITUTION.md](core/constitution/00-CONSTITUTION.md) — immutable rules |
 | 3 | [core/architecture/04-ARCHITECTURE.md](core/architecture/04-ARCHITECTURE.md) — layer patterns |
 | 4 | [core/glossary/GLOSSARY.md](core/glossary/GLOSSARY.md) — terminology |
+| 5 | [core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md](core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) — platform vision (architecture planning) |
 
 ---
 
@@ -35,6 +36,7 @@ Read in order:
 │   ├── decision-framework/    — Decision procedure
 │   ├── ai-rules/              — Module registry + AI communication
 │   ├── glossary/              — Canonical vocabulary
+│   ├── vision/                — Platform charter, OS map, intelligence pipeline
 │   ├── supplementary/         — Security, performance, writing
 │   ├── templates/             — ADR, task, completion blanks
 │   └── governance/            — Registry stubs → canonical files above
