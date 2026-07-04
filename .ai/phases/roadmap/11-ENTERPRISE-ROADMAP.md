@@ -42,6 +42,9 @@ flowchart LR
 | **20** | AI Infrastructure Platform | ADR-035 | P1 capstone |
 | 21 | Search & Graph Production *(renumbered)* | ADR-022 | P2 |
 | 22 | Content & Vector Scale *(renumbered)* | ADR-021 | P1 |
+| **25** | **Global AI Intelligence Platform** *(capstone above 16–20)* | ADR-036/037/038/043 | P2 vision |
+
+**Capstone Phase 25** composes the enterprise platform (federation, cloud, observability, infrastructure) into a globally distributed telemetry + analytics + sync platform — see [10-POST-ROADMAP.md § Phase 25](10-POST-ROADMAP.md) and [.ai/phases/25-global-ai-intelligence/DESIGN.md](../25-global-ai-intelligence/DESIGN.md).
 
 ---
 
@@ -77,6 +80,7 @@ flowchart LR
 | [ADR-033](../adr/033-cloud-platform.md) | 18 |
 | [ADR-034](../adr/034-observability-platform.md) | 19 |
 | [ADR-035](../adr/035-ai-infrastructure-platform.md) | 20 |
+| [ADR-036/037/038/043](../../../docs/adr/036-global-ai-intelligence-platform.md) | 25 (capstone) |
 
 Implementation blocked until respective ADR **Approved**.
 

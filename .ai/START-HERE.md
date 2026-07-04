@@ -72,6 +72,8 @@ Read in order:
 | Prompt templates | `workflow/prompts/` |
 | Checklists | `workflow/checklists/` |
 | Current phase docs | [11-production-ops/](phases/11-production-ops/) · [10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md) |
+| Design-draft phases | [phases/README.md](phases/README.md) — reserved & extension/platform drafts (incl. Phase 25) |
+| Platform vision | [core/vision/](core/vision/) — charter, OS map, intelligence pipeline |
 | Active task | Rotate to Phase 10 when scheduled — [TASK_PROMPT.md](TASK_PROMPT.md) |
 
 ---
@@ -94,6 +96,9 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 9.5 Platform Architecture | ✅ Complete (ADR-008 2026-07-03) |
 | 10 Enterprise | ✅ Complete (2026-07-03) |
 | 11 Production Ops | 🔄 In Progress — [11-production-ops/](phases/11-production-ops/) · [10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md) |
+| 10.5 · 12–25 (+ extension tracks) | 🔲 Design draft — awaiting owner approval · [phases/README.md](phases/README.md) |
+
+**Platform vision & capstone:** [core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md](core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) · [Phase 25 Global AI Intelligence Platform](phases/25-global-ai-intelligence/DESIGN.md) (ADR-036/037/038/043 Proposed).
 
 ---
 

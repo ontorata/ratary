@@ -38,6 +38,8 @@ Record **live** project metrics, deployment facts, and documented technical debt
 | Last completed gate | Phase 11 ✅ — [.ai/phases/11-production-ops/](../phases/11-production-ops/README.md) (2026-07-04) |
 | Phase 10.5 status | In progress — 10.5A ✅ |
 | Blocker | None |
+| Design drafts (not implemented) | Phases 12–25 + extension tracks — [phases/README.md](../../phases/README.md); capstone [Phase 25](../../phases/25-global-ai-intelligence/DESIGN.md) (ADR-036/037/038/043 Proposed) |
+| Platform vision | [core/vision/](../vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) — architecture planning only |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
 

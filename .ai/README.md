@@ -20,9 +20,9 @@ On conflict, **`.ai/` wins**.
 
 | Folder | Role |
 |--------|------|
-| [core/](core/) | Constitution, standards, architecture law, AI rules |
+| [core/](core/) | Constitution, standards, architecture law, AI rules, **vision** (platform charter) |
 | [workflow/](workflow/) | Process, prompts, checklists, playbooks |
-| [phases/](phases/) | Phase evidence, roadmap, audits |
+| [phases/](phases/) | Phase evidence, roadmap, audits (incl. design drafts through Phase 25) |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Active scoped work |
 
 ---

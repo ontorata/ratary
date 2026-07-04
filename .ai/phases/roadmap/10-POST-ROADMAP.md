@@ -297,6 +297,41 @@ All enterprise phases: **additive**, **MemoryService unchanged**, agent runtime 
 
 ---
 
+# Phase 25 — Global AI Intelligence Platform (capstone)
+
+**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**
+**Folder:** [.ai/phases/25-global-ai-intelligence/](../25-global-ai-intelligence/README.md)
+
+## Scope
+
+Distributed-intelligence **composition capstone** above Phases 14/18/19/20/23/24: AI telemetry event model, usage analytics engine, cloud-connected ecosystem, and 5-tier federation sync (Workspace → Org → Cloud → Edge → Developer). Composes existing ports; **`MemoryService` unchanged**; no user-content collection by default.
+
+| Track | Deliverable |
+|-------|-------------|
+| 25A | Telemetry event model (10 events) + OTLP mapping (ADR-037) |
+| 25B | `IUsageAnalyticsService` + KPI catalog (ADR-038) |
+| 25C | Cloud-connected ecosystem: offline journal, device sessions (ADR-043) |
+| 25D | `IGlobalSyncOrchestrator` 5-tier sync over Phase 14 exchange (ADR-043) |
+
+## ADR gates
+
+| ADR | Title |
+|-----|-------|
+| ADR-036 | Global AI Intelligence Platform (umbrella) — **Proposed** |
+| ADR-037 | AI Telemetry Event Model — **Proposed** |
+| ADR-038 | Usage Analytics Engine — **Proposed** |
+| ADR-043 | Cloud Federation Sync Topology — **Proposed** |
+
+## Success criteria
+
+- [ ] ADR-036/037/038/043 **Approved**
+- [ ] Zero `MemoryService` logic change; analytics never writes SSOT
+- [ ] No `switch(cloud)`/`switch(tier)` in services
+- [ ] No content collection by default; privacy redaction enforced
+- [ ] `GLOBAL_INTELLIGENCE_PLATFORM=false` default; full regression green
+
+---
+
 # Phase 21 — Search & Graph Production
 
 **Status:** 🔲 Planned *(renumbered from former Phase 16)*  

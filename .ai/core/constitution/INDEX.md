@@ -275,6 +275,7 @@ flowchart TD
 | [.ai/core/glossary/GLOSSARY.md](../../glossary/GLOSSARY.md) | Canonical vocabulary |
 | [.ai/core/ai-rules/11-AI-RULES.md](../ai-rules/11-AI-RULES.md) | Response structure |
 | [.ai/core/supplementary/WRITING.md](../../supplementary/WRITING.md) | Documentation form |
+| [.ai/core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md](../vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) | Platform vision charter (architecture planning; not normative override) |
 
 ---
 

@@ -26,7 +26,7 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 ## Not Covered
 
 - Active implementation tasks → [../../../TASK_PROMPT.md](../../../TASK_PROMPT.md)
-- Post–Phase 10 phases 11–14 → [10-POST-ROADMAP.md](10-POST-ROADMAP.md)
+- Post–Phase 10 phases 11–22 → [10-POST-ROADMAP.md](10-POST-ROADMAP.md); enterprise 16–20 → [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md); capstone Phase 25 → [12-MASTER-ROADMAP-ARCHITECTURE.md](12-MASTER-ROADMAP-ARCHITECTURE.md)
 - Structural ADR content → [adr/](../../../docs/adr/)
 - Immutable engineering law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) – [08-REVIEW.md](../../core/standards/08-REVIEW.md)
 - Historical phase design detail → [archive/](../../docs/archive/)
@@ -41,7 +41,8 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 | **In progress** | — |
 | **Completed (sub)** | 9.5 — Platform Architecture · 11 — Production Operations |
 | **Next** | Phase 10.5 Transport or Phase 12 Event Pipeline ([10-POST-ROADMAP.md](10-POST-ROADMAP.md)) |
-| **Future** | Phases 10.5, 12–22 (see [10-POST-ROADMAP.md](10-POST-ROADMAP.md), [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md)) |
+| **Future** | Phases 10.5, 12–22 ([10-POST-ROADMAP.md](10-POST-ROADMAP.md), [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md)); capstone **Phase 25** Global AI Intelligence Platform ([12-MASTER-ROADMAP-ARCHITECTURE.md](12-MASTER-ROADMAP-ARCHITECTURE.md) Tier 6) |
+| **Vision** | Collaborative Memory Intelligence Platform — [core/vision/](../../core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) (architecture planning) |
 
 **Capability stack:**
 

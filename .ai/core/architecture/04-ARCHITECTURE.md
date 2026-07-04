@@ -439,6 +439,34 @@ External agent runtimes (outside repo) → protocol → MemoryService.
 
 ---
 
+## Global AI Intelligence layer (Phase 25 — planned)
+
+**Status:** Design draft — ADR-036/037/038/043 Proposed · [25-global-ai-intelligence DESIGN](../../phases/25-global-ai-intelligence/DESIGN.md)
+**Prerequisite:** Phase 12 ✅ · 13 ✅ · 14 · 18 · 19 · 20
+
+**Owns:** distributed-intelligence **composition capstone** — AI telemetry event model, usage analytics engine, cloud-connected ecosystem, and 5-tier federation sync (Workspace → Org → Cloud → Edge → Developer). Composes Phase 14/18/19 ports; **`MemoryService` unchanged** (called as library by the sync orchestrator).
+
+**Target structure:**
+
+```
+intelligence/
+  telemetry/   ITelemetryRecorder, ITelemetrySink, ITelemetryRedactor — OTLP/Prometheus/Jaeger
+  analytics/   IUsageAnalyticsService, IAnalyticsQueryPort — read-only, no SSOT write
+  sync/        IGlobalSyncOrchestrator, IOfflineJournal, ISyncConflictPolicy — over Phase 14 exchange
+```
+
+**Layer law:**
+
+| Layer | Must | Must NOT |
+|-------|------|----------|
+| Telemetry adapter | Export via OTel/vendor SDK (adapter only) | Mutate business state; read memory bodies by default |
+| Analytics service | Read-only derivations over analytics store | Write `memories`; call `MemoryService.create` |
+| Sync orchestrator | Route tiers; delegate to Phase 14 exchange | Access repositories; `switch(cloud)`/`switch(tier)` |
+
+**Default:** `GLOBAL_INTELLIGENCE_PLATFORM=false`. No content collection by default (privacy via `ITelemetryRedactor`).
+
+---
+
 ## Auth layer
 
 **Owns:** identity resolution chain, API key and JWT validation, OAuth provider, permission enforcement, audit events, client registry.
