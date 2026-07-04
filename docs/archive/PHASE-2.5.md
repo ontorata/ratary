@@ -104,8 +104,8 @@ Fase ini **bukan menambah fitur bisnis**, melainkan menguatkan fondasi sebelum P
 - [x] Permission granular (`memory.read`, `memory.write` enforcement)
 - [x] JWT / OAuth providers
 - [x] Hapus legacy routes (`/memory`, dll.)
-- [ ] Test coverage threshold di CI
-- [ ] Rate limit di Vercel edge (perlu KV / Upstash jika multi-instance)
+- [x] Test coverage threshold di CI
+- [x] Rate limit di Vercel edge (perlu KV / Upstash jika multi-instance)
 
 ---
 
@@ -119,7 +119,9 @@ Diterapkan per IP pada route auth (`src/plugins/rate-limit.ts`):
 | `POST /api/v1/auth/identities` | 20 / menit |
 | `POST /api/v1/auth/identities/:id/rotate` | 10 / menit |
 
-> Rate limit in-memory — efektif untuk single instance. Di Vercel serverless, setiap cold start punya counter terpisah (mitigasi parsial).
+> Rate limit per IP pada route auth (`src/plugins/rate-limit.ts`).
+> **Local / single instance:** in-memory counter (default).
+> **Vercel multi-instance:** set `RATE_LIMIT_REDIS_URL` atau `REDIS_URL` ke Upstash Redis — counter dibagi antar instance via ioredis (`src/plugins/rate-limit-redis.ts`, `skipOnError: true`).
 
 ---
 
@@ -150,7 +152,8 @@ Jika D1 tidak bisa dijangkau → HTTP **503**, `"status": "degraded"`.
 npm run lint          # ✅
 npm run format:check  # ✅
 npm run typecheck     # ✅
-npm run test          # ✅ 40 tests
+npm run test          # ✅ 423 tests
+npm run test:coverage # ✅ enforces src/ thresholds (80/75/85/80)
 ```
 
 Sama dengan yang dijalankan GitHub Actions (`.github/workflows/ci.yml`).

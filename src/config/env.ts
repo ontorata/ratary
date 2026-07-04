@@ -79,6 +79,7 @@ const envSchema = z
       .default('false'),
     CACHE_PROVIDER: z.enum(['none', 'memory', 'redis']).default('none'),
     REDIS_URL: z.string().url().optional(),
+    RATE_LIMIT_REDIS_URL: z.string().url().optional(),
     REDIS_KEY_PREFIX: z.string().default('ai-brain:cache:'),
     EVENT_BUS_PROVIDER: z.enum(['none', 'noop', 'redis']).default('none'),
     REDIS_STREAM_PREFIX: z.string().default('ai-brain:events:'),
