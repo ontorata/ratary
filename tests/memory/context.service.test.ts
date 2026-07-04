@@ -98,6 +98,16 @@ describe('ContextService', () => {
     expect(rich.context).toContain(bodyMarker);
   });
 
+  it('should include retrievalPlan in buildContext result', async () => {
+    await seed('Plan note', 'Plan content');
+
+    const result = await service.buildContext({ ownerId }, { query: 'Plan', limit: 3 });
+
+    expect(result.retrievalPlan?.policyVersion).toBe('1');
+    expect(result.retrievalPlan?.stagesApplied).toContain('summary');
+    expect(result.retrievalPlan?.hydrateBody).toBe(false);
+  });
+
   it('should emit memory access audit entries when auditor is wired', async () => {
     await seed('Audit target', 'Content for audit trail');
 

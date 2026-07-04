@@ -41,6 +41,7 @@ export class ContextController {
         level: memory.level,
       })),
       totalCandidates: result.totalCandidates,
+      retrievalPlan: result.retrievalPlan,
     });
   }
 }

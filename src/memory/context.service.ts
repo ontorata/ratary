@@ -7,9 +7,15 @@ import type { IRetrievalCandidateSource } from './retrieval-candidate-source.int
 import { Ranker, type ScoredMemory } from './ranker.js';
 import { ContextBuilder, type ContextBuildOptions } from './context-builder.js';
 import { PromptBuilder } from './prompt-builder.js';
-import { DEFAULT_RETRIEVAL_RANK_LIMIT } from './context.config.js';
+import { DEFAULT_RETRIEVAL_RANK_LIMIT, MAX_CONTEXT_MAX_CHARS } from './context.config.js';
 import type { IMemoryAccessAuditor } from '../ports/audit/imemory-access-auditor.port.js';
 import type { MemoryLevel } from '../types/memory-level.js';
+import type {
+  IRetrievalPolicy,
+  RetrievalPlan,
+} from './retrieval-policy/iretrieval-policy.interface.js';
+import { DefaultRetrievalPolicy } from './retrieval-policy/default-retrieval-policy.js';
+import type { RetrievalDeploymentCapabilities } from './retrieval-policy/retrieval-budget.js';
 
 export interface BuildContextRequest {
   projectId?: string;
@@ -24,6 +30,7 @@ export interface BuildContextResult {
   context: string;
   memories: ScoredMemory[];
   totalCandidates: number;
+  retrievalPlan?: RetrievalPlan;
 }
 
 export interface BuildPromptResult extends BuildContextResult {
@@ -31,21 +38,35 @@ export interface BuildPromptResult extends BuildContextResult {
   user: string;
 }
 
+export interface ContextServiceDeps {
+  retrievalPolicy?: IRetrievalPolicy;
+  deployment?: RetrievalDeploymentCapabilities;
+}
+
 export class ContextService {
   private readonly retriever: Retriever;
   private readonly ranker: Ranker;
   private readonly contextBuilder: ContextBuilder;
   private readonly promptBuilder: PromptBuilder;
+  private readonly retrievalPolicy: IRetrievalPolicy;
+  private readonly deployment: RetrievalDeploymentCapabilities;
 
   constructor(
     private readonly repository: IMemoryRepository,
     candidateSource?: IRetrievalCandidateSource,
     private readonly memoryAccessAuditor?: IMemoryAccessAuditor,
+    deps: ContextServiceDeps = {},
   ) {
     this.retriever = new Retriever(candidateSource ?? new SqlRetrievalCandidateSource(repository));
     this.ranker = new Ranker();
     this.contextBuilder = new ContextBuilder();
     this.promptBuilder = new PromptBuilder();
+    this.retrievalPolicy = deps.retrievalPolicy ?? new DefaultRetrievalPolicy();
+    this.deployment = deps.deployment ?? {
+      hybridRetrieval: false,
+      graphRetrieval: false,
+      maxContextMaxChars: MAX_CONTEXT_MAX_CHARS,
+    };
   }
 
   async buildContext(
@@ -67,11 +88,17 @@ export class ContextService {
       request.limit ?? DEFAULT_RETRIEVAL_RANK_LIMIT,
     );
 
+    const plan = this.retrievalPolicy.resolve(request, ranked.length, this.deployment);
+
     const contextOptions: ContextBuildOptions = {
       ...request.context,
-      includeSummaryOnly: request.context?.includeSummaryOnly ?? true,
+      maxChars: plan.budget.maxChars,
+      includeSummaryOnly: !plan.hydrateBody,
     };
-    const memoriesForContext = await this.hydrateRankedMemories(scope, ranked, contextOptions);
+
+    const memoriesForContext = plan.hydrateBody
+      ? await this.hydrateRankedMemories(scope, ranked, contextOptions)
+      : ranked;
     const context = this.contextBuilder.build(memoriesForContext, contextOptions);
 
     const workspaceId = workspaceIdFromScope(scope);
@@ -95,6 +122,7 @@ export class ContextService {
       context,
       memories: ranked,
       totalCandidates: candidates.length,
+      retrievalPlan: plan,
     };
   }
 
@@ -120,9 +148,9 @@ export class ContextService {
   private async hydrateRankedMemories(
     scope: MemoryScope,
     ranked: ScoredMemory[],
-    options: ContextBuildOptions,
+    _options: ContextBuildOptions,
   ): Promise<ScoredMemory[]> {
-    if (options.includeSummaryOnly !== false || ranked.length === 0) {
+    if (ranked.length === 0) {
       return ranked;
     }
 
