@@ -1,4 +1,5 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
+import { generateSummary } from '../../src/knowledge/summary.generator.js';
 import { join, basename, dirname, relative, resolve } from 'node:path';
 import { parseTranscriptFile, isMainTranscript } from './transcript-parser.js';
 
@@ -95,11 +96,11 @@ function extractSummary(content: string): string {
       !trimmed.startsWith('-') &&
       trimmed.length > 20
     ) {
-      return trimmed.slice(0, 500);
+      return generateSummary(trimmed);
     }
   }
 
-  return lines.slice(0, 3).join(' ').slice(0, 500);
+  return generateSummary(lines.slice(0, 3).join(' '));
 }
 
 function extractTitleFromContent(content: string, fallback: string): string {

@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { basename, dirname } from 'node:path';
+import { generateSummary } from '../../src/knowledge/summary.generator.js';
 
 const MAX_CONTENT_CHARS = 60_000;
 const MAX_ASSISTANT_CHARS_PER_TURN = 4_000;
@@ -135,7 +136,7 @@ function summaryFromTurns(turns: DialogueTurn[]): string {
   const lastAssistant = [...turns].reverse().find((t) => t.assistant)?.assistant ?? '';
 
   const candidate = firstUser || lastAssistant.split('\n')[0] || '';
-  return candidate.replace(/\s+/g, ' ').slice(0, 500);
+  return generateSummary(candidate);
 }
 
 function detectProject(text: string): string {

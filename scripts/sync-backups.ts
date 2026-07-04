@@ -6,6 +6,7 @@ import { createMemoryService } from '../src/services/create-memory-service.js';
 import type { MemoryService } from '../src/services/memory.service.js';
 import { getMcpMemoryScope } from '../src/types/memory-scope.js';
 import { getD1Client } from '../src/db/index.js';
+import { D1SqlDatabaseAdapter } from '../src/infrastructure/sql/d1-sql-database.adapter.js';
 import {
   collectSyncCandidates,
   ensureBackupRoot,
@@ -22,6 +23,7 @@ import {
   setSyncedState,
   type SyncStateFile,
 } from './lib/sync-state.js';
+import { formatScriptError } from './lib/cli-error.js';
 
 const BACKUP_ROOT = resolve(process.env.BACKUP_ROOT ?? 'D:/Apps/_backups');
 const DEBOUNCE_MS = Number(process.env.BACKUP_SYNC_DEBOUNCE_MS ?? 3000);
@@ -158,7 +160,7 @@ async function runSync(files?: string[]): Promise<void> {
     const state = await loadSyncState();
     state.backupRoot = BACKUP_ROOT;
 
-    const service = DRY_RUN ? null : createMemoryService(getD1Client());
+    const service = DRY_RUN ? null : createMemoryService(new D1SqlDatabaseAdapter(getD1Client()));
     let synced = 0;
     let skipped = 0;
     let unchanged = 0;
@@ -261,7 +263,7 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error) => {
-  console.error('Sync gagal:', error);
+main().catch((error: unknown) => {
+  console.error('Sync gagal:', formatScriptError(error));
   process.exit(1);
 });
