@@ -2,7 +2,7 @@
 
 **Handoff (Cline / VS Code):** [HANDOFF.md](phases/11-production-ops/HANDOFF.md) — session state + starter prompt (2026-07-03)
 
-**Status:** 🔄 In Progress — SC-11-01 ✅ (2026-07-04); SC-11-05 pending owner sign-off  
+**Status:** ✅ Gate PASS (2026-07-04) — rotate to Phase 10.5 or 12 per [10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md)  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)  
 **Roadmap:** [phases/roadmap/10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md)
 
@@ -35,14 +35,14 @@
 - [x] C11-7: MIGRATION.md cutover runbook
 - [x] C11-8: PANDUAN §8 + README ops matrix
 - [x] Staging harness: `test:postgres-staging` green (local 2026-07-04)
-- [ ] Gate REVIEW PASS *(blocked on SC-11-05 owner sign-off)*
+- [x] Gate REVIEW PASS ✅ *(owner sign-off 2026-07-04)*
 
 ---
 
 ## Definition of Done
 
 - [x] Staging evidence for Postgres metadata adapter *(local harness 3/3 PASS 2026-07-04)*
-- [ ] Owner sign-off on cutover strategy
+- [x] Owner sign-off on cutover strategy ✅ *(Lutfi Ramadhan, 2026-07-04)*
 - [x] 457 tests green at default env (D1) *(2026-07-04)*
 - [ ] No service-layer rewrite
 

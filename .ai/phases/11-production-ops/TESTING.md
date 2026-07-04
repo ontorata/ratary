@@ -32,7 +32,7 @@ Phase 11 is an **operational proof** phase — no application behavior changes. 
 | SC-11-02 | Cutover + rollback documented with data boundaries | `MIGRATION.md` authored + reviewed | ✅ |
 | SC-11-03 | Default D1 deploy unchanged; 457 tests at default env | `npm run typecheck && npm test` → 457 pass (2026-07-04) | ✅ |
 | SC-11-04 | No `MemoryService` / `Retriever` rewrite | Grep: zero `pg` imports outside `src/infrastructure/` | ✅ |
-| SC-11-05 | Owner sign-off on cutover strategy | `REVIEW.md` sign-off section | 🔲 Pending owner |
+| SC-11-05 | Owner sign-off on cutover strategy | `REVIEW.md` sign-off section | ✅ Lutfi Ramadhan 2026-07-04 |
 | SC-11-06 | ADR-018 **Approved** before merge | [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/docs/adr/018-production-postgres-cutover.md) | ✅ Approved 2026-07-03 |
 
 ---
@@ -242,7 +242,7 @@ All suites must pass on the Postgres staging harness before cutover.
 | Postgres unit tests | All mock-based tests pass | ✅ |
 | Postgres staging integration | `POSTGRES_STAGING=1` suite green | ✅ 2026-07-04 (local) |
 | CI staging job | `postgres-staging` workflow on `main` | ✅ Defined; confirm green in GitHub Actions |
-| Owner sign-off | `REVIEW.md` sign-off section signed | 🔲 Pending owner |
+| Owner sign-off | `REVIEW.md` sign-off section signed | ✅ 2026-07-04 |
 
 ---
 

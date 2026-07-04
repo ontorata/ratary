@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 10 gate PASS (2026-07-03)
+**Last updated:** Phase 11 gate PASS (2026-07-04)
 
 ---
 
@@ -34,8 +34,9 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | Phase 11 Readiness — [10-POST-ROADMAP.md](../../phases/roadmap/10-POST-ROADMAP.md) · [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| Last completed | Phase 10 gate PASS — [.ai/phases/10-enterprise/](../phases/10-enterprise/README.md) |
+| Active task | Phase 10.5 or 12 — [10-POST-ROADMAP.md](../../phases/roadmap/10-POST-ROADMAP.md) · rotate [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| Last completed gate | Phase 11 ✅ — [.ai/phases/11-production-ops/](../phases/11-production-ops/README.md) (2026-07-04) |
+| Phase 11 status | Gate PASS — owner sign-off Lutfi Ramadhan |
 | Blocker | None |
 
 Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.

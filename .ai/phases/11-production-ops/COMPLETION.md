@@ -1,7 +1,7 @@
 # Phase 11 — Production Operations — COMPLETION
 
 **Document:** COMPLETION
-**Phase status:** ✅ Complete — SC-11-01 PASS (2026-07-04); SC-11-05 pending owner sign-off
+**Phase status:** ✅ Gate PASS (2026-07-04)
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 **Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → Approved ADRs → this document.
@@ -16,10 +16,10 @@
 | SC-11-02 | Cutover + rollback documented with data boundaries | ✅ | [MIGRATION.md](MIGRATION.md) — S0–S4 states, FK-safe order, rollback limits |
 | SC-11-03 | Default D1 deploy unchanged; 457 tests at default env | ✅ | `npm run typecheck && npm test` → 457 pass (2026-07-04) |
 | SC-11-04 | No `MemoryService` / `Retriever` rewrite | ✅ | Zero `pg` imports outside `src/infrastructure/` |
-| SC-11-05 | Owner sign-off on cutover strategy | 🔲 Pending | Owner sign-off required in [REVIEW.md](REVIEW.md) |
+| SC-11-05 | Owner sign-off on cutover strategy | ✅ | [REVIEW.md](REVIEW.md) — Lutfi Ramadhan, 2026-07-04 |
 | SC-11-06 | ADR-018 **Approved** before merge | ✅ | ADR-018 Approved 2026-07-03 |
 
-**Result: 5/6 PASS. SC-11-05 pending owner sign-off.**
+**Result: 6/6 PASS. Phase 11 gate closed 2026-07-04.**
 
 ---
 
@@ -169,19 +169,16 @@ All new scripts (`apply-postgres-schema.ts`, `backfill-d1-to-postgres.ts`, `veri
 
 | # | Action | Blocking | Where |
 |---|--------|----------|-------|
-| 1 | Record cutover sign-off in [REVIEW.md](REVIEW.md) | SC-11-05 | Owner sign-off section |
-| 2 | Confirm CI `postgres-staging` job green on GitHub Actions | Recommended | Actions tab |
-| 3 | Provision production Postgres + run cutover (S2→S3) | Production | [MIGRATION.md](MIGRATION.md) |
-| 4 | Retain D1 read-only ≥ 30 days post-cutover | Production | [MIGRATION.md](MIGRATION.md) |
+| 1 | Confirm CI `postgres-staging` job green on GitHub Actions | Recommended | Actions tab |
+| 2 | Provision production Postgres + run cutover (S2→S3) | Production | [MIGRATION.md](MIGRATION.md) |
+| 3 | Retain D1 read-only ≥ 30 days post-cutover | Production | Until 2026-08-03 minimum |
 
 ---
 
 ## Phase Status
 
-**SC-11-01 PASS (local 2026-07-04). Gate close blocked on SC-11-05 owner sign-off only.**
-
-Production cutover is owner-authorized per ADR-018 after sign-off.
+**Phase 11 gate PASS. Production cutover scheduled per owner — see [MIGRATION.md](MIGRATION.md).**
 
 ---
 
-*Completion evidence updated 2026-07-04. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Gate closed 2026-07-04. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*

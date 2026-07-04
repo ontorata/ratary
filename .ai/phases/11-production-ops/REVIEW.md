@@ -1,7 +1,7 @@
 # Phase 11 — Production Operations — REVIEW
 
 **Document:** REVIEW
-**Phase status:** In Progress — SC-11-01 PASS (local 2026-07-04); SC-11-05 pending owner sign-off
+**Phase status:** ✅ Gate PASS — owner sign-off 2026-07-04
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 **Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → Approved ADRs → this document.
@@ -138,9 +138,9 @@ Canonical DDL source: `src/db/migrations.ts` → `runSchemaMigrations(client, 'p
 | Criterion | Status | Evidence |
 |-----------|--------|----------|
 | Design authorized | ✅ | Owner approved DESIGN.md (2026-07-03) |
-| Cutover strategy signed | 🔲 Pending | Owner sign-off below |
+| Cutover strategy signed | ✅ | Owner sign-off 2026-07-04 — §Owner Sign-Off |
 
-**Verdict:** 🔲 **Pending owner — sign decision record below.**
+**Verdict:** ✅ **PASS**.
 
 ### SC-11-06 — ADR-018 Approved before merge
 
@@ -156,15 +156,15 @@ Canonical DDL source: `src/db/migrations.ts` → `runSchemaMigrations(client, 'p
 
 | Item | Owner action | Blocking |
 |------|-------------|-----------|
-| Record cutover sign-off | Owner | SC-11-05 |
-| Confirm CI `postgres-staging` job green on GitHub Actions | Owner (optional) | Recommended — local harness already PASS |
+| Confirm CI `postgres-staging` job green on GitHub Actions | Owner (optional) | Recommended — local harness PASS 2026-07-04 |
+| Production cutover S2→S3 | Owner | Per [MIGRATION.md](MIGRATION.md) when ready |
 
 ### Deferred by design
 
 | Item | Reason | Gate |
 |------|--------|------|
 | 11C `MemoryRepository` reader/writer split | Optional; requires ADR-019 | Deferred until owner requests |
-| Production cutover (S2→S3) | Owner-only action; not automated | After SC-11-05 |
+| Production cutover (S2→S3) | Owner-only action; not automated | When production Postgres ready |
 
 ---
 
@@ -172,12 +172,12 @@ Canonical DDL source: `src/db/migrations.ts` → `runSchemaMigrations(client, 'p
 
 | Field | Value |
 |-------|-------|
-| **Reviewer** | AI assistant (design + staging verification 2026-07-04); owner for SC-11-05 |
-| **Date** | 2026-07-04 (staging verification); 2026-07-03 (design review) |
+| **Reviewer** | AI assistant (design + staging verification); owner sign-off Lutfi Ramadhan |
+| **Date** | 2026-07-04 |
 | **Design authority** | Owner approved 2026-07-03 |
 | **ADR gates** | ADR-018 ✅ Approved · ADR-009 ✅ Implemented |
-| **Verdict** | **CONDITIONAL PASS** — SC-11-01 ✅; SC-11-05 pending owner sign-off |
-| **Ready for** | Owner sign-off in §Owner Sign-Off below; then Phase 11 gate close |
+| **Verdict** | **PASS** — all SC-11-01..06 satisfied; gate closed 2026-07-04 |
+| **Ready for** | Phase 10.5 / Phase 12 per [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) |
 
 ---
 
@@ -188,15 +188,15 @@ I confirm that the Phase 11 design and implementation are complete per [DESIGN.m
 I authorize the staging harness run and production cutover procedure as documented in [MIGRATION.md](MIGRATION.md).
 
 ```
-Owner: _______________________
-Date:  _______________________
+Owner: Lutfi Ramadhan
+Date: 2026-07-04
 Postgres provider: Local PostgreSQL (localhost:5432)
 Staging target (DATABASE_URL): postgresql://postgres:***@localhost:5432/postgres
 Staging harness: ✅ PASS 2026-07-04 (3/3 integration tests)
-Cutover authorized: _______________________
-D1 retained until: _______________________ (≥ 30 days)
+Cutover authorized: Yes — per MIGRATION.md S0→S4 when production Postgres ready
+D1 retained until: 2026-08-03 (≥ 30 days post-cutover)
 ```
 
 ---
 
-*Review completed as part of Phase 11 gate. Owner sign-off required to close SC-11-05 and unblock production cutover.*
+*Gate closed 2026-07-04. Production cutover (S2→S3) remains owner-scheduled per [MIGRATION.md](MIGRATION.md).*

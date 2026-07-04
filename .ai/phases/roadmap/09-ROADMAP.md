@@ -3,7 +3,7 @@
 **Status:** Permanent project standard (living roadmap).  
 **Audience:** AI assistants and human maintainers.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Operational detail: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md).  
-**Last updated:** Phase 10 gate PASS (2026-07-03)
+**Last updated:** Phase 11 gate PASS (2026-07-04)
 
 ---
 
@@ -37,20 +37,20 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 | Status | Phases |
 |--------|--------|
-| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9, 9.5, 10 |
+| **Completed** | 1, 2 (2.5 + 2.6), 3, 4, 5, 6, 7, 8, 9, 9.5, 10, **11** |
 | **In progress** | — |
-| **Completed (sub)** | 9.5 — Platform Architecture |
-| **Next** | Phase 11 — Production Operations ([10-POST-ROADMAP.md](10-POST-ROADMAP.md)) |
-| **Future** | Phases 12–14 (event pipeline, content scale, search/graph prod) |
+| **Completed (sub)** | 9.5 — Platform Architecture · 11 — Production Operations |
+| **Next** | Phase 10.5 Transport or Phase 12 Event Pipeline ([10-POST-ROADMAP.md](10-POST-ROADMAP.md)) |
+| **Future** | Phases 10.5, 12–22 (see [10-POST-ROADMAP.md](10-POST-ROADMAP.md), [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md)) |
 
 **Capability stack:**
 
 ```
 Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Multi-AI → Enterprise → Production Ops
-  ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅              🔲
+  ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅              ✅
 ```
 
-**Metrics (current):** 420 tests · 19 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
+**Metrics (current):** 457 tests · 20 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
 
 **Post–Phase 10 plan:** [10-POST-ROADMAP.md](10-POST-ROADMAP.md)
 
