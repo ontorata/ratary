@@ -49,6 +49,14 @@ See [13-COLLABORATIVE-KNOWLEDGE-OS.md](13-COLLABORATIVE-KNOWLEDGE-OS.md).
 
 See [15-LEARNING-TRACK-L21-L30.md](15-LEARNING-TRACK-L21-L30.md) · umbrella [08.6-learning-intelligence](../08.6-learning-intelligence/DESIGN.md).
 
+## Tier 6 — Distributed intelligence capstone (25)
+
+| Phase | Name | ADRs (draft) |
+|-------|------|--------------|
+| 25 | Global AI Intelligence Platform | ADR-036 / 037 / 038 / 043 |
+
+Composes Phases 14/18/19/20/23/24 into a globally distributed, privacy-preserving platform: AI telemetry, usage analytics, cloud-connected ecosystem, and 5-tier federation sync (Workspace → Org → Cloud → Edge → Developer). See [.ai/phases/25-global-ai-intelligence/DESIGN.md](../25-global-ai-intelligence/DESIGN.md).
+
 ## Scale tracks (renumbered)
 
 | Canonical | Name |

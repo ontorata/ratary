@@ -36,6 +36,10 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [033-cloud-platform.md](../../.ai/adr/033-cloud-platform.md) | Cloud Platform (Phase 18) | **Proposed** | Control plane, metering |
 | [034-observability-platform.md](../../.ai/adr/034-observability-platform.md) | Observability Platform (Phase 19) | **Proposed** | OTel, Grafana |
 | [035-ai-infrastructure-platform.md](../../.ai/adr/035-ai-infrastructure-platform.md) | AI Infrastructure Platform (Phase 20) | **Proposed** | Plugin marketplace |
+| [036-global-ai-intelligence-platform.md](036-global-ai-intelligence-platform.md) | Global AI Intelligence Platform — capstone (Phase 25) | **Proposed** | Distributed telemetry/analytics/sync |
+| [037-ai-telemetry-event-model.md](037-ai-telemetry-event-model.md) | AI Telemetry Event Model (Phase 25) | **Proposed** | Semantic OTLP telemetry |
+| [038-usage-analytics-engine.md](038-usage-analytics-engine.md) | Usage Analytics Engine (Phase 25) | **Proposed** | Quality/adoption/cost KPIs |
+| [043-cloud-federation-sync-topology.md](043-cloud-federation-sync-topology.md) | Cloud Federation Sync Topology (Phase 25) | **Proposed** | 5-tier global sync |
 
 **Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-020 (event consumers), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
 
