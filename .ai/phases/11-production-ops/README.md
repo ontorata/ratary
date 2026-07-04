@@ -1,6 +1,6 @@
 # Phase 11 — Production Operations
 
-**Status:** 🔄 Open — Readiness PASS (conditional, 2026-07-03)  
+**Status:** 🔄 Open — SC-11-01 ✅ (2026-07-04); SC-11-05 pending owner sign-off  
 **Roadmap:** [10-POST-ROADMAP.md — Phase 11](../../roadmap/10-POST-ROADMAP.md)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
@@ -15,9 +15,10 @@
 | ADR-009 Implemented | ✅ |
 | Extension points (`ISqlDatabase`, Postgres adapter) | ✅ |
 | DESIGN + RISKS drafted | ✅ |
-| Owner explicit authorization | ⏳ Pending |
+| Owner explicit authorization | ⏳ Pending cutover sign-off (SC-11-05) |
+| Staging harness (SC-11-01) | ✅ Local PASS 2026-07-04 |
 
-**Verdict: READY WITH CONDITIONS** — script + harness implementation may begin; production cutover requires owner sign-off. Detail: [CHECKLIST.md](CHECKLIST.md).
+**Verdict: CONDITIONAL PASS** — gate close blocked on owner sign-off only. Detail: [CHECKLIST.md](CHECKLIST.md) · [TESTING.md](TESTING.md).
 
 ---
 

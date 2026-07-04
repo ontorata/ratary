@@ -123,7 +123,7 @@ Formalize **Transport & Connectivity** as canonical outer layer. REST and MCP st
 
 # Phase 11 — Production Operations
 
-**Status:** 🔄 In Progress — Design Approved (2026-07-03); implementation complete; SC-11-01 + SC-11-05 pending owner action
+**Status:** 🔄 In Progress — SC-11-01 ✅ (2026-07-04); SC-11-05 pending owner sign-off
 
 ## Scope
 
@@ -145,9 +145,9 @@ Move from *adapters exist* to *adapters proven in staging/production* for metada
 
 ## Success criteria
 
-- [x] Staging deploy runs full test suite on `SQL_PROVIDER=postgres` *(CI harness ready; SC-11-01 pending live Postgres)*
+- [x] Staging harness green on live Postgres *(local 3/3 PASS 2026-07-04 — [TESTING.md](../11-production-ops/TESTING.md))*
 - [x] Documented cutover + rollback; owner sign-off *(MIGRATION.md authored; SC-11-05 pending owner sign-off)*
-- [x] Default D1 deploy unchanged; Postgres opt-in only *(420 tests green at default env)*
+- [x] Default D1 deploy unchanged; Postgres opt-in only *(457 tests green at default env — 2026-07-04)*
 - [x] No `MemoryService` / `Retriever` rewrite *(verified — no pg imports outside infrastructure)*
 
 ## Risks

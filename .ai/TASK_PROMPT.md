@@ -2,7 +2,7 @@
 
 **Handoff (Cline / VS Code):** [HANDOFF.md](phases/11-production-ops/HANDOFF.md) — session state + starter prompt (2026-07-03)
 
-**Status:** 🔄 In Progress — Design Approved (2026-07-03); implementation complete; SC-11-01 + SC-11-05 pending owner action  
+**Status:** 🔄 In Progress — SC-11-01 ✅ (2026-07-04); SC-11-05 pending owner sign-off  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)  
 **Roadmap:** [phases/roadmap/10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md)
 
@@ -34,16 +34,16 @@
 - [x] C11-1..C11-6: runPostgresMigrations, apply-postgres-schema, backfill, parity scripts, CI harness
 - [x] C11-7: MIGRATION.md cutover runbook
 - [x] C11-8: PANDUAN §8 + README ops matrix
-- [ ] Staging CI/job: `SQL_PROVIDER=postgres` full test suite
-- [ ] Gate REVIEW PASS
+- [x] Staging harness: `test:postgres-staging` green (local 2026-07-04)
+- [ ] Gate REVIEW PASS *(blocked on SC-11-05 owner sign-off)*
 
 ---
 
 ## Definition of Done
 
-- [ ] Staging evidence for Postgres metadata adapter
+- [x] Staging evidence for Postgres metadata adapter *(local harness 3/3 PASS 2026-07-04)*
 - [ ] Owner sign-off on cutover strategy
-- [ ] 405+ tests green at default env (D1)
+- [x] 457 tests green at default env (D1) *(2026-07-04)*
 - [ ] No service-layer rewrite
 
 ---

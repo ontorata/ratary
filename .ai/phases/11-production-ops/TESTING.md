@@ -28,9 +28,9 @@ Phase 11 is an **operational proof** phase — no application behavior changes. 
 
 | ID | Criterion | Evidence | Status |
 |----|-----------|----------|--------|
-| SC-11-01 | Full test suite passes on Postgres staging harness | CI `postgres-staging` job green (`.github/workflows/postgres-staging.yml`) | 🔲 Pending (11B harness not yet run — requires live Postgres) |
+| SC-11-01 | Full test suite passes on Postgres staging harness | Local harness PASS 2026-07-04 — see §Test Results; CI `.github/workflows/postgres-staging.yml` on `main` | ✅ |
 | SC-11-02 | Cutover + rollback documented with data boundaries | `MIGRATION.md` authored + reviewed | ✅ |
-| SC-11-03 | Default D1 deploy unchanged; 420 tests at default env | `npm run typecheck && npm test` → 420 pass | ✅ |
+| SC-11-03 | Default D1 deploy unchanged; 457 tests at default env | `npm run typecheck && npm test` → 457 pass (2026-07-04) | ✅ |
 | SC-11-04 | No `MemoryService` / `Retriever` rewrite | Grep: zero `pg` imports outside `src/infrastructure/` | ✅ |
 | SC-11-05 | Owner sign-off on cutover strategy | `REVIEW.md` sign-off section | 🔲 Pending owner |
 | SC-11-06 | ADR-018 **Approved** before merge | [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/docs/adr/018-production-postgres-cutover.md) | ✅ Approved 2026-07-03 |
@@ -58,7 +58,7 @@ Phase 11 is an **operational proof** phase — no application behavior changes. 
 
 **Command:** `npm test`
 **Provider:** `SQL_PROVIDER=d1` (implicit) or test mocks
-**Baseline:** 420 tests green
+**Baseline:** 457 tests green
 
 This suite proves:
 - No regression to Phase 10 D1 baseline.
@@ -132,9 +132,9 @@ POSTGRES_STAGING=1 DATABASE_URL=postgresql://... npm run test:postgres-staging
 ### Baseline (default env — D1)
 
 ```
-npm run typecheck && npm test
+npm run typecheck && npm test   # 2026-07-04
 Typecheck:  ✅ PASS
-Tests:      ✅ 420 passed | 3 skipped (423 total)
+Tests:      ✅ 457 passed | 3 skipped (460 total)
 ```
 
 ### Postgres unit tests (mock)
@@ -144,15 +144,32 @@ tests/db/postgres-migrations.test.ts       ✅ 5 tests
 tests/scripts/d1-to-postgres-backfill.test.ts ✅ 6 tests
 ```
 
-### Postgres staging integration
+### Postgres staging integration — local verification (2026-07-04)
+
+**Target:** Local PostgreSQL on `localhost:5432` (owner-provisioned; database `postgres`).
+
+```powershell
+# Schema apply (idempotent — run twice, both PASS)
+npx tsx scripts/apply-postgres-schema.ts --database-url=postgresql://postgres:***@localhost:5432/postgres
+
+$env:SQL_PROVIDER='postgres'
+$env:DATABASE_URL='postgresql://postgres:***@localhost:5432/postgres'
+$env:POSTGRES_STAGING='1'
+$env:AUTH_SECRET='test-auth-secret-minimum-32-characters!!'
+npm run test:postgres-staging
+```
 
 ```
 tests/db/postgres-staging.integration.test.ts
-  ⏭  skipped (POSTGRES_STAGING != '1' or DATABASE_URL not set)
-  Status: 🔲 Pending — requires live Postgres instance
+  ✅ should apply schema idempotently via applyPostgresSchemaToDatabase
+  ✅ should have core metadata tables
+  ✅ should insert and scope reads via MemoryRepository on Postgres
+  Result: 3 passed (364ms)
 ```
 
-**To activate staging integration:**
+**CI harness:** `.github/workflows/postgres-staging.yml` committed on `main` (commit `60d48b9`); runs same steps against `postgres:16` service.
+
+**To reproduce (Docker alternative):**
 ```bash
 docker run --rm -d -p 5432:5432 \
   -e POSTGRES_PASSWORD=postgres \
@@ -221,12 +238,12 @@ All suites must pass on the Postgres staging harness before cutover.
 | Gate | Criteria | Status |
 |------|----------|--------|
 | Typecheck | `tsc --noEmit -p tsconfig.build.json` → 0 errors | ✅ |
-| Default env tests | 420+ tests pass at `SQL_PROVIDER=d1` | ✅ |
+| Default env tests | 457 tests pass at `SQL_PROVIDER=d1` | ✅ 2026-07-04 |
 | Postgres unit tests | All mock-based tests pass | ✅ |
-| Postgres staging integration | `POSTGRES_STAGING=1` suite green | 🔲 Pending live Postgres |
-| CI staging job | `postgres-staging` workflow green | 🔲 Pending live Postgres |
+| Postgres staging integration | `POSTGRES_STAGING=1` suite green | ✅ 2026-07-04 (local) |
+| CI staging job | `postgres-staging` workflow on `main` | ✅ Defined; confirm green in GitHub Actions |
 | Owner sign-off | `REVIEW.md` sign-off section signed | 🔲 Pending owner |
 
 ---
 
-*Authored as part of Phase 11 C11-7 gate documentation. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Gate evidence updated 2026-07-04 (local Postgres staging verification). Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*

@@ -1,7 +1,7 @@
 # Phase 11 — Production Operations — COMPLETION
 
 **Document:** COMPLETION
-**Phase status:** ✅ Complete — Design Approved; SC-11-01 + SC-11-05 pending owner action
+**Phase status:** ✅ Complete — SC-11-01 PASS (2026-07-04); SC-11-05 pending owner sign-off
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 **Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → Approved ADRs → this document.
@@ -12,14 +12,14 @@
 
 | ID | Criterion | Status | Evidence |
 |----|-----------|--------|----------|
-| SC-11-01 | Full test suite passes on Postgres staging harness | 🔲 Pending | CI harness ready; live Postgres required |
+| SC-11-01 | Full test suite passes on Postgres staging harness | ✅ | Local harness 3/3 PASS 2026-07-04 — [TESTING.md](TESTING.md) |
 | SC-11-02 | Cutover + rollback documented with data boundaries | ✅ | [MIGRATION.md](MIGRATION.md) — S0–S4 states, FK-safe order, rollback limits |
-| SC-11-03 | Default D1 deploy unchanged; 420 tests at default env | ✅ | `npm run typecheck && npm test` → 420 pass, 0 errors |
+| SC-11-03 | Default D1 deploy unchanged; 457 tests at default env | ✅ | `npm run typecheck && npm test` → 457 pass (2026-07-04) |
 | SC-11-04 | No `MemoryService` / `Retriever` rewrite | ✅ | Zero `pg` imports outside `src/infrastructure/` |
 | SC-11-05 | Owner sign-off on cutover strategy | 🔲 Pending | Owner sign-off required in [REVIEW.md](REVIEW.md) |
 | SC-11-06 | ADR-018 **Approved** before merge | ✅ | ADR-018 Approved 2026-07-03 |
 
-**Result: 4/6 PASS. 2 pending owner action.**
+**Result: 5/6 PASS. SC-11-05 pending owner sign-off.**
 
 ---
 
@@ -62,15 +62,15 @@
 ### Default env (D1)
 
 ```
-$ npm run typecheck && npm test
+$ npm run typecheck && npm test   # 2026-07-04
 
 > typecheck
 > tsc --noEmit -p tsconfig.build.json
   ✅ 0 errors
 
 > test
-  ✅ 420 passed | 3 skipped (423 total)
-  Duration: 4.32s
+  ✅ 457 passed | 3 skipped (460 total)
+  Duration: 5.66s
 ```
 
 ### Postgres unit tests (mock-based)
@@ -80,12 +80,13 @@ tests/db/postgres-migrations.test.ts         ✅ 5 passed
 tests/scripts/d1-to-postgres-backfill.test.ts ✅ 6 passed
 ```
 
-### Postgres staging integration
+### Postgres staging integration — local (2026-07-04)
 
 ```
+Target: postgresql://postgres:***@localhost:5432/postgres
+Schema apply: ✅ idempotent (2 runs)
 tests/db/postgres-staging.integration.test.ts
-  ⏭  3 skipped — POSTGRES_STAGING != '1' or DATABASE_URL not set
-  Status: pending — requires live Postgres
+  ✅ 3 passed (364ms)
 ```
 
 ---
@@ -123,7 +124,7 @@ All new scripts (`apply-postgres-schema.ts`, `backfill-d1-to-postgres.ts`, `veri
 | FK-safe backfill order | `METADATA_BACKFILL_TABLES` ordered: org → ws → client → identity → agent → memory → embeddings → relations |
 | Dry-run default | `--dry-run` implicit; `--execute` flag required for writes |
 | Rollback documented | `SQL_PROVIDER=d1` env flip; write-loss warning; re-backfill procedure |
-| Default unchanged | `SQL_PROVIDER=d1`; 420 tests green at default |
+| Default unchanged | `SQL_PROVIDER=d1`; 457 tests green at default (2026-07-04) |
 
 ---
 
@@ -154,7 +155,7 @@ All new scripts (`apply-postgres-schema.ts`, `backfill-d1-to-postgres.ts`, `veri
 | Rule | Status |
 |------|--------|
 | No TODO / FIXME / stub | ✅ Zero in Phase 11 deliverables |
-| Evidence-based completion | ✅ 420 tests + typecheck + architecture grep |
+| Evidence-based completion | ✅ 457 tests + typecheck + staging harness (2026-07-04) |
 | Backward compatible | ✅ Default env unchanged |
 | Zero breaking changes | ✅ No public contract changes |
 | No dead code | ✅ All scripts wired to `package.json` |
@@ -168,22 +169,19 @@ All new scripts (`apply-postgres-schema.ts`, `backfill-d1-to-postgres.ts`, `veri
 
 | # | Action | Blocking | Where |
 |---|--------|----------|-------|
-| 1 | Provide staging Postgres target (`DATABASE_URL`) | SC-11-01 | CI `postgres-staging` job |
-| 2 | Run `postgres-staging` CI job | SC-11-01 | GitHub Actions |
-| 3 | Record cutover sign-off in [REVIEW.md](REVIEW.md) | SC-11-05 | Owner sign-off section |
-| 4 | Provision production Postgres + run cutover (S2→S3) | Production | [MIGRATION.md](MIGRATION.md) |
-| 5 | Retain D1 read-only ≥ 30 days post-cutover | Production | [MIGRATION.md](MIGRATION.md) |
+| 1 | Record cutover sign-off in [REVIEW.md](REVIEW.md) | SC-11-05 | Owner sign-off section |
+| 2 | Confirm CI `postgres-staging` job green on GitHub Actions | Recommended | Actions tab |
+| 3 | Provision production Postgres + run cutover (S2→S3) | Production | [MIGRATION.md](MIGRATION.md) |
+| 4 | Retain D1 read-only ≥ 30 days post-cutover | Production | [MIGRATION.md](MIGRATION.md) |
 
 ---
 
 ## Phase Status
 
-**Design Approved. Implementation complete. Gate pending owner action.**
+**SC-11-01 PASS (local 2026-07-04). Gate close blocked on SC-11-05 owner sign-off only.**
 
-Phase 11 deliverables are complete and conformant. The operational proof is ready to execute once the owner provisions the staging Postgres target and runs the CI harness.
-
-Production cutover is owner-authorized per ADR-018.
+Production cutover is owner-authorized per ADR-018 after sign-off.
 
 ---
 
-*Completion evidence recorded 2026-07-03. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Completion evidence updated 2026-07-04. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*

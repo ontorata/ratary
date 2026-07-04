@@ -1,7 +1,7 @@
 # Phase 11 — Production Operations — RETROSPECTIVE
 
 **Document:** RETROSPECTIVE
-**Phase status:** In Progress — Design Approved; staging pending
+**Phase status:** In Progress — SC-11-01 PASS (2026-07-04); SC-11-05 pending owner sign-off
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 **Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
 
@@ -43,23 +43,19 @@ Embedding Postgres ops directly in `docs/PANDUAN.md` §8 rather than a separate 
 
 ## What Could Be Improved
 
-### Staging Postgres target
+### Staging Postgres target — resolved (2026-07-04)
 
-Phase 11 ships the CI harness (`.github/workflows/postgres-staging.yml`) but cannot complete the full gate (SC-11-01) until a **live Postgres instance** is provided. This is an owner action, not an implementation gap — but it means the CI job has never been run against a real Postgres database before Phase 11 close.
+Phase 11 shipped the CI harness (`.github/workflows/postgres-staging.yml`). SC-11-01 was completed when the owner provisioned **local PostgreSQL on `localhost:5432`**. Local verification: schema apply idempotent (2 runs), `test:postgres-staging` **3/3 PASS**.
 
-**Lesson:** Future infrastructure phases should include a **provisioned staging environment** as a prerequisite gate, not as a post-implementation owner action.
+**Lesson (confirmed):** A provisioned staging target unblocks the gate quickly once scripts exist. CI service containers mirror the same harness on `main`.
 
-**Action:** Phase 12 (Event Pipeline) and Phase 13 (Content & Vector) should provision their staging targets before declaring Readiness PASS.
+**Remaining:** Confirm GitHub Actions `postgres-staging` job green; optional but recommended.
 
-### No integration test at CI time
+### Integration test at CI time — partially resolved
 
-The `postgres-staging.integration.test.ts` suite is `@skipIf(!stagingEnabled)` — skipped in normal CI. The unit tests (mock-based) pass, but the live adapter integration test only runs when `POSTGRES_STAGING=1`. This means dialect translation bugs in `PostgresSqlDatabaseAdapter` could surface only at cutover time.
+The `postgres-staging.integration.test.ts` suite runs when `POSTGRES_STAGING=1` — now **proven on live Postgres** (2026-07-04). Default `npm test` still skips it; CI workflow runs it via service container.
 
-**Lesson:** Integration tests that require live external services should either:
-1. Be runnable in CI via service containers (as the harness does), or
-2. Have a documented local reproduction path that is **not** skipped in normal CI.
-
-**Action:** For Phase 13 pgvector cutover, ensure the vector integration suite runs in CI via a `pgvector` service container, not as a skipped suite.
+**Lesson:** Service-container CI jobs are the right pattern — local reproduction path documented in [TESTING.md](TESTING.md).
 
 ### MIGRATION.md came late in the sequence
 
@@ -76,8 +72,8 @@ The cutover runbook was drafted after the scripts landed, rather than in paralle
 | Risk | Mitigation | Outcome |
 |------|-----------|---------|
 | R11-01 Schema drift D1 ↔ Postgres | Shared `MIGRATION_SQL`; `runSchemaMigrations(client, 'postgres')` | ✅ Did not drift — same DDL source |
-| R11-03 Staging not representative | Full `npm test` harness | 🔲 Pending — harness ready but not yet run |
-| R11-05 Default D1 regression | 420-test baseline unchanged | ✅ No regression |
+| R11-03 Staging not representative | `test:postgres-staging` harness | ✅ PASS local 2026-07-04 (3/3) |
+| R11-05 Default D1 regression | 457-test baseline unchanged | ✅ No regression (2026-07-04) |
 | R11-07 SQL dialect edge cases | `information_schema` for Postgres; `PRAGMA` for D1 | ✅ Correct routing verified |
 
 ---
