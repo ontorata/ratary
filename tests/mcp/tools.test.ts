@@ -23,27 +23,9 @@ vi.stubEnv('D1_DATABASE_ID', 'test-database');
 vi.stubEnv('D1_API_TOKEN', 'test-token');
 vi.stubEnv('NODE_ENV', 'test');
 
-const EXPECTED_TOOLS = [
-  'save_memory',
-  'update_memory',
-  'delete_memory',
-  'get_memory',
-  'get_memory_by_codename',
-  'search_memory',
-  'get_context',
-  'build_prompt',
-  'list_projects',
-  'list_tags',
-  'link_memories',
-  'list_relations',
-  'toggle_favorite',
-  'archive_memory',
-  'get_graph_capabilities',
-  'traverse_relations',
-  'list_workspaces',
-  'list_agents',
-  'register_agent',
-] as const;
+import { MCP_TOOL_NAMES } from '../../src/capabilities/mcp-tool-names.js';
+
+const EXPECTED_TOOLS = MCP_TOOL_NAMES;
 
 describe('MCP tools', () => {
   let mockDb: MockD1Client;
@@ -251,5 +233,17 @@ describe('MCP tools', () => {
       agents: Array<{ id: string }>;
     };
     expect(agentsBody.agents.some((a) => a.id === agent.id)).toBe(true);
+  });
+
+  it('returns deployment manifest from get_capabilities', async () => {
+    const result = await client.callTool({ name: 'get_capabilities', arguments: {} });
+    expect(result.isError).not.toBe(true);
+    const manifest = JSON.parse((result.content as [{ text: string }])[0].text) as {
+      protocolVersion: string;
+      mcp: { toolCount: number; toolNames: string[] };
+    };
+    expect(manifest.protocolVersion).toBe('1.0.0');
+    expect(manifest.mcp.toolCount).toBe(EXPECTED_TOOLS.length);
+    expect(manifest.mcp.toolNames).toContain('get_capabilities');
   });
 });

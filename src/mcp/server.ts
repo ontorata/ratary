@@ -29,6 +29,7 @@ import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../types/knowl
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from './context-tool-params.js';
+import { CapabilityManifestBuilder } from '../capabilities/capability-manifest-builder.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -365,6 +366,18 @@ function createMcpServer(
       content: [{ type: 'text', text: JSON.stringify({ capabilities }, null, 2) }],
     };
   });
+
+  server.tool(
+    'get_capabilities',
+    'Discover AI Memory Cloud deployment capabilities, limits, and MCP tool registry',
+    {},
+    async () => {
+      const manifest = new CapabilityManifestBuilder(getEnv()).build();
+      return {
+        content: [{ type: 'text', text: JSON.stringify(manifest, null, 2) }],
+      };
+    },
+  );
 
   server.tool('list_workspaces', 'List workspaces for the MCP owner', {}, async () => {
     const scope = await mcpScope();

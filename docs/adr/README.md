@@ -25,7 +25,7 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [018-production-postgres-cutover.md](018-production-postgres-cutover.md) | Production Postgres cutover | **Approved** | Phase 11 |
 | [023-semantic-compression-policy.md](023-semantic-compression-policy.md) | Semantic compression policy (Phase 5.5) | **Approved** | Token scale / consolidation |
 | [024-progressive-retrieval-policy.md](024-progressive-retrieval-policy.md) | Progressive retrieval policy (Phase 6.5) | **Approved** | Context budget / staged hydration |
-| [025-capability-discovery-api.md](025-capability-discovery-api.md) | Capability discovery API (Phase 7.5) | **Approved** | `GET /capabilities`, MCP manifest |
+| [025-capability-discovery-api.md](025-capability-discovery-api.md) | Capability discovery API (Phase 7.5) | **Implemented** | `GET /capabilities`, MCP manifest |
 | [026-memory-quality-signals.md](026-memory-quality-signals.md) | Memory quality signals — ingest not agent learning (Phase 8.5) | **Approved** | Ranking adaptation / Phase 12 |
 
 **Rule:** No implementation of Proposed/Draft ADRs until owner marks **Approved**.

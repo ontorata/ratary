@@ -1,8 +1,9 @@
 # ADR-025: Capability Discovery API
 
-**Status:** Approved  
+**Status:** Implemented  
 **Date:** 2026-07-04  
 **Approved:** 2026-07-04 (owner — DESIGN + implementation plan)  
+**Implemented:** 2026-07-04 — `GET /api/v1/capabilities`, MCP `get_capabilities`, `CapabilityManifestBuilder`  
 **Deciders:** Project owner  
 
 ---

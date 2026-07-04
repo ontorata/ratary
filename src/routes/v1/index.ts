@@ -8,12 +8,14 @@ import type { MemoryRelationController } from '../../controllers/knowledge.contr
 import type { ContextController } from '../../controllers/context.controller.js';
 import type { GraphController } from '../../controllers/graph.controller.js';
 import type { WorkspaceController } from '../../controllers/workspace.controller.js';
+import type { CapabilitiesController } from '../../controllers/capabilities.controller.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from '../index.js';
 import { authRoutes } from './auth.routes.js';
 import { knowledgeRoutes } from './knowledge.routes.js';
 import { contextRoutes } from './context.routes.js';
 import { graphRoutes } from './graph.routes.js';
 import { workspaceRoutes } from './workspace.routes.js';
+import { capabilitiesRoutes } from './capabilities.routes.js';
 
 export async function registerV1Routes(
   fastify: FastifyInstance,
@@ -27,9 +29,11 @@ export async function registerV1Routes(
     context: ContextController;
     graph: GraphController;
     workspace: WorkspaceController;
+    capabilities: CapabilitiesController;
   },
 ): Promise<void> {
   await healthRoutes(fastify, controllers.health);
+  await capabilitiesRoutes(fastify, controllers.capabilities);
   await knowledgeRoutes(fastify, controllers.knowledge);
   await contextRoutes(fastify, controllers.context);
   await graphRoutes(fastify, controllers.graph);

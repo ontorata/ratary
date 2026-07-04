@@ -9,6 +9,7 @@ function isPublicPath(url: string): boolean {
   if (PUBLIC_PATHS.has(path)) return true;
   if (path.startsWith('/docs/')) return true;
   if (path === '/api/v1/auth/bootstrap') return true;
+  if (path === '/api/v1/capabilities') return true;
   if (path === '/api/v1/health' || path === '/health') return true;
   if (path === '/') return true;
   return false;

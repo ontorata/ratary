@@ -23,6 +23,7 @@ import {
 import { createContextController } from './controllers/context.controller.js';
 import { createGraphController } from './controllers/graph.controller.js';
 import { createWorkspaceController } from './controllers/workspace.controller.js';
+import { createCapabilitiesController } from './controllers/capabilities.controller.js';
 import { createGraphService } from './services/graph.service.js';
 import { createContextService } from './memory/create-context-service.js';
 import { createMemoryAccessAuditor } from './infrastructure/composition/create-memory-access-auditor.js';
@@ -152,6 +153,7 @@ export async function buildApp(options?: {
     scopeResolver,
     multiAi.agentIdentity,
   );
+  const capabilitiesController = createCapabilitiesController(env);
 
   const controllers = {
     health: healthController,
@@ -163,6 +165,7 @@ export async function buildApp(options?: {
     context: contextController,
     graph: graphController,
     workspace: workspaceController,
+    capabilities: capabilitiesController,
   };
 
   await fastify.register(

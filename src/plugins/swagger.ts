@@ -22,6 +22,7 @@ export async function swaggerPlugin(fastify: FastifyInstance): Promise<void> {
         { name: 'Knowledge', description: 'Categories, memory types, relations' },
         { name: 'Search', description: 'Search operations with relevance ranking' },
         { name: 'Backup', description: 'Backup and restore' },
+        { name: 'Capabilities', description: 'Runtime capability discovery (Phase 7.5)' },
       ],
       components: {
         securitySchemes: {
