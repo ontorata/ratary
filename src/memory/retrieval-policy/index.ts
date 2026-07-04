@@ -4,3 +4,8 @@ export type { IRetrievalBudget, RetrievalDeploymentCapabilities } from './retrie
 export { defaultRetrievalBudget } from './retrieval-budget.js';
 export type { IRetrievalPolicy, RetrievalPlan } from './iretrieval-policy.interface.js';
 export { DefaultRetrievalPolicy } from './default-retrieval-policy.js';
+export { LegacyRetrievalPolicy } from './legacy-retrieval-policy.js';
+export { AdaptiveRetrievalPolicy } from './adaptive-retrieval-policy.js';
+export type { AdaptiveRetrievalHints } from './retrieval-policy-hints.js';
+export { buildAdaptiveRetrievalHints } from './retrieval-policy-hints.js';
+export { expandWithRelationNeighbors } from './relation-context-expander.js';

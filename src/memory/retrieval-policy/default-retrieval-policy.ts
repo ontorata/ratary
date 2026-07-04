@@ -4,6 +4,7 @@ import type { IRetrievalBudget, RetrievalDeploymentCapabilities } from './retrie
 import type { IRetrievalPolicy, RetrievalPlan } from './iretrieval-policy.interface.js';
 import { RETRIEVAL_POLICY_VERSION } from './retrieval-stage.js';
 import type { RetrievalStage } from './retrieval-stage.js';
+import type { AdaptiveRetrievalHints } from './retrieval-policy-hints.js';
 
 const TIGHT_BUDGET_CHARS = 2_000;
 
@@ -14,6 +15,7 @@ export class DefaultRetrievalPolicy implements IRetrievalPolicy {
     request: BuildContextRequest,
     rankedCount: number,
     deployment: RetrievalDeploymentCapabilities,
+    _hints?: AdaptiveRetrievalHints,
   ): RetrievalPlan {
     const includeSummaryOnly = request.context?.includeSummaryOnly !== false;
     const maxChars = Math.min(
@@ -34,6 +36,9 @@ export class DefaultRetrievalPolicy implements IRetrievalPolicy {
       hydrateBody = true;
     }
 
+    if (deployment.graphRetrieval) {
+      stages.push('relations');
+    }
     if (deployment.hybridRetrieval) {
       stages.push('vector');
     }
@@ -45,7 +50,7 @@ export class DefaultRetrievalPolicy implements IRetrievalPolicy {
       maxChars,
       maxMemories,
       allowBodyHydration: hydrateBody,
-      allowGraphExpansion: deployment.graphRetrieval,
+      allowGraphExpansion: deployment.graphRetrieval && stages.includes('relations'),
     };
 
     return {

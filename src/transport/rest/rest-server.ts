@@ -75,6 +75,7 @@ import { createAiBrainPlatformPorts } from '../../composition/create-ai-brain-pl
 import { createAiBrainPlatformController } from '../../controllers/ai-brain-platform.controller.js';
 import { createGlobalIntelligencePorts } from '../../composition/create-global-intelligence-ports.js';
 import { createGlobalIntelligenceController } from '../../controllers/global-intelligence.controller.js';
+import { createCompressionAdminController } from '../../controllers/compression-admin.controller.js';
 import { EmbeddingJobRunner } from '../../embedding/embedding-job.runner.js';
 
 export interface AppDependencies {
@@ -318,6 +319,11 @@ export async function buildApp(options?: {
   const globalIntelligenceController = globalIntelligencePorts.enabled
     ? createGlobalIntelligenceController(env, globalIntelligencePorts, scopeResolver)
     : undefined;
+  const compressionAdminController = createCompressionAdminController(
+    scopeResolver,
+    platform.sql,
+    env,
+  );
 
   const transportHandlers = createTransportHandlers({
     memoryService,
@@ -362,6 +368,7 @@ export async function buildApp(options?: {
     knowledgeFabric: knowledgeFabricController,
     aiBrainPlatform: aiBrainPlatformController,
     globalIntelligence: globalIntelligenceController,
+    compressionAdmin: compressionAdminController,
   };
 
   await fastify.register(

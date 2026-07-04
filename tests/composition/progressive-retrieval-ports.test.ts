@@ -44,5 +44,24 @@ describe('createProgressiveRetrievalPorts (Phase 6.5)', () => {
     const plan = ports.policy.resolve({}, 2, ports.deployment);
     expect(plan.stagesApplied).toContain('vector');
     expect(plan.stagesApplied).toContain('graph');
+    expect(plan.stagesApplied).toContain('relations');
+  });
+
+  it('selects legacy policy when RETRIEVAL_POLICY=legacy', () => {
+    vi.stubEnv('RETRIEVAL_POLICY', 'legacy');
+    resetEnvCache();
+
+    const ports = createProgressiveRetrievalPorts(getEnv());
+    const plan = ports.policy.resolve({ limit: 8 }, 4, ports.deployment);
+    expect(plan.policyVersion).toBe('legacy');
+  });
+
+  it('selects adaptive policy when RETRIEVAL_POLICY=adaptive', () => {
+    vi.stubEnv('RETRIEVAL_POLICY', 'adaptive');
+    resetEnvCache();
+
+    const ports = createProgressiveRetrievalPorts(getEnv());
+    const plan = ports.policy.resolve({}, 2, ports.deployment);
+    expect(plan.policyVersion).toBe('adaptive-1');
   });
 });

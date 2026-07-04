@@ -11,12 +11,15 @@
 | Track | Deliverable | Status |
 |-------|-------------|--------|
 | Policy port | `IRetrievalPolicy` + `DefaultRetrievalPolicy` | ✅ |
+| Legacy adapter | `LegacyRetrievalPolicy` — `RETRIEVAL_POLICY=legacy` | ✅ |
+| Adaptive adapter | `AdaptiveRetrievalPolicy` — `RETRIEVAL_POLICY=adaptive` | ✅ |
+| Relations expansion | `expandWithRelationNeighbors` + `relations` stage | ✅ |
 | Types | `IRetrievalBudget`, `RetrievalPlan`, `RetrievalStage` | ✅ |
 | Hook | `ContextService.buildContext` — policy after rank, before hydration | ✅ |
 | Response | Additive `retrievalPlan` in REST/MCP context responses | ✅ |
 | Composition | `create-progressive-retrieval-ports.ts` | ✅ |
 | Manifest | `supportsProgressiveRetrieval`, `progressivePolicyVersion` | ✅ |
-| Env | `RETRIEVAL_POLICY_VERSION` (default `1`), `HYBRID_RETRIEVAL`, `GRAPH_RETRIEVAL` | ✅ |
+| Env | `RETRIEVAL_POLICY`, `RETRIEVAL_POLICY_VERSION`, `RETRIEVAL_RELATION_NEIGHBOR_CAP`, hybrid/graph flags | ✅ |
 
 ---
 
@@ -28,7 +31,12 @@ src/memory/retrieval-policy/
   retrieval-budget.ts
   iretrieval-policy.interface.ts
   default-retrieval-policy.ts
+  legacy-retrieval-policy.ts
+  adaptive-retrieval-policy.ts
+  relation-context-expander.ts
+  retrieval-policy-hints.ts
   index.ts
+src/composition/create-retrieval-policy.ts
 src/memory/context.service.ts           # policy hook + hydration gate
 src/memory/create-context-service.ts    # wires progressive ports + composite source
 src/composition/create-progressive-retrieval-ports.ts

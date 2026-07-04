@@ -12,6 +12,7 @@
 | `tests/memory/default-retrieval-policy.test.ts` | Summary-only default, body hydration, vector/graph stages, tight budget, policy version |
 | `tests/memory/context.service.test.ts` | `retrievalPlan` in buildContext result |
 | `tests/composition/progressive-retrieval-ports.test.ts` | Composition wiring from env flags |
+| `tests/memory/token-benchmark.test.ts` | ≥85% summary savings vs naive dump (CI-stable) |
 | `tests/capabilities/manifest-builder.test.ts` | `supportsProgressiveRetrieval`, policy version |
 
 ---
@@ -45,7 +46,7 @@
 npm run benchmark:context-tokens
 ```
 
-Documents token savings for summary-first vs full body path.
+Documents token savings for summary-first vs full body path. **Recorded 2026-07-04:** default policy summary path **85.5%** vs naive dump — see [COMPLETION.md](COMPLETION.md#token-benchmark-evidence-optional--sc-65-06).
 ## Current regression
 
 689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)

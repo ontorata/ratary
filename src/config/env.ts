@@ -133,7 +133,9 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
 
+    RETRIEVAL_POLICY: z.enum(['default', 'legacy', 'adaptive']).default('default'),
     RETRIEVAL_POLICY_VERSION: z.string().default('1'),
+    RETRIEVAL_RELATION_NEIGHBOR_CAP: z.coerce.number().int().min(0).max(30).default(5),
 
     COMPRESSION_ENABLED: z
       .enum(['true', 'false'])

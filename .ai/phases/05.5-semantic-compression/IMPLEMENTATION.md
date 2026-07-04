@@ -22,6 +22,7 @@
 | Manifest | `capabilities.supportsSemanticCompression` | ✅ |
 | Status reader | `ICompressionStatusReader` + `CompressionStatusReader` | ✅ |
 | MCP | `get_compression_status` (tool #22) | ✅ |
+| REST admin | `POST /api/v1/admin/compress` (dry-run default) | ✅ |
 
 ---
 
@@ -39,7 +40,8 @@ src/jobs/local-compression-scheduler.ts
 src/ports/compression/icompression-scheduler.port.ts
 src/ports/compression/icompression-status-reader.port.ts
 src/composition/create-compression-ports.ts
-scripts/compress-memories.ts
+src/controllers/compression-admin.controller.ts
+src/routes/v1/admin-compression.routes.ts
 src/db/migrations.ts                    # compression_meta, compression_version
 src/types/knowledge.ts                  # consolidates relation type
 tests/memory/rule-based-compression-policy.test.ts

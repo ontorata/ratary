@@ -16,6 +16,7 @@ import { createLexicalRetrievalSource } from '../infrastructure/composition/crea
 import { createGraphProvider } from '../infrastructure/composition/create-graph-provider.js';
 import { createProgressiveRetrievalPorts } from '../composition/create-progressive-retrieval-ports.js';
 import { createLearningPorts } from '../composition/create-learning-ports.js';
+import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
 
 export interface ContextServicePlatformDeps {
   embeddingProvider?: IEmbeddingProvider;
@@ -45,6 +46,9 @@ export function createContextService(
     platform?.sql && env.LEARNING_ENGINE_ENABLED
       ? createLearningPorts(platform.sql, env)
       : undefined;
+  const relationRepository = platform?.sql
+    ? new MemoryRelationRepository(platform.sql)
+    : undefined;
 
   return new ContextService(repository, candidateSource, platform?.memoryAccessAuditor, {
     retrievalPolicy: progressive.policy,
@@ -53,6 +57,8 @@ export function createContextService(
       learning?.enabled && learning.artifactStore
         ? (scope) => learning.artifactStore!.getActiveRankingSnapshot(scope)
         : undefined,
+    relationRepository,
+    relationNeighborCap: env.RETRIEVAL_RELATION_NEIGHBOR_CAP,
   });
 }
 

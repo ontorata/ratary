@@ -285,7 +285,7 @@ Env:
 |------|---------|
 | `default-retrieval-policy.test.ts` | Pure policy tables |
 | `context.service.test.ts` extend | hydrate vs summary-only unchanged semantics |
-| `token-benchmark.test.ts` | ≥85% summary path savings |
+| `token-benchmark.test.ts` | ≥85% summary path savings (runs in `npm test` / CI) |
 | `cross-owner-leak.test.ts` | Policy cannot expand scope |
 | E2E MCP | `content_mode=full` includes body marker; default excludes |
 | Composite regression | ADR-001 merge unchanged when policy default |
@@ -300,22 +300,24 @@ Env:
 - [x] `IRetrievalPolicy` + default adapter wired via composition root
 - [x] Default policy reproduces current production behavior exactly
 - [x] `retrievalPlan` optional in REST/MCP context responses
-- [ ] Token benchmark thresholds documented and CI-stable — optional via `benchmark:context-tokens`
+- [x] Token benchmark thresholds documented — optional CLI `benchmark:context-tokens`; **CI-stable** via `tests/memory/token-benchmark.test.ts` (≥85%); manual evidence archived [COMPLETION.md](COMPLETION.md) (summary path **85.5%**, 2026-07-04)
 - [x] No signature changes to `MemoryService`, `Retriever`, `Ranker`
 - [x] O-04-2 regression preserved (candidates without body until hydration)
 - [x] All existing tests green with default policy
 
 ---
 
-## Future Phase
+## Future phase interactions
 
-| Phase | Interaction |
-|-------|-------------|
-| **5.5** | Policy prefers `level=summary\|canonical` candidates |
-| **7.5** | Manifest advertises `supportsProgressiveRetrieval`, policy version |
-| **8.5** | Quality signals adjust rule-based adaptive caps |
-| **13** | pgvector / R2 stages validated under load |
-| **14** | Meilisearch / Neo4j as optional high stages |
+| Phase | Interaction | Status (2026-07-04) |
+|-------|-------------|------------------------|
+| **5.5** Compression | Ranker boosts `level=summary\|canonical`; policy default `includeSummaryOnly=true` prefers summary field | ✅ Landed — [05.5](../05.5-semantic-compression/CHECKLIST.md) gate PASS; `LEVEL_BOOST` in `ranker.ts` |
+| **7.5** Capability manifest | `supportsProgressiveRetrieval`, `retrieval.progressivePolicyVersion` | ✅ Landed — [07.5](../07.5-runtime-compatibility/CHECKLIST.md) gate PASS; ADR-025 |
+| **8.5** Quality signals | Rule-based adaptive caps from access/importance signals | ⏳ Partial — signal ingest landed ([08.5](../08.5-observation-reflection-learning/CHECKLIST.md)); `IRetrievalPolicy` cap adjustment + ranker wiring deferred |
+| **10 / 22** Content & vector scale | pgvector / R2 content stages under load (was roadmap “13”) | ✅ Adapters landed Phase 10 (ADR-011, ADR-005); ops orchestrator Phase 22 (ADR-021) — load validation ops-owned |
+| **10 / 21** Search & graph prod | Meilisearch / Neo4j as optional retrieval legs (was roadmap “14”) | ✅ Adapters Phase 10; production sync platform Phase 21 (ADR-022) — opt-in via env flags |
+
+> **Note:** Original DESIGN referenced roadmap phases 13–14 for scale/search. Current repo numbering: **13** = Protocol Layer, **14** = Federation; vector/R2 → **22**, Meilisearch/Neo4j prod sync → **21**.
 
 ---
 

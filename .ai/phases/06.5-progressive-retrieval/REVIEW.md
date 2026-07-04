@@ -25,10 +25,11 @@ Record architecture review findings and formal phase gate verdict.
 
 ---
 
-## Known gaps (accepted)
+## Known gaps (accepted at gate)
 
-- RETRIEVAL_POLICY=legacy adapter not built
-- Relations stage auto-expansion deferred
+- `RETRIEVAL_POLICY=legacy` adapter not built — only `DefaultRetrievalPolicy` wired
+- Relations stage auto-expansion deferred — `traverse_relations` MCP for deep graph
+- Token benchmark — **archived** [COMPLETION.md](COMPLETION.md) SC-65-06 (summary path 85.5%)
 
 ---
 

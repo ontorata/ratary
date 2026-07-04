@@ -248,6 +248,7 @@ export interface AICapabilityManifest {
   ecosystem: AgentEcosystemManifest;
   retrieval: {
     progressivePolicyVersion: string;
+    retrievalPolicy: string;
     defaultContentMode: 'summary' | 'full';
   };
   deployment: {

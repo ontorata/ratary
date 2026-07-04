@@ -18,8 +18,8 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 |------|------------|--------|------------|--------|
 | Policy breaks summary-only default | Medium | High | DefaultRetrievalPolicy matches pre-6.5 behavior | Mitigated |
 | Client ignores retrievalPlan | Low | Low | Additive response field; optional | Accepted |
-| Token budget miscalculation | Medium | Medium | Unit tests; benchmark deferred | Identified |
-| Relations stage incomplete | Medium | Medium | Stage defined; auto-expand deferred | Deferred |
+| Token budget miscalculation | Medium | Medium | `token-benchmark.test.ts` in CI (≥85%); SC-65-06 CLI evidence | Mitigated |
+| Relations stage incomplete | Medium | Medium | `relations` stage + `expandWithRelationNeighbors`; deep BFS via MCP | Mitigated |
 
 ---
 

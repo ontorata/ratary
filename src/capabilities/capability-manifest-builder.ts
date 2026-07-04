@@ -234,6 +234,7 @@ export class CapabilityManifestBuilder {
       ecosystem: new AgentEcosystemManifestBuilder(this.env).buildSync(),
       retrieval: {
         progressivePolicyVersion: this.env.RETRIEVAL_POLICY_VERSION,
+        retrievalPolicy: this.env.RETRIEVAL_POLICY,
         defaultContentMode: 'summary',
       },
       deployment: {

@@ -39,7 +39,7 @@
 ## Deferred
 
 - [x] `ICompressionSummarizer` LLM adapter (async only) — `OpenAICompressionSummarizer`, `npm run enrich:summaries`
-- [ ] `POST /api/v1/admin/compress` REST endpoint
+- [x] `POST /api/v1/admin/compress` REST endpoint — `compression-admin.controller.ts`, dry-run default
 - [x] MCP tool `get_compression_status` — `ICompressionStatusReader` + MCP tool #22
 - [x] Token benchmark evidence archived in [COMPLETION.md](COMPLETION.md) — `npm run benchmark:context-tokens` (summary-only **85.5%** vs baseline, ≥80% target)
 

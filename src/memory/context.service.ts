@@ -15,7 +15,10 @@ import type {
   RetrievalPlan,
 } from './retrieval-policy/iretrieval-policy.interface.js';
 import { DefaultRetrievalPolicy } from './retrieval-policy/default-retrieval-policy.js';
+import { buildAdaptiveRetrievalHints } from './retrieval-policy/retrieval-policy-hints.js';
+import { expandWithRelationNeighbors } from './retrieval-policy/relation-context-expander.js';
 import type { RetrievalDeploymentCapabilities } from './retrieval-policy/retrieval-budget.js';
+import type { IMemoryRelationRepository } from '../repositories/memory-relation.repository.interface.js';
 import type { RankingPolicySnapshot } from '../learning/learning.types.js';
 
 export interface BuildContextRequest {
@@ -43,6 +46,8 @@ export interface ContextServiceDeps {
   retrievalPolicy?: IRetrievalPolicy;
   deployment?: RetrievalDeploymentCapabilities;
   rankingSnapshotLoader?: (scope: MemoryScope) => Promise<RankingPolicySnapshot | null>;
+  relationRepository?: IMemoryRelationRepository;
+  relationNeighborCap?: number;
 }
 
 export class ContextService {
@@ -55,6 +60,8 @@ export class ContextService {
   private readonly rankingSnapshotLoader?: (
     scope: MemoryScope,
   ) => Promise<RankingPolicySnapshot | null>;
+  private readonly relationRepository?: IMemoryRelationRepository;
+  private readonly relationNeighborCap: number;
 
   constructor(
     private readonly repository: IMemoryRepository,
@@ -73,6 +80,8 @@ export class ContextService {
       maxContextMaxChars: MAX_CONTEXT_MAX_CHARS,
     };
     this.rankingSnapshotLoader = deps.rankingSnapshotLoader;
+    this.relationRepository = deps.relationRepository;
+    this.relationNeighborCap = deps.relationNeighborCap ?? 5;
   }
 
   async buildContext(
@@ -99,7 +108,24 @@ export class ContextService {
       rankingSnapshot ?? undefined,
     );
 
-    const plan = this.retrievalPolicy.resolve(request, ranked.length, this.deployment);
+    const hints = buildAdaptiveRetrievalHints(ranked);
+    const plan = this.retrievalPolicy.resolve(request, ranked.length, this.deployment, hints);
+
+    let selected = ranked.slice(0, plan.budget.maxMemories);
+
+    if (
+      plan.budget.allowGraphExpansion &&
+      plan.stagesApplied.includes('relations') &&
+      this.relationRepository
+    ) {
+      selected = await expandWithRelationNeighbors(
+        this.repository,
+        this.relationRepository,
+        scope,
+        selected,
+        this.relationNeighborCap,
+      );
+    }
 
     const contextOptions: ContextBuildOptions = {
       ...request.context,
@@ -108,17 +134,17 @@ export class ContextService {
     };
 
     const memoriesForContext = plan.hydrateBody
-      ? await this.hydrateRankedMemories(scope, ranked, contextOptions)
-      : ranked;
+      ? await this.hydrateRankedMemories(scope, selected, contextOptions)
+      : selected;
     const context = this.contextBuilder.build(memoriesForContext, contextOptions);
 
     const workspaceId = workspaceIdFromScope(scope);
-    const memoryIds = ranked.map((memory) => memory.id);
+    const memoryIds = selected.map((memory) => memory.id);
     await this.repository.recordAccessBatch(memoryIds, scope.ownerId, workspaceId);
 
     if (this.memoryAccessAuditor) {
       await Promise.all(
-        ranked.map((memory) =>
+        selected.map((memory) =>
           this.memoryAccessAuditor!.recordAccess({
             memoryId: memory.id,
             ownerId: scope.ownerId,
@@ -131,7 +157,7 @@ export class ContextService {
 
     return {
       context,
-      memories: ranked,
+      memories: selected,
       totalCandidates: candidates.length,
       retrievalPlan: plan,
     };

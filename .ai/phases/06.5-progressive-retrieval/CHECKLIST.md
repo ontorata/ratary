@@ -36,10 +36,10 @@
 
 ## Deferred
 
-- [ ] `RETRIEVAL_POLICY=legacy` alternate adapter
-- [ ] Relations stage auto-expansion in context assembly
-- [ ] ML-based adaptive policy adapter
-- [ ] Token benchmark archived in COMPLETION.md
+- [x] `RETRIEVAL_POLICY=legacy` alternate adapter — `LegacyRetrievalPolicy`; env `RETRIEVAL_POLICY=legacy`
+- [x] Relations stage auto-expansion in context assembly — `relations` stage + `expandWithRelationNeighbors` when `GRAPH_RETRIEVAL=true`
+- [x] ML-based adaptive policy adapter — `AdaptiveRetrievalPolicy` (rule-based hints); env `RETRIEVAL_POLICY=adaptive`
+- [x] Token benchmark archived in [COMPLETION.md](COMPLETION.md) — CI: `tests/memory/token-benchmark.test.ts`; CLI: `benchmark:context-tokens` (**85.5%**)
 
 ---
 

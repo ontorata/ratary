@@ -24,7 +24,7 @@ describe('DefaultRetrievalPolicy', () => {
     expect(plan.stagesApplied).toContain('body');
   });
 
-  it('includes vector and graph stages when deployment flags are on', () => {
+  it('includes vector, graph, and relations stages when deployment flags are on', () => {
     const plan = policy.resolve({}, 3, {
       hybridRetrieval: true,
       graphRetrieval: true,
@@ -33,6 +33,8 @@ describe('DefaultRetrievalPolicy', () => {
 
     expect(plan.stagesApplied).toContain('vector');
     expect(plan.stagesApplied).toContain('graph');
+    expect(plan.stagesApplied).toContain('relations');
+    expect(plan.budget.allowGraphExpansion).toBe(true);
   });
 
   it('reduces maxMemories under tight char budget', () => {

@@ -24,6 +24,7 @@ import type { ContentScaleController } from '../../controllers/content-scale.con
 import type { KnowledgeFabricController } from '../../controllers/knowledge-fabric.controller.js';
 import type { AiBrainPlatformController } from '../../controllers/ai-brain-platform.controller.js';
 import type { GlobalIntelligenceController } from '../../controllers/global-intelligence.controller.js';
+import type { CompressionAdminController } from '../../controllers/compression-admin.controller.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from '../index.js';
 import { authRoutes } from './auth.routes.js';
 import { knowledgeRoutes } from './knowledge.routes.js';
@@ -46,6 +47,7 @@ import { contentScaleRoutes } from './content-scale.routes.js';
 import { knowledgeFabricRoutes } from './knowledge-fabric.routes.js';
 import { aiBrainPlatformRoutes } from './ai-brain-platform.routes.js';
 import { globalIntelligenceRoutes } from './global-intelligence.routes.js';
+import { adminCompressionRoutes } from './admin-compression.routes.js';
 
 export async function registerV1Routes(
   fastify: FastifyInstance,
@@ -75,10 +77,12 @@ export async function registerV1Routes(
     knowledgeFabric?: KnowledgeFabricController;
     aiBrainPlatform?: AiBrainPlatformController;
     globalIntelligence?: GlobalIntelligenceController;
+    compressionAdmin: CompressionAdminController;
   },
 ): Promise<void> {
   await healthRoutes(fastify, controllers.health);
   await capabilitiesRoutes(fastify, controllers.capabilities);
+  await adminCompressionRoutes(fastify, controllers.compressionAdmin);
   await ecosystemRoutes(fastify, controllers.ecosystem);
   if (controllers.security) {
     await securityRoutes(fastify, controllers.security);

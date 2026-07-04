@@ -30,23 +30,34 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## What was harder than expected
 
-- `RETRIEVAL_POLICY=legacy` alternate adapter not built
-- Relations stage auto-expansion deferred
-- ML adaptive policy and token benchmarks deferred
+- ~~`RETRIEVAL_POLICY=legacy` alternate adapter~~ — landed `LegacyRetrievalPolicy` + env switch
+- ~~Relations stage auto-expansion~~ — `expandWithRelationNeighbors` when graph enabled
+- ~~ML adaptive retrieval policy~~ — `AdaptiveRetrievalPolicy` (rule-based hints, not online ML)
 
 ---
 
-## Accepted debt
+## Accepted debt (at gate)
 
-- Single default policy — no legacy/ML adapters
-- Relations stage not auto-expanded
+- ~~Single default policy~~ — `RETRIEVAL_POLICY` selects default | legacy | adaptive
+- Deep BFS graph traverse remains `traverse_relations` MCP (relations stage is one-hop summaries only)
+
+---
+
+## Successor closure (2026-07-04)
+
+| Deferred item | Closed by |
+|---------------|-----------|
+| Legacy policy adapter | `LegacyRetrievalPolicy`, `RETRIEVAL_POLICY=legacy` |
+| Relations auto-expansion | `relations` stage + `relation-context-expander.ts` |
+| Adaptive policy adapter | `AdaptiveRetrievalPolicy`, `RETRIEVAL_POLICY=adaptive` |
+| Token benchmark | SC-65-06 + `token-benchmark.test.ts` in CI |
 
 ---
 
 ## Recommendations
 
 - Implement relations-stage expansion before high-graph deployments
-- Add token benchmark evidence to COMPLETION.md
+- ~~Add token benchmark evidence to COMPLETION.md~~ ✅ done 2026-07-04
 
 ---
 
