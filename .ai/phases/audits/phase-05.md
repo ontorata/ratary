@@ -46,7 +46,7 @@ Async embedding backfill, `IEmbeddingProvider`, `IEmbeddingStore`, `memory_embed
 |----|-------------|----------|-------------|--------|
 | ~~O-05-1~~ | ~~Duplicate MemoryRepository in composition roots~~ | Medium | ~~Phase 6 wiring~~ | **✅ RESOLVED** |
 | ~~O-05-2~~ | ~~schema.sql drift from migrations.ts intelligence columns~~ | Medium | ~~Phase 6 or maintenance~~ | **✅ RESOLVED** |
-| O-05-3 | MVP vector scale ceiling | Low | Documented; adapter swap path | OPEN |
+| ~~O-05-3~~ | ~~MVP vector scale ceiling~~ | Low | ~~Documented; adapter swap path~~ | **✅ RESOLVED** (Phase 10 — ADR-011 `PgVectorStoreAdapter`, `VECTOR_PROVIDER=pgvector`) |
 
 ---
 
@@ -63,6 +63,10 @@ Phase 5 marked ✅ in roadmap (2026-07-01). Ready for Phase 6 design pending ADR
 - Quality gate: **172 tests passing** (20 more than at phase close)
 - Typed errors: `ValidationError` now used in embedding providers
 - Embedding layer stable
+
+## Addendum 2026-07-04
+
+- **O-05-3 RESOLVED**: MVP vector scale ceiling — adapter swap path implemented in Phase 10 (`PgVectorStoreAdapter`, ADR-011 Implemented; `VECTOR_PROVIDER=pgvector` opt-in). D1 JSON store remains default for small deployments.
 
 ---
 

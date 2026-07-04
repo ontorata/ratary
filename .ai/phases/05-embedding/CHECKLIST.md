@@ -89,9 +89,15 @@ Executable gate checklist — async embedding layer, `memory_embeddings` store, 
 ## Non-goals (confirmed out of scope)
 
 - Synchronous embed on memory create/update
-- pgvector production store (Phase 10 / ADR-011)
+- ~~pgvector production store (Phase 10 / ADR-011)~~ — **landed Phase 10** (`VECTOR_PROVIDER=pgvector` opt-in; default D1 unchanged)
 - R2 content offload (`object_key`) — later phase
 - Retriever ranking changes — Phase 6
+
+## Deferred observation O-05-3 (resolved)
+
+| ID | Item | Status | Resolution |
+|----|------|--------|------------|
+| O-05-3 | MVP vector scale ceiling | ✅ Resolved 2026-07-04 | ADR-011 `PgVectorStoreAdapter`; `createVectorStore()`; `db:backfill-pgvector` — see [audits/phase-05.md](../audits/phase-05.md) |
 
 ---
 
