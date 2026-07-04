@@ -61,6 +61,8 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 - ~~Add token benchmark evidence to COMPLETION.md~~ ✅ done 2026-07-04
 - For high-graph production: validate `RETRIEVAL_RELATION_NEIGHBOR_CAP` and neighbor noise under real graph density (ops tuning)
 
+**Mitigated (2026-07-05):** Ops runbook in `docs/PANDUAN.md` — § *Tiga jalur graph* + *Tuning graph padat*; `.env.example` comments for `RETRIEVAL_RELATION_NEIGHBOR_CAP`.
+
 ---
 
 *Recorded at gate 2026-07-04. Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*

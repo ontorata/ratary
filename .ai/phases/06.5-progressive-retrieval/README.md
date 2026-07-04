@@ -34,7 +34,9 @@
 | vector | Off | `HYBRID_RETRIEVAL=true` |
 | graph | Off | `GRAPH_RETRIEVAL=true` |
 
-Deep graph BFS remains `traverse_relations` MCP tool — not auto-inlined.
+Deep graph BFS remains `traverse_relations` MCP tool — not auto-inlined. **By design** (ADR-024): hot path one-hop + composite leg; multi-hop = explicit MCP call.
+
+Ops tuning for dense graphs: [docs/PANDUAN.md](../../../docs/PANDUAN.md) — *Tuning graph padat* (`RETRIEVAL_RELATION_NEIGHBOR_CAP`).
 
 ---
 

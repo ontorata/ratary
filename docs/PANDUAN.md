@@ -276,6 +276,29 @@ EMBEDDING_API_KEY=sk-...
 
 API eksplorasi graph (tanpa flag di atas): MCP `get_graph_capabilities`, `traverse_relations`; REST `GET /api/v1/graph/capabilities`, `POST /api/v1/graph/traverse`.
 
+#### Tiga jalur graph (desain intentional)
+
+| Jalur | Kapan aktif | Kedalaman | Gunakan untuk |
+|-------|-------------|-----------|---------------|
+| Composite graph leg | `GRAPH_RETRIEVAL=true` | BFS terbatas (`GRAPH_MAX_*`) | Kandidat retrieval di rank |
+| Relations stage (6.5) | `GRAPH_RETRIEVAL=true` + stage `relations` | **One-hop** saja | Ringkasan tetangga langsung di `get_context` |
+| `traverse_relations` MCP/REST | Agent panggil eksplisit | Depth 1–3 | Eksplorasi dalam (handoff, audit) |
+
+Deep BFS **tidak** di-inline otomatis ke setiap `get_context` — hot path tetap ringan; agent yang butuh multi-hop memanggil `traverse_relations`.
+
+#### Tuning graph padat (ops)
+
+Saat graph banyak relasi (mis. `RELATION_INFERENCE_ENABLED=true`) dan context terasa noisy:
+
+| Variable | Default | Panduan |
+|----------|---------|---------|
+| `RETRIEVAL_RELATION_NEIGHBOR_CAP` | `5` | One-hop neighbors di relations stage. Graph tipis: 5 OK. Graph padat/noisy: turunkan ke **3**. Butuh lebih banyak tetangga langsung: naikkan ke **8–10** (max 30). |
+| `GRAPH_MAX_NEIGHBORS` | `30` | Budget composite graph leg — turunkan jika recall terlalu lebar. |
+| `GRAPH_SEED_CAP` | `5` | Seed lexical — turunkan untuk corpus besar. |
+| `max_chars` / `limit` | MCP/REST | Batasi token terlepas dari neighbor count. |
+
+Validasi praktis: bandingkan output `get_context` sebelum/sesudah ubah cap; jalankan `npm run benchmark:context-tokens` jika perlu bukti token.
+
 ---
 
 ## 8. Infrastruktur platform (Fase 10 + 11)

@@ -20,6 +20,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Client ignores retrievalPlan | Low | Low | Additive response field; optional | Accepted |
 | Token budget miscalculation | Medium | Medium | `token-benchmark.test.ts` in CI (≥85%); SC-65-06 CLI evidence | Mitigated |
 | Relations stage incomplete | Medium | Medium | `relations` stage + `expandWithRelationNeighbors`; deep BFS via MCP | Mitigated |
+| Neighbor noise on dense graphs | Medium | Medium | `RETRIEVAL_RELATION_NEIGHBOR_CAP` tuning — `docs/PANDUAN.md` ops table | Mitigated (ops) |
 
 ---
 

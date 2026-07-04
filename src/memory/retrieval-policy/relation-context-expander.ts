@@ -6,7 +6,8 @@ import type { ScoredMemory } from '../ranker.js';
 
 const DEFAULT_SEED_COUNT = 3;
 
-/** One-hop relation neighbor summaries for progressive retrieval relations stage. */
+/** One-hop relation neighbor summaries for progressive retrieval relations stage.
+ *  Deep multi-hop: MCP traverse_relations (ADR-024) — not inlined here. */
 export async function expandWithRelationNeighbors(
   repository: IMemoryRepository,
   relationRepository: IMemoryRelationRepository,
