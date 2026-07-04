@@ -22,6 +22,7 @@ On conflict, **`.ai/` wins**.
 |--------|------|
 | [core/](core/) | Constitution, standards, architecture law, AI rules, **vision** (platform charter) |
 | [workflow/](workflow/) | Process, prompts, checklists, playbooks |
+| [agent-forge/](agent-forge/) | Memory-governed agent pipeline (→ `.cursor/skills/forge-*`) |
 | [phases/](phases/) | Phase evidence, roadmap, audits (incl. design drafts through Phase 25) |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Active scoped work |
 

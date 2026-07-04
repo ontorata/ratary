@@ -1,0 +1,19 @@
+---
+description: Agent Forge — mandatory skill activation before tasks; memory-governed pipeline
+alwaysApply: true
+---
+
+# Agent Forge (mandatory)
+
+Before **any** design, code, test, or review work:
+
+1. Identify pipeline stage from [.ai/agent-forge/PIPELINE.md](../.ai/agent-forge/PIPELINE.md)
+2. **Read and follow** the matching skill in `.cursor/skills/forge-*/SKILL.md`
+3. Run **Recall** at session start (`forge-recall`) and **Remember** at session end (`forge-remember`) when MCP is available
+4. Do not skip **Intent → Isolate → Blueprint** for non-trivial features (multi-file or structural)
+5. On failure, switch to `forge-diagnose` before guessing fixes
+
+Authority: `.ai/` > Agent Forge > ad-hoc prompts.  
+Legacy prompts: reference by ID from [.ai/workflow/prompts/PROMPT-LIBRARY.md](../.ai/workflow/prompts/PROMPT-LIBRARY.md) — do not duplicate their text in chat.
+
+Constitution: no agent runtime code in `src/` — Forge is workflow law only.
