@@ -1,9 +1,9 @@
 # Phase 10.5 — Transport & Connectivity Layer
 
-**Status:** 🔲 Reserved — Design draft awaiting owner approval (2026-07-04)  
+**Status:** 🔄 In Progress — ADR-027 Approved (2026-07-04); track 10.5A ✅  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 10.5  
-**ADR gate:** [ADR-027](../../adr/027-transport-connectivity-layer.md) — **Proposed**
+**ADR gate:** [ADR-027](../../adr/027-transport-connectivity-layer.md) — **Approved**
 
 ---
 

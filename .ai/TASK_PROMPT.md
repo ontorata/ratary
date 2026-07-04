@@ -1,20 +1,19 @@
-# Task Prompt — Phase 11 Production Operations
+# Task Prompt — Phase 10.5 Transport & Connectivity Layer
 
-**Handoff (Cline / VS Code):** [HANDOFF.md](phases/11-production-ops/HANDOFF.md) — session state + starter prompt (2026-07-03)
-
-**Status:** ✅ Gate PASS (2026-07-04) — rotate to Phase 10.5 or 12 per [10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md)  
+**Status:** 🔄 In Progress — ADR-027 ✅ Approved (2026-07-04); track 10.5A started  
+**Handoff:** [10.5-transport-connectivity/TASK_PROMPT.md](phases/10.5-transport-connectivity/TASK_PROMPT.md)  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)  
-**Roadmap:** [phases/roadmap/10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md)
+**Roadmap:** [phases/roadmap/10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md) § Phase 10.5
 
 ---
 
 # TASK
 
-**Phase 11 — Production Operations** (P0 post–Phase 10)
+**Phase 10.5 — Transport & Connectivity Layer** (P1 extension post–Phase 11)
 
-**Objective:** Prove Postgres metadata path in staging; produce cutover runbook. Default D1 deploy unchanged.
+**Objective:** Formalize `src/transport/`, shared application handlers, optional gRPC (default OFF), manifest transport section — **without changing** application services, repositories, or storage ports.
 
-**Do not implement until:** Readiness PASS. ADR-018 ✅ Approved (2026-07-03).
+**Authorized:** Lutfi Ramadhan — 2026-07-04 (after Phase 11 gate PASS)
 
 ---
 
@@ -22,40 +21,40 @@
 
 | ADR | Title | Status |
 |-----|-------|--------|
-| [018](../../../docs/adr/018-production-postgres-cutover.md) | Production Postgres cutover | ✅ **Approved** (2026-07-03) |
+| [027](../../docs/adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer | ✅ **Approved** (2026-07-04) |
+| [025](../../docs/adr/025-capability-discovery-api.md) | Capability discovery (transport block amend) | ✅ Implemented |
 
 ---
 
-## Milestones (from POST-ROADMAP)
+## Milestones
 
-- [x] ADR-018 Approved (2026-07-03)
-- [x] Phase 11 folder scaffolded (`11-production-ops/`)
-- [x] DESIGN + RISKS + Readiness Review PASS (conditional)
-- [x] C11-1..C11-6: runPostgresMigrations, apply-postgres-schema, backfill, parity scripts, CI harness
-- [x] C11-7: MIGRATION.md cutover runbook
-- [x] C11-8: PANDUAN §8 + README ops matrix
-- [x] Staging harness: `test:postgres-staging` green (local 2026-07-04)
-- [x] Gate REVIEW PASS ✅ *(owner sign-off 2026-07-04)*
+- [x] ADR-027 Approved (2026-07-04)
+- [x] Phase 11 gate PASS — parallel OK
+- [x] 10.5A — `TransportContext`, `resolve-transport-scope`, transport errors
+- [ ] 10.5B — Shared `IApplicationHandler` (≥10 use cases)
+- [ ] 10.5C — REST → `transport/rest/` (strangler re-exports)
+- [ ] 10.5D — MCP → `transport/mcp/` (strangler re-exports)
+- [ ] 10.5E — gRPC v1 behind `GRPC_ENABLED=false`
+- [ ] 10.5F — Manifest transport section + docs
+- [ ] Gate REVIEW PASS
 
 ---
 
 ## Definition of Done
 
-- [x] Staging evidence for Postgres metadata adapter *(local harness 3/3 PASS 2026-07-04)*
-- [x] Owner sign-off on cutover strategy ✅ *(Lutfi Ramadhan, 2026-07-04)*
-- [x] 457 tests green at default env (D1) *(2026-07-04)*
-- [ ] No service-layer rewrite
+- [ ] SC-10.5-01 through SC-10.5-08 PASS ([DESIGN.md](phases/10.5-transport-connectivity/DESIGN.md) §10)
+- [ ] 457+ tests green at default env
+- [ ] No service/repository logic change
+- [ ] `GRPC_ENABLED=false` default
 
 ---
 
-## Parallel tracks (later phases — not Phase 11)
+## Quality gate (every commit)
 
-| Phase | Focus |
-|-------|--------|
-| 12 | Event pipeline, audit fan-out, OTel runbook |
-| 13 | R2 content offload, pgvector production |
-| 14 | Meilisearch / Neo4j production |
+```bash
+npm run lint && npm run format:check && npm run typecheck && npm test
+```
 
 ---
 
-*Rotated from post–Phase 10 roadmap definition 2026-07-03.*
+*Rotated from Phase 11 gate PASS 2026-07-04.*

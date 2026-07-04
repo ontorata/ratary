@@ -70,7 +70,7 @@ flowchart LR
 
 # Phase 10.5 — Transport & Connectivity Layer
 
-**Status:** 🔲 Reserved — Design draft (2026-07-04); **awaiting owner approval**  
+**Status:** 🔄 In Progress — ADR-027 Approved (2026-07-04); track 10.5A ✅  
 **Folder:** [.ai/phases/10.5-transport-connectivity/](../10.5-transport-connectivity/README.md)
 
 ## Scope
@@ -90,7 +90,7 @@ Formalize **Transport & Connectivity** as canonical outer layer. REST and MCP st
 
 | ADR | Title | Purpose |
 |-----|-------|---------|
-| [ADR-027](../../adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer | **Proposed** — owner must Approve before code |
+| [ADR-027](../../adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer | **Approved** (2026-07-04) |
 | ADR-025 amend | Add `transport` block to manifest | Additive only |
 
 ## Success criteria

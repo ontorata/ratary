@@ -1,7 +1,8 @@
 # ADR-027: Transport & Connectivity Layer (Phase 10.5)
 
-**Status:** Proposed  
+**Status:** Approved  
 **Date:** 2026-07-04  
+**Approved:** 2026-07-04 (Lutfi Ramadhan — Phase 11 gate PASS; Phase 10.5 authorized)  
 **Deciders:** Project owner  
 
 ---

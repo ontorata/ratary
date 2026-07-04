@@ -1,7 +1,7 @@
 # Phase 10.5 — Transport & Connectivity Layer — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready — Architecture Review draft (2026-07-04); **awaiting owner approval**  
+**Phase status:** Approved — Architecture Review (2026-07-04); **implementation in progress (10.5A ✅)**  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → [ADR-027](../../adr/027-transport-connectivity-layer.md)  
 **Roadmap placement:** Extension track **10.5** — parallel with Phase 11 after 11A; **does not block** Postgres P0
