@@ -407,14 +407,14 @@ No changes to REST/MCP request or response shapes in Phase 5. Optional: expose `
 
 ## 16. Definition of Done (Phase 5)
 
-- [ ] `IEmbeddingProvider` + `NoopEmbeddingProvider` with tests
-- [ ] `memory_embeddings` table + `D1EmbeddingStore`
-- [ ] `EmbeddingJobRunner` + `npm run db:backfill-embeddings`
-- [ ] `applyEmbeddingBackfill` on `IMemoryWriter`; reader query for missing embeddings
-- [ ] OpenAI provider behind env (optional in prod)
-- [ ] No synchronous embed in `insert()` / `update()`
-- [ ] ARCHITECTURE.md Phase 5 row updated
-- [ ] All existing tests pass; new tests for embedding ports
+- [x] `IEmbeddingProvider` + `NoopEmbeddingProvider` with tests
+- [x] `memory_embeddings` table + `D1EmbeddingStore`
+- [x] `EmbeddingJobRunner` + `npm run db:backfill-embeddings`
+- [x] `applyEmbeddingBackfill` on `IMemoryWriter`; reader query for missing embeddings
+- [x] OpenAI provider behind env (optional in prod)
+- [x] No synchronous embed in `insert()` / `update()`
+- [x] ARCHITECTURE.md Phase 5 row updated
+- [x] All existing tests pass; new tests for embedding ports
 
 ---
 
