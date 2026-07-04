@@ -43,6 +43,16 @@ phases/
 └── 18-cloud-platform/                🔲 Enterprise
 └── 19-observability-platform/        🔲 Enterprise
 └── 20-ai-infrastructure/             🔲 Enterprise
+
+# Extension & platform design drafts (2026-07-04) — awaiting owner approval
+└── 04.7-memory-stewardship/          🔲 Design draft (ADR-045)
+└── 08.6-learning-intelligence/       🔲 Design draft (ADR-057)
+└── 08.7-graph-relation-inference/    🔲 Design draft (ADR-041)
+└── 09.7-memory-evolution/            🔲 Design draft (ADR-040)
+└── 09.8-multi-client-sync/           🔲 Design draft (ADR-042)
+└── 23-enterprise-knowledge-fabric/   🔲 Design draft (ADR-047)
+└── 24-ai-brain-platform/             🔲 Design draft (ADR-044)
+└── 25-global-ai-intelligence/        🔲 Design draft — capstone (ADR-036/037/038/043)
 ```
 
 Each `phases/NN-name/` folder:
@@ -97,6 +107,26 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | ✅ Closed | [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md) |
 | 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | ✅ Closed | [ADR-005–017](../../../docs/adr/README.md) |
 | 11 Production Ops | [11-production-ops/](11-production-ops/README.md) | 🔄 Open | [ADR-018 Approved](../../../docs/adr/018-production-postgres-cutover.md) |
+
+### Reserved & design-draft phases (awaiting owner approval)
+
+| Phase | Folder | Status | ADR gate |
+|-------|--------|--------|----------|
+| 10.5 Transport & Connectivity | [10.5-transport-connectivity/](10.5-transport-connectivity/README.md) | 🔲 Design draft | ADR-027 Approved |
+| 13 Protocol Layer | [13-protocol-layer/](13-protocol-layer/README.md) | 🔲 Design draft | ADR-028 |
+| 14 Federation | [14-federation/](14-federation/README.md) | 🔲 Design draft | ADR-029 |
+| 15 Autonomous Agent Ecosystem | [15-autonomous-agent-ecosystem/](15-autonomous-agent-ecosystem/README.md) | 🔲 Design draft | ADR-030 |
+| 16–20 Enterprise evolution | [roadmap/11-ENTERPRISE-ROADMAP.md](../roadmap/11-ENTERPRISE-ROADMAP.md) | 🔲 Design draft | ADR-031–035 |
+| 04.7 Memory Stewardship | [04.7-memory-stewardship/](04.7-memory-stewardship/README.md) | 🔲 Design draft | ADR-045 |
+| 08.6 Learning Intelligence | [08.6-learning-intelligence/](08.6-learning-intelligence/README.md) | 🔲 Design draft | ADR-057 |
+| 08.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | 🔲 Design draft | ADR-041 |
+| 09.7 Memory Evolution | [09.7-memory-evolution/](09.7-memory-evolution/README.md) | 🔲 Design draft | ADR-040 |
+| 09.8 Multi-client Sync | [09.8-multi-client-sync/](09.8-multi-client-sync/README.md) | 🔲 Design draft | ADR-042 |
+| 23 Enterprise Knowledge Fabric | [23-enterprise-knowledge-fabric/](23-enterprise-knowledge-fabric/README.md) | 🔲 Design draft | ADR-047 |
+| 24 AI-Brain Platform | [24-ai-brain-platform/](24-ai-brain-platform/README.md) | 🔲 Design draft | ADR-044 |
+| **25 Global AI Intelligence Platform** | [25-global-ai-intelligence/](25-global-ai-intelligence/README.md) | 🔲 Design draft — capstone | ADR-036 / 037 / 038 / 043 |
+
+*Design-draft phases carry no implementation until their ADR gate is **Approved**.*
 
 ---
 

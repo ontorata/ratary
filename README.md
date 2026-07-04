@@ -116,6 +116,18 @@ Default deploy = **D1-only** (tanpa adapter eksternal). Adapter di bawah aktif v
 
 Detail timeline: [.ai/phases/roadmap/10-POST-ROADMAP.md](.ai/phases/roadmap/10-POST-ROADMAP.md) · status live: [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md)
 
+#### Visi platform (desain jangka panjang 🔲)
+
+Arah evolusi AI-Brain menjadi **Collaborative Memory Intelligence Platform** terdokumentasi sebagai desain (belum diimplementasi, menunggu approval owner):
+
+| Desain | Fokus | Referensi |
+|--------|-------|-----------|
+| **Vision charter** | Identitas platform, prinsip knowledge independence & team ownership | [.ai/core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md](.ai/core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) |
+| **Phase 25 — Global AI Intelligence Platform** | AI telemetry, usage analytics, cloud-connected ecosystem, federasi 5-tier (Workspace → Org → Cloud → Edge → Developer) | [.ai/phases/25-global-ai-intelligence/DESIGN.md](.ai/phases/25-global-ai-intelligence/DESIGN.md) · ADR-036/037/038/043 |
+| **Indeks fase & drafts** | Seluruh fase reserved + extension design drafts | [.ai/phases/README.md](.ai/phases/README.md) |
+
+Semua desain di atas berstatus **draft** — tanpa perubahan `MemoryService`, semua kapabilitas default OFF.
+
 ## Tech Stack
 
 - **Cloudflare D1** — SQLite serverless database (default metadata store)
