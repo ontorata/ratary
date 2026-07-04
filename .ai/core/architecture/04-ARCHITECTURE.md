@@ -206,6 +206,8 @@ MemoryService
 - `ContextService` owns budget enforcement; config in `context.config.ts`.
 - Consolidation runs via script/job — not on every read path.
 - `semantic_hash` and intelligence fields are metadata — not reasoning state.
+- Semantic compression (Phase 5.5, ADR-023): `memory/compression/` defines `ICompressionPolicy`; `MemoryConsolidator` extended for hierarchical summaries (`level=summary|canonical`), `consolidates` relations, and `compression_meta` audit. Gated by `COMPRESSION_ENABLED=false`. CLI: `compress:memories`.
+- Progressive retrieval (Phase 6.5, ADR-024): `memory/retrieval-policy/` defines `IRetrievalPolicy` / `RetrievalPlan`; `ContextService.buildContext` resolves policy after rank, gates body hydration, returns additive `retrievalPlan`. Composition: `create-progressive-retrieval-ports.ts`. Manifest: `supportsProgressiveRetrieval`.
 - Stewardship (Phase 04.7, ADR-045): `memory/stewardship/` orchestrates deterministic maintenance tasks in fixed stage order (dry-run default) behind `IMemoryStewardshipOrchestrator` / `IMaintenanceTask` / `IStewardshipRunStore`. Composes `MemoryConsolidator` + read-only audits from the outside — no planner, no agent, `MemoryService` unchanged. Gated by `MEMORY_STEWARDSHIP_ENABLED`.
 
 ---

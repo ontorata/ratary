@@ -1,9 +1,7 @@
 import { getD1Client } from '../src/db/index.js';
 import { runMigrations } from '../src/db/migrations.js';
-import { MemoryRepository } from '../src/repositories/memory.repository.js';
-import { MemoryRelationRepository } from '../src/repositories/memory-relation.repository.js';
-import { CompressionJobRunner } from '../src/jobs/compression-job-runner.js';
-import { RuleBasedCompressionPolicy } from '../src/memory/compression/rule-based-compression-policy.js';
+import { getEnv } from '../src/config/index.js';
+import { createCompressionPorts } from '../src/composition/create-compression-ports.js';
 import { sqlFromD1Client } from './lib/sql-from-d1-client.js';
 
 function parseArgs(): { dryRun: boolean; projectId?: string } {
@@ -17,19 +15,16 @@ async function compressMemories(): Promise<void> {
   const { dryRun, projectId } = parseArgs();
   console.log(`Semantic compression (${dryRun ? 'dry-run' : 'execute'})...`);
 
+  const env = getEnv();
+  if (!env.COMPRESSION_ENABLED) {
+    console.log('Note: COMPRESSION_ENABLED=false — runner will report zero candidates.');
+  }
+
   const client = getD1Client();
   await runMigrations(client);
 
   const sql = sqlFromD1Client(client);
-  const repository = new MemoryRepository(sql);
-  const relationRepository = new MemoryRelationRepository(sql);
-  const enabled = process.env.COMPRESSION_ENABLED === 'true';
-  const runner = new CompressionJobRunner(
-    repository,
-    relationRepository,
-    new RuleBasedCompressionPolicy(),
-    enabled,
-  );
+  const { runner } = createCompressionPorts(sql, env);
 
   const owners = await client.query<{ owner_id: string }>(
     'SELECT DISTINCT owner_id FROM memories WHERE owner_id != ?',

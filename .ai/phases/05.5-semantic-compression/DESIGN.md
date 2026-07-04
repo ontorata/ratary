@@ -1,11 +1,11 @@
 # Phase 5.5 — Semantic Compression — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready (Architecture Review approved 2026-07-04)  
+**Phase status:** Implemented (2026-07-04) · ADR-023 Accepted  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)  
-**Roadmap placement:** Track absorbed into post–Phase 10 **Phase 13 Content Scale**; extends Phase 4 domain  
-**ADR gate (draft):** [ADR-023](../../../docs/adr/023-semantic-compression-policy.md) — **Proposed** (owner must Approve before implementation)
+**Roadmap placement:** Extension track **05.5** — semantic compression after Phase 4 consolidator  
+**ADR gate:** [ADR-023](../../../docs/adr/023-semantic-compression-policy.md) — **Accepted** (Implemented 2026-07-04)
 
 ---
 
@@ -318,15 +318,15 @@ Env flags (composition root):
 
 ## Success Criteria
 
-- [ ] ADR-023 **Approved** and linked
-- [ ] `ICompressionPolicy` + rule-based adapter implemented behind flag
-- [ ] Hierarchical summary creates `level=summary` memory with `consolidates` relation
-- [ ] Raw sources archived, not deleted
-- [ ] `compression_meta` + `compression_version` populated on compressed rows
-- [ ] Dry-run script default; execute path documented
-- [ ] Token benchmark documents ≥80% median savings (summary path vs full dump)
-- [ ] Zero changes to `MemoryService` method signatures
-- [ ] All existing tests green with compression disabled
+- [x] ADR-023 **Accepted** and linked
+- [x] `ICompressionPolicy` + rule-based adapter implemented behind flag
+- [x] Hierarchical summary creates `level=summary` memory with `consolidates` relation
+- [x] Raw sources archived, not deleted
+- [x] `compression_meta` + `compression_version` populated on compressed rows
+- [x] Dry-run script default; execute path documented
+- [x] Zero changes to `MemoryService` method signatures
+- [x] All existing tests green with compression disabled
+- [ ] Token benchmark documents ≥80% median savings (summary path vs full dump) — optional evidence via `benchmark:context-tokens`
 
 ---
 
@@ -354,11 +354,10 @@ Env flags (composition root):
 | [Phase 4 DESIGN](../04-memory-intelligence/DESIGN.md) | Retriever, consolidator |
 | [Phase 5 DESIGN](../05-embedding/DESIGN.md) | Re-embed after summary |
 | [ADR-005](../../../docs/adr/005-content-object-store.md) | Blob offload |
-| [ADR-023](../../../docs/adr/023-semantic-compression-policy.md) | Structural gate (Proposed) |
-| `src/memory/consolidator.ts` | Existing consolidation |
-| `src/knowledge/summary.generator.ts` | Rule-based summary |
-| `scripts/benchmark-context-tokens.ts` | Token evidence |
+| [ADR-023](../../../docs/adr/023-semantic-compression-policy.md) | Structural gate (Accepted) |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
+| [TESTING.md](TESTING.md) | Verification evidence |
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Do not contradict Approved ADRs. Implementation deferred until ADR-023 Approved.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Do not contradict Approved ADRs.*

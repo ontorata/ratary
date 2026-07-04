@@ -14,7 +14,7 @@ import { GraphRetrievalCandidateSource } from '../graph/graph-retrieval-candidat
 import { getEnv } from '../config/index.js';
 import { createLexicalRetrievalSource } from '../infrastructure/composition/create-lexical-retrieval-source.js';
 import { createGraphProvider } from '../infrastructure/composition/create-graph-provider.js';
-import { MAX_CONTEXT_MAX_CHARS } from './context.config.js';
+import { createProgressiveRetrievalPorts } from '../composition/create-progressive-retrieval-ports.js';
 
 export interface ContextServicePlatformDeps {
   embeddingProvider?: IEmbeddingProvider;
@@ -39,13 +39,11 @@ export function createContextService(
 ): ContextService {
   const env = getEnv();
   const candidateSource = buildCompositeCandidateSource(repository, env, platform);
+  const progressive = createProgressiveRetrievalPorts(env);
 
   return new ContextService(repository, candidateSource, platform?.memoryAccessAuditor, {
-    deployment: {
-      hybridRetrieval: env.HYBRID_RETRIEVAL,
-      graphRetrieval: env.GRAPH_RETRIEVAL,
-      maxContextMaxChars: MAX_CONTEXT_MAX_CHARS,
-    },
+    retrievalPolicy: progressive.policy,
+    deployment: progressive.deployment,
   });
 }
 

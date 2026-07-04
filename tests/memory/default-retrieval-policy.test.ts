@@ -34,4 +34,17 @@ describe('DefaultRetrievalPolicy', () => {
     expect(plan.stagesApplied).toContain('vector');
     expect(plan.stagesApplied).toContain('graph');
   });
+
+  it('reduces maxMemories under tight char budget', () => {
+    const plan = policy.resolve({ limit: 10, context: { maxChars: 1_500 } }, 8, deployment);
+
+    expect(plan.budget.maxChars).toBe(1_500);
+    expect(plan.budget.maxMemories).toBeLessThan(10);
+  });
+
+  it('uses custom policy version when provided', () => {
+    const custom = new DefaultRetrievalPolicy('2');
+    const plan = custom.resolve({}, 1, deployment);
+    expect(plan.policyVersion).toBe('2');
+  });
 });

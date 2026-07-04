@@ -8,6 +8,8 @@ import type { RetrievalStage } from './retrieval-stage.js';
 const TIGHT_BUDGET_CHARS = 2_000;
 
 export class DefaultRetrievalPolicy implements IRetrievalPolicy {
+  constructor(private readonly policyVersion: string = RETRIEVAL_POLICY_VERSION) {}
+
   resolve(
     request: BuildContextRequest,
     rankedCount: number,
@@ -47,7 +49,7 @@ export class DefaultRetrievalPolicy implements IRetrievalPolicy {
     };
 
     return {
-      policyVersion: RETRIEVAL_POLICY_VERSION,
+      policyVersion: this.policyVersion,
       stagesApplied: stages,
       hydrateBody,
       budget,

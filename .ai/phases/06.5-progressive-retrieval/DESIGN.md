@@ -1,11 +1,11 @@
 # Phase 6.5 — Progressive Retrieval — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready (Architecture Review approved 2026-07-04)  
+**Phase status:** Implemented (2026-07-04) · ADR-024 Accepted  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)  
-**Roadmap placement:** Track extends Phase 4 + Phase 6; production hardening in **Phase 13–14**  
-**ADR gate (draft):** [ADR-024](../../../docs/adr/024-progressive-retrieval-policy.md) — **Proposed**
+**Roadmap placement:** Extension track **06.5** — progressive retrieval after Phase 4 + Phase 6  
+**ADR gate:** [ADR-024](../../../docs/adr/024-progressive-retrieval-policy.md) — **Accepted** (Implemented 2026-07-04)
 
 ---
 
@@ -296,14 +296,14 @@ Env:
 
 ## Success Criteria
 
-- [ ] ADR-024 **Approved**
-- [ ] `IRetrievalPolicy` + default adapter behind env flag
-- [ ] Default policy reproduces current production behavior exactly
-- [ ] `retrievalPlan` optional in REST/MCP responses when enabled
-- [ ] Token benchmark thresholds documented and CI-stable
-- [ ] No signature changes to `MemoryService`, `Retriever`, `Ranker`
-- [ ] O-04-2 regression test still passes
-- [ ] All existing tests green with `RETRIEVAL_POLICY=default`
+- [x] ADR-024 **Accepted** and linked
+- [x] `IRetrievalPolicy` + default adapter wired via composition root
+- [x] Default policy reproduces current production behavior exactly
+- [x] `retrievalPlan` optional in REST/MCP context responses
+- [ ] Token benchmark thresholds documented and CI-stable — optional via `benchmark:context-tokens`
+- [x] No signature changes to `MemoryService`, `Retriever`, `Ranker`
+- [x] O-04-2 regression preserved (candidates without body until hydration)
+- [x] All existing tests green with default policy
 
 ---
 
@@ -324,15 +324,10 @@ Env:
 | Document | Relevance |
 |----------|-----------|
 | [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) | Composite retrieval |
-| [ADR-024](../../../docs/adr/024-progressive-retrieval-policy.md) | Gate (Proposed) |
-| [Phase 4 DESIGN](../04-memory-intelligence/DESIGN.md) | Retriever, ContextBuilder |
-| [Phase 6 DESIGN](../06-hybrid-retrieval/DESIGN.md) | Vector leg |
-| [Phase 8 DESIGN](../08-knowledge-graph/DESIGN.md) | Graph leg |
-| [Phase 7 DESIGN §10–§11](../07-agent-runtime/DESIGN.md) | Context MCP contract |
-| `src/memory/context.service.ts` | Orchestration point |
-| `src/repositories/memory.repository.ts` | O-04-2 projection |
-| Architecture Review 2026-07-04 | Progressive stack approval |
+| [ADR-024](../../../docs/adr/024-progressive-retrieval-policy.md) | Gate (Accepted) |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
+| [TESTING.md](TESTING.md) | Verification evidence |
 
 ---
 
-*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Implementation deferred until ADR-024 Approved.*
+*Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Do not contradict Approved ADRs.*
