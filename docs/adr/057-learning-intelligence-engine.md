@@ -1,7 +1,9 @@
 # ADR-057: Learning Intelligence Engine (Phase 08.6)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
+**Approved:** 2026-07-04 (owner — DESIGN + W1/L26 implementation)  
+**Implemented:** 2026-07-04 — L21 foundation, L22 analytics, L26 ranking snapshots  
 **Deciders:** Project owner  
 
 ---
@@ -33,6 +35,15 @@ Adopt **Learning Intelligence Engine (Phase 08.6)** with orchestrator + componen
 ## Rollback
 
 Disable flag; Ranker reads static `ranking.config.ts`; learning tables dormant.
+
+## Implementation (2026-07-04)
+
+- `src/learning/` — orchestrator, analytics, ranking learning, event recorder
+- `src/infrastructure/learning/` — SQL event + artifact stores
+- `create-learning-ports.ts` — composition root
+- `npm run learning:run` — batch orchestrator CLI
+- Ranker + ContextService read active ranking policy snapshot when enabled
+- Remaining component engines: no-op stubs for L23–L30
 
 ## References
 

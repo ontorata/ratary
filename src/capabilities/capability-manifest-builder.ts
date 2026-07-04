@@ -58,6 +58,9 @@ export class CapabilityManifestBuilder {
         supportsEventSubscription: this.env.EVENT_BUS_PROVIDER !== 'none',
         supportsProgressiveRetrieval: true,
         supportsSelfManagement: Boolean(this.env.MEMORY_STEWARDSHIP_ENABLED),
+        supportsLearningEngine: this.env.LEARNING_ENGINE_ENABLED,
+        supportsRelationInference: this.env.RELATION_INFERENCE_ENABLED,
+        supportsMemoryEvolution: this.env.MEMORY_EVOLUTION_ENABLED,
       },
       limits: {
         maxContextTokens: Math.floor(MAX_CONTEXT_MAX_CHARS / 4) || MANIFEST_MAX_CONTEXT_TOKENS,

@@ -26,6 +26,9 @@ import { createWorkspaceController } from '../../controllers/workspace.controlle
 import { createCapabilitiesController } from '../../controllers/capabilities.controller.js';
 import { createSignalsController } from '../../controllers/signals.controller.js';
 import { createSignalIngestPorts } from '../../composition/create-signal-ingest-ports.js';
+import { createLearningPorts } from '../../composition/create-learning-ports.js';
+import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
+import { createEvolutionController } from '../../controllers/evolution.controller.js';
 import { createGraphService } from '../../services/graph.service.js';
 import { createContextService } from '../../memory/create-context-service.js';
 import { createMemoryAccessAuditor } from '../../infrastructure/composition/create-memory-access-auditor.js';
@@ -127,7 +130,13 @@ export async function buildApp(options?: {
   const relationRepository = new MemoryRelationRepository(platform.sql);
   const multiAi = createMultiAiPorts(platform.sql);
   const { scopeResolver } = multiAi;
-  const memoryService = createMemoryService(platform.sql, repository, multiAi);
+  const evolutionPorts = createMemoryEvolutionPorts(platform.sql, env);
+  const memoryService = createMemoryService(
+    platform.sql,
+    repository,
+    multiAi,
+    evolutionPorts.coordinator,
+  );
   const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
   const healthService = new HealthService(platform.sql);
 
@@ -158,9 +167,16 @@ export async function buildApp(options?: {
   );
   const capabilitiesController = createCapabilitiesController(env);
   const signalPorts = createSignalIngestPorts(platform.sql, env);
+  const learningPorts = createLearningPorts(platform.sql, env);
   const signalsController = signalPorts.enabled
-    ? createSignalsController(scopeResolver, signalPorts.normalizer, signalPorts.ingestor)
+    ? createSignalsController(scopeResolver, signalPorts.normalizer, signalPorts.ingestor, {
+        eventRecorder: learningPorts.enabled ? learningPorts.eventRecorder : undefined,
+      })
     : undefined;
+  const evolutionController =
+    evolutionPorts.enabled && evolutionPorts.service
+      ? createEvolutionController(scopeResolver, evolutionPorts.service)
+      : undefined;
 
   const controllers = {
     health: healthController,
@@ -174,6 +190,7 @@ export async function buildApp(options?: {
     workspace: workspaceController,
     capabilities: capabilitiesController,
     signals: signalsController,
+    evolution: evolutionController,
   };
 
   await fastify.register(

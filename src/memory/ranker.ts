@@ -6,6 +6,8 @@ import {
   RETRIEVAL_MAX_RANKED,
   RETRIEVAL_WEIGHTS,
 } from '../search/ranking.config.js';
+import type { RankingPolicySnapshot } from '../learning/learning.types.js';
+import { resolveRetrievalWeight } from '../learning/ranking-policy-snapshot.js';
 
 export interface ScoredMemory extends Memory {
   relevanceScore: number;
@@ -24,25 +26,31 @@ function daysSince(iso: string): number {
   return (Date.now() - then) / (1000 * 60 * 60 * 24);
 }
 
-function recencyBoost(updatedAt: string): number {
+function recencyBoost(updatedAt: string, snapshot?: RankingPolicySnapshot): number {
   const days = daysSince(updatedAt);
-  if (days <= 7) return RETRIEVAL_WEIGHTS.recencyDays7;
-  if (days <= 30) return RETRIEVAL_WEIGHTS.recencyDays30;
+  const weight7 = resolveRetrievalWeight('recencyDays7', snapshot);
+  const weight30 = resolveRetrievalWeight('recencyDays30', snapshot);
+  if (days <= 7) return weight7;
+  if (days <= 30) return weight30;
   return 0;
 }
 
-function accessBoost(accessCount: number): number {
+function accessBoost(accessCount: number, snapshot?: RankingPolicySnapshot): number {
   if (accessCount <= 0) return 0;
-  return Math.round(RETRIEVAL_WEIGHTS.accessCountLog * Math.log1p(accessCount));
+  const weight = resolveRetrievalWeight('accessCountLog', snapshot);
+  return Math.round(weight * Math.log1p(accessCount));
 }
 
-export function applyRetrievalBoosts(memory: ScoredMemory): ScoredMemory {
+export function applyRetrievalBoosts(
+  memory: ScoredMemory,
+  snapshot?: RankingPolicySnapshot,
+): ScoredMemory {
   const levelBoost = LEVEL_BOOST[memory.level] ?? 0;
   const boosted =
     memory.relevanceScore +
     levelBoost +
-    recencyBoost(memory.updatedAt) +
-    accessBoost(memory.accessCount);
+    recencyBoost(memory.updatedAt, snapshot) +
+    accessBoost(memory.accessCount, snapshot);
 
   return { ...memory, relevanceScore: boosted };
 }
@@ -52,10 +60,11 @@ export class Ranker {
     memories: Memory[],
     query: SearchQueryContext,
     limit = RETRIEVAL_DEFAULT_LIMIT,
+    snapshot?: RankingPolicySnapshot,
   ): ScoredMemory[] {
     const cappedLimit = Math.min(Math.max(limit, 1), RETRIEVAL_MAX_RANKED);
     return rankMemories(memories, query)
-      .map(applyRetrievalBoosts)
+      .map((memory) => applyRetrievalBoosts(memory, snapshot))
       .sort((a, b) => {
         if (b.relevanceScore !== a.relevanceScore) {
           return b.relevanceScore - a.relevanceScore;

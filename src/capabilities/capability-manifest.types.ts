@@ -38,6 +38,9 @@ export interface CapabilityFlags {
   supportsEventSubscription: boolean;
   supportsProgressiveRetrieval: boolean;
   supportsSelfManagement: boolean;
+  supportsLearningEngine: boolean;
+  supportsRelationInference: boolean;
+  supportsMemoryEvolution: boolean;
 }
 
 export interface CapabilityLimits {

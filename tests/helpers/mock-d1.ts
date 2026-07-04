@@ -1065,6 +1065,46 @@ export class MockD1Client implements D1Client {
       return { results: [{ count }], success: true };
     }
 
+    if (
+      normalizedSql.startsWith('SELECT') &&
+      normalizedSql.includes('FROM MEMORY_RELATIONS') &&
+      normalizedSql.includes('SOURCE_MEMORY_ID = ?') &&
+      normalizedSql.includes('TARGET_MEMORY_ID = ?') &&
+      normalizedSql.includes('RELATION = ?') &&
+      !normalizedSql.includes('COUNT(*)') &&
+      !normalizedSql.includes('SOURCE_MEMORY_ID = ? OR TARGET_MEMORY_ID = ?')
+    ) {
+      const ownerId = params[0] as string;
+      const sourceId = params[1] as string;
+      const targetId = params[2] as string;
+      const relation = params[3] as string;
+      const rows = [...this.relations.values()].filter(
+        (r) =>
+          r.owner_id === ownerId &&
+          r.source_memory_id === sourceId &&
+          r.target_memory_id === targetId &&
+          r.relation === relation,
+      );
+      return { results: rows, success: true };
+    }
+
+    if (normalizedSql.startsWith('UPDATE MEMORY_RELATIONS')) {
+      const weight = params[0] as number;
+      const confidence = params[1] as number;
+      const metadata = params[2] as string;
+      const id = params[3] as string;
+      const ownerId = params[4] as string;
+      const row = this.relations.get(id);
+      if (row && row.owner_id === ownerId) {
+        row.weight = weight;
+        row.confidence = confidence;
+        row.metadata = metadata;
+        this.relations.set(id, row);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+      return { results: [], success: true, meta: { changes: 0 } };
+    }
+
     if (normalizedSql.startsWith('DELETE FROM MEMORY_RELATIONS')) {
       const id = params[0] as string;
       const ownerId = params[1] as string;

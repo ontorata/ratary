@@ -18,6 +18,7 @@ import { NotFoundError } from '../types/errors.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 import { hasWorkspaceScope } from '../types/memory-scope.js';
 import type { ISyncManager, MemoryWriteEvent } from '../sync/isync-manager.interface.js';
+import type { IMemoryEvolutionCoordinator } from '../evolution/memory-evolution-coordinator.js';
 import { generateId } from '../utils/memory-mapper.js';
 
 export class MemoryService {
@@ -28,6 +29,7 @@ export class MemoryService {
     private readonly embeddingStore?: IEmbeddingStore,
     private readonly syncManager?: ISyncManager,
     private readonly agentIdentity?: IAgentIdentity,
+    private readonly evolution?: IMemoryEvolutionCoordinator,
   ) {}
 
   private async resolveAttributionAgentId(scope: MemoryScope): Promise<string | undefined> {
@@ -77,7 +79,7 @@ export class MemoryService {
     const agentId = await this.resolveAttributionAgentId(scope);
     await this.reconcileMemoryWrite(scope, id, 'create');
 
-    return this.repository.insert({
+    const memory = await this.repository.insert({
       id,
       title: input.title,
       project: input.project,
@@ -99,6 +101,12 @@ export class MemoryService {
       level: input.level ?? DEFAULT_MEMORY_LEVEL,
       lastModifiedByAgentId: agentId ?? null,
     });
+
+    if (this.evolution?.enabled) {
+      await this.evolution.onMemoryCreated(scope, memory);
+    }
+
+    return memory;
   }
 
   async updateMemory(scope: MemoryScope, id: string, input: UpdateMemoryInput): Promise<Memory> {
@@ -131,6 +139,10 @@ export class MemoryService {
 
     const agentId = await this.resolveAttributionAgentId(scope);
     await this.reconcileMemoryWrite(scope, id, 'update', existing.updatedAt);
+
+    if (this.evolution?.enabled) {
+      await this.evolution.onMemoryUpdated(scope, existing, agentId ?? null);
+    }
 
     const updated = await this.repository.update(
       id,

@@ -1,7 +1,9 @@
 # ADR-041: Automatic Graph Relation Inference (Phase 08.7)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
+**Approved:** 2026-07-04 (owner — DESIGN + implementation)  
+**Implemented:** 2026-07-04 — orchestrator, 3 sources, upsertInferred, CLI  
 **Deciders:** Project owner  
 
 ---
@@ -19,3 +21,16 @@ Adopt `IRelationInferenceOrchestrator` + source ports; upsert inferred edges; ma
 ## Rollback
 
 Disable flag; no inference jobs scheduled.
+
+## Implementation (2026-07-04)
+
+- `src/inference/` — orchestrator, scoring policy, 3 deterministic sources
+- `MemoryRelationRepository.upsertInferred` — manual-safe upsert
+- `relation_inference_evidence` audit table
+- `npm run infer:relations` CLI
+- Manifest `supportsRelationInference`
+
+## References
+
+- Phase 8 graph traversal
+- ADR-006 IGraphProvider

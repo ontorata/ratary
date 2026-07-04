@@ -210,6 +210,9 @@ MemoryService
 - Progressive retrieval (Phase 6.5, ADR-024): `memory/retrieval-policy/` defines `IRetrievalPolicy` / `RetrievalPlan`; `ContextService.buildContext` resolves policy after rank, gates body hydration, returns additive `retrievalPlan`. Composition: `create-progressive-retrieval-ports.ts`. Manifest: `supportsProgressiveRetrieval`.
 - Stewardship (Phase 04.7, ADR-045): `memory/stewardship/` orchestrates deterministic maintenance tasks in fixed stage order (dry-run default) behind `IMemoryStewardshipOrchestrator` / `IMaintenanceTask` / `IStewardshipRunStore`. Composes `MemoryConsolidator` + read-only audits from the outside — no planner, no agent, `MemoryService` unchanged. Gated by `MEMORY_STEWARDSHIP_ENABLED`.
 - Quality signals (Phase 8.5, ADR-026): `ingest/` defines `IMemorySignalIngestor`, `DefaultSignalNormalizer`, `ImportanceScoringPolicy`; optional `POST /api/v1/signals` and `memory_signals` audit store. Gated by `SIGNAL_INGEST_ENABLED=false`. CLI: `reflect:signals` (advisory-only).
+- Learning intelligence (Phase 8.6, ADR-057): `learning/` orchestrates async policy snapshots from signal events; `DefaultRankingLearningEngine` produces bounded retrieval weight multipliers; `ContextService` loads active snapshot. Gated by `LEARNING_ENGINE_ENABLED=false`. CLI: `learning:run`.
+- Graph relation inference (Phase 8.7, ADR-041): `inference/` orchestrates batch inferred edges into `memory_relations` (`source_type=inferred`); manual edges never overwritten. Gated by `RELATION_INFERENCE_ENABLED=false`. CLI: `infer:relations`.
+- Memory evolution (Phase 09.7, ADR-040): `evolution/` archives pre-update snapshots to `memory_versions`; `memories` remains Current head. Gated by `MEMORY_EVOLUTION_ENABLED=false`. CLI: `evolution:history`.
 
 ---
 
@@ -385,6 +388,81 @@ scripts/reflect-signals.ts         advisory batch (dry-run default)
 ```
 
 **Gating:** `SIGNAL_INGEST_ENABLED=false` (default). Manifest `supportsQualitySignals` mirrors flag. Explicit feedback applies bounded importance delta; ranker unchanged when disabled.
+
+---
+
+## Learning intelligence (Phase 8.6 — implemented W1 + L26)
+
+**Status:** Implemented — [ADR-057](../../../docs/adr/057-learning-intelligence-engine.md) Accepted (2026-07-04) · [08.6 DESIGN](../../phases/08.6-learning-intelligence/DESIGN.md)
+
+**Owns:** async policy learning from signals — event store, behavior analytics, ranking policy snapshots. **Does not** mutate memory SSOT, implement agent loops, or run in-repo ML training.
+
+**Structure:**
+
+```
+learning/
+  learning-orchestrator.ts           ILearningOrchestrator
+  default-behavior-analytics-engine.ts
+  default-ranking-learning-engine.ts
+  learning-event-recorder.ts         hot-path event append
+infrastructure/learning/
+  sql-learning-event-store.ts
+  sql-learning-artifact-store.ts
+composition/create-learning-ports.ts
+scripts/run-learning.ts              batch orchestrator CLI
+```
+
+**Gating:** `LEARNING_ENGINE_ENABLED=false` (default). Requires `LEARNING_STORE_PROVIDER=sql`. Ranker reads active snapshot via `ContextService` when enabled. Remaining L23–L30 engines are no-op stubs.
+
+---
+
+## Graph relation inference (Phase 8.7 — implemented)
+
+**Status:** Implemented — [ADR-041](../../../docs/adr/041-automatic-graph-relation-inference.md) Accepted (2026-07-04) · [08.7 DESIGN](../../phases/08.7-graph-relation-inference/DESIGN.md)
+
+**Owns:** batch inference of `memory_relations` edges from deterministic signals (project, tags, temporal). **Does not** use LLM extraction or mutate manual relations.
+
+**Structure:**
+
+```
+inference/
+  relation-inference-orchestrator.ts
+  default-relation-scoring-policy.ts
+  sources/project-cooccurrence-source.ts
+  sources/shared-tag-source.ts
+  sources/temporal-proximity-source.ts
+infrastructure/inference/
+  sql-relation-evidence-store.ts
+composition/create-relation-inference-ports.ts
+repositories/memory-relation.repository.ts   # upsertInferred
+scripts/infer-relations.ts
+```
+
+**Gating:** `RELATION_INFERENCE_ENABLED=false` (default). Manual `source_type` edges are never overwritten.
+
+---
+
+## Memory evolution (Phase 09.7 — implemented)
+
+**Status:** Implemented — [ADR-040](../../../docs/adr/040-memory-evolution-version-control.md) Accepted (2026-07-04) · [09.7 DESIGN](../../phases/09.7-memory-evolution/DESIGN.md)
+
+**Owns:** immutable version chain side-store — pre-update snapshots, head pointer, diff/merge policy ports. **Does not** replace REST v1 or mutate history in place.
+
+**Structure:**
+
+```
+evolution/
+  memory-evolution-coordinator.ts    hook on MemoryService create/update
+  memory-evolution.service.ts        list + diff read API
+  default-memory-diff-engine.ts
+infrastructure/evolution/
+  sql-memory-version-store.ts
+  sql-memory-head-store.ts
+composition/create-memory-evolution-ports.ts
+routes/v1/evolution.routes.ts
+```
+
+**Gating:** `MEMORY_EVOLUTION_ENABLED=false` (default). Current content always in `memories`; versions are append-only archives.
 
 ---
 

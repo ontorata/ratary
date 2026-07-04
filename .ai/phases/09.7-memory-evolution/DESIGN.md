@@ -1,15 +1,50 @@
 # Phase 09.7 — Memory Evolution — DESIGN
 
-**ADR gate:** ADR-040 Proposed
+**Document:** DESIGN  
+**Phase status:** ✅ Implemented (2026-07-04) · ADR-040 Accepted  
+**ADR gate:** [ADR-040](../../../docs/adr/040-memory-evolution-version-control.md) — **Accepted**
+
+---
 
 ## Purpose
 
-Enable memories to evolve over time with immutable versions and Current head pointer. Distinct from duplicate rollup (04.7) and federation merge (14).
+Enable memories to evolve over time with immutable versions and a Current head pointer. Distinct from duplicate rollup (04.7) and federation merge (14).
+
+## Side-store model
+
+| Store | Role |
+|-------|------|
+| `memories` | Current head — default CRUD reads/writes |
+| `memory_versions` | Immutable snapshots (pre-update archive) |
+| `memory_heads` | Version counter + branch name per memory |
 
 ## Ports
 
-`IMemoryVersionStore`, `IMemoryHeadStore`, `IMemoryDiffEngine`, `IMemoryMergePolicy`, `IVersionConfidenceScorer`
+| Port | Implementation | Status |
+|------|----------------|--------|
+| `IMemoryVersionStore` | `SqlMemoryVersionStore` | ✅ |
+| `IMemoryHeadStore` | `SqlMemoryHeadStore` | ✅ |
+| `IMemoryDiffEngine` | `DefaultMemoryDiffEngine` | ✅ |
+| `IMemoryMergePolicy` | `DefaultMemoryMergePolicy` | ✅ |
+| `IVersionConfidenceScorer` | `DefaultVersionConfidenceScorer` | ✅ |
+| Coordinator | `MemoryEvolutionCoordinator` | ✅ |
 
 ## MemoryService impact
 
-Facade mode when enabled; signatures unchanged when disabled
+Facade hook when enabled — **signatures unchanged** when disabled.
+
+## Success criteria
+
+- [x] ADR-040 Accepted
+- [x] Pre-update snapshots on `updateMemory`
+- [x] Head init on `createMemory`
+- [x] REST list + diff endpoints (gated)
+- [x] Flag off = zero regression
+- [ ] Branch/merge execute path (deferred)
+- [ ] Restore-to-version mutation (deferred)
+
+## Non-goals
+
+- REST API v2
+- In-place destructive history rewrite
+- LLM-assisted merge

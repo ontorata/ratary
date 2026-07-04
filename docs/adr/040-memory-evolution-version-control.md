@@ -1,7 +1,9 @@
 # ADR-040: Memory Evolution & Version Control (Phase 09.7)
 
-**Status:** Proposed  
+**Status:** Implemented  
 **Date:** 2026-07-04  
+**Approved:** 2026-07-04  
+**Implemented:** 2026-07-04 — side-store versioning, diff, REST history  
 **Deciders:** Project owner  
 
 ---
@@ -19,3 +21,16 @@ Adopt side-store version model (`memory_versions`, heads, merge parents) with Cu
 ## Rollback
 
 Disable flag; in-place memory path only.
+
+## Implementation (2026-07-04)
+
+- `src/evolution/` — coordinator, diff, merge, confidence
+- SQL stores for versions + heads
+- MemoryService hooks on create/update
+- REST `GET /memory/:id/versions` and diff endpoint
+- CLI `evolution:history`
+
+## References
+
+- Phase 04.7 duplicate rollup (distinct concern)
+- Phase 09.8 sync conflict resolution

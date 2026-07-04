@@ -50,9 +50,9 @@ phases/
 └── 06.5-progressive-retrieval/       ✅ Implemented (ADR-024)
 └── 07.5-runtime-compatibility/       ✅ Implemented (ADR-025)
 └── 08.5-observation-reflection-learning/ ✅ Implemented (ADR-026)
-└── 08.6-learning-intelligence/       🔲 Design draft (ADR-057)
-└── 08.7-graph-relation-inference/    🔲 Design draft (ADR-041)
-└── 09.7-memory-evolution/            🔲 Design draft (ADR-040)
+└── 08.6-learning-intelligence/       ✅ Implemented W1+L26 (ADR-057)
+└── 08.7-graph-relation-inference/    ✅ Implemented (ADR-041)
+└── 09.7-memory-evolution/            ✅ Implemented (ADR-040)
 └── 09.8-multi-client-sync/           🔲 Design draft (ADR-042)
 └── 23-enterprise-knowledge-fabric/   🔲 Design draft (ADR-047)
 └── 24-ai-brain-platform/             🔲 Design draft (ADR-044)
@@ -126,9 +126,9 @@ Full lifecycle (created when, updated by, roadmap relation): [PHASE-DOCUMENT-SCH
 | 06.5 Progressive Retrieval | [06.5-progressive-retrieval/](06.5-progressive-retrieval/README.md) | ✅ Implemented | ADR-024 |
 | 07.5 Runtime Compatibility | [07.5-runtime-compatibility/](07.5-runtime-compatibility/README.md) | ✅ Implemented | ADR-025 |
 | 08.5 Quality Signals | [08.5-observation-reflection-learning/](08.5-observation-reflection-learning/README.md) | ✅ Implemented | ADR-026 |
-| 08.6 Learning Intelligence | [08.6-learning-intelligence/](08.6-learning-intelligence/README.md) | 🔲 Design draft | ADR-057 |
-| 08.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | 🔲 Design draft | ADR-041 |
-| 09.7 Memory Evolution | [09.7-memory-evolution/](09.7-memory-evolution/README.md) | 🔲 Design draft | ADR-040 |
+| 08.6 Learning Intelligence | [08.6-learning-intelligence/](08.6-learning-intelligence/README.md) | ✅ Implemented W1+L26 | ADR-057 |
+| 08.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | ✅ Implemented | ADR-041 |
+| 09.7 Memory Evolution | [09.7-memory-evolution/](09.7-memory-evolution/README.md) | ✅ Implemented | ADR-040 |
 | 09.8 Multi-client Sync | [09.8-multi-client-sync/](09.8-multi-client-sync/README.md) | 🔲 Design draft | ADR-042 |
 | 23 Enterprise Knowledge Fabric | [23-enterprise-knowledge-fabric/](23-enterprise-knowledge-fabric/README.md) | 🔲 Design draft | ADR-047 |
 | 24 AI-Brain Platform | [24-ai-brain-platform/](24-ai-brain-platform/README.md) | 🔲 Design draft | ADR-044 |

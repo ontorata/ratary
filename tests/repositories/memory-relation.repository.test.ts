@@ -50,4 +50,67 @@ describe('MemoryRelationRepository', () => {
 
     expect(await repository.delete(relation.id, '')).toBe(true);
   });
+
+  it('upsertInferred creates inferred relation', async () => {
+    const outcome = await repository.upsertInferred({
+      sourceMemoryId: '00000000-0000-0000-0000-000000000001',
+      targetMemoryId: '00000000-0000-0000-0000-000000000002',
+      relation: 'related',
+      ownerId,
+      weight: 1,
+      confidence: 0.8,
+    });
+
+    expect(outcome).toBe('created');
+    const exists = await repository.exists(
+      '00000000-0000-0000-0000-000000000001',
+      '00000000-0000-0000-0000-000000000002',
+      'related',
+      ownerId,
+    );
+    expect(exists).toBe(true);
+  });
+
+  it('upsertInferred skips manual relation', async () => {
+    await repository.insert({
+      sourceMemoryId: '00000000-0000-0000-0000-000000000001',
+      targetMemoryId: '00000000-0000-0000-0000-000000000002',
+      relation: 'related',
+      ownerId,
+      sourceType: 'manual',
+    });
+
+    const outcome = await repository.upsertInferred({
+      sourceMemoryId: '00000000-0000-0000-0000-000000000001',
+      targetMemoryId: '00000000-0000-0000-0000-000000000002',
+      relation: 'related',
+      ownerId,
+      weight: 2,
+      confidence: 0.9,
+    });
+
+    expect(outcome).toBe('skipped_manual');
+  });
+
+  it('upsertInferred updates existing inferred relation', async () => {
+    await repository.upsertInferred({
+      sourceMemoryId: '00000000-0000-0000-0000-000000000001',
+      targetMemoryId: '00000000-0000-0000-0000-000000000002',
+      relation: 'related',
+      ownerId,
+      weight: 1,
+      confidence: 0.6,
+    });
+
+    const outcome = await repository.upsertInferred({
+      sourceMemoryId: '00000000-0000-0000-0000-000000000001',
+      targetMemoryId: '00000000-0000-0000-0000-000000000002',
+      relation: 'related',
+      ownerId,
+      weight: 2,
+      confidence: 0.9,
+    });
+
+    expect(outcome).toBe('updated');
+  });
 });

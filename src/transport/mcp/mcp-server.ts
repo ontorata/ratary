@@ -12,6 +12,7 @@ import { createContextService } from '../../memory/create-context-service.js';
 import { createMemoryAccessAuditor } from '../../infrastructure/composition/create-memory-access-auditor.js';
 import { createEmbeddingProvider } from '../../embedding/create-embedding-provider.js';
 import { createPlatformAdapters } from '../../infrastructure/composition/create-platform-adapters.js';
+import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
 import { getEnv } from '../../config/index.js';
 import { createGraphService } from '../../services/graph.service.js';
 import { assertMcpOwnerConfigured } from '../../types/memory-scope.js';
@@ -463,7 +464,13 @@ export async function startMcpStdioServer(): Promise<void> {
   const repository = new MemoryRepository(platform.sql);
   const relationRepository = new MemoryRelationRepository(platform.sql);
   const multiAi = createMultiAiPorts(platform.sql);
-  const memoryService = createMemoryService(platform.sql, repository, multiAi);
+  const evolutionPorts = createMemoryEvolutionPorts(platform.sql, env);
+  const memoryService = createMemoryService(
+    platform.sql,
+    repository,
+    multiAi,
+    evolutionPorts.coordinator,
+  );
   const relationService = createMemoryRelationService(platform.sql, repository, relationRepository);
   const embeddingProvider = createEmbeddingProvider();
   const memoryAccessAuditor = createMemoryAccessAuditor(env, platform.sql);

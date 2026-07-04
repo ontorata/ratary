@@ -63,4 +63,17 @@ export interface IMemoryRelationRepository {
     input: CreateRelationInput,
     createdBy?: string | null,
   ): Promise<MemoryRelation>;
+
+  /**
+   * Upsert an inferred relation — never overwrites manual edges.
+   */
+  upsertInferred(data: {
+    sourceMemoryId: string;
+    targetMemoryId: string;
+    relation: RelationType;
+    ownerId: string;
+    weight: number;
+    confidence: number;
+    metadata?: Record<string, unknown>;
+  }): Promise<'created' | 'updated' | 'skipped_manual'>;
 }

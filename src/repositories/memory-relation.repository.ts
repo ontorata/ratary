@@ -173,4 +173,48 @@ export class MemoryRelationRepository implements IMemoryRelationRepository {
       createdBy,
     });
   }
+
+  async upsertInferred(data: {
+    sourceMemoryId: string;
+    targetMemoryId: string;
+    relation: RelationType;
+    ownerId: string;
+    weight: number;
+    confidence: number;
+    metadata?: Record<string, unknown>;
+  }): Promise<'created' | 'updated' | 'skipped_manual'> {
+    const rows = await this.db.query<RelationRow>(
+      `SELECT ${RELATION_SELECT} FROM memory_relations
+       WHERE owner_id = ? AND source_memory_id = ? AND target_memory_id = ? AND relation = ?`,
+      [data.ownerId, data.sourceMemoryId, data.targetMemoryId, data.relation],
+    );
+
+    if (rows.length > 0) {
+      const existing = rowToRelation(rows[0]);
+      if (existing.sourceType !== 'inferred') {
+        return 'skipped_manual';
+      }
+
+      await this.db.execute(
+        `UPDATE memory_relations
+         SET weight = ?, confidence = ?, metadata = ?
+         WHERE id = ? AND owner_id = ?`,
+        [
+          data.weight,
+          data.confidence,
+          JSON.stringify(data.metadata ?? {}),
+          existing.id,
+          data.ownerId,
+        ],
+      );
+      return 'updated';
+    }
+
+    await this.insert({
+      ...data,
+      sourceType: 'inferred',
+      createdBy: null,
+    });
+    return 'created';
+  }
 }

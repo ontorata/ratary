@@ -129,6 +129,27 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
 
+    // Learning intelligence engine (Phase 8.6) — ADR-057, async policy adaptation
+    LEARNING_ENGINE_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    LEARNING_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+
+    // Graph relation inference (Phase 8.7) — ADR-041, async inferred edges
+    RELATION_INFERENCE_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    RELATION_INFERENCE_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+
+    // Memory evolution & version control (Phase 09.7) — ADR-040
+    MEMORY_EVOLUTION_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    MEMORY_EVOLUTION_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+
     // Self-managing memory stewardship (Phase 04.7) — ADR-045, deterministic maintenance pipeline
     MEMORY_STEWARDSHIP_ENABLED: z
       .enum(['true', 'false'])

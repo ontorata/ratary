@@ -60,4 +60,23 @@ describe('Ranker', () => {
     const ranked = ranker.rank(memories, {}, 5);
     expect(ranked).toHaveLength(5);
   });
+
+  it('should boost access count when ranking snapshot increases access weight', () => {
+    const withSnapshot = applyRetrievalBoosts(
+      { ...baseMemory({ accessCount: 10 }), relevanceScore: 10 },
+      {
+        snapshotId: 's1',
+        ownerId: 'owner',
+        version: 1,
+        retrievalWeightMultipliers: { accessCountLog: 1.2 },
+        createdAt: new Date().toISOString(),
+      },
+    );
+    const baseline = applyRetrievalBoosts({
+      ...baseMemory({ accessCount: 10 }),
+      relevanceScore: 10,
+    });
+
+    expect(withSnapshot.relevanceScore).toBeGreaterThan(baseline.relevanceScore);
+  });
 });

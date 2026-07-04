@@ -5,10 +5,13 @@ import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
 import { resolveMemoryScopeFromRequest } from '../scope/resolve-request-scope.js';
 import { ValidationError } from '../types/errors.js';
 
+import type { LearningEventRecorder } from '../learning/learning-event-recorder.js';
+
 export function createSignalsController(
   scopeResolver: IScopeResolver,
   normalizer: ISignalNormalizer,
   ingestor: IMemorySignalIngestor,
+  options?: { eventRecorder?: LearningEventRecorder },
 ) {
   return {
     async ingest(request: FastifyRequest, reply: FastifyReply): Promise<void> {
@@ -23,6 +26,9 @@ export function createSignalsController(
       }
 
       const result = await ingestor.ingest(scope, signal);
+      if (options?.eventRecorder) {
+        await options.eventRecorder.recordFromSignal(scope, signal, result);
+      }
       reply.send(result);
     },
   };

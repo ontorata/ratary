@@ -16,6 +16,7 @@ import type {
 } from './retrieval-policy/iretrieval-policy.interface.js';
 import { DefaultRetrievalPolicy } from './retrieval-policy/default-retrieval-policy.js';
 import type { RetrievalDeploymentCapabilities } from './retrieval-policy/retrieval-budget.js';
+import type { RankingPolicySnapshot } from '../learning/learning.types.js';
 
 export interface BuildContextRequest {
   projectId?: string;
@@ -41,6 +42,7 @@ export interface BuildPromptResult extends BuildContextResult {
 export interface ContextServiceDeps {
   retrievalPolicy?: IRetrievalPolicy;
   deployment?: RetrievalDeploymentCapabilities;
+  rankingSnapshotLoader?: (scope: MemoryScope) => Promise<RankingPolicySnapshot | null>;
 }
 
 export class ContextService {
@@ -50,6 +52,9 @@ export class ContextService {
   private readonly promptBuilder: PromptBuilder;
   private readonly retrievalPolicy: IRetrievalPolicy;
   private readonly deployment: RetrievalDeploymentCapabilities;
+  private readonly rankingSnapshotLoader?: (
+    scope: MemoryScope,
+  ) => Promise<RankingPolicySnapshot | null>;
 
   constructor(
     private readonly repository: IMemoryRepository,
@@ -67,6 +72,7 @@ export class ContextService {
       graphRetrieval: false,
       maxContextMaxChars: MAX_CONTEXT_MAX_CHARS,
     };
+    this.rankingSnapshotLoader = deps.rankingSnapshotLoader;
   }
 
   async buildContext(
@@ -82,10 +88,15 @@ export class ContextService {
       limit: request.limit,
     });
 
+    const rankingSnapshot = this.rankingSnapshotLoader
+      ? await this.rankingSnapshotLoader(scope)
+      : undefined;
+
     const ranked = this.ranker.rank(
       candidates,
       { q: request.query, tag: request.tags?.[0] },
       request.limit ?? DEFAULT_RETRIEVAL_RANK_LIMIT,
+      rankingSnapshot ?? undefined,
     );
 
     const plan = this.retrievalPolicy.resolve(request, ranked.length, this.deployment);

@@ -8,6 +8,7 @@ import { KnowledgeService } from '../knowledge/knowledge.service.js';
 import { SearchService } from '../search/search.service.js';
 import { MemoryService } from './memory.service.js';
 import { MemoryRelationService } from './memory-relation.service.js';
+import type { IMemoryEvolutionCoordinator } from '../evolution/memory-evolution-coordinator.js';
 
 /**
  * Creates MemoryService with a shared repository instance.
@@ -17,6 +18,7 @@ export function createMemoryService(
   db: ISqlDatabase,
   repository?: IMemoryRepository,
   multiAi?: Pick<MultiAiPorts, 'syncManager' | 'agentIdentity'>,
+  evolution?: IMemoryEvolutionCoordinator,
 ): MemoryService {
   const memRepo = repository ?? new MemoryRepository(db);
   const knowledge = new KnowledgeService(memRepo);
@@ -29,6 +31,7 @@ export function createMemoryService(
     embeddingStore,
     multiAi?.syncManager,
     multiAi?.agentIdentity,
+    evolution,
   );
 }
 

@@ -426,6 +426,77 @@ CREATE TABLE IF NOT EXISTS memory_signals (
 CREATE INDEX IF NOT EXISTS idx_memory_signals_owner ON memory_signals(owner_id, created_at DESC);
 `;
 
+const LEARNING_TABLES_SQL = `
+CREATE TABLE IF NOT EXISTS learning_events (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  event_type TEXT NOT NULL,
+  payload TEXT NOT NULL DEFAULT '{}',
+  processed INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_learning_events_owner ON learning_events(owner_id, processed, created_at);
+
+CREATE TABLE IF NOT EXISTS learning_policy_snapshots (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  snapshot_type TEXT NOT NULL,
+  payload TEXT NOT NULL,
+  active INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_learning_snapshots_owner ON learning_policy_snapshots(owner_id, snapshot_type, active);
+`;
+
+const RELATION_INFERENCE_EVIDENCE_SQL = `
+CREATE TABLE IF NOT EXISTS relation_inference_evidence (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  source_memory_id TEXT NOT NULL,
+  target_memory_id TEXT NOT NULL,
+  relation TEXT NOT NULL,
+  inference_source TEXT NOT NULL,
+  confidence REAL NOT NULL,
+  payload TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_relation_inference_evidence_owner
+  ON relation_inference_evidence(owner_id, created_at DESC);
+`;
+
+const MEMORY_EVOLUTION_SQL = `
+CREATE TABLE IF NOT EXISTS memory_versions (
+  id TEXT PRIMARY KEY,
+  memory_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  version_number INTEGER NOT NULL,
+  snapshot TEXT NOT NULL,
+  created_by TEXT,
+  merge_parent_ids TEXT NOT NULL DEFAULT '[]',
+  confidence REAL NOT NULL DEFAULT 1.0,
+  created_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_memory_versions_mem_ver
+  ON memory_versions(memory_id, version_number);
+
+CREATE TABLE IF NOT EXISTS memory_heads (
+  memory_id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  current_version INTEGER NOT NULL DEFAULT 0,
+  branch_name TEXT NOT NULL DEFAULT 'main',
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_memory_heads_owner ON memory_heads(owner_id);
+`;
+
 export async function migrateExtensionTracksPhase1(
   client: ISqlDatabase,
   dialect: MigrationDialect = 'sqlite',
@@ -438,6 +509,27 @@ export async function migrateExtensionTracksPhase1(
   }
 
   for (const sql of splitStatements(MEMORY_SIGNALS_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Extension track 8.6 — learning events + policy snapshots (ADR-057). */
+export async function migrateExtensionTracksPhase2(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(LEARNING_TABLES_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Extension track 8.7 — relation inference evidence (ADR-041). */
+export async function migrateExtensionTracksPhase3(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(RELATION_INFERENCE_EVIDENCE_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Extension track 09.7 — memory evolution version store (ADR-040). */
+export async function migrateExtensionTracksPhase4(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(MEMORY_EVOLUTION_SQL)) {
     await client.execute(sql);
   }
 }
@@ -485,6 +577,9 @@ export async function runSchemaMigrations(
   await migrateMultiAiPhase1(client, dialect);
   await migrateEnterprisePhase1(client, dialect);
   await migrateExtensionTracksPhase1(client, dialect);
+  await migrateExtensionTracksPhase2(client);
+  await migrateExtensionTracksPhase3(client);
+  await migrateExtensionTracksPhase4(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

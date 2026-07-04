@@ -4,9 +4,9 @@ Incremental implementation order for [DESIGN.md](DESIGN.md).
 
 | Wave | Phases | Milestone |
 |------|--------|-----------|
-| W1 | L21, L22 | Events + behavior analytics |
-| W2 | L23, L25 | Patterns + clusters |
-| W3 | L24, L26, L27 | Recommendations + adaptive rank + feedback |
+| W1 | L21, L22 | Events + behavior analytics | ✅ Implemented |
+| W2 | L23, L25 | Patterns + clusters | 🔲 Stub engines |
+| W3 | L24, L26, L27 | Recommendations + adaptive rank + feedback | L26 ✅, L24/L27 stub |
 | W4 | L28, L29 | Dataset export + optional ML provider |
 | W5 | L30 | Evaluation + closed loop |
 

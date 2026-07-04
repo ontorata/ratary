@@ -15,6 +15,7 @@ import { getEnv } from '../config/index.js';
 import { createLexicalRetrievalSource } from '../infrastructure/composition/create-lexical-retrieval-source.js';
 import { createGraphProvider } from '../infrastructure/composition/create-graph-provider.js';
 import { createProgressiveRetrievalPorts } from '../composition/create-progressive-retrieval-ports.js';
+import { createLearningPorts } from '../composition/create-learning-ports.js';
 
 export interface ContextServicePlatformDeps {
   embeddingProvider?: IEmbeddingProvider;
@@ -40,10 +41,18 @@ export function createContextService(
   const env = getEnv();
   const candidateSource = buildCompositeCandidateSource(repository, env, platform);
   const progressive = createProgressiveRetrievalPorts(env);
+  const learning =
+    platform?.sql && env.LEARNING_ENGINE_ENABLED
+      ? createLearningPorts(platform.sql, env)
+      : undefined;
 
   return new ContextService(repository, candidateSource, platform?.memoryAccessAuditor, {
     retrievalPolicy: progressive.policy,
     deployment: progressive.deployment,
+    rankingSnapshotLoader:
+      learning?.enabled && learning.artifactStore
+        ? (scope) => learning.artifactStore!.getActiveRankingSnapshot(scope)
+        : undefined,
   });
 }
 
