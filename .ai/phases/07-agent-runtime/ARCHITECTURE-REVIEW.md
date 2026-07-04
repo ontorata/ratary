@@ -45,12 +45,12 @@ None.
 
 ### SUGGESTIONS
 
-| # | Section | Suggestion |
-|---|---------|------------|
-| S1 | §10 | Add standard error codes to CapabilityManifest |
-| S2 | §10 | Document rate limiting expectations per capability |
-| S3 | §11 | Add example JSON-RPC request/response for each tool |
-| S4 | §12 | Add OpenAPI schema reference |
+| # | Section | Suggestion | Status |
+|---|---------|------------|--------|
+| S1 | §10 | Add standard error codes to CapabilityManifest | ✅ **RESOLVED** 2026-07-04 — `errorCodes` + table in [DESIGN.md §10](DESIGN.md) |
+| S2 | §10 | Document rate limiting expectations per capability | ✅ **RESOLVED** 2026-07-04 — `rateLimits` + enforcement table in §10 |
+| S3 | §11 | Add example JSON-RPC request/response for each tool | ✅ **RESOLVED** 2026-07-04 — envelopes + 19-tool matrix in §11 |
+| S4 | §12 | Add OpenAPI schema reference | ✅ **RESOLVED** 2026-07-04 — `/docs/json`, `/docs/yaml` in §12 |
 
 ---
 

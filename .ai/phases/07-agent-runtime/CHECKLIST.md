@@ -28,7 +28,7 @@ Executable gate checklist instance — one item per milestone or success criteri
 ### Milestones
 
 - [x] Agent runtime ADR (external system) — No internal ADR needed
-- [x] MCP tool contracts stable for agent consumers — 14 tools available
+- [x] MCP tool contracts stable for agent consumers — 19 tools available (`tests/mcp/tools.test.ts`)
 - [x] Optional: `agentId` in `MemoryScope` types (undefined until Phase 9) — Deferred to Phase 9
 - [x] Documentation for agent integration boundary — DESIGN.md created
 
@@ -43,7 +43,12 @@ Executable gate checklist instance — one item per milestone or success criteri
 - [x] `npm run lint && npm run format:check && npm run typecheck && npm test` — green (196 tests)
 - [x] [08-REVIEW-CHECKLIST.md](../../core/standards/08-REVIEW.md) satisfied — No code changes
 - [x] ARCHITECTURE.md Phase 7 row updated
-- [x] Agent boundary documentation complete — DESIGN.md, COMPLETION.md
+### Architecture review suggestions (S1–S4)
+
+- [x] S1 — Standard error codes in CapabilityManifest (`DESIGN.md` §10)
+- [x] S2 — Rate limiting expectations per capability (`DESIGN.md` §10)
+- [x] S3 — JSON-RPC examples per MCP tool (`DESIGN.md` §11)
+- [x] S4 — OpenAPI schema reference (`DESIGN.md` §12)
 
 ---
 

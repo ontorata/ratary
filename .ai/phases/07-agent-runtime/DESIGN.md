@@ -478,11 +478,49 @@ interface AICapabilityManifest {
     maxResultsPerSearch: number;
     maxRelationsPerMemory: number;
   };
-  
+
+  /** Standard REST/MCP error codes agents should handle (maps to AppError.code). */
+  errorCodes: {
+    code: string;
+    httpStatus: number;
+    when: string;
+  }[];
+
+  /** Soft rate-limit expectations per capability group (enforced on REST auth; MCP stdio advisory). */
+  rateLimits: {
+    capabilityGroup: string;
+    limit: string;
+    scope: string;
+    notes?: string;
+  }[];
+
   version: string;
   timestamp: string;
 }
 ```
+
+**Standard `errorCodes` (S1):**
+
+| Code | HTTP | When |
+|------|------|------|
+| `VALIDATION_ERROR` | 400 | Zod/body validation failed (e.g. summary >300 chars) |
+| `UNAUTHORIZED` | 401 | Missing or invalid API key / JWT |
+| `FORBIDDEN` | 403 | Valid auth but insufficient permission or revoked identity |
+| `NOT_FOUND` | 404 | Memory/relation/workspace not found or cross-owner scope |
+| `DATABASE_ERROR` | 500 | D1/Postgres persistence failure |
+| `INTERNAL_ERROR` | 500 | Unhandled server error |
+
+MCP tools surface failures as `isError: true` on the tool result with message text; agents should map known substrings/codes where exposed.
+
+**Rate limits per capability (S2):**
+
+| Capability group | Limit | Scope | Enforcement |
+|------------------|-------|-------|-------------|
+| Auth bootstrap / identities | 5/h bootstrap; 20/min create; 10/min rotate | Per client IP | REST `@fastify/rate-limit` (`src/plugins/rate-limit.ts`); Redis when `RATE_LIMIT_REDIS_URL` set |
+| Memory CRUD / search / context | 100 req/min (design advisory) | Per owner | Not hard-limited on MCP stdio; REST global advisory |
+| Graph traverse | Same as memory | Per owner | Expensive BFS — keep `depth` ≤3 |
+| Backup import/export | Same as memory | Per owner | Large payloads — respect `maxMemoryContentBytes` |
+| Health / docs / graph capabilities | Unlimited | Public | No auth on `/health`, `/docs` |
 
 ### Capability endpoints
 
@@ -549,6 +587,86 @@ interface AICapabilityManifest {
 | Response timeout | 30 seconds |
 | Rate limit | 100 requests/minute/owner |
 
+### JSON-RPC examples (S3)
+
+MCP uses **JSON-RPC 2.0** over stdio. Tool invocations use `tools/call`; responses wrap JSON in `content[].text`.
+
+**Request envelope:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "save_memory",
+    "arguments": {
+      "title": "Auth middleware pattern",
+      "content": "## JWT validation\n...",
+      "project": "ai-brain",
+      "tags": ["auth"]
+    }
+  }
+}
+```
+
+**Success response envelope:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{ \"id\": \"…\", \"codename\": \"AUTH-0001\", \"title\": \"Auth middleware pattern\" }"
+      }
+    ],
+    "isError": false
+  }
+}
+```
+
+**Error response (tool failure):**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "content": [{ "type": "text", "text": "Memory with id '…' not found" }],
+    "isError": true
+  }
+}
+```
+
+**Per-tool `arguments` → `content[].text` payload (19 tools, implementation `src/mcp/server.ts`):**
+
+| Tool | Example `arguments` | Response `text` (JSON) |
+|------|---------------------|-------------------------|
+| `save_memory` | `{ "title", "content", "project?", "tags?", "metadata?" }` | `Memory` object |
+| `update_memory` | `{ "id", "title?", "content?", "metadata?" }` | `Memory` object |
+| `delete_memory` | `{ "id" }` | Plain success string |
+| `get_memory` | `{ "id" }` | `Memory` object |
+| `get_memory_by_codename` | `{ "codename": "AUTH-0001" }` | `Memory` object |
+| `search_memory` | `{ "q?", "project?", "limit?", "offset?" }` | `{ memories, total }` |
+| `list_projects` | `{}` | `{ projects: string[] }` |
+| `list_tags` | `{}` | `{ tags: string[] }` |
+| `link_memories` | `{ "sourceId", "targetId", "relation" }` | `MemoryRelation` |
+| `list_relations` | `{ "id" }` | `{ relations: [...] }` |
+| `toggle_favorite` | `{ "id" }` | `Memory` object |
+| `archive_memory` | `{ "id" }` | `Memory` object |
+| `get_context` | `{ "query?", "limit?", "max_chars?" }` | `{ context, memories, ... }` |
+| `build_prompt` | `{ "task", "query?", "system_role?" }` | `{ system, user, context }` |
+| `get_graph_capabilities` | `{}` | `{ capabilities: {...} }` |
+| `traverse_relations` | `{ "memoryId", "depth?", "types?" }` | `{ memoryIds, neighbors }` |
+| `list_workspaces` | `{}` | `{ workspaces: [...] }` |
+| `list_agents` | `{}` | `{ agents: [...] }` |
+| `register_agent` | `{ "name", "agent_type?", "metadata?" }` | `Agent` object |
+
+Contract tests: `tests/mcp/tools.test.ts` (`EXPECTED_TOOLS`).
+
 ---
 
 ## 12. Stable REST Contracts
@@ -589,6 +707,25 @@ interface AICapabilityManifest {
 |---------|--------|--------|
 | 1 | `/api/v1/` | Current |
 | 2 | `/api/v2/` | Reserved |
+
+### OpenAPI schema reference (S4)
+
+| Resource | URL | Notes |
+|----------|-----|-------|
+| Swagger UI | `GET /docs` | Interactive explorer (disabled on Vercel serverless — `skipSwagger` when `VERCEL` set) |
+| OpenAPI JSON | `GET /docs/json` | OpenAPI 3.0 document generated by `@fastify/swagger` |
+| OpenAPI YAML | `GET /docs/yaml` | Same spec, YAML encoding |
+| Source | `src/plugins/swagger.ts` | Tags: Health, Auth, Memory, Knowledge, Search, Backup |
+
+**Example — discover spec locally:**
+
+```bash
+curl -s http://localhost:3000/docs/json | jq '.info,.paths["/api/v1/memory"]'
+```
+
+**Auth in OpenAPI:** `components.securitySchemes.ApiKeyAuth` (`X-API-Key`) and `BearerAuth` (`Authorization: Bearer aic_…`).
+
+**Canonical paths:** Memory routes live under `/api/v1/memory` (singular), not `/memories` — see `src/routes/index.ts` + route registration in `src/routes/v1/index.ts`.
 
 ---
 
