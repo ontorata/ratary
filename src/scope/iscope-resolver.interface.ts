@@ -17,7 +17,7 @@ export interface ScopeResolutionHints {
 
 /**
  * Resolves effective MemoryScope at composition root — not inside services.
- * @see docs/adr/007-multi-ai-workspace-scope.md
+ * @see .ai/adr/007-multi-ai-workspace-scope.md
  */
 export interface IScopeResolver {
   resolveFromRequest(auth: AuthUser, hints?: ScopeResolutionHints): Promise<MemoryScope>;

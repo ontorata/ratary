@@ -1,7 +1,7 @@
 /**
  * Vendor-neutral analytics / OLAP write and query port.
  * Adapters: ClickHouse, Snowflake, BigQuery, DuckDB.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export interface AnalyticsQuery {
   /** Adapter-specific query name or statement identifier. */

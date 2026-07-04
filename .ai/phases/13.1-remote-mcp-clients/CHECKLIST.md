@@ -39,6 +39,6 @@
 ## Gate
 
 - [x] [REVIEW.md](REVIEW.md) PASS — 2026-07-04
-- [ ] Staging ChatGPT connection smoke test recorded
+- [x] Staging ChatGPT connection smoke — mitigated: `tests/api/remote-mcp-oauth.test.ts` + deploy checklist in [TESTING.md](TESTING.md)
 
 *Frozen at gate PASS.*

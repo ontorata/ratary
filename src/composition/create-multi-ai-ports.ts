@@ -26,7 +26,9 @@ export interface MultiAiPorts {
 export function createMultiAiPorts(db: ISqlDatabase, env?: Env): MultiAiPorts {
   const envResolved = env ?? getEnv();
   const audit = new AuditRepository(db);
-  const clientSync = createMultiClientSyncPorts(db, envResolved, audit);
+  const clientSync = createMultiClientSyncPorts(db, envResolved, audit, {
+    evolutionMergeEnabled: envResolved.MEMORY_EVOLUTION_ENABLED,
+  });
 
   return {
     scopeResolver: new DefaultScopeResolver(db),

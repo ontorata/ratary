@@ -3,7 +3,7 @@
 **Status:** ✅ Implemented · Gate PASS (2026-07-04)  
 **Roadmap:** [10-POST-ROADMAP.md — Phase 11](../roadmap/10-POST-ROADMAP.md)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**ADR:** [ADR-018 Approved](../../../docs/adr/018-production-postgres-cutover.md)
+**ADR:** [ADR-018 Approved](../../adr/018-production-postgres-cutover.md)
 
 ---
 

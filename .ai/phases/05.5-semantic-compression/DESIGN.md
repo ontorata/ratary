@@ -5,7 +5,7 @@
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)  
 **Roadmap placement:** Extension track **05.5** — semantic compression after Phase 4 consolidator  
-**ADR gate:** [ADR-023](../../../docs/adr/023-semantic-compression-policy.md) — **Accepted** (Implemented 2026-07-04)
+**ADR gate:** [ADR-023](../../adr/023-semantic-compression-policy.md) — **Accepted** (Implemented 2026-07-04)
 
 ---
 
@@ -354,8 +354,8 @@ Env flags (composition root):
 | [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) | Phase 13 content scale |
 | [Phase 4 DESIGN](../04-memory-intelligence/DESIGN.md) | Retriever, consolidator |
 | [Phase 5 DESIGN](../05-embedding/DESIGN.md) | Re-embed after summary |
-| [ADR-005](../../../docs/adr/005-content-object-store.md) | Blob offload |
-| [ADR-023](../../../docs/adr/023-semantic-compression-policy.md) | Structural gate (Accepted) |
+| [ADR-005](../../adr/005-content-object-store.md) | Blob offload |
+| [ADR-023](../../adr/023-semantic-compression-policy.md) | Structural gate (Accepted) |
 | [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
 | [TESTING.md](TESTING.md) | Verification evidence |
 

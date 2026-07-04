@@ -60,7 +60,7 @@ flowchart TD
 ### C — ADR gates
 
 - [ ] Required ADRs for phase N+1 — status **Approved** (not Proposed)
-- [ ] No implementation of Proposed ADRs ([ADR-POLICY.md](../../../docs/adr/POLICY.md))
+- [ ] No implementation of Proposed ADRs ([ADR-POLICY.md](../../adr/POLICY.md))
 
 ### D — Extension points
 

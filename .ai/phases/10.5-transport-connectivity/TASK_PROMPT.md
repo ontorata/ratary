@@ -39,7 +39,7 @@ Implement **Phase 10.5 — Transport & Connectivity Layer**: formalize `src/tran
 | ADR | Title | Status |
 |-----|-------|--------|
 | [027](../../adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer | **Implemented** (2026-07-04) |
-| [025](../../../docs/adr/025-capability-discovery-api.md) | Capability discovery (amend transport block) | **Implemented** — additive amend only |
+| [025](../../adr/025-capability-discovery-api.md) | Capability discovery (amend transport block) | **Implemented** — additive amend only |
 
 ### Future compatibility
 

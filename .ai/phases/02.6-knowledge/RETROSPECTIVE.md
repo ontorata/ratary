@@ -31,7 +31,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 ## What was harder than expected
 
 - UNIQUE indexes required backfill before migration — `migrateKnowledgeFoundationPhase3` ordering
-- Design archive in `docs/archive/` — phase folder DESIGN is summary + pointer
+- Design archive in `.ai/archive/` — phase folder DESIGN is summary + pointer
 
 ---
 

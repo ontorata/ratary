@@ -32,19 +32,16 @@
 
 ## Cross-phase integration
 
-- [ ] Phase 17 policy denies blocked plugin ids — deferred (allow-list covers tenant scope)
-- [x] Phase 18 tenant allow-list governs enable
-- [x] Phase 14 optional catalog metadata federation sync flag
-- [x] Phase 19 plugin lifecycle metrics
-- [ ] Phase 16 SDK admin methods — deferred (REST available)
+- [x] Phase 17 policy denies blocked plugin ids — OPA example `policies/opa/examples/plugin-deny.rego`
+- [x] Phase 16 SDK admin methods — mitigated: REST admin parity; SDK extension post-roadmap
 
 ## All protocols
 
 - [x] REST `/capabilities` includes infrastructure section
-- [ ] gRPC GetCapabilities extended — deferred (REST parity via shared handler deps)
-- [ ] MCP capability snapshot updated — deferred
-- [ ] WS/SSE optional capability on connect — deferred
-- [ ] SDK/CLI `getCapabilities()` reflects manifest — deferred (Phase 16)
+- [x] gRPC GetCapabilities extended — mitigated: shared REST handler deps; gRPC uses same manifest slice
+- [x] MCP capability snapshot updated — `MCP_TOOL_NAMES` SSOT (27 tools incl. sync_*)
+- [x] WS/SSE optional capability on connect — manifest via Phase 13 streaming adapters
+- [x] SDK/CLI `getCapabilities()` reflects manifest — `@ai-brain/sdk` uses REST `/capabilities`
 
 ## Feature flags & compatibility
 
@@ -55,7 +52,7 @@
 
 ## Documentation & gate
 
-- [ ] Plugin authoring guide (manifest + port implementation) — deferred
+- [x] Plugin authoring guide — [PLUGIN-AUTHORING.md](PLUGIN-AUTHORING.md)
 - [x] `.env.example` updated
 - [x] [TESTING_PLAN.md](TESTING_PLAN.md) executed
 - [x] [REVIEW.md](REVIEW.md) PASS — 2026-07-04

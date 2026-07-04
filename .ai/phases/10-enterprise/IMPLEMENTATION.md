@@ -1,16 +1,16 @@
-﻿# Phase 10 — Infrastructure Adapters — IMPLEMENTATION
+# Phase 10 � Infrastructure Adapters � IMPLEMENTATION
 
 **Document:** IMPLEMENTATION  
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-03  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR-008:** [Platform ports](../../../docs/adr/008-platform-architecture.md)
+**Design:** [DESIGN.md](DESIGN.md) � **ADR-008:** [Platform ports](../../adr/008-platform-architecture.md)
 
 ---
 
 ## Purpose
 
-Record the **incremental infrastructure adapter plan**: folder layout, migration strategy, commit sequence, testing gates, and provider priority — **without changing application or domain layers**.
+Record the **incremental infrastructure adapter plan**: folder layout, migration strategy, commit sequence, testing gates, and provider priority � **without changing application or domain layers**.
 
 ---
 
@@ -29,12 +29,12 @@ Record the **incremental infrastructure adapter plan**: folder layout, migration
 
 | Milestone | Status | Evidence |
 |-----------|--------|----------|
-| **T0** Contract harness + graph move | ✅ | `tests/infrastructure/contracts/isql-database.contract.ts`, `src/infrastructure/graph/d1/` |
-| **T1** PostgreSQL adapter | ✅ | [ADR-009 Approved](../../../docs/adr/009-postgresql-metadata-adapter.md), `PostgresSqlDatabaseAdapter` |
-| **T2** R2 object storage | ✅ | [ADR-005 Approved](../../../docs/adr/005-content-object-store.md), `R2ObjectStorageAdapter` |
-| **T3** pgvector | ✅ | [ADR-011 Approved](../../../docs/adr/011-pgvector-store-adapter.md), `PgVectorStoreAdapter` |
-| **T4–T8 + events** | ✅ | ADR-012–016, Redis/S3/DuckDB/Meilisearch/Neo4j/Redis Streams |
-| **10A/10B** Reference + tenancy | ✅ | [COMPLETION.md](COMPLETION.md) |
+| **T0** Contract harness + graph move | ? | `tests/infrastructure/contracts/isql-database.contract.ts`, `src/infrastructure/graph/d1/` |
+| **T1** PostgreSQL adapter | ? | [ADR-009 Approved](../../adr/009-postgresql-metadata-adapter.md), `PostgresSqlDatabaseAdapter` |
+| **T2** R2 object storage | ? | [ADR-005 Approved](../../adr/005-content-object-store.md), `R2ObjectStorageAdapter` |
+| **T3** pgvector | ? | [ADR-011 Approved](../../adr/011-pgvector-store-adapter.md), `PgVectorStoreAdapter` |
+| **T4�T8 + events** | ? | ADR-012�016, Redis/S3/DuckDB/Meilisearch/Neo4j/Redis Streams |
+| **10A/10B** Reference + tenancy | ? | [COMPLETION.md](COMPLETION.md) |
 
 ---
 
@@ -53,22 +53,22 @@ Record the **incremental infrastructure adapter plan**: folder layout, migration
 
 ## Current baseline
 
-### Ports (Phase 9.5 ✅)
+### Ports (Phase 9.5 ?)
 
-`src/ports/` — `ISqlDatabase`, `IMemoryRepository`, `IRelationRepository`, `IEmbeddingProvider`, `IVectorStore`, `IGraphStore`, `IObjectStorage`, `ICache`, `IEventBus`, `IAnalyticsStore`, enterprise ports.
+`src/ports/` � `ISqlDatabase`, `IMemoryRepository`, `IRelationRepository`, `IEmbeddingProvider`, `IVectorStore`, `IGraphStore`, `IObjectStorage`, `ICache`, `IEventBus`, `IAnalyticsStore`, enterprise ports.
 
-### Reference infrastructure (partial ✅)
+### Reference infrastructure (partial ?)
 
 ```
 src/infrastructure/
-├── composition/create-platform-adapters.ts
-├── sql/d1-sql-database.adapter.ts
-├── vector/d1-vector-store.bridge.ts
-├── storage/inline-object-storage.adapter.ts
-├── cache/{memory-cache,noop-cache}.adapter.ts
-├── events/noop-event-bus.adapter.ts
-├── analytics/noop-analytics-store.adapter.ts
-└── enterprise/…
++-- composition/create-platform-adapters.ts
++-- sql/d1-sql-database.adapter.ts
++-- vector/d1-vector-store.bridge.ts
++-- storage/inline-object-storage.adapter.ts
++-- cache/{memory-cache,noop-cache}.adapter.ts
++-- events/noop-event-bus.adapter.ts
++-- analytics/noop-analytics-store.adapter.ts
++-- enterprise/�
 ```
 
 Wired from `server.ts` and `mcp/server.ts`. Repositories depend on `ISqlDatabase`.
@@ -83,21 +83,21 @@ PostgreSQL, MariaDB, MySQL, SQLite, R2, MinIO, S3, Redis, Valkey, pgvector, Qdra
 
 ```
 Transport (REST / MCP)
-        ↓
-Application (controllers, services, mcp)     ← UNCHANGED
-        ↓
-Domain (memory, knowledge, search, retriever) ← UNCHANGED
-        ↓
-Ports (src/ports/)                         ← UNCHANGED contracts
-        ↓
-Infrastructure (src/infrastructure/)       ← EXTEND ONLY
-        ↓
-Vendor engines (D1, Postgres, Redis, …)
+        ?
+Application (controllers, services, mcp)     ? UNCHANGED
+        ?
+Domain (memory, knowledge, search, retriever) ? UNCHANGED
+        ?
+Ports (src/ports/)                         ? UNCHANGED contracts
+        ?
+Infrastructure (src/infrastructure/)       ? EXTEND ONLY
+        ?
+Vendor engines (D1, Postgres, Redis, �)
 ```
 
-**Search (Meilisearch / OpenSearch):** implement domain port `IRetrievalCandidateSource` (ADR-001) in `infrastructure/search/`; wire only in `createContextService` — **do not modify** `SearchService`.
+**Search (Meilisearch / OpenSearch):** implement domain port `IRetrievalCandidateSource` (ADR-001) in `infrastructure/search/`; wire only in `createContextService` � **do not modify** `SearchService`.
 
-**Observability (OTel / Prometheus):** Fastify plugins in `infrastructure/observability/`; wire only from `server.ts` — **no domain port required**.
+**Observability (OTel / Prometheus):** Fastify plugins in `infrastructure/observability/`; wire only from `server.ts` � **no domain port required**.
 
 ---
 
@@ -105,95 +105,95 @@ Vendor engines (D1, Postgres, Redis, …)
 
 ```
 src/infrastructure/
-├── composition/
-│   ├── create-platform-adapters.ts       # sole platform factory
-│   ├── adapter-registry.ts               # env → constructor (optional split)
-│   └── create-retrieval-sources.ts       # search/vector/graph candidate wiring
-│
-├── sql/
-│   ├── d1/                               # ✅ exists (flatten to folder in T0)
-│   ├── postgres/                          # ADR-009
-│   ├── mysql/                             # MariaDB + MySQL (mysql2, dialect flag)
-│   └── sqlite/                            # local / embedded dev
-│
-├── storage/
-│   ├── inline/                            # ✅
-│   ├── r2/                                # ADR-005
-│   └── s3/                                # S3 + MinIO (S3-compatible client)
-│
-├── cache/
-│   ├── noop/                              # ✅
-│   ├── memory/                            # ✅
-│   └── redis/                             # Redis + Valkey — ADR-012
-│
-├── vector/
-│   ├── d1-bridge/                         # ✅
-│   ├── inmemory/                          # test / dev
-│   ├── pgvector/                          # ADR-011
-│   ├── qdrant/
-│   └── pinecone/
-│
-├── graph/
-│   ├── d1/                                # migrate from src/graph/d1-graph.adapter.ts
-│   ├── neo4j/                             # ADR-015
-│   └── memgraph/
-│
-├── search/                                # IRetrievalCandidateSource adapters
-│   ├── sql/                               # wraps SqlRetrievalCandidateSource
-│   ├── meilisearch/                       # ADR-014
-│   └── opensearch/
-│
-├── events/
-│   ├── noop/                              # ✅
-│   ├── redis-streams/                     # ADR-016
-│   ├── cloudflare-queue/
-│   ├── rabbitmq/
-│   └── kafka/
-│
-├── analytics/
-│   ├── noop/                              # ✅
-│   ├── duckdb/                            # ADR-013 (dev reference)
-│   ├── clickhouse/
-│   └── snowflake/
-│
-├── observability/                         # transport-only
-│   ├── opentelemetry/
-│   └── prometheus/
-│
-├── enterprise/                            # ✅ tenancy
-│
-└── _shared/                               # internal helpers (not exported)
-    ├── connection-pools/
-    └── retry-policies.ts
++-- composition/
+�   +-- create-platform-adapters.ts       # sole platform factory
+�   +-- adapter-registry.ts               # env ? constructor (optional split)
+�   +-- create-retrieval-sources.ts       # search/vector/graph candidate wiring
+�
++-- sql/
+�   +-- d1/                               # ? exists (flatten to folder in T0)
+�   +-- postgres/                          # ADR-009
+�   +-- mysql/                             # MariaDB + MySQL (mysql2, dialect flag)
+�   +-- sqlite/                            # local / embedded dev
+�
++-- storage/
+�   +-- inline/                            # ?
+�   +-- r2/                                # ADR-005
+�   +-- s3/                                # S3 + MinIO (S3-compatible client)
+�
++-- cache/
+�   +-- noop/                              # ?
+�   +-- memory/                            # ?
+�   +-- redis/                             # Redis + Valkey � ADR-012
+�
++-- vector/
+�   +-- d1-bridge/                         # ?
+�   +-- inmemory/                          # test / dev
+�   +-- pgvector/                          # ADR-011
+�   +-- qdrant/
+�   +-- pinecone/
+�
++-- graph/
+�   +-- d1/                                # migrate from src/graph/d1-graph.adapter.ts
+�   +-- neo4j/                             # ADR-015
+�   +-- memgraph/
+�
++-- search/                                # IRetrievalCandidateSource adapters
+�   +-- sql/                               # wraps SqlRetrievalCandidateSource
+�   +-- meilisearch/                       # ADR-014
+�   +-- opensearch/
+�
++-- events/
+�   +-- noop/                              # ?
+�   +-- redis-streams/                     # ADR-016
+�   +-- cloudflare-queue/
+�   +-- rabbitmq/
+�   +-- kafka/
+�
++-- analytics/
+�   +-- noop/                              # ?
+�   +-- duckdb/                            # ADR-013 (dev reference)
+�   +-- clickhouse/
+�   +-- snowflake/
+�
++-- observability/                         # transport-only
+�   +-- opentelemetry/
+�   +-- prometheus/
+�
++-- enterprise/                            # ? tenancy
+�
++-- _shared/                               # internal helpers (not exported)
+    +-- connection-pools/
+    +-- retry-policies.ts
 
 tests/infrastructure/
-├── contracts/                             # shared port contract runners
-│   ├── isql-database.contract.ts
-│   ├── ivector-store.contract.ts
-│   ├── icache.contract.ts
-│   └── …
-├── sql/
-├── vector/
-└── integration/                           # testcontainers (optional CI job)
++-- contracts/                             # shared port contract runners
+�   +-- isql-database.contract.ts
+�   +-- ivector-store.contract.ts
+�   +-- icache.contract.ts
+�   +-- �
++-- sql/
++-- vector/
++-- integration/                           # testcontainers (optional CI job)
 ```
 
 ---
 
-## Port ↔ provider matrix
+## Port ? provider matrix
 
 | Port | Providers | ADR gate | Env flag |
 |------|-----------|----------|----------|
-| `ISqlDatabase` | D1 ✅, PostgreSQL, MySQL, MariaDB, SQLite | ADR-009 (Postgres) | `SQL_PROVIDER` |
-| `IObjectStorage` | inline ✅, R2, S3, MinIO | ADR-005 | `OBJECT_STORAGE_PROVIDER` |
-| `ICache` | noop ✅, memory ✅, Redis, Valkey | ADR-012 | `CACHE_PROVIDER` |
-| `IVectorStore` | D1 bridge ✅, InMemory, pgvector, Qdrant, Pinecone | ADR-011 | `VECTOR_PROVIDER` |
+| `ISqlDatabase` | D1 ?, PostgreSQL, MySQL, MariaDB, SQLite | ADR-009 (Postgres) | `SQL_PROVIDER` |
+| `IObjectStorage` | inline ?, R2, S3, MinIO | ADR-005 | `OBJECT_STORAGE_PROVIDER` |
+| `ICache` | noop ?, memory ?, Redis, Valkey | ADR-012 | `CACHE_PROVIDER` |
+| `IVectorStore` | D1 bridge ?, InMemory, pgvector, Qdrant, Pinecone | ADR-011 | `VECTOR_PROVIDER` |
 | `IGraphStore` | D1, Neo4j, Memgraph | ADR-015 | `GRAPH_PROVIDER` |
-| `IEventBus` | noop ✅, Redis Streams, CF Queue, RabbitMQ, Kafka | ADR-016 | `EVENT_BUS_PROVIDER` |
-| `IAnalyticsStore` | noop ✅, DuckDB, ClickHouse, Snowflake | ADR-013 | `ANALYTICS_PROVIDER` |
+| `IEventBus` | noop ?, Redis Streams, CF Queue, RabbitMQ, Kafka | ADR-016 | `EVENT_BUS_PROVIDER` |
+| `IAnalyticsStore` | noop ?, DuckDB, ClickHouse, Snowflake | ADR-013 | `ANALYTICS_PROVIDER` |
 | Search | SQL (default), Meilisearch, OpenSearch | ADR-014 | `SEARCH_PROVIDER` |
 | Observability | OpenTelemetry, Prometheus | TBD | `OTEL_ENABLED` |
 
-**Env rule:** extend Zod enum only when adapter + ADR are merged. Unimplemented selection → **throw at factory**, not silent fallback.
+**Env rule:** extend Zod enum only when adapter + ADR are merged. Unimplemented selection ? **throw at factory**, not silent fallback.
 
 ---
 
@@ -201,16 +201,16 @@ tests/infrastructure/
 
 | Tier | Deliverable | ADR | Rationale |
 |------|-------------|-----|-----------|
-| **T0** | Contract harness + D1 hardening + graph adapter move to infra | ADR-008 ✅ | Baseline, zero behavior change |
+| **T0** | Contract harness + D1 hardening + graph adapter move to infra | ADR-008 ? | Baseline, zero behavior change |
 | **T1** | PostgreSQL `ISqlDatabase` | ADR-009 | Largest metadata scale unlock |
-| **T2** | R2 `IObjectStorage` | ✅ Implemented | ADR-005 |
-| **T3** | pgvector `IVectorStore` | ✅ Implemented | ADR-011 |
-| **T4** | Redis `ICache` | ✅ Implemented | ADR-012 |
-| **T5** | S3-compatible (MinIO + AWS) | ✅ Implemented | ADR-005 |
-| **T6** | DuckDB `IAnalyticsStore` | ✅ Implemented | ADR-013 |
-| **T7** | Meilisearch retrieval source | ✅ Implemented | ADR-014 |
-| **T8** | Neo4j `IGraphStore` | ✅ Implemented | ADR-015 |
-| **T9+** | Redis Streams event bus | ✅ Implemented | ADR-016 |
+| **T2** | R2 `IObjectStorage` | ? Implemented | ADR-005 |
+| **T3** | pgvector `IVectorStore` | ? Implemented | ADR-011 |
+| **T4** | Redis `ICache` | ? Implemented | ADR-012 |
+| **T5** | S3-compatible (MinIO + AWS) | ? Implemented | ADR-005 |
+| **T6** | DuckDB `IAnalyticsStore` | ? Implemented | ADR-013 |
+| **T7** | Meilisearch retrieval source | ? Implemented | ADR-014 |
+| **T8** | Neo4j `IGraphStore` | ? Implemented | ADR-015 |
+| **T9+** | Redis Streams event bus | ? Implemented | ADR-016 |
 
 ---
 
@@ -218,10 +218,10 @@ tests/infrastructure/
 
 ### Principles
 
-1. **Zero downtime** — feature flags default to current D1-only path.
-2. **Backward compatibility** — solo `owner_id` + default workspace unchanged.
-3. **Strangler pattern** — new adapters opt-in per environment.
-4. **Sub-ADR gate** — no vendor code before ADR **Approved**.
+1. **Zero downtime** � feature flags default to current D1-only path.
+2. **Backward compatibility** � solo `owner_id` + default workspace unchanged.
+3. **Strangler pattern** � new adapters opt-in per environment.
+4. **Sub-ADR gate** � no vendor code before ADR **Approved**.
 
 ### Rollout phases
 
@@ -234,13 +234,13 @@ tests/infrastructure/
 | 10E | Redis cache | None until consumers use cache |
 | 10F | pgvector | None until `VECTOR_PROVIDER` changed |
 | 10G | Graph infra move + Neo4j | None until `GRAPH_PROVIDER` changed |
-| 10H–K | Analytics, events, search, OTel | Opt-in per flag |
+| 10H�K | Analytics, events, search, OTel | Opt-in per flag |
 
 ### Example cutover (Postgres metadata)
 
 ```
 1. Deploy adapter; SQL_PROVIDER=d1
-2. Backfill D1 → Postgres; read fallback D1
+2. Backfill D1 ? Postgres; read fallback D1
 3. SQL_PROVIDER=postgres; dual-write
 4. Retire D1 writes
 ```
@@ -264,7 +264,7 @@ Rollback: revert env flags to defaults.
 | C9 | `infra(search): MeilisearchRetrievalSource` | ADR-014 Approved |
 | C10 | `infra(analytics): DuckDBAnalyticsStore` | ADR-013 Approved |
 | C11 | `infra(events): RedisStreamsEventBus` | ADR-016 Approved |
-| C12 | `infra(obs): OpenTelemetry fastify plugin` | ✅ Implemented |
+| C12 | `infra(obs): OpenTelemetry fastify plugin` | ? Implemented |
 | C13+ | One commit per additional vendor | isolated adapter + tests |
 
 **Rule:** one concern per commit; no mixing adapter + domain + gate docs in one commit.
@@ -289,7 +289,7 @@ tests/infrastructure/contracts/
   runVectorStoreContract(factory)
   runCacheContract(factory)
   runObjectStorageContract(factory)
-  …
+  �
 ```
 
 Extend patterns from `tests/ports/platform-ports.test.ts` and `tests/graph/igraph-provider.interface.test.ts`.
@@ -299,7 +299,7 @@ Extend patterns from `tests/ports/platform-ports.test.ts` and `tests/graph/igrap
 | Gate | Target |
 |------|--------|
 | `npm run lint && npm run typecheck && npm test` | PASS |
-| Default env full suite | ≥337 tests |
+| Default env full suite | =337 tests |
 | `cross-owner-leak` | 23 PASS |
 | `cross-workspace-leak` | 17 PASS |
 | `cross-organization-leak` | 12 PASS (RBAC on) |
@@ -333,7 +333,7 @@ Extend patterns from `tests/ports/platform-ports.test.ts` and `tests/graph/igrap
 
 | ID | Risk | L | I | Mitigation |
 |----|------|---|---|------------|
-| R-01 | Scope creep — all providers at once | H | H | Tier table; DESIGN exclusion list |
+| R-01 | Scope creep � all providers at once | H | H | Tier table; DESIGN exclusion list |
 | R-02 | Vendor leak into services | M | C | Lint boundary + grep CI |
 | R-03 | SQL dialect drift | H | H | Separate adapters; parity tests |
 | R-04 | Object storage dual-write inconsistency | M | H | ADR-005: inline fallback |
@@ -358,7 +358,7 @@ Extend patterns from `tests/ports/platform-ports.test.ts` and `tests/graph/igrap
 
 ## Next actions
 
-1. Owner approves sub-ADR priority: **ADR-009 → ADR-005 → ADR-011**.
+1. Owner approves sub-ADR priority: **ADR-009 ? ADR-005 ? ADR-011**.
 2. Land **T0**: contract harness + graph adapter relocation (infra-only).
 3. Implement **T1** (Postgres) as template for subsequent adapters.
 
@@ -370,7 +370,7 @@ Extend patterns from `tests/ports/platform-ports.test.ts` and `tests/graph/igrap
 - [MIGRATION.md](MIGRATION.md)
 - [TESTING.md](TESTING.md)
 - [RISKS.md](RISKS.md)
-- [docs/adr/README.md](../../../docs/adr/README.md)
+- [.ai/adr/README.md](../../adr/README.md)
 
 ---
 

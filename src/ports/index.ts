@@ -1,7 +1,7 @@
 /**
  * Platform ports — storage-agnostic extension points.
  * Application and domain layers depend on these interfaces only.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 
 export type { ISqlDatabase, SqlExecuteResult } from './sql/isql-database.port.js';

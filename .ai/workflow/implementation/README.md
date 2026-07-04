@@ -13,7 +13,7 @@
 | Active task | [.ai/TASK_PROMPT.md](../../../TASK_PROMPT.md) | Current scoped work and definition of done |
 | User guide | [docs/PANDUAN.md](../../docs/PANDUAN.md) | Operator and user instructions |
 | MCP setup | [docs/MCP-SETUP.md](../../docs/MCP-SETUP.md) | Tool connection steps |
-| Phase archive | [docs/archive/](../../docs/archive/) | Historical design documents |
+| Phase archive | [.ai/archive/](../archive/) | Historical design documents |
 | Source code | `src/` | Implementation |
 | Tests | `tests/` | Verification |
 | Schema | `schema.sql` | Database definition |

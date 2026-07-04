@@ -165,7 +165,7 @@ Validation lives in `src/config/env.ts` — Phase 11 documents behavior; changes
 
 **Rollback limit (design constraint):** Env flip to `d1` is immediate for **reads and writes** against D1. Rows written only to Postgres during S3 are **not** automatically synced back to D1. Runbook MUST document this and recommend a read-only or quiesce window during flip.
 
-**Approved cutover strategy ([ADR-018](../../../docs/adr/018-production-postgres-cutover.md) Option A):**
+**Approved cutover strategy ([ADR-018](../../adr/018-production-postgres-cutover.md) Option A):**
 
 1. Quiesce / write freeze on production.
 2. Final incremental backfill D1 → Postgres.
@@ -392,8 +392,8 @@ Detailed plan: `TESTING.md` (to be authored at implementation start).
 
 | ADR | Title | Status needed |
 |-----|-------|---------------|
-| [ADR-009](../../../docs/adr/009-postgresql-metadata-adapter.md) | PostgreSQL metadata adapter | ✅ Approved |
-| [ADR-018](../../../docs/adr/018-production-postgres-cutover.md) | Production Postgres cutover | ✅ Approved |
+| [ADR-009](../../adr/009-postgresql-metadata-adapter.md) | PostgreSQL metadata adapter | ✅ Approved |
+| [ADR-018](../../adr/018-production-postgres-cutover.md) | Production Postgres cutover | ✅ Approved |
 | ADR-019 (optional) | Repository module split | Approved before 11C structural split |
 
 ### Artifacts by track
@@ -455,7 +455,7 @@ Implementation commits require **Readiness PASS** in addition to ADR-018 Approve
 |----------|------|
 | [10-POST-ROADMAP.md](../../roadmap/10-POST-ROADMAP.md) | Phase 11 scope authority |
 | [Phase 10 DESIGN](../10-enterprise/DESIGN.md) | Adapter architecture baseline |
-| [ADR-004](../../../docs/adr/004-repository-port-types.md) | Reader/writer split policy |
+| [ADR-004](../../adr/004-repository-port-types.md) | Reader/writer split policy |
 | [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) | T-01 debt tracking |
 | [RISKS.md](RISKS.md) | Phase risk register |
 

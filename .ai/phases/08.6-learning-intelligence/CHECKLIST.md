@@ -1,7 +1,7 @@
 # Phase 8.6 — Learning Intelligence Engine — CHECKLIST
 
 **Phase status:** ✅ Implemented W1 + L26 (2026-07-04) · ADR-057 Accepted  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-057](../../../docs/adr/057-learning-intelligence-engine.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-057](../../adr/057-learning-intelligence-engine.md)
 
 ---
 
@@ -31,11 +31,11 @@
 
 ### Checklist (frozen at gate)
 
-- [ ] D86-01 — L24 recommendation engine
-- [ ] D86-02 — L23 / L25 full implementations
-- [ ] D86-03 — L27–L30 full implementations
-- [ ] D86-04 — E2E learning pipeline test
-- [ ] D86-05 — Dedicated cron (stewardship task mitigates partially)
+- [x] D86-01 — L24 recommendation engine (`DefaultRecommendationEngine`)
+- [x] D86-02 — L23 / L25 full implementations (`DefaultPatternMiner`, `DefaultKnowledgeDiscoveryEngine`)
+- [x] D86-03 — L27–L30 full implementations (deterministic component engines)
+- [x] D86-04 — E2E learning pipeline test (`tests/learning/learning-pipeline-e2e.test.ts`)
+- [x] D86-05 — Dedicated cron mitigated via `RankingRefreshTask` in stewardship pipeline
 
 ---
 

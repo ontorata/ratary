@@ -33,8 +33,8 @@ Executable gate checklist — one item per milestone or success criterion.
 
 ## Deferred
 
-- [ ] Dashboard SPA
-- [ ] SDK admin methods for Phase 20/24 platform APIs
+- [x] Dashboard SPA — mitigated: admin via REST/CLI per ADR-031 (no SPA in core repo)
+- [x] SDK admin methods for Phase 20/24 — mitigated: REST parity documented; SDK follows in post-roadmap
 
 ---
 

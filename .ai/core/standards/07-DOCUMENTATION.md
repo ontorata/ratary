@@ -72,8 +72,8 @@ Prevent documentation drift, duplication of immutable rules, and contradictions 
 .ai/core/architecture/04-ARCHITECTURE.md     structural law (permanent)
 .ai/workflow/05-WORKFLOW.md             workflow + pre-implementation analysis
 .ai/TASK_PROMPT.md                      active scoped work
-docs/adr/POLICY.md + docs/adr/          structural decisions (ADR text immutable)
-docs/archive/                           historical phase designs (read-only)
+.ai/adr/POLICY.md + .ai/adr/          structural decisions (ADR text immutable)
+.ai/archive/                           historical phase designs (read-only)
 docs/PANDUAN.md                         end-user guide (Indonesian)
 README.md (root)                        public entry + quick start
 docs/README.md                          human documentation index
@@ -148,15 +148,15 @@ Two layers — do not merge:
 
 ## ADR
 
-**Policy:** [../adr/POLICY.md](../../../docs/adr/POLICY.md)  
-**Template:** [adr/000-template.md](../../../docs/adr/000-template.md)  
-**Index:** [adr/README.md](../../../docs/adr/README.md)
+**Policy:** [../adr/POLICY.md](../../adr/POLICY.md)  
+**Template:** [adr/000-template.md](../../adr/000-template.md)  
+**Index:** [adr/README.md](../../adr/README.md)
 
 **When to write:** Every structural change per ADR-POLICY. Proposed before code.
 
 **Required sections (all):** Context, Problem, Constraints, Alternatives (≥2), Decision, Tradeoffs, Migration, Rollback, Impact on future phases.
 
-**Naming:** `docs/adr/NNN-short-title.md` — three-digit sequence, kebab-case.
+**Naming:** `.ai/adr/NNN-short-title.md` — three-digit sequence, kebab-case.
 
 **Status lifecycle:** `Proposed` → `Approved` → `Implemented` → `Superseded`
 
@@ -263,8 +263,8 @@ Two layers — do not merge:
 |----------|------|-----------|
 | [../../TASK_PROMPT.md](../../TASK_PROMPT.md) | Active work, requirements, definition of done | Replaced from template when phase starts |
 | [12-TASK-TEMPLATE.md](../workflow/12-TASK-TEMPLATE.md) | Blank phase template | Updated when process changes |
-| `docs/archive/PHASE-*.md` | Historical design for completed phases | Write-once; append errata only |
-| [archive/README.md](../../docs/archive/README.md) | Index of phase archives | Update when new archive added |
+| `.ai/archive/PHASE-*.md` | Historical design for completed phases | Write-once; append errata only |
+| [archive/README.md](../archive/README.md) | Index of phase archives | Update when new archive added |
 
 **Rules:**
 

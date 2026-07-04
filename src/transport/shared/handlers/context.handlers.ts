@@ -37,7 +37,12 @@ export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers
 
   return {
     buildContext: {
-      handle: async (ctx, request) => deps.contextService.buildContext(await scope(ctx), request),
+      handle: async (ctx, request) =>
+        deps.contextService.buildContext(await scope(ctx), {
+          ...request,
+          auditIdentityId: ctx.auth?.identityId,
+          auditIpAddress: ctx.clientIp,
+        }),
     },
     buildPrompt: {
       handle: async (ctx, body) =>

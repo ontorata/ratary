@@ -19,6 +19,7 @@ import type { IClientSyncService } from '../client-sync/iclient-sync-service.int
 import type { SyncConflictStrategy } from '../client-sync/client-sync.types.js';
 import { SqlSyncCursorStore } from '../infrastructure/client-sync/sql-sync-cursor-store.js';
 import { SqlSyncConflictStore } from '../infrastructure/client-sync/sql-sync-conflict-store.js';
+import { DefaultMemoryMergePolicy } from '../evolution/default-memory-merge-policy.js';
 
 export interface MultiClientSyncPorts {
   enabled: boolean;
@@ -51,6 +52,7 @@ export function createMultiClientSyncPorts(
   sql: ISqlDatabase,
   env: Env,
   audit: AuditRepository,
+  options?: { evolutionMergeEnabled?: boolean },
 ): MultiClientSyncPorts {
   const acceptSyncManager = new AcceptSyncManager(sql, audit);
   const noopFactory = () => new NoOpClientSyncService();
@@ -72,6 +74,11 @@ export function createMultiClientSyncPorts(
   const resolver = createConflictResolver(strategy);
   const memoryReader = new MemoryRepository(sql);
 
+  const mergePolicy =
+    options?.evolutionMergeEnabled && strategy === 'field_merge'
+      ? new DefaultMemoryMergePolicy()
+      : undefined;
+
   return {
     enabled: true,
     syncManager: new ConflictAwareSyncManager(staleDetector, resolver, conflictStore),
@@ -84,6 +91,7 @@ export function createMultiClientSyncPorts(
         platformRegistry,
         strategy,
         conflictStore,
+        mergePolicy,
       ),
   };
 }

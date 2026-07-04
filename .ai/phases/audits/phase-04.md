@@ -12,7 +12,7 @@
 
 Retriever, Ranker, ContextBuilder, PromptBuilder, ContextService, consolidator, `IRetrievalCandidateSource`, access tracking, reserved columns.
 
-**Evidence:** [phases/04-memory-intelligence/](../04-memory-intelligence/README.md) · [docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)
+**Evidence:** [phases/04-memory-intelligence/](../04-memory-intelligence/README.md) · [.ai/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)
 
 ---
 

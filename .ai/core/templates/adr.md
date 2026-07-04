@@ -1,7 +1,7 @@
 # ADR Template
 
-**Canonical:** [docs/adr/000-template.md](../../../docs/adr/000-template.md)
+**Canonical:** [.ai/adr/000-template.md](../../adr/000-template.md)
 
 **Single responsibility:** Blank Architecture Decision Record form.
 
-**Usage:** Copy to `docs/adr/NNN-title.md` when proposing a structural decision.
+**Usage:** Copy to `.ai/adr/NNN-title.md` when proposing a structural decision.

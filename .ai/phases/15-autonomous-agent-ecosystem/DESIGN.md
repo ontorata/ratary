@@ -446,8 +446,8 @@ Existing MCP memory tools **unchanged**.
 - [ADR-030](../../adr/030-autonomous-agent-ecosystem.md)
 - [Phase 7 DESIGN](../07-agent-runtime/DESIGN.md)
 - [Phase 9 DESIGN](../09-multi-ai/DESIGN.md)
-- [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md)
-- [ADR-025](../../../docs/adr/025-capability-discovery-api.md)
+- [ADR-007](../../adr/007-multi-ai-workspace-scope.md)
+- [ADR-025](../../adr/025-capability-discovery-api.md)
 - [Phase 13 Protocol](../13-protocol-layer/DESIGN.md)
 - [IAgentIdentity](../../../src/agent/iagent-identity.interface.ts)
 

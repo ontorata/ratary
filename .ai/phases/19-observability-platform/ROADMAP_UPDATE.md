@@ -20,7 +20,7 @@ Phase 19 may start after Phase 11 production baseline; full **Cost Dashboard** r
 |------|--------|
 | 11-ENTERPRISE-ROADMAP | Phase 19 after 18 in recommended order |
 | 10-PHASE-STATUS | Dashboard pack count, SLO templates |
-| docs/adr/README.md | ADR-034 gate |
+| .ai/adr/README.md | ADR-034 gate |
 
 ## Enterprise buyer note
 

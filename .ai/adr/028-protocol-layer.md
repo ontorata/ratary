@@ -116,6 +116,6 @@ Phase 12 event pipeline provides domain events suitable for push protocols. Phas
 ## References
 
 - [ADR-027 Transport layer](../../adr/027-transport-connectivity-layer.md)
-- [ADR-025 Capability manifest](../../../docs/adr/025-capability-discovery-api.md)
+- [ADR-025 Capability manifest](../../adr/025-capability-discovery-api.md)
 - [Phase 13 DESIGN](../phases/13-protocol-layer/DESIGN.md)
 - [04-ARCHITECTURE.md](../core/architecture/04-ARCHITECTURE.md)

@@ -36,6 +36,15 @@ export {
 } from './ranking-policy-snapshot.js';
 export { DefaultBehaviorAnalyticsEngine } from './default-behavior-analytics-engine.js';
 export { DefaultRankingLearningEngine } from './default-ranking-learning-engine.js';
+export {
+  DefaultRecommendationEngine,
+  DefaultPatternMiner,
+  DefaultKnowledgeDiscoveryEngine,
+  DefaultFeedbackLearningEngine,
+  DefaultLearningDatasetExporter,
+  DefaultLearningEvaluationEngine,
+  DefaultContextOptimizationEngine,
+} from './default-learning-component-engines.js';
 export { LearningOrchestrator } from './learning-orchestrator.js';
 export { LearningEventRecorder } from './learning-event-recorder.js';
 export {

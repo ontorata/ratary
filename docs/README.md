@@ -26,9 +26,9 @@
 
 | Document | Purpose |
 |----------|---------|
-| [adr/](adr/) | Architecture Decision Records (immutable decision text) |
-| [adr/POLICY.md](adr/POLICY.md) | When and how to write ADRs |
-| [archive/](archive/) | Historical phase designs — **read-only**, not implementation authority |
+| [.ai/adr/](../.ai/adr/) | Architecture Decision Records (immutable decision text) |
+| [.ai/adr/POLICY.md](../.ai/adr/POLICY.md) | When and how to write ADRs |
+| [.ai/archive/](../.ai/archive/) | Historical phase designs — **read-only**, not implementation authority |
 | [examples/](examples/) | Sample configuration files |
 
 ---
@@ -61,13 +61,13 @@ Owner instruction
   → .ai/core/constitution/00-CONSTITUTION.md
   → .ai/core/decision-framework/13-AI-DECISION-FRAMEWORK.md
   → .ai/core/architecture/04-ARCHITECTURE.md
-  → docs/adr/ (approved ADRs)
+  → .ai/adr/ (approved ADRs)
   → .ai/core/standards/*
   → .ai/TASK_PROMPT.md
   → src/
 ```
 
-Documentation in `docs/` (except ADR decision text) **must not** override `.ai/`.
+Documentation in `docs/` **must not** override `.ai/`.
 
 ---
 

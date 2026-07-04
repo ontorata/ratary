@@ -8,6 +8,9 @@ import { NoOpRelationInferenceOrchestrator } from '../inference/noop-relation-in
 import { ProjectCooccurrenceSource } from '../inference/sources/project-cooccurrence-source.js';
 import { SharedTagSource } from '../inference/sources/shared-tag-source.js';
 import { TemporalProximitySource } from '../inference/sources/temporal-proximity-source.js';
+import { SemanticSimilaritySource } from '../inference/sources/semantic-similarity-source.js';
+import { ConversationCooccurrenceSource } from '../inference/sources/conversation-cooccurrence-source.js';
+import { DependencySource } from '../inference/sources/dependency-source.js';
 import { SqlRelationEvidenceStore } from '../infrastructure/inference/sql-relation-evidence-store.js';
 import type { IRelationInferenceOrchestrator } from '../inference/irelation-inference-orchestrator.interface.js';
 
@@ -41,6 +44,9 @@ export function createRelationInferencePorts(sql: ISqlDatabase, env: Env): Relat
         new ProjectCooccurrenceSource(),
         new SharedTagSource(),
         new TemporalProximitySource(),
+        new SemanticSimilaritySource(),
+        new ConversationCooccurrenceSource(),
+        new DependencySource(),
       ],
     }),
   };

@@ -3,7 +3,7 @@
 **Status:** ✅ Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 12  
-**ADR gate:** [ADR-020 Implemented](../../../docs/adr/020-event-consumer-architecture.md)
+**ADR gate:** [ADR-020 Implemented](../../adr/020-event-consumer-architecture.md)
 
 ---
 

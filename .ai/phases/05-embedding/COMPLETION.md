@@ -37,7 +37,7 @@ Map roadmap success criteria to concrete evidence for Phase 5 closure.
 
 - **Tests:** 152 passing
 - **Completed:** 2026-07-01
-- **Design archive:** [PHASE-5-EMBEDDING-DESIGN.md](../../../docs/archive/PHASE-5-EMBEDDING-DESIGN.md)
+- **Design archive:** [PHASE-5-EMBEDDING-DESIGN.md](../../archive/PHASE-5-EMBEDDING-DESIGN.md)
 
 ---
 

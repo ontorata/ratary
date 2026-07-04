@@ -279,9 +279,9 @@ ${rows.map(([e, d, p]) => `| ${e} | ${d} | ${p} |`).join('\n')}
 }
 
 const ADR_LINKS = {
-  'ADR-001': '[ADR-001 Implemented](../../../docs/adr/001-multi-source-retrieval.md)',
-  'ADR-002': '[ADR-002 Implemented](../../../docs/adr/002-workspace-identity-model.md)',
-  'ADR-003': '[ADR-003 Implemented](../../../docs/adr/003-embedding-storage-mvp.md)',
+  'ADR-001': '[ADR-001 Implemented](../../../.ai/adr/001-multi-source-retrieval.md)',
+  'ADR-002': '[ADR-002 Implemented](../../../.ai/adr/002-workspace-identity-model.md)',
+  'ADR-003': '[ADR-003 Implemented](../../../.ai/adr/003-embedding-storage-mvp.md)',
 };
 
 function adrHeader(adr) {

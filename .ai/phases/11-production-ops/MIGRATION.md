@@ -16,7 +16,7 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 Phase 10 introduced Postgres adapter (`PostgresSqlDatabaseAdapter`, ADR-009). Phase 11 adds **data migration tooling** and **cutover runbook** — not new domain DDL.
 
-**No new application DDL in this phase.** Phase 11 delivers **operational proof** of the Postgres metadata path per [ADR-018](../../../docs/adr/018-production-postgres-cutover.md): schema bootstrap, staging harness, backfill/parity scripts, and owner-run cutover runbook.
+**No new application DDL in this phase.** Phase 11 delivers **operational proof** of the Postgres metadata path per [ADR-018](../../adr/018-production-postgres-cutover.md): schema bootstrap, staging harness, backfill/parity scripts, and owner-run cutover runbook.
 
 ---
 

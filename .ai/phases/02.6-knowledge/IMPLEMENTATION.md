@@ -3,7 +3,7 @@
 **Phase status:** Closed  
 **Gate:** PASS 2026-06-30  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**ADR:** [ADR-002 Implemented](../../../docs/adr/002-workspace-identity-model.md)
+**ADR:** [ADR-002 Implemented](../../adr/002-workspace-identity-model.md)
 
 ---
 

@@ -546,9 +546,9 @@ interface GlobalSyncRequest {
 
 ## 19. References
 
-- [ADR-036](../../../docs/adr/036-global-ai-intelligence-platform.md) · [ADR-037](../../../docs/adr/037-ai-telemetry-event-model.md) · [ADR-038](../../../docs/adr/038-usage-analytics-engine.md) · [ADR-043](../../../docs/adr/043-cloud-federation-sync-topology.md)
+- [ADR-036](../../adr/036-global-ai-intelligence-platform.md) · [ADR-037](../../adr/037-ai-telemetry-event-model.md) · [ADR-038](../../adr/038-usage-analytics-engine.md) · [ADR-043](../../adr/043-cloud-federation-sync-topology.md)
 - Phase 14 Federation [DESIGN](../14-federation/DESIGN.md) · Phase 18 Cloud · Phase 19 Observability [DESIGN](../19-observability-platform/DESIGN.md) · Phase 20 AI Infrastructure
-- [ADR-013 analytics store](../../../docs/adr/013-duckdb-analytics-store.md) · [ADR-026 memory quality signals](../../../docs/adr/026-memory-quality-signals.md)
+- [ADR-013 analytics store](../../adr/013-duckdb-analytics-store.md) · [ADR-026 memory quality signals](../../adr/026-memory-quality-signals.md)
 - [Vision charter](../../core/vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) · [Intelligence pipeline](../../core/vision/03-INTELLIGENCE-PIPELINE.md)
 
 ---

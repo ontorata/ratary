@@ -3,7 +3,7 @@
 **Document:** IMPLEMENTATION  
 **Phase status:** ✅ Gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../adr/018-production-postgres-cutover.md)
 
 ---
 
@@ -293,7 +293,7 @@ If staging harness blocks CI: disable workflow with owner approval; track in `RI
 | Milestone | Status | Evidence |
 |-----------|--------|----------|
 | Readiness PASS | ✅ | [CHECKLIST.md](CHECKLIST.md) |
-| ADR-018 Approved | ✅ | [018-production-postgres-cutover.md](../../../docs/adr/018-production-postgres-cutover.md) |
+| ADR-018 Approved | ✅ | [018-production-postgres-cutover.md](../../adr/018-production-postgres-cutover.md) |
 | `runPostgresMigrations` | ✅ | `src/db/postgres-migrations.ts`, `tests/db/postgres-migrations.test.ts` |
 | `db:apply-postgres-schema` | ✅ | `scripts/apply-postgres-schema.ts`, `scripts/lib/postgres-schema.ts` |
 | Postgres CI job | ✅ | `.github/workflows/postgres-staging.yml`, `npm run test:postgres-staging` |
@@ -318,4 +318,4 @@ If staging harness blocks CI: disable workflow with owner approval; track in `RI
 
 ---
 
-*Implementation plan 2026-07-03. Updated 2026-07-04 with all artifacts delivered. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Implementation plan 2026-07-03. Updated 2026-07-04 with all artifacts delivered. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../adr/018-production-postgres-cutover.md).*

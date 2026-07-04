@@ -17,7 +17,7 @@ export interface GraphRetrievalConfig {
 
 /**
  * Graph retrieval leg: lexical seeds → bidirectional BFS → hydrate neighbors.
- * @see docs/adr/006-igraph-provider.md Appendix F
+ * @see .ai/adr/006-igraph-provider.md Appendix F
  */
 export class GraphRetrievalCandidateSource implements IRetrievalCandidateSource {
   constructor(

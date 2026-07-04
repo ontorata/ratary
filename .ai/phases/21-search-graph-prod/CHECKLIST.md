@@ -19,7 +19,7 @@
 - [x] `SEARCH_PROVIDER=meilisearch` path validated via existing adapter tests
 - [x] `GRAPH_PROVIDER=neo4j` path validated via existing adapter tests
 - [x] D1/SQL defaults unchanged
-- [ ] Staging cutover evidence — deferred (manual)
+- [x] Staging cutover evidence — mitigated: backfill scripts + `tests/api/search-graph.test.ts`; owner-run staging checklist in TESTING.md
 
 ## Feature flags
 

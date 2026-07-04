@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
-**ADR:** [ADR-024 Accepted](../../../docs/adr/024-progressive-retrieval-policy.md)
+**ADR:** [ADR-024 Accepted](../../adr/024-progressive-retrieval-policy.md)
 
 ---
 

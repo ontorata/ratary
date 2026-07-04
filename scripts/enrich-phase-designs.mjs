@@ -77,7 +77,7 @@ Cloudflare D1 (memories, identities, clients, audit_logs, settings)
     title: 'Phase 2.6 — Knowledge Foundation',
     gateDate: '2026-06-30',
     classic: true,
-    archive: '[PHASE-2.6-DESIGN.md](../../../docs/archive/PHASE-2.6-DESIGN.md)',
+    archive: '[PHASE-2.6-DESIGN.md](../../../.ai/archive/PHASE-2.6-DESIGN.md)',
     goal: 'Add structured knowledge metadata (codename, slug, keywords, category, importance) and `memory_relations` graph edges on the existing `memories` table — metadata foundation before authorization, retrieval, and embedding.',
     architecture: `\
 \`\`\`
@@ -150,7 +150,7 @@ AuthUser { ownerId, identityId, clientId } → handlers
     title: 'Phase 4 — Memory Intelligence',
     gateDate: '2026-07-01',
     classic: true,
-    archive: '[PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)',
+    archive: '[PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../.ai/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)',
     adr: 'ADR-004',
     goal: 'Intelligent retrieval pipeline: bounded candidate retrieval, ranking, token-budget context assembly, and background consolidation — without loading full corpus into LLM context.',
     architecture: `\
@@ -193,7 +193,7 @@ MemoryConsolidator (batch CLI — dedupe, archive, stale promotion)
     title: 'Phase 5 — Embedding',
     gateDate: '2026-07-01',
     classic: true,
-    archive: '[PHASE-5-EMBEDDING-DESIGN.md](../../../docs/archive/PHASE-5-EMBEDDING-DESIGN.md)',
+    archive: '[PHASE-5-EMBEDDING-DESIGN.md](../../../.ai/archive/PHASE-5-EMBEDDING-DESIGN.md)',
     adr: 'ADR-003',
     goal: 'Async embedding pipeline: generate and store vectors behind ports without blocking CRUD. Prepare Phase 6 hybrid retrieval via `IEmbeddingStore.searchSimilar`.',
     architecture: `\
@@ -254,8 +254,8 @@ IMemoryRepository.setEmbeddingId (pointer on memories row)
 ];
 
 const ADR_LINKS = {
-  'ADR-003': '[ADR-003 Embedding Storage MVP](../../../docs/adr/003-embedding-storage-mvp.md)',
-  'ADR-004': '[ADR-004 Repository Port Types](../../../docs/adr/004-repository-port-types.md)',
+  'ADR-003': '[ADR-003 Embedding Storage MVP](../../../.ai/adr/003-embedding-storage-mvp.md)',
+  'ADR-004': '[ADR-004 Repository Port Types](../../../.ai/adr/004-repository-port-types.md)',
 };
 
 function adrLine(adr) {
@@ -325,8 +325,8 @@ ${FOOTER}`;
 function patchPhase6(content) {
   return content
     .replace(
-      '**ADR:** [ADR-001 Multi-Source Retrieval](../../../docs/adr/001-multi-source-retrieval.md) — **Proposed** (must be **Approved** before code).',
-      '**ADR:** [ADR-001 Multi-Source Retrieval](../../../docs/adr/001-multi-source-retrieval.md) — **Approved** · Implemented',
+      '**ADR:** [ADR-001 Multi-Source Retrieval](../../../.ai/adr/001-multi-source-retrieval.md) — **Proposed** (must be **Approved** before code).',
+      '**ADR:** [ADR-001 Multi-Source Retrieval](../../../.ai/adr/001-multi-source-retrieval.md) — **Approved** · Implemented',
     )
     .replace(
       '\n*Blocked until ADR-001 status is Approved. Do not contradict [09-ROADMAP.md](../../../roadmap/09-ROADMAP.md).*',

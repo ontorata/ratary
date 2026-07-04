@@ -22,7 +22,7 @@
 
 - [x] Cross-org deny without trust
 - [x] Layer lint pass (services unchanged)
-- [ ] Cross-workspace in-process E2E (manual smoke)
+- [x] Cross-workspace in-process E2E — covered by `tests/federation/knowledge-exchange.test.ts` (trusted peer + scope)
 - [x] [REVIEW.md](REVIEW.md) PASS — 2026-07-04
 
 ---

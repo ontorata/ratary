@@ -153,7 +153,7 @@ The **Status** column in every phase `RISKS.md` MUST use one of the values below
 1. One document, one responsibility — do not merge DESIGN into IMPLEMENTATION.
 2. Do not delete closed phase folders — history is permanent.
 3. Do not mark roadmap ✅ until `REVIEW.md` records gate PASS.
-4. `docs/archive/PHASE-*.md` remains canonical for detailed historical design; `DESIGN.md` summarizes and links.
+4. `.ai/archive/PHASE-*.md` remains canonical for detailed historical design; `DESIGN.md` summarizes and links.
 5. Sub-phases (2.5, 2.6) get separate folders — do not collapse into parent phase.
 
 ---

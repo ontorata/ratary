@@ -33,7 +33,7 @@ Provide AI assistants a single map for placing new code, wiring adapters, and ev
 - Naming conventions → [03-NAMING.md](../../core/standards/03-NAMING.md)
 - Canonical module registry (implementation names) → [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
 - Active phase tasks and deliverables → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
-- ADR content and approval → [../adr/POLICY.md](../../../docs/adr/POLICY.md), [adr/](../../../docs/adr/)
+- ADR content and approval → [../adr/POLICY.md](../../adr/POLICY.md), [adr/](../../adr/)
 - User setup and operations → [../PANDUAN.md](../../docs/PANDUAN.md)
 - Live deployment inventory and test counts → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 
@@ -311,7 +311,7 @@ scripts/backfill-embeddings.ts
 
 ## Transport layer (Phase 10.5 — implemented)
 
-**Status:** Implemented — [ADR-027](../../../.ai/adr/027-transport-connectivity-layer.md) Implemented (2026-07-04) · [10.5 DESIGN](../../phases/10.5-transport-connectivity/DESIGN.md)
+**Status:** Implemented — [ADR-027](../../adr/027-transport-connectivity-layer.md) Implemented (2026-07-04) · [10.5 DESIGN](../../phases/10.5-transport-connectivity/DESIGN.md)
 
 **Owns:** protocol adapters (REST, MCP stdio, optional gRPC), `TransportContext`, shared application handlers, transport registry, manifest transport section.
 
@@ -349,7 +349,7 @@ transport/
 
 ## Production operations (Phase 11 — implemented)
 
-**Status:** Implemented — [ADR-018](../../../docs/adr/018-production-postgres-cutover.md) Approved (2026-07-03) · Gate PASS (2026-07-04) · [11 DESIGN](../../phases/11-production-ops/DESIGN.md)
+**Status:** Implemented — [ADR-018](../../adr/018-production-postgres-cutover.md) Approved (2026-07-03) · Gate PASS (2026-07-04) · [11 DESIGN](../../phases/11-production-ops/DESIGN.md)
 
 **Owns:** Postgres metadata cutover **operational proof** — schema bootstrap, D1→Postgres backfill, parity verification, staging harness. **Does not** rewrite application services.
 
@@ -373,7 +373,7 @@ tests/db/postgres-staging.integration.test.ts
 
 ## Runtime compatibility (Phase 7.5 — implemented)
 
-**Status:** Implemented — [ADR-025](../../../docs/adr/025-capability-discovery-api.md) Accepted (2026-07-04) · [07.5 DESIGN](../../phases/07.5-runtime-compatibility/DESIGN.md)
+**Status:** Implemented — [ADR-025](../../adr/025-capability-discovery-api.md) Accepted (2026-07-04) · [07.5 DESIGN](../../phases/07.5-runtime-compatibility/DESIGN.md)
 
 **Owns:** deployment-accurate capability manifest — feature flags, limits, error/rate-limit catalogs, MCP tool registry, protocol version. **Does not** implement agent runtime.
 
@@ -395,7 +395,7 @@ transport/shared/handlers/capabilities.handlers.ts
 
 ## Quality signals (Phase 8.5 — implemented)
 
-**Status:** Implemented — [ADR-026](../../../docs/adr/026-memory-quality-signals.md) Accepted (2026-07-04) · [08.5 DESIGN](../../phases/08.5-observation-reflection-learning/DESIGN.md)
+**Status:** Implemented — [ADR-026](../../adr/026-memory-quality-signals.md) Accepted (2026-07-04) · [08.5 DESIGN](../../phases/08.5-observation-reflection-learning/DESIGN.md)
 
 **Owns:** scoped signal ingest, deterministic importance scoring, optional append-only audit store. **Does not** implement agent reflection, LLM introspection, or autonomous memory mutation.
 
@@ -420,7 +420,7 @@ scripts/reflect-signals.ts         advisory batch (dry-run default)
 
 ## Learning intelligence (Phase 8.6 — implemented W1 + L26)
 
-**Status:** Implemented — [ADR-057](../../../docs/adr/057-learning-intelligence-engine.md) Accepted (2026-07-04) · [08.6 DESIGN](../../phases/08.6-learning-intelligence/DESIGN.md)
+**Status:** Implemented — [ADR-057](../../adr/057-learning-intelligence-engine.md) Accepted (2026-07-04) · [08.6 DESIGN](../../phases/08.6-learning-intelligence/DESIGN.md)
 
 **Owns:** async policy learning from signals — event store, behavior analytics, ranking policy snapshots. **Does not** mutate memory SSOT, implement agent loops, or run in-repo ML training.
 
@@ -445,7 +445,7 @@ scripts/run-learning.ts              batch orchestrator CLI
 
 ## Graph relation inference (Phase 8.7 — implemented)
 
-**Status:** Implemented — [ADR-041](../../../docs/adr/041-automatic-graph-relation-inference.md) Accepted (2026-07-04) · [08.7 DESIGN](../../phases/08.7-graph-relation-inference/DESIGN.md)
+**Status:** Implemented — [ADR-041](../../adr/041-automatic-graph-relation-inference.md) Accepted (2026-07-04) · [08.7 DESIGN](../../phases/08.7-graph-relation-inference/DESIGN.md)
 
 **Owns:** batch inference of `memory_relations` edges from deterministic signals (project, tags, temporal). **Does not** use LLM extraction or mutate manual relations.
 
@@ -471,7 +471,7 @@ scripts/infer-relations.ts
 
 ## Memory evolution (Phase 09.7 — implemented)
 
-**Status:** Implemented — [ADR-040](../../../docs/adr/040-memory-evolution-version-control.md) Accepted (2026-07-04) · [09.7 DESIGN](../../phases/09.7-memory-evolution/DESIGN.md)
+**Status:** Implemented — [ADR-040](../../adr/040-memory-evolution-version-control.md) Accepted (2026-07-04) · [09.7 DESIGN](../../phases/09.7-memory-evolution/DESIGN.md)
 
 **Owns:** immutable version chain side-store — pre-update snapshots, head pointer, diff/merge policy ports. **Does not** replace REST v1 or mutate history in place.
 
@@ -495,7 +495,7 @@ routes/v1/evolution.routes.ts
 
 ## Multi-client sync (Phase 09.8 — implemented)
 
-**Status:** Implemented — [ADR-042](../../../docs/adr/042-multi-client-memory-sync.md) Accepted (2026-07-04) · [09.8 DESIGN](../../phases/09.8-multi-client-sync/DESIGN.md)
+**Status:** Implemented — [ADR-042](../../adr/042-multi-client-memory-sync.md) Accepted (2026-07-04) · [09.8 DESIGN](../../phases/09.8-multi-client-sync/DESIGN.md)
 
 **Owns:** client-to-hub pull/push sync, per-platform cursors, conflict resolution strategies. **Distinct from** Phase 14 federation (node-to-node).
 
@@ -519,7 +519,7 @@ routes/v1/client-sync.routes.ts
 
 ## Event pipeline (Phase 12 — implemented)
 
-**Status:** Implemented — [ADR-020](../../../docs/adr/020-event-consumer-architecture.md) Implemented (2026-07-04) · [12 DESIGN](../../phases/12-event-pipeline/DESIGN.md)
+**Status:** Implemented — [ADR-020](../../adr/020-event-consumer-architecture.md) Implemented (2026-07-04) · [12 DESIGN](../../phases/12-event-pipeline/DESIGN.md)
 
 **Owns:** async domain event fan-out on `IEventBus` — consumer registry, post-commit publishers, analytics sink. **Distinct from** Phase 19 observability (operational telemetry).
 
@@ -543,7 +543,7 @@ composition/create-event-pipeline-ports.ts
 
 ## Protocol layer (Phase 13 — planned)
 
-**Status:** Design draft — [ADR-028](../../../.ai/adr/028-protocol-layer.md) Proposed · [13-protocol-layer DESIGN](../../phases/13-protocol-layer/DESIGN.md)  
+**Status:** Design draft — [ADR-028](../../adr/028-protocol-layer.md) Proposed · [13-protocol-layer DESIGN](../../phases/13-protocol-layer/DESIGN.md)  
 **Prerequisite:** Phase 10.5 (ADR-027 Implemented)
 
 **Owns:** multi-protocol streaming (SSE, WebSocket, gRPC server-stream), protocol benchmark CLI, `ProtocolContext`, shared `IUseCaseHandler`. Evolves `transport/` → `protocol/` canonical root.
@@ -581,7 +581,7 @@ protocol/
 
 ## Federation layer (Phase 14 — planned)
 
-**Status:** Design draft — [ADR-029](../../../.ai/adr/029-federation-layer.md) Proposed · [14-federation DESIGN](../../phases/14-federation/DESIGN.md)  
+**Status:** Design draft — [ADR-029](../../adr/029-federation-layer.md) Proposed · [14-federation DESIGN](../../phases/14-federation/DESIGN.md)  
 **Prerequisite:** Phase 13 Implemented · Phase 9–10 ✅
 
 **Owns:** cross-node knowledge exchange (workspace, region, organization, cloud) via federation ports. **`MemoryService` unchanged** — `IKnowledgeExchangeService` delegates local persistence to existing MemoryService methods.
@@ -611,7 +611,7 @@ federation/
 
 ## Cloud platform layer (Phase 18 — implemented)
 
-**Status:** Implemented (2026-07-04) — [ADR-033](../../../.ai/adr/033-cloud-platform.md) · [18-cloud-platform IMPLEMENTATION](../../phases/18-cloud-platform/IMPLEMENTATION.md)  
+**Status:** Implemented (2026-07-04) — [ADR-033](../../adr/033-cloud-platform.md) · [18-cloud-platform IMPLEMENTATION](../../phases/18-cloud-platform/IMPLEMENTATION.md)  
 **Prerequisite:** Phase 14 ✅ · Phase 17 ✅
 
 **Owns:** control plane metadata orchestration — workspace provisioning records, region registry, usage metering export, DR orchestration. **`MemoryService` unchanged** — DR calls `exportBackup`; control plane never touches repositories.
@@ -631,7 +631,7 @@ src/routes/v1/cloud.routes.ts   GET/POST /api/v1/cloud/* when CONTROL_PLANE_ENAB
 
 ## Observability platform layer (Phase 19 — implemented)
 
-**Status:** Implemented (2026-07-04) — [ADR-034](../../../.ai/adr/034-observability-platform.md) · [19-observability-platform IMPLEMENTATION](../../phases/19-observability-platform/IMPLEMENTATION.md)  
+**Status:** Implemented (2026-07-04) — [ADR-034](../../adr/034-observability-platform.md) · [19-observability-platform IMPLEMENTATION](../../phases/19-observability-platform/IMPLEMENTATION.md)  
 **Prerequisite:** Phase 12 ✅ · Phase 13 ✅
 
 **Owns:** metrics/traces/logs export at middleware boundary — Prometheus scrape, OTel trace bridge, Loki log shipper, Grafana dashboard packs, SLO/Alertmanager templates. **`MemoryService` unchanged** — no observability handler on Phase 12 business bus.
@@ -651,7 +651,7 @@ GET /metrics                Prometheus scrape when OBSERVABILITY_PLATFORM=true
 
 ## Agent ecosystem layer (Phase 15 — implemented)
 
-**Status:** Implemented (2026-07-04) — [ADR-030](../../../.ai/adr/030-autonomous-agent-ecosystem.md) · [15-autonomous-agent-ecosystem IMPLEMENTATION](../../phases/15-autonomous-agent-ecosystem/IMPLEMENTATION.md)  
+**Status:** Implemented (2026-07-04) — [ADR-030](../../adr/030-autonomous-agent-ecosystem.md) · [15-autonomous-agent-ecosystem IMPLEMENTATION](../../phases/15-autonomous-agent-ecosystem/IMPLEMENTATION.md)  
 **Prerequisite:** Phase 7/9 ✅ · ADR-025 ✅
 
 **Owns:** external **client catalog** (12 profiles: Cursor, Claude, OpenAI, Gemini, Codex, Continue, Qwen, …), ecosystem manifest, `GET /api/v1/ecosystem/clients`. Enables shared **Memory Cloud** per workspace.
@@ -742,7 +742,7 @@ auth/
 
 ## Future vector layer (Phase 6)
 
-**Not yet implemented.** Requires approved [ADR-001](../../../docs/adr/001-multi-source-retrieval.md).
+**Not yet implemented.** Requires approved [ADR-001](../../adr/001-multi-source-retrieval.md).
 
 **Planned extension:**
 
@@ -763,7 +763,7 @@ IRetrievalCandidateSource
 
 ## Future graph layer (Phase 8)
 
-**Not yet implemented.** Requires `IGraphProvider` per [ADR-002](../../../docs/adr/002-workspace-identity-model.md) path.
+**Not yet implemented.** Requires `IGraphProvider` per [ADR-002](../../adr/002-workspace-identity-model.md) path.
 
 **Planned extension:**
 

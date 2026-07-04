@@ -10,15 +10,15 @@ import type { ILearningOrchestrator } from '../learning/ilearning-orchestrator.i
 import type { ILearningEventStore } from '../learning/ilearning-event-store.port.js';
 import type { ILearningArtifactStore } from '../learning/ilearning-artifact-store.port.js';
 import {
-  NoOpContextOptimizationEngine,
-  NoOpFeedbackLearningEngine,
-  NoOpKnowledgeDiscoveryEngine,
-  NoOpLearningDatasetExporter,
-  NoOpLearningEvaluationEngine,
-  NoOpMLProvider,
-  NoOpPatternMiner,
-  NoOpRecommendationEngine,
-} from '../learning/noop-learning-engines.js';
+  DefaultContextOptimizationEngine,
+  DefaultFeedbackLearningEngine,
+  DefaultKnowledgeDiscoveryEngine,
+  DefaultLearningDatasetExporter,
+  DefaultLearningEvaluationEngine,
+  DefaultPatternMiner,
+  DefaultRecommendationEngine,
+} from '../learning/default-learning-component-engines.js';
+import { NoOpMLProvider } from '../learning/noop-learning-engines.js';
 import { NoOpLearningOrchestrator } from '../learning/noop-learning-orchestrator.js';
 
 export interface LearningPorts {
@@ -50,13 +50,13 @@ export function createLearningPorts(sql: ISqlDatabase, env: Env): LearningPorts 
       artifactStore,
       behaviorAnalytics,
       rankingLearning,
-      recommendation: new NoOpRecommendationEngine(),
-      patternMiner: new NoOpPatternMiner(),
-      knowledgeDiscovery: new NoOpKnowledgeDiscoveryEngine(),
-      feedbackLearning: new NoOpFeedbackLearningEngine(),
-      datasetExporter: new NoOpLearningDatasetExporter(),
-      evaluation: new NoOpLearningEvaluationEngine(),
-      contextOptimization: new NoOpContextOptimizationEngine(),
+      recommendation: new DefaultRecommendationEngine(),
+      patternMiner: new DefaultPatternMiner(),
+      knowledgeDiscovery: new DefaultKnowledgeDiscoveryEngine(),
+      feedbackLearning: new DefaultFeedbackLearningEngine(),
+      datasetExporter: new DefaultLearningDatasetExporter(),
+      evaluation: new DefaultLearningEvaluationEngine(),
+      contextOptimization: new DefaultContextOptimizationEngine(),
     }),
     eventStore,
     artifactStore,

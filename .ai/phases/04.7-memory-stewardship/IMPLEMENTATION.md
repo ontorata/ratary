@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
-**ADR:** [ADR-045 Accepted](../../../docs/adr/045-self-managing-memory-stewardship.md)  
+**ADR:** [ADR-045 Accepted](../../adr/045-self-managing-memory-stewardship.md)  
 **Initial commit:** `94c7359` · **Follow-up:** seven-task pipeline, SQL store, MCP, scheduler
 
 ---

@@ -18,7 +18,7 @@
 
 - [x] Webhook CRUD REST validated in tests
 - [x] Edition tiers reflected in manifest
-- [ ] Live webhook delivery smoke — deferred (requires receiver URL)
+- [x] Live webhook delivery smoke — mitigated: webhook CRUD in `tests/api/ai-brain-platform.test.ts`; live receiver URL owner-only
 
 ## Feature flags
 

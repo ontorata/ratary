@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04 — W1 + L26 foundation  
-**ADR:** [ADR-057 Accepted](../../../docs/adr/057-learning-intelligence-engine.md)
+**ADR:** [ADR-057 Accepted](../../adr/057-learning-intelligence-engine.md)
 
 ---
 

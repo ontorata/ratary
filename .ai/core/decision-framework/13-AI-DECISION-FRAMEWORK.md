@@ -33,7 +33,7 @@ When sources conflict, authority MUST be applied in this order (highest first):
 | 2 | [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) |
 | 3 | [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) (this document) |
 | 4 | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) (structural law) |
-| 5 | Approved ADRs ([../../../docs/adr/POLICY.md](../../../docs/adr/POLICY.md), [adr/](../../../docs/adr/)) |
+| 5 | Approved ADRs ([POLICY.md](../../adr/POLICY.md), [adr/](../../adr/)) |
 | 6 | [01-05-WORKFLOW.md](01-05-WORKFLOW.md) |
 | 7 | [02-CODING.md](../../core/standards/02-CODING.md) |
 | 8 | [03-NAMING.md](../../core/standards/03-NAMING.md) |
@@ -85,7 +85,7 @@ Explicit ordering removes arbitrary choices. Constitution and ADRs outrank conve
 | 2 | Read constitution | [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) |
 | 3 | Read decision framework | [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) |
 | 4 | Read architecture | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) |
-| 5 | Read relevant ADRs | [adr/](../../../docs/adr/) per task scope |
+| 5 | Read relevant ADRs | [adr/](../../adr/) per task scope |
 | 6 | Check existing implementation | `src/`; [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) canonical owners |
 | 6a | **YES** — extend existing code | Extend canonical module; no parallel owner |
 | 6b | **NO** — design new component | Development discussion per [05-WORKFLOW.md](../workflow/05-WORKFLOW.md); ADR if structural |
@@ -508,8 +508,8 @@ Good decisions compound; poor decisions require ADRs and migrations to unwind. T
 | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Structural architecture |
 | [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) | Review → design → implementation gates |
 | [08-REVIEW.md](../../core/standards/08-REVIEW.md) | Pre-merge verification |
-| [../adr/POLICY.md](../../../docs/adr/POLICY.md) | Structural decision process |
-| [adr/](../../../docs/adr/) | Approved structural decisions |
+| [../adr/POLICY.md](../../adr/POLICY.md) | Structural decision process |
+| [adr/](../../adr/) | Approved structural decisions |
 | [09-ROADMAP.md](../roadmap/09-ROADMAP.md) | Phase 1–10 evolution |
 | [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md) | Response structure and vocabulary |
 | [supplementary/WRITING.md](supplementary/WRITING.md) | Documentation form |

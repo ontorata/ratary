@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
-**ADR:** [ADR-020 Accepted](../../../docs/adr/020-event-consumer-architecture.md)
+**ADR:** [ADR-020 Accepted](../../adr/020-event-consumer-architecture.md)
 
 ---
 
@@ -79,5 +79,5 @@ Wired in: `rest-server.ts`, `grpc-server.ts`, `mcp-server.ts` (stdio bootstrap).
 ## References
 
 - [DESIGN.md](DESIGN.md)
-- [ADR-016](../../../docs/adr/016-redis-streams-event-bus.md)
-- [ADR-017](../../../docs/adr/017-memory-access-audit.md)
+- [ADR-016](../../adr/016-redis-streams-event-bus.md)
+- [ADR-017](../../adr/017-memory-access-audit.md)

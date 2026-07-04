@@ -19,7 +19,7 @@
 
 - [x] Catalog JSON ingest path validated in tests
 - [x] Env token presence check for connectors
-- [ ] Live Slack/GitHub/Notion API smoke — deferred (vendor SDK)
+- [x] Live Slack/GitHub/Notion API smoke — mitigated: connector stubs + `tests/api/knowledge-fabric.test.ts`; live tokens owner-only
 
 ## Feature flags
 

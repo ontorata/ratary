@@ -3,7 +3,7 @@
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-03  
   
-**ADR:** [ADR-001 Implemented](../../../docs/adr/001-multi-source-retrieval.md)
+**ADR:** [ADR-001 Implemented](../../adr/001-multi-source-retrieval.md)
 
 ---
 

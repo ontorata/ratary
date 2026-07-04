@@ -47,4 +47,4 @@ Phase 16 **must not** block Phase 11 or Phase 17.
 
 ## Owner approval gate
 
-Implementation blocked until ADR-031 status = **Approved** in `docs/adr/README.md`.
+Implementation blocked until ADR-031 status = **Approved** in `.ai/adr/README.md`.

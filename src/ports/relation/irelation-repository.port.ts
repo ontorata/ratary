@@ -1,6 +1,6 @@
 /**
  * Canonical relation persistence port (flat relations today; graph engines later).
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export type { IMemoryRelationRepository as IRelationRepository } from '../../repositories/memory-relation.repository.interface.js';
 

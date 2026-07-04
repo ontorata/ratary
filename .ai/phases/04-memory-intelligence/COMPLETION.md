@@ -33,7 +33,7 @@ Map roadmap success criteria to durable evidence.
 | SC-03 | MEMORY_SELECT projection | ✅ No full body in retrieval hot path |
 | SC-04 | MemoryConsolidator batch path | ✅ `scripts/consolidate-memories.ts` |
 | SC-05 | Importance scoring + backfill | ✅ dry-run default backfill script |
-| SC-06 | Design archive | ✅ [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) |
+| SC-06 | Design archive | ✅ [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) |
 
 **Result:** 6/6 PASS. Phase gate closed 2026-07-01.
 

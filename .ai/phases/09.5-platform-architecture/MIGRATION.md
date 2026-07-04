@@ -1,7 +1,7 @@
 # Phase 9.5 — Platform Architecture — MIGRATION
 
 **Status:** N/A for schema — import-path migration only  
-**ADR:** [ADR-008](../../../docs/adr/008-platform-architecture.md)
+**ADR:** [ADR-008](../../adr/008-platform-architecture.md)
 
 ---
 

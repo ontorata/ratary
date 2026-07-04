@@ -72,7 +72,7 @@ const PHASES = [
     ],
     harderOrDeferred: [
       'UNIQUE indexes required backfill before migration — `migrateKnowledgeFoundationPhase3` ordering',
-      'Design archive in `docs/archive/` — phase folder DESIGN is summary + pointer',
+      'Design archive in `.ai/archive/` — phase folder DESIGN is summary + pointer',
     ],
     acceptedDebt: ['Rule-based summary/keywords only — no LLM enrichment path yet'],
     recommendations: [

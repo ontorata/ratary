@@ -15,7 +15,9 @@ import type {
 import type { IClientPlatformRegistry } from './iclient-platform-registry.interface.js';
 import type { IClientSyncService } from './iclient-sync-service.interface.js';
 import type { ISyncConflictStore } from './isync-conflict-store.port.js';
-import type { ISyncCursorStore } from './isync-cursor-store.port.js';
+import type { Memory } from '../types/memory.js';
+import type { IMemoryMergePolicy } from '../evolution/imemory-merge-policy.interface.js';
+import { toMemorySnapshot } from '../evolution/memory-evolution.types.js';
 
 export class ClientSyncService implements IClientSyncService {
   constructor(
@@ -25,6 +27,7 @@ export class ClientSyncService implements IClientSyncService {
     private readonly platformRegistry: IClientPlatformRegistry,
     private readonly strategy: SyncConflictStrategy,
     private readonly conflictStore?: ISyncConflictStore,
+    private readonly mergePolicy?: IMemoryMergePolicy,
   ) {}
 
   async pull(
@@ -201,17 +204,28 @@ export class ClientSyncService implements IClientSyncService {
     });
   }
 
-  private mergeFields(
-    existing: {
-      title: string;
-      project: string;
-      content: string;
-      summary: string;
-      tags: string[];
-      favorite: boolean;
-    },
-    incoming: NonNullable<PushChangeItem['data']>,
-  ) {
+  private mergeFields(existing: Memory, incoming: NonNullable<PushChangeItem['data']>) {
+    if (this.mergePolicy && this.strategy === 'field_merge') {
+      const incomingSnapshot = toMemorySnapshot({
+        ...existing,
+        title: incoming.title ?? existing.title,
+        project: incoming.project ?? existing.project,
+        content: incoming.content ?? existing.content,
+        summary: incoming.summary ?? existing.summary,
+        tags: incoming.tags ?? existing.tags,
+        favorite: incoming.favorite ?? existing.favorite,
+      });
+      const merged = this.mergePolicy.merge(toMemorySnapshot(existing), incomingSnapshot);
+      return {
+        title: merged.title,
+        project: merged.project,
+        content: merged.content,
+        summary: merged.summary,
+        tags: merged.tags,
+        favorite: merged.favorite,
+      };
+    }
+
     return {
       title: incoming.title ?? existing.title,
       project: incoming.project ?? existing.project,

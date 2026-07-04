@@ -1,7 +1,7 @@
 # Phase 9.5 — Platform Architecture — README
 
 **Status:** ✅ Complete (gate PASS 2026-07-03)  
-**ADR:** [ADR-008](../../../docs/adr/008-platform-architecture.md) — **Approved**  
+**ADR:** [ADR-008](../../adr/008-platform-architecture.md) — **Approved**  
 **Depends on:** Phase 9 gate PASS  
 
 ---
@@ -31,4 +31,4 @@ Transform AI Brain from a D1-oriented application into a **storage-agnostic plat
 
 ---
 
-*Subordinate to [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) and [ADR-008](../../../docs/adr/008-platform-architecture.md).*
+*Subordinate to [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) and [ADR-008](../../adr/008-platform-architecture.md).*

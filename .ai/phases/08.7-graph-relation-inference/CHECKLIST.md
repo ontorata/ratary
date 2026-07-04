@@ -1,7 +1,7 @@
 # Phase 8.7 — Graph Relation Inference — CHECKLIST
 
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-041 Accepted  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-041](../../../docs/adr/041-automatic-graph-relation-inference.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-041](../../adr/041-automatic-graph-relation-inference.md)
 
 ---
 
@@ -45,9 +45,9 @@
 
 ## Deferred
 
-- [ ] Semantic similarity inference source
+- [x] Semantic similarity inference source (`SemanticSimilaritySource`)
 - [x] Phase 04.7 `graph-repair` stewardship task — `GraphRepairTask` in `create-memory-stewardship-ports`
-- [ ] Conversation / dependency sources
+- [x] Conversation / dependency sources (`ConversationCooccurrenceSource`, `DependencySource`)
 
 ---
 

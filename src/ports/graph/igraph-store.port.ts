@@ -1,7 +1,7 @@
 /**
  * Vendor-neutral graph traversal port.
  * Adapters: D1 flat relations (MVP), Neo4j, Memgraph, ArangoDB.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export type {
   IGraphProvider as IGraphStore,

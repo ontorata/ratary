@@ -131,7 +131,7 @@ REMOTE_MCP_CORS_ORIGINS=*
 | OAuth (ChatGPT dropdown) | `REMOTE_MCP_OAUTH_ENABLED=true`, `OIDC_ISSUER_URL`, `OIDC_MCP_OWNER_ID` | Phase 17 OIDC; discovery di `/.well-known/oauth-protected-resource/mcp` |
 
 - Implementasi: [.ai/phases/13.1-remote-mcp-clients/](../.ai/phases/13.1-remote-mcp-clients/README.md)
-- ADR: [ADR-048 Implemented](../.ai/adr/048-remote-mcp-transport.md)
+- ADR: [ADR-048 Implemented](../adr/048-remote-mcp-transport.md)
 
 **Jangan** tempel URL REST (`/api/v1`) ke field Server URL MCP — protokol berbeda.
 
@@ -319,7 +319,7 @@ Adapter eksternal diaktifkan melalui variabel lingkungan di composition root. **
 | `MEMORY_ACCESS_AUDIT` | `false` | Audit | `memory.accessed` trail (ADR-017) |
 | `OTEL_ENABLED` | `false` | OTel | OpenTelemetry HTTP tracing |
 
-Rincian ADR: [docs/adr/README.md](adr/README.md). Contoh variabel: [.env.example](../.env.example).
+Rincian ADR: [.ai/adr/README.md](adr/README.md). Contoh variabel: [.env.example](../.env.example).
 
 ### Postgres metadata (Phase 11)
 
@@ -386,6 +386,38 @@ Opsi CLI: `--owner=<uuid>`, `--batch-size=100`, `--execute`.
 
 ---
 
+## 10. Observability & OTel (Phase 12D / 19)
+
+Enable structured telemetry without changing default deploy:
+
+```env
+OBSERVABILITY_ENABLED=true
+OTEL_ENABLED=true
+OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318/v1/traces
+```
+
+- Metrics: `GET /metrics` (Prometheus format when enabled)
+- Dashboards: import JSON from `observability/dashboards/`
+- Full stack wiring: [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md)
+
+Smoke: `npm test -- tests/observability`
+
+---
+
+## 11. Agent Ecosystem (Phase 15F)
+
+Multi-agent workspace memory (Phase 9) + autonomous agent registration:
+
+| Fitur | MCP / REST |
+|-------|------------|
+| Daftar agent | `list_agents`, `register_agent` |
+| Workspace scope | header `x-workspace-id` atau env MCP |
+| Federation (opt-in) | `FEDERATION_ENABLED=true` — lihat [ADR-029](../.ai/adr/029-federation-layer.md) |
+
+E2E: `npm test -- tests/api/ecosystem.test.ts`
+
+---
+
 ## 9. Migrasi lingkungan pengembangan
 
 Apabila Anda memindahkan instalasi ke perangkat atau workstation baru, ikuti panduan formal:
@@ -405,5 +437,5 @@ Ringkasan: salin `.env` (terutama `AUTH_SECRET`), jalankan `db:migrate`, verifik
 | [.ai/workflow/05-WORKFLOW.md](.ai/workflow/05-WORKFLOW.md) | Proses Principal Engineer & format analisis |
 | [TASK_PROMPT.md](TASK_PROMPT.md) | Status post–Phase 10 |
 | [.ai/workflow/12-TASK-TEMPLATE.md](.ai/workflow/12-TASK-TEMPLATE.md) | Template task untuk fase berikutnya |
-| [adr/POLICY.md](adr/POLICY.md) | Kebijakan ADR — wajib untuk perubahan struktural |
-| [archive/](archive/) | Desain historis per fase |
+| [adr/POLICY.md](../.ai/adr/POLICY.md) | Kebijakan ADR — wajib untuk perubahan struktural |
+| [archive/](../.ai/archive/) | Desain historis per fase |

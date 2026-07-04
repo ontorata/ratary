@@ -80,7 +80,7 @@ flowchart LR
 | [ADR-033](../adr/033-cloud-platform.md) | 18 |
 | [ADR-034](../adr/034-observability-platform.md) | 19 |
 | [ADR-035](../adr/035-ai-infrastructure-platform.md) | 20 |
-| [ADR-036/037/038/043](../../../docs/adr/036-global-ai-intelligence-platform.md) | 25 (capstone) |
+| [ADR-036/037/038/043](../../adr/036-global-ai-intelligence-platform.md) | 25 (capstone) |
 
 Implementation blocked until respective ADR **Approved**.
 

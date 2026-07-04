@@ -5,7 +5,7 @@
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)  
 **Roadmap placement:** Extension track **06.5** — progressive retrieval after Phase 4 + Phase 6  
-**ADR gate:** [ADR-024](../../../docs/adr/024-progressive-retrieval-policy.md) — **Accepted** (Implemented 2026-07-04)
+**ADR gate:** [ADR-024](../../adr/024-progressive-retrieval-policy.md) — **Accepted** (Implemented 2026-07-04)
 
 ---
 
@@ -325,8 +325,8 @@ Env:
 
 | Document | Relevance |
 |----------|-----------|
-| [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) | Composite retrieval |
-| [ADR-024](../../../docs/adr/024-progressive-retrieval-policy.md) | Gate (Accepted) |
+| [ADR-001](../../adr/001-multi-source-retrieval.md) | Composite retrieval |
+| [ADR-024](../../adr/024-progressive-retrieval-policy.md) | Gate (Accepted) |
 | [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
 | [TESTING.md](TESTING.md) | Verification evidence |
 

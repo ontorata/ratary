@@ -96,6 +96,6 @@ Constitution §3 and §55: reasoning, planning, execution, and agent orchestrati
 ## References
 
 - [Phase 7 Agent Runtime DESIGN](../phases/07-agent-runtime/DESIGN.md)
-- [ADR-007 Multi-AI workspace](../../../docs/adr/007-multi-ai-workspace-scope.md)
-- [ADR-025 Capability discovery](../../../docs/adr/025-capability-discovery-api.md)
+- [ADR-007 Multi-AI workspace](../../adr/007-multi-ai-workspace-scope.md)
+- [ADR-025 Capability discovery](../../adr/025-capability-discovery-api.md)
 - [Phase 15 DESIGN](../phases/15-autonomous-agent-ecosystem/DESIGN.md)

@@ -1,7 +1,7 @@
 # Phase 7.5 — Runtime Compatibility — CHECKLIST
 
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-025 Accepted  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-025](../../../docs/adr/025-capability-discovery-api.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-025](../../adr/025-capability-discovery-api.md)
 
 ---
 

@@ -109,7 +109,7 @@ function renderRunbook(p) {
 
 ${p.scope}
 
-**No new application DDL in this phase.** Phase 11 delivers **operational proof** of the Postgres metadata path per [ADR-018](../../../docs/adr/018-production-postgres-cutover.md): schema bootstrap, staging harness, backfill/parity scripts, and owner-run cutover runbook.
+**No new application DDL in this phase.** Phase 11 delivers **operational proof** of the Postgres metadata path per [ADR-018](../../../.ai/adr/018-production-postgres-cutover.md): schema bootstrap, staging harness, backfill/parity scripts, and owner-run cutover runbook.
 
 ---
 

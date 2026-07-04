@@ -1,7 +1,7 @@
 /**
  * Vendor-neutral async event distribution port.
  * Adapters: Kafka, RabbitMQ, NATS, Redis Streams, Cloudflare Queues.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export interface EventEnvelope<TPayload = unknown> {
   topic: string;

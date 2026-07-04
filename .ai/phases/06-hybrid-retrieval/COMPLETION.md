@@ -2,7 +2,7 @@
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-03)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**ADR:** [ADR-001 Multi-Source Retrieval](docs/adr/001-multi-source-retrieval.md)
+**ADR:** [ADR-001 Multi-Source Retrieval](.ai/adr/001-multi-source-retrieval.md)
 
 ---
 

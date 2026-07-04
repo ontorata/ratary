@@ -1,7 +1,7 @@
-ï»¿# Phase 6 â€” Hybrid Retrieval â€” DESIGN
+# Phase 6 — Hybrid Retrieval — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** âœ… Closed â€” gate PASS (2026-07-03  )  
+**Phase status:** ? Closed — gate PASS (2026-07-03  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -16,16 +16,16 @@ Record approved design intent for Phase 6: hybrid SQL + vector retrieval via por
 
 | Attribute | Value |
 |-----------|-------|
-| **Created when** | Design phase begins â€” before implementation commits |
+| **Created when** | Design phase begins — before implementation commits |
 | **Updated by** | AI assistant drafts; owner approves via ADR-001 |
-| **Read-only when** | Phase gate PASS â€” frozen as historical design record |
+| **Read-only when** | Phase gate PASS — frozen as historical design record |
 | **Roadmap relation** | Captures scope and architecture evolution row for Phase 6 |
 
 ---
 
 ## Design record
 
-**ADR:** [ADR-001 Multi-Source Retrieval](../../../docs/adr/001-multi-source-retrieval.md) â€” **Approved** Â· Implemented
+**ADR:** [ADR-001 Multi-Source Retrieval](../../adr/001-multi-source-retrieval.md) — **Approved** · Implemented
 
 ### Decision (Option B)
 
@@ -58,7 +58,7 @@ Introduce `CompositeRetrievalCandidateSource` implementing `IRetrievalCandidateS
 
 ### Ranking
 
-Fusion weights may extend `RankingEngine` / `ranking.config.ts` â€” engine remains pure.
+Fusion weights may extend `RankingEngine` / `ranking.config.ts` — engine remains pure.
 
 ---
 ---

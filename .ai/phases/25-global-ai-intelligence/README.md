@@ -12,12 +12,12 @@ Phase 25 lets AI-Brain **observe how it is used** and **synchronize knowledge ac
 
 | Pillar | Capability | Builds on | ADR gate |
 |--------|------------|-----------|----------|
-| **AI Telemetry Platform** | Semantic telemetry event model (`MemoryAccessed`, `ContextBuilt`, `ModelInvoked`, …) → OpenTelemetry / OTLP | Phase 19 exporters | [ADR-037](../../../docs/adr/037-ai-telemetry-event-model.md) |
-| **Usage Analytics Engine** | Quality, adoption, cost, latency analytics from telemetry (no raw content) | Phase 13 analytics store (ADR-013) | [ADR-038](../../../docs/adr/038-usage-analytics-engine.md) |
-| **Cloud Connected Ecosystem** | Multi-device / IDE / repo / workspace / org, offline sync, conflict resolution, event replication | Phase 18 control plane | [ADR-043](../../../docs/adr/043-cloud-federation-sync-topology.md) |
-| **Federation Architecture** | Workspace → Organization → Cloud → Edge → Developer synchronization | Phase 14 federation ports | [ADR-043](../../../docs/adr/043-cloud-federation-sync-topology.md) |
+| **AI Telemetry Platform** | Semantic telemetry event model (`MemoryAccessed`, `ContextBuilt`, `ModelInvoked`, …) → OpenTelemetry / OTLP | Phase 19 exporters | [ADR-037](../../adr/037-ai-telemetry-event-model.md) |
+| **Usage Analytics Engine** | Quality, adoption, cost, latency analytics from telemetry (no raw content) | Phase 13 analytics store (ADR-013) | [ADR-038](../../adr/038-usage-analytics-engine.md) |
+| **Cloud Connected Ecosystem** | Multi-device / IDE / repo / workspace / org, offline sync, conflict resolution, event replication | Phase 18 control plane | [ADR-043](../../adr/043-cloud-federation-sync-topology.md) |
+| **Federation Architecture** | Workspace → Organization → Cloud → Edge → Developer synchronization | Phase 14 federation ports | [ADR-043](../../adr/043-cloud-federation-sync-topology.md) |
 
-**Umbrella gate:** [ADR-036](../../../docs/adr/036-global-ai-intelligence-platform.md) — Global AI Intelligence Platform.
+**Umbrella gate:** [ADR-036](../../adr/036-global-ai-intelligence-platform.md) — Global AI Intelligence Platform.
 
 **Master flag:** `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false` (default) — zero behavior change, zero export overhead target.
 

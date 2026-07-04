@@ -4,7 +4,7 @@
  * Same owner, two workspaces: memories in workspace A must not be visible or
  * mutable when the client sends X-Workspace-Id for workspace B (404 pattern).
  *
- * @see docs/adr/007-multi-ai-workspace-scope.md
+ * @see .ai/adr/007-multi-ai-workspace-scope.md
  * @see tests/api/cross-owner-leak.test.ts
  */
 

@@ -1,7 +1,7 @@
 # Architecture Decision Policy
 
 **Status:** Active governance — applies to all structural changes.  
-**Hierarchy:** [../../.ai/core/constitution/00-CONSTITUTION.md](../../.ai/core/constitution/00-CONSTITUTION.md) → this policy → individual ADRs → implementation.
+**Hierarchy:** [../core/constitution/00-CONSTITUTION.md](../core/constitution/00-CONSTITUTION.md) → this policy → individual ADRs → implementation.
 
 ---
 
@@ -46,7 +46,7 @@ Proposed → Approved → Implemented → Superseded
 
 | State | Meaning |
 |-------|---------|
-| **Proposed** | Written under `docs/adr/`; no structural code yet |
+| **Proposed** | Written under `.ai/adr/`; no structural code yet |
 | **Approved** | Owner explicitly approves in chat/PR/issue |
 | **Implemented** | Code merged; ADR updated with implementation note |
 | **Superseded** | Replaced by newer ADR; link forward |
@@ -55,7 +55,7 @@ Proposed → Approved → Implemented → Superseded
 
 ## Required sections (every ADR)
 
-Each ADR **must** include all sections below. Use [adr/000-template.md](adr/000-template.md).
+Each ADR **must** include all sections below. Use [000-template.md](000-template.md).
 
 1. **Context** — situation, phase, links to constitution/architecture  
 2. **Problem** — what fails or will fail without a decision  
@@ -72,12 +72,12 @@ Each ADR **must** include all sections below. Use [adr/000-template.md](adr/000-
 ## File naming
 
 ```
-docs/adr/NNN-short-title.md
+.ai/adr/NNN-short-title.md
 ```
 
 - `NNN` = three-digit sequence (`001`, `002`, …)  
 - Lowercase kebab-case title  
-- Index maintained in [adr/README.md](adr/README.md)
+- Index maintained in [README.md](README.md)
 
 ---
 

@@ -1,10 +1,10 @@
-﻿# 11 — AI Rules
+# 11 � AI Rules
 
 **Status:** Permanent project standard.  
 **Audience:** AI assistants operating on this repository.  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md). Structural law: [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md).
 
-**Supersedes:** `AI_BRAIN_CONSTITUTION.md` (module registry), `10-AI-COMMUNICATION.md` (protocol). Archived snapshots: [archive/](../../docs/archive/).
+**Supersedes:** `AI_BRAIN_CONSTITUTION.md` (module registry), `10-AI-COMMUNICATION.md` (protocol). Archived snapshots: [archive/](../archive/).
 
 ---
 
@@ -18,7 +18,7 @@ Immutable law remains in [00-CONSTITUTION.md](../../core/constitution/00-CONSTIT
 
 # Module registry
 
-Extend the **canonical module** — do not copy logic.
+Extend the **canonical module** � do not copy logic.
 
 | Concern | Owner |
 |---------|--------|
@@ -27,7 +27,7 @@ Extend the **canonical module** — do not copy logic.
 | CRUD / backup | `MemoryService` |
 | REST search | `SearchService` + `findSearchCandidates` |
 | Relevance scoring | `search/ranking.engine.ts` + `ranking.config.ts` |
-| LLM retrieval | `memory/Retriever` → `Ranker` → `ContextService` |
+| LLM retrieval | `memory/Retriever` ? `Ranker` ? `ContextService` |
 | Validation | `types/*.ts` (Zod) |
 | Embedding inference | `IEmbeddingProvider` |
 | Vector storage | `IEmbeddingStore` |
@@ -37,7 +37,7 @@ Extend the **canonical module** — do not copy logic.
 
 # Never create
 
-- `*V2` classes (`MemoryServiceV2`, `RetrieverV2`, …)
+- `*V2` classes (`MemoryServiceV2`, `RetrieverV2`, �)
 - `KnowledgeManager`, `MemoryManager`, `UniversalRepository`
 - Placeholders, stubs, `TODO`, `FIXME`, dead code for future phases
 - Business logic in `utils/` (mappers and `formatWIB` only)
@@ -63,10 +63,10 @@ Extend the **canonical module** — do not copy logic.
 |------|-------------|
 | Commits | Small; **one concern per commit** |
 | Scope | No architecture outside approved ADR + [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| Quality gate | `lint` → `format:check` → `typecheck` → `test` — stop on failure |
+| Quality gate | `lint` ? `format:check` ? `typecheck` ? `test` � stop on failure |
 | Tests | No decrease in coverage; never skip |
 | MCP | Additive tools preferred |
-| Long-term | Evaluate compatibility with Phases 5–10 before coding |
+| Long-term | Evaluate compatibility with Phases 5�10 before coding |
 
 ---
 
@@ -80,11 +80,11 @@ Extend the **canonical module** — do not copy logic.
 
 The user may communicate in **Indonesian**. All AI assistants MUST:
 
-1. Understand Indonesian naturally — never ask the user to rewrite prompts in English.
+1. Understand Indonesian naturally � never ask the user to rewrite prompts in English.
 2. Internally normalize requests into **technical English** before reasoning.
-3. Use repository standards ([.ai/README.md](../README.md), `.ai/core/constitution/*`, `.ai/core/standards/*`, `docs/adr/*`) as the **single source of truth**.
+3. Use repository standards ([.ai/README.md](../README.md), `.ai/core/constitution/*`, `.ai/core/standards/*`, `.ai/adr/*`) as the **single source of truth**.
 4. Never infer architecture outside documented standards.
-5. Never replace existing patterns without **ADR approval** (see [adr/POLICY.md](../../../docs/adr/POLICY.md)).
+5. Never replace existing patterns without **ADR approval** (see [adr/POLICY.md](../../adr/POLICY.md)).
 6. Reply to the user in **Indonesian** unless the user explicitly requests another language.
 7. Produce technical artifacts (architecture notes, analysis, plans) in **English**.
 8. Produce source code in **English**.
@@ -93,9 +93,9 @@ The user may communicate in **Indonesian**. All AI assistants MUST:
 
 **Code language prohibitions (MUST NOT):**
 
-11. Mix Indonesian names with English identifiers — all variables, functions, types, and files MUST use English identifiers only.
-12. Generate Indonesian code comments — comments MUST be English (why-only per [02-CODING.md](../../core/standards/02-CODING.md)).
-13. Translate existing source code — do not rename identifiers or rewrite comments in another language unless the owner explicitly requests a localization task.
+11. Mix Indonesian names with English identifiers � all variables, functions, types, and files MUST use English identifiers only.
+12. Generate Indonesian code comments � comments MUST be English (why-only per [02-CODING.md](../../core/standards/02-CODING.md)).
+13. Translate existing source code � do not rename identifiers or rewrite comments in another language unless the owner explicitly requests a localization task.
 
 **Consistency rule:** Identifiers, layer names, port names, and protocol terms remain English in all languages.
 
@@ -126,7 +126,7 @@ The user may communicate in **Indonesian**. All AI assistants MUST:
 | User writes in Indonesian | Indonesian | English |
 | User writes in English | Indonesian (default) or English if user prefers | English |
 | User asks for PANDUAN edit | Indonesian for PANDUAN body | English for governance |
-| Code, commits, ADRs, architecture docs | — | English always |
+| Code, commits, ADRs, architecture docs | � | English always |
 
 **Rule:** Technical precision is never sacrificed. Do not ask the user to switch languages for convenience.
 
@@ -134,29 +134,29 @@ The user may communicate in **Indonesian**. All AI assistants MUST:
 
 # Communication Rules
 
-1. **No conversational filler** â€” Omit greetings, hedging preambles, enthusiasm, and closing bait.
+1. **No conversational filler** — Omit greetings, hedging preambles, enthusiasm, and closing bait.
 
-2. **State assumptions** â€” Prefix unverified beliefs with `Assumption:` and list what was not read or tested.
+2. **State assumptions** — Prefix unverified beliefs with `Assumption:` and list what was not read or tested.
 
-3. **Calibrated certainty** â€” Use `Verified:`, `Observed:`, `Inferred:`, `Recommended:` â€” not absolute claims without evidence.
+3. **Calibrated certainty** — Use `Verified:`, `Observed:`, `Inferred:`, `Recommended:` — not absolute claims without evidence.
 
-4. **Separate fact from recommendation** â€” Facts describe current state; recommendations describe proposed action.
+4. **Separate fact from recommendation** — Facts describe current state; recommendations describe proposed action.
 
-5. **Objective tone** â€” Use declarative engineering statements. Avoid subjective praise or blame.
+5. **Objective tone** — Use declarative engineering statements. Avoid subjective praise or blame.
 
-6. **Quantify when possible** â€” Counts, file paths, gate results, test outcomes â€” not "many" or "few."
+6. **Quantify when possible** — Counts, file paths, gate results, test outcomes — not "many" or "few."
 
-7. **Reference authority** â€” Cite governing doc (`00-CONSTITUTION`, `04-ARCHITECTURE`, ADR id) when stating rules.
+7. **Reference authority** — Cite governing doc (`00-CONSTITUTION`, `04-ARCHITECTURE`, ADR id) when stating rules.
 
-8. **No hidden scope** â€” State what is in scope and out of scope for the current task.
+8. **No hidden scope** — State what is in scope and out of scope for the current task.
 
-9. **Stop conditions explicit** â€” State when workflow halts (missing ADR, failing gate, constitutional conflict).
+9. **Stop conditions explicit** — State when workflow halts (missing ADR, failing gate, constitutional conflict).
 
-10. **Proportional length** â€” Match response depth to task complexity; no padding.
+10. **Proportional length** — Match response depth to task complexity; no padding.
 
-11. **No false completion** â€” Do not claim done until gates in [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) pass.
+11. **No false completion** — Do not claim done until gates in [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) pass.
 
-12. **Single voice** â€” One assistant response uses one structural template; do not mix casual and formal registers.
+12. **Single voice** — One assistant response uses one structural template; do not mix casual and formal registers.
 
 ---
 
@@ -166,7 +166,7 @@ Use controlled terms with fixed meanings. Do not substitute synonyms.
 
 | Term | Meaning |
 |------|---------|
-| **Decision** | A chosen option among documented alternatives â€” requires owner authority if structural or breaking |
+| **Decision** | A chosen option among documented alternatives — requires owner authority if structural or breaking |
 | **Approved** | Owner or ADR explicitly authorizes proceeding |
 | **Rejected** | Option eliminated; will not implement |
 | **Accepted** | Tradeoff or risk acknowledged and borne |
@@ -190,7 +190,7 @@ Use controlled terms with fixed meanings. Do not substitute synonyms.
 |-----------|--------------|
 | maybe / perhaps | `Assumption:` or `Risk:` |
 | I think / I believe | `Inferred:` or `Recommendation:` |
-| probably / likely | `Risk: likelihood â€¦` or run validation |
+| probably / likely | `Risk: likelihood …` or run validation |
 | should work | `Validation required:` + test plan |
 | looks fine | `Verified:` + evidence or list unchecked items |
 | kind of / sort of | Precise description |
@@ -281,11 +281,11 @@ Every architecture decision or discussion uses this structure:
 | **Problem** | What fails if undecided |
 | **Constraints** | Constitution, backward compatibility, scope rules |
 | **Options** | Minimum two real alternatives |
-| **Tradeoffs** | Per option or per decision â€” gains and costs |
+| **Tradeoffs** | Per option or per decision — gains and costs |
 | **Recommendation** | Single clear option; label `Recommendation:` not `Decision:` unless Approved |
 | **Future Compatibility** | Impact on phases N+1 through N+3 minimum |
 
-Structural changes: write ADR using [../adr/000-template.md](../../../docs/adr/000-template.md); set status **Proposed** until **Approved**.
+Structural changes: write ADR using [../adr/000-template.md](../../adr/000-template.md); set status **Proposed** until **Approved**.
 
 ---
 
@@ -316,7 +316,7 @@ Every code review response uses:
 | **Risks** | Security, regression, migration, contract |
 | **Maintainability** | Layer purity, size, duplication |
 | **Scalability** | Caps, ports, engine assumptions |
-| **Future Compatibility** | Phase 6â€“10 blockers |
+| **Future Compatibility** | Phase 6–10 blockers |
 | **Action Items** | Numbered, actionable, priority ordered |
 
 Cross-check [08-REVIEW.md](../../core/standards/08-REVIEW.md). Label blocking items `Blocked:`.
@@ -349,16 +349,16 @@ Cross-check [08-REVIEW.md](../../core/standards/08-REVIEW.md). Label blocking it
 |---------|----------------|
 | **Requirement Understanding** | Scope bounded; task prompt cited |
 | **Architecture Review** | Layer + canonical owner identified; ADR gate checked |
-| **Layer Impact** | Table: layer â†’ change â†’ forbidden check |
+| **Layer Impact** | Table: layer → change → forbidden check |
 | **Files Affected** | Explicit paths; no vague "various files" |
 | **Migration Impact** | None, or idempotent plan + rollback |
-| **API Impact** | None / additive / breaking (breaking â†’ owner approval) |
+| **API Impact** | None / additive / breaking (breaking → owner approval) |
 | **MCP Impact** | None / additive / breaking |
 | **Testing Strategy** | Unit, repository, API, MCP as applicable |
 
-After all sections complete â†’ proceed to **Implementation Plan** in Output Structure.
+After all sections complete → proceed to **Implementation Plan** in Output Structure.
 
-Single-layer bug fix with no contract change: **Architecture Review** and **Layer Impact** may be abbreviated to three sentences each â€” not omitted.
+Single-layer bug fix with no contract change: **Architecture Review** and **Layer Impact** may be abbreviated to three sentences each — not omitted.
 
 ---
 
@@ -401,9 +401,9 @@ Single-layer bug fix with no contract change: **Architecture Review** and **Laye
 
 | Situation | Communication action |
 |-----------|---------------------|
-| Unread governing doc | `Blocked: document not read` â€” read before continuing |
-| Proposed ADR | `Status: Proposed` â€” no implementation language |
-| Tests not run | `Validation: not executed` â€” run before completion |
+| Unread governing doc | `Blocked: document not read` — read before continuing |
+| Proposed ADR | `Status: Proposed` — no implementation language |
+| Tests not run | `Validation: not executed` — run before completion |
 | User language Indonesian, technical task | Reply Indonesian; technical artifacts English |
 | Breaking change | Label `Breaking Change:` + owner approval required |
 | Uncertain architecture fit | `Assumption:` + `Recommendation:` request confirmation |
@@ -422,7 +422,7 @@ Implement orphan vector cleanup on memory delete per TASK_PROMPT. Scope: MemoryS
 
 ## Architecture Review
 
-Layer: application service orchestrates IEmbeddingStore.deleteByMemoryId after IMemoryRepository.delete. Port compliance: verified against 04-ARCHITECTURE Â§Embedding. ADR: ADR-003 Implemented â€” no new ADR required.
+Layer: application service orchestrates IEmbeddingStore.deleteByMemoryId after IMemoryRepository.delete. Port compliance: verified against 04-ARCHITECTURE §Embedding. ADR: ADR-003 Implemented — no new ADR required.
 
 ## Testing Strategy
 

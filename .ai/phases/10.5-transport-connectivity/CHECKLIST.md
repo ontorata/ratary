@@ -28,7 +28,7 @@
 
 - [x] [ADR-027](../../adr/027-transport-connectivity-layer.md) — **Approved** (2026-07-04)
 - [x] ADR-025 — Implemented (additive manifest amend only)
-- [ ] No conflicting Proposed ADRs
+- [x] No conflicting Proposed ADRs — audit 2026-07-05: all structural ADRs Implemented/Accepted
 
 ### D — Extension points
 

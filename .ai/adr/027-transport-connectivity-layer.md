@@ -139,6 +139,6 @@ All six tracks landed with zero behavior change at default env (D1 + REST + MCP 
 
 - [00-CONSTITUTION.md](../core/constitution/00-CONSTITUTION.md) §7, §17–18
 - [04-ARCHITECTURE.md](../core/architecture/04-ARCHITECTURE.md)
-- [ADR-025 Capability discovery](../../docs/adr/025-capability-discovery-api.md)
+- [ADR-025 Capability discovery](../adr/025-capability-discovery-api.md)
 - [Phase 10.5 DESIGN](../phases/10.5-transport-connectivity/DESIGN.md)
 - [10-POST-ROADMAP.md](../phases/roadmap/10-POST-ROADMAP.md)

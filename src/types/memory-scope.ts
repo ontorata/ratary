@@ -1,7 +1,7 @@
 /**
  * Effective memory boundary for CRUD, search, and retrieval.
- * @see docs/adr/002-workspace-identity-model.md
- * @see docs/adr/007-multi-ai-workspace-scope.md
+ * @see .ai/adr/002-workspace-identity-model.md
+ * @see .ai/adr/007-multi-ai-workspace-scope.md
  */
 export interface MemoryScope {
   /** Identity anchor — required in all phases. */

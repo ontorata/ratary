@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
-**ADR:** [ADR-023 Accepted](../../../docs/adr/023-semantic-compression-policy.md)
+**ADR:** [ADR-023 Accepted](../../adr/023-semantic-compression-policy.md)
 
 ---
 

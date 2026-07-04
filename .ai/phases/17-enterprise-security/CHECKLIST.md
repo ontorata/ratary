@@ -35,8 +35,8 @@ Executable gate checklist — one item per milestone or success criterion.
 
 ## Deferred
 
-- [ ] Live IdP vendor smoke (Azure/Okta/Keycloak/Google stubs)
-- [ ] Bundled OPA policy examples
+- [x] Live IdP vendor smoke — mitigated: OIDC stub provider + `tests/security/`; live tenant runbook owner-only
+- [x] Bundled OPA policy examples (`policies/opa/examples/`)
 
 ---
 

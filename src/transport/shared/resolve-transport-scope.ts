@@ -55,6 +55,7 @@ export function buildTransportContextFromRestRequest(request: FastifyRequest): T
     projectId: hints.projectId,
     auth: user ?? null,
     source: 'rest',
+    clientIp: request.ip,
   };
 }
 

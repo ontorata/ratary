@@ -2,7 +2,7 @@
 
 **Document:** DESIGN  
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-040 Accepted  
-**ADR gate:** [ADR-040](../../../docs/adr/040-memory-evolution-version-control.md) — **Accepted**
+**ADR gate:** [ADR-040](../../adr/040-memory-evolution-version-control.md) — **Accepted**
 
 ---
 

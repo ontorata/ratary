@@ -1,7 +1,7 @@
 /**
  * Vendor-neutral cache port.
  * Adapters: Redis, Dragonfly, Valkey, in-memory.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export interface CacheEntryOptions {
   ttlSeconds?: number;

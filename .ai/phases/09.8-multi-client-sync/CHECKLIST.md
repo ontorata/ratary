@@ -26,6 +26,6 @@
 
 ## Deferred
 
-- [ ] REST E2E sync integration test
-- [ ] MCP pull/push tools
-- [ ] Evolution branch merge on conflict (09.7 integration)
+- [x] REST E2E sync integration test (`tests/api/client-sync.test.ts`)
+- [x] MCP pull/push tools (`sync_pull`, `sync_push`, `sync_status`)
+- [x] Evolution branch merge on conflict (`DefaultMemoryMergePolicy` in `field_merge` push)

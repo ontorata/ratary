@@ -3,7 +3,7 @@
 **Phase status:** ✅ Closed — gate PASS (2026-06-30  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
-**Design archive:** [PHASE-2.6-DESIGN.md](../../../docs/archive/PHASE-2.6-DESIGN.md) (full narrative)
+**Design archive:** [PHASE-2.6-DESIGN.md](../../archive/PHASE-2.6-DESIGN.md) (full narrative)
 
 ---
 

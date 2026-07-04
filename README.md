@@ -193,19 +193,19 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 2.6 — Knowledge Foundation | ✅ | [.ai/phases/02.6-knowledge/](.ai/phases/02.6-knowledge/) |
 | 3 — Authorization | ✅ | [.ai/phases/03-authorization/](.ai/phases/03-authorization/) |
 | 4 — Memory Intelligence | ✅ | [.ai/phases/04-memory-intelligence/](.ai/phases/04-memory-intelligence/) |
-| 5 — Embedding | ✅ | [.ai/phases/05-embedding/](.ai/phases/05-embedding/) · [ADR-003](docs/adr/003-embedding-storage-mvp.md) |
-| 6 — Hybrid Retrieval | ✅ | [.ai/phases/06-hybrid-retrieval/](.ai/phases/06-hybrid-retrieval/) · [ADR-001](docs/adr/001-multi-source-retrieval.md) |
+| 5 — Embedding | ✅ | [.ai/phases/05-embedding/](.ai/phases/05-embedding/) · [ADR-003](.ai/adr/003-embedding-storage-mvp.md) |
+| 6 — Hybrid Retrieval | ✅ | [.ai/phases/06-hybrid-retrieval/](.ai/phases/06-hybrid-retrieval/) · [ADR-001](.ai/adr/001-multi-source-retrieval.md) |
 | 7 — Agent Runtime | ✅ | [.ai/phases/07-agent-runtime/](.ai/phases/07-agent-runtime/) |
-| 8 — Knowledge Graph | ✅ | [.ai/phases/08-knowledge-graph/](.ai/phases/08-knowledge-graph/) · [ADR-006](docs/adr/006-igraph-provider.md) |
-| 9 — Multi-AI | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · [ADR-007](docs/adr/007-multi-ai-workspace-scope.md) |
-| 9.5 — Platform Architecture | ✅ | [.ai/phases/09.5-platform-architecture/](.ai/phases/09.5-platform-architecture/) · [ADR-008](docs/adr/008-platform-architecture.md) |
-| 10 — Enterprise | ✅ | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-008–016](docs/adr/README.md) |
-| 11 — Production Ops | ✅ | [.ai/phases/11-production-ops/](.ai/phases/11-production-ops/) · [ADR-018](docs/adr/018-production-postgres-cutover.md) |
+| 8 — Knowledge Graph | ✅ | [.ai/phases/08-knowledge-graph/](.ai/phases/08-knowledge-graph/) · [ADR-006](.ai/adr/006-igraph-provider.md) |
+| 9 — Multi-AI | ✅ | [.ai/phases/09-multi-ai/](.ai/phases/09-multi-ai/) · [ADR-007](.ai/adr/007-multi-ai-workspace-scope.md) |
+| 9.5 — Platform Architecture | ✅ | [.ai/phases/09.5-platform-architecture/](.ai/phases/09.5-platform-architecture/) · [ADR-008](.ai/adr/008-platform-architecture.md) |
+| 10 — Enterprise | ✅ | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-008–016](.ai/adr/README.md) |
+| 11 — Production Ops | ✅ | [.ai/phases/11-production-ops/](.ai/phases/11-production-ops/) · [ADR-018](.ai/adr/018-production-postgres-cutover.md) |
 | **Extension tracks** | | |
-| 5.5–9.8 | ✅ | Compression · Progressive retrieval · Capability API · Quality signals · Learning · Evolution · Sync · [ADR-023–026](docs/adr/README.md) |
+| 5.5–9.8 | ✅ | Compression · Progressive retrieval · Capability API · Quality signals · Learning · Evolution · Sync · [ADR-023–026](.ai/adr/README.md) |
 | **Transport & protocol (opt-in)** | | |
 | 10.5 — Transport | ✅ | [.ai/phases/10.5-transport-connectivity/](.ai/phases/10.5-transport-connectivity/) · [ADR-027](.ai/adr/027-transport-connectivity-layer.md) |
-| 12 — Event Pipeline | ✅ | [.ai/phases/12-event-pipeline/](.ai/phases/12-event-pipeline/) · [ADR-020](docs/adr/020-event-consumer-architecture.md) |
+| 12 — Event Pipeline | ✅ | [.ai/phases/12-event-pipeline/](.ai/phases/12-event-pipeline/) · [ADR-020](.ai/adr/020-event-consumer-architecture.md) |
 | 13 — Protocol Layer | ✅ | [.ai/phases/13-protocol-layer/](.ai/phases/13-protocol-layer/) · [ADR-028](.ai/adr/028-protocol-layer.md) |
 | 13.1 — Remote MCP | ✅ | [.ai/phases/13.1-remote-mcp-clients/](.ai/phases/13.1-remote-mcp-clients/) · [ADR-048](.ai/adr/048-remote-mcp-transport.md) |
 | **Enterprise platform (opt-in)** | | |
@@ -216,13 +216,13 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 18 — Cloud Platform | ✅ | [.ai/phases/18-cloud-platform/](.ai/phases/18-cloud-platform/) · [ADR-033](.ai/adr/033-cloud-platform.md) |
 | 19 — Observability | ✅ | [.ai/phases/19-observability-platform/](.ai/phases/19-observability-platform/) · [ADR-034](.ai/adr/034-observability-platform.md) |
 | 20 — AI Infrastructure | ✅ | [.ai/phases/20-ai-infrastructure/](.ai/phases/20-ai-infrastructure/) · [ADR-035](.ai/adr/035-ai-infrastructure-platform.md) |
-| 21 — Search & Graph Prod | ✅ | [.ai/phases/21-search-graph-prod/](.ai/phases/21-search-graph-prod/) · [ADR-022](docs/adr/022-search-graph-production-platform.md) |
-| 22 — Content Scale | ✅ | [.ai/phases/22-content-scale/](.ai/phases/22-content-scale/) · [ADR-021](docs/adr/021-content-vector-scale-platform.md) |
-| 23 — Knowledge Fabric | ✅ | [.ai/phases/23-enterprise-knowledge-fabric/](.ai/phases/23-enterprise-knowledge-fabric/) · [ADR-047](docs/adr/047-enterprise-knowledge-fabric.md) |
-| 24 — AI-Brain Platform | ✅ | [.ai/phases/24-ai-brain-platform/](.ai/phases/24-ai-brain-platform/) · [ADR-044](docs/adr/044-ai-brain-platform-architecture.md) |
-| 25 — Global Intelligence | ✅ | [.ai/phases/25-global-ai-intelligence/](.ai/phases/25-global-ai-intelligence/) · [ADR-036](docs/adr/036-global-ai-intelligence-platform.md) |
+| 21 — Search & Graph Prod | ✅ | [.ai/phases/21-search-graph-prod/](.ai/phases/21-search-graph-prod/) · [ADR-022](.ai/adr/022-search-graph-production-platform.md) |
+| 22 — Content Scale | ✅ | [.ai/phases/22-content-scale/](.ai/phases/22-content-scale/) · [ADR-021](.ai/adr/021-content-vector-scale-platform.md) |
+| 23 — Knowledge Fabric | ✅ | [.ai/phases/23-enterprise-knowledge-fabric/](.ai/phases/23-enterprise-knowledge-fabric/) · [ADR-047](.ai/adr/047-enterprise-knowledge-fabric.md) |
+| 24 — AI-Brain Platform | ✅ | [.ai/phases/24-ai-brain-platform/](.ai/phases/24-ai-brain-platform/) · [ADR-044](.ai/adr/044-ai-brain-platform-architecture.md) |
+| 25 — Global Intelligence | ✅ | [.ai/phases/25-global-ai-intelligence/](.ai/phases/25-global-ai-intelligence/) · [ADR-036](.ai/adr/036-global-ai-intelligence-platform.md) |
 
-*688 tests green (default flags OFF). Desain historis: [docs/archive/](docs/archive/). Ops & backfill: [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
+*688 tests green (default flags OFF). Desain historis: [.ai/archive/](.ai/archive/). Ops & backfill: [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
 
 ## Quick Start
 
@@ -804,7 +804,7 @@ npm run db:migrate   # Run D1 migrations
 
 **Health:** `GET /health` memeriksa koneksi D1 — mengembalikan `503` jika database tidak dapat dijangkau.
 
-Lihat **[docs/archive/PHASE-2.5.md](docs/archive/PHASE-2.5.md)** untuk checklist stabilisasi lengkap.
+Lihat **[.ai/archive/PHASE-2.5.md](.ai/archive/PHASE-2.5.md)** untuk checklist stabilisasi lengkap.
 
 ## Environment Variables
 
@@ -825,7 +825,7 @@ Lihat **[docs/archive/PHASE-2.5.md](docs/archive/PHASE-2.5.md)** untuk checklist
 
 ### Infrastruktur platform (Fase 10 — opt-in)
 
-Default: D1 metadata, inline storage, noop cache/events/analytics. Provider eksternal diaktifkan per variabel lingkungan. Rincian: [docs/PANDUAN.md](docs/PANDUAN.md) §8, [docs/adr/README.md](docs/adr/README.md).
+Default: D1 metadata, inline storage, noop cache/events/analytics. Provider eksternal diaktifkan per variabel lingkungan. Rincian: [docs/PANDUAN.md](docs/PANDUAN.md) §8, [.ai/adr/README.md](.ai/adr/README.md).
 
 | Variable | Default | Deskripsi |
 |----------|---------|-----------|

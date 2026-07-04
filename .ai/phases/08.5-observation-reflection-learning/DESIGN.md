@@ -6,7 +6,7 @@
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) · [Phase 7 Boundary](../07-agent-runtime/DESIGN.md)  
 **Roadmap placement:** Track absorbed into **Phase 12 Event Pipeline** + memory domain extensions  
-**ADR gate:** [ADR-026](../../../docs/adr/026-memory-quality-signals.md) — **Accepted**
+**ADR gate:** [ADR-026](../../adr/026-memory-quality-signals.md) — **Accepted**
 
 ---
 
@@ -411,9 +411,9 @@ Phase 8.5 core gate closed **2026-07-04** (ADR-026). Deferred **D85-01–06** re
 | [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) | §32 context efficiency; agent exclusion |
 | [Phase 7 DESIGN](../07-agent-runtime/DESIGN.md) | Agent boundary §7 |
 | [Phase 4 DESIGN](../04-memory-intelligence/DESIGN.md) | Access tracking, Ranker |
-| [ADR-017](../../../docs/adr/017-memory-access-audit.md) | Audit port |
-| [ADR-016](../../../docs/adr/016-redis-streams-event-bus.md) | Event bus |
-| [ADR-026](../../../docs/adr/026-memory-quality-signals.md) | Gate (Accepted) |
+| [ADR-017](../../adr/017-memory-access-audit.md) | Audit port |
+| [ADR-016](../../adr/016-redis-streams-event-bus.md) | Event bus |
+| [ADR-026](../../adr/026-memory-quality-signals.md) | Gate (Accepted) |
 | [Phase 8.6 DESIGN](../08.6-learning-intelligence/DESIGN.md) | Learning event bridge |
 | [Phase 12 DESIGN](../12-event-pipeline/DESIGN.md) | Event bus — D85-02 |
 | [10-POST-ROADMAP.md §Phase 12](../roadmap/10-POST-ROADMAP.md) | Event pipeline |

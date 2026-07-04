@@ -3,7 +3,7 @@
 **Document:** DESIGN  
 **Phase status:** Implemented (2026-07-04) · ADR-045 Accepted  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → [ADR-045](../../../docs/adr/045-self-managing-memory-stewardship.md)  
+**Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → [ADR-045](../../adr/045-self-managing-memory-stewardship.md)  
 **Roadmap placement:** Extension track **04.7** — memory hygiene orchestration after Phase 4 consolidator  
 **Flag:** `MEMORY_STEWARDSHIP_ENABLED=false` (default)
 
@@ -323,7 +323,7 @@ ConsolidationTask.run(ctx)
 
 | Document | Relevance |
 |----------|-----------|
-| [ADR-045](../../../docs/adr/045-self-managing-memory-stewardship.md) | Structural gate |
+| [ADR-045](../../adr/045-self-managing-memory-stewardship.md) | Structural gate |
 | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Memory domain § stewardship |
 | [Phase 4 DESIGN](../04-memory-intelligence/DESIGN.md) | Consolidator baseline |
 | [Phase 5.5 DESIGN](../05.5-semantic-compression/DESIGN.md) | Compression policy |

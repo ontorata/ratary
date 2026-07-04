@@ -117,7 +117,7 @@ const FULL = [
         name: 'Quality gate',
         items: [
           [true, 'Cross-owner leak regression tests'],
-          [true, 'Design archive: [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)'],
+          [true, 'Design archive: [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../.ai/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)'],
           [true, 'Governance docs closed at gate'],
         ],
       },

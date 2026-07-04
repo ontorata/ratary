@@ -3,7 +3,7 @@
 **Document:** DESIGN  
 **Phase status:** ✅ Implemented W1 + L26 (2026-07-04) · ADR-057 Accepted  
 **Platform snapshot:** 2026-07-04 — 722 tests; Phase 04.7 `RankingRefreshTask` bridge  
-**ADR gate:** [ADR-057](../../../docs/adr/057-learning-intelligence-engine.md) — **Accepted**  
+**ADR gate:** [ADR-057](../../adr/057-learning-intelligence-engine.md) — **Accepted**  
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) · extends [08.5](../08.5-observation-reflection-learning/DESIGN.md)
 
 ---

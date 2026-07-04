@@ -3,7 +3,7 @@
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-01  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**ADR:** [ADR-003 Implemented](../../../docs/adr/003-embedding-storage-mvp.md)
+**ADR:** [ADR-003 Implemented](../../adr/003-embedding-storage-mvp.md)
 
 ---
 

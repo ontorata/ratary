@@ -1,4 +1,4 @@
-﻿# Phase 2.6 — Knowledge Foundation
+# Phase 2.6 � Knowledge Foundation
 
 **Status:** Closed  
 **Roadmap:** Completed  
@@ -25,9 +25,9 @@ Single entry point for Phase 2.6 governance artifacts. Summarizes scope, links a
 
 ## Scope summary
 
-See [09-ROADMAP.md — Phase 2.6](../../roadmap/09-ROADMAP.md).
+See [09-ROADMAP.md � Phase 2.6](../../roadmap/09-ROADMAP.md).
 
-Canonical detail: [docs/archive/PHASE-2.6-DESIGN.md](../../docs/archive/PHASE-2.6-DESIGN.md).
+Canonical detail: [.ai/archive/PHASE-2.6-DESIGN.md](../archive/PHASE-2.6-DESIGN.md).
 
 ---
 
@@ -35,15 +35,15 @@ Canonical detail: [docs/archive/PHASE-2.6-DESIGN.md](../../docs/archive/PHASE-2.
 
 | Document | Responsibility | Status |
 |----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Complete |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ Complete |
-| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ N/A (no DDL) or prior phase |
-| [TESTING.md](TESTING.md) | Verification strategy | ✅ Complete |
-| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
-| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
-| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ✅ Complete |
-| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
-| [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
+| [DESIGN.md](DESIGN.md) | Approved design intent | ? Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ? Complete |
+| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ? N/A (no DDL) or prior phase |
+| [TESTING.md](TESTING.md) | Verification strategy | ? Complete |
+| [REVIEW.md](REVIEW.md) | Architecture review and gate | ? Complete |
+| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ? Complete |
+| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ? Complete |
+| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ? Complete |
+| [RISKS.md](RISKS.md) | Risk register | ? Complete |
 
 *All ten governance documents closed per [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md). Gate PASS 2026-07-04.*
 

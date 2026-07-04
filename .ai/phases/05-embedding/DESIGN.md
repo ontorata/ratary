@@ -2,9 +2,9 @@
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-01  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**ADR:** [ADR-003 Embedding Storage MVP](../../../docs/adr/003-embedding-storage-mvp.md)
+**ADR:** [ADR-003 Embedding Storage MVP](../../adr/003-embedding-storage-mvp.md)
 
-**Design archive:** [PHASE-5-EMBEDDING-DESIGN.md](../../../docs/archive/PHASE-5-EMBEDDING-DESIGN.md) (full narrative)
+**Design archive:** [PHASE-5-EMBEDDING-DESIGN.md](../../archive/PHASE-5-EMBEDDING-DESIGN.md) (full narrative)
 
 ---
 

@@ -34,7 +34,7 @@
 
 - [x] `.env.example` updated
 - [x] [TESTING_PLAN.md](TESTING_PLAN.md) executed
-- [ ] External stack setup guide (Prometheus/Grafana/Tempo/Loki) — deferred
+- [x] External stack setup guide — [observability/EXTERNAL-STACK.md](../../../observability/EXTERNAL-STACK.md) + PANDUAN §10
 
 ---
 

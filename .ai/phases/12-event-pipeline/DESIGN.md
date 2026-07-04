@@ -4,13 +4,13 @@
 **Phase status:** ✅ Implemented (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)  
-**ADR gate:** [ADR-020 Implemented](../../../docs/adr/020-event-consumer-architecture.md)
+**ADR gate:** [ADR-020 Implemented](../../adr/020-event-consumer-architecture.md)
 
 ---
 
 ## 1. Purpose
 
-Phase 10 landed `IEventBus` ([ADR-016](../../../docs/adr/016-redis-streams-event-bus.md)) and opt-in memory access audit ([ADR-017](../../../docs/adr/017-memory-access-audit.md)) **without hot-path consumers**. Phase 12 wires **async fan-out** so compliance, analytics, and downstream integrations can subscribe without changing `MemoryService` contracts.
+Phase 10 landed `IEventBus` ([ADR-016](../../adr/016-redis-streams-event-bus.md)) and opt-in memory access audit ([ADR-017](../../adr/017-memory-access-audit.md)) **without hot-path consumers**. Phase 12 wires **async fan-out** so compliance, analytics, and downstream integrations can subscribe without changing `MemoryService` contracts.
 
 **Problem Phase 12 solves:**
 
@@ -112,7 +112,7 @@ MemoryAccessAuditor ──► optional memory.accessed + event publish
 ## References
 
 - [10-POST-ROADMAP.md § Phase 12](../roadmap/10-POST-ROADMAP.md)
-- [ADR-016 Redis Streams event bus](../../../docs/adr/016-redis-streams-event-bus.md)
-- [ADR-017 Memory access audit](../../../docs/adr/017-memory-access-audit.md)
-- [ADR-013 DuckDB analytics store](../../../docs/adr/013-duckdb-analytics-store.md)
+- [ADR-016 Redis Streams event bus](../../adr/016-redis-streams-event-bus.md)
+- [ADR-017 Memory access audit](../../adr/017-memory-access-audit.md)
+- [ADR-013 DuckDB analytics store](../../adr/013-duckdb-analytics-store.md)
 - Phase 13 [DESIGN.md](../13-protocol-layer/DESIGN.md) — event subscription dependency

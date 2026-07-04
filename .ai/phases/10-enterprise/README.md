@@ -1,6 +1,6 @@
-﻿# Phase 10 — Enterprise
+# Phase 10 � Enterprise
 
-**Status:** ✅ Complete (gate PASS 2026-07-03)  
+**Status:** ? Complete (gate PASS 2026-07-03)  
 **Roadmap:** Phase 10 closed    
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
@@ -25,7 +25,7 @@ Single entry point for Phase 10 governance artifacts. Summarizes scope, links al
 
 ## Scope summary
 
-See [09-ROADMAP.md — Phase 10](../../roadmap/09-ROADMAP.md).
+See [09-ROADMAP.md � Phase 10](../../roadmap/09-ROADMAP.md).
 
 Platform infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry), enterprise tenancy (organizations, RBAC opt-in), and external provider backfill scripts.
 
@@ -35,15 +35,15 @@ Platform infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch,
 
 | Document | Responsibility | Status |
 |----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Complete |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ Complete |
-| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ Complete |
-| [TESTING.md](TESTING.md) | Verification strategy | ✅ Complete |
-| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
-| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
-| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ✅ Complete |
-| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
-| [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
+| [DESIGN.md](DESIGN.md) | Approved design intent | ? Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ? Complete |
+| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ? Complete |
+| [TESTING.md](TESTING.md) | Verification strategy | ? Complete |
+| [REVIEW.md](REVIEW.md) | Architecture review and gate | ? Complete |
+| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ? Complete |
+| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ? Complete |
+| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ? Complete |
+| [RISKS.md](RISKS.md) | Risk register | ? Complete |
 
 *All ten governance documents closed per [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md). Gate PASS 2026-07-03.*
 
@@ -52,9 +52,9 @@ Platform infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch,
 
 ## Notes
 
-- **Adapter plan:** [IMPLEMENTATION.md](IMPLEMENTATION.md) — tiers T0–T8, contract tests, backfill scripts.
-- **ADRs:** [ADR-005–017 Approved/Implemented](../../../docs/adr/README.md).
-- **Human ops:** [PANDUAN.md §8](../../../docs/PANDUAN.md), [README env vars](../../../README.md#environment-variables).
+- **Adapter plan:** [IMPLEMENTATION.md](IMPLEMENTATION.md) � tiers T0�T8, contract tests, backfill scripts.
+- **ADRs:** [ADR-005�017 Approved/Implemented](../../adr/README.md).
+- **Human ops:** [PANDUAN.md �8](../../../docs/PANDUAN.md), [README env vars](../../../README.md#environment-variables).
 
 ---
 

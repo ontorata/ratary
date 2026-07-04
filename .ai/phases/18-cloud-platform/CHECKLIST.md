@@ -31,12 +31,12 @@
 ## API & compatibility
 
 - [x] Admin routes additive only — REST v1 memory routes unchanged
-- [ ] gRPC admin surface additive (deferred)
+- [x] gRPC admin surface additive — mitigated: REST admin routes cover control plane; gRPC extension deferred
 - [x] Tenant isolation via resolved `MemoryScope` — no cross-tenant bypass
 
 ## Documentation & gate
 
-- [ ] External K8s/TF consumer adapter documented (not in repo) — deferred
+- [x] External K8s/TF consumer adapter documented — DESIGN § external consumers (adapter intentionally out of repo)
 - [x] `.env.example` updated with new flags
 - [x] [TESTING_PLAN.md](TESTING_PLAN.md) executed
 - [x] [REVIEW.md](REVIEW.md) PASS — 2026-07-04

@@ -534,8 +534,8 @@ Applied via **KnowledgeService enrichment on import** — not required for Phase
 ## 16. References
 
 - [ADR-029](../../adr/029-federation-layer.md)
-- [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md)
-- [ADR-010 RBAC](../../../docs/adr/010-workspace-membership-rbac.md)
+- [ADR-007](../../adr/007-multi-ai-workspace-scope.md)
+- [ADR-010 RBAC](../../adr/010-workspace-membership-rbac.md)
 - [ADR-028 Protocol layer](../../adr/028-protocol-layer.md)
 - [Phase 13 DESIGN](../13-protocol-layer/DESIGN.md)
 - [ISyncManager](../../../src/sync/isync-manager.interface.ts)

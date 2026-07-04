@@ -17,7 +17,7 @@
 ### ADR
 
 - [x] ADR-028 **Approved** → Implemented
-- [ ] Roadmap renumber Phase 15 Content Scale — owner approved (docs pending)
+- [x] Roadmap renumber Phase 15 Content Scale — documented in [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § phase renumber table
 
 ---
 

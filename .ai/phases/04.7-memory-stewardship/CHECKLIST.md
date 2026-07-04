@@ -2,7 +2,7 @@
 
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-045 Accepted  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-045](../../../docs/adr/045-self-managing-memory-stewardship.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-045](../../adr/045-self-managing-memory-stewardship.md)
 
 ---
 

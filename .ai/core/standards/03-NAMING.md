@@ -35,7 +35,7 @@ Reduce integration errors caused by vocabulary drift between layers, modules, an
 - Code formatting and function size → [02-CODING.md](../../core/standards/02-CODING.md)
 - MCP tool names and protocol schemas → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md), `src/mcp/`
 - User-facing documentation titles → [../PANDUAN.md](../../docs/PANDUAN.md)
-- ADR file numbering → [../adr/POLICY.md](../../../docs/adr/POLICY.md)
+- ADR file numbering → [../adr/POLICY.md](../../adr/POLICY.md)
 
 ---
 

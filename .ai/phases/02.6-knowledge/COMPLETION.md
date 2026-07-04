@@ -33,7 +33,7 @@ Map roadmap success criteria to durable evidence.
 | SC-03 | Generators pure + KnowledgeService orchestrator | ✅ W1 design review compliance |
 | SC-04 | UNIQUE indexes after backfill | ✅ migrateKnowledgeFoundationPhase3 |
 | SC-05 | Owner isolation tests | ✅ ≥6 cross-owner-leak cases |
-| SC-06 | Design archive | ✅ [PHASE-2.6-DESIGN.md](../../../docs/archive/PHASE-2.6-DESIGN.md) |
+| SC-06 | Design archive | ✅ [PHASE-2.6-DESIGN.md](../../archive/PHASE-2.6-DESIGN.md) |
 
 **Result:** 6/6 PASS. Phase gate closed 2026-06-30.
 

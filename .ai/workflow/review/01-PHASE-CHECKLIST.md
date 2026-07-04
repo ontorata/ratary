@@ -25,7 +25,7 @@
 
 - [ ] Phase scope matches [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) milestone
 - [ ] Dependency phases complete and Phase Gate passed
-- [ ] Structural change has **Approved** ADR ([ADR-POLICY.md](../../../docs/adr/POLICY.md))
+- [ ] Structural change has **Approved** ADR ([ADR-POLICY.md](../../adr/POLICY.md))
 - [ ] [13-AI-DECISION-FRAMEWORK.md](../../core/decision-framework/13-AI-DECISION-FRAMEWORK.md) — extend vs new module decided
 - [ ] [templates/design-discussion.md](../templates/design-discussion.md) complete if new module required
 - [ ] Backward compatibility assessed — additive default

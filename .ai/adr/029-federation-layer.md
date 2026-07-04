@@ -107,7 +107,7 @@ Optional schema: `federation_*` tables via **`IFederationMetadataStore`** adapte
 
 ## References
 
-- [ADR-007 Multi-AI workspace scope](../../../docs/adr/007-multi-ai-workspace-scope.md)
-- [ADR-008 Platform architecture](../../../docs/adr/008-platform-architecture.md)
+- [ADR-007 Multi-AI workspace scope](../../adr/007-multi-ai-workspace-scope.md)
+- [ADR-008 Platform architecture](../../adr/008-platform-architecture.md)
 - [ADR-028 Protocol layer](../../adr/028-protocol-layer.md)
 - [Phase 14 DESIGN](../phases/14-federation/DESIGN.md)

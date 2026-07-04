@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04 · D7.5 deferred closed 2026-07-05  
-**ADR:** [ADR-025 Accepted](../../../docs/adr/025-capability-discovery-api.md)
+**ADR:** [ADR-025 Accepted](../../adr/025-capability-discovery-api.md)
 
 ---
 

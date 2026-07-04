@@ -1,7 +1,7 @@
 # Phase 9.5 — Platform Architecture — IMPLEMENTATION
 
 **Status:** 🔄 Ports delivered  
-**ADR:** [ADR-008](../../../docs/adr/008-platform-architecture.md)
+**ADR:** [ADR-008](../../adr/008-platform-architecture.md)
 
 ---
 
@@ -45,7 +45,7 @@ src/
 | Event bus port (new) | `src/ports/events/ievent-bus.port.ts` |
 | Analytics port (new) | `src/ports/analytics/ianalytics-store.port.ts` |
 | Contract tests | `tests/ports/platform-ports.test.ts` |
-| ADR | `docs/adr/008-platform-architecture.md` |
+| ADR | `.ai/adr/008-platform-architecture.md` |
 
 ## Explicitly not changed
 
@@ -70,4 +70,4 @@ Adapters implement ports; wired only in composition roots.
 
 ---
 
-*Do not contradict [ADR-008](../../../docs/adr/008-platform-architecture.md).*
+*Do not contradict [ADR-008](../../adr/008-platform-architecture.md).*

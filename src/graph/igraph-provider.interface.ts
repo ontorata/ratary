@@ -5,7 +5,7 @@ export type GraphTraversalDirection = 'outgoing' | 'incoming';
 
 /**
  * Read-only graph traversal over flat memory_relations.
- * @see docs/adr/006-igraph-provider.md
+ * @see .ai/adr/006-igraph-provider.md
  */
 export interface IGraphProvider {
   traverseNeighbors(

@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
-**ADR:** [ADR-042 Accepted](../../../docs/adr/042-multi-client-memory-sync.md)
+**ADR:** [ADR-042 Accepted](../../adr/042-multi-client-memory-sync.md)
 
 ---
 

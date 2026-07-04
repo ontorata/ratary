@@ -37,7 +37,7 @@ AI assistants MUST read documents **in this order** at session start.
 | 1 | **Constitution** | [.ai/core/constitution/00-CONSTITUTION.md](../constitution/00-CONSTITUTION.md) |
 | 2 | **AI Decision Framework** | [.ai/core/decision-framework/13-AI-DECISION-FRAMEWORK.md](../decision-framework/13-AI-DECISION-FRAMEWORK.md) |
 | 3 | **Architecture** | [.ai/core/architecture/04-ARCHITECTURE.md](../architecture/04-ARCHITECTURE.md) |
-| 4 | **ADR** | [docs/adr/](../../../docs/adr/) — task-relevant records only |
+| 4 | **ADR** | [.ai/adr/](../../adr/) — task-relevant records only |
 | 5 | **Engineering** | [.ai/core/standards/01-ENGINEERING.md](../standards/01-ENGINEERING.md) |
 | 6 | **Coding** | [.ai/core/standards/02-CODING.md](../standards/02-CODING.md) |
 | 7 | **Naming** | [.ai/core/standards/03-NAMING.md](../standards/03-NAMING.md) |
@@ -111,7 +111,7 @@ Higher priority overrides lower priority. Lower levels MUST NOT violate higher l
 | 2 | [Constitution](../constitution/00-CONSTITUTION.md) | Immutable law |
 | 3 | [AI Decision Framework](../decision-framework/13-AI-DECISION-FRAMEWORK.md) | Decision procedure and principles |
 | 4 | [Architecture](../architecture/04-ARCHITECTURE.md) | Layer and port law |
-| 5 | Approved [ADRs](../../../docs/adr/) | Structural decisions |
+| 5 | Approved [ADRs](../../adr/) | Structural decisions |
 | 6 | [Engineering Standards](../standards/01-ENGINEERING.md) | Domain engineering rules |
 | 7 | [Coding Style](../standards/02-CODING.md) | Format and refactor scope |
 | 8 | [Naming Convention](../standards/03-NAMING.md) | Identifiers across codebase |
@@ -271,7 +271,7 @@ flowchart TD
 | [.ai/README.md](../../docs/README.md) | Governance folder overview |
 | [.ai/DEPENDENCY-HIERARCHY.md](../DEPENDENCY-HIERARCHY.md) | Extended authority detail |
 | [.ai/READING-ORDER.md](../READING-ORDER.md) | Supplementary session sequences |
-| [docs/adr/POLICY.md](../../../docs/adr/POLICY.md) | ADR lifecycle |
+| [.ai/adr/POLICY.md](../../adr/POLICY.md) | ADR lifecycle |
 | [.ai/core/glossary/GLOSSARY.md](../../glossary/GLOSSARY.md) | Canonical vocabulary |
 | [.ai/core/ai-rules/11-AI-RULES.md](../ai-rules/11-AI-RULES.md) | Response structure |
 | [.ai/core/supplementary/WRITING.md](../../supplementary/WRITING.md) | Documentation form |

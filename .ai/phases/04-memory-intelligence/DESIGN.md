@@ -2,9 +2,9 @@
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-01  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**ADR:** [ADR-004 Repository Port Types](../../../docs/adr/004-repository-port-types.md)
+**ADR:** [ADR-004 Repository Port Types](../../adr/004-repository-port-types.md)
 
-**Design archive:** [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) (full narrative)
+**Design archive:** [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md) (full narrative)
 
 ---
 

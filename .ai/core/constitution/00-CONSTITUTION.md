@@ -38,7 +38,7 @@ Provide AI assistants a single authoritative source when instructions, tools, or
 - Repository layout, module names, or technology choices → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md); live metrics → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 - Session workflow, analysis templates, quality gate commands → [05-WORKFLOW.md](../workflow/05-WORKFLOW.md)
 - Active phase scope and deliverables → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
-- Structural decision content and lifecycle → [../adr/POLICY.md](../../../docs/adr/POLICY.md), [adr/](../../../docs/adr/)
+- Structural decision content and lifecycle → [../adr/POLICY.md](../../adr/POLICY.md), [adr/](../../adr/)
 - End-user onboarding and operations → [../PANDUAN.md](../../docs/PANDUAN.md)
 - Implementation-specific layer tables and canonical module registry → [11-AI-RULES.md](../../core/ai-rules/11-AI-RULES.md)
 

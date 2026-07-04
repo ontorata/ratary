@@ -1,7 +1,7 @@
 # Phase 8.5 — Quality Signals — CHECKLIST
 
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-026 Accepted  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-026](../../../docs/adr/026-memory-quality-signals.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-026](../../adr/026-memory-quality-signals.md)
 
 ---
 

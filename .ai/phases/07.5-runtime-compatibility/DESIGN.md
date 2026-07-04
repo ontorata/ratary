@@ -5,7 +5,7 @@
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [Phase 7 Agent Runtime DESIGN](../07-agent-runtime/DESIGN.md) · [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md)  
 **Roadmap placement:** Extension track **07.5** — runtime capability discovery (Phase 7 gap closure)  
-**ADR gate:** [ADR-025](../../../docs/adr/025-capability-discovery-api.md) — **Accepted** (Implemented 2026-07-04)
+**ADR gate:** [ADR-025](../../adr/025-capability-discovery-api.md) — **Accepted** (Implemented 2026-07-04)
 
 ---
 
@@ -328,7 +328,7 @@ Phase 7.5 core gate closed **2026-07-04** (ADR-025). Deferred tracks **D7.5-01 /
 | Document | Relevance |
 |----------|-----------|
 | [Phase 7 DESIGN](../07-agent-runtime/DESIGN.md) | §10 Capability manifest, §11 MCP, §12 OpenAPI |
-| [ADR-025](../../../docs/adr/025-capability-discovery-api.md) | Gate (Accepted) |
+| [ADR-025](../../adr/025-capability-discovery-api.md) | Gate (Accepted) |
 | [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
 | [TESTING.md](TESTING.md) | Verification evidence |
 

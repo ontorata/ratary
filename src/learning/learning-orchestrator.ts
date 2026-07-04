@@ -39,15 +39,15 @@ export class LearningOrchestrator implements ILearningOrchestrator {
     const rankingSnapshot = this.deps.rankingLearning.compute(scope, events);
 
     const [recommendations, patterns] = await Promise.all([
-      this.deps.recommendation?.recommend(scope, 10) ?? Promise.resolve([]),
-      this.deps.patternMiner?.mine(scope) ?? Promise.resolve([]),
+      this.deps.recommendation?.recommend(scope, events, 10) ?? Promise.resolve([]),
+      this.deps.patternMiner?.mine(scope, events) ?? Promise.resolve([]),
     ]);
 
-    await this.deps.knowledgeDiscovery?.discover(scope);
-    await this.deps.feedbackLearning?.adapt(scope);
-    await this.deps.contextOptimization?.suggest(scope);
-    await this.deps.datasetExporter?.export(scope);
-    await this.deps.evaluation?.evaluate(scope);
+    await this.deps.knowledgeDiscovery?.discover(scope, events);
+    await this.deps.feedbackLearning?.adapt(scope, events, analytics);
+    await this.deps.contextOptimization?.suggest(scope, events, rankingSnapshot);
+    await this.deps.datasetExporter?.export(scope, events);
+    await this.deps.evaluation?.evaluate(scope, events, analytics);
 
     if (!options.dryRun) {
       if (rankingSnapshot) {

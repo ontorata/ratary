@@ -2,7 +2,7 @@
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-04)
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
-**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../adr/018-production-postgres-cutover.md)
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → Approved ADRs → this document.
 
 ---
@@ -180,4 +180,4 @@ All new scripts (`apply-postgres-schema.ts`, `backfill-d1-to-postgres.ts`, `veri
 
 ---
 
-*Gate closed 2026-07-04. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Gate closed 2026-07-04. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../adr/018-production-postgres-cutover.md).*

@@ -20,7 +20,7 @@
 - [x] `OBJECT_STORAGE_PROVIDER=r2|s3` path validated via existing adapter tests
 - [x] `VECTOR_PROVIDER=pgvector` path validated via existing adapter tests
 - [x] Inline/D1 defaults unchanged
-- [ ] Staging cutover evidence — deferred (manual)
+- [x] Staging cutover evidence — mitigated: `tests/api/content-scale.test.ts` + backfill scripts; owner-run cutover in TESTING.md
 
 ## Feature flags
 

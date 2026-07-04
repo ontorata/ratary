@@ -35,7 +35,7 @@ Executable gate checklist — one item per milestone or success criterion.
 ## Quality gate
 
 - [x] Cross-owner leak regression tests
-- [x] Design archive: [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)
+- [x] Design archive: [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)
 - [x] Governance docs closed at gate
 
 ---

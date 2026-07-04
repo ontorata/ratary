@@ -1,7 +1,7 @@
 # Phase 5.5 — Semantic Compression — CHECKLIST
 
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-023 Accepted  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-023](../../../docs/adr/023-semantic-compression-policy.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-023](../../adr/023-semantic-compression-policy.md)
 
 ---
 

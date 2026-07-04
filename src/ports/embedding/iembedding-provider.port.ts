@@ -1,7 +1,7 @@
 /**
  * Canonical embedding inference port.
  * Adapters: OpenAI, Gemini, Voyage, Ollama, Nomic, SentenceTransformers, noop.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export type {
   IEmbeddingProvider,

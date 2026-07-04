@@ -2,7 +2,7 @@
 
 **Document:** DESIGN  
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-041 Accepted  
-**ADR gate:** [ADR-041](../../../docs/adr/041-automatic-graph-relation-inference.md) — **Accepted**  
+**ADR gate:** [ADR-041](../../adr/041-automatic-graph-relation-inference.md) — **Accepted**  
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) · feeds Phase 8 `IGraphProvider`
 
 ---

@@ -2,7 +2,7 @@
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
-**ADR:** [ADR-026 Accepted](../../../docs/adr/026-memory-quality-signals.md)
+**ADR:** [ADR-026 Accepted](../../adr/026-memory-quality-signals.md)
 
 ---
 

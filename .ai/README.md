@@ -37,7 +37,7 @@ On conflict, **`.ai/` wins**.
 
 - [docs/README.md](../docs/README.md)
 - [docs/PANDUAN.md](../docs/PANDUAN.md)
-- [docs/adr/](../docs/adr/)
+- [adr/](adr/) — Architecture Decision Records (SSOT)
 
 ---
 

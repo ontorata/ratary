@@ -24,6 +24,9 @@ export const MCP_TOOL_NAMES = [
   'submit_signal',
   'run_stewardship',
   'get_compression_status',
+  'sync_pull',
+  'sync_push',
+  'sync_status',
 ] as const;
 
 export type McpToolName = (typeof MCP_TOOL_NAMES)[number];

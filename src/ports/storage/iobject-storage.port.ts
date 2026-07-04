@@ -1,8 +1,8 @@
 /**
  * Vendor-neutral object/blob storage port.
  * Adapters: R2, MinIO, S3, Azure Blob, GCS, local FS.
- * @see docs/adr/005-content-object-store.md
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/005-content-object-store.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export interface ObjectStorageKey {
   /** Logical key segments — adapter maps to bucket/path convention. */

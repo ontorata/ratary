@@ -1,7 +1,7 @@
 # Phase 6.5 — Progressive Retrieval — CHECKLIST
 
 **Phase status:** ✅ Implemented (2026-07-04) · ADR-024 Accepted  
-**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-024](../../../docs/adr/024-progressive-retrieval-policy.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-024](../../adr/024-progressive-retrieval-policy.md)
 
 ---
 

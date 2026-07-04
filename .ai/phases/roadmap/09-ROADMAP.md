@@ -27,9 +27,9 @@ Record what is completed, what is in progress, what is planned, dependencies bet
 
 - Active implementation tasks → [../../../TASK_PROMPT.md](../../../TASK_PROMPT.md)
 - Post–Phase 10 phases 11–22 → [10-POST-ROADMAP.md](10-POST-ROADMAP.md); enterprise 16–20 → [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md); capstone Phase 25 → [12-MASTER-ROADMAP-ARCHITECTURE.md](12-MASTER-ROADMAP-ARCHITECTURE.md)
-- Structural ADR content → [adr/](../../../docs/adr/)
+- Structural ADR content → [adr/](../../adr/)
 - Immutable engineering law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) – [08-REVIEW.md](../../core/standards/08-REVIEW.md)
-- Historical phase design detail → [archive/](../../docs/archive/)
+- Historical phase design detail → [archive/](../archive/)
 
 ---
 
@@ -382,11 +382,11 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 `IGraphProvider` for traversal; graph-augmented retrieval source; flat `memory_relations` CRUD unchanged.
 
-**ADR:** [docs/adr/006-igraph-provider.md](../../docs/adr/006-igraph-provider.md) — **Approved** · **Implemented**
+**ADR:** [.ai/adr/006-igraph-provider.md](../adr/006-igraph-provider.md) — **Approved** · **Implemented**
 
 ## Milestones
 
-- [x] `IGraphProvider` ADR Approved — [ADR-006](../../docs/adr/006-igraph-provider.md) (2026-07-03)
+- [x] `IGraphProvider` ADR Approved — [ADR-006](../adr/006-igraph-provider.md) (2026-07-03)
 - [x] `IGraphProvider` port + `D1GraphAdapter` (bidirectional BFS)
 - [x] `GraphRetrievalCandidateSource` + tests
 - [x] Composite retrieval includes graph source (role-based RRF caps)
@@ -428,8 +428,8 @@ Vector-augmented retrieval: `VectorRetrievalCandidateSource`, `CompositeRetrieva
 
 Shared workspace memory across agents and clients; `IScopeResolver`, `IAgentIdentity`, `ISyncManager`; workspace schema; multi-client coherence.
 
-**ADR:** [docs/adr/007-multi-ai-workspace-scope.md](../../docs/adr/007-multi-ai-workspace-scope.md) — **Implemented**  
-**Contract:** [ADR-002](../../docs/adr/002-workspace-identity-model.md) — Approved
+**ADR:** [.ai/adr/007-multi-ai-workspace-scope.md](../adr/007-multi-ai-workspace-scope.md) — **Implemented**  
+**Contract:** [ADR-002](../adr/002-workspace-identity-model.md) — Approved
 
 ## Milestones
 
@@ -463,7 +463,7 @@ Shared workspace memory across agents and clients; `IScopeResolver`, `IAgentIden
 
 Storage-agnostic **port registry** (`src/ports/`). Prepare enterprise infrastructure swap without changing domain or application services. No new user-facing features; no provider implementations.
 
-**ADR:** [docs/adr/008-platform-architecture.md](../../docs/adr/008-platform-architecture.md) — **Approved**
+**ADR:** [.ai/adr/008-platform-architecture.md](../adr/008-platform-architecture.md) — **Approved**
 
 ## Milestones
 
@@ -586,7 +586,7 @@ Organization tenant, workspace membership RBAC, platform infrastructure adapters
 - [x] Success criteria verified with tests — **402 passed** (89 files); `npm test` green
 - [x] 10-PHASE-STATUS.md phase row updated — [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 - [x] 09-ROADMAP.md status updated — Summary + Phase 10 **Complete**
-- [x] ADRs marked Implemented / Approved — [docs/adr/README.md](../../../docs/adr/README.md) (ADR-001–017)
+- [x] ADRs marked Implemented / Approved — [.ai/adr/README.md](../../adr/README.md) (ADR-001–017)
 - [x] TASK_PROMPT completion report archived — [TASK_PROMPT.md](../../TASK_PROMPT.md) → post–Phase 10
 - [x] PANDUAN updated if user-visible — §8 platform, §9 migrasi, `MEMORY_ACCESS_AUDIT`
 - [x] No constitutional violations per 08-REVIEW — Phase 10 REVIEW PASS; layer boundaries preserved

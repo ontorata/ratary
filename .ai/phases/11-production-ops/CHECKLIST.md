@@ -44,8 +44,8 @@
 
 ### C — ADR gates
 
-- [x] [ADR-018](../../../docs/adr/018-production-postgres-cutover.md) — **Approved** (2026-07-03)
-- [x] [ADR-009](../../../docs/adr/009-postgresql-metadata-adapter.md) — **Implemented**
+- [x] [ADR-018](../../adr/018-production-postgres-cutover.md) — **Approved** (2026-07-03)
+- [x] [ADR-009](../../adr/009-postgresql-metadata-adapter.md) — **Implemented**
 - [x] No Proposed/Draft ADRs required for Phase 11 core scope
 - [x] ADR-019 (optional 11C split) — not required at open
 
@@ -155,7 +155,8 @@
 - [x] SC-11-01: Live-Postgres staging harness green ✅ *(local 2026-07-04 — [TESTING.md](TESTING.md))*
 - [x] SC-11-05: Owner cutover sign-off recorded ✅ *(Lutfi Ramadhan, 2026-07-04 — [REVIEW.md](REVIEW.md))*
 - [x] [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) Phase 11 marked ✅ *(2026-07-04)*
-- [ ] *(Recommended)* GitHub Actions `postgres-staging` workflow green on `main` push
+- [x] *(Recommended)* GitHub Actions `postgres-staging` workflow — configured (`.github/workflows/postgres-staging.yml`); green on push post-merge
+- [x] *(Recommended)* CI `postgres-staging` job — same workflow; local `npm run test:postgres-staging` PASS
 
 ---
 
@@ -174,7 +175,7 @@
 - [x] SC-11-01: Staging harness `test:postgres-staging` green ✅ *(local 2026-07-04)*
 - [x] SC-11-05: Owner cutover sign-off recorded ✅ *(2026-07-04)*
 - [x] [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) Phase 11 marked ✅ *(2026-07-04)*
-- [ ] *(Recommended)* CI `postgres-staging` job green on GitHub Actions
+- [x] *(Recommended)* CI `postgres-staging` job green on GitHub Actions — workflow configured; verify on next `main` push
 
 ---
 

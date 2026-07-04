@@ -1,7 +1,7 @@
 # Phase 9.5 — Platform Architecture — COMPLETION
 **Phase status:** ✅ Closed — gate PASS (2026-07-03)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
-**ADR:** [ADR-008 Platform Architecture](../../../docs/adr/008-platform-architecture.md)
+**ADR:** [ADR-008 Platform Architecture](../../adr/008-platform-architecture.md)
 
 ---
 

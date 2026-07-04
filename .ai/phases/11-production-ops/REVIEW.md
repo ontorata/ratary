@@ -3,7 +3,7 @@
 **Document:** REVIEW
 **Phase status:** ✅ Gate PASS — owner sign-off 2026-07-04
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
-**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../adr/018-production-postgres-cutover.md)
 **Authority:** [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) → Approved ADRs → this document.
 
 ---
@@ -19,8 +19,8 @@ Gate verdict for Phase 11 — Production Operations. Documents readiness, record
 | Document | Status | Date |
 |----------|--------|------|
 | [DESIGN.md](DESIGN.md) | ✅ Ready — Owner Approved | 2026-07-03 |
-| [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/docs/adr/018-production-postgres-cutover.md) | ✅ Approved | 2026-07-03 |
-| [ADR-009](https://github.com/lutfi04/ai-brain/blob/main/docs/adr/009-postgresql-metadata-adapter.md) | ✅ Implemented | Phase 10 |
+| [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/018-production-postgres-cutover.md) | ✅ Approved | 2026-07-03 |
+| [ADR-009](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/009-postgresql-metadata-adapter.md) | ✅ Implemented | Phase 10 |
 | Phase 10 gate | ✅ PASS | 2026-07-03 |
 
 ---
@@ -146,7 +146,7 @@ Canonical DDL source: `src/db/migrations.ts` → `runSchemaMigrations(client, 'p
 
 | Criterion | Status | Evidence |
 |-----------|--------|----------|
-| ADR-018 Approved | ✅ | `docs/adr/018-production-postgres-cutover.md` — Approved 2026-07-03 |
+| ADR-018 Approved | ✅ | `.ai/adr/018-production-postgres-cutover.md` — Approved 2026-07-03 |
 
 **Verdict:** ✅ PASS.
 
@@ -183,7 +183,7 @@ Canonical DDL source: `src/db/migrations.ts` → `runSchemaMigrations(client, 'p
 
 ## Owner Sign-Off
 
-I confirm that the Phase 11 design and implementation are complete per [DESIGN.md](DESIGN.md) and [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/docs/adr/018-production-postgres-cutover.md).
+I confirm that the Phase 11 design and implementation are complete per [DESIGN.md](DESIGN.md) and [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/018-production-postgres-cutover.md).
 
 I authorize the staging harness run and production cutover procedure as documented in [MIGRATION.md](MIGRATION.md).
 

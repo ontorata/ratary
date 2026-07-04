@@ -5,7 +5,7 @@
  * Memories in organization A must not be accessible via organization B workspace
  * without explicit membership (403 Forbidden).
  *
- * @see docs/adr/010-workspace-membership-rbac.md
+ * @see .ai/adr/010-workspace-membership-rbac.md
  * @see tests/api/cross-workspace-leak.test.ts
  */
 

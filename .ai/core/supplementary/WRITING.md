@@ -246,7 +246,7 @@ Assign writing rules per document class.
 | User guide | `PANDUAN.md` | Setup and usage |
 | README | `README.md` | Entry point and links |
 
-- ADRs MUST follow [adr/000-template.md](../../../docs/adr/000-template.md).
+- ADRs MUST follow [adr/000-template.md](../../adr/000-template.md).
 - ADRs MUST use RFC 2119 in **Constraints** and **Decision** sections.
 - `TASK_PROMPT.md` MUST be replaced from template at phase start — not appended indefinitely.
 

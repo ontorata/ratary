@@ -13,7 +13,7 @@ export type SyncReconcileResult = 'accept' | 'reject';
 
 /**
  * Cross-client write reconciliation — Phase 9 MVP accepts with conflict audit.
- * @see docs/adr/007-multi-ai-workspace-scope.md
+ * @see .ai/adr/007-multi-ai-workspace-scope.md
  */
 export interface ISyncManager {
   reconcileWrite(event: MemoryWriteEvent): Promise<SyncReconcileResult>;

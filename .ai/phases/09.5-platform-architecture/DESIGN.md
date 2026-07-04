@@ -101,7 +101,7 @@ flowchart TB
 
 ## ADR
 
-[ADR-008 Platform Architecture](../../../docs/adr/008-platform-architecture.md)
+[ADR-008 Platform Architecture](../../adr/008-platform-architecture.md)
 
 ---
 

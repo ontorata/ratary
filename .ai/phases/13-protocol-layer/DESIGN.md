@@ -551,7 +551,7 @@ Owner approval required for renumber in [10-POST-ROADMAP.md](../roadmap/10-POST-
 - [ADR-028](../../adr/028-protocol-layer.md)
 - [ADR-027](../../adr/027-transport-connectivity-layer.md)
 - [Phase 10.5 DESIGN](../10.5-transport-connectivity/DESIGN.md)
-- [ADR-024 Progressive retrieval](../../../docs/adr/024-progressive-retrieval-policy.md)
+- [ADR-024 Progressive retrieval](../../adr/024-progressive-retrieval-policy.md)
 - [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 
 ---

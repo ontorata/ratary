@@ -41,6 +41,9 @@ Read in order:
 │   ├── templates/             — ADR, task, completion blanks
 │   └── governance/            — Registry stubs → canonical files above
 │
+├── adr/                       ← Architecture Decision Records (SSOT)
+├── archive/                   ← Historical phase design snapshots (read-only)
+│
 ├── workflow/                  ← Use while working
 │   ├── 05-WORKFLOW.md         — Development process gates
 │   ├── 12-TASK-TEMPLATE.md    — Task prompt blank form
@@ -56,7 +59,7 @@ Read in order:
     └── audits/                — Phase audit records
 ```
 
-**ADR canonical text:** [docs/adr/](../docs/adr/) (human-readable decision records; subordinate to `.ai/core/`).
+**ADR canonical text:** [adr/README.md](adr/README.md) — subordinate to `.ai/core/`.
 
 ---
 

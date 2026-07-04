@@ -26,7 +26,7 @@ Phase 18 Cloud → requires Phase 17 tenant isolation + quota
 - Phase 17: 🔲 → 🔄 when ADR Approved
 - Track: OPA bundle CI, SSO mock IdP tests
 
-## docs/adr/README.md
+## .ai/adr/README.md
 
 - ADR-032: Proposed → Approved (owner action)
 

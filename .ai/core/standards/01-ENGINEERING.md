@@ -36,7 +36,7 @@ Ensure consistent code quality, predictable runtime behavior, and replaceable in
 - Module layout, port inventory → [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md); live metrics → [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 - Pre-code analysis workflow → [05-WORKFLOW.md](../workflow/05-WORKFLOW.md) §Pre-implementation analysis
 - Active task scope → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
-- ADR lifecycle → [../adr/POLICY.md](../../../docs/adr/POLICY.md)
+- ADR lifecycle → [../adr/POLICY.md](../../adr/POLICY.md)
 
 ---
 
@@ -411,7 +411,7 @@ Composition root → All concrete implementations
 
 # Decision rules (task classification)
 
-Merged from archived [AI_ENGINEERING_STANDARDS.md](../../docs/archive/AI_ENGINEERING_STANDARDS.md).
+Merged from archived [AI_ENGINEERING_STANDARDS.md](../archive/AI_ENGINEERING_STANDARDS.md).
 
 | Signal | Classification | Action |
 |--------|----------------|--------|

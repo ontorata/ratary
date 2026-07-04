@@ -2,7 +2,7 @@
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-04)
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
-**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
+**Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../adr/018-production-postgres-cutover.md)
 
 ---
 
@@ -129,4 +129,4 @@ ADR-018 (Approved) established the cutover strategy before implementation began.
 
 ---
 
-*Retrospective authored as part of Phase 11 gate. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Retrospective authored as part of Phase 11 gate. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../adr/018-production-postgres-cutover.md).*

@@ -50,7 +50,7 @@ const PHASES = [
       ['SC-03', 'Generators pure + KnowledgeService orchestrator', '✅ W1 design review compliance'],
       ['SC-04', 'UNIQUE indexes after backfill', '✅ migrateKnowledgeFoundationPhase3'],
       ['SC-05', 'Owner isolation tests', '✅ ≥6 cross-owner-leak cases'],
-      ['SC-06', 'Design archive', '✅ [PHASE-2.6-DESIGN.md](../../../docs/archive/PHASE-2.6-DESIGN.md)'],
+      ['SC-06', 'Design archive', '✅ [PHASE-2.6-DESIGN.md](../../../.ai/archive/PHASE-2.6-DESIGN.md)'],
     ],
   },
   {
@@ -75,7 +75,7 @@ const PHASES = [
       ['SC-03', 'MEMORY_SELECT projection', '✅ No full body in retrieval hot path'],
       ['SC-04', 'MemoryConsolidator batch path', '✅ `scripts/consolidate-memories.ts`'],
       ['SC-05', 'Importance scoring + backfill', '✅ dry-run default backfill script'],
-      ['SC-06', 'Design archive', '✅ [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../docs/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)'],
+      ['SC-06', 'Design archive', '✅ [PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md](../../../.ai/archive/PHASE-4-MEMORY-INTELLIGENCE-DESIGN.md)'],
     ],
   },
   {

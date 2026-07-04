@@ -35,6 +35,7 @@ import { createCompressionPorts } from '../../composition/create-compression-por
 import { createSignalIngestPorts } from '../../composition/create-signal-ingest-ports.js';
 import { createLearningPorts } from '../../composition/create-learning-ports.js';
 import { wireMcpInitializeCapabilities } from './mcp-initialize-capabilities.js';
+import type { IClientSyncService } from '../../client-sync/iclient-sync-service.interface.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -47,6 +48,8 @@ const metadataSchema = z.object({
 
 export interface CreateMcpServerOptions {
   mcpTransport?: 'stdio' | 'streamable-http';
+  clientSync?: IClientSyncService;
+  clientSyncEnabled?: boolean;
 }
 
 function createMcpServer(
@@ -480,6 +483,99 @@ function createMcpServer(
     },
   );
 
+  const syncService = options.clientSync;
+  const syncDisabledPayload = {
+    content: [
+      {
+        type: 'text' as const,
+        text: JSON.stringify({
+          error: 'MULTI_CLIENT_SYNC_ENABLED=false — enable multi-client sync to use sync_* tools',
+        }),
+      },
+    ],
+    isError: true,
+  };
+
+  server.tool(
+    'sync_status',
+    'Multi-client sync status for a platform (ADR-042)',
+    {
+      platform_id: z.string().min(1).max(100).describe('Client platform id (e.g. cursor, vscode)'),
+    },
+    async (params) => {
+      if (!options.clientSyncEnabled || !syncService) {
+        return syncDisabledPayload;
+      }
+      const status = await syncService.getStatus(await mcpScope(), params.platform_id);
+      return { content: [{ type: 'text', text: JSON.stringify(status, null, 2) }] };
+    },
+  );
+
+  server.tool(
+    'sync_pull',
+    'Pull memory changes since cursor for a client platform',
+    {
+      platform_id: z.string().min(1).max(100),
+      cursor: z.string().optional().describe('Optional cursor override'),
+    },
+    async (params) => {
+      if (!options.clientSyncEnabled || !syncService) {
+        return syncDisabledPayload;
+      }
+      const result = await syncService.pull(
+        await mcpScope(),
+        params.platform_id,
+        params.cursor,
+      );
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+    },
+  );
+
+  server.tool(
+    'sync_push',
+    'Push memory changes from a client platform',
+    {
+      platform_id: z.string().min(1).max(100),
+      cursor: z.string().optional(),
+      changes: z
+        .array(
+          z.object({
+            memory_id: z.string().uuid(),
+            operation: z.enum(['create', 'update', 'delete']),
+            expected_updated_at: z.string().optional().nullable(),
+            data: z
+              .object({
+                title: z.string().optional(),
+                project: z.string().optional(),
+                content: z.string().optional(),
+                summary: z.string().optional(),
+                tags: z.array(z.string()).optional(),
+                favorite: z.boolean().optional(),
+              })
+              .optional(),
+          }),
+        )
+        .max(100),
+    },
+    async (params) => {
+      if (!options.clientSyncEnabled || !syncService) {
+        return syncDisabledPayload;
+      }
+      const result = await syncService.push(
+        await mcpScope(),
+        params.platform_id,
+        params.changes.map((change) => ({
+          memoryId: change.memory_id,
+          operation: change.operation,
+          expectedUpdatedAt: change.expected_updated_at,
+          data: change.data,
+        })),
+        params.cursor,
+      );
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+    },
+  );
+
   server.tool('list_workspaces', 'List workspaces for the MCP owner', {}, async () => {
     const scope = await mcpScope();
     await ensureDefaultWorkspace(sql, scope.ownerId);
@@ -651,6 +747,10 @@ export async function startMcpStdioServer(): Promise<void> {
     createStdioMcpBinding(scopeResolver),
     agentIdentity,
     platform.sql,
+    {
+      clientSync: multiAi.bindClientSyncService(memoryService),
+      clientSyncEnabled: multiAi.clientSync.enabled,
+    },
   );
   const transport = new StdioServerTransport();
 

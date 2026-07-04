@@ -32,8 +32,8 @@
 
 - [x] 12A — Consumer registry + idempotent handlers
 - [x] 12B — Audit/analytics fan-out
-- [ ] 12C — Identity/IP on memory access audit (deferred)
-- [ ] 12D — OTel runbook in PANDUAN (deferred)
+- [x] 12C — Identity/IP on memory access audit (`TransportContext.clientIp` + `auditIdentityId` on context.build)
+- [x] 12D — OTel runbook in PANDUAN (§10 Observability)
 - [x] IMPLEMENTATION.md · TESTING.md authored
 - [x] Default env regression green
 

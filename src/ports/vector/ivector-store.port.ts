@@ -1,7 +1,7 @@
 /**
  * Vendor-neutral vector similarity storage port.
  * Adapters: D1 in-process (MVP), Pinecone, Qdrant, Weaviate, Milvus, pgvector, Chroma.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export interface VectorScopeKey {
   ownerId: string;

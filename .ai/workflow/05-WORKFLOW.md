@@ -31,7 +31,7 @@ Ensure AI assistants and humans follow the same sequence regardless of tool, mod
 - Immutable rules and layer law → [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) – [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 - Line-level coding style → [02-CODING.md](../../core/standards/02-CODING.md)
 - Naming conventions → [03-NAMING.md](../../core/standards/03-NAMING.md)
-- ADR content and lifecycle policy → [../adr/POLICY.md](../../../docs/adr/POLICY.md)
+- ADR content and lifecycle policy → [../adr/POLICY.md](../../adr/POLICY.md)
 - Active task scope and definition of done → [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
 - User-facing operations → [../PANDUAN.md](../../docs/PANDUAN.md)
 
@@ -89,7 +89,7 @@ No stage may be skipped. No backward transition without fixing the failing check
    - [02-CODING.md](../../core/standards/02-CODING.md)
    - [03-NAMING.md](../../core/standards/03-NAMING.md)
    - [../../TASK_PROMPT.md](../../TASK_PROMPT.md)
-   - Relevant approved ADRs in [adr/](../../../docs/adr/)
+   - Relevant approved ADRs in [adr/](../../adr/)
 2. Inspect existing code in affected modules under `src/`.
 3. Classify the change:
    - Bug fix (boundary unchanged)
@@ -253,10 +253,10 @@ Update documents when applicable:
 | [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) | Ports, phases, deployment, extension points changed |
 | [../../TASK_PROMPT.md](../../TASK_PROMPT.md) | Definition of done, completion report |
 | [../PANDUAN.md](../../docs/PANDUAN.md) | User-visible setup, env vars, commands |
-| [adr/*.md](../../../docs/adr/) | ADR status → Implemented when structural work merges |
-| [adr/README.md](../../../docs/adr/README.md) | ADR index status |
+| [adr/*.md](../../adr/) | ADR status → Implemented when structural work merges |
+| [adr/README.md](../../adr/README.md) | ADR index status |
 | [README.md](../../docs/README.md) | Public API surface change |
-| [archive/](../../docs/archive/) | Phase design history when closing a phase |
+| [archive/](../archive/) | Phase design history when closing a phase |
 
 Do not duplicate constitutional rules. Link to `00-` – `04-` standards instead.
 
@@ -532,7 +532,7 @@ Abbreviated Design still requires written layer placement — never skip D2.
 
 # Pre-implementation analysis
 
-**Mandatory before any code** (merged from archived [05-WORKFLOW.md](../../docs/archive/05-WORKFLOW.md)). Produce all eight sections. No implementation until complete.
+**Mandatory before any code** (merged from archived [05-WORKFLOW.md](../archive/05-WORKFLOW.md)). Produce all eight sections. No implementation until complete.
 
 ## Before starting
 
@@ -543,7 +543,7 @@ Abbreviated Design still requires written layer placement — never skip D2.
 | 3 | [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md) | Live metrics and debt |
 | 4 | [TASK_PROMPT.md](../../TASK_PROMPT.md) | Current phase work only |
 | 5 | [PANDUAN.md](../../docs/PANDUAN.md) | User-facing behavior and ops |
-| 6 | [archive/](../../docs/archive/) | Historical design context |
+| 6 | [archive/](../archive/) | Historical design context |
 | 7 | Existing implementation | Inspect `src/` — verify against docs |
 
 ### 1. Current architecture

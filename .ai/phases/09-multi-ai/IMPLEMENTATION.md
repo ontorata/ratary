@@ -1,7 +1,7 @@
-﻿# Phase 9 — Multi-AI — IMPLEMENTATION
+# Phase 9 � Multi-AI � IMPLEMENTATION
 
-**Status:** ✅ Complete (2026-07-03)  
-**ADR:** [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md)
+**Status:** ? Complete (2026-07-03)  
+**ADR:** [ADR-007](../../adr/007-multi-ai-workspace-scope.md)
 
 ---
 

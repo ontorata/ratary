@@ -70,18 +70,18 @@ Full lifecycle: [PHASE-DOCUMENT-SCHEMA.md](PHASE-DOCUMENT-SCHEMA.md).
 | Phase | Folder | Gate | ADR / notes |
 |-------|--------|------|-------------|
 | 1 Foundation | [01-foundation/](01-foundation/README.md) | ✅ | — |
-| 2.5 Stabilization | [02.5-stabilization/](02.5-stabilization/README.md) | ✅ | [PHASE-2.5.md](../../docs/archive/PHASE-2.5.md) |
-| 2.6 Knowledge | [02.6-knowledge/](02.6-knowledge/README.md) | ✅ | [PHASE-2.6-DESIGN.md](../../docs/archive/PHASE-2.6-DESIGN.md) |
-| 3 Authorization | [03-authorization/](03-authorization/README.md) | ✅ | [PHASE-3.md](../../docs/archive/PHASE-3.md) |
+| 2.5 Stabilization | [02.5-stabilization/](02.5-stabilization/README.md) | ✅ | [PHASE-2.5.md](../archive/PHASE-2.5.md) |
+| 2.6 Knowledge | [02.6-knowledge/](02.6-knowledge/README.md) | ✅ | [PHASE-2.6-DESIGN.md](../archive/PHASE-2.6-DESIGN.md) |
+| 3 Authorization | [03-authorization/](03-authorization/README.md) | ✅ | [PHASE-3.md](../archive/PHASE-3.md) |
 | 4 Memory Intelligence | [04-memory-intelligence/](04-memory-intelligence/README.md) | ✅ | Archive design |
-| 5 Embedding | [05-embedding/](05-embedding/README.md) | ✅ | [ADR-003](../../docs/adr/003-embedding-storage-mvp.md) |
-| 6 Hybrid Retrieval | [06-hybrid-retrieval/](06-hybrid-retrieval/README.md) | ✅ | [ADR-001](../../docs/adr/001-multi-source-retrieval.md) |
+| 5 Embedding | [05-embedding/](05-embedding/README.md) | ✅ | [ADR-003](../adr/003-embedding-storage-mvp.md) |
+| 6 Hybrid Retrieval | [06-hybrid-retrieval/](06-hybrid-retrieval/README.md) | ✅ | [ADR-001](../adr/001-multi-source-retrieval.md) |
 | 7 Agent Runtime | [07-agent-runtime/](07-agent-runtime/README.md) | ✅ | Doc-only boundary |
-| 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | ✅ | [ADR-006](../../docs/adr/006-igraph-provider.md) |
-| 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | ✅ | [ADR-007](../../docs/adr/007-multi-ai-workspace-scope.md) |
-| 9.5 Platform Architecture | [09.5-platform-architecture/](09.5-platform-architecture/README.md) | ✅ | [ADR-008](../../docs/adr/008-platform-architecture.md) |
-| 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | ✅ | [ADR-008–016](../../docs/adr/README.md) |
-| 11 Production Ops | [11-production-ops/](11-production-ops/README.md) | ✅ | [ADR-018](../../docs/adr/018-production-postgres-cutover.md) |
+| 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | ✅ | [ADR-006](../adr/006-igraph-provider.md) |
+| 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | ✅ | [ADR-007](../adr/007-multi-ai-workspace-scope.md) |
+| 9.5 Platform Architecture | [09.5-platform-architecture/](09.5-platform-architecture/README.md) | ✅ | [ADR-008](../adr/008-platform-architecture.md) |
+| 10 Enterprise | [10-enterprise/](10-enterprise/README.md) | ✅ | [ADR-008–016](../adr/README.md) |
+| 11 Production Ops | [11-production-ops/](11-production-ops/README.md) | ✅ | [ADR-018](../adr/018-production-postgres-cutover.md) |
 
 ---
 
@@ -171,7 +171,7 @@ flowchart LR
 
 1. **Never delete** a closed phase folder — append addenda only.
 2. **Never rewrite** closed `DESIGN.md` — link to ADR or archive for corrections.
-3. **`docs/archive/PHASE-*.md`** remains canonical for long-form historical design; `DESIGN.md` summarizes and links.
+3. **`.ai/archive/PHASE-*.md`** remains canonical for long-form historical design; `DESIGN.md` summarizes and links.
 4. **Sub-phases** (2.5, 2.6, extension tracks) have separate folders — do not merge into a parent.
 5. **Roadmap sync:** `README.md` status MUST match [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) after gate.
 

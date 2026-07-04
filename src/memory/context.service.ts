@@ -28,6 +28,8 @@ export interface BuildContextRequest {
   levels?: MemoryLevel[];
   limit?: number;
   context?: ContextBuildOptions;
+  auditIdentityId?: string;
+  auditIpAddress?: string;
 }
 
 export interface BuildContextResult {
@@ -150,6 +152,8 @@ export class ContextService {
             ownerId: scope.ownerId,
             workspaceId,
             source: 'context.build',
+            identityId: request.auditIdentityId,
+            ipAddress: request.auditIpAddress,
           }),
         ),
       );

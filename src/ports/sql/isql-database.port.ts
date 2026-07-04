@@ -1,7 +1,7 @@
 /**
  * Vendor-neutral SQL execution port.
  * Adapters: D1, PostgreSQL, MariaDB, MySQL, SQLite, CockroachDB, TiDB, PlanetScale, SQL Server, Oracle.
- * @see docs/adr/008-platform-architecture.md
+ * @see .ai/adr/008-platform-architecture.md
  */
 export interface SqlExecuteResult {
   results: Record<string, unknown>[];

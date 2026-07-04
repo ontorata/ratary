@@ -455,7 +455,7 @@ transport: {
 | Document | Relevance |
 |----------|-----------|
 | [ADR-027](../../adr/027-transport-connectivity-layer.md) | Structural gate |
-| [ADR-025](../../../docs/adr/025-capability-discovery-api.md) | Manifest extension |
+| [ADR-025](../../adr/025-capability-discovery-api.md) | Manifest extension |
 | [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md) | Layer law |
 | [07.5 DESIGN](../07.5-runtime-compatibility/DESIGN.md) | SDK external |
 | [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) | Phase sequence |

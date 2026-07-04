@@ -13,7 +13,7 @@
 - [x] 15C Ecosystem manifest
 - [x] 15D GET /ecosystem/clients
 - [x] 15E Compatibility tests
-- [ ] 15F PANDUAN § ecosystem (deferred)
+- [x] 15F PANDUAN § ecosystem (§11 Agent Ecosystem)
 
 ## Boundary verification
 

@@ -33,7 +33,7 @@ Phase 11 is an **operational proof** phase — no application behavior changes. 
 | SC-11-03 | Default D1 deploy unchanged; 546 tests at default env | `npm run typecheck && npm test` → 546 pass (2026-07-04) | ✅ |
 | SC-11-04 | No `MemoryService` / `Retriever` rewrite | Grep: zero `pg` imports outside `src/infrastructure/` | ✅ |
 | SC-11-05 | Owner sign-off on cutover strategy | `REVIEW.md` sign-off section | ✅ Lutfi Ramadhan 2026-07-04 |
-| SC-11-06 | ADR-018 **Approved** before merge | [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/docs/adr/018-production-postgres-cutover.md) | ✅ Approved 2026-07-03 |
+| SC-11-06 | ADR-018 **Approved** before merge | [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/018-production-postgres-cutover.md) | ✅ Approved 2026-07-03 |
 
 ---
 
@@ -246,7 +246,7 @@ All suites must pass on the Postgres staging harness before cutover.
 
 ---
 
-*Gate evidence updated 2026-07-04 (local Postgres staging verification). Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Gate evidence updated 2026-07-04 (local Postgres staging verification). Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../adr/018-production-postgres-cutover.md).*
 ## Current regression
 
 689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)
