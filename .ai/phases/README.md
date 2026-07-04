@@ -77,6 +77,7 @@ Full lifecycle: [PHASE-DOCUMENT-SCHEMA.md](PHASE-DOCUMENT-SCHEMA.md).
 | 5 Embedding | [05-embedding/](05-embedding/README.md) | ✅ | [ADR-003](../adr/003-embedding-storage-mvp.md) |
 | 6 Hybrid Retrieval | [06-hybrid-retrieval/](06-hybrid-retrieval/README.md) | ✅ | [ADR-001](../adr/001-multi-source-retrieval.md) |
 | 7 Agent Runtime | [07-agent-runtime/](07-agent-runtime/README.md) | ✅ | Doc-only boundary |
+| **7.1 Agent Forge** | [07.1-agent-forge/](07.1-agent-forge/README.md) | ✅ | Cursor skills pipeline |
 | 8 Knowledge Graph | [08-knowledge-graph/](08-knowledge-graph/README.md) | ✅ | [ADR-006](../adr/006-igraph-provider.md) |
 | 9 Multi-AI | [09-multi-ai/](09-multi-ai/README.md) | ✅ | [ADR-007](../adr/007-multi-ai-workspace-scope.md) |
 | 9.5 Platform Architecture | [09.5-platform-architecture/](09.5-platform-architecture/README.md) | ✅ | [ADR-008](../adr/008-platform-architecture.md) |
@@ -93,6 +94,7 @@ Full lifecycle: [PHASE-DOCUMENT-SCHEMA.md](PHASE-DOCUMENT-SCHEMA.md).
 | 5.5 Semantic Compression | [05.5-semantic-compression/](05.5-semantic-compression/README.md) | ADR-023 |
 | 6.5 Progressive Retrieval | [06.5-progressive-retrieval/](06.5-progressive-retrieval/README.md) | ADR-024 |
 | 7.5 Runtime Compatibility | [07.5-runtime-compatibility/](07.5-runtime-compatibility/README.md) | ADR-025 |
+| **7.1 Agent Forge** | [07.1-agent-forge/](07.1-agent-forge/README.md) | — (workflow; Phase 7 extension) |
 | 8.5 Quality Signals | [08.5-observation-reflection-learning/](08.5-observation-reflection-learning/README.md) | ADR-026 |
 | 8.6 Learning Intelligence | [08.6-learning-intelligence/](08.6-learning-intelligence/README.md) | ADR-057 |
 | 8.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | ADR-041 |

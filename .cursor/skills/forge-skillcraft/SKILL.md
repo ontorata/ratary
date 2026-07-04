@@ -11,7 +11,7 @@ description: >-
 ## Location
 
 - Project skills: `.cursor/skills/{name}/SKILL.md`
-- Register stage in `.ai/agent-forge/manifest.json` if pipeline stage
+- Register stage in `.ai/phases/07.1-agent-forge/manifest.json` if pipeline stage
 - Never write to `~/.cursor/skills-cursor/` (Cursor internal)
 
 ## SKILL.md frontmatter

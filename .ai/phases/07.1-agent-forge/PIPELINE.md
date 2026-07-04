@@ -29,3 +29,5 @@ flowchart LR
 **Supporting:** `forge-diagnose` (failures), `forge-parallel` (independent tracks), `forge-skillcraft` (new skills), `forge-intro` (onboarding).
 
 Machine-readable: [manifest.json](manifest.json)
+
+Phase entry: [README.md](README.md)

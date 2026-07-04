@@ -7,7 +7,7 @@ alwaysApply: true
 
 Before **any** design, code, test, or review work:
 
-1. Identify pipeline stage from [.ai/agent-forge/PIPELINE.md](../.ai/agent-forge/PIPELINE.md)
+1. Identify pipeline stage from [.ai/phases/07.1-agent-forge/PIPELINE.md](../.ai/phases/07.1-agent-forge/PIPELINE.md)
 2. **Read and follow** the matching skill in `.cursor/skills/forge-*/SKILL.md`
 3. Run **Recall** at session start (`forge-recall`) and **Remember** at session end (`forge-remember`) when MCP is available
 4. Do not skip **Intent → Isolate → Blueprint** for non-trivial features (multi-file or structural)

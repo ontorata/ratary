@@ -14,7 +14,7 @@ Agent Forge is this repo's **memory-governed** pipeline — different from gener
 
 ## Read first
 
-1. [.ai/agent-forge/PIPELINE.md](../../.ai/agent-forge/PIPELINE.md)
+1. [.ai/phases/07.1-agent-forge/PIPELINE.md](../../.ai/phases/07.1-agent-forge/PIPELINE.md)
 2. [.ai/START-HERE.md](../../.ai/START-HERE.md)
 3. [.ai/TASK_PROMPT.md](../../.ai/TASK_PROMPT.md) if active work exists
 

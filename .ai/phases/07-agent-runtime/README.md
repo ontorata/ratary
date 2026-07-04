@@ -55,6 +55,8 @@ No external design archive.
 
 Phase 7 is a **documentation-only boundary phase** — agent runtime external; no new implementation in `src/`. All ten governance documents closed (IMPLEMENTATION/TESTING complete; MIGRATION N/A).
 
+**Extension:** [Phase 07.1 Agent Forge](../07.1-agent-forge/README.md) — mandatory Cursor skill pipeline for external agents (Recall → Remember via MCP).
+
 **Key Scope:**
 - Agent loops consume MCP/REST externally (outside repo)
 - Foundation may add scope hooks per ADR-002

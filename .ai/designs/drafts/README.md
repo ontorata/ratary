@@ -1,6 +1,8 @@
-# Design drafts (Agent Forge)
+# Design drafts (Phase 07.1 Agent Forge)
 
 Intent and blueprint artifacts written during **forge-intent** and **forge-blueprint** stages.
+
+Phase SSOT: [.ai/phases/07.1-agent-forge/](../phases/07.1-agent-forge/README.md)
 
 Naming: `{feature-slug}.md` (intent), `{feature-slug}-plan.md` (blueprint).
 

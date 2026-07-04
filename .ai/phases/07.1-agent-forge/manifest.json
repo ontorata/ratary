@@ -2,6 +2,7 @@
   "name": "agent-forge",
   "version": "1.0.0",
   "description": "Memory-governed agent pipeline for AI Brain — mandatory stage activation with MCP recall/remember bookends",
+  "phase": ".ai/phases/07.1-agent-forge",
   "authority": ".ai/core/constitution/00-CONSTITUTION.md",
   "skillsRoot": ".cursor/skills",
   "designDrafts": ".ai/designs/drafts",
