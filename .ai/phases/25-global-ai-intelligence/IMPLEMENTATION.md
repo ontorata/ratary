@@ -1,6 +1,7 @@
 # Phase 25 — Global AI Intelligence — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-036 Implemented](../../adr/036-global-ai-intelligence-platform.md) · [ADR-037](../../adr/037-ai-telemetry-event-model.md) · [ADR-038](../../adr/038-usage-analytics-engine.md) · [ADR-043](../../adr/043-cloud-federation-sync-topology.md)
 
 ---

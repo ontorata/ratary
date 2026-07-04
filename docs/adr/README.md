@@ -29,14 +29,14 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [025-capability-discovery-api.md](025-capability-discovery-api.md) | Capability discovery API (Phase 7.5) | **Implemented** | `GET /capabilities`, MCP manifest |
 | [026-memory-quality-signals.md](026-memory-quality-signals.md) | Memory quality signals — ingest not agent learning (Phase 8.5) | **Implemented** | Ranking adaptation / Phase 12 |
 | [027](../../.ai/adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer (Phase 10.5) | **Implemented** | gRPC opt-in, transport registry |
-| [028-protocol-layer.md](../../.ai/adr/028-protocol-layer.md) | Protocol Layer — WS/SSE/stream/benchmark (Phase 13) | **Proposed** | Multi-protocol streaming |
-| [029-federation-layer.md](../../.ai/adr/029-federation-layer.md) | Federation Layer — cross-node knowledge exchange (Phase 14) | **Proposed** | Global memory fabric |
-| [030-autonomous-agent-ecosystem.md](../../.ai/adr/030-autonomous-agent-ecosystem.md) | Autonomous Agent Ecosystem (Phase 15) | **Proposed** | Multi-client Memory Cloud |
-| [031-developer-platform.md](../../.ai/adr/031-developer-platform.md) | Developer Platform (Phase 16) | **Proposed** | SDK, CLI, remote MCP |
-| [032-enterprise-security.md](../../.ai/adr/032-enterprise-security.md) | Enterprise Security (Phase 17) | **Proposed** | SSO, OPA, ABAC |
-| [033-cloud-platform.md](../../.ai/adr/033-cloud-platform.md) | Cloud Platform (Phase 18) | **Proposed** | Control plane, metering |
-| [034-observability-platform.md](../../.ai/adr/034-observability-platform.md) | Observability Platform (Phase 19) | **Proposed** | OTel, Grafana |
-| [035-ai-infrastructure-platform.md](../../.ai/adr/035-ai-infrastructure-platform.md) | AI Infrastructure Platform (Phase 20) | **Proposed** | Plugin marketplace |
+| [028-protocol-layer.md](../../.ai/adr/028-protocol-layer.md) | Protocol Layer — WS/SSE/stream/benchmark (Phase 13) | **Implemented** | Multi-protocol streaming |
+| [029-federation-layer.md](../../.ai/adr/029-federation-layer.md) | Federation Layer — cross-node knowledge exchange (Phase 14) | **Implemented** | Global memory fabric |
+| [030-autonomous-agent-ecosystem.md](../../.ai/adr/030-autonomous-agent-ecosystem.md) | Autonomous Agent Ecosystem (Phase 15) | **Implemented** | Multi-client Memory Cloud |
+| [031-developer-platform.md](../../.ai/adr/031-developer-platform.md) | Developer Platform (Phase 16) | **Implemented** | SDK, CLI, remote MCP |
+| [032-enterprise-security.md](../../.ai/adr/032-enterprise-security.md) | Enterprise Security (Phase 17) | **Implemented** | SSO, OPA, ABAC |
+| [033-cloud-platform.md](../../.ai/adr/033-cloud-platform.md) | Cloud Platform (Phase 18) | **Implemented** | Control plane, metering |
+| [034-observability-platform.md](../../.ai/adr/034-observability-platform.md) | Observability Platform (Phase 19) | **Implemented** | OTel, Grafana |
+| [035-ai-infrastructure-platform.md](../../.ai/adr/035-ai-infrastructure-platform.md) | AI Infrastructure Platform (Phase 20) | **Implemented** | Plugin marketplace |
 | [044-ai-brain-platform-architecture.md](044-ai-brain-platform-architecture.md) | AI-Brain Platform Architecture (Phase 24) | **Implemented** | Umbrella manifest + webhooks |
 | [047-enterprise-knowledge-fabric.md](047-enterprise-knowledge-fabric.md) | Enterprise Knowledge Fabric (Phase 23) | **Implemented** | External connector ingest |
 | [021-content-vector-scale-platform.md](021-content-vector-scale-platform.md) | Content & Vector Scale Platform (Phase 22) | **Implemented** | R2/pgvector/embedding sync ops |
@@ -54,28 +54,22 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 
 **Phase 24 ADR gate:** [ADR-044](044-ai-brain-platform-architecture.md) **Implemented** (2026-07-04).
 
-**Extension ADR (Proposed):** [ADR-048 Remote MCP transport](../../.ai/adr/048-remote-mcp-transport.md) — Phase 13.1 ChatGPT / web MCP clients.
+**Phase 13.1 ADR gate:** [ADR-048 Remote MCP transport](../../.ai/adr/048-remote-mcp-transport.md) **Implemented** (2026-07-04).
 
-**Rule:** No implementation of Proposed/Draft ADRs until owner marks **Approved**.
+**Rule:** No implementation of **Draft** ADRs until owner marks **Approved**. **Implemented** ADRs reflect shipped code (opt-in where noted).
 
 **Phases 1–10 ADR closure:** ADR-001–017 **Implemented** (2026-07-03).
 
 **Phase 11 ADR gate:** [ADR-018](018-production-postgres-cutover.md) **Implemented** (gate PASS 2026-07-04).
 
-**Extension tracks (5.5–8.5):** ADR-023–026 **Implemented** (2026-07-04).
+**Extension tracks (5.5–9.8):** ADR-023–026, ADR-040–042, ADR-057 **Implemented** (2026-07-04).
 
 **Phase 10.5 ADR gate:** [ADR-027](../../.ai/adr/027-transport-connectivity-layer.md) **Implemented** (2026-07-04).
 
 **Phase 12 ADR gate:** [ADR-020](020-event-consumer-architecture.md) **Implemented** (2026-07-04).
 
-**Phase 13 ADR gate:** [ADR-028](../../.ai/adr/028-protocol-layer.md) **Proposed** (2026-07-04) — requires ADR-027 Implemented.
+**Phases 13–20 ADR gates:** ADR-028–035 **Implemented** (2026-07-04) — all default OFF via env.
 
-**Phase 14 ADR gate:** [ADR-029](../../.ai/adr/029-federation-layer.md) **Proposed** (2026-07-04) — requires Phase 13 Implemented.
+**Phases 21–25 ADR gates:** ADR-021, ADR-022, ADR-036–038, ADR-043, ADR-044, ADR-047 **Implemented** (2026-07-04).
 
-**Phase 15 ADR gate:** [ADR-030](../../.ai/adr/030-autonomous-agent-ecosystem.md) **Proposed**.
-
-**Enterprise Phases 16–20:** [11-ENTERPRISE-ROADMAP.md](../../.ai/phases/roadmap/11-ENTERPRISE-ROADMAP.md) · ADR-031–035 **Proposed**.
-
-**Post–Phase 10:** [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md) — Phase 11 P0; Phase 10.5 extension parallel after 11A.
-
-**Implementation plan:** [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)
+**POST-ROADMAP:** [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md) — optional ADR-019 (repo split).

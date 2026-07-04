@@ -1,6 +1,7 @@
 # Phase 13 — Protocol Layer — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-028 Implemented](../../adr/028-protocol-layer.md)
 
 ---

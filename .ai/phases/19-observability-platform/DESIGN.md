@@ -1,6 +1,7 @@
 # Phase 19 — Observability Platform — DESIGN
 
-**Document:** DESIGN · **ADR:** [ADR-034](../../adr/034-observability-platform.md) · **Status:** Implemented (2026-07-04)
+**Document:** DESIGN · **ADR:** [ADR-034](../../adr/034-observability-platform.md) · **Phase status:** Closed  
+**Gate:** PASS 2026-07-04
 
 ---
 

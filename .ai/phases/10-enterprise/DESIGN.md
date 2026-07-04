@@ -1,7 +1,8 @@
 ﻿# Phase 10 — Enterprise Infrastructure — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready (awaiting Readiness Review + sub-ADRs Approved)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-03  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Depends on:** Phase 9 ✅ · Phase 9.5 ✅ · ADR-008 Implemented  
 

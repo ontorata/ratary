@@ -1,6 +1,7 @@
 # Phase 09.7 — Memory Evolution — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-040 Accepted](../../../docs/adr/040-memory-evolution-version-control.md)
 
 ---

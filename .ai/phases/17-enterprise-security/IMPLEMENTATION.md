@@ -1,6 +1,7 @@
 # Phase 17 — Enterprise Security — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-032 Implemented](../../adr/032-enterprise-security.md)
 
 ---

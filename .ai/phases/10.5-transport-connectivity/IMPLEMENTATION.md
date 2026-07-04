@@ -1,6 +1,7 @@
 # Phase 10.5 — Transport & Connectivity — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-027 Implemented](../../adr/027-transport-connectivity-layer.md)
 
 ---

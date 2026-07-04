@@ -1,7 +1,8 @@
 ﻿# Phase 6 — Hybrid Retrieval — IMPLEMENTATION
 
 **Document:** IMPLEMENTATION  
-**Phase status:** Ready (not started — ADR-001 gate)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-03  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---

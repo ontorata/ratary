@@ -1,6 +1,7 @@
 # Phase 5.5 — Semantic Compression — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-023 Accepted](../../../docs/adr/023-semantic-compression-policy.md)
 
 ---

@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 10.5 track 10.5A started (2026-07-04)
+**Last updated:** Phase governance doc sync (2026-07-04)
 
 ---
 
@@ -20,13 +20,14 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 457 |
+| Tests passing | 689 (692 total, 3 skipped) |
 | MCP tools | 20 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
+| Remote MCP | `REMOTE_MCP_ENABLED` → `/mcp` (Phase 13.1) |
 | Storage (default) | Cloudflare D1 (HTTP API) |
 | Local dev | `npm run dev` → `dev-server.ts` |
-| Platform adapters | Opt-in via env — see [ADR-008–017](../../../docs/adr/README.md) |
+| Platform adapters | Opt-in via env — see [ADR-008–048](../../../docs/adr/README.md) |
 
 ---
 
@@ -34,14 +35,15 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Item | Value |
 |------|-------|
-| Active task | Phase 10.5 Transport — [10.5-transport-connectivity/CHECKLIST.md](../../phases/10.5-transport-connectivity/CHECKLIST.md) · [TASK_PROMPT.md](../../TASK_PROMPT.md) |
-| Last completed gate | Phase 11 ✅ — [.ai/phases/11-production-ops/](../phases/11-production-ops/README.md) (2026-07-04) |
-| Phase 10.5 status | In progress — 10.5A ✅ |
-| Blocker | None |
-| Design drafts (not implemented) | Phases 12–25 + extension tracks — [phases/README.md](../../phases/README.md); capstone [Phase 25](../../phases/25-global-ai-intelligence/DESIGN.md) (ADR-036/037/038/043 Proposed) |
-| Platform vision | [core/vision/](../vision/01-COLLABORATIVE-MEMORY-PLATFORM.md) — architecture planning only |
+| **Core memory path** | Phases 1–11 ✅ — default deploy unchanged |
+| **Enterprise platform** | Phases 10.5–25 ✅ Implemented — **all default OFF** |
+| **Extension tracks** | 04.7, 05.5–09.8 ✅ Implemented — opt-in |
+| **Last platform gate** | Phase 25 Global Intelligence (2026-07-04) |
+| **Active task** | Maintenance / POST-ROADMAP — see [TASK_PROMPT.md](../../TASK_PROMPT.md) |
+| **Governance index** | [phases/README.md](../../phases/README.md) — phases 1–25 |
+| **Blocker** | None |
 
-Strategic phase status (completed / next / future): [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) §Summary.
+Strategic phase status: [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) · POST-ROADMAP: [10-POST-ROADMAP.md](../../phases/roadmap/10-POST-ROADMAP.md).
 
 ---
 
@@ -69,15 +71,14 @@ New dev environment: [README.md § Instalasi](../../../README.md#instalasi-pada-
 | ID | Item | Mitigation path | Status |
 |----|------|-----------------|--------|
 | ~~D-01~~ | ~~API cross-owner leak E2E tests missing~~ | ✅ **Resolved** — 20 security tests in `tests/api/cross-owner-leak.test.ts` (2026-07-03) |
-| ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ✅ **Resolved** — Refactored `createMemoryService/createMemoryRelationService` to accept shared repository instance (2026-07-03) |
-| ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ✅ **Resolved** — schema.sql synced with all Phase 4 indexes (2026-07-03) |
-| ~~D-04~~ | ~~ADR-001 merge policy must be unit-tested~~ | ✅ **Resolved** — 13 unit tests for `CompositeRetrievalCandidateSource` (2026-07-03) |
+| ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ✅ **Resolved** — shared repository instance (2026-07-03) |
+| ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ✅ **Resolved** — schema.sql synced (2026-07-03) |
+| ~~D-04~~ | ~~ADR-001 merge policy must be unit-tested~~ | ✅ **Resolved** — 13 unit tests (2026-07-03) |
 | — | `MemoryRepository` ~622 lines | Additive methods only; split when Postgres adapter lands |
-| ~~—~~ | ~~`MemoryRelationRepository` no interface~~ | ✅ **Resolved** — `IMemoryRelationRepository` created (2026-07-03) |
-| ~~O-04-2~~ | ~~Retrieval projection content exclusion — verify all paths~~ | ✅ **Resolved** — regression test in `tests/repositories/memory.repository.test.ts` (2026-07-03) |
-| ~~—~~ | ~~`SELECT *` in non-retrieval repository queries~~ | ✅ **Resolved** — explicit `MEMORY_SELECT` / `RELATION_SELECT` (2026-07-03) |
-| ~~—~~ | ~~N× `recordAccess` on context build~~ | ✅ **Resolved** — `recordAccessBatch` + single UPDATE (2026-07-03) |
-| ~~—~~ | ~~D1 vector search in-process~~ | ✅ **Mitigated** — pgvector adapter (ADR-011); opt-in `VECTOR_PROVIDER=pgvector` |
+| ~~O-04-2~~ | ~~Retrieval projection content exclusion~~ | ✅ **Resolved** — regression test (2026-07-03) |
+| ~~—~~ | ~~N× `recordAccess` on context build~~ | ✅ **Resolved** — `recordAccessBatch` (2026-07-03) |
+| ~~—~~ | ~~D1 vector search in-process~~ | ✅ **Mitigated** — pgvector adapter (ADR-011) |
+| D-GOV | Phase governance scaffolds (Reserved/N/A) | ✅ **Mitigated** — backfill script + manual close 2026-07-04 |
 
 Aggregate audit: [.ai/phases/audits/latest.md](../../phases/audits/latest.md).
 

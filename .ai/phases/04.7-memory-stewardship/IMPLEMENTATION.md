@@ -1,6 +1,7 @@
 # Phase 04.7 — Self-Managing Memory Stewardship — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-045 Accepted](../../../docs/adr/045-self-managing-memory-stewardship.md)  
 **Commit:** `94c7359` feat(memory): implement Phase 04.7 self-managing memory stewardship
 

@@ -1,6 +1,7 @@
 # Phase 13.1 — Remote MCP Clients — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-048 Implemented](../../adr/048-remote-mcp-transport.md)
 
 ---

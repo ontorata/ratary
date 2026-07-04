@@ -1,6 +1,7 @@
 # Phase 7.5 — Runtime Compatibility — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-025 Accepted](../../../docs/adr/025-capability-discovery-api.md)
 
 ---

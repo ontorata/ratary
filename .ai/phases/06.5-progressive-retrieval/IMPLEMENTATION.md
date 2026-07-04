@@ -1,6 +1,7 @@
 # Phase 6.5 — Progressive Retrieval — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-024 Accepted](../../../docs/adr/024-progressive-retrieval-policy.md)
 
 ---

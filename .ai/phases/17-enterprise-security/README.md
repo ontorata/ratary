@@ -7,20 +7,19 @@
 
 Enterprise-grade security layer: department/project hierarchy, ABAC policy engine (OPA opt-in), OIDC SSO federation, IdP connector catalog, quota enforcement, and compliance audit — **edge evaluation only; MemoryService unchanged**.
 
-## Documents
+## Document index
 
-| File | Purpose |
-|------|---------|
-| [DESIGN.md](DESIGN.md) | Architecture & boundaries |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | What was built |
-| [TESTING.md](TESTING.md) | Test coverage |
-| [TASK_PROMPT.md](TASK_PROMPT.md) | Implementation prompt |
-| [CHECKLIST.md](CHECKLIST.md) | Gate checklist |
-| [COMPLETION_TEMPLATE.md](COMPLETION_TEMPLATE.md) | Closure form |
-| [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) | Commit sequence |
-| [MIGRATION_PLAN.md](MIGRATION_PLAN.md) | Rollout & compatibility |
-| [TESTING_PLAN.md](TESTING_PLAN.md) | Verification |
-| [RISK_ANALYSIS.md](RISK_ANALYSIS.md) | Risks |
-| [SUCCESS_CRITERIA.md](SUCCESS_CRITERIA.md) | SC-17-xx |
+| Document | Responsibility | Status |
+|----------|----------------|--------|
+| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ Complete |
+| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ Complete |
+| [TESTING.md](TESTING.md) | Verification strategy | ✅ Complete |
+| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
+| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
+| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ✅ Complete |
+| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
+| [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
 
-**Prerequisite:** Phase 10 ✅ · Phase 16 ✅ (SDK consumes auth tokens)
+*All ten governance documents closed per [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md). Gate PASS 2026-07-04.*
+

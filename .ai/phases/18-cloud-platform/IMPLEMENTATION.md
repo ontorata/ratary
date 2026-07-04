@@ -1,6 +1,7 @@
 # Phase 18 — Cloud Platform — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-033 Implemented](../../adr/033-cloud-platform.md)
 
 ---

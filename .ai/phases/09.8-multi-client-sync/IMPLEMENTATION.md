@@ -1,6 +1,7 @@
 # Phase 09.8 — Multi-Client Sync — IMPLEMENTATION
 
-**Status:** Implemented (2026-07-04)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-04  
 **ADR:** [ADR-042 Accepted](../../../docs/adr/042-multi-client-memory-sync.md)
 
 ---

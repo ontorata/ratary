@@ -35,15 +35,18 @@ Platform infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch,
 
 | Document | Responsibility | Status |
 |----------|----------------|--------|
-| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Ready (2026-07-03) |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Incremental adapter rollout plan | ✅ T0–T8 + events complete |
-| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ Ready (enterprise DDL) |
-| [TESTING.md](TESTING.md) | Verification strategy | ✅ 402-test baseline |
-| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ PASS (2026-07-03) |
-| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Gate evidence |
-| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ✅ Recorded |
+| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ Complete |
+| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ Complete |
+| [TESTING.md](TESTING.md) | Verification strategy | ✅ Complete |
+| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
+| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
+| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ✅ Complete |
 | [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
-| [RISKS.md](RISKS.md) | Risk register | ✅ Ready |
+| [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
+
+*All ten governance documents closed per [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md). Gate PASS 2026-07-03.*
+
 
 ---
 

@@ -1,7 +1,8 @@
 ﻿# Phase 10 — Infrastructure Adapters — IMPLEMENTATION
 
 **Document:** IMPLEMENTATION  
-**Phase status:** In progress — T0 + T1 complete (2026-07-03)  
+**Phase status:** Closed  
+**Gate:** PASS 2026-07-03  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Design:** [DESIGN.md](DESIGN.md) · **ADR-008:** [Platform ports](../../../docs/adr/008-platform-architecture.md)
 

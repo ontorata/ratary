@@ -22,16 +22,20 @@
 
 ## Document index
 
-| Document | Status |
-|----------|--------|
-| [DESIGN.md](DESIGN.md) | ✅ Ready |
-| [MIGRATION.md](MIGRATION.md) | ✅ Implemented |
-| [RISKS.md](RISKS.md) | Initial |
-| [CHECKLIST.md](CHECKLIST.md) | ✅ Complete |
-| [IMPLEMENTATION.md](IMPLEMENTATION.md) | ✅ Complete |
-| [TESTING.md](TESTING.md) | ✅ Evidence attached |
-| [REVIEW.md](REVIEW.md) | ✅ PASS |
-| [COMPLETION.md](COMPLETION.md) | ✅ Complete |
+| Document | Responsibility | Status |
+|----------|----------------|--------|
+| [DESIGN.md](DESIGN.md) | Approved design intent | ✅ Complete |
+| [IMPLEMENTATION.md](IMPLEMENTATION.md) | Build plan and modules | ✅ Complete |
+| [MIGRATION.md](MIGRATION.md) | Schema and data migrations | ✅ Complete |
+| [TESTING.md](TESTING.md) | Verification strategy | ✅ Complete |
+| [REVIEW.md](REVIEW.md) | Architecture review and gate | ✅ Complete |
+| [COMPLETION.md](COMPLETION.md) | Success criteria evidence | ✅ Complete |
+| [RETROSPECTIVE.md](RETROSPECTIVE.md) | Lessons learned | ✅ Complete |
+| [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
+| [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
+
+*All ten governance documents closed per [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md). Gate PASS 2026-07-03.*
+
 
 ---
 
