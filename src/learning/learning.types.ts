@@ -5,6 +5,7 @@ export type LearningEventType =
   | 'signal.explicit_feedback'
   | 'signal.access'
   | 'signal.consolidation_hint'
+  | 'signal.inspection_outcome'
   | 'context.accessed'
   | 'learning.run.completed';
 

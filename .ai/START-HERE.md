@@ -97,6 +97,7 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 6 Hybrid Retrieval | ✅ Complete |
 | 7 Agent Runtime | ✅ Complete |
 | **7.1 Agent Forge** | ✅ Complete — [07.1-agent-forge/](phases/07.1-agent-forge/) · contributor workflow |
+| **8.8 Inspection Pattern Ledger** | ✅ Complete — [08.8-inspection-pattern-ledger/](phases/08.8-inspection-pattern-ledger/) · ADR-059 |
 | 8 Knowledge Graph | ✅ Complete |
 | 9 Multi-AI | ✅ Complete (ADR-007 Implemented 2026-07-03) |
 | 9.5 Platform Architecture | ✅ Complete (ADR-008 2026-07-03) |

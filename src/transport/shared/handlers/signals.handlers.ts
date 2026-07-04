@@ -8,12 +8,24 @@ import type { IngestResult } from '../../../ingest/memory-quality-signal.types.j
 import type { IApplicationHandler } from '../iapplication-handler.interface.js';
 import { resolveHandlerScope } from './resolve-handler-scope.js';
 
-export interface SubmitSignalInput {
-  type: 'explicit_feedback';
-  memoryId: string;
-  value: 'helpful' | 'not_helpful';
-  signalId?: string;
-}
+export type SubmitSignalInput =
+  | {
+      type: 'explicit_feedback';
+      memoryId: string;
+      value: 'helpful' | 'not_helpful';
+      signalId?: string;
+    }
+  | {
+      type: 'inspection_outcome';
+      source: 'forge_inspect' | 'ci' | 'mcp' | 'rest';
+      taskId?: string;
+      severity: 'constitutional' | 'critical' | 'major';
+      category: 'boundary' | 'adr' | 'testing' | 'security' | 'phase_gate';
+      resolved: boolean;
+      diffScope?: { paths?: string[]; modules?: string[]; adrIds?: string[] };
+      patternHint?: string;
+      signalId?: string;
+    };
 
 export interface SignalHandlerDeps {
   scopeResolver: IScopeResolver;

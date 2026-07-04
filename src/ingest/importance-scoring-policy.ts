@@ -18,7 +18,7 @@ export class ImportanceScoringPolicy {
       if (value === 'not_helpful') return -5;
     }
 
-    if (signal.signalType === 'consolidation_hint') {
+    if (signal.signalType === 'consolidation_hint' || signal.signalType === 'inspection_outcome') {
       return 0;
     }
 

@@ -15,6 +15,7 @@ description: >-
 - Diff matches current blueprint task only
 - ADR / phase requirements satisfied
 - No forbidden patterns ([11-AI-RULES.md](../../.ai/core/ai-rules/11-AI-RULES.md) Never create)
+- **Inspection Pattern Ledger (Phase 8.8):** recall relevant ledger entries via MCP `search_memory` tag `inspection-pattern` or REST `/api/v1/inspection-patterns?path=…` — use as prioritized checklist only; **constitutional blockers still come from spec**, not ledger alone
 
 ### Pass 2 — Code quality
 

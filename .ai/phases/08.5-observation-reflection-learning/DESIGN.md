@@ -228,7 +228,11 @@ interface MemoryQualitySignal {
   payload?: Record<string, unknown>;
   observedAt: string;         // ISO 8601
 }
+```
 
+**Planned extension (Phase 08.8):** add `inspection_outcome` signal type — see [08.8-inspection-pattern-ledger/DESIGN.md](../08.8-inspection-pattern-ledger/DESIGN.md). Requires ADR-059 Approved before implementation.
+
+```typescript
 interface ISignalNormalizer {
   normalize(raw: unknown, ctx: AuthContext): MemoryQualitySignal | null;
 }

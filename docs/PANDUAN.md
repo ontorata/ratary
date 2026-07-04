@@ -70,6 +70,8 @@ AI otomatis memilih cuplikan memory yang paling relevan — bukan dump semua cat
 
 Untuk fitur multi-file atau struktural, jangan lewati **Intent → Isolate → Blueprint**. Draft desain sementara: `.ai/designs/drafts/`.
 
+**Phase 8.8 — Inspection Pattern Ledger (opsional):** setelah inspect PASS, kirim `submit_signal` dengan `type: inspection_outcome` (`resolved: true`, severity ≥ major) agar pola inspeksi terakumulasi; recall via tag `inspection-pattern` atau `GET /api/v1/inspection-patterns`. SSOT: [.ai/phases/08.8-inspection-pattern-ledger/](../.ai/phases/08.8-inspection-pattern-ledger/README.md).
+
 ---
 
 ## 3. Keamanan

@@ -12,6 +12,8 @@ function mapSignalType(signalType: MemoryQualitySignal['signalType']): LearningE
       return 'signal.access';
     case 'consolidation_hint':
       return 'signal.consolidation_hint';
+    case 'inspection_outcome':
+      return 'signal.inspection_outcome';
     default:
       return 'signal.access';
   }

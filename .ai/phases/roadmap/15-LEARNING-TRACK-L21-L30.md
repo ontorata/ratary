@@ -8,11 +8,11 @@
 |----|------|-------------------|
 | L21 | Learning Foundation | `ILearningOrchestrator`, event store, artifact store |
 | L22 | Behavior Analytics | `IBehaviorAnalyticsEngine` |
-| L23 | Pattern Mining | `IPatternMiner` |
+| L23 | Pattern Mining | `IPatternMiner` — **Phase 08.8** implements inspection specialization ([DESIGN](../08.8-inspection-pattern-ledger/DESIGN.md)) |
 | L24 | Recommendation Engine | `IRecommendationEngine` |
 | L25 | Knowledge Discovery | `IKnowledgeDiscoveryEngine` |
 | L26 | Adaptive Ranking | `IRankingLearningEngine` → Ranker snapshot |
-| L27 | Feedback Learning | `IFeedbackLearningEngine` |
+| L27 | Feedback Learning | `IFeedbackLearningEngine` — **Phase 08.8** confidence / inspection outcomes |
 | L28 | Dataset Generator | `ILearningDatasetExporter` |
 | L29 | Model Training Pipeline | `IMLProvider` hook — compute **external** |
 | L30 | Learning Platform capstone | `ILearningEvaluationEngine`, closed loop |

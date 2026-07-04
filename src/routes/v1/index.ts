@@ -25,6 +25,7 @@ import type { KnowledgeFabricController } from '../../controllers/knowledge-fabr
 import type { AiBrainPlatformController } from '../../controllers/ai-brain-platform.controller.js';
 import type { GlobalIntelligenceController } from '../../controllers/global-intelligence.controller.js';
 import type { CompressionAdminController } from '../../controllers/compression-admin.controller.js';
+import type { InspectionLedgerController } from '../../controllers/inspection-ledger.controller.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from '../index.js';
 import { authRoutes } from './auth.routes.js';
 import { knowledgeRoutes } from './knowledge.routes.js';
@@ -48,6 +49,7 @@ import { knowledgeFabricRoutes } from './knowledge-fabric.routes.js';
 import { aiBrainPlatformRoutes } from './ai-brain-platform.routes.js';
 import { globalIntelligenceRoutes } from './global-intelligence.routes.js';
 import { adminCompressionRoutes } from './admin-compression.routes.js';
+import { inspectionLedgerRoutes } from './inspection-ledger.routes.js';
 
 export async function registerV1Routes(
   fastify: FastifyInstance,
@@ -78,6 +80,7 @@ export async function registerV1Routes(
     aiBrainPlatform?: AiBrainPlatformController;
     globalIntelligence?: GlobalIntelligenceController;
     compressionAdmin: CompressionAdminController;
+    inspectionLedger?: InspectionLedgerController;
   },
 ): Promise<void> {
   await healthRoutes(fastify, controllers.health);
@@ -92,6 +95,9 @@ export async function registerV1Routes(
   }
   if (controllers.signals) {
     await signalsRoutes(fastify, controllers.signals);
+  }
+  if (controllers.inspectionLedger) {
+    await inspectionLedgerRoutes(fastify, controllers.inspectionLedger);
   }
   if (controllers.evolution) {
     await evolutionRoutes(fastify, controllers.evolution);

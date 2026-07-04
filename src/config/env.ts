@@ -164,6 +164,17 @@ const envSchema = z
       .default('false'),
     LEARNING_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
 
+    // Inspection pattern ledger (Phase 8.8) — ADR-059, batch pattern mining from inspection signals
+    INSPECTION_LEDGER_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    INSPECTION_LEDGER_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+    INSPECTION_CHARTER_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+
     // Graph relation inference (Phase 8.7) — ADR-041, async inferred edges
     RELATION_INFERENCE_ENABLED: z
       .enum(['true', 'false'])

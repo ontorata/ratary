@@ -3,10 +3,17 @@ export type {
   MemorySignalType,
   IngestResult,
   ExplicitFeedbackPayload,
+  InspectionOutcomePayload,
+  InspectionOutcomeSource,
+  InspectionOutcomeSeverity,
+  InspectionOutcomeCategory,
+  InspectionDiffScope,
 } from './memory-quality-signal.types.js';
 export type { IMemorySignalIngestor } from './imemory-signal-ingestor.interface.js';
 export type { ISignalNormalizer, SignalAuthContext } from './isignal-normalizer.interface.js';
 export { DefaultSignalNormalizer } from './default-signal-normalizer.js';
+export { InspectionOutcomeNormalizer } from './inspection-outcome-normalizer.js';
+export { CompositeSignalNormalizer } from './composite-signal-normalizer.js';
 export { MemorySignalIngestor } from './memory-signal-ingestor.js';
 export { ImportanceScoringPolicy, type MemorySnapshot } from './importance-scoring-policy.js';
 export { processSignalIngest, type SignalIngestDeps } from './process-signal-ingest.js';

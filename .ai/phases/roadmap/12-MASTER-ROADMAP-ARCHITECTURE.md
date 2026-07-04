@@ -34,6 +34,7 @@
 | Memory lifecycle | 09.6 | ADR-039 |
 | Memory stewardship | 04.7 | ADR-045 |
 | Graph relation inference | 08.7 | ADR-041 |
+| Inspection pattern ledger | 08.8 | ADR-059 |
 | Memory evolution | 09.7 | ADR-040 |
 | Multi-client sync | 09.8 | ADR-042 |
 | Federation | 14 | ADR-029 |

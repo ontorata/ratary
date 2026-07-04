@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 07.1 Agent Forge gate PASS (2026-07-05)
+**Last updated:** Phase 08.8 Inspection Pattern Ledger gate PASS (2026-07-05)
 
 ---
 
@@ -20,7 +20,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 757 (760 total, 3 skipped) |
+| Tests passing | 783 (786 total, 3 skipped) |
 | MCP tools | 27 |
 | Agent Forge skills | 13 (`.cursor/skills/forge-*`) |
 | Agent Forge rule | `.cursor/rules/agent-forge.mdc` |
@@ -39,7 +39,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 |------|-------|
 | **Core memory path** | Phases 1ù11 ? ù default deploy unchanged |
 | **Enterprise platform** | Phases 10.5ù25 ? Implemented ù **all default OFF** |
-| **Extension tracks** | 04.7, 05.5ù09.8, **07.1 Agent Forge** ? ù opt-in / workflow |
+| **Extension tracks** | 04.7, 05.5ñ09.8, **07.1 Agent Forge**, **08.8 Inspection Ledger** | ? opt-in / workflow |
 | **Last platform gate** | Phase 25 Global Intelligence (2026-07-04) |
 | **Active task** | Maintenance / POST-ROADMAP ù see [TASK_PROMPT.md](../../TASK_PROMPT.md) |
 | **Governance index** | [phases/README.md](../../phases/README.md) ù phases 1ù25 |

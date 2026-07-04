@@ -23,7 +23,7 @@ export class MemorySignalIngestor implements IMemorySignalIngestor {
       return { accepted: false, duplicate: true };
     }
 
-    if (signal.signalType === 'consolidation_hint') {
+    if (signal.signalType === 'consolidation_hint' || signal.signalType === 'inspection_outcome') {
       if (this.signalStore) {
         await this.signalStore.append(signal);
       }

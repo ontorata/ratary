@@ -3,6 +3,8 @@ import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { IEventBus } from '../ports/events/ievent-bus.port.js';
 import { DomainEventPublisher } from '../events/domain-event-publisher.js';
 import { DefaultSignalNormalizer } from '../ingest/default-signal-normalizer.js';
+import { InspectionOutcomeNormalizer } from '../ingest/inspection-outcome-normalizer.js';
+import { CompositeSignalNormalizer } from '../ingest/composite-signal-normalizer.js';
 import { MemorySignalIngestor } from '../ingest/memory-signal-ingestor.js';
 import type { IMemorySignalIngestor } from '../ingest/imemory-signal-ingestor.interface.js';
 import type { ISignalNormalizer } from '../ingest/isignal-normalizer.interface.js';
@@ -27,7 +29,10 @@ export function createSignalIngestPorts(
   },
 ): SignalIngestPorts {
   const repository = new MemoryRepository(sql);
-  const normalizer = new DefaultSignalNormalizer();
+  const normalizer = new CompositeSignalNormalizer([
+    new DefaultSignalNormalizer(),
+    new InspectionOutcomeNormalizer(),
+  ]);
   const signalStore =
     env.SIGNAL_STORE_PROVIDER === 'sql' ? new SqlMemorySignalStore(sql) : undefined;
   const ingestor = new MemorySignalIngestor(repository, signalStore);

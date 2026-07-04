@@ -212,6 +212,7 @@ MemoryService
 - Quality signals (Phase 8.5, ADR-026): `ingest/` defines `IMemorySignalIngestor`, `DefaultSignalNormalizer`, `ImportanceScoringPolicy`; optional `POST /api/v1/signals` and `memory_signals` audit store. Gated by `SIGNAL_INGEST_ENABLED=false`. CLI: `reflect:signals` (advisory-only).
 - Learning intelligence (Phase 8.6, ADR-057): `learning/` orchestrates async policy snapshots from signal events; `DefaultRankingLearningEngine` produces bounded retrieval weight multipliers; `ContextService` loads active snapshot. Gated by `LEARNING_ENGINE_ENABLED=false`. CLI: `learning:run`.
 - Graph relation inference (Phase 8.7, ADR-041): `inference/` orchestrates batch inferred edges into `memory_relations` (`source_type=inferred`); manual edges never overwritten. Gated by `RELATION_INFERENCE_ENABLED=false`. CLI: `infer:relations`.
+- Inspection pattern ledger (Phase 8.8, ADR-059): `learning/inspection/` mines `inspection_outcome` signals into side-store patterns + optional recall memories; Forge/MCP recall. Gated by `INSPECTION_LEDGER_ENABLED=false`. CLI: `inspection:mine`.
 - Memory evolution (Phase 09.7, ADR-040): `evolution/` archives pre-update snapshots to `memory_versions`; `memories` remains Current head. Gated by `MEMORY_EVOLUTION_ENABLED=false`. CLI: `evolution:history`.
 - Multi-client sync (Phase 09.8, ADR-042): `client-sync/` pull/push with conflict resolution; extends `ISyncManager`. Gated by `MULTI_CLIENT_SYNC_ENABLED=false`. CLI: `sync:status`.
 - Event pipeline (Phase 12, ADR-020): `events/` domain publishers + consumer registry; post-commit fan-out via `IEventBus`. Gated by `EVENT_CONSUMERS_ENABLED=false`. Requires `EVENT_BUS_PROVIDER=redis` when ON.
@@ -466,6 +467,31 @@ scripts/infer-relations.ts
 ```
 
 **Gating:** `RELATION_INFERENCE_ENABLED=false` (default). Manual `source_type` edges are never overwritten.
+
+---
+
+## Inspection pattern ledger (Phase 8.8 — implemented)
+
+**Status:** Implemented — [ADR-059](../../adr/059-inspection-pattern-ledger.md) Accepted (2026-07-05) · [08.8 DESIGN](../../phases/08.8-inspection-pattern-ledger/DESIGN.md)
+
+**Owns:** evidence-based inspection patterns from resolved `inspection_outcome` signals; confidence lifecycle; contradiction audit; optional Charter promotion. **Does not** replace constitutional Forge blockers or run LLM on hot path.
+
+**Structure:**
+
+```
+ingest/inspection-outcome-normalizer.ts
+learning/inspection/
+  inspection-ledger-orchestrator.ts
+  default-inspection-pattern-miner.ts
+  default-inspection-confidence-policy.ts
+  charter-pattern-promoter.ts
+infrastructure/learning/sql-inspection-pattern-store.ts
+composition/create-inspection-ledger-ports.ts
+controllers/inspection-ledger.controller.ts   # GET /inspection-patterns
+scripts/run-inspection-miner.ts
+```
+
+**Gating:** `INSPECTION_LEDGER_ENABLED=false` (default; requires `LEARNING_ENGINE_ENABLED` + SQL stores). Charter: `INSPECTION_CHARTER_ENABLED` + `FEDERATION_ENABLED`.
 
 ---
 

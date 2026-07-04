@@ -124,3 +124,15 @@ describe('migrateExtensionTracksPhase6', () => {
     expect(sql).toContain('CREATE TABLE IF NOT EXISTS federation_exchange_log');
   });
 });
+
+describe('migrateExtensionTracksPhase8', () => {
+  it('creates inspection pattern ledger tables', async () => {
+    const { migrateExtensionTracksPhase8 } = await import('../../src/db/migrations.js');
+    const client = new RecordingD1Client();
+    await migrateExtensionTracksPhase8(client);
+    const sql = client.statements.join('\n');
+    expect(sql).toContain('CREATE TABLE IF NOT EXISTS inspection_patterns');
+    expect(sql).toContain('CREATE TABLE IF NOT EXISTS inspection_pattern_events');
+    expect(sql).toContain('CREATE TABLE IF NOT EXISTS inspection_pattern_contradictions');
+  });
+});

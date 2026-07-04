@@ -967,6 +967,61 @@ export async function migrateExtensionTracksPhase7(client: ISqlDatabase): Promis
   }
 }
 
+/** Extension track 8.8 — inspection pattern ledger (ADR-059). */
+const INSPECTION_LEDGER_SQL = `
+CREATE TABLE IF NOT EXISTS inspection_patterns (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  organization_id TEXT,
+  memory_id TEXT,
+  pattern_key TEXT NOT NULL,
+  pattern_scope TEXT NOT NULL,
+  category TEXT NOT NULL,
+  trigger_json TEXT NOT NULL,
+  description TEXT NOT NULL,
+  confidence REAL NOT NULL DEFAULT 0,
+  evidence_count INTEGER NOT NULL DEFAULT 0,
+  protected INTEGER NOT NULL DEFAULT 0,
+  disabled INTEGER NOT NULL DEFAULT 0,
+  lifecycle_state TEXT NOT NULL DEFAULT 'active',
+  last_confirmed_at TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_inspection_patterns_owner ON inspection_patterns(owner_id, lifecycle_state);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_inspection_patterns_scope_key ON inspection_patterns(
+  owner_id, pattern_scope, pattern_key, workspace_id
+);
+
+CREATE TABLE IF NOT EXISTS inspection_pattern_events (
+  id TEXT PRIMARY KEY,
+  pattern_id TEXT NOT NULL,
+  signal_id TEXT NOT NULL,
+  observed_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_inspection_pattern_events_pattern ON inspection_pattern_events(pattern_id);
+
+CREATE TABLE IF NOT EXISTS inspection_pattern_contradictions (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  pattern_id_a TEXT NOT NULL,
+  pattern_id_b TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  detected_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_inspection_contradictions_owner ON inspection_pattern_contradictions(owner_id);
+`;
+
+export async function migrateExtensionTracksPhase8(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(INSPECTION_LEDGER_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: ISqlDatabase): Promise<void> {
   await client.execute(
@@ -1024,6 +1079,7 @@ export async function runSchemaMigrations(
   await migrateExtensionTracksPhase5(client);
   await migrateExtensionTracksPhase6(client);
   await migrateExtensionTracksPhase7(client);
+  await migrateExtensionTracksPhase8(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

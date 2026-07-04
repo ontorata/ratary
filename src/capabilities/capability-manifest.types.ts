@@ -41,6 +41,7 @@ export interface CapabilityFlags {
   supportsProgressiveRetrieval: boolean;
   supportsSelfManagement: boolean;
   supportsLearningEngine: boolean;
+  supportsInspectionLedger: boolean;
   supportsRelationInference: boolean;
   supportsMemoryEvolution: boolean;
   supportsMultiClientSync: boolean;

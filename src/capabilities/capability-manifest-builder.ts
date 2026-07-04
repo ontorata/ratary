@@ -81,6 +81,7 @@ export class CapabilityManifestBuilder {
         supportsProgressiveRetrieval: true,
         supportsSelfManagement: Boolean(this.env.MEMORY_STEWARDSHIP_ENABLED),
         supportsLearningEngine: this.env.LEARNING_ENGINE_ENABLED,
+        supportsInspectionLedger: this.env.INSPECTION_LEDGER_ENABLED,
         supportsRelationInference: this.env.RELATION_INFERENCE_ENABLED,
         supportsMemoryEvolution: this.env.MEMORY_EVOLUTION_ENABLED,
         supportsMultiClientSync: this.env.MULTI_CLIENT_SYNC_ENABLED,

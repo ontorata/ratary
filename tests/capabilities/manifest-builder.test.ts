@@ -32,6 +32,7 @@ describe('CapabilityManifestBuilder', () => {
     expect(manifest.capabilities.supportsSemanticCompression).toBe(false);
     expect(manifest.capabilities.supportsQualitySignals).toBe(false);
     expect(manifest.capabilities.supportsLearningEngine).toBe(false);
+    expect(manifest.capabilities.supportsInspectionLedger).toBe(false);
     expect(manifest.capabilities.supportsRelationInference).toBe(false);
     expect(manifest.capabilities.supportsMemoryEvolution).toBe(false);
     expect(manifest.capabilities.supportsMultiClientSync).toBe(false);

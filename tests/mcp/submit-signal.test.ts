@@ -113,4 +113,25 @@ describe('MCP submit_signal (D85-01)', () => {
     expect(body.accepted).toBe(true);
     expect(body.appliedDelta).toBe(5);
   });
+
+  it('accepts inspection_outcome via submit_signal (8.8A)', async () => {
+    const result = await client.callTool({
+      name: 'submit_signal',
+      arguments: {
+        type: 'inspection_outcome',
+        source: 'forge_inspect',
+        severity: 'major',
+        category: 'testing',
+        resolved: true,
+        task_id: 'task-1',
+      },
+    });
+
+    const body = JSON.parse((result.content as [{ text: string }])[0].text) as {
+      accepted: boolean;
+      appliedDelta?: number;
+    };
+    expect(body.accepted).toBe(true);
+    expect(body.appliedDelta).toBe(0);
+  });
 });

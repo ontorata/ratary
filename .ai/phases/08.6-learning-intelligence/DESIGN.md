@@ -34,9 +34,9 @@ Phase 8.5 signals ──► LearningEventRecorder ──► learning_events (SQL
 |---|-----------|------|--------|
 | 1 | Ranking learning | `IRankingLearningEngine` | ✅ L26 |
 | 2 | Recommendation | `IRecommendationEngine` | 🔲 Stub — D86-01 |
-| 3 | Pattern mining | `IPatternMiner` | 🔲 Stub — D86-02 |
+| 3 | Pattern mining | `IPatternMiner` | 🔲 Stub — D86-02 → **Phase 08.8** [IInspectionPatternMiner](../08.8-inspection-pattern-ledger/DESIGN.md) |
 | 4 | Knowledge discovery | `IKnowledgeDiscoveryEngine` | 🔲 Stub — D86-02 |
-| 5 | Feedback learning | `IFeedbackLearningEngine` | 🔲 Stub — D86-03 |
+| 5 | Feedback learning | `IFeedbackLearningEngine` | 🔲 Stub — D86-03 → **Phase 08.8** confidence hook |
 | 6 | Quality recommendations | feeds 04.7 | 🔲 Deferred — stewardship hooks partial |
 | 7 | Context optimization | `IContextOptimizationEngine` | 🔲 Stub — D86-03 |
 | 8 | Dataset export | `ILearningDatasetExporter` | 🔲 Stub — D86-03 |
@@ -77,8 +77,8 @@ Foundation (L21–L22) and adaptive ranking (L26) implemented; remaining engines
 | ID | Track | Notes |
 |----|-------|-------|
 | D86-01 | L24 | Recommendation engine |
-| D86-02 | L23, L25 | Pattern + discovery |
-| D86-03 | L27–L30 | Feedback, context opt, dataset, ML, eval |
+| D86-02 | L23, L25 | Pattern + discovery — **L23 inspection slice → Phase 08.8** |
+| D86-03 | L27–L30 | Feedback, context opt, dataset, ML, eval — **L27 inspection slice → Phase 08.8** |
 | D86-04 | E2E test | Signal → snapshot → rank order |
 | D86-05 | Scheduler | Partial via 04.7 stewardship |
 
@@ -90,6 +90,7 @@ Foundation (L21–L22) and adaptive ranking (L26) implemented; remaining engines
 | **04.7** ✅ | `RankingRefreshTask` at `ranking-refresh` |
 | **6.5** ✅ | Ranker snapshot in context pipeline |
 | **12** ⏳ | Optional bus fan-out (via 8.5 D85-02) |
+| **08.8** 🔲 | Inspection Pattern Ledger — L23/L27 specialization ([DESIGN](../08.8-inspection-pattern-ledger/DESIGN.md)) |
 
 See [DELIVERY-TRACK.md](DELIVERY-TRACK.md) for L21–L30 ship order · [15-LEARNING-TRACK-L21-L30.md](../roadmap/15-LEARNING-TRACK-L21-L30.md).
 

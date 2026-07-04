@@ -27,6 +27,8 @@ import { createCapabilitiesController } from '../../controllers/capabilities.con
 import { createSignalsController } from '../../controllers/signals.controller.js';
 import { createSignalIngestPorts } from '../../composition/create-signal-ingest-ports.js';
 import { createLearningPorts } from '../../composition/create-learning-ports.js';
+import { createInspectionLedgerPorts } from '../../composition/create-inspection-ledger-ports.js';
+import { createInspectionLedgerController } from '../../controllers/inspection-ledger.controller.js';
 import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
 import { createEventPipelinePorts } from '../../composition/create-event-pipeline-ports.js';
 import { createEvolutionController } from '../../controllers/evolution.controller.js';
@@ -263,6 +265,7 @@ export async function buildApp(options?: {
     }),
   );
   const learningPorts = createLearningPorts(platform.sql, env);
+  const inspectionLedgerPorts = createInspectionLedgerPorts(platform.sql, env);
   const signalPorts = createSignalIngestPorts(platform.sql, env, {
     eventBus: platform.eventBus,
     learningPorts,
@@ -270,6 +273,10 @@ export async function buildApp(options?: {
   const signalsController = signalPorts.enabled
     ? createSignalsController(scopeResolver, signalPorts.ingestDeps)
     : undefined;
+  const inspectionLedgerController =
+    inspectionLedgerPorts.enabled && inspectionLedgerPorts.patternStore
+      ? createInspectionLedgerController(scopeResolver, inspectionLedgerPorts.patternStore)
+      : undefined;
   const evolutionController =
     evolutionPorts.enabled && evolutionPorts.service
       ? createEvolutionController(scopeResolver, evolutionPorts.service)
@@ -356,6 +363,7 @@ export async function buildApp(options?: {
     workspace: workspaceController,
     capabilities: capabilitiesController,
     signals: signalsController,
+    inspectionLedger: inspectionLedgerController,
     evolution: evolutionController,
     clientSync: clientSyncController,
     federation: federationController,

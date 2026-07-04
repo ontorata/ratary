@@ -49,3 +49,11 @@ Parent: [07-agent-runtime](../07-agent-runtime/README.md)
 Working intent/blueprint files: [`.ai/designs/drafts/`](../../designs/drafts/README.md)
 
 Promote to phase `DESIGN.md` only after gate PASS on the feature itself.
+
+---
+
+## Successor / related tracks
+
+| Track | Relation |
+|-------|----------|
+| [08.8 Inspection Pattern Ledger](../08.8-inspection-pattern-ledger/README.md) | Extends Inspect + Remember with evidence-based pattern ledger (ADR-059 Proposed) |

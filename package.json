@@ -54,6 +54,8 @@
     "learning:run:execute": "tsx scripts/run-learning.ts --execute",
     "infer:relations": "tsx scripts/infer-relations.ts",
     "infer:relations:execute": "tsx scripts/infer-relations.ts --execute",
+    "inspection:mine": "tsx scripts/run-inspection-miner.ts",
+    "inspection:mine:execute": "tsx scripts/run-inspection-miner.ts --execute",
     "evolution:history": "tsx scripts/evolution-history.ts",
     "sync:status": "tsx scripts/sync-status.ts",
     "steward:memories": "tsx scripts/steward-memories.ts",

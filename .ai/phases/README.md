@@ -23,7 +23,7 @@ Each phase directory contains **ten documents**, each with a **single responsibi
 | Group | Folders | Status |
 |-------|---------|--------|
 | **Core 1–11** | `01-foundation` … `11-production-ops` | ✅ Closed / Implemented |
-| **Extension tracks** | `04.7`, `05.5`–`09.8`, **`07.1-agent-forge`** | ✅ Implemented (opt-in / workflow) |
+| **Extension tracks** | `04.7`, `05.5`–`09.8`, **`07.1-agent-forge`**, **`08.8-inspection-pattern-ledger`** | ✅ Implemented (opt-in / workflow) |
 | **Transport** | `10.5-transport-connectivity`, `12-event-pipeline`, `13-protocol-layer`, `13.1-remote-mcp-clients` | ✅ Implemented (opt-in) |
 | **Enterprise 14–20** | `14-federation` … `20-ai-infrastructure` | ✅ Implemented (opt-in) |
 | **Scale 21–24** | `21-search-graph-prod` … `24-ai-brain-platform` | ✅ Implemented (opt-in) |
@@ -97,6 +97,7 @@ Full lifecycle: [PHASE-DOCUMENT-SCHEMA.md](PHASE-DOCUMENT-SCHEMA.md).
 | 8.5 Quality Signals | [08.5-observation-reflection-learning/](08.5-observation-reflection-learning/README.md) | ADR-026 |
 | 8.6 Learning Intelligence | [08.6-learning-intelligence/](08.6-learning-intelligence/README.md) | ADR-057 |
 | 8.7 Graph Relation Inference | [08.7-graph-relation-inference/](08.7-graph-relation-inference/README.md) | ADR-041 |
+| **8.8 Inspection Pattern Ledger** | [08.8-inspection-pattern-ledger/](08.8-inspection-pattern-ledger/README.md) | ADR-059 |
 | 9.7 Memory Evolution | [09.7-memory-evolution/](09.7-memory-evolution/README.md) | ADR-040 |
 | 9.8 Multi-client Sync | [09.8-multi-client-sync/](09.8-multi-client-sync/README.md) | ADR-042 |
 

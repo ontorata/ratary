@@ -69,9 +69,9 @@ Manifest reports `capabilities.supportsLearningEngine: true` when flag enabled. 
 | Wave | Tracks | Status |
 |------|--------|--------|
 | W1 | L21 foundation, L22 behavior analytics | ✅ |
-| W2 | L23, L25 pattern/discovery | 🔲 Stub (D86-02) |
+| W2 | L23, L25 pattern/discovery | 🔲 Stub (D86-02) → **08.8** owns L23 inspection miner |
 | W3 | L26 adaptive ranking | ✅ |
-| W3 | L24 recommendation, L27 feedback | 🔲 Deferred (D86-01, D86-03) |
+| W3 | L24 recommendation, L27 feedback | 🔲 Deferred (D86-01, D86-03) · **L27 inspection → 08.8** |
 | W4–W5 | L28–L30 dataset / ML / eval | 🔲 Deferred (D86-03) |
 
 ---
@@ -82,3 +82,4 @@ Manifest reports `capabilities.supportsLearningEngine: true` when flag enabled. 
 - Phase 04.7 stewardship: [04.7-memory-stewardship](../04.7-memory-stewardship/README.md) — ✅ `RankingRefreshTask`
 - Phase 6.5 retrieval policy: [06.5-progressive-retrieval](../06.5-progressive-retrieval/README.md) — Ranker consumer
 - Roadmap L21–L30: [15-LEARNING-TRACK-L21-L30.md](../roadmap/15-LEARNING-TRACK-L21-L30.md)
+- Phase 8.8 inspection ledger: [08.8-inspection-pattern-ledger](../08.8-inspection-pattern-ledger/README.md) — 🔲 Design

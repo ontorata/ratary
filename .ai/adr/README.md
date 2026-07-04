@@ -43,6 +43,7 @@
 | [042-multi-client-memory-sync.md](042-multi-client-memory-sync.md) | Multi-client memory sync (Phase 9.8) | **Implemented** | LWW / field merge |
 | [045-self-managing-memory-stewardship.md](045-self-managing-memory-stewardship.md) | Self-managing memory stewardship (Phase 4.7) | **Implemented** | Maintenance pipeline |
 | [057-learning-intelligence-engine.md](057-learning-intelligence-engine.md) | Learning intelligence engine (Phase 8.6) | **Implemented** | Ranking snapshots |
+| [059-inspection-pattern-ledger.md](059-inspection-pattern-ledger.md) | Inspection pattern ledger (Phase 8.8) | **Implemented** | Forge/MCP inspection memory |
 | [021-content-vector-scale-platform.md](021-content-vector-scale-platform.md) | Content & Vector Scale Platform (Phase 22) | **Implemented** | R2/pgvector sync ops |
 | [022-search-graph-production-platform.md](022-search-graph-production-platform.md) | Search & Graph Production Platform (Phase 21) | **Implemented** | Meilisearch/Neo4j sync |
 | [036-global-ai-intelligence-platform.md](036-global-ai-intelligence-platform.md) | Global AI Intelligence Platform (Phase 25) | **Implemented** | Distributed telemetry/analytics |
@@ -59,7 +60,7 @@
 
 **Phases 1–10 ADR closure:** ADR-001–017 **Implemented** (2026-07-03).
 
-**Extension tracks (5.5–9.8):** ADR-023–026, ADR-040–042, ADR-045, ADR-057 **Implemented** (2026-07-04).
+**Extension tracks (5.5–9.8, 08.8):** ADR-023–026, ADR-040–042, ADR-045, ADR-057 **Implemented**; ADR-059 **Implemented** (2026-07-05).
 
 **Phases 10.5–25 ADR gates:** ADR-027–048 **Implemented** (2026-07-04) — platform phases default OFF via env where noted.
 

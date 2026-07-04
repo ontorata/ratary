@@ -645,11 +645,26 @@ function createMcpServer(
 
   server.tool(
     'submit_signal',
-    'Submit explicit memory quality feedback (helpful / not helpful)',
+    'Submit memory quality feedback or inspection outcome signals (Phase 8.5 / 8.8)',
     {
-      type: z.literal('explicit_feedback').default('explicit_feedback'),
-      memory_id: z.string().uuid().describe('Target memory UUID'),
-      value: z.enum(['helpful', 'not_helpful']).describe('Feedback value'),
+      type: z.enum(['explicit_feedback', 'inspection_outcome']).default('explicit_feedback'),
+      memory_id: z.string().uuid().optional().describe('Target memory UUID (explicit_feedback)'),
+      value: z.enum(['helpful', 'not_helpful']).optional().describe('Feedback value'),
+      source: z.enum(['forge_inspect', 'ci', 'mcp', 'rest']).optional(),
+      task_id: z.string().optional(),
+      severity: z.enum(['constitutional', 'critical', 'major']).optional(),
+      category: z
+        .enum(['boundary', 'adr', 'testing', 'security', 'phase_gate'])
+        .optional(),
+      resolved: z.boolean().optional(),
+      diff_scope: z
+        .object({
+          paths: z.array(z.string()).optional(),
+          modules: z.array(z.string()).optional(),
+          adr_ids: z.array(z.string()).optional(),
+        })
+        .optional(),
+      pattern_hint: z.string().optional(),
       signal_id: z.string().uuid().optional().describe('Optional idempotency key'),
     },
     async (params) => {
@@ -669,12 +684,37 @@ function createMcpServer(
         };
       }
 
-      const result = await handlers.signals.submit.handle(mcpCtx(), {
-        type: 'explicit_feedback',
-        memoryId: params.memory_id,
-        value: params.value,
-        ...(params.signal_id ? { signalId: params.signal_id } : {}),
-      });
+      const raw =
+        params.type === 'inspection_outcome'
+          ? {
+              type: 'inspection_outcome' as const,
+              source: params.source ?? 'mcp',
+              ...(params.task_id ? { taskId: params.task_id } : {}),
+              severity: params.severity ?? 'major',
+              category: params.category ?? 'boundary',
+              resolved: params.resolved ?? false,
+              ...(params.diff_scope
+                ? {
+                    diffScope: {
+                      ...(params.diff_scope.paths ? { paths: params.diff_scope.paths } : {}),
+                      ...(params.diff_scope.modules ? { modules: params.diff_scope.modules } : {}),
+                      ...(params.diff_scope.adr_ids
+                        ? { adrIds: params.diff_scope.adr_ids }
+                        : {}),
+                    },
+                  }
+                : {}),
+              ...(params.pattern_hint ? { patternHint: params.pattern_hint } : {}),
+              ...(params.signal_id ? { signalId: params.signal_id } : {}),
+            }
+          : {
+              type: 'explicit_feedback' as const,
+              memoryId: params.memory_id!,
+              value: params.value ?? 'helpful',
+              ...(params.signal_id ? { signalId: params.signal_id } : {}),
+            };
+
+      const result = await handlers.signals.submit.handle(mcpCtx(), raw);
 
       return {
         content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
