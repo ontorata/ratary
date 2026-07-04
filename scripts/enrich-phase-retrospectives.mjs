@@ -640,11 +640,76 @@ function bullets(items) {
   return items.map((i) => `- ${i}`).join('\n');
 }
 
+const SCHEMA_LINE = '**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)';
+
+function extractGateDate(content) {
+  const patterns = [
+    /\*\*Recorded:\*\* (\d{4}-\d{2}-\d{2})/,
+    /✅ Closed — gate PASS \((\d{4}-\d{2}-\d{2})\)/,
+    /✅ Gate PASS \((\d{4}-\d{2}-\d{2})\)/,
+    /\*\*Date:\*\* (\d{4}-\d{2}-\d{2})/,
+    /Recorded (\d{4}-\d{2}-\d{2}) after gate PASS/i,
+    /Recorded at gate (\d{4}-\d{2}-\d{2})/i,
+    /Gate closed (\d{4}-\d{2}-\d{2})/i,
+    /gate PASS (\d{4}-\d{2}-\d{2})/i,
+  ];
+  for (const pattern of patterns) {
+    const m = content.match(pattern);
+    if (m?.[1]) return m[1];
+  }
+  return null;
+}
+
+function isStandardRetroHeader(content) {
+  return /^\*\*Phase status:\*\* ✅ Closed — gate PASS \(\d{4}-\d{2}-\d{2}\)/m.test(content);
+}
+
+/** Normalize RETROSPECTIVE header without rewriting body sections. */
+function normalizeRetrospectiveHeader(content) {
+  let next = content.charCodeAt(0) === 0xfeff ? content.slice(1) : content;
+  const date = extractGateDate(next);
+  if (!date) return content;
+
+  const statusLine = `**Phase status:** ✅ Closed — gate PASS (${date})  `;
+  const head = () => next.split('\n').slice(0, 14).join('\n');
+
+  if (isStandardRetroHeader(next) && head().includes(SCHEMA_LINE) && !head().includes('**Recorded:**')) {
+    return content.charCodeAt(0) === 0xfeff ? `\uFEFF${next}` : next;
+  }
+
+  next = next.replace(/\*\*Document:\*\* RETROSPECTIVE\s*\r?\n/, '');
+
+  next = next.replace(
+    /\*\*Phase status:\*\* Closed\s*\r?\n\*\*Recorded:\*\* \d{4}-\d{2}-\d{2}\s*\r?\n/,
+    `${statusLine}\n`,
+  );
+
+  next = next.replace(/\*\*Phase status:\*\* Complete\s*\r?\n/, `${statusLine}\n`);
+  next = next.replace(/\*\*Phase status:\*\* ✅ Gate PASS \(\d{4}-\d{2}-\d{2}\)/, statusLine.trim());
+
+  next = next.replace(
+    /\*\*Date:\*\* \d{4}-\d{2}-\d{2}\s*\r?\n\*\*Gate:\*\* PASS\s*\r?\n/,
+    `${statusLine}\n`,
+  );
+
+  next = next.replace(/\*\*Date:\*\* \d{4}-\d{2}-\d{2}\s*\r?\n(?=---)/, `${statusLine}\n`);
+
+  next = next.replace(/\*\*Recorded:\*\* \d{4}-\d{2}-\d{2}\s*\r?\n/, '');
+
+  if (!head().includes(SCHEMA_LINE)) {
+    next = next.replace(
+      /(\*\*Phase status:\*\* ✅ Closed — gate PASS \(\d{4}-\d{2}-\d{2}\)\s*\r?\n)/,
+      `$1${SCHEMA_LINE}  \n`,
+    );
+  }
+
+  return next;
+}
+
 function render(p) {
   return `# ${p.title} — RETROSPECTIVE
 
-**Phase status:** Closed  
-**Recorded:** ${p.gateDate}  
+**Phase status:** ✅ Closed — gate PASS (${p.gateDate})  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -692,6 +757,35 @@ ${bullets(p.recommendations)}
 }
 
 let updated = 0;
+let skipped = 0;
+
+if (process.argv.includes('--fix-headers')) {
+  const dirs = fs
+    .readdirSync(PHASES_DIR)
+    .filter((d) => {
+      const p = path.join(PHASES_DIR, d);
+      return fs.statSync(p).isDirectory() && !['roadmap', 'audits'].includes(d);
+    })
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+  for (const dir of dirs) {
+    const file = path.join(PHASES_DIR, dir, 'RETROSPECTIVE.md');
+    if (!fs.existsSync(file)) continue;
+    const existing = fs.readFileSync(file, 'utf8');
+    const next = normalizeRetrospectiveHeader(existing);
+    if (next === existing) {
+      console.log('skip (already standard)', dir);
+      skipped++;
+      continue;
+    }
+    fs.writeFileSync(file, next);
+    updated++;
+    console.log('header fixed', dir);
+  }
+  console.log(`\nFixed ${updated} RETROSPECTIVE.md headers; skipped ${skipped}.`);
+  process.exit(0);
+}
+
 for (const p of PHASES) {
   const file = path.join(PHASES_DIR, p.dir, 'RETROSPECTIVE.md');
   fs.writeFileSync(file, render(p));

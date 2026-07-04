@@ -1,7 +1,6 @@
 # Phase 2.5 — Stabilization — RETROSPECTIVE
 
-**Phase status:** Closed  
-**Recorded:** 2026-06-29  
+**Phase status:** ✅ Closed — gate PASS (2026-06-29)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---

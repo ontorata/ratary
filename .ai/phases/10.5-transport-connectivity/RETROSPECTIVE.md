@@ -1,8 +1,7 @@
 # Phase 10.5 — Transport & Connectivity — RETROSPECTIVE
 
-**Date:** 2026-07-04  
-**Gate:** PASS
-
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 ---
 
 ## What went well
