@@ -1,32 +1,28 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { GraphService } from '../services/graph.service.js';
-import type { MemoryScope } from '../types/memory-scope.js';
-import type { TraverseGraphBody } from '../types/graph.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
-import { resolveMemoryScopeFromRequest } from '../scope/resolve-request-scope.js';
+import type { TraverseGraphBody } from '../types/graph.js';
+import { buildTransportContextFromRestRequest } from '../transport/shared/resolve-transport-scope.js';
+import {
+  createGraphHandlers,
+  type GraphHandlers,
+} from '../transport/shared/handlers/create-transport-handlers.js';
 
 export class GraphController {
-  constructor(
-    private readonly graphService: GraphService,
-    private readonly scopeResolver: IScopeResolver,
-  ) {}
-
-  private resolveScope(request: FastifyRequest): Promise<MemoryScope> {
-    return resolveMemoryScopeFromRequest(request, this.scopeResolver);
-  }
+  constructor(private readonly handlers: GraphHandlers) {}
 
   async getCapabilities(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    reply.send({ capabilities: this.graphService.getCapabilities() });
+    const capabilities = await this.handlers.getCapabilities.handle(
+      buildTransportContextFromRestRequest(_request),
+      {},
+    );
+    reply.send({ capabilities });
   }
 
   async traverse(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const ctx = buildTransportContextFromRestRequest(request);
     const body = request.body as TraverseGraphBody;
-    const result = await this.graphService.traverseRelations(await this.resolveScope(request), {
-      memoryId: body.memoryId,
-      depth: body.depth,
-      types: body.types,
-    });
-
+    const result = await this.handlers.traverse.handle(ctx, body);
     reply.send(result);
   }
 }
@@ -34,6 +30,9 @@ export class GraphController {
 export function createGraphController(
   graphService: GraphService,
   scopeResolver: IScopeResolver,
+  handlers?: GraphHandlers,
 ): GraphController {
-  return new GraphController(graphService, scopeResolver);
+  return new GraphController(
+    handlers ?? createGraphHandlers({ graphService, scopeResolver }),
+  );
 }

@@ -1,6 +1,6 @@
 # Task Prompt — Phase 10.5 Transport & Connectivity Layer
 
-**Status:** 🔄 In Progress — ADR-027 ✅ Approved (2026-07-04); track 10.5A started  
+**Status:** 🔄 In Progress — ADR-027 ✅ Approved (2026-07-04); tracks 10.5A–10.5B ✅  
 **Handoff:** [10.5-transport-connectivity/TASK_PROMPT.md](phases/10.5-transport-connectivity/TASK_PROMPT.md)  
 **Template:** [workflow/12-TASK-TEMPLATE.md](workflow/12-TASK-TEMPLATE.md)  
 **Roadmap:** [phases/roadmap/10-POST-ROADMAP.md](phases/roadmap/10-POST-ROADMAP.md) § Phase 10.5
@@ -31,7 +31,7 @@
 - [x] ADR-027 Approved (2026-07-04)
 - [x] Phase 11 gate PASS — parallel OK
 - [x] 10.5A — `TransportContext`, `resolve-transport-scope`, transport errors
-- [ ] 10.5B — Shared `IApplicationHandler` (≥10 use cases)
+- [x] 10.5B — Shared `IApplicationHandler` (≥10 use cases)
 - [ ] 10.5C — REST → `transport/rest/` (strangler re-exports)
 - [ ] 10.5D — MCP → `transport/mcp/` (strangler re-exports)
 - [ ] 10.5E — gRPC v1 behind `GRPC_ENABLED=false`

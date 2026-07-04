@@ -17,11 +17,14 @@ import { createGraphService } from '../../src/services/graph.service.js';
 import { DefaultScopeResolver } from '../../src/scope/default-scope-resolver.js';
 import { D1AgentIdentity } from '../../src/agent/d1-agent-identity.js';
 import { createMcpServer } from '../../src/mcp/server.js';
+import { getEnv } from '../../src/config/index.js';
+import { createTransportHandlers } from '../../src/transport/shared/handlers/create-transport-handlers.js';
 
 vi.stubEnv('CLOUDFLARE_ACCOUNT_ID', 'test-account');
 vi.stubEnv('D1_DATABASE_ID', 'test-database');
 vi.stubEnv('D1_API_TOKEN', 'test-token');
 vi.stubEnv('NODE_ENV', 'test');
+vi.stubEnv('MCP_OWNER_ID', 'mcp-test-owner');
 
 import { MCP_TOOL_NAMES } from '../../src/capabilities/mcp-tool-names.js';
 
@@ -45,15 +48,15 @@ describe('MCP tools', () => {
     const graphService = createGraphService(sql, repository);
     const scopeResolver = new DefaultScopeResolver(sql);
     const agentIdentity = new D1AgentIdentity(sql);
-    const server = createMcpServer(
+    const handlers = createTransportHandlers({
       memoryService,
-      relationService,
       contextService,
       graphService,
+      relationService,
       scopeResolver,
-      agentIdentity,
-      sql,
-    );
+      env: getEnv(),
+    });
+    const server = createMcpServer(handlers, scopeResolver, agentIdentity, sql);
 
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     await server.connect(serverTransport);

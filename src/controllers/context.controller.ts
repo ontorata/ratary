@@ -1,32 +1,20 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { ContextService } from '../memory/context.service.js';
-import type { MemoryScope } from '../types/memory-scope.js';
-import type { BuildContextBody } from '../types/context.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
-import { resolveMemoryScopeFromRequest } from '../scope/resolve-request-scope.js';
+import type { BuildContextBody } from '../types/context.js';
+import { buildTransportContextFromRestRequest } from '../transport/shared/resolve-transport-scope.js';
+import {
+  createContextHandlers,
+  type ContextHandlers,
+} from '../transport/shared/handlers/create-transport-handlers.js';
 
 export class ContextController {
-  constructor(
-    private readonly contextService: ContextService,
-    private readonly scopeResolver: IScopeResolver,
-  ) {}
-
-  private resolveScope(request: FastifyRequest): Promise<MemoryScope> {
-    return resolveMemoryScopeFromRequest(request, this.scopeResolver);
-  }
+  constructor(private readonly handlers: ContextHandlers) {}
 
   async buildContext(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const body = request.body as BuildContextBody;
-    const result = await this.contextService.buildPrompt(await this.resolveScope(request), {
-      projectId: body.projectId,
-      query: body.query,
-      tags: body.tags,
-      levels: body.levels,
-      limit: body.limit,
-      context: body.context,
-      task: body.task,
-      systemRole: body.systemRole,
-    });
+    const ctx = buildTransportContextFromRestRequest(request);
+    const result = await this.handlers.buildPrompt.handle(ctx, body);
 
     reply.send({
       context: result.context,
@@ -49,6 +37,9 @@ export class ContextController {
 export function createContextController(
   contextService: ContextService,
   scopeResolver: IScopeResolver,
+  handlers?: ContextHandlers,
 ): ContextController {
-  return new ContextController(contextService, scopeResolver);
+  return new ContextController(
+    handlers ?? createContextHandlers({ contextService, scopeResolver }),
+  );
 }

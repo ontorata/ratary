@@ -1,6 +1,6 @@
 # Task Prompt — Phase 10.5 Transport & Connectivity Layer
 
-**Status:** 🔄 In Progress — ADR-027 ✅ Approved (2026-07-04); track 10.5A ✅  
+**Status:** 🔄 In Progress — ADR-027 ✅ Approved (2026-07-04); tracks 10.5A–10.5B ✅  
 **Template:** [workflow/12-TASK-TEMPLATE.md](../../workflow/12-TASK-TEMPLATE.md)  
 **Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-027](../../adr/027-transport-connectivity-layer.md)  
 **Roadmap:** [10-POST-ROADMAP.md](../roadmap/10-POST-ROADMAP.md) § Phase 10.5

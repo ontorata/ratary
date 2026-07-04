@@ -98,10 +98,10 @@
 
 ### 10.5B — Shared handlers
 
-- [ ] `IApplicationHandler` contract
-- [ ] ≥10 handlers extracted (save, search, get, context, capabilities, …)
-- [ ] REST controller delegates to handler
-- [ ] MCP tool delegates to same handler
+- [x] `IApplicationHandler` contract
+- [x] ≥10 handlers extracted (save, search, get, context, capabilities, …)
+- [x] REST controller delegates to handler
+- [x] MCP tool delegates to same handler
 
 ### 10.5C — REST migration
 

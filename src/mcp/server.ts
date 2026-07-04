@@ -8,19 +8,19 @@ import {
   createMemoryService,
   createMemoryRelationService,
 } from '../services/create-memory-service.js';
-import type { MemoryService } from '../services/memory.service.js';
-import { MemoryRelationService } from '../services/memory-relation.service.js';
 import { createContextService } from '../memory/create-context-service.js';
 import { createMemoryAccessAuditor } from '../infrastructure/composition/create-memory-access-auditor.js';
 import { createEmbeddingProvider } from '../embedding/create-embedding-provider.js';
 import { createPlatformAdapters } from '../infrastructure/composition/create-platform-adapters.js';
 import { getEnv } from '../config/index.js';
-import type { ContextService } from '../memory/context.service.js';
-import type { GraphService } from '../services/graph.service.js';
 import { createGraphService } from '../services/graph.service.js';
 import { assertMcpOwnerConfigured } from '../types/memory-scope.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
-import { resolveMcpMemoryScope } from '../scope/resolve-request-scope.js';
+import { buildTransportContextFromMcpEnv } from '../transport/shared/resolve-transport-scope.js';
+import {
+  createTransportHandlers,
+  type TransportHandlers,
+} from '../transport/shared/handlers/create-transport-handlers.js';
 import { createMultiAiPorts } from '../composition/create-multi-ai-ports.js';
 import type { IAgentIdentity } from '../agent/iagent-identity.interface.js';
 import { AGENT_TYPES } from '../agent/agent.types.js';
@@ -29,7 +29,7 @@ import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../types/knowl
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from './context-tool-params.js';
-import { CapabilityManifestBuilder } from '../capabilities/capability-manifest-builder.js';
+import { resolveMcpMemoryScope } from '../scope/resolve-request-scope.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -41,14 +41,12 @@ const metadataSchema = z.object({
 });
 
 function createMcpServer(
-  memoryService: MemoryService,
-  relationService: MemoryRelationService,
-  contextService: ContextService,
-  graphService: GraphService,
+  handlers: TransportHandlers,
   scopeResolver: IScopeResolver,
   agentIdentity: IAgentIdentity,
   sql: ISqlDatabase,
 ): McpServer {
+  const mcpCtx = () => buildTransportContextFromMcpEnv();
   const mcpScope = () => resolveMcpMemoryScope(scopeResolver);
   const server = new McpServer({
     name: 'ai-memory-cloud',
@@ -69,7 +67,7 @@ function createMcpServer(
     },
     async (params) => {
       const meta = params.metadata ?? {};
-      const memory = await memoryService.createMemory(await mcpScope(), {
+      const memory = await handlers.memory.create.handle(mcpCtx(), {
         title: params.title,
         content: params.content,
         project: params.project ?? '',
@@ -105,14 +103,17 @@ function createMcpServer(
     },
     async (params) => {
       const { id, metadata, ...rest } = params;
-      const memory = await memoryService.updateMemory(await mcpScope(), id, {
-        ...rest,
-        category: metadata?.category,
-        memoryType: metadata?.memoryType,
-        keywords: metadata?.keywords,
-        importance: metadata?.importance,
-        language: metadata?.language,
-        notes: metadata?.notes,
+      const memory = await handlers.memory.update.handle(mcpCtx(), {
+        id,
+        input: {
+          ...rest,
+          category: metadata?.category,
+          memoryType: metadata?.memoryType,
+          keywords: metadata?.keywords,
+          importance: metadata?.importance,
+          language: metadata?.language,
+          notes: metadata?.notes,
+        },
       });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
@@ -127,7 +128,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID to delete'),
     },
     async (params) => {
-      await memoryService.deleteMemory(await mcpScope(), params.id);
+      await handlers.memory.delete.handle(mcpCtx(), { id: params.id });
       return {
         content: [{ type: 'text', text: `Memory ${params.id} deleted successfully` }],
       };
@@ -141,7 +142,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID'),
     },
     async (params) => {
-      const memory = await memoryService.getMemoryById(await mcpScope(), params.id);
+      const memory = await handlers.memory.getById.handle(mcpCtx(), { id: params.id });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -155,7 +156,9 @@ function createMcpServer(
       codename: z.string().describe('Memory codename'),
     },
     async (params) => {
-      const memory = await memoryService.getMemoryByCodename(await mcpScope(), params.codename);
+      const memory = await handlers.memory.getByCodename.handle(mcpCtx(), {
+        codename: params.codename,
+      });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -178,7 +181,7 @@ function createMcpServer(
       offset: z.number().int().min(0).optional().describe('Pagination offset'),
     },
     async (params) => {
-      const result = await memoryService.searchMemory(await mcpScope(), {
+      const result = await handlers.memory.search.handle(mcpCtx(), {
         q: params.q,
         tag: params.tag,
         project: params.project,
@@ -197,14 +200,14 @@ function createMcpServer(
   );
 
   server.tool('list_projects', 'List all unique project names', {}, async () => {
-    const projects = await memoryService.listProjects(await mcpScope());
+    const projects = await handlers.memory.listProjects.handle(mcpCtx(), {});
     return {
       content: [{ type: 'text', text: JSON.stringify({ projects }, null, 2) }],
     };
   });
 
   server.tool('list_tags', 'List all unique tags', {}, async () => {
-    const tags = await memoryService.listTags(await mcpScope());
+    const tags = await handlers.memory.listTags.handle(mcpCtx(), {});
     return {
       content: [{ type: 'text', text: JSON.stringify({ tags }, null, 2) }],
     };
@@ -219,10 +222,13 @@ function createMcpServer(
       relation: z.enum(['related', 'depends_on', 'parent', 'child', 'duplicate', 'reference']),
     },
     async (params) => {
-      const relation = await relationService.createRelation(await mcpScope(), params.sourceId, {
-        targetMemoryId: params.targetId,
-        relation: params.relation,
-        sourceType: 'mcp',
+      const relation = await handlers.relations.create.handle(mcpCtx(), {
+        memoryId: params.sourceId,
+        input: {
+          targetMemoryId: params.targetId,
+          relation: params.relation,
+          sourceType: 'mcp',
+        },
       });
       return {
         content: [{ type: 'text', text: JSON.stringify(relation, null, 2) }],
@@ -237,7 +243,7 @@ function createMcpServer(
       id: z.string().uuid(),
     },
     async (params) => {
-      const relations = await relationService.listRelations(await mcpScope(), params.id);
+      const relations = await handlers.relations.list.handle(mcpCtx(), { memoryId: params.id });
       return {
         content: [{ type: 'text', text: JSON.stringify({ relations }, null, 2) }],
       };
@@ -251,7 +257,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID'),
     },
     async (params) => {
-      const memory = await memoryService.toggleFavorite(await mcpScope(), params.id);
+      const memory = await handlers.memory.toggleFavorite.handle(mcpCtx(), { id: params.id });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -265,7 +271,7 @@ function createMcpServer(
       id: z.string().uuid().describe('Memory UUID to archive'),
     },
     async (params) => {
-      const memory = await memoryService.archiveMemory(await mcpScope(), params.id, true);
+      const memory = await handlers.memory.archive.handle(mcpCtx(), { id: params.id });
       return {
         content: [{ type: 'text', text: JSON.stringify(memory, null, 2) }],
       };
@@ -297,7 +303,7 @@ function createMcpServer(
       format: z.enum(['markdown', 'xml']).optional().describe('Context output format'),
     },
     async (params) => {
-      const result = await contextService.buildContext(await mcpScope(), {
+      const result = await handlers.context.buildContext.handle(mcpCtx(), {
         query: params.query,
         projectId: params.projectId,
         tags: params.tags,
@@ -341,7 +347,7 @@ function createMcpServer(
       system_role: z.string().optional().describe('Custom system role prompt'),
     },
     async (params) => {
-      const result = await contextService.buildPrompt(await mcpScope(), {
+      const result = await handlers.context.buildPrompt.handle(mcpCtx(), {
         task: params.task,
         query: params.query,
         projectId: params.projectId,
@@ -361,7 +367,7 @@ function createMcpServer(
   );
 
   server.tool('get_graph_capabilities', 'Discover graph traversal capabilities', {}, async () => {
-    const capabilities = graphService.getCapabilities();
+    const capabilities = await handlers.graph.getCapabilities.handle(mcpCtx(), {});
     return {
       content: [{ type: 'text', text: JSON.stringify({ capabilities }, null, 2) }],
     };
@@ -372,7 +378,7 @@ function createMcpServer(
     'Discover AI Memory Cloud deployment capabilities, limits, and MCP tool registry',
     {},
     async () => {
-      const manifest = new CapabilityManifestBuilder(getEnv()).build();
+      const manifest = await handlers.capabilities.getManifest.handle(mcpCtx(), {});
       return {
         content: [{ type: 'text', text: JSON.stringify(manifest, null, 2) }],
       };
@@ -426,7 +432,7 @@ function createMcpServer(
       types: z.array(z.enum(RELATION_TYPES)).optional().describe('Filter by relation types'),
     },
     async (params) => {
-      const result = await graphService.traverseRelations(await mcpScope(), {
+      const result = await handlers.graph.traverse.handle(mcpCtx(), {
         memoryId: params.memoryId,
         depth: params.depth,
         types: params.types,
@@ -470,15 +476,16 @@ export async function startMcpStdioServer(): Promise<void> {
   const graphService = createGraphService(platform.sql, repository);
   const { scopeResolver, agentIdentity } = multiAi;
 
-  const server = createMcpServer(
+  const handlers = createTransportHandlers({
     memoryService,
-    relationService,
     contextService,
     graphService,
+    relationService,
     scopeResolver,
-    agentIdentity,
-    platform.sql,
-  );
+    env,
+  });
+
+  const server = createMcpServer(handlers, scopeResolver, agentIdentity, platform.sql);
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }

@@ -1,9 +1,14 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { HealthService } from '../services/health.service.js';
-import type { MemoryService } from '../services/memory.service.js';
-import type { MemoryScope } from '../types/memory.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
-import { resolveMemoryScopeFromRequest } from '../scope/resolve-request-scope.js';
+import type { MemoryService } from '../services/memory.service.js';
+import {
+  buildTransportContextFromRestRequest,
+} from '../transport/shared/resolve-transport-scope.js';
+import {
+  createMemoryHandlers,
+  type MemoryHandlers,
+} from '../transport/shared/handlers/create-transport-handlers.js';
 import {
   toBackupResponse,
   toMemoryListResponse,
@@ -49,20 +54,11 @@ export function createHealthController(healthService: HealthService): HealthCont
 }
 
 export class MemoryController {
-  constructor(
-    private readonly memoryService: MemoryService,
-    private readonly scopeResolver: IScopeResolver,
-  ) {}
-
-  private resolveScope(request: FastifyRequest): Promise<MemoryScope> {
-    return resolveMemoryScopeFromRequest(request, this.scopeResolver);
-  }
+  constructor(private readonly handlers: MemoryHandlers) {}
 
   async create(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const memory = await this.memoryService.createMemory(
-      await this.resolveScope(request),
-      request.body as never,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const memory = await this.handlers.create.handle(ctx, request.body as never);
     reply.status(201).send(toMemoryResponse(memory));
   }
 
@@ -70,10 +66,8 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const memory = await this.memoryService.getMemoryById(
-      await this.resolveScope(request),
-      request.params.id,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const memory = await this.handlers.getById.handle(ctx, { id: request.params.id });
     reply.send(toMemoryResponse(memory));
   }
 
@@ -81,10 +75,10 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { codename: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const memory = await this.memoryService.getMemoryByCodename(
-      await this.resolveScope(request),
-      request.params.codename,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const memory = await this.handlers.getByCodename.handle(ctx, {
+      codename: request.params.codename,
+    });
     reply.send(toMemoryResponse(memory));
   }
 
@@ -92,10 +86,8 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { slug: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const memory = await this.memoryService.getMemoryBySlug(
-      await this.resolveScope(request),
-      request.params.slug,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const memory = await this.handlers.getBySlug.handle(ctx, { slug: request.params.slug });
     reply.send(toMemoryResponse(memory));
   }
 
@@ -103,11 +95,11 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const memory = await this.memoryService.updateMemory(
-      await this.resolveScope(request),
-      request.params.id,
-      request.body as never,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const memory = await this.handlers.update.handle(ctx, {
+      id: request.params.id,
+      input: request.body as never,
+    });
     reply.send(toMemoryResponse(memory));
   }
 
@@ -115,33 +107,32 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    await this.memoryService.deleteMemory(await this.resolveScope(request), request.params.id);
+    const ctx = buildTransportContextFromRestRequest(request);
+    await this.handlers.delete.handle(ctx, { id: request.params.id });
     reply.status(204).send();
   }
 
   async list(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const result = await this.memoryService.listMemories(
-      await this.resolveScope(request),
-      request.query as never,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const result = await this.handlers.list.handle(ctx, request.query as never);
     reply.send(toMemoryListResponse(result));
   }
 
   async search(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const result = await this.memoryService.searchMemory(
-      await this.resolveScope(request),
-      request.query as never,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const result = await this.handlers.search.handle(ctx, request.query as never);
     reply.send(toSearchResponse(result));
   }
 
   async listProjects(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const projects = await this.memoryService.listProjects(await this.resolveScope(request));
+    const ctx = buildTransportContextFromRestRequest(request);
+    const projects = await this.handlers.listProjects.handle(ctx, {});
     reply.send({ projects });
   }
 
   async listTags(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const tags = await this.memoryService.listTags(await this.resolveScope(request));
+    const ctx = buildTransportContextFromRestRequest(request);
+    const tags = await this.handlers.listTags.handle(ctx, {});
     reply.send({ tags });
   }
 
@@ -149,10 +140,8 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const memory = await this.memoryService.toggleFavorite(
-      await this.resolveScope(request),
-      request.params.id,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const memory = await this.handlers.toggleFavorite.handle(ctx, { id: request.params.id });
     reply.send(toMemoryResponse(memory));
   }
 
@@ -160,11 +149,8 @@ export class MemoryController {
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const memory = await this.memoryService.archiveMemory(
-      await this.resolveScope(request),
-      request.params.id,
-      true,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const memory = await this.handlers.archive.handle(ctx, { id: request.params.id });
     reply.send(toMemoryResponse(memory));
   }
 }
@@ -172,31 +158,28 @@ export class MemoryController {
 export function createMemoryController(
   memoryService: MemoryService,
   scopeResolver: IScopeResolver,
+  handlers?: MemoryHandlers,
 ): MemoryController {
-  return new MemoryController(memoryService, scopeResolver);
+  return new MemoryController(
+    handlers ?? createMemoryHandlers({ memoryService, scopeResolver }),
+  );
 }
 
 export class BackupController {
-  constructor(
-    private readonly memoryService: MemoryService,
-    private readonly scopeResolver: IScopeResolver,
-  ) {}
-
-  private resolveScope(request: FastifyRequest): Promise<MemoryScope> {
-    return resolveMemoryScopeFromRequest(request, this.scopeResolver);
-  }
+  constructor(private readonly handlers: MemoryHandlers) {}
 
   async export(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    const backup = await this.memoryService.exportBackup(await this.resolveScope(request));
+    const ctx = buildTransportContextFromRestRequest(request);
+    const backup = await this.handlers.exportBackup.handle(ctx, {});
     reply.send(toBackupResponse(backup));
   }
 
   async import(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const replace = (request.query as { replace?: string }).replace === 'true';
-    const scope = await this.resolveScope(request);
+    const ctx = buildTransportContextFromRestRequest(request);
     const result = replace
-      ? await this.memoryService.replaceBackup(scope, request.body as never)
-      : await this.memoryService.importBackup(scope, request.body as never);
+      ? await this.handlers.replaceBackup.handle(ctx, { input: request.body as never })
+      : await this.handlers.importBackup.handle(ctx, { input: request.body as never });
     reply.send(result);
   }
 }
@@ -204,6 +187,9 @@ export class BackupController {
 export function createBackupController(
   memoryService: MemoryService,
   scopeResolver: IScopeResolver,
+  handlers?: MemoryHandlers,
 ): BackupController {
-  return new BackupController(memoryService, scopeResolver);
+  return new BackupController(
+    handlers ?? createMemoryHandlers({ memoryService, scopeResolver }),
+  );
 }

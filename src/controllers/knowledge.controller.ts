@@ -2,10 +2,15 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import { CATEGORIES, MEMORY_TYPES } from '../types/knowledge.js';
 import type { MemoryService } from '../services/memory.service.js';
 import type { MemoryRelationService } from '../services/memory-relation.service.js';
-import type { MemoryScope } from '../types/memory.js';
 import type { CreateRelationInput } from '../types/knowledge.js';
+import type { MemoryScope } from '../types/memory-scope.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
 import { resolveMemoryScopeFromRequest } from '../scope/resolve-request-scope.js';
+import { buildTransportContextFromRestRequest } from '../transport/shared/resolve-transport-scope.js';
+import {
+  createRelationHandlers,
+  type RelationHandlers,
+} from '../transport/shared/handlers/create-transport-handlers.js';
 
 export class KnowledgeController {
   constructor(
@@ -37,23 +42,14 @@ export function createKnowledgeController(
 }
 
 export class MemoryRelationController {
-  constructor(
-    private readonly relationService: MemoryRelationService,
-    private readonly scopeResolver: IScopeResolver,
-  ) {}
-
-  private resolveScope(request: FastifyRequest): Promise<MemoryScope> {
-    return resolveMemoryScopeFromRequest(request, this.scopeResolver);
-  }
+  constructor(private readonly handlers: RelationHandlers) {}
 
   async list(
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const relations = await this.relationService.listRelations(
-      await this.resolveScope(request),
-      request.params.id,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const relations = await this.handlers.list.handle(ctx, { memoryId: request.params.id });
     reply.send({ relations });
   }
 
@@ -61,12 +57,12 @@ export class MemoryRelationController {
     request: FastifyRequest<{ Params: { id: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    const relation = await this.relationService.createRelation(
-      await this.resolveScope(request),
-      request.params.id,
-      request.body as CreateRelationInput,
-      request.user?.identityId,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    const relation = await this.handlers.create.handle(ctx, {
+      memoryId: request.params.id,
+      input: request.body as CreateRelationInput,
+      identityId: request.user?.identityId,
+    });
     reply.status(201).send(relation);
   }
 
@@ -74,11 +70,11 @@ export class MemoryRelationController {
     request: FastifyRequest<{ Params: { id: string; relationId: string } }>,
     reply: FastifyReply,
   ): Promise<void> {
-    await this.relationService.deleteRelation(
-      await this.resolveScope(request),
-      request.params.id,
-      request.params.relationId,
-    );
+    const ctx = buildTransportContextFromRestRequest(request);
+    await this.handlers.delete.handle(ctx, {
+      memoryId: request.params.id,
+      relationId: request.params.relationId,
+    });
     reply.status(204).send();
   }
 }
@@ -86,6 +82,9 @@ export class MemoryRelationController {
 export function createMemoryRelationController(
   relationService: MemoryRelationService,
   scopeResolver: IScopeResolver,
+  handlers?: RelationHandlers,
 ): MemoryRelationController {
-  return new MemoryRelationController(relationService, scopeResolver);
+  return new MemoryRelationController(
+    handlers ?? createRelationHandlers({ relationService, scopeResolver }),
+  );
 }
