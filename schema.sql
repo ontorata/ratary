@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS memories (
   semantic_hash TEXT,
   workspace_id TEXT,
   last_modified_by_agent_id TEXT,
+  compression_meta TEXT,
+  compression_version INTEGER,
+  lifecycle_state TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 );
@@ -225,3 +228,16 @@ CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+
+-- Extension tracks 5.5 / 8.5 (ADR-023, ADR-026)
+CREATE TABLE IF NOT EXISTS memory_signals (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  memory_id TEXT,
+  signal_type TEXT NOT NULL,
+  payload TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_memory_signals_owner ON memory_signals(owner_id, created_at DESC);

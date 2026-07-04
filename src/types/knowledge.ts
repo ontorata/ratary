@@ -30,6 +30,7 @@ export const RELATION_TYPES = [
   'parent',
   'child',
   'duplicate',
+  'consolidates',
   'reference',
 ] as const;
 

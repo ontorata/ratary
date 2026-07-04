@@ -6,6 +6,9 @@ import { generateSummary } from '../knowledge/summary.generator.js';
 import { slugify } from '../knowledge/slug.generator.js';
 import { resolveCodenamePrefix } from '../knowledge/codename.generator.js';
 import { computeSemanticHash, normalizeTitleForDedup } from './semantic-hash.js';
+import type { ICompressionPolicy } from './compression/compression-policy.interface.js';
+import type { CompressionMetadata } from './compression/compression.types.js';
+import { MANIFEST_MAX_MEMORY_CONTENT_BYTES } from '../capabilities/capability-manifest.constants.js';
 
 export interface ConsolidationOptions {
   dryRun?: boolean;
@@ -14,6 +17,11 @@ export interface ConsolidationOptions {
   staleAccessMin?: number;
   staleDays?: number;
   importanceBump?: number;
+}
+
+export interface ConsolidationDeps {
+  compressionPolicy?: ICompressionPolicy;
+  compressionEnabled?: boolean;
 }
 
 export interface ConsolidationAction {
@@ -37,10 +45,17 @@ const DEFAULT_STALE_DAYS = 30;
 const DEFAULT_IMPORTANCE_BUMP = 5;
 
 export class MemoryConsolidator {
+  private readonly compressionPolicy?: ICompressionPolicy;
+  private readonly compressionEnabled: boolean;
+
   constructor(
     private readonly repository: IMemoryRepository,
     private readonly relationRepository?: MemoryRelationRepository,
-  ) {}
+    deps: ConsolidationDeps = {},
+  ) {
+    this.compressionPolicy = deps.compressionPolicy;
+    this.compressionEnabled = deps.compressionEnabled ?? false;
+  }
 
   async run(scope: MemoryScope, options: ConsolidationOptions = {}): Promise<ConsolidationReport> {
     const dryRun = options.dryRun ?? true;
@@ -65,8 +80,25 @@ export class MemoryConsolidator {
       const canonical = this.pickCanonical(group);
       const others = group.filter((m) => m.id !== canonical.id);
       let targetId = canonical.id;
+      const sourceIds = group.map((m) => m.id);
 
-      if (options.generateSummary) {
+      const shouldSummarize =
+        options.generateSummary &&
+        (!this.compressionEnabled ||
+          !this.compressionPolicy ||
+          this.compressionPolicy.shouldCompress(
+            {
+              memory: canonical,
+              duplicateClusterSize: group.length,
+              totalChars: group.reduce((sum, m) => sum + m.content.length, 0),
+            },
+            {
+              scope,
+              deploymentLimits: { maxMemoryContentBytes: MANIFEST_MAX_MEMORY_CONTENT_BYTES },
+            },
+          ));
+
+      if (shouldSummarize) {
         report.actions.push({
           type: 'create_summary',
           memoryId: canonical.id,
@@ -78,6 +110,12 @@ export class MemoryConsolidator {
             .map((m) => `${m.title}: ${m.summary || generateSummary(m.content)}`)
             .join('\n\n');
           const summaryTitle = `Summary: ${canonical.title}`;
+          const targetLevel =
+            this.compressionPolicy?.targetLevel({
+              memory: canonical,
+              duplicateClusterSize: group.length,
+            }) ?? 'summary';
+
           const codename = await this.repository.allocateCodename(
             scope.ownerId,
             resolveCodenamePrefix({
@@ -103,7 +141,7 @@ export class MemoryConsolidator {
             favorite: false,
             ownerId: scope.ownerId,
             projectId: canonical.projectId,
-            level: 'summary',
+            level: targetLevel,
             semanticHash: computeSemanticHash(
               summaryTitle,
               generateSummary(summaryContent),
@@ -112,6 +150,26 @@ export class MemoryConsolidator {
           });
           targetId = summaryMemory.id;
           report.summariesCreated++;
+
+          if (this.compressionEnabled && this.compressionPolicy) {
+            const charsBefore = group.reduce((sum, m) => sum + m.content.length, 0);
+            const meta: CompressionMetadata = {
+              algorithm: this.compressionPolicy.algorithmId(),
+              version: this.compressionPolicy.policyVersion(),
+              sourceMemoryIds: sourceIds,
+              charRatio: summaryContent.length / Math.max(charsBefore, 1),
+              compressedAt: new Date().toISOString(),
+            };
+            await this.repository.applyCompressionMetadata(
+              summaryMemory.id,
+              scope.ownerId,
+              meta as unknown as Record<string, unknown>,
+              this.compressionPolicy.policyVersion(),
+            );
+            for (const sourceId of sourceIds) {
+              await this.linkConsolidates(scope.ownerId, targetId, sourceId, report);
+            }
+          }
         }
       }
 
@@ -226,6 +284,31 @@ export class MemoryConsolidator {
       relation: 'duplicate',
       sourceType: 'inferred',
       confidence: 0.9,
+    });
+    report.relationsCreated++;
+  }
+
+  private async linkConsolidates(
+    ownerId: string,
+    summaryId: string,
+    sourceId: string,
+    report: ConsolidationReport,
+  ): Promise<void> {
+    if (!this.relationRepository) return;
+
+    const exists = await this.relationRepository.exists(
+      summaryId,
+      sourceId,
+      'consolidates',
+      ownerId,
+    );
+    if (exists) return;
+
+    await this.relationRepository.createFromInput(summaryId, ownerId, {
+      targetMemoryId: sourceId,
+      relation: 'consolidates',
+      sourceType: 'inferred',
+      confidence: 1,
     });
     report.relationsCreated++;
   }

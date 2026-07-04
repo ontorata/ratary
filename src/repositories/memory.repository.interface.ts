@@ -101,6 +101,19 @@ export interface IMemoryWriter {
     data: { projectId: string; level: MemoryLevel; semanticHash: string },
   ): Promise<void>;
   applyEmbeddingBackfill(id: string, ownerId: string, data: { embeddingId: string }): Promise<void>;
+  applyCompressionMetadata(
+    id: string,
+    ownerId: string,
+    metadata: Record<string, unknown>,
+    version: number,
+    workspaceId?: string,
+  ): Promise<void>;
+  setLifecycleState(
+    id: string,
+    ownerId: string,
+    state: string,
+    workspaceId?: string,
+  ): Promise<Memory | null>;
 }
 
 /**

@@ -402,6 +402,46 @@ export async function migrateEnterprisePhase1(
   }
 }
 
+/** Extension tracks 5.5 / 8.5 — compression metadata + quality signals (ADR-023, ADR-026). */
+const EXTENSION_TRACK_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
+  { name: 'compression_meta', ddl: 'ALTER TABLE memories ADD COLUMN compression_meta TEXT' },
+  {
+    name: 'compression_version',
+    ddl: 'ALTER TABLE memories ADD COLUMN compression_version INTEGER',
+  },
+  { name: 'lifecycle_state', ddl: 'ALTER TABLE memories ADD COLUMN lifecycle_state TEXT' },
+];
+
+const MEMORY_SIGNALS_SQL = `
+CREATE TABLE IF NOT EXISTS memory_signals (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  memory_id TEXT,
+  signal_type TEXT NOT NULL,
+  payload TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_memory_signals_owner ON memory_signals(owner_id, created_at DESC);
+`;
+
+export async function migrateExtensionTracksPhase1(
+  client: ISqlDatabase,
+  dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
+  for (const column of EXTENSION_TRACK_MEMORY_COLUMNS) {
+    const hasColumn = await tableHasColumn(client, 'memories', column.name, dialect);
+    if (!hasColumn) {
+      await client.execute(column.ddl);
+    }
+  }
+
+  for (const sql of splitStatements(MEMORY_SIGNALS_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: ISqlDatabase): Promise<void> {
   await client.execute(
@@ -444,6 +484,7 @@ export async function runSchemaMigrations(
   await migrateEmbeddingPhase1(client);
   await migrateMultiAiPhase1(client, dialect);
   await migrateEnterprisePhase1(client, dialect);
+  await migrateExtensionTracksPhase1(client, dialect);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

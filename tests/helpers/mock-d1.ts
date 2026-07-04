@@ -76,6 +76,7 @@ export class MockD1Client implements D1Client {
   private organizations: Map<string, OrganizationRow> = new Map();
   private workspaceMemberships: Map<string, WorkspaceMembershipRow> = new Map();
   private agents: Map<string, AgentRow> = new Map();
+  private memorySignals: Map<string, Record<string, unknown>> = new Map();
   private settings: Map<string, string> = new Map();
   private auditLogs: unknown[] = [];
   private memoryEmbeddingsTableReady = false;
@@ -589,6 +590,20 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: 1 } };
     }
 
+    if (normalizedSql.startsWith('INSERT INTO MEMORY_SIGNALS')) {
+      const row = {
+        id: params[0] as string,
+        owner_id: params[1] as string,
+        workspace_id: params[2] as string | null,
+        memory_id: params[3] as string | null,
+        signal_type: params[4] as string,
+        payload: params[5] as string,
+        created_at: params[6] as string,
+      };
+      this.memorySignals.set(row.id, row);
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
     if (normalizedSql.startsWith('UPDATE MEMORY_EMBEDDINGS')) {
       const dimensions = params[0] as number;
       const vectorJson = params[1] as string;
@@ -698,6 +713,26 @@ export class MockD1Client implements D1Client {
           return { results: [], success: true, meta: { changes: 0 } };
         }
         existing.embedding_id = embeddingId;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
+      if (
+        normalizedSql.includes('COMPRESSION_META = ?') &&
+        normalizedSql.includes('COMPRESSION_VERSION = ?')
+      ) {
+        const meta = params[0] as string;
+        const version = params[1] as number;
+        const updatedAt = params[2] as string;
+        const id = params[3] as string;
+        const ownerId = params[4] as string;
+        const existing = this.memories.get(id);
+        if (!existing || existing.owner_id !== ownerId) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        (existing as Record<string, unknown>).compression_meta = meta;
+        (existing as Record<string, unknown>).compression_version = version;
+        existing.updated_at = updatedAt;
         this.memories.set(id, existing);
         return { results: [], success: true, meta: { changes: 1 } };
       }
@@ -938,6 +973,12 @@ export class MockD1Client implements D1Client {
         .slice(0, 1)
         .map((m) => ({ codename: m.codename }));
       return { results: rows, success: true };
+    }
+
+    if (normalizedSql.includes('SELECT COUNT(*) AS COUNT FROM MEMORY_SIGNALS')) {
+      const signalId = params[0] as string;
+      const count = this.memorySignals.has(signalId) ? 1 : 0;
+      return { results: [{ count }], success: true };
     }
 
     if (

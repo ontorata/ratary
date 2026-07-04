@@ -738,6 +738,47 @@ export class MemoryRepository implements IMemoryRepository {
     ]);
   }
 
+  async applyCompressionMetadata(
+    id: string,
+    ownerId: string,
+    metadata: Record<string, unknown>,
+    version: number,
+    workspaceId?: string,
+  ): Promise<void> {
+    const updatedAt = nowISO();
+    const conditions = ['id = ?', 'owner_id = ?'];
+    const params: unknown[] = [JSON.stringify(metadata), version, updatedAt, id, ownerId];
+    appendWorkspaceFilter(conditions, params, workspaceId);
+
+    await this.db.execute(
+      `UPDATE memories SET compression_meta = ?, compression_version = ?, updated_at = ?
+       WHERE ${conditions.join(' AND ')}`,
+      params,
+    );
+  }
+
+  async setLifecycleState(
+    id: string,
+    ownerId: string,
+    state: string,
+    workspaceId?: string,
+  ): Promise<Memory | null> {
+    const existing = await this.findById(id, ownerId, workspaceId);
+    if (!existing) return null;
+
+    const updatedAt = nowISO();
+    const conditions = ['id = ?', 'owner_id = ?'];
+    const params: unknown[] = [state, updatedAt, id, ownerId];
+    appendWorkspaceFilter(conditions, params, workspaceId);
+
+    await this.db.execute(
+      `UPDATE memories SET lifecycle_state = ?, updated_at = ? WHERE ${conditions.join(' AND ')}`,
+      params,
+    );
+
+    return { ...existing, updatedAt };
+  }
+
   private async searchByTag(
     tag: string,
     filters: SearchFilters,
