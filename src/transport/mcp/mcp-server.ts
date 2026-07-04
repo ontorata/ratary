@@ -32,6 +32,8 @@ import { MEMORY_LEVELS } from '../../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from '../../mcp/context-tool-params.js';
 import { createMemoryStewardshipPorts } from '../../composition/create-memory-stewardship-ports.js';
 import { createCompressionPorts } from '../../composition/create-compression-ports.js';
+import { createSignalIngestPorts } from '../../composition/create-signal-ingest-ports.js';
+import { createLearningPorts } from '../../composition/create-learning-ports.js';
 import { wireMcpInitializeCapabilities } from './mcp-initialize-capabilities.js';
 
 const metadataSchema = z.object({
@@ -545,6 +547,45 @@ function createMcpServer(
     },
   );
 
+  server.tool(
+    'submit_signal',
+    'Submit explicit memory quality feedback (helpful / not helpful)',
+    {
+      type: z.literal('explicit_feedback').default('explicit_feedback'),
+      memory_id: z.string().uuid().describe('Target memory UUID'),
+      value: z.enum(['helpful', 'not_helpful']).describe('Feedback value'),
+      signal_id: z.string().uuid().optional().describe('Optional idempotency key'),
+    },
+    async (params) => {
+      if (!handlers.signals) {
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify({
+                accepted: false,
+                duplicate: false,
+                error: 'SIGNAL_INGEST_ENABLED=false — enable signal ingest to use submit_signal',
+              }),
+            },
+          ],
+          isError: true,
+        };
+      }
+
+      const result = await handlers.signals.submit.handle(mcpCtx(), {
+        type: 'explicit_feedback',
+        memoryId: params.memory_id,
+        value: params.value,
+        ...(params.signal_id ? { signalId: params.signal_id } : {}),
+      });
+
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    },
+  );
+
   wireMcpInitializeCapabilities(
     server,
     () => handlers.capabilities.getManifest.handle(mcpCtx(), {}),
@@ -589,6 +630,12 @@ export async function startMcpStdioServer(): Promise<void> {
   const graphService = createGraphService(platform.sql, repository);
   const { scopeResolver, agentIdentity } = multiAi;
 
+  const learningPorts = createLearningPorts(platform.sql, env);
+  const signalPorts = createSignalIngestPorts(platform.sql, env, {
+    eventBus: platform.eventBus,
+    learningPorts,
+  });
+
   const handlers = createTransportHandlers({
     memoryService,
     contextService,
@@ -596,6 +643,7 @@ export async function startMcpStdioServer(): Promise<void> {
     relationService,
     scopeResolver,
     env,
+    signalIngest: signalPorts.enabled ? { enabled: true, ...signalPorts.ingestDeps } : undefined,
   });
 
   const server = createMcpServer(

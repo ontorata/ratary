@@ -2,7 +2,7 @@
 
 **Document:** DESIGN  
 **Phase status:** ✅ Implemented (2026-07-04)  
-**Platform snapshot:** 2026-07-05 — **736 tests**; Phase 8.6 learning bridge ✅; D85-01–05 open with documented mitigations  
+**Platform snapshot:** 2026-07-05 — **749 tests**; Phase 8.5 deferred **D85-01–06 closed**  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) · [Phase 7 Boundary](../07-agent-runtime/DESIGN.md)  
 **Roadmap placement:** Track absorbed into **Phase 12 Event Pipeline** + memory domain extensions  
@@ -45,9 +45,9 @@ Phase 8.5 does **not** add planner, executor, goal stack, or autonomous memory m
 | `MemoryQualitySignal` contract | ✅ Implemented | — |
 | Extend `Ranker` inputs (importance delta) | ✅ Via `bumpImportance` on ingest | Hot path importance delta live |
 | Extend access tracking path | ✅ `recordAccess` / audit (Phase 4) | Implicit observation via context |
-| Lifecycle state hints on `memories` | ⏳ Open | Column migrated; **no GET field yet** — use `importance` / `access_count` |
-| Event publish on signal ingest | ⏳ **D85-02** Open | **8.6** `LearningEventRecorder` when ingest + learning ON; topic `memory.signal.received` defined |
-| MCP `submit_signal` | ⏳ **D85-01** Open | **REST** `POST /api/v1/signals` — same controller path |
+| Lifecycle state hints on `memories` | ✅ Implemented | `GET /memory/:id` exposes optional `lifecycleState` when set (D85-06) |
+| Event publish on signal ingest | ✅ **D85-02** Closed | `DomainEventPublisher.publishMemorySignalReceived` on ingest |
+| MCP `submit_signal` | ✅ **D85-01** Closed | MCP tool + REST share `processSignalIngest` |
 
 ### Outside this repository
 
@@ -331,12 +331,12 @@ Env:
 
 | ID | Item | Status | Mitigation / continuation |
 |----|------|--------|---------------------------|
-| **D85-01** | MCP `submit_signal` tool | ⏳ Open | REST ingest + `SignalsController`; wire MCP tool reusing handler → **Phase 13.1** |
-| **D85-02** | `IEventBus.publish('memory.signal.received')` on ingest | ⏳ Open | **8.6** learning store bridge live; topic + webhook consumer registered → wire publisher in ingest → **Phase 12** alignment |
-| **D85-03** | `RANKING_ADAPTATION_ENABLED` batch weight mutation | ⏳ Open | Per-signal `ImportanceScoringPolicy` + `bumpImportance` on hot path; `reflect:signals` reports only until batch weights implemented |
-| **D85-04** | Ranker sort-order integration test | ⏳ Open | `importance-scoring-policy.test.ts` + `signal-ingest.test.ts` cover bounds; manual verify via search/context ordering |
-| **D85-05** | REST E2E `POST /signals` with auth fixture | ⏳ Open | `signal-ingest-ports.test.ts` + unit ingest; enable flag in staging for manual E2E |
-| **D85-06** | `lifecycle_state` on GET memory | ⏳ Open | Column + repository setter exist; ops use `importance` / stewardship until API field exposed |
+| **D85-01** | MCP `submit_signal` tool | ✅ Closed | MCP `submit_signal` + transport handlers |
+| **D85-02** | `IEventBus.publish('memory.signal.received')` on ingest | ✅ Closed | `publishMemorySignalReceived` fire-and-forget |
+| **D85-03** | `RANKING_ADAPTATION_ENABLED` batch weight mutation | ✅ Closed | `SignalReflectionRunner` + `reflect:signals --execute` |
+| **D85-04** | Ranker sort-order integration test | ✅ Closed | `ranker.test.ts` — importance reorder after signal delta |
+| **D85-05** | REST E2E `POST /signals` with auth fixture | ✅ Closed | `tests/api/signals.test.ts` |
+| **D85-06** | `lifecycle_state` on GET memory | ✅ Closed | `lifecycleState` optional on `GET /memory/:id` |
 
 See [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md) deferred table.
 
@@ -363,7 +363,7 @@ See [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md) deferred tabl
 - [x] Ranker behavior unchanged when `SIGNAL_INGEST_ENABLED=false`
 - [x] No agent planner / reflection LLM code in repository
 - [x] Constitution boundary review PASS
-- [ ] D85-02 — Phase 12 `IEventBus.publish('memory.signal.received')` on ingest
+- [x] D85-02 — Phase 12 `IEventBus.publish('memory.signal.received')` on ingest
 - [x] All existing tests green with flags off
 - [x] Phase 8.6 `LearningEventRecorder` bridge when both ingest + learning flags ON
 
@@ -377,12 +377,12 @@ Phase 8.5 core gate closed **2026-07-04** (ADR-026). Deferred **D85-01–06** re
 
 | ID | Item | Mitigation today | Continuation |
 |----|------|------------------|--------------|
-| **D85-01** | MCP `submit_signal` | REST `POST /api/v1/signals` | Phase **13.1** remote MCP |
-| **D85-02** | Phase 12 bus publish on ingest | **8.6** `LearningEventRecorder` + SQL learning store | Wire `IEventBus` in ingest path |
-| **D85-03** | Batch ranker weight mutation | Hot-path `bumpImportance`; `reflect:signals` dry-run | Implement weight snapshot writer |
-| **D85-04** | Ranker E2E sort-order test | Unit policy + ingest tests | Add `ranker.test.ts` ordering case |
-| **D85-05** | REST E2E signals route | Composition + unit tests | Auth fixture E2E when flag ON |
-| **D85-06** | `lifecycleState` on GET memory | `importance`, `access_count`, stewardship | Optional API field when needed |
+| **D85-01** | MCP `submit_signal` | ✅ MCP + REST | — |
+| **D85-02** | Phase 12 bus publish on ingest | ✅ `memory.signal.received` | — |
+| **D85-03** | Batch ranker weight mutation | ✅ `reflect:signals --execute` | — |
+| **D85-04** | Ranker E2E sort-order test | ✅ `ranker.test.ts` | — |
+| **D85-05** | REST E2E signals route | ✅ `tests/api/signals.test.ts` | — |
+| **D85-06** | `lifecycleState` on GET memory | ✅ Optional API field | — |
 
 ### Successor phases (closed / partial)
 

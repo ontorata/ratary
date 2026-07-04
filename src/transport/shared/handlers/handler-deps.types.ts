@@ -10,6 +10,7 @@ import type { IScopeResolver } from '../../../scope/iscope-resolver.interface.js
 import type { GraphService } from '../../../services/graph.service.js';
 import type { MemoryRelationService } from '../../../services/memory-relation.service.js';
 import type { MemoryService } from '../../../services/memory.service.js';
+import type { SignalIngestDeps } from '../../../ingest/process-signal-ingest.js';
 
 /** Shared dependencies for Phase 10.5B application handlers. */
 export interface TransportHandlerDeps {
@@ -25,4 +26,5 @@ export interface TransportHandlerDeps {
   knowledgeFabricPorts?: KnowledgeFabricPorts;
   aiBrainPlatformPorts?: AiBrainPlatformPorts;
   globalIntelligencePorts?: GlobalIntelligencePorts;
+  signalIngest?: SignalIngestDeps & { enabled: boolean };
 }

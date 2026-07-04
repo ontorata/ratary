@@ -79,4 +79,45 @@ describe('Ranker', () => {
 
     expect(withSnapshot.relevanceScore).toBeGreaterThan(baseline.relevanceScore);
   });
+
+  it('should rank higher importance above lower when query relevance matches (D85-04)', () => {
+    const lower = baseMemory({
+      id: '00000000-0000-4000-8000-000000000001',
+      importance: 50,
+      title: 'Signal topic alpha',
+    });
+    const higher = baseMemory({
+      id: '00000000-0000-4000-8000-000000000002',
+      importance: 55,
+      title: 'Signal topic alpha',
+    });
+
+    const ranked = ranker.rank([lower, higher], { q: 'Signal topic' });
+    expect(ranked[0]!.id).toBe(higher.id);
+    expect(ranked[0]!.importance).toBeGreaterThan(ranked[1]!.importance);
+  });
+
+  it('should reorder after helpful signal delta changes importance (D85-04)', () => {
+    const beforeSignal = baseMemory({
+      id: '00000000-0000-4000-8000-000000000001',
+      importance: 50,
+      title: 'Feedback target',
+    });
+    const competitor = baseMemory({
+      id: '00000000-0000-4000-8000-000000000002',
+      importance: 52,
+      title: 'Feedback target',
+    });
+    const afterSignal = baseMemory({
+      id: beforeSignal.id,
+      importance: 55,
+      title: 'Feedback target',
+    });
+
+    const rankedBefore = ranker.rank([beforeSignal, competitor], { q: 'Feedback' });
+    expect(rankedBefore[0]!.id).toBe(competitor.id);
+
+    const rankedAfter = ranker.rank([afterSignal, competitor], { q: 'Feedback' });
+    expect(rankedAfter[0]!.id).toBe(afterSignal.id);
+  });
 });

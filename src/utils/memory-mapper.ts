@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import type { MemoryLifecycleState } from '../types/memory.js';
 
 export function generateId(): string {
   return randomUUID();
@@ -35,6 +36,7 @@ export function rowToMemory(row: {
   embedding_id?: string | null;
   object_key?: string | null;
   semantic_hash?: string | null;
+  lifecycle_state?: string | null;
 }): import('../types/memory.js').Memory {
   let tags: string[] = [];
   try {
@@ -77,9 +79,18 @@ export function rowToMemory(row: {
     embeddingId: row.embedding_id ?? null,
     objectKey: row.object_key ?? null,
     semanticHash: row.semantic_hash ?? null,
+    lifecycleState: parseLifecycleState(row.lifecycle_state),
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
+}
+
+function parseLifecycleState(value: string | null | undefined): MemoryLifecycleState | null {
+  if (value == null || value === '') return null;
+  if (value === 'active' || value === 'stale' || value === 'candidate_compress') {
+    return value;
+  }
+  return null;
 }
 
 export function tagsToJson(tags: string[]): string {

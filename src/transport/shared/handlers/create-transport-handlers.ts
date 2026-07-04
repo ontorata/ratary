@@ -9,6 +9,8 @@ import type { MemoryHandlers } from './memory.handlers.js';
 import { createMemoryHandlers } from './memory.handlers.js';
 import type { RelationHandlers } from './relation.handlers.js';
 import { createRelationHandlers } from './relation.handlers.js';
+import type { SignalHandlers } from './signals.handlers.js';
+import { createSignalHandlers } from './signals.handlers.js';
 
 export type { TransportHandlerDeps } from './handler-deps.types.js';
 export type { MemoryHandlers } from './memory.handlers.js';
@@ -22,6 +24,8 @@ export { createContextHandlers } from './context.handlers.js';
 export { createCapabilitiesHandlers } from './capabilities.handlers.js';
 export { createGraphHandlers } from './graph.handlers.js';
 export { createRelationHandlers } from './relation.handlers.js';
+export type { SignalHandlers } from './signals.handlers.js';
+export { createSignalHandlers } from './signals.handlers.js';
 
 export interface TransportHandlers {
   memory: MemoryHandlers;
@@ -29,10 +33,11 @@ export interface TransportHandlers {
   capabilities: CapabilitiesHandlers;
   graph: GraphHandlers;
   relations: RelationHandlers;
+  signals?: SignalHandlers;
 }
 
 export function createTransportHandlers(deps: TransportHandlerDeps): TransportHandlers {
-  const { memoryService, contextService, graphService, relationService, scopeResolver, env, infrastructurePorts, searchGraphPorts, contentScalePorts, knowledgeFabricPorts, aiBrainPlatformPorts, globalIntelligencePorts } = deps;
+  const { memoryService, contextService, graphService, relationService, scopeResolver, env, infrastructurePorts, searchGraphPorts, contentScalePorts, knowledgeFabricPorts, aiBrainPlatformPorts, globalIntelligencePorts, signalIngest } = deps;
 
   return {
     memory: createMemoryHandlers({ memoryService, scopeResolver }),
@@ -40,5 +45,15 @@ export function createTransportHandlers(deps: TransportHandlerDeps): TransportHa
     capabilities: createCapabilitiesHandlers({ env, infrastructurePorts, searchGraphPorts, contentScalePorts, knowledgeFabricPorts, aiBrainPlatformPorts, globalIntelligencePorts }),
     graph: createGraphHandlers({ graphService, scopeResolver }),
     relations: createRelationHandlers({ relationService, scopeResolver }),
+    signals:
+      signalIngest?.enabled
+        ? createSignalHandlers({
+            scopeResolver,
+            normalizer: signalIngest.normalizer,
+            ingestor: signalIngest.ingestor,
+            eventRecorder: signalIngest.eventRecorder,
+            domainEventPublisher: signalIngest.domainEventPublisher,
+          })
+        : undefined,
   };
 }

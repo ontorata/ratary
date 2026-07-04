@@ -145,6 +145,7 @@ export class MockD1Client implements D1Client {
         { name: 'semantic_hash' },
         { name: 'workspace_id' },
         { name: 'last_modified_by_agent_id' },
+        { name: 'lifecycle_state' },
       ];
       return { results: columns, success: true };
     }
@@ -685,16 +686,43 @@ export class MockD1Client implements D1Client {
         return { results: [], success: true, meta: { changes: 1 } };
       }
 
-      if (normalizedSql.includes('IMPORTANCE = ?') && params.length === 4) {
+      if (normalizedSql.startsWith('UPDATE MEMORIES SET IMPORTANCE = ?, UPDATED_AT = ?')) {
         const importance = params[0] as number;
         const updatedAt = params[1] as string;
-        const id = params[2] as string;
-        const ownerId = params[3] as string;
+        const hasWorkspace = normalizedSql.includes('WORKSPACE_ID = ?');
+        const id = params[params.length - (hasWorkspace ? 3 : 2)] as string;
+        const ownerId = params[params.length - (hasWorkspace ? 2 : 1)] as string;
+        const workspaceId = hasWorkspace ? (params[params.length - 1] as string) : undefined;
         const existing = this.memories.get(id);
-        if (!existing || existing.owner_id !== ownerId) {
+        if (
+          !existing ||
+          existing.owner_id !== ownerId ||
+          (workspaceId !== undefined && (existing.workspace_id ?? null) !== workspaceId)
+        ) {
           return { results: [], success: true, meta: { changes: 0 } };
         }
         existing.importance = importance;
+        existing.updated_at = updatedAt;
+        this.memories.set(id, existing);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+
+      if (normalizedSql.startsWith('UPDATE MEMORIES SET LIFECYCLE_STATE = ?, UPDATED_AT = ?')) {
+        const state = params[0] as string;
+        const updatedAt = params[1] as string;
+        const hasWorkspace = normalizedSql.includes('WORKSPACE_ID = ?');
+        const id = params[params.length - (hasWorkspace ? 3 : 2)] as string;
+        const ownerId = params[params.length - (hasWorkspace ? 2 : 1)] as string;
+        const workspaceId = hasWorkspace ? (params[params.length - 1] as string) : undefined;
+        const existing = this.memories.get(id);
+        if (
+          !existing ||
+          existing.owner_id !== ownerId ||
+          (workspaceId !== undefined && (existing.workspace_id ?? null) !== workspaceId)
+        ) {
+          return { results: [], success: true, meta: { changes: 0 } };
+        }
+        existing.lifecycle_state = state;
         existing.updated_at = updatedAt;
         this.memories.set(id, existing);
         return { results: [], success: true, meta: { changes: 1 } };
@@ -998,6 +1026,35 @@ export class MockD1Client implements D1Client {
       const signalId = params[0] as string;
       const count = this.memorySignals.has(signalId) ? 1 : 0;
       return { results: [{ count }], success: true };
+    }
+
+    if (normalizedSql.includes('SELECT DISTINCT OWNER_ID FROM MEMORY_SIGNALS')) {
+      const owners = [
+        ...new Set(
+          [...this.memorySignals.values()].map((row) => row.owner_id as string).filter(Boolean),
+        ),
+      ]
+        .filter((ownerId) => ownerId !== (params[0] as string))
+        .map((owner_id) => ({ owner_id }));
+      return { results: owners, success: true };
+    }
+
+    if (
+      normalizedSql.includes('FROM MEMORY_SIGNALS') &&
+      normalizedSql.includes('ORDER BY CREATED_AT DESC')
+    ) {
+      const hasWorkspace = normalizedSql.includes('WORKSPACE_ID = ?');
+      const ownerId = params[0] as string;
+      const workspaceId = hasWorkspace ? (params[1] as string) : undefined;
+      const limit = params[params.length - 1] as number;
+      let rows = [...this.memorySignals.values()].filter((row) => row.owner_id === ownerId);
+      if (workspaceId) {
+        rows = rows.filter((row) => (row.workspace_id ?? null) === workspaceId);
+      }
+      rows.sort((a, b) =>
+        String(b.created_at ?? '').localeCompare(String(a.created_at ?? '')),
+      );
+      return { results: rows.slice(0, limit), success: true };
     }
 
     if (

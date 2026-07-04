@@ -66,6 +66,7 @@ describe('Capability manifest contract', () => {
     expect([...manifest.mcp.toolNames].sort()).toEqual([...MCP_TOOL_NAMES].sort());
     expect(manifest.mcp.toolNames).toContain('get_capabilities');
     expect(manifest.mcp.toolNames).toContain('negotiate_capabilities');
+    expect(manifest.mcp.toolNames).toContain('submit_signal');
   });
 
   it('required manifest fields are present', () => {

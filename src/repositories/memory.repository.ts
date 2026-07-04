@@ -8,7 +8,7 @@ import {
   keywordsToJson,
 } from '../utils/memory-mapper.js';
 import { DatabaseError } from '../types/errors.js';
-import type { Memory } from '../types/memory.js';
+import type { Memory, MemoryLifecycleState } from '../types/memory.js';
 import {
   formatCodename,
   parseCodenameSequence,
@@ -32,12 +32,12 @@ const CODENAME_MAX_RETRIES = 3;
 const RETRIEVAL_MEMORY_SELECT = `id, title, project, '' as content, summary, tags, favorite, archived,
   owner_id, created_at, updated_at, codename, slug, keywords, category, memory_type,
   importance, language, notes, project_id, level, last_accessed, access_count,
-  embedding_id, object_key, semantic_hash`;
+  embedding_id, object_key, semantic_hash, lifecycle_state`;
 
 const MEMORY_SELECT = `id, title, project, content, summary, tags, favorite, archived,
   owner_id, created_at, updated_at, codename, slug, keywords, category, memory_type,
   importance, language, notes, project_id, level, last_accessed, access_count,
-  embedding_id, object_key, semantic_hash, workspace_id, last_modified_by_agent_id`;
+  embedding_id, object_key, semantic_hash, workspace_id, last_modified_by_agent_id, lifecycle_state`;
 
 export class MemoryRepository implements IMemoryRepository {
   constructor(private readonly db: ISqlDatabase) {}
@@ -803,7 +803,11 @@ export class MemoryRepository implements IMemoryRepository {
       params,
     );
 
-    return { ...existing, updatedAt };
+    return {
+      ...existing,
+      lifecycleState: state as MemoryLifecycleState,
+      updatedAt,
+    };
   }
 
   private async searchByTag(

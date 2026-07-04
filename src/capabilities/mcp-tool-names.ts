@@ -21,6 +21,7 @@ export const MCP_TOOL_NAMES = [
   'register_agent',
   'get_capabilities',
   'negotiate_capabilities',
+  'submit_signal',
   'run_stewardship',
   'get_compression_status',
 ] as const;

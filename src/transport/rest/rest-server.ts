@@ -262,12 +262,13 @@ export async function buildApp(options?: {
       globalIntelligencePorts,
     }),
   );
-  const signalPorts = createSignalIngestPorts(platform.sql, env);
   const learningPorts = createLearningPorts(platform.sql, env);
+  const signalPorts = createSignalIngestPorts(platform.sql, env, {
+    eventBus: platform.eventBus,
+    learningPorts,
+  });
   const signalsController = signalPorts.enabled
-    ? createSignalsController(scopeResolver, signalPorts.normalizer, signalPorts.ingestor, {
-        eventRecorder: learningPorts.enabled ? learningPorts.eventRecorder : undefined,
-      })
+    ? createSignalsController(scopeResolver, signalPorts.ingestDeps)
     : undefined;
   const evolutionController =
     evolutionPorts.enabled && evolutionPorts.service
@@ -338,6 +339,7 @@ export async function buildApp(options?: {
     knowledgeFabricPorts,
     aiBrainPlatformPorts,
     globalIntelligencePorts,
+    signalIngest: signalPorts.enabled ? { enabled: true, ...signalPorts.ingestDeps } : undefined,
   });
 
   fastify.decorate('transportHandlers', transportHandlers);

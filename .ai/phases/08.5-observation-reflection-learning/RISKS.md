@@ -28,12 +28,12 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | ID | Risk | Mitigation path | Status |
 |----|------|-----------------|--------|
-| D85-01 | MCP submit_signal gap | REST ingest → Phase **13.1** | ⏳ Open |
+| D85-01 | MCP submit_signal gap | REST ingest | ✅ Closed |
 | D85-02 | No event bus fan-out on ingest | **8.6** learning store + Phase 12 publisher | ⏳ Open |
 | D85-03 | Ranking adaptation stub | Hot-path bumpImportance; CLI dry-run | ⏳ Open |
 | D85-04 | Rank order E2E gap | Unit tests | ⏳ Open |
 | D85-05 | REST E2E signals | Composition test + staging | ⏳ Open |
-| D85-06 | lifecycleState API | importance / access_count | ⏳ Open |
+| D85-06 | lifecycleState API | importance / access_count | ✅ Closed |
 
 ---
 

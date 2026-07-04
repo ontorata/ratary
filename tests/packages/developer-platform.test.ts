@@ -47,6 +47,7 @@ describe('Developer platform — zero business logic in packages/', () => {
     );
     const parsed = JSON.parse(spec) as { paths: Record<string, unknown> };
     expect(Object.keys(parsed.paths)).toContain('/capabilities');
+    expect(Object.keys(parsed.paths)).toContain('/capabilities/negotiate');
     expect(Object.keys(parsed.paths)).toContain('/memory');
   });
 });

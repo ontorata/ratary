@@ -59,4 +59,14 @@ describe('toMemoryResponse', () => {
     expect(response.createdAtWib).toBe('2026-07-02 07:00:00 WIB');
     expect(response.updatedAtWib).toBe('2026-07-02 21:30:45 WIB');
   });
+
+  it('omits lifecycleState when unset (D85-06)', () => {
+    const response = toMemoryResponse(base);
+    expect(response).not.toHaveProperty('lifecycleState');
+  });
+
+  it('includes lifecycleState when set (D85-06)', () => {
+    const response = toMemoryResponse({ ...base, lifecycleState: 'stale' });
+    expect(response.lifecycleState).toBe('stale');
+  });
 });

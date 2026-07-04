@@ -318,7 +318,7 @@ Phase 7.5 core gate closed **2026-07-04** (ADR-025). Deferred tracks **D7.5-01 /
 | Item | Notes |
 |------|-------|
 | Protocol **2.0** | Breaking changes only with ADR + migration guide (Phase 7 §9) |
-| OpenAPI negotiate schema | Register `POST /capabilities/negotiate` request/response in swagger (additive) |
+| OpenAPI negotiate schema | ✅ Fastify route schemas + `packages/openapi` `POST /capabilities/negotiate` (2026-07-05) |
 | Manifest TTL cache | Optional in-memory cache at builder — not implemented; manifest stays compute-on-read |
 
 ---

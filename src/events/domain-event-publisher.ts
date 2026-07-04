@@ -2,6 +2,7 @@ import type { IEventBus } from '../ports/events/ievent-bus.port.js';
 import type { Memory } from '../types/memory.js';
 import type { MemoryScope } from '../types/memory-scope.js';
 import type { MemoryAccessAuditEntry } from '../ports/audit/imemory-access-auditor.port.js';
+import type { IngestResult, MemoryQualitySignal } from '../ingest/memory-quality-signal.types.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 import { DomainEventTopics } from './domain-event-topics.js';
 import type { IDomainEventPublisher } from './idomain-event-publisher.port.js';
@@ -50,6 +51,29 @@ export class DomainEventPublisher implements IDomainEventPublisher {
         userAgent: entry.userAgent,
       },
       entry.requestId,
+    );
+  }
+
+  async publishMemorySignalReceived(
+    scope: MemoryScope,
+    signal: MemoryQualitySignal,
+    result: IngestResult,
+  ): Promise<void> {
+    await this.safePublish(
+      DomainEventTopics.MEMORY_SIGNAL_RECEIVED,
+      {
+        signalId: signal.signalId,
+        signalType: signal.signalType,
+        memoryId: signal.memoryId ?? null,
+        ownerId: scope.ownerId,
+        workspaceId: workspaceIdFromScope(scope) ?? null,
+        accepted: result.accepted,
+        duplicate: result.duplicate,
+        appliedDelta: result.appliedDelta ?? 0,
+        payload: signal.payload ?? null,
+        observedAt: signal.observedAt,
+      },
+      signal.signalId,
     );
   }
 

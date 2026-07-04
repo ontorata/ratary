@@ -24,6 +24,11 @@
           "tags": { "type": "array", "items": { "type": "string" } },
           "favorite": { "type": "boolean" },
           "archived": { "type": "boolean" },
+          "lifecycleState": {
+            "type": "string",
+            "enum": ["active", "stale", "candidate_compress"],
+            "description": "Optional stewardship lifecycle hint when set"
+          },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         }
@@ -64,6 +69,59 @@
           "prompt": { "type": "string" },
           "memoryCount": { "type": "integer" }
         }
+      },
+      "ClientCapabilityRequest": {
+        "type": "object",
+        "properties": {
+          "protocolVersion": { "type": "string" },
+          "clientInfo": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "version": { "type": "string" }
+            },
+            "required": ["name", "version"]
+          },
+          "requiredCapabilities": { "type": "array", "items": { "type": "string" } },
+          "preferredCapabilities": { "type": "array", "items": { "type": "string" } },
+          "transports": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "CapabilityMatchGroups": {
+        "type": "object",
+        "properties": {
+          "required": { "type": "array", "items": { "type": "string" } },
+          "preferred": { "type": "array", "items": { "type": "string" } },
+          "transports": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["required", "preferred", "transports"]
+      },
+      "CapabilityNegotiationResult": {
+        "type": "object",
+        "properties": {
+          "compatible": { "type": "boolean" },
+          "negotiatedProtocolVersion": { "type": "string" },
+          "serverProtocolVersion": { "type": "string" },
+          "supportedProtocolVersions": { "type": "array", "items": { "type": "string" } },
+          "matched": { "$ref": "#/components/schemas/CapabilityMatchGroups" },
+          "missing": { "$ref": "#/components/schemas/CapabilityMatchGroups" },
+          "serverEnabledCapabilities": { "type": "array", "items": { "type": "string" } },
+          "capabilitiesUrl": { "type": "string" },
+          "negotiateUrl": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "compatible",
+          "negotiatedProtocolVersion",
+          "serverProtocolVersion",
+          "supportedProtocolVersions",
+          "matched",
+          "missing",
+          "serverEnabledCapabilities",
+          "capabilitiesUrl",
+          "negotiateUrl",
+          "timestamp"
+        ]
       }
     }
   },
@@ -82,6 +140,31 @@
         "tags": ["Capabilities"],
         "security": [],
         "responses": { "200": { "description": "Capability manifest" } }
+      }
+    },
+    "/capabilities/negotiate": {
+      "post": {
+        "operationId": "negotiateCapabilities",
+        "tags": ["Capabilities"],
+        "security": [],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ClientCapabilityRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Negotiation result matrix",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CapabilityNegotiationResult" }
+              }
+            }
+          }
+        }
       }
     },
     "/ecosystem/clients": {

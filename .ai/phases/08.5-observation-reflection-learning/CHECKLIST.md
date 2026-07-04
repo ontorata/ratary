@@ -50,25 +50,25 @@
 
 | ID | Item | Status | Owner / notes |
 |----|------|--------|---------------|
-| D85-01 | MCP `submit_signal` tool | ⏳ Open | **Mitigation:** REST `POST /api/v1/signals` — same `SignalsController` → Phase **13.1** MCP parity |
-| D85-02 | Phase 12 `IEventBus.publish('memory.signal.received')` | ⏳ Open | **Mitigation:** **8.6** `LearningEventRecorder` when ingest + learning ON; topic in `domain-event-topics.ts` |
-| D85-03 | `RANKING_ADAPTATION_ENABLED` batch weight mutation | ⏳ Open | **Mitigation:** hot-path `bumpImportance`; `reflect:signals` dry-run only — keep flag `false` |
-| D85-04 | Ranker sort-order integration test | ⏳ Open | **Mitigation:** `importance-scoring-policy.test.ts` + `signal-ingest.test.ts` |
-| D85-05 | REST E2E `POST /signals` with auth fixture | ⏳ Open | **Mitigation:** `signal-ingest-ports.test.ts`; staging E2E with flag ON |
-| D85-06 | `lifecycleState` on GET memory | ⏳ Open | **Mitigation:** use `importance` / `access_count`; column migrated |
+| D85-01 | MCP `submit_signal` tool | ✅ Closed | MCP `submit_signal` + shared `processSignalIngest` handler path |
+| D85-02 | Phase 12 `IEventBus.publish('memory.signal.received')` | ✅ Closed | `DomainEventPublisher.publishMemorySignalReceived` on ingest |
+| D85-03 | `RANKING_ADAPTATION_ENABLED` batch weight mutation | ✅ Closed | `SignalReflectionRunner` + `reflect:signals --execute` |
+| D85-04 | Ranker sort-order integration test | ✅ Closed | `ranker.test.ts` — importance delta reorder (D85-04) |
+| D85-05 | REST E2E `POST /signals` with auth fixture | ✅ Closed | `tests/api/signals.test.ts` |
+| D85-06 | `lifecycleState` on GET memory | ✅ Closed | Column + `GET /memory/:id` optional field when set |
 
 ### Checklist (frozen at gate)
 
-- [ ] D85-01 — MCP `submit_signal` tool
-- [ ] D85-02 — Phase 12 event publish `memory.signal.received`
-- [ ] D85-03 — `RANKING_ADAPTATION_ENABLED` batch weight mutation (beyond advisory stub)
-- [ ] D85-04 — Ranker sort-order integration test
-- [ ] D85-05 — REST E2E signals route test
-- [ ] D85-06 — Expose `lifecycleState` on GET memory (optional metadata)
+- [x] D85-01 — MCP `submit_signal` tool
+- [x] D85-02 — Phase 12 event publish `memory.signal.received`
+- [x] D85-03 — `RANKING_ADAPTATION_ENABLED` batch weight mutation (beyond advisory stub)
+- [x] D85-04 — Ranker sort-order integration test
+- [x] D85-05 — REST E2E signals route test
+- [x] D85-06 — Expose `lifecycleState` on GET memory (optional metadata)
 
 **Partial bridge (post-gate):** Phase **8.6** `LearningEventRecorder` appends to learning event store when `SIGNAL_INGEST_ENABLED=true` **and** `LEARNING_ENGINE_ENABLED=true` — mitigates analytics need until **D85-02** bus publish lands.
 
-**Regression:** 689 at gate → **736** platform snapshot (2026-07-05)
+**Regression:** 689 at gate → **749** platform snapshot (2026-07-05)
 
 ---
 

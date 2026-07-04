@@ -6,27 +6,31 @@ import type { Memory } from '../../src/types/memory.js';
 
 const sampleMemory: Memory = {
   id: 'mem-1',
+  codename: null,
+  slug: null,
   title: 'Test',
   project: 'ai-brain',
   content: 'content',
-  summary: null,
+  summary: '',
   tags: [],
   keywords: [],
-  category: null,
+  category: '',
   memoryType: 'note',
   importance: 50,
   language: 'en',
-  notes: null,
-  codename: null,
-  slug: null,
+  notes: '',
   favorite: false,
   archived: false,
   ownerId: 'owner-1',
-  workspaceId: null,
+  projectId: 'ai-brain',
   level: 'note',
+  lastAccessed: null,
+  accessCount: 0,
+  embeddingId: null,
+  objectKey: null,
+  semanticHash: null,
   createdAt: '2026-07-04T00:00:00.000Z',
   updatedAt: '2026-07-04T00:00:00.000Z',
-  lastModifiedByAgentId: null,
 };
 
 describe('DomainEventPublisher (Phase 12)', () => {
@@ -41,6 +45,35 @@ describe('DomainEventPublisher (Phase 12)', () => {
     await publisher.publishMemoryCreated({ ownerId: 'owner-1' }, sampleMemory);
 
     expect(received).toEqual(['mem-1']);
+  });
+
+  it('publishes memory.signal.received (D85-02)', async () => {
+    const bus = new InMemoryEventBus();
+    const payloads: unknown[] = [];
+    await bus.subscribe(DomainEventTopics.MEMORY_SIGNAL_RECEIVED, async (event) => {
+      payloads.push(event.payload);
+    });
+
+    const publisher = new DomainEventPublisher(bus);
+    await publisher.publishMemorySignalReceived(
+      { ownerId: 'owner-1' },
+      {
+        signalId: 'sig-1',
+        signalType: 'explicit_feedback',
+        memoryId: 'mem-1',
+        ownerId: 'owner-1',
+        payload: { value: 'helpful' },
+        observedAt: '2026-07-05T00:00:00.000Z',
+      },
+      { accepted: true, duplicate: false, appliedDelta: 5 },
+    );
+
+    expect(payloads).toHaveLength(1);
+    expect(payloads[0]).toMatchObject({
+      signalId: 'sig-1',
+      memoryId: 'mem-1',
+      appliedDelta: 5,
+    });
   });
 
   it('isolates publish errors from callers', async () => {

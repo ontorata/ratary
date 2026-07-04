@@ -9,3 +9,5 @@ export type { ISignalNormalizer, SignalAuthContext } from './isignal-normalizer.
 export { DefaultSignalNormalizer } from './default-signal-normalizer.js';
 export { MemorySignalIngestor } from './memory-signal-ingestor.js';
 export { ImportanceScoringPolicy, type MemorySnapshot } from './importance-scoring-policy.js';
+export { processSignalIngest, type SignalIngestDeps } from './process-signal-ingest.js';
+export { SignalReflectionRunner, type SignalReflectionReport } from './signal-reflection-runner.js';

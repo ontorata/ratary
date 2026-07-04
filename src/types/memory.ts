@@ -5,6 +5,9 @@ import { MEMORY_LEVELS, type MemoryLevel } from './memory-level.js';
 export { MEMORY_LEVELS, DEFAULT_MEMORY_LEVEL } from './memory-level.js';
 export type { MemoryLevel } from './memory-level.js';
 
+export const MEMORY_LIFECYCLE_STATES = ['active', 'stale', 'candidate_compress'] as const;
+export type MemoryLifecycleState = (typeof MEMORY_LIFECYCLE_STATES)[number];
+
 export const memoryRowSchema = z.object({
   id: z.string().uuid(),
   title: z.string(),
@@ -34,6 +37,7 @@ export const memoryRowSchema = z.object({
   semantic_hash: z.string().nullable().optional(),
   workspace_id: z.string().nullable().optional(),
   last_modified_by_agent_id: z.string().nullable().optional(),
+  lifecycle_state: z.string().nullable().optional(),
 });
 
 export type MemoryRow = z.infer<typeof memoryRowSchema>;
@@ -63,6 +67,7 @@ export interface Memory {
   embeddingId: string | null;
   objectKey: string | null;
   semanticHash: string | null;
+  lifecycleState?: MemoryLifecycleState | null;
   createdAt: string;
   updatedAt: string;
 }

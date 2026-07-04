@@ -12,11 +12,16 @@ export interface ScoredMemoryResponse extends MemoryResponse {
 }
 
 export function toMemoryResponse(memory: Memory): MemoryResponse {
-  return {
-    ...memory,
+  const { lifecycleState, ...rest } = memory;
+  const response: MemoryResponse = {
+    ...rest,
     createdAtWib: formatWIB(memory.createdAt),
     updatedAtWib: formatWIB(memory.updatedAt),
   };
+  if (lifecycleState != null) {
+    response.lifecycleState = lifecycleState;
+  }
+  return response;
 }
 
 export function toScoredMemoryResponse(memory: ScoredMemory): ScoredMemoryResponse {
