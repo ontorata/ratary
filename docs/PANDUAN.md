@@ -90,7 +90,7 @@ Jangan commit atau share file `.env`.
 | Connection closed (Windows) | Pakai `command: "cmd"` — lihat §6 |
 | AI tidak pakai memory | Sebut proyek + topik |
 | Memory kosong | Normal di DB baru — simpan dulu |
-| MCP error production | Set `MCP_OWNER_ID` |
+| MCP error production | Set `MCP_OWNER_ID` di `.env`, atau pastikan `.env` punya `NODE_ENV=development` untuk dev lokal (stdio memuat `.env` dengan override). Reload MCP. |
 | Claude pending approval | `claude` di folder repo → approve |
 | ChatGPT | MCP stdio tidak didukung — pakai REST API + `aic_...` key |
 

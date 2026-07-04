@@ -1,3 +1,4 @@
+import './load-mcp-env.js';
 import { startMcpStdioServer } from './server.js';
 
 startMcpStdioServer().catch((error) => {
