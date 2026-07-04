@@ -5,9 +5,119 @@ Second brain untuk AI coding assistant — simpan, cari, dan akses seluruh knowl
 Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemini CLI**, **ChatGPT (REST API)**, dan AI lain yang mendukung MCP stdio.  
 → Panduan lengkap: **[docs/PANDUAN.md](docs/PANDUAN.md)**
 
+## Kenapa AI Brain?
+
+AI Brain bukan sekadar “simpan catatan” — ini **memory foundation** yang dirancang khusus untuk asisten coding: scoped per owner, diakses lewat **MCP + REST** dengan logic yang sama, dan dioptimalkan agar **hemat token** tanpa kehilangan jejak knowledge (codename, relasi, graph).
+
+### Benchmark token context
+
+Fixture standar repo: **20 memory × ~2.400 karakter body** + summary otomatis (≤300 karakter).  
+Estimasi token memakai heuristic `chars/4` (±10% vs tokenizer model nyata).
+
+Jalankan ulang kapan saja:
+
+```bash
+npm run benchmark:context-tokens
+```
+
+| Strategi | Token (~) | Penghematan vs dump mentah |
+|----------|-----------|----------------------------|
+| Naive full dump (semua body) | ~10.935 | 0% (baseline) |
+| ContextBuilder default (12k chars) | ~2.541 | **76,8%** |
+| **Summary-only (default MCP `get_context`)** | **~1.588** | **85,5%** |
+| Summary-only (top 5 memory) | ~402 | **96,3%** |
+| Codename index (fetch on demand) | ~305 | **97,2%** |
+
+**Implikasi praktis:** dengan default summary-only, Anda bisa memasukkan **~7× lebih banyak konteks** ke jendela token yang sama — atau membayar jauh lebih sedikit untuk handoff antar sesi AI.
+
+Progressive retrieval (`IRetrievalPolicy`) dan capability manifest (`GET /api/v1/capabilities`) membuat perilaku ini **terprediksi dan discoverable** oleh agent runtime eksternal.
+
+### Perbandingan singkat vs proyek sejenis
+
+| Aspek | AI Brain | Mem0 / Zep (hosted memory) | Cursor memory built-in | RAG generik (vector DB + chunk) |
+|-------|----------|----------------------------|------------------------|----------------------------------|
+| **Self-host & data sovereignty** | ✅ D1/Postgres milik Anda | ⚠️ SaaS / cloud vendor | ❌ Terikat Cursor | ⚠️ Tergantung stack |
+| **MCP native (Cursor, Claude Code, …)** | ✅ 20 tools + stdio | ✅ (Mem0 MCP) | ✅ (hanya Cursor) | ❌ Perlu glue code |
+| **REST + OpenAPI + auth** | ✅ API key, RBAC, audit | ✅ (berbayar tier) | ❌ | ⚠️ DIY |
+| **Owner / workspace isolation** | ✅ ADR-governed, 457 tests | ⚠️ Tenant model vendor | ❌ Single user | ⚠️ DIY |
+| **Knowledge graph + relasi** | ✅ BFS traverse, hybrid retrieval | ⚠️ Graph di Zep | ❌ | ❌ |
+| **Token-efficient context default** | ✅ Summary-first ~85%+ | ⚠️ Bervariasi | ⚠️ Tidak terukur | ❌ Sering dump full chunk |
+| **Agent runtime di repo** | ❌ By design (boundary jelas) | ⚠️ Kadang bundled | ✅ | N/A |
+| **Arsitektur & ADR** | ✅ 26 ADR, fase 1–10 + tracks | ⚠️ Closed source / docs terbatas | ❌ | ❌ |
+
+### Analisis SWOT
+
+| | |
+|---|---|
+| **Strengths (Kekuatan)** | Memory foundation matang (fase 1–10 ✅); **MCP + REST satu codebase**; default **summary-only ~85% hemat token**; hybrid retrieval (SQL + vector + graph); multi-AI workspace; **457 automated tests**; manifest capability untuk agent; self-host Cloudflare D1 (free tier) atau Postgres enterprise |
+| **Weaknesses (Kelemahan)** | Butuh setup D1/env sendiri (bukan plug-and-play SaaS); tidak ada UI dashboard siap pakai; embedding OpenAI opsional (noop default); dokumentasi orientasi developer/architect |
+| **Opportunities (Peluang)** | Tim multi-AI (Cursor + Claude Code + custom bot) sharing satu brain; cutover Postgres/R2/pgvector (fase 11); semantic compression & quality signals (tracks 5.5–8.5); integrasi CI/handoff otomatis via MCP |
+| **Threats (Ancaman)** | Vendor memory SaaS (Mem0, Zep) bergerak cepat; Cursor/IDE menambah memory native yang “cukup baik” untuk solo dev; risiko scope creep ke agent runtime (dicegah konstitusi) |
+
+**Kapan pilih AI Brain?** Anda butuh **memori coding persisten, portable antar AI client, terukur token-nya, dan under your control** — bukan sekadar chat history atau RAG dokumen generik.
+
+**Kapan pertimbangkan alternatif?** Solo dev yang hanya pakai Cursor dan tidak peduli portability → built-in memory mungkin cukup. Tim yang ingin zero-ops sepenuhnya → SaaS memory layer. Use case pure document Q&A tanpa struktur memory → RAG vector store saja.
+
+### Dukungan platform
+
+#### AI client & protokol (saat ini ✅)
+
+| Platform | Cara akses | Status | Catatan |
+|----------|------------|--------|---------|
+| **Cursor** | MCP stdio | ✅ Didukung | `npm run setup` → `.cursor/mcp.json` |
+| **Claude Code** | MCP stdio | ✅ Didukung | `.mcp.json` |
+| **Roo Code** | MCP stdio | ✅ Didukung | `.roo/mcp.json` |
+| **Cline** | MCP stdio | ✅ Didukung | via UI MCP settings |
+| **Gemini CLI** | MCP stdio | ✅ Didukung | `.gemini/settings.json` |
+| **VS Code Copilot** | MCP stdio | ✅ Didukung | `.vscode/mcp.json` |
+| **Claude Desktop** | MCP stdio | ✅ Didukung | config global `%APPDATA%\Claude\` |
+| **Windsurf / IDE MCP-compatible** | MCP stdio | ✅ Didukung* | *Setara MCP stdio generik |
+| **Custom bot / CI** | REST API | ✅ Didukung | `Authorization: Bearer aic_...` |
+| **ChatGPT / Actions** | REST API | ✅ Didukung | MCP stdio **tidak** didukung ChatGPT |
+| **Agent runtime eksternal** | REST + MCP | ✅ Didukung | `GET /api/v1/capabilities`, 20 MCP tools |
+
+Semua client MCP di atas **menulis ke D1/Postgres yang sama** — memory portable antar AI.
+
+#### Runtime & deploy (saat ini ✅)
+
+| Platform | Peran | Status |
+|----------|-------|--------|
+| **Node.js 24.x** | Runtime wajib | ✅ |
+| **Windows / macOS / Linux** | Dev + MCP | ✅ |
+| **Local dev** | `npm run dev` | ✅ |
+| **Vercel** | REST API produksi | ✅ `ai-brain-beryl.vercel.app` |
+| **Cloudflare D1** | Metadata DB default | ✅ |
+
+#### Storage & adapter infrastruktur (saat ini ✅ opt-in)
+
+Default deploy = **D1-only** (tanpa adapter eksternal). Adapter di bawah aktif via env ([PANDUAN §8](docs/PANDUAN.md)):
+
+| Kategori | Provider didukung | Default | Opt-in |
+|----------|-------------------|---------|--------|
+| Metadata SQL | Cloudflare D1, **PostgreSQL** | D1 | `SQL_PROVIDER=postgres` |
+| Vector store | D1 inline, **pgvector** | D1 | `VECTOR_PROVIDER=pgvector` |
+| Object storage | inline, **Cloudflare R2**, **S3** | inline | `OBJECT_STORAGE_PROVIDER=r2\|s3` |
+| Search index | SQL lexical, **Meilisearch** | sql | `SEARCH_PROVIDER=meilisearch` |
+| Graph store | D1 relations, **Neo4j** | d1 | `GRAPH_PROVIDER=neo4j` |
+| Cache | none, memory, **Redis/Valkey** | none | `CACHE_PROVIDER=redis` |
+| Event bus | none, noop, **Redis Streams** | none | `EVENT_BUS_PROVIDER=redis` |
+| Analytics | none, **DuckDB** (dev ref) | none | `ANALYTICS_PROVIDER=duckdb` |
+| Embedding | noop, **OpenAI** | noop | `EMBEDDING_PROVIDER=openai` |
+
+#### Roadmap platform (berikutnya 🔲)
+
+| Fase | Fokus | Platform / capability baru |
+|------|-------|----------------------------|
+| **11 — Production Ops** 🔄 | Cutover metadata | **Postgres produksi** (ADR-018), staging harness, runbook rollback |
+| **12 — Event Pipeline** 🔲 | Async & observability | **Redis Streams consumers**, audit fan-out, OTel runbook |
+| **13 — Content Scale** 🔲 | Skala konten & vektor | **R2/S3** body offload, **pgvector** produksi, embedding job hardening |
+| **14 — Search & Graph Prod** 🔲 | Index & graph skala | **Meilisearch** + **Neo4j** produksi, backfill terbukti di staging |
+| **External** 🔲 | Ekosistem | npm **`@ai-brain/client` SDK** (di luar repo), MCP `submit_signal` (env-gated) |
+
+Detail timeline: [.ai/phases/roadmap/10-POST-ROADMAP.md](.ai/phases/roadmap/10-POST-ROADMAP.md) · status live: [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md)
+
 ## Tech Stack
 
-- **Fastify** + **TypeScript** — REST API
 - **Cloudflare D1** — SQLite serverless database (default metadata store)
 - **Platform adapters** — Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j (opt-in, Phase 10)
 - **MCP Server** — Model Context Protocol untuk integrasi AI
@@ -66,6 +176,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 9.5 — Platform Architecture | ✅ | [.ai/phases/09.5-platform-architecture/](.ai/phases/09.5-platform-architecture/) · [ADR-008](docs/adr/008-platform-architecture.md) |
 | 10 — Enterprise | ✅ | [.ai/phases/10-enterprise/](.ai/phases/10-enterprise/) · [ADR-008–016](docs/adr/README.md) |
 | 11 — Production Ops | 🔲 In Progress | [.ai/phases/11-production-ops/](.ai/phases/11-production-ops/) · [ADR-018](docs/adr/018-production-postgres-cutover.md) |
+| 5.5–8.5 — Extension tracks | ✅ | Compression · Progressive retrieval · Capability API · Quality signals · [ADR-023–026](docs/adr/README.md) |
 
 *Desain historis (read-only): [docs/archive/](docs/archive/). Perintah backfill/migrate: lihat [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
 
@@ -444,7 +555,8 @@ curl https://ai-brain-beryl.vercel.app/api/v1/memory?limit=3 \
 
 ```bash
 npm run dev                    # Server lokal
-npm run test                   # Unit + E2E (402 tests)
+npm run test                   # Unit + E2E (457 tests)
+npm run benchmark:context-tokens  # Token savings benchmark
 npm run test:integration       # Verifikasi D1 live
 npm run mcp                    # MCP standalone
 npm run import:backups         # Import backup markdown
@@ -491,8 +603,9 @@ Panduan setup per client: **[docs/PANDUAN.md](docs/PANDUAN.md)**
 | `list_workspaces` | List workspaces for MCP owner (Phase 9) |
 | `list_agents` | List agents in MCP workspace (Phase 9) |
 | `register_agent` | Register agent in MCP workspace (Phase 9) |
+| `get_capabilities` | Deployment capability manifest (Phase 7.5) |
 
-See also: `get_memory_by_codename`, `get_context`, `build_prompt`, `link_memories`, `list_relations` — **19 tools** total in MCP server.
+See also: `get_memory_by_codename`, `get_context`, `build_prompt`, `link_memories`, `list_relations` — **20 tools** total in MCP server.
 
 ## REST API Endpoints
 
@@ -546,6 +659,8 @@ curl http://localhost:3001/api/v1/memory \
 | POST | `/api/v1/auth/token` | Issue JWT |
 | GET | `/api/v1/backup/export` | Export JSON |
 | POST | `/api/v1/backup/import` | Import JSON |
+| GET | `/api/v1/capabilities` | Capability manifest (public, Phase 7.5) |
+| POST | `/api/v1/signals` | Quality signal ingest (env-gated, Phase 8.5) |
 | GET | `/api/v1/graph/capabilities` | Graph traversal capabilities (Phase 8) |
 | POST | `/api/v1/graph/traverse` | BFS traverse from seed memory (Phase 8) |
 | GET | `/api/v1/workspaces` | List workspaces (Phase 9) |
@@ -632,7 +747,8 @@ Lihat [Langkah 7 — Folder cadangan chat](#langkah-7--folder-cadangan-chat-opsi
 npm run dev          # Start dev server (disarankan, graceful shutdown)
 npm run build:local  # Compile TypeScript → dist/
 npm start            # Jalankan dist/ (butuh build:local dulu)
-npm run test         # Run tests (402 unit + E2E)
+npm run test         # Run tests (457 unit + E2E)
+npm run benchmark:context-tokens  # Context token benchmark
 npm run lint         # ESLint
 npm run format       # Prettier
 npm run format:check # CI format gate
