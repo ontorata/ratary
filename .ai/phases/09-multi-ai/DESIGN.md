@@ -1,7 +1,7 @@
 ﻿# Phase 9 — Multi-AI — DESIGN
 
 **Document:** DESIGN  
-**Phase status:** Ready (pending ADR-007 Approved)  
+**Phase status:** ✅ Complete — ADR-007 Implemented (2026-07-03)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [ADR-002](../../../docs/adr/002-workspace-identity-model.md) · Implementation: [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md)
 
@@ -158,7 +158,7 @@ Existing memory routes unchanged; optional header **`X-Workspace-Id`**.
 |------------|--------|
 | Phase 3 Auth | ✅ |
 | ADR-002 contract | ✅ Approved |
-| ADR-007 implementation ADR | 🔲 Proposed |
+| ADR-007 implementation ADR | ✅ Approved · Implemented |
 | Phase 8 Graph | ✅ Complete |
 
 ---

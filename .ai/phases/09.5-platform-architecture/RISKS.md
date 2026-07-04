@@ -1,6 +1,6 @@
 # Phase 9.5 — Platform Architecture — RISKS
 
-**Status:** Active  
+**Status:** Closed (gate PASS 2026-07-03)  
 **ADR:** [ADR-008](../../../docs/adr/008-platform-architecture.md)
 
 ---

@@ -21,10 +21,7 @@ class RecordingPostgresClient implements ISqlDatabase {
     this.existingColumns.get(table)!.add(column);
   }
 
-  async query<T = Record<string, unknown>>(
-    sql: string,
-    params?: readonly unknown[],
-  ): Promise<T[]> {
+  async query<T = Record<string, unknown>>(sql: string, params?: readonly unknown[]): Promise<T[]> {
     this.queryCalls.push({ sql, params });
 
     if (/information_schema\.columns/i.test(sql) && params?.length === 2) {
@@ -83,9 +80,9 @@ describe('runPostgresMigrations', () => {
       /ALTER TABLE workspaces ADD COLUMN organization_id/i.test(s),
     ).length;
     expect(alterCount).toBe(0);
-    expect(client.executeCalls.some((s) => /CREATE TABLE IF NOT EXISTS organizations/i.test(s))).toBe(
-      true,
-    );
+    expect(
+      client.executeCalls.some((s) => /CREATE TABLE IF NOT EXISTS organizations/i.test(s)),
+    ).toBe(true);
   });
 
   it('should be idempotent (second run does not throw)', async () => {
@@ -122,7 +119,9 @@ describe('runSchemaMigrations dialect routing', () => {
 
     await runSchemaMigrations(client, 'sqlite');
 
-    expect(client.query).toHaveBeenCalledWith(expect.stringContaining('PRAGMA table_info(memories)'));
+    expect(client.query).toHaveBeenCalledWith(
+      expect.stringContaining('PRAGMA table_info(memories)'),
+    );
     expect(client.query).not.toHaveBeenCalledWith(
       expect.stringContaining('information_schema'),
       expect.anything(),

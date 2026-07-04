@@ -35,9 +35,13 @@
 
 ## Pre-production checklist
 
-- [ ] Run `scripts/backfill-organizations.ts` on production D1 after deploy
-- [ ] Confirm `ENTERPRISE_RBAC=false` unless membership data ready
-- [ ] Seed `workspace_memberships` before enabling RBAC
+These are **production deployment actions** — not phase gate blockers. Phase 10 gate passed with default config unchanged (`ENTERPRISE_RBAC=false`).
+
+| # | Action | When |
+|---|--------|-------|
+| 1 | Run `scripts/backfill-organizations.ts` on production D1 | Before enabling org features |
+| 2 | Confirm `ENTERPRISE_RBAC=false` unless membership data ready | Default is `false` — safe to deploy |
+| 3 | Seed `workspace_memberships` before enabling RBAC | Before `ENTERPRISE_RBAC=true` |
 
 ---
 

@@ -50,7 +50,7 @@ Memory → Knowledge → Embedding → Vector → Graph → Agent Runtime → Mu
   ✅        ✅           ✅       ✅        ✅         ✅            ✅          ✅              🔲
 ```
 
-**Metrics (current):** 405 tests · 19 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
+**Metrics (current):** 420 tests · 19 MCP tools · REST on Vercel · D1 default · platform adapters opt-in
 
 **Post–Phase 10 plan:** [10-POST-ROADMAP.md](10-POST-ROADMAP.md)
 

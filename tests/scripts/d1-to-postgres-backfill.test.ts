@@ -43,7 +43,11 @@ class InMemorySql implements ISqlDatabase {
     return [] as T[];
   }
 
-  private applyOwnerFilter(sql: string, params: readonly unknown[] | undefined, rows: Row[]): Row[] {
+  private applyOwnerFilter(
+    sql: string,
+    params: readonly unknown[] | undefined,
+    rows: Row[],
+  ): Row[] {
     if (!sql.includes('WHERE') || !params?.length) {
       return rows;
     }

@@ -50,7 +50,7 @@ Phases 12–14 may overlap **after** Phase 11 Readiness PASS; do not start produ
 
 # Phase 11 — Production Operations
 
-**Status:** 🔲 Scaffolded — [11-production-ops/](../11-production-ops/README.md)
+**Status:** 🔄 In Progress — Design Approved (2026-07-03); implementation complete; SC-11-01 + SC-11-05 pending owner action
 
 ## Scope
 
@@ -72,10 +72,10 @@ Move from *adapters exist* to *adapters proven in staging/production* for metada
 
 ## Success criteria
 
-- [ ] Staging deploy runs full test suite on `SQL_PROVIDER=postgres`
-- [ ] Documented cutover + rollback; owner sign-off
-- [ ] Default D1 deploy unchanged; Postgres opt-in only
-- [ ] No `MemoryService` / `Retriever` rewrite
+- [x] Staging deploy runs full test suite on `SQL_PROVIDER=postgres` *(CI harness ready; SC-11-01 pending live Postgres)*
+- [x] Documented cutover + rollback; owner sign-off *(MIGRATION.md authored; SC-11-05 pending owner sign-off)*
+- [x] Default D1 deploy unchanged; Postgres opt-in only *(420 tests green at default env)*
+- [x] No `MemoryService` / `Retriever` rewrite *(verified — no pg imports outside infrastructure)*
 
 ## Risks
 

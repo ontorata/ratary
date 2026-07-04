@@ -2,10 +2,12 @@ import pg from 'pg';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { MemoryRepository } from '../../src/repositories/memory.repository.js';
 import { createPostgresSqlDatabase } from '../../src/infrastructure/sql/postgres-sql-database.adapter.js';
-import { applyPostgresSchema, applyPostgresSchemaToDatabase } from '../../scripts/lib/postgres-schema.js';
+import {
+  applyPostgresSchema,
+  applyPostgresSchemaToDatabase,
+} from '../../scripts/lib/postgres-schema.js';
 
-const stagingEnabled =
-  process.env.POSTGRES_STAGING === '1' && Boolean(process.env.DATABASE_URL);
+const stagingEnabled = process.env.POSTGRES_STAGING === '1' && Boolean(process.env.DATABASE_URL);
 
 describe.skipIf(!stagingEnabled)('Postgres staging integration', () => {
   const connectionString = process.env.DATABASE_URL!;

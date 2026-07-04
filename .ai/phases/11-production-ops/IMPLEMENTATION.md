@@ -1,7 +1,7 @@
 # Phase 11 — Production Operations — IMPLEMENTATION
 
 **Document:** IMPLEMENTATION  
-**Phase status:** Planned — Readiness PASS (2026-07-03)  
+**Phase status:** ✅ Ready — Owner Approved (2026-07-03)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Design:** [DESIGN.md](DESIGN.md) · **ADR-018:** [Production Postgres cutover](../../../docs/adr/018-production-postgres-cutover.md)
 
@@ -298,21 +298,24 @@ If staging harness blocks CI: disable workflow with owner approval; track in `RI
 | `db:apply-postgres-schema` | ✅ | `scripts/apply-postgres-schema.ts`, `scripts/lib/postgres-schema.ts` |
 | Postgres CI job | ✅ | `.github/workflows/postgres-staging.yml`, `npm run test:postgres-staging` |
 | Backfill + parity scripts | ✅ | `scripts/lib/d1-to-postgres-backfill.ts`, `scripts/backfill-d1-to-postgres.ts`, `scripts/verify-postgres-parity.ts`, `tests/scripts/d1-to-postgres-backfill.test.ts` |
-| `MIGRATION.md` | 🔲 | — |
-| Staging harness PASS | 🔲 | — |
-| Ops docs (11D) | 🔲 | — |
-| 11C repo split | ⏸️ Deferred | — |
-| Phase gate REVIEW | 🔲 | — |
+| `MIGRATION.md` runbook | ✅ | [MIGRATION.md](MIGRATION.md) — cutover S0→S4, rollback, FK order |
+| Ops docs (11D) | ✅ | [PANDUAN.md §8](https://github.com/lutfi04/ai-brain/blob/main/docs/PANDUAN.md#8-infrastruktur-platform-fase-10--11) — Postgres ops matrix |
+| TESTING.md | ✅ | [TESTING.md](TESTING.md) — gate evidence |
+| REVIEW.md | ✅ | [REVIEW.md](REVIEW.md) — gate verdict; owner sign-off pending |
+| COMPLETION.md | ✅ | [COMPLETION.md](COMPLETION.md) — success criteria evidence |
+| RETROSPECTIVE.md | ✅ | [RETROSPECTIVE.md](RETROSPECTIVE.md) — lessons learned |
+| Staging harness PASS | 🔲 Pending | Requires live Postgres — owner provides `DATABASE_URL` |
+| 11C repo split | ⏸️ Deferred | Optional; requires ADR-019 if structural |
 
 ---
 
 ## Handoff notes
 
-1. Start with **C11-1** — unblocks all scripts and harness.
-2. Do not production-flip until **C11-4** green + **C11-6** dry-run on staging copy of prod data.
-3. Name staging Postgres provider in `MIGRATION.md` when owner confirms (Readiness condition).
-4. Update milestone table in this document as commits land.
+1. All implementation artifacts delivered — C11-1 through C11-8 complete.
+2. **Do not production-flip** until staging harness PASS + owner sign-off.
+3. Owner must provide staging Postgres target (`DATABASE_URL`) to complete SC-11-01.
+4. Owner sign-off required for SC-11-05 — record in [REVIEW.md](REVIEW.md) sign decision record.
 
 ---
 
-*Implementation plan 2026-07-03. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
+*Implementation plan 2026-07-03. Updated 2026-07-04 with all artifacts delivered. Subordinate to [DESIGN.md](DESIGN.md) and [ADR-018](../../../docs/adr/018-production-postgres-cutover.md).*
