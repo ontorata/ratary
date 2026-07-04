@@ -58,6 +58,36 @@ export interface BuildContextResult {
 
 export type CapabilityManifest = Record<string, unknown>;
 
+export interface ClientCapabilityRequest {
+  protocolVersion?: string;
+  clientInfo?: { name: string; version: string };
+  requiredCapabilities?: string[];
+  preferredCapabilities?: string[];
+  transports?: string[];
+}
+
+export interface CapabilityNegotiationResult {
+  compatible: boolean;
+  negotiatedProtocolVersion: string;
+  serverProtocolVersion: string;
+  supportedProtocolVersions: readonly string[];
+  matched: {
+    required: string[];
+    preferred: string[];
+    transports: string[];
+  };
+  missing: {
+    required: string[];
+    preferred: string[];
+    transports: string[];
+  };
+  serverEnabledCapabilities: string[];
+  capabilitiesUrl: string;
+  negotiateUrl: string;
+  clientInfo?: { name: string; version: string };
+  timestamp: string;
+}
+
 export interface EcosystemClientProfile {
   clientType: string;
   displayName: string;

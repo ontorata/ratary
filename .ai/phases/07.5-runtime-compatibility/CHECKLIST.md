@@ -38,15 +38,15 @@
 
 | ID | Item | Status | Owner / notes |
 |----|------|--------|---------------|
-| D7.5-01 | Condensed manifest in MCP `initialize` `serverInfo` metadata | ⏳ Open | **Phase 13.1 follow-up** — optional additive snapshot (`protocolVersion`, `toolCount`, manifest URL); full manifest remains `get_capabilities` / REST |
+| D7.5-01 | Condensed manifest in MCP `initialize` `serverInfo` metadata | ✅ Closed | **D7.5-01** — `_meta['io.aibrain/capabilities']` + `serverInfo.description` + `instructions`; full manifest remains `get_capabilities` / REST |
 | D7.5-02 | Client SDK package | ✅ Closed | **Phase 16** (ADR-031) — `@ai-brain/sdk` in `packages/sdk` + language wrappers; supersedes external `@ai-brain/client` name from Phase 7.5 DESIGN |
-| D7.5-03 | Remote capability negotiation handshake | ⏳ Open | **Phase 13+** — bidirectional client↔server protocol version / feature matrix exchange; manifest is pull-only today |
+| D7.5-03 | Remote capability negotiation handshake | ✅ Closed | **D7.5-03** — `POST /api/v1/capabilities/negotiate`, MCP `negotiate_capabilities`, initialize `_meta['io.aibrain/capabilities-request'|'capabilities-negotiation']` |
 
 ### Checklist (frozen at gate)
 
-- [ ] D7.5-01 — Condensed manifest in MCP `initialize` `serverInfo` metadata
+- [x] D7.5-01 — Condensed manifest in MCP `initialize` `serverInfo` metadata
 - [x] D7.5-02 — Client SDK — `@ai-brain/sdk` (Phase 16; was `@ai-brain/client` in DESIGN)
-- [ ] D7.5-03 — Remote capability negotiation handshake
+- [x] D7.5-03 — Remote capability negotiation handshake
 
 **Mitigation while open:** agents call `get_capabilities` or `GET /api/v1/capabilities` explicitly; SDK `CapabilitiesApi.get()` (Phase 16).
 

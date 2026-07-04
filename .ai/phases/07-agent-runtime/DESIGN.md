@@ -1007,11 +1007,11 @@ interface MemoryScope {
 
 ---
 
-## 17. Event Model (Future Only)
+## 17. Event Model
 
-### Event contract (Phase 10+)
+> **Successor (Phase 12 — landed 2026-07-04):** `IEventBus` consumers, audit fan-out (`memory.accessed`), domain topics. Default `EVENT_BUS_PROVIDER=none` — zero hot-path change. Contract below authored at Phase 7 gate; shapes align with Phase 12 implementation (ADR-020).
 
-This section defines the **contract** for future event bus integration. No implementation in Phase 7.
+### Event contract (Phase 7 design → Phase 12 implementation)
 
 ```typescript
 // Future event types (Phase 10+)
@@ -1175,7 +1175,12 @@ interface IEventBus {
 | 8 | Complete | Knowledge graph |
 | 9 | Complete | Multi-AI |
 | 10 | Complete | Enterprise (opt-in adapters) |
-| 12 | Future | Event bus / async pipeline |
+| 12 | Complete | Event pipeline / async bus (ADR-020; opt-in `EVENT_BUS_PROVIDER`) |
+| 13 | Complete | Protocol layer (streaming SSE/WS/gRPC) |
+| 13.1 | Complete | Remote MCP (ADR-048) |
+| 19 | Future | Full observability platform (Grafana/SLO — distinct from Phase 12 bus) |
+
+> **Snapshot note:** Table updated post-gate (2026-07-05). Phase 7 gate (2026-07-03) listed Phase 12 as Future — D7-03 closed when Phase 12 landed (2026-07-04).
 
 ### Future migration policy
 
@@ -1248,10 +1253,20 @@ Phase 7 design enabled Phase 10 integration without rewrites:
 |---------------|----------------|---------|
 | `MemoryScope` | Gains `organizationId` | Optional field |
 | Auth | Org-level RBAC | `IWorkspaceMembership` port |
-| Audit | Event contracts defined | Bus implementation → Phase 12 |
+| Audit | Event contracts defined | ✅ Phase 12 `IEventBus` + audit fan-out (opt-in) |
 | Storage | Postgres adapter | Same ports; D1 adapter unchanged |
 
 **Landed:** Org RBAC adapters (opt-in); JWT `organization_id`; actor rules §14.
+
+### Phase 12 — Event pipeline (landed)
+
+| Design element (D7-03) | Phase 12 outcome |
+|------------------------|------------------|
+| Event subscription contract §17 | ✅ Domain consumers via `IEventBus` (ADR-020) |
+| `memory.created/updated/deleted/accessed` | ✅ MemoryService post-commit publishers |
+| Agent-facing event API | ⏸ Not in Phase 7 scope — bus is internal/async |
+
+**Partial follow-ups (outside Phase 7):** Phase 12C request metadata audit; `memory.signal.received` bridge (8.5 D85-02); Phase 19 OTel runbook.
 
 ### Phase 7.5 — Capability manifest (landed)
 
@@ -1448,7 +1463,7 @@ Mapped to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md):
 
 | Risk | Phase | Tracking |
 |------|-------|----------|
-| Event bus performance at scale | 10 | Event contracts defined; implementation deferred |
+| Event bus performance at scale | 12 | ✅ Implemented opt-in; tune `EVENT_BUS_PROVIDER` in prod |
 | Workspace isolation performance | 9 | Query patterns defined; index strategy deferred |
 | Graph traversal at scale | 8 | Port defined; D1 CTE vs external engine deferred |
 

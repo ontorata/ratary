@@ -45,7 +45,7 @@ Phase 7 is a **documentation-only boundary phase**. No new modules, migrations, 
 | New MCP tools for Phase 7 | **None** — reuse existing tool catalog |
 | `agentId` on `MemoryScope` | **Landed** Phase 9 — optional scope field |
 | Internal agent-runtime ADR | **Not required** — boundary is external-system ADR per roadmap |
-| Event bus / subscriptions | **Contract only** in DESIGN §17 — implementation Phase 12+ |
+| Event bus / subscriptions | **Landed Phase 12** — contract §17; `IEventBus` opt-in (ADR-020) |
 
 ### Existing integration surfaces (unchanged)
 

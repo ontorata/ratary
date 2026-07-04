@@ -250,6 +250,39 @@ describe('MCP tools', () => {
     expect(manifest.mcp.toolNames).toContain('get_capabilities');
   });
 
+  it('includes condensed capability snapshot in MCP initialize metadata', async () => {
+    const serverInfo = client.getServerVersion();
+    expect(serverInfo?.name).toBe('ai-memory-cloud');
+    expect(serverInfo?.description).toContain('/api/v1/capabilities');
+    expect(serverInfo?.description).toContain(String(EXPECTED_TOOLS.length));
+
+    const instructions = client.getInstructions();
+    expect(instructions).toContain('get_capabilities');
+    expect(instructions).toContain('1.0.0');
+    expect(instructions).toContain(String(EXPECTED_TOOLS.length));
+  });
+
+  it('negotiate_capabilities returns compatible matrix for baseline requirements', async () => {
+    const result = await client.callTool({
+      name: 'negotiate_capabilities',
+      arguments: {
+        protocol_version: '1.0.0',
+        required_capabilities: ['supportsMemoryCRUD', 'supportsContextBuilder'],
+        transports: ['mcp'],
+        client_name: 'vitest',
+        client_version: '1.0.0',
+      },
+    });
+    expect(result.isError).not.toBe(true);
+    const negotiation = JSON.parse((result.content as [{ text: string }])[0].text) as {
+      compatible: boolean;
+      matched: { required: string[]; transports: string[] };
+    };
+    expect(negotiation.compatible).toBe(true);
+    expect(negotiation.matched.required).toContain('supportsMemoryCRUD');
+    expect(negotiation.matched.transports).toContain('mcp');
+  });
+
   it('runs run_stewardship in dry-run mode', async () => {
     const result = await client.callTool({
       name: 'run_stewardship',

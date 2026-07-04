@@ -54,7 +54,6 @@ Phase 7.5 does **not** implement:
 - Breaking MCP tool renames
 - Versioned duplicate endpoints (`/api/v2` not required)
 - Embedding agent health checks
-- Remote capability negotiation handshake (future — D7.5-03 → Phase 13+)
 
 ---
 
@@ -220,7 +219,8 @@ Deploy-time flags override static doc when present.
 
 | Method | Endpoint | Auth | Purpose |
 |--------|----------|------|---------|
-| `GET` | `/api/v1/capabilities` | Public (recommended) or optional | Full manifest |
+| `GET` | `/api/v1/capabilities` | Public | Full manifest |
+| `POST` | `/api/v1/capabilities/negotiate` | Public | D7.5-03 capability handshake |
 | — | `/docs/json` | Public | OpenAPI (existing) |
 | — | All existing | Unchanged | — |
 
@@ -238,14 +238,15 @@ Optional headers:
 
 | Tool | Change |
 |------|--------|
-| **`get_capabilities`** | **New** — returns manifest JSON |
-| All 19 existing tools | **Unchanged** |
+| **`get_capabilities`** | Returns full manifest JSON |
+| **`negotiate_capabilities`** | D7.5-03 — bidirectional handshake JSON |
+| All prior memory/context/graph tools | **Unchanged** |
 | `get_context` params | Documented in manifest limits |
-| `list_tools` | Count must match manifest.mcp.toolCount |
+| `list_tools` | Count must match manifest.mcp.toolCount (**23** at 2026-07-05) |
 
 **Tool registry test:** `tests/mcp/tools.test.ts` `EXPECTED_TOOLS` ↔ manifest parity.
 
-Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (additive metadata — **D7.5-01**, Phase 13.1 follow-up).
+**Initialize (D7.5-01 / D7.5-03):** condensed snapshot in `_meta['io.aibrain/capabilities']`; optional client request via `_meta['io.aibrain/capabilities-request']` → negotiation in `_meta['io.aibrain/capabilities-negotiation']`; enriched `serverInfo.description` + `instructions`.
 
 ---
 
@@ -254,9 +255,11 @@ Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (addi
 | Test | Purpose |
 |------|---------|
 | `manifest-builder.test.ts` | Env combinations → correct flags |
-| `manifest-contract.test.ts` | toolCount === 19; required fields present |
-| `capabilities.routes.test.ts` | GET 200, schema validation |
-| MCP integration | `get_capabilities` returns parseable JSON |
+| `manifest-contract.test.ts` | toolCount === MCP_TOOL_NAMES; required fields present |
+| `capabilities.routes.test.ts` | GET + POST negotiate 200, schema validation |
+| `capability-negotiation.test.ts` | Protocol + capability matrix matching |
+| `mcp-initialize-capabilities.test.ts` | Initialize `_meta` condensed + negotiation |
+| MCP integration | `get_capabilities` / `negotiate_capabilities` parseable JSON |
 | Snapshot optional | Manifest shape regression (additive fields OK) |
 
 **Non-regression:** all existing API/MCP tests unchanged.
@@ -273,21 +276,50 @@ Optional: embed condensed manifest in MCP `serverInfo` during `initialize` (addi
 - [x] `supportsHybridRetrieval` reflects `HYBRID_RETRIEVAL` + embedding env
 - [x] Default D1 deploy manifest accurate with all flags off
 - [x] `X-Protocol-Version` response header on capabilities endpoint
+- [x] D7.5-01 condensed MCP `initialize` snapshot (`_meta`, `serverInfo`, `instructions`)
+- [x] D7.5-03 REST POST negotiate + MCP `negotiate_capabilities` + initialize handshake
 - [x] No changes to `MemoryService` or retrieval logic
 
 ---
 
 ## Future Phase
 
-| Phase | Interaction |
-|-------|-------------|
-| **6.5** | Manifest includes `retrievalPolicyVersion` |
-| **5.5** | `supportsSemanticCompression` flag |
-| **8.5** | `supportsQualitySignals` flag |
-| **12** | `supportsEventSubscription` scoped flags |
-| **13.1 follow-up** | D7.5-01 condensed manifest in MCP `initialize` `serverInfo` |
-| **13+** | D7.5-03 remote capability negotiation handshake |
-| **16** ✅ | D7.5-02 `@ai-brain/sdk` — `CapabilitiesApi.get()` consumes manifest (ADR-031) |
+Phase 7.5 core gate closed **2026-07-04** (ADR-025). Deferred tracks **D7.5-01 / D7.5-02 / D7.5-03** are **closed** — no open D7.5 debt. Successor phases below extended `CapabilityManifestBuilder`; this section records closure and adjacent evolution only.
+
+### D7.5 deferred closure
+
+| ID | Deliverable | Status |
+|----|-------------|--------|
+| **D7.5-01** | Condensed manifest in MCP `initialize` — `_meta['io.aibrain/capabilities']`, enriched `serverInfo.description`, `instructions` | ✅ 2026-07-05 |
+| **D7.5-02** | Client SDK — `@ai-brain/sdk` `CapabilitiesApi.get()` (Phase 16, ADR-031) | ✅ Phase 16 |
+| **D7.5-03** | Bidirectional negotiation — `POST /api/v1/capabilities/negotiate`, MCP `negotiate_capabilities`, initialize `_meta['io.aibrain/capabilities-request' \| 'capabilities-negotiation']`; SDK `CapabilitiesApi.negotiate()` | ✅ 2026-07-05 |
+
+### Successor phases — manifest extensions (closed)
+
+| Phase | Field / behavior in manifest | Status |
+|-------|------------------------------|--------|
+| **5.5** | `capabilities.supportsSemanticCompression` | ✅ |
+| **6.5** | `retrieval.retrievalPolicy`, `retrieval.progressivePolicyVersion`, `defaultContentMode` | ✅ |
+| **8.5** | `capabilities.supportsQualitySignals` | ✅ |
+| **12** | `capabilities.supportsEventSubscription` (env-scoped) | ✅ |
+| **13.1** | `transport.mcp.remote`; remote clients use initialize condensed snapshot + negotiation `_meta` | ✅ |
+
+### Adjacent phases (not owned by 7.5)
+
+| Phase / track | Relationship |
+|---------------|--------------|
+| **7** | Agent runtime external — boundary unchanged; manifest is the discovery contract |
+| **13** | Protocol layer (SSE/gRPC/WS) — consumes manifest `transport.*`; no 7.5 refactor required |
+| **16** | SDK owns client call patterns (`get`, `negotiate`); manifest remains server SSOT |
+| **18+** | Platform sections (`cloud`, `federation`, `observability`, …) — additive builder options when flags enabled |
+
+### Open evolution (no D7.5 ID)
+
+| Item | Notes |
+|------|-------|
+| Protocol **2.0** | Breaking changes only with ADR + migration guide (Phase 7 §9) |
+| OpenAPI negotiate schema | Register `POST /capabilities/negotiate` request/response in swagger (additive) |
+| Manifest TTL cache | Optional in-memory cache at builder — not implemented; manifest stays compute-on-read |
 
 ---
 

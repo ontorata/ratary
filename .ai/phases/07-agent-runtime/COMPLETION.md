@@ -73,7 +73,8 @@ Phase 7 required **no code implementation**. The agent integration boundary was 
 | **7.5** | Capability discovery gap (D7-01) | ✅ ADR-025 `get_capabilities` | Agents discover flags/limits without trial-and-error |
 | **8** | Graph readiness §19 | ✅ `traverse_relations`, graph retrieval leg | MCP graph traverse + opt-in `GRAPH_RETRIEVAL` |
 | **9** | `agentId` / workspace (D7-02) | ✅ Multi-AI scope + agent identity tools | `list_workspaces`, `list_agents`, `register_agent` |
-| **10** | Enterprise org scope (D7-04 partial) | ✅ Org RBAC adapters (opt-in) | JWT `organization_id`; actor rules §14 |
+| **10** | Enterprise org scope (D7-04 partial) | ✅ Org RBAC adapters (opt-in) |
+| **12** | D7-03 event bus / async pipeline | ✅ ADR-020; opt-in `EVENT_BUS_PROVIDER` | JWT `organization_id`; actor rules §14 |
 
 Additional additive MCP (boundary unchanged): `run_stewardship` (04.7), `get_compression_status` (5.5).
 
@@ -81,7 +82,7 @@ Additional additive MCP (boundary unchanged): `run_stewardship` (04.7), `get_com
 
 ## Future Work
 
-No open Phase 7 boundary items. D7-03 event bus → Phase 12. See [DESIGN.md](DESIGN.md) §19 successor closure.
+No open Phase 7 boundary items. D7-03 event bus ✅ Phase 12 (2026-07-04). See [DESIGN.md](DESIGN.md) §19 successor closure.
 
 ---
 

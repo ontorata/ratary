@@ -21,7 +21,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Tool count mismatch | Medium | High | MCP_TOOL_NAMES SSOT + tools.test.ts | Mitigated |
 | Public capabilities info leak | Low | Medium | No secrets in manifest; flags only | Mitigated |
 | Agents miss capabilities without explicit call | Medium | Medium | `get_capabilities` + SDK `CapabilitiesApi.get()` | Accepted — D7.5-01 open |
-| No runtime negotiation protocol | Low | Medium | Pull manifest; handshake → Phase 13+ | Accepted — D7.5-03 open |
+| No runtime negotiation protocol | Low | Medium | D7.5-03 REST POST + MCP initialize `_meta` + `negotiate_capabilities` | ✅ Closed |
 
 ---
 

@@ -78,6 +78,7 @@ Phase 7 closed as a **documentation-only boundary phase**: agent planning and ex
 | **8** | Graph readiness §19 | ✅ Graph MCP + composite leg |
 | **9** | D7-02 `agentId` scope | ✅ Multi-AI tools + scope resolver |
 | **10** | D7-04 org actor rules | ✅ Org RBAC adapters (opt-in) |
+| **12** | D7-03 event bus §17 | ✅ Event pipeline ADR-020 (opt-in bus) |
 | **04.7 / 5.5** | — | ✅ Additive `run_stewardship`, `get_compression_status` |
 
 Regression at platform snapshot: **722 passed** | 3 skipped. Phase 7 boundary unchanged — no planner in `src/services/` or `src/memory/`.

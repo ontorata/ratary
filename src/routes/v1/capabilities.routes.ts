@@ -17,4 +17,17 @@ export async function capabilitiesRoutes(
     },
     controller.getManifest.bind(controller),
   );
+
+  fastify.post(
+    '/capabilities/negotiate',
+    {
+      schema: {
+        tags: ['Capabilities'],
+        summary: 'Bidirectional capability negotiation handshake (D7.5-03)',
+        description:
+          'Client declares protocol version, required/preferred capabilities, and transports; server returns negotiated matrix.',
+      },
+    },
+    controller.negotiate.bind(controller),
+  );
 }

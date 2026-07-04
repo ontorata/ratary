@@ -1,7 +1,7 @@
 # Phase 7.5 — Runtime Compatibility — REVIEW
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04  
+**Gate:** PASS 2026-07-04 · D7.5 deferred follow-up closed 2026-07-05  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -18,8 +18,11 @@ Record architecture review findings and formal phase gate verdict.
 |-------|--------|
 | CapabilityManifestBuilder | ✅ Reads live deployment flags |
 | GET /api/v1/capabilities | ✅ REST manifest endpoint |
+| POST /api/v1/capabilities/negotiate | ✅ D7.5-03 handshake (public) |
 | MCP get_capabilities | ✅ Identical JSON to REST |
-| MCP_TOOL_NAMES SSOT | ✅ 20 tools; contract parity tests |
+| MCP negotiate_capabilities | ✅ Same negotiation handler path |
+| MCP initialize `_meta` | ✅ D7.5-01 condensed + D7.5-03 negotiation |
+| MCP_TOOL_NAMES SSOT | ✅ **23 tools**; contract parity tests |
 | No new env vars | ✅ Discovery only — closes Phase 7 debt D7-01 |
 | MemoryService unchanged | ✅ Read-only manifest builder |
 
@@ -36,18 +39,18 @@ Record architecture review findings and formal phase gate verdict.
 
 | ID | Item | Status |
 |----|------|--------|
-| D7.5-01 | Condensed manifest in MCP `initialize` metadata | Open → Phase 13.1 follow-up |
+| D7.5-01 | Condensed manifest in MCP `initialize` metadata | ✅ Closed 2026-07-05 |
 | D7.5-02 | Client SDK | ✅ Phase 16 `@ai-brain/sdk` (ADR-031) |
-| D7.5-03 | Remote capability negotiation handshake | Open → Phase 13+ |
+| D7.5-03 | Remote capability negotiation handshake | ✅ Closed 2026-07-05 |
 
-See [CHECKLIST.md](CHECKLIST.md) deferred table.
+See [CHECKLIST.md](CHECKLIST.md) deferred table — **no open D7.5 items**.
 
 ---
 
 **Reviewer:** AI implementer + project owner authorization  
-**Gate verdict:** **PASS** (2026-07-04)
+**Gate verdict:** **PASS** (2026-07-04; deferred follow-up closed 2026-07-05)
 
-**Evidence:** [COMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
+**Evidence:** [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md) · [COMPLETION.md](COMPLETION.md)
 
 ---
 

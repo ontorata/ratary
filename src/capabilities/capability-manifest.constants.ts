@@ -2,6 +2,14 @@ import type { ErrorCodeDescriptor, RateLimitDescriptor } from './capability-mani
 
 export const PROTOCOL_VERSION = '1.0.0';
 
+/** AI Brain application protocol versions accepted during capability negotiation (D7.5-03). */
+export const SUPPORTED_AI_BRAIN_PROTOCOL_VERSIONS = [PROTOCOL_VERSION] as const;
+
+/** MCP initialize `_meta` keys for capability discovery and negotiation. */
+export const MCP_CAPABILITIES_META_KEY = 'io.aibrain/capabilities';
+export const MCP_CAPABILITIES_REQUEST_META_KEY = 'io.aibrain/capabilities-request';
+export const MCP_CAPABILITIES_NEGOTIATION_META_KEY = 'io.aibrain/capabilities-negotiation';
+
 /** Approximate token ceiling for context assembly (chars / 4 heuristic). */
 export const MANIFEST_MAX_CONTEXT_TOKENS = 6_000;
 
@@ -79,6 +87,6 @@ export const STANDARD_RATE_LIMITS: RateLimitDescriptor[] = [
     capabilityGroup: 'Health / docs / capabilities',
     limit: 'Unlimited',
     scope: 'Public',
-    notes: 'No auth on /health, /docs, /api/v1/capabilities',
+    notes: 'No auth on /health, /docs, /api/v1/capabilities, /api/v1/capabilities/negotiate',
   },
 ];

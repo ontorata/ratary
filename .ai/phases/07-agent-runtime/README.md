@@ -61,7 +61,7 @@ Phase 7 is a **documentation-only boundary phase** — agent runtime external; n
 - MCP tool contracts stable for agent consumers
 - Optional: `agentId` in `MemoryScope` types — ✅ Phase 9
 
-**Dependencies:** Phase 4 context API ✅ · Phase 6 hybrid ✅ · Post-gate: Phase 7.5 capabilities ✅ · Phase 8 graph ✅ · Phase 9 multi-AI ✅
+**Dependencies:** Phase 4 context API ✅ · Post-gate: 7.5 capabilities ✅ · 8 graph ✅ · 9 multi-AI ✅ · **12 event pipeline ✅**
 
 ### Platform snapshot (post-gate — agent integration surface)
 

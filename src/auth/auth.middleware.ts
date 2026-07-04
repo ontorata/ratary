@@ -11,7 +11,7 @@ function isPublicPath(url: string): boolean {
   if (PUBLIC_PATHS.has(path)) return true;
   if (path.startsWith('/docs/')) return true;
   if (path === '/api/v1/auth/bootstrap') return true;
-  if (path === '/api/v1/capabilities') return true;
+  if (path === '/api/v1/capabilities' || path === '/api/v1/capabilities/negotiate') return true;
   if (path.startsWith('/api/v1/ecosystem/')) return true;
   if (path.startsWith('/api/v1/infrastructure/marketplace')) return true;
   if (path.startsWith('/api/v1/auth/sso/')) return true;

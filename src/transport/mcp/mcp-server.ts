@@ -32,6 +32,7 @@ import { MEMORY_LEVELS } from '../../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from '../../mcp/context-tool-params.js';
 import { createMemoryStewardshipPorts } from '../../composition/create-memory-stewardship-ports.js';
 import { createCompressionPorts } from '../../composition/create-compression-ports.js';
+import { wireMcpInitializeCapabilities } from './mcp-initialize-capabilities.js';
 
 const metadataSchema = z.object({
   category: categorySchema.optional(),
@@ -42,11 +43,16 @@ const metadataSchema = z.object({
   notes: z.string().optional(),
 });
 
+export interface CreateMcpServerOptions {
+  mcpTransport?: 'stdio' | 'streamable-http';
+}
+
 function createMcpServer(
   handlers: TransportHandlers,
   binding: McpContextBinding,
   agentIdentity: IAgentIdentity,
   sql: ISqlDatabase,
+  options: CreateMcpServerOptions = {},
 ): McpServer {
   const mcpCtx = () => binding.getTransportContext();
   const mcpScope = () => binding.resolveMemoryScope();
@@ -388,6 +394,51 @@ function createMcpServer(
   );
 
   server.tool(
+    'negotiate_capabilities',
+    'Bidirectional capability negotiation handshake — declare required features and receive matched deployment matrix',
+    {
+      protocol_version: z
+        .string()
+        .optional()
+        .describe('Client AI Brain protocol version (e.g. 1.0.0)'),
+      required_capabilities: z
+        .array(z.string())
+        .optional()
+        .describe('Capability flags the client requires to operate'),
+      preferred_capabilities: z
+        .array(z.string())
+        .optional()
+        .describe('Optional capability flags the client prefers'),
+      transports: z
+        .array(z.string())
+        .optional()
+        .describe('Transports the client intends to use (rest, mcp, streamable-http, grpc, sse, websocket)'),
+      client_name: z.string().optional().describe('Client implementation name'),
+      client_version: z.string().optional().describe('Client implementation version'),
+    },
+    async (params) => {
+      const result = await handlers.capabilities.negotiate.handle(mcpCtx(), {
+        ...(params.protocol_version ? { protocolVersion: params.protocol_version } : {}),
+        ...(params.required_capabilities
+          ? { requiredCapabilities: params.required_capabilities }
+          : {}),
+        ...(params.preferred_capabilities
+          ? { preferredCapabilities: params.preferred_capabilities }
+          : {}),
+        ...(params.transports ? { transports: params.transports } : {}),
+        ...(params.client_name && params.client_version
+          ? { clientInfo: { name: params.client_name, version: params.client_version } }
+          : {}),
+        capabilitiesUrl: '/api/v1/capabilities',
+        negotiateUrl: '/api/v1/capabilities/negotiate',
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    },
+  );
+
+  server.tool(
     'run_stewardship',
     'Run the memory stewardship maintenance pipeline (dry-run by default)',
     {
@@ -491,6 +542,16 @@ function createMcpServer(
           },
         ],
       };
+    },
+  );
+
+  wireMcpInitializeCapabilities(
+    server,
+    () => handlers.capabilities.getManifest.handle(mcpCtx(), {}),
+    {
+      mcpTransport: options.mcpTransport ?? 'stdio',
+      capabilitiesUrl: '/api/v1/capabilities',
+      negotiateUrl: '/api/v1/capabilities/negotiate',
     },
   );
 

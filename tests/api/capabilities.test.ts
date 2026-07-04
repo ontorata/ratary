@@ -51,4 +51,28 @@ describe('Capabilities API', () => {
     expect(body.transport.sdk.status).toBe('published');
     expect(body.capabilities.supportsDeveloperPlatform).toBe(true);
   });
+
+  it('POST /api/v1/capabilities/negotiate returns handshake matrix without auth', async () => {
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/v1/capabilities/negotiate',
+      payload: {
+        protocolVersion: '1.0.0',
+        requiredCapabilities: ['supportsMemoryCRUD', 'supportsContextBuilder'],
+        preferredCapabilities: ['supportsHybridRetrieval'],
+        transports: ['rest', 'mcp'],
+        clientInfo: { name: 'vitest', version: '1.0.0' },
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers['x-protocol-version']).toBe('1.0.0');
+
+    const body = response.json();
+    expect(body.compatible).toBe(true);
+    expect(body.negotiatedProtocolVersion).toBe('1.0.0');
+    expect(body.matched.required).toEqual(['supportsMemoryCRUD', 'supportsContextBuilder']);
+    expect(body.missing.preferred).toContain('supportsHybridRetrieval');
+    expect(body.negotiateUrl).toBe('/api/v1/capabilities/negotiate');
+  });
 });

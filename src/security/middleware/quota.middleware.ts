@@ -5,7 +5,7 @@ import { buildTransportContextFromRestRequest } from '../../transport/shared/res
 function isPublicPath(url: string): boolean {
   const path = url.split('?')[0] ?? url;
   if (path.startsWith('/docs')) return true;
-  if (path === '/api/v1/capabilities') return true;
+  if (path === '/api/v1/capabilities' || path === '/api/v1/capabilities/negotiate') return true;
   if (path.startsWith('/api/v1/ecosystem/')) return true;
   if (path === '/api/v1/health' || path === '/health' || path === '/') return true;
   if (path.startsWith('/api/v1/auth/sso/')) return true;

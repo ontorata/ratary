@@ -109,6 +109,7 @@ export async function registerRemoteMcpRoutes(
             bindingFactory(),
             deps.agentIdentity,
             deps.sql,
+            { mcpTransport: 'streamable-http' },
           );
           await server.connect(transport);
           entry = { transport, server };

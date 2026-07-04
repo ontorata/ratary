@@ -40,6 +40,36 @@ describe('RestTransport', () => {
     expect(init.headers).not.toHaveProperty('Authorization');
   });
 
+  it('negotiates capabilities over public POST endpoint', async () => {
+    const fetchImpl = vi.fn(async () =>
+      Response.json(
+        {
+          compatible: true,
+          negotiatedProtocolVersion: '1.0.0',
+          matched: { required: ['supportsMemoryCRUD'], preferred: [], transports: ['rest'] },
+        },
+        { status: 200 },
+      ),
+    );
+
+    const client = new AiBrainClient({
+      baseUrl: 'http://localhost:3000/api/v1',
+      fetchImpl,
+    });
+
+    const result = await client.capabilities.negotiate({
+      protocolVersion: '1.0.0',
+      requiredCapabilities: ['supportsMemoryCRUD'],
+      transports: ['rest'],
+    });
+
+    expect(result.compatible).toBe(true);
+    const [url, init] = fetchImpl.mock.calls[0] as [string, RequestInit];
+    expect(url).toBe('http://localhost:3000/api/v1/capabilities/negotiate');
+    expect(init.method).toBe('POST');
+    expect(init.headers).not.toHaveProperty('Authorization');
+  });
+
   it('throws AiBrainApiError on HTTP error', async () => {
     const fetchImpl = vi.fn(async () =>
       Response.json({ message: 'Not found' }, { status: 404 }),
