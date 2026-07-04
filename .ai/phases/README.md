@@ -34,6 +34,9 @@ phases/
 ├── 09-multi-ai/                      ✅ Closed
 └── 10-enterprise/                    ✅ Closed
 └── 11-production-ops/                🔄 Open (Readiness PASS)
+└── 10.5-transport-connectivity/      🔲 Reserved (design draft 2026-07-04)
+└── 13-protocol-layer/                🔲 Reserved (design draft 2026-07-04)
+└── 14-federation/                    🔲 Reserved (design draft 2026-07-04)
 ```
 
 Each `phases/NN-name/` folder:

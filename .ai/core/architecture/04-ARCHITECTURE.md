@@ -69,13 +69,14 @@ The system evolves through ordered capabilities. This repository implements the 
 ┌─────────────────────────────────────────────────────────────┐
 │  Agent / Reasoning / Planning / Execution  (outside repo)   │
 └───────────────────────────┬─────────────────────────────────┘
-                            │ MCP / REST
+                            │ MCP / REST / gRPC (opt-in)
 ┌───────────────────────────▼─────────────────────────────────┐
-│  Transport: REST (Fastify)  │  MCP (stdio protocol server)  │
+│  Transport layer — src/transport/ (Phase 10.5)              │
+│  REST (Fastify) │ MCP (stdio) │ gRPC (GRPC_ENABLED=false)   │
 ├───────────────────────────┬─────────────────────────────────┤
-│  Auth layer               │  Routes + Controllers (edge)    │
+│  Auth layer               │  Handlers + Controllers (edge)  │
 ├───────────────────────────┴─────────────────────────────────┤
-│  Application services (orchestration)                       │
+│  Application services (orchestration) — UNCHANGED             │
 ├──────────┬──────────┬──────────┬──────────┬─────────────────┤
 │ Memory   │ Knowledge│ Search   │ Embedding│ (future Graph)  │
 │ domain   │ domain   │ domain   │ domain   │                 │
@@ -102,9 +103,11 @@ The system evolves through ordered capabilities. This repository implements the 
 
 | Layer | Modules | Responsibility | Forbidden |
 |-------|---------|----------------|-----------|
-| **Edge — routes** | `routes/` | Path mounting, schema validation hooks, rate limits | Business logic, SQL |
-| **Edge — controllers** | `controllers/` | Request/response mapping, display formatting | SQL, auth policy, domain rules |
-| **Edge — MCP** | `mcp/` | Tool definitions, protocol transport, scope bootstrap | Duplicated business logic |
+| **Transport — registry** | `transport/registry/` | Wire enabled protocol servers at bootstrap | Business logic |
+| **Transport — REST** | `transport/rest/` (legacy: `routes/`, `controllers/`) | HTTP routing, validation, response mapping | Business logic, SQL |
+| **Transport — MCP** | `transport/mcp/` (legacy: `mcp/`) | stdio protocol, tool dispatch, scope bootstrap | Duplicated business logic |
+| **Transport — gRPC** | `transport/grpc/` (Phase 10.5, opt-in) | Proto services, streaming, interceptors | Business logic, SQL |
+| **Transport — shared** | `transport/shared/` | `TransportContext`, shared handlers, scope unify | Domain rules, persistence |
 | **Application** | `services/` | Use-case orchestration, scope parameters, port coordination | HTTP types, SQL, vendor SDKs |
 | **Domain — memory** | `memory/` | Retrieval, ranking orchestration, context budget, prompt assembly, consolidation | SQL, HTTP |
 | **Domain — knowledge** | `knowledge/` | Pure generators + `KnowledgeService` enrichment | SQL, HTTP |
@@ -292,7 +295,109 @@ scripts/backfill-embeddings.ts
 - MCP auth model: D1 credentials in env, not REST JWT chain.
 - Same `MemoryService`, `ContextService`, `SearchService` as REST.
 
-**Composition:** `startMcpStdioServer()` in `mcp/server.ts` is a composition root alongside `server.ts`.
+**Composition:** `startMcpStdioServer()` in `mcp/server.ts` is a composition root alongside `server.ts`. Phase 10.5 consolidates under `transport/mcp/` without behavior change.
+
+---
+
+## Transport layer (Phase 10.5 — planned)
+
+**Status:** Design draft — [ADR-027](../../../.ai/adr/027-transport-connectivity-layer.md) Proposed · [10.5 DESIGN](../../phases/10.5-transport-connectivity/DESIGN.md)
+
+**Owns:** protocol adapters (REST, MCP stdio, optional gRPC), `TransportContext`, shared application handlers, transport registry, manifest transport section.
+
+**Target structure:**
+
+```
+transport/
+  shared/     TransportContext, handlers (thin), scope unify
+  rest/       Fastify bootstrap, routes, controllers
+  mcp/        stdio server, tools → handlers
+  grpc/       opt-in; GRPC_ENABLED=false default
+  registry/   ITransportServer lifecycle, startAll/stopAll
+```
+
+**Rules:**
+
+- All transports delegate to the **same** shared handlers → **same** application services.
+- MCP does not traverse REST (preserved).
+- `services/` MUST NOT import Fastify, MCP SDK, or gRPC libraries.
+- REST remains **public API** (`/api/v1`). MCP remains **AI protocol** (stdio). gRPC is **internal/enterprise opt-in**.
+- SDK (`@ai-brain/client`) lives **outside** repo — repo publishes OpenAPI + proto only.
+- GraphQL deferred — separate ADR required.
+
+**Protocol roles:**
+
+| Protocol | Primary audience | Default |
+|----------|------------------|---------|
+| REST | Public integrators, ChatGPT Actions | ✅ always |
+| MCP stdio | IDE-embedded AI clients | ✅ always |
+| gRPC | Batch ingest, streaming context, service mesh | ❌ opt-in |
+
+---
+
+## Protocol layer (Phase 13 — planned)
+
+**Status:** Design draft — [ADR-028](../../../.ai/adr/028-protocol-layer.md) Proposed · [13-protocol-layer DESIGN](../../phases/13-protocol-layer/DESIGN.md)  
+**Prerequisite:** Phase 10.5 (ADR-027 Implemented)
+
+**Owns:** multi-protocol streaming (SSE, WebSocket, gRPC server-stream), protocol benchmark CLI, `ProtocolContext`, shared `IUseCaseHandler`. Evolves `transport/` → `protocol/` canonical root.
+
+**Target structure:**
+
+```
+protocol/
+  shared/       ProtocolContext, IUseCaseHandler, IStreamPublisher, IContextStreamSource
+  rest/         unary (unchanged) + SSE stream route (SSE_ENABLED=false)
+  grpc/         unary + ContextService server-stream
+  websocket/    WS envelope → handlers (WEBSOCKET_ENABLED=false)
+  sse/          text/event-stream adapter
+  mcp/          stdio (from 10.5)
+  registry/     DI — single MemoryService graph for all protocols
+  benchmark/    npm run benchmark:protocols
+```
+
+**Layer law:**
+
+| Layer | Must | Must NOT |
+|-------|------|----------|
+| Protocol adapter | Wire encode/decode, auth hooks | Business logic, SQL, repository |
+| Handler | Call injected services | Import storage SDKs or repositories |
+| Service | Orchestrate ports | Import Fastify, gRPC, ws, SSE |
+| Repository | Scoped persistence | Know protocol, headers, or wire types |
+
+**Streaming:** `IContextStreamSource` yields chunks from existing `ContextService` output — ranking/budget logic not duplicated in adapters.
+
+**Additive API:** `GET /api/v1/context/stream` (SSE). Existing REST v1 unary endpoints unchanged.
+
+---
+
+## Federation layer (Phase 14 — planned)
+
+**Status:** Design draft — [ADR-029](../../../.ai/adr/029-federation-layer.md) Proposed · [14-federation DESIGN](../../phases/14-federation/DESIGN.md)  
+**Prerequisite:** Phase 13 Implemented · Phase 9–10 ✅
+
+**Owns:** cross-node knowledge exchange (workspace, region, organization, cloud) via federation ports. **`MemoryService` unchanged** — `IKnowledgeExchangeService` delegates local persistence to existing MemoryService methods.
+
+**Target structure:**
+
+```
+federation/
+  ports/       IFederationRegistry, IFederationTransport, IFederationPolicy, IFederationTrustStore, …
+  services/    KnowledgeExchangeService → MemoryService (public API only)
+  adapters/    registry, transport, trust, policy, metadata — env-selected, no hardcoding
+  protocol/    REST /api/v1/federation/* when FEDERATION_ENABLED=true
+```
+
+**Layer law:**
+
+| Layer | Must | Must NOT |
+|-------|------|----------|
+| Federation adapter | Implement ports; vendor SDKs here only | Call repositories directly |
+| KnowledgeExchangeService | Orchestrate exchange; call MemoryService | Import cloud-specific logic |
+| MemoryService | Local CRUD/search (unchanged) | Import federation modules |
+| Repository | Scoped persistence (unchanged) | Know federation peers or regions |
+
+**Default:** `FEDERATION_ENABLED=false`.
 
 ---
 

@@ -27,6 +27,11 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [024-progressive-retrieval-policy.md](024-progressive-retrieval-policy.md) | Progressive retrieval policy (Phase 6.5) | **Implemented** | Context budget / staged hydration |
 | [025-capability-discovery-api.md](025-capability-discovery-api.md) | Capability discovery API (Phase 7.5) | **Implemented** | `GET /capabilities`, MCP manifest |
 | [026-memory-quality-signals.md](026-memory-quality-signals.md) | Memory quality signals — ingest not agent learning (Phase 8.5) | **Implemented** | Ranking adaptation / Phase 12 |
+| [027-transport-connectivity-layer.md](../../.ai/adr/027-transport-connectivity-layer.md) | Transport & Connectivity Layer (Phase 10.5) | **Proposed** | gRPC opt-in, transport registry |
+| [028-protocol-layer.md](../../.ai/adr/028-protocol-layer.md) | Protocol Layer — WS/SSE/stream/benchmark (Phase 13) | **Proposed** | Multi-protocol streaming |
+| [029-federation-layer.md](../../.ai/adr/029-federation-layer.md) | Federation Layer — cross-node knowledge exchange (Phase 14) | **Proposed** | Global memory fabric |
+
+**Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-020 (event consumers), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
 
 **Rule:** No implementation of Proposed/Draft ADRs until owner marks **Approved**.
 
@@ -36,8 +41,12 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 
 **Extension tracks (5.5–8.5):** ADR-023–026 **Implemented** (2026-07-04).
 
-**Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-020 (event consumers), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
+**Phase 10.5 ADR gate:** [ADR-027](../../.ai/adr/027-transport-connectivity-layer.md) **Proposed** (2026-07-04).
 
-**Post–Phase 10:** [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md) — Phase 11 next.
+**Phase 13 ADR gate:** [ADR-028](../../.ai/adr/028-protocol-layer.md) **Proposed** (2026-07-04) — requires ADR-027 Implemented.
+
+**Phase 14 ADR gate:** [ADR-029](../../.ai/adr/029-federation-layer.md) **Proposed** (2026-07-04) — requires Phase 13 Implemented.
+
+**Post–Phase 10:** [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md) — Phase 11 P0; Phase 10.5 extension parallel after 11A.
 
 **Implementation plan:** [.ai/phases/10-enterprise/IMPLEMENTATION.md](../../.ai/phases/10-enterprise/IMPLEMENTATION.md)
