@@ -1,9 +1,8 @@
 # ADR-023: Semantic Compression Policy
 
-**Status:** Approved  
-**Date:** 2026-07-04  
+**Status:** Implemented  
 **Approved:** 2026-07-04 (owner — DESIGN + implementation plan)  
-**Deciders:** Project owner  
+**Implemented:** 2026-07-04 — `ICompressionPolicy`, `consolidates` relation, compression migration, `compress:memories` CLI  
 
 ---
 

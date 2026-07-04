@@ -1,9 +1,8 @@
 # ADR-024: Progressive Retrieval Policy
 
-**Status:** Approved  
-**Date:** 2026-07-04  
+**Status:** Implemented  
 **Approved:** 2026-07-04 (owner — DESIGN + implementation plan)  
-**Deciders:** Project owner  
+**Implemented:** 2026-07-04 — `IRetrievalPolicy`, `DefaultRetrievalPolicy`, `retrievalPlan` in context responses  
 
 ---
 

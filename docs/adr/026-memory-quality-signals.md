@@ -1,9 +1,8 @@
 # ADR-026: Memory Quality Signals (Ingest, Not Agent Learning)
 
-**Status:** Approved  
-**Date:** 2026-07-04  
+**Status:** Implemented  
 **Approved:** 2026-07-04 (owner — DESIGN + implementation plan)  
-**Deciders:** Project owner  
+**Implemented:** 2026-07-04 — `IMemorySignalIngestor`, `POST /api/v1/signals`, `reflect:signals` CLI  
 
 ---
 

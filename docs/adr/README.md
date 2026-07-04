@@ -23,10 +23,10 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 | [016-redis-streams-event-bus.md](016-redis-streams-event-bus.md) | Redis Streams event bus | **Implemented** | Async events |
 | [017-memory-access-audit.md](017-memory-access-audit.md) | Memory access audit (opt-in) | **Implemented** | Compliance trail |
 | [018-production-postgres-cutover.md](018-production-postgres-cutover.md) | Production Postgres cutover | **Approved** | Phase 11 |
-| [023-semantic-compression-policy.md](023-semantic-compression-policy.md) | Semantic compression policy (Phase 5.5) | **Approved** | Token scale / consolidation |
-| [024-progressive-retrieval-policy.md](024-progressive-retrieval-policy.md) | Progressive retrieval policy (Phase 6.5) | **Approved** | Context budget / staged hydration |
+| [023-semantic-compression-policy.md](023-semantic-compression-policy.md) | Semantic compression policy (Phase 5.5) | **Implemented** | Token scale / consolidation |
+| [024-progressive-retrieval-policy.md](024-progressive-retrieval-policy.md) | Progressive retrieval policy (Phase 6.5) | **Implemented** | Context budget / staged hydration |
 | [025-capability-discovery-api.md](025-capability-discovery-api.md) | Capability discovery API (Phase 7.5) | **Implemented** | `GET /capabilities`, MCP manifest |
-| [026-memory-quality-signals.md](026-memory-quality-signals.md) | Memory quality signals — ingest not agent learning (Phase 8.5) | **Approved** | Ranking adaptation / Phase 12 |
+| [026-memory-quality-signals.md](026-memory-quality-signals.md) | Memory quality signals — ingest not agent learning (Phase 8.5) | **Implemented** | Ranking adaptation / Phase 12 |
 
 **Rule:** No implementation of Proposed/Draft ADRs until owner marks **Approved**.
 
@@ -34,7 +34,7 @@ Index of structural decisions. **Policy:** [POLICY.md](POLICY.md)
 
 **Phase 11 ADR gate:** [ADR-018](018-production-postgres-cutover.md) **Approved** (2026-07-03) — implementation authorized after Readiness PASS.
 
-**Extension tracks (5.5–8.5):** ADR-023–026 **Approved** (2026-07-04) — design in [.ai/phases/05.5-semantic-compression/](../../.ai/phases/05.5-semantic-compression/DESIGN.md) through [.ai/phases/08.5-observation-reflection-learning/](../../.ai/phases/08.5-observation-reflection-learning/DESIGN.md).
+**Extension tracks (5.5–8.5):** ADR-023–026 **Implemented** (2026-07-04).
 
 **Planned (POST-ROADMAP, not yet filed):** ADR-019 (repo split, optional), ADR-020 (event consumers), ADR-021 (content blob lifecycle), ADR-022 (search/graph cutover) — see [10-POST-ROADMAP.md](../../.ai/phases/roadmap/10-POST-ROADMAP.md).
 

@@ -20,7 +20,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 445 |
+| Tests passing | 457 |
 | MCP tools | 20 |
 | REST deploy | Vercel (`api/index.ts`) |
 | MCP entry | `npm run mcp` / `npm run setup` |
