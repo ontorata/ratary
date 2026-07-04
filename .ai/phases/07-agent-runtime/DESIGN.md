@@ -822,6 +822,35 @@ type ActorType =
 3. **Attribution** — Phase 9 enables `agentId` attribution for multi-AI scenarios.
 4. **Isolation** — Actor type does not affect scope enforcement.
 
+### `organizationId` on actors (P1)
+
+Enterprise actors (Phase 10+) carry optional `organizationId` on `ActorMetadata`, aligned with `MemoryScope.organizationId` in `src/types/memory-scope.ts` and [ADR-002](../../../docs/adr/002-workspace-identity-model.md) / [ADR-010](../../../docs/adr/010-workspace-membership-rbac.md).
+
+| Field | Required when | Source | Notes |
+|-------|---------------|--------|-------|
+| `actorId` | Always | JWT `sub`, API key identity, or MCP env | Primary actor identifier |
+| `organizationId` | `actorType === 'future_organization'` or org-scoped JWT | JWT `organization_id` claim or workspace → org lookup | Must match event/memory scope when present |
+| `actorSource` | Webhooks, GitHub Actions, automation | Caller metadata | Does not replace scope |
+
+**Population rules:**
+
+1. **Phase 7–9** — `organizationId` omitted on all actor records; scope remains `ownerId` (+ optional `workspaceId` / `agentId` from Phase 9).
+2. **Phase 10** — When JWT includes `organization_id`, copy to `ActorMetadata.organizationId` on mutating operations for audit correlation.
+3. **Mismatch forbidden** — If `organizationId` is set on actor metadata, it must equal the resolved `MemoryScope.organizationId` for that operation; otherwise treat as `FORBIDDEN`.
+4. **Not a scope substitute** — `organizationId` on actor metadata is attribution/audit; enforcement still flows through `MemoryScope` + `IScopeResolver`.
+
+**Example (Phase 10 enterprise actor):**
+
+```typescript
+const actor: ActorMetadata = {
+  actorType: 'future_organization',
+  actorId: 'idn_svc_billing',
+  actorName: 'Billing Service',
+  organizationId: 'org_acme_corp',
+  timestamp: '2026-07-04T03:00:00.000Z',
+};
+```
+
 ### Future actor extensions
 
 | Phase | Extension | Implementation |
@@ -1011,12 +1040,38 @@ interface RelationCreatedEvent {
 
 Event subscriptions are scoped to `ownerId` in all phases through Phase 9. Organization-level subscription is deferred to Phase 10.
 
+**Subscription scope matrix (P2):**
+
+| Phase | Subscribe scope | Auth proof | Events delivered | Cross-scope |
+|-------|-----------------|------------|------------------|-------------|
+| 7–8 | `ownerId` only | API key or JWT with matching `ownerId` | `memory.*`, `context.*`, `relation.*` for that owner | Forbidden — 404 on mismatch |
+| 9 | `ownerId` + optional `workspaceId` | JWT/API key + workspace membership when RBAC on | Above + `agent.*`, `workspace.*` filtered to workspace | Workspace A cannot subscribe to workspace B |
+| 10 | `ownerId` + optional `workspaceId` + optional `organizationId` | JWT with `organization_id` + membership ([ADR-010](../../../docs/adr/010-workspace-membership-rbac.md)) | Above + `organization.*`, `audit.*` within org boundary | Org-level handlers receive only org-scoped events |
+
+**Authorization rules:**
+
+1. **Subscriber identity** — `subscribe()` requires the same credentials as REST/MCP; anonymous subscriptions are forbidden.
+2. **Scope binding** — Each handler registration stores `{ ownerId, workspaceId?, organizationId? }`; the bus filters before delivery.
+3. **No wildcard tenancy** — Patterns like `subscribe('*')` or cross-owner fan-out are forbidden.
+4. **Audit-only** — Subscribers receive notifications; AI Brain does not execute agent logic in handlers (external consumers only).
+5. **Phase 7** — Contract only; no bus implementation or live subscriptions.
+
 ```typescript
+interface EventSubscriptionScope {
+  ownerId: string;
+  workspaceId?: string;       // Phase 9+
+  organizationId?: string;    // Phase 10+
+}
+
 interface IEventBus {
   // Phase 10+ — not implemented in Phase 7
   publish(event: DomainEvent): Promise<void>;
-  subscribe(eventType: string, handler: EventHandler): Promise<void>;
-  unsubscribe(eventType: string, handlerId: string): Promise<void>;
+  subscribe(
+    eventType: string,
+    scope: EventSubscriptionScope,
+    handler: EventHandler,
+  ): Promise<string>;  // returns handlerId
+  unsubscribe(handlerId: string): Promise<void>;
 }
 ```
 
@@ -1232,6 +1287,36 @@ The Phase 7 boundary design guarantees:
 - [x] Future Graph Layer preserved (`IGraphProvider` contract)
 - [x] Future Agent Layer excluded (boundary document)
 
+### Constitution principles checklist (P1)
+
+Mapped to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md):
+
+| Principle group | Rule | Phase 7 evidence |
+|-----------------|------|------------------|
+| Philosophy | System not snapshot; capability stack | §19 three-phase horizon |
+| Philosophy | Boundary discipline; replaceability | §7 inside/outside; §11–§12 ports |
+| Architecture | Inward dependencies; layer separation | §4 layer diagram |
+| Architecture | Single canonical owner; composition root | §3 architecture; no duplicate services |
+| SOLID | SRP, OCP, LSP, ISP, DIP | Ports per ADR-004; additive contracts §18 |
+| Compatibility | Stable public surface; additive first | §11 tool schema rules; §18 versioning |
+| Extensibility | Port before implementation; extension over rewrite | §19 future ports |
+| Multi-tenancy | Scope by identity; isolation default | §16 `MemoryScope`; 404 cross-scope |
+| Multi-tenancy | Future-ready scope contract | §16 optional `organizationId`, `workspaceId`, `agentId` |
+| AI-first | Protocol-native access; context efficiency | §11 MCP; §5 context budget |
+| Maintainability | Document hierarchy; evidence-based completion | This DESIGN + CHECKLIST gate |
+
+### ADR compliance checklist (P1)
+
+| ADR | Status | Phase 7 evidence |
+|-----|--------|------------------|
+| [ADR-001](../../../docs/adr/001-multi-source-retrieval.md) | Implemented | `CompositeRetrievalCandidateSource` §3 |
+| [ADR-002](../../../docs/adr/002-workspace-identity-model.md) | Implemented | `MemoryScope` §16; actor `organizationId` §14 |
+| [ADR-003](../../../docs/adr/003-embedding-storage-mvp.md) | Implemented | `IEmbeddingStore` §19 |
+| [ADR-004](../../../docs/adr/004-repository-port-types.md) | Implemented | Repository ports §11–§12 |
+| [ADR-005](../../../docs/adr/005-content-object-store.md) | Implemented | Future blob offload §19 |
+| [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md) | Implemented | `workspaceId` / `agentId` optional §16 |
+| [ADR-010](../../../docs/adr/010-workspace-membership-rbac.md) | Implemented | Org scope + event subscription §17 |
+
 ### Section deliverables checklist (23 sections)
 
 - [x] §1 Purpose · §2 Scope · §3 Architecture · §4–§6 Boundaries & forbidden patterns
@@ -1346,14 +1431,21 @@ The Phase 7 boundary design guarantees:
 | [ADR-003](../../../docs/adr/003-embedding-storage-mvp.md) | Embedding storage | Vector retrieval foundation |
 | [ADR-004](../../../docs/adr/004-repository-port-types.md) | Repository ports | Storage abstraction |
 | [ADR-005](../../../docs/adr/005-content-object-store.md) | Content store | Future blob offload |
+| [ADR-007](../../../docs/adr/007-multi-ai-workspace-scope.md) | Multi-AI workspace scope | Phase 9 `workspaceId` / `agentId` |
+| [ADR-010](../../../docs/adr/010-workspace-membership-rbac.md) | Workspace membership RBAC | Phase 10 org scope + events |
 
 ### Phase documents
 
 | Phase | Document | Phase 7 relation |
 |-------|----------|-----------------|
 | 6 | [06-hybrid-retrieval/DESIGN.md](../06-hybrid-retrieval/DESIGN.md) | Hybrid retrieval enables richer context |
-| 8 | [08-knowledge-graph/DESIGN.md](../08-knowledge-graph/DESIGN.md) (planned) | Future: graph-augmented retrieval — see [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) |
-| 9 | [09-multi-ai/DESIGN.md](../09-multi-ai/DESIGN.md) (planned) | Future: workspace scope — see [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) |
+| 8 | [08-knowledge-graph/DESIGN.md](../08-knowledge-graph/DESIGN.md) | Graph-augmented retrieval; `IGraphProvider` §19 |
+| 9 | [09-multi-ai/DESIGN.md](../09-multi-ai/DESIGN.md) | Workspace scope, `agentId`, `ISyncManager` §19 |
+| 9.5 | [09.5-platform-architecture/DESIGN.md](../09.5-platform-architecture/DESIGN.md) | Platform ports that extend agent boundary |
+| 10 | [10-enterprise/DESIGN.md](../10-enterprise/DESIGN.md) | `organizationId`, RBAC, event bus §17 |
+| 11 | [11-production-ops/DESIGN.md](../11-production-ops/DESIGN.md) | Postgres cutover, ops — no agent logic |
+
+Roadmap index: [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) · Phase status: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 
 ### External references
 

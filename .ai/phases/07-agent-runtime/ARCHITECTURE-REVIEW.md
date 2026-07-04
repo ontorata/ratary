@@ -27,7 +27,7 @@ None.
 
 | # | Section | Finding | Status |
 |---|---------|---------|--------|
-| M1 | §3, §11, §21 | **Tool count inconsistency** — Verified actual MCP implementation has exactly 14 tools. All references aligned to "14 tools". | ✅ **RESOLVED** |
+| M1 | §3, §11, §21 | **Tool count inconsistency** — Verified actual MCP implementation has 19 tools (`tests/mcp/tools.test.ts`). | ✅ **RESOLVED** |
 | M2 | §15 | **Multi-agent write reconciliation not defined** — Added `ISyncManager` contract in Section 19 with full interface definition. | ✅ **RESOLVED** |
 
 ---
@@ -81,12 +81,12 @@ None.
 
 | Priority | Change | Location | Status |
 |----------|--------|----------|--------|
-| P0 | Fix tool count to match actual implementation | §3, §11, §21 | ✅ RESOLVED |
+| P0 | Fix tool count to match actual implementation | §3, §11, §21 | ✅ RESOLVED (19 tools — `tests/mcp/tools.test.ts`) |
 | P0 | Add ISyncManager basic contract | §19 | ✅ RESOLVED |
-| P1 | Add organizationId to ActorMetadata | §14 | Optional |
-| P1 | Expand constitutional checklist | §20 | Optional |
-| P2 | Add event subscription scope note | §17 | Optional |
-| P2 | Fix future phase links | §23 | Optional |
+| P1 | Add organizationId to ActorMetadata | §14 | ✅ **RESOLVED** 2026-07-04 — usage rules + Phase 10 example in §14 |
+| P1 | Expand constitutional checklist | §20 | ✅ **RESOLVED** 2026-07-04 — principles + ADR tables in §20 |
+| P2 | Add event subscription scope note | §17 | ✅ **RESOLVED** 2026-07-04 — scope matrix + `EventSubscriptionScope` in §17 |
+| P2 | Fix future phase links | §23 | ✅ **RESOLVED** 2026-07-04 — Phases 8–11 DESIGN links in §23 |
 
 ---
 
@@ -126,23 +126,19 @@ None.
 **APPROVED**
 
 All P0 major issues have been resolved:
-- ✅ Tool count verified against actual MCP implementation (14 tools)
+- ✅ Tool count verified against actual MCP implementation (19 tools)
 - ✅ ISyncManager contract defined with full interface
 
 The Phase 7 DESIGN document is ready for commit.
 
 | Issue | Resolution |
 |-------|------------|
-| M1: Tool count | Verified: MCP implementation has 14 tools. All references aligned. |
+| M1: Tool count | Verified: MCP implementation has 19 tools. Registry in §11 S3 matrix. |
 | M2: ISyncManager | Contract added to Section 19 with `reconcileWrite`, `resolveConflict`, `getStrategy` methods. |
 
 ### Remaining Minor Items
 
-The following minor items are optional improvements not required for approval:
-- m1: Add `organizationId` to ActorMetadata (Phase 10 concern)
-- m2: Event subscription authorization note
-- m3: Expand constitutional checklist
-- m4: Fix future phase links
+All optional P1/P2 items resolved 2026-07-04 (see REQUIRED CHANGES table).
 
 ---
 

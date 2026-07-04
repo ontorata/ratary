@@ -50,6 +50,13 @@ Executable gate checklist instance — one item per milestone or success criteri
 - [x] S3 — JSON-RPC examples per MCP tool (`DESIGN.md` §11)
 - [x] S4 — OpenAPI schema reference (`DESIGN.md` §12)
 
+### Architecture review optional items (P1–P2)
+
+- [x] P1 — `organizationId` actor rules (`DESIGN.md` §14)
+- [x] P1 — Expanded constitutional + ADR checklists (`DESIGN.md` §20)
+- [x] P2 — Event subscription scope matrix (`DESIGN.md` §17)
+- [x] P2 — Future phase links Phases 8–11 (`DESIGN.md` §23)
+
 ---
 
 *Do not contradict [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) or Approved ADRs.*
