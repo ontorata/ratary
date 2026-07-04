@@ -46,7 +46,7 @@ _None recorded at gate._
 | Risk | Owner phase | Notes |
 |------|-------------|-------|
 | Search relevance at large corpus | Phase 6 | Hybrid retrieval + vector ranking |
-| Enterprise tenant boundary | Phase 10 | `organization_id` added; no separate `tenant_id` required |
+| Enterprise tenant boundary | Resolved Phase 10 | `organizations` + `organization_id` on workspaces; no `tenant_id` column |
 
 ---
 

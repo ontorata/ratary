@@ -473,7 +473,7 @@ Legacy mount (`/memory`, dll.) **tidak** mendapat endpoint knowledge baru.
 | 7 AI Agent | ✅ | Relations dengan weight/confidence |
 | 8 Knowledge Graph | ✅ | `memory_relations` extensible (W4) |
 | 9 Multi-AI | ✅ | owner_id scoped |
-| 10 Enterprise | ⚠️ | May need `tenant_id` later — not blocking |
+| 10 Enterprise | ✅ | Resolved Phase 10 — `organization_id` + RBAC (ADR-002); `tenant_id` tidak diadopsi |
 
 ---
 

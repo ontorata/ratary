@@ -56,7 +56,7 @@ Executable gate checklist — knowledge metadata, relations, search ranking, MCP
 | 7 AI Agent | ✅ | Relations with `weight` / `confidence` |
 | 8 Knowledge Graph | ✅ | `memory_relations` extensible (W4) |
 | 9 Multi-AI | ✅ | `owner_id` scoped |
-| 10 Enterprise | ⚠️ | `organization_id` landed Phase 10; `tenant_id` not required — not blocking |
+| 10 Enterprise | ✅ | Resolved Phase 10 — `organization_id` + RBAC (ADR-002); `tenant_id` tidak diadopsi |
 
 ---
 
