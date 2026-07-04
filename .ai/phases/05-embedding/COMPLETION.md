@@ -1,7 +1,6 @@
-﻿# Phase 5 — Embedding — COMPLETION
+# Phase 5 — Embedding — COMPLETION
 
-**Document:** COMPLETION  
-**Phase status:** Closed  
+**Phase status:** ✅ Closed — gate PASS (2026-07-01)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---

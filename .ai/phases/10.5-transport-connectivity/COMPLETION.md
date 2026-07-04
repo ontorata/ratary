@@ -1,6 +1,7 @@
 # Phase 10.5 — Transport & Connectivity — COMPLETION
 
-**Phase status:** ✅ Gate PASS (2026-07-04)  
+**Phase status:** ✅ Closed — gate PASS (2026-07-04)  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Design:** [DESIGN.md](DESIGN.md) · **ADR:** [ADR-027](../../adr/027-transport-connectivity-layer.md)
 
 ---

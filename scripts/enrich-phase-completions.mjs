@@ -494,30 +494,128 @@ ${p.flag ? `Set \`${p.flag}\`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTAT
 ${FOOTER(p.gateDate)}`;
 }
 
+const SCHEMA_LINE = '**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)';
+
+function extractGateDate(content) {
+  const patterns = [
+    /✅ Closed — gate PASS \((\d{4}-\d{2}-\d{2})\)/,
+    /✅ Gate PASS \((\d{4}-\d{2}-\d{2})\)/,
+    /\*\*Date:\*\* (\d{4}-\d{2}-\d{2})/,
+    /Complete \(gate PASS (\d{4}-\d{2}-\d{2})\)/i,
+    /Complete \((\d{4}-\d{2}-\d{2})\)/,
+    /Implemented \((\d{4}-\d{2}-\d{2})\)/,
+    /gate closed (\d{4}-\d{2}-\d{2})/i,
+    /\*\*Completed:\*\* (\d{4}-\d{2}-\d{2})/,
+    /\*\*Gate:\*\* PASS (\d{4}-\d{2}-\d{2})/,
+    /Phase \d+ gate closed (\d{4}-\d{2}-\d{2})/i,
+  ];
+  for (const pattern of patterns) {
+    const m = content.match(pattern);
+    if (m?.[1]) return m[1];
+  }
+  return null;
+}
+
+function isStandardCompletionHeader(content) {
+  return /^\*\*Phase status:\*\* ✅ Closed — gate PASS \(\d{4}-\d{2}-\d{2}\)/m.test(content);
+}
+
+/** Normalize COMPLETION title + header without rewriting body content. */
+function normalizeCompletionHeader(content) {
+  let next = content.charCodeAt(0) === 0xfeff ? content.slice(1) : content;
+
+  next = next.replace(
+    /^# Phase (\d+(?:\.\d+)?): (.+?) — COMPLETED\s*\r?\n/m,
+    '# Phase $1 — $2 — COMPLETION\n',
+  );
+  next = next.replace(/^# (.+?) — COMPLETED\s*\r?\n/m, '# $1 — COMPLETION\n');
+
+  const date = extractGateDate(next);
+  if (!date) return next;
+
+  const statusLine = `**Phase status:** ✅ Closed — gate PASS (${date})  `;
+
+  if (isStandardCompletionHeader(next) && next.includes(SCHEMA_LINE) && !/^# .+ — COMPLETED/m.test(content)) {
+    return next;
+  }
+
+  // Legacy two-line Closed + Gate
+  next = next.replace(
+    /\*\*Phase status:\*\* Closed\s*\n\*\*Gate:\*\* PASS \d{4}-\d{2}-\d{2}\s*\n/,
+    `${statusLine}\n`,
+  );
+
+  // Status + Date block (06, 08, 09, 09.5)
+  next = next.replace(
+    /\*\*Status:\*\* ✅ COMPLETED\s*\n\*\*Date:\*\* \d{4}-\d{2}-\d{2}\s*\n/,
+    `${statusLine}\n`,
+  );
+
+  // Implemented status (12)
+  next = next.replace(
+    /\*\*Status:\*\* ✅ Implemented \(\d{4}-\d{2}-\d{2}\)\s*\n/,
+    `${statusLine}\n`,
+  );
+
+  // Phase status variants
+  next = next.replace(/\*\*Phase status:\*\* ✅ Gate PASS \(\d{4}-\d{2}-\d{2}\)/, statusLine.trim());
+  next = next.replace(
+    /\*\*Phase status:\*\* Complete \(gate PASS \d{4}-\d{2}-\d{2}\)/,
+    statusLine.trim(),
+  );
+  next = next.replace(/\*\*Phase status:\*\* Complete \(\d{4}-\d{2}-\d{2}\)/, statusLine.trim());
+  next = next.replace(/\*\*Phase status:\*\* Closed(?=\s*\n)/, statusLine.trim());
+
+  // Remove redundant Document line (standard uses title H1 only)
+  next = next.replace(/\*\*Document:\*\* COMPLETION\s*\n/, '');
+
+  // Ensure Schema after status block (first 12 lines)
+  const head = next.split('\n').slice(0, 12).join('\n');
+  if (!head.includes(SCHEMA_LINE)) {
+    next = next.replace(
+      /(\*\*Phase status:\*\* ✅ Closed — gate PASS \(\d{4}-\d{2}-\d{2}\)\s*\n)/,
+      `$1${SCHEMA_LINE}  \n`,
+    );
+  }
+
+  return next;
+}
+
 const fixHeaders = process.argv.includes('--fix-headers');
 
 let updated = 0;
 let skipped = 0;
 
-for (const p of PHASES) {
-  const file = path.join(PHASES_DIR, p.dir, 'COMPLETION.md');
-  const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
-  if (fixHeaders) {
-    if (SKIP.has(p.dir) && isRich(existing)) {
-      console.log('skip (rich content)', p.dir);
+if (fixHeaders) {
+  const dirs = fs
+    .readdirSync(PHASES_DIR)
+    .filter((d) => {
+      const p = path.join(PHASES_DIR, d);
+      return fs.statSync(p).isDirectory() && !['roadmap', 'audits'].includes(d);
+    })
+    .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+  for (const dir of dirs) {
+    const file = path.join(PHASES_DIR, dir, 'COMPLETION.md');
+    if (!fs.existsSync(file)) continue;
+    const existing = fs.readFileSync(file, 'utf8');
+    const next = normalizeCompletionHeader(existing);
+    if (next === existing) {
+      console.log('skip (already standard)', dir);
       skipped++;
       continue;
     }
-    if (existing.includes('**Gate:** PASS')) {
-      fs.writeFileSync(file, render(p));
-      updated++;
-      console.log('header fixed', p.dir);
-    } else {
-      console.log('skip (no legacy header)', p.dir);
-      skipped++;
-    }
-    continue;
+    fs.writeFileSync(file, next);
+    updated++;
+    console.log('header fixed', dir);
   }
+  console.log(`\nFixed ${updated} COMPLETION.md headers; skipped ${skipped}.`);
+  process.exit(0);
+}
+
+for (const p of PHASES) {
+  const file = path.join(PHASES_DIR, p.dir, 'COMPLETION.md');
+  const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
   if (SKIP.has(p.dir) && isRich(existing)) {
     console.log('skip (rich content)', p.dir);
     skipped++;

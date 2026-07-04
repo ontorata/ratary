@@ -1,7 +1,6 @@
-﻿# Phase 8 — Knowledge Graph — COMPLETED
-
-**Status:** ✅ COMPLETED  
-**Date:** 2026-07-03  
+# Phase 8 — Knowledge Graph — COMPLETION
+**Phase status:** ✅ Closed — gate PASS (2026-07-03)  
+**Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** [ADR-006 IGraph Provider](../../../docs/adr/006-igraph-provider.md)
 
 ---
