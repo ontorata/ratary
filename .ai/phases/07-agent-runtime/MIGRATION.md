@@ -1,7 +1,8 @@
 ﻿# Phase 7 — Agent Runtime — MIGRATION
 
 **Document:** MIGRATION  
-**Phase status:** Reserved  
+**Phase status:** Closed (N/A — no migrations)  
+**Gate:** PASS 2026-07-03  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
@@ -25,7 +26,11 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ## Migrations
 
-_None planned yet — update when schema changes identified._
+**N/A — no schema or data migration required for Phase 7.**
+
+Phase 7 documents the **external agent runtime boundary** only. It introduces no DDL, backfill, or rollback steps. Agent identity hooks (`agentId`, `organizationId`) are specified as future optional fields in [DESIGN.md](DESIGN.md) §14 and implemented in later phases (9, 10) without retroactive Phase 7 migration.
+
+Gate evidence: [REVIEW.md](REVIEW.md) — Migration **PASS** (N/A, no DDL).
 
 ---
 
