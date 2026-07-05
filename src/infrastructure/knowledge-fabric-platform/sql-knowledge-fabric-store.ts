@@ -49,6 +49,17 @@ function scopeKey(scope: MemoryScope): { ownerId: string; workspaceId: string | 
   return { ownerId: scope.ownerId, workspaceId: scope.workspaceId ?? null };
 }
 
+/** Postgres-safe workspace filter (avoids `IS $n` which breaks on NULL params). */
+function workspaceScopeSql(
+  column: string,
+  workspaceId: string | null,
+): { clause: string; params: unknown[] } {
+  if (workspaceId === null) {
+    return { clause: `${column} IS NULL`, params: [] };
+  }
+  return { clause: `${column} = ?`, params: [workspaceId] };
+}
+
 function mapIngestRun(row: IngestRunRow): FabricIngestRun {
   return {
     id: row.id,
@@ -135,12 +146,13 @@ export class SqlKnowledgeFabricStore
     scope: MemoryScope,
   ): Promise<FabricExternalRef | null> {
     const { ownerId, workspaceId } = scopeKey(scope);
+    const ws = workspaceScopeSql('workspace_id', workspaceId);
     const rows = await this.sql.query<ExternalRefRow>(
       `SELECT id, connector_id, external_id, memory_id, owner_id, workspace_id, external_updated_at, updated_at
        FROM knowledge_fabric_external_refs
-       WHERE connector_id = ? AND external_id = ? AND owner_id = ? AND workspace_id IS ?
+       WHERE connector_id = ? AND external_id = ? AND owner_id = ? AND ${ws.clause}
        LIMIT 1`,
-      [connectorId, externalId, ownerId, workspaceId],
+      [connectorId, externalId, ownerId, ...ws.params],
     );
     const row = rows[0];
     if (!row) return null;
@@ -209,11 +221,12 @@ export class SqlKnowledgeFabricStore
     scope: MemoryScope,
   ): Promise<FabricConnectorState | null> {
     const { ownerId, workspaceId } = scopeKey(scope);
+    const ws = workspaceScopeSql('workspace_id', workspaceId);
     const rows = await this.sql.query<ConnectorStateRow>(
       `SELECT connector_id, owner_id, workspace_id, last_cursor, last_run_id, updated_at
        FROM knowledge_fabric_connector_state
-       WHERE connector_id = ? AND owner_id = ? AND workspace_id IS ?`,
-      [connectorId, ownerId, workspaceId],
+       WHERE connector_id = ? AND owner_id = ? AND ${ws.clause}`,
+      [connectorId, ownerId, ...ws.params],
     );
     const row = rows[0];
     if (!row) return null;
