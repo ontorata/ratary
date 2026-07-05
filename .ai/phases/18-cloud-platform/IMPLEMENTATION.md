@@ -85,6 +85,7 @@ Admin request → Auth → IControlPlane (metadata only)
 Memory CRUD   → Auth → Handlers → MemoryService (unchanged)
 Phase 12 bus  → UsageMeterEventConsumer → IUsageMeter (async, optional)
 DR run        → IDisasterRecovery → MemoryService.exportBackup (public API)
+Cost gauges   → Phase 19 publishUsageCostMetrics on /metrics scrape (D19-01; OBS_COST_METRICS_ENABLED)
 ```
 
 ---

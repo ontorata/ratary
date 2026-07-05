@@ -229,7 +229,7 @@ const PHASES = [
     risks: [
       ['Streaming duplicates ranking logic', 'Medium', 'High', 'Reuse chunksFromBuildContextResult', 'Mitigated'],
       ['WebSocket auth bypass', 'Medium', 'Critical', 'Same auth middleware as REST', 'Mitigated'],
-      ['SSE connection exhaustion', 'Medium', 'Medium', 'Rate limits; ops guidance', 'Identified'],
+      ['SSE connection exhaustion', 'Medium', 'Medium', 'SSE_MAX_CONCURRENT_PER_IP + stream rate limit; ops guidance', 'Mitigated'],
       ['All protocols default ON', 'Low', 'Critical', 'SSE/WS flags false default', 'Mitigated'],
     ],
   },
@@ -307,7 +307,7 @@ const PHASES = [
     risks: [
       ['Memory content in metric labels', 'Low', 'Critical', 'Route sanitization; no body in labels', 'Mitigated'],
       ['Observability on business event hot path', 'Medium', 'High', 'Separate from Phase 12 consumers', 'Mitigated'],
-      ['Cost dashboard empty gauges', 'Medium', 'Low', 'Phase 18 usage integration deferred', 'Deferred'],
+      ['Cost dashboard empty gauges', 'Medium', 'Low', 'D19-01: OBS_COST_METRICS_ENABLED + Phase 18 meter on scrape', 'Mitigated'],
       ['PII in trace spans', 'Medium', 'High', 'OTEL attribute allowlist', 'Mitigated'],
     ],
   },

@@ -513,10 +513,10 @@ const PHASES = [
       'REST middleware instrumentation; integrates `OTEL_ENABLED`',
       'ADR-034 Implemented',
     ],
-    harderOrDeferred: ['gRPC/MCP dedicated hooks deferred', 'No bundled docker-compose stack', 'Cost gauges TBD'],
-    acceptedDebt: ['External Prometheus/Grafana deployment only', 'Cost dashboard values not populated'],
+    harderOrDeferred: ['gRPC/MCP dedicated hooks deferred', 'No bundled docker-compose stack'],
+    acceptedDebt: ['External Prometheus/Grafana deployment only'],
     recommendations: [
-      'Wire Phase 18 usage export into cost metrics',
+      'Enable cost path in staging: OBS_COST_METRICS_ENABLED + USAGE_METER_ENABLED (D19-01 shipped)',
       'Add gRPC/MCP instrumentation before combined prod enable',
     ],
   },

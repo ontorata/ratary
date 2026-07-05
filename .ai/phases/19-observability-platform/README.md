@@ -18,5 +18,12 @@
 | [CHECKLIST.md](CHECKLIST.md) | Gate checklist instance | ✅ Complete |
 | [RISKS.md](RISKS.md) | Risk register | ✅ Complete |
 
-*All ten governance documents closed per [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md). Gate PASS 2026-07-04.*
+*All ten governance documents closed per [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md). Gate PASS 2026-07-04; D19-01 cost bridge closed 2026-07-05.*
 
+## Follow-up deliverable
+
+| ID | Deliverable | Status |
+|----|-------------|--------|
+| D19-01 | Usage meter → cost gauges + embedding usage wiring | ✅ 2026-07-05 |
+
+Enable: `OBS_COST_METRICS_ENABLED=true` with Phase 18 `USAGE_METER_ENABLED`. See [IMPLEMENTATION.md](IMPLEMENTATION.md) and [observability/EXTERNAL-STACK.md](../../../observability/EXTERNAL-STACK.md).

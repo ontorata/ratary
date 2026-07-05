@@ -17,6 +17,7 @@
 | 13D | gRPC stream uses shared `chunksFromBuildContextResult` | ✅ |
 | 13E | `npm run benchmark:protocols` CLI + report schema | ✅ |
 | 13F | Manifest transport extensions + docs | ✅ |
+| 13G | SSE connection guard + per-IP rate limits | ✅ 2026-07-05 |
 
 ---
 
@@ -33,6 +34,7 @@ src/transport/
   shared/handlers/context.handlers.ts   (+ streamContext)
   sse/
     sse-stream-publisher.ts
+    sse-connection-guard.ts
     register-sse-routes.ts
   websocket/
     ws-message.envelope.ts
@@ -52,6 +54,9 @@ tests/transport/context-stream.test.ts
 | Env | Default | Purpose |
 |-----|---------|---------|
 | `SSE_ENABLED` | `false` | Mount `GET /api/v1/context/stream` |
+| `SSE_MAX_CONCURRENT_PER_IP` | `10` | Max open SSE streams per client IP |
+| `SSE_STREAM_RATE_LIMIT_MAX` | `30` | New SSE stream attempts per IP per window |
+| `SSE_STREAM_RATE_LIMIT_WINDOW` | `1 minute` | Rate limit window for new SSE streams |
 | `WEBSOCKET_ENABLED` | `false` | Attach WS upgrade on Fastify HTTP server |
 | `WEBSOCKET_PATH` | `/api/v1/ws` | WebSocket endpoint path |
 
@@ -81,3 +86,28 @@ Existing `GRPC_ENABLED` unchanged — gRPC context server-stream now shares chun
 ## Rollback
 
 Set `SSE_ENABLED=false`, `WEBSOCKET_ENABLED=false` — unary REST/MCP only.
+
+---
+
+## Operations — SSE connection limits
+
+Long-lived SSE streams can exhaust file descriptors or worker threads if clients open unbounded connections.
+
+**Defaults (tunable via env):**
+
+| Control | Default | Env |
+|---------|---------|-----|
+| Concurrent streams per IP | 10 | `SSE_MAX_CONCURRENT_PER_IP` |
+| New stream attempts per IP | 30 / minute | `SSE_STREAM_RATE_LIMIT_MAX`, `SSE_STREAM_RATE_LIMIT_WINDOW` |
+
+**HTTP 429** when concurrent cap exceeded (`SSE_CONNECTION_LIMIT`). Route-level rate limit applies to new stream requests.
+
+**Production guidance:**
+
+- Run SSE on a **long-running Node host** (Railway, Fly, VPS) — not Vercel serverless.
+- Set `RATE_LIMIT_REDIS_URL` so per-IP counters survive multi-instance restarts.
+- Size `SSE_MAX_CONCURRENT_PER_IP` × expected clients below process `ulimit -n`.
+- Prefer unary `POST /api/v1/context` for batch clients; reserve SSE for browser streaming UX.
+- Monitor `ratary_http_requests_total{route="sse"}` (Phase 19) for stream volume.
+
+Implementation: `src/transport/sse/sse-connection-guard.ts`, `@fastify/rate-limit` on `/context/stream`.

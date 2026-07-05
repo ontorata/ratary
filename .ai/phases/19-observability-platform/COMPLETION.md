@@ -35,8 +35,9 @@ Map roadmap success criteria to durable evidence.
 | SC-19-02 | Separated from Phase 12 business bus | ✅ No OTLP on memory events |
 | SC-19-03 | REST middleware instrumentation | ✅ Integrates OTEL_ENABLED |
 | SC-19-04 | Default flag OFF regression | ✅ 689 passed | 3 skipped (default env, master flags OFF) |
+| SC-19-05 | Cost gauges from Phase 18 usage meter (D19-01) | ✅ `usage-cost-metrics-publisher` + embedding meter wiring |
 
-**Result:** 4/4 PASS. Phase gate closed 2026-07-04.
+**Result:** 5/5 PASS. Phase gate closed 2026-07-04; D19-01 follow-up closed 2026-07-05.
 
 ## Metrics at gate
 

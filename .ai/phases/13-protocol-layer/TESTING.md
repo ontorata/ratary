@@ -10,6 +10,7 @@
 | Suite | File | Coverage |
 |-------|------|----------|
 | Context stream handler | `tests/transport/context-stream.test.ts` | chunk order, publisher contract, benchmark report schema |
+| SSE connection guard | `tests/transport/sse-connection-guard.test.ts` | concurrent cap per IP |
 | Handler parity | `tests/transport/handler-parity.test.ts` | REST/MCP unchanged |
 | gRPC stream | `tests/transport/grpc-transport.test.ts` | proto + server-stream shape |
 | Layer boundaries | `tests/transport/layer-boundaries.test.ts` | no protocol imports in services |

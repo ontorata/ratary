@@ -361,7 +361,7 @@ const PHASES = [
       ['Default deploy unchanged', '✅ External Prometheus/Grafana only'],
     ],
     adrGate: ['ADR-034 Implemented'],
-    deferred: ['gRPC/MCP dedicated hooks deferred', 'Cost dashboard gauges not populated', 'No bundled docker-compose stack'],
+    deferred: ['gRPC/MCP dedicated hooks deferred', 'Cost dashboard gauges → mitigated D19-01 (2026-07-05)', 'No bundled docker-compose stack'],
   },
   {
     dir: '20-ai-infrastructure',

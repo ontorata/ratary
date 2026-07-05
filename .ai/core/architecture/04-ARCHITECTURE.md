@@ -617,6 +617,8 @@ protocol/
 
 **Additive API:** `GET /api/v1/context/stream` (SSE). Existing REST v1 unary endpoints unchanged.
 
+**SSE exhaustion guard (D13-01):** `SSE_MAX_CONCURRENT_PER_IP` + `SSE_STREAM_RATE_LIMIT_*` on stream route; long-running host required. See [13 IMPLEMENTATION](../../phases/13-protocol-layer/IMPLEMENTATION.md#operations--sse-connection-limits).
+
 ---
 
 ## Federation layer (Phase 14 — planned)
@@ -679,13 +681,16 @@ src/routes/v1/cloud.routes.ts   GET/POST /api/v1/cloud/* when CONTROL_PLANE_ENAB
 ```
 src/observability/
   ports/       IMetricsExporter, ITraceExporter, ILogShipper, IDashboardPack, ISloRegistry
+  adapters/    Prometheus, OTel, stdout/Loki, usage-cost-metrics-publisher (D19-01)
   middleware/  request duration + counter instrumentation
+src/cloud/adapters/usage-meter-embedding-provider.ts   embedding.request events (D19-01)
 observability/dashboards/   Grafana JSON (6 packs)
 observability/slo/          SLO + Alertmanager templates
 GET /metrics                Prometheus scrape when OBSERVABILITY_PLATFORM=true
+                              + cost gauges when OBS_COST_METRICS_ENABLED + USAGE_METER_ENABLED
 ```
 
-**Default:** `OBSERVABILITY_PLATFORM=false`.
+**Default:** `OBSERVABILITY_PLATFORM=false`, `OBS_COST_METRICS_ENABLED=false`.
 
 ---
 
@@ -720,7 +725,7 @@ External agent runtimes (outside repo) → protocol → MemoryService.
 | 16 Developer Platform | `packages/` SDK, CLI, MCP — **clients only** | None (OpenAPI additive) | ✅ Implemented — [IMPLEMENTATION](../../phases/16-developer-platform/IMPLEMENTATION.md) |
 | 17 Enterprise Security | Auth edge: OPA, SSO, hierarchy, quota | Edge middleware only | ✅ Implemented — [IMPLEMENTATION](../../phases/17-enterprise-security/IMPLEMENTATION.md) |
 | 18 Cloud Platform | Control plane ports: provision, meter, DR | Orchestration ports | ✅ Implemented — [IMPLEMENTATION](../../phases/18-cloud-platform/IMPLEMENTATION.md) |
-| 19 Observability | Exporters, Grafana packs, SLO | Sidecar adapters | ✅ Implemented — [IMPLEMENTATION](../../phases/19-observability-platform/IMPLEMENTATION.md) |
+| 19 Observability | Exporters, Grafana packs, SLO, cost gauge bridge (D19-01) | Sidecar adapters | ✅ Implemented — [IMPLEMENTATION](../../phases/19-observability-platform/IMPLEMENTATION.md) |
 | 20 AI Infrastructure | Plugin registry, marketplace metadata | Composition root wiring | Planned |
 
 **Capstone (20):** AI Memory **Infrastructure** — not Memory API only. All providers remain ADR-008 ports.

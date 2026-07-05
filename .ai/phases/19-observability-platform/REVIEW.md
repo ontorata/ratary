@@ -35,7 +35,7 @@ Record architecture review findings and formal phase gate verdict.
 ## Known gaps (accepted)
 
 - gRPC/MCP dedicated hooks deferred
-- Cost dashboard gauges not populated
+- ~~Cost dashboard gauges not populated~~ → **Mitigated (D19-01, 2026-07-05)** — `OBS_COST_METRICS_ENABLED` + Phase 18 meter
 - No bundled docker-compose stack
 
 ---
