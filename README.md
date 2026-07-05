@@ -205,8 +205,8 @@ Ratary is a platform — not a single binary.
 └──────────────────────────────┬──────────────────────────────┘
          │              │              │              │
          ▼              ▼              ▼              ▼
-   @ratary/sdk    @ratary/cli   @ratary/mcp-server   Studio *
-         │              │              │         (future)
+   @ratary/sdk    @ratary/cli   @ratary/mcp-server   Ontorata Studio *
+         │              │              │              (future)
          └──────────────┴──────────────┴──────────────┘
                                │
                                ▼
@@ -214,7 +214,7 @@ Ratary is a platform — not a single binary.
               consumer AI assistant · built on Ratary
 ```
 
-**Ratary Server** is the source of truth. Everything else connects to it.
+**Ratary Server** is the source of truth. Everything else connects to it. **Ontorata Studio** is the operator console (Ontorata ecosystem); MCP stays **`ratary`**.
 
 ---
 
@@ -292,7 +292,7 @@ Organized by direction — not sprints.
 | | Themes |
 |---|--------|
 | **Today** | MCP + REST brain, hybrid retrieval, self-host on D1/Postgres, remote MCP for ChatGPT |
-| **Next** | Ratary Studio, deeper connectors, expanded SDK surface, container images |
+| **Next** | Ontorata Studio, deeper connectors, expanded SDK surface, container images |
 | **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace |
 
 Enterprise modules ship **opt-in via environment flags** — defaults stay lean.
