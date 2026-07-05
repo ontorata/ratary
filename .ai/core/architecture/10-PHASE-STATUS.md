@@ -40,8 +40,8 @@ Record **live** project metrics, deployment facts, and documented technical debt
 | **Core memory path** | Phases 1?11 ? ? default deploy unchanged |
 | **Enterprise platform** | Phases 10.5?25 ? Implemented ? **all default OFF** |
 | **Extension tracks** | 04.7, 05.5–09.8, **06.6 Precision Search (Implemented, default OFF)**, **07.1 Agent Forge**, **08.8 Inspection Ledger** | opt-in / workflow |
-| **Next gate** | Phase 6.6 owner sign-off — [REVIEW](../../phases/06.6-precision-search/REVIEW.md) |
-| **Last extension ship** | Phase 6.6 Precision Search (2026-07-05) |
+| **Next gate** | None — Phase 6.6 gate PASS (2026-07-05) · follow-up D66-04/D66-05 in [COMPLETION](../../phases/06.6-precision-search/COMPLETION.md) |
+| **Last extension gate** | Phase 6.6 Precision Search PASS (2026-07-05) |
 | **Last platform gate** | Phase 25 Global Intelligence (2026-07-04) |
 | **Active task** | Maintenance / POST-ROADMAP ? see [TASK_PROMPT.md](../../TASK_PROMPT.md) |
 | **Governance index** | [phases/README.md](../../phases/README.md) ? phases 1?25 |

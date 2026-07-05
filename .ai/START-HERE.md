@@ -97,7 +97,7 @@ Source of truth: [phases/roadmap/09-ROADMAP.md](phases/roadmap/09-ROADMAP.md)
 | 4 Memory Intelligence | ✅ Complete |
 | 5 Embedding | ✅ Complete |
 | 6 Hybrid Retrieval | ✅ Complete |
-| **6.6 Precision Search** | ✅ Implemented — [06.6-precision-search/](phases/06.6-precision-search/) · ADR-060 · default OFF |
+| **6.6 Precision Search** | ✅ Gate PASS — [06.6-precision-search/](phases/06.6-precision-search/) · ADR-060 · default OFF |
 | 7 Agent Runtime | ✅ Complete |
 | **7.1 Agent Forge** | ✅ Complete — [07.1-agent-forge/](phases/07.1-agent-forge/) · contributor workflow |
 | **8.8 Inspection Pattern Ledger** | ✅ Complete — [08.8-inspection-pattern-ledger/](phases/08.8-inspection-pattern-ledger/) · ADR-059 |

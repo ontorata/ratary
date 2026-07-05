@@ -92,7 +92,7 @@ Full lifecycle: [PHASE-DOCUMENT-SCHEMA.md](PHASE-DOCUMENT-SCHEMA.md).
 | 4.7 Memory Stewardship | [04.7-memory-stewardship/](04.7-memory-stewardship/README.md) | ADR-045 |
 | 5.5 Semantic Compression | [05.5-semantic-compression/](05.5-semantic-compression/README.md) | ADR-023 |
 | 6.5 Progressive Retrieval | [06.5-progressive-retrieval/](06.5-progressive-retrieval/README.md) | ADR-024 |
-| **6.6 Precision Search** | [06.6-precision-search/](06.6-precision-search/README.md) | ADR-060 **Implemented** (2026-07-05) · default OFF |
+| **6.6 Precision Search** | [06.6-precision-search/](06.6-precision-search/README.md) | ADR-060 **Implemented** · gate PASS (2026-07-05) · default OFF |
 | 7.5 Runtime Compatibility | [07.5-runtime-compatibility/](07.5-runtime-compatibility/README.md) | ADR-025 |
 | **7.1 Agent Forge** | [07.1-agent-forge/](07.1-agent-forge/README.md) | — (workflow; Phase 7 extension) |
 | 8.5 Quality Signals | [08.5-observation-reflection-learning/](08.5-observation-reflection-learning/README.md) | ADR-026 |
