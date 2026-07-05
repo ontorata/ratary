@@ -6,16 +6,37 @@
 
 ---
 
+## Documentation map (which file answers what)
+
+| Question | Document |
+|----------|----------|
+| How do I install and use Ratary daily? | **[GUIDE.md](GUIDE.md)** |
+| What does each `.env` variable do? | **[CONFIGURATION.md](CONFIGURATION.md)** |
+| What is Ratary architecturally? | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Copy MCP / IDE config | [examples/](examples/) |
+| Enterprise authorization (OPA/Rego) | [policies/](policies/) |
+| Grafana / Prometheus setup | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
+| Product overview & quick start | [../README.md](../README.md) |
+
+**Template vs docs:**
+
+| File | Role |
+|------|------|
+| [../.env.example](../.env.example) | Variable **names & defaults** (machine-readable template) |
+| [CONFIGURATION.md](CONFIGURATION.md) | Variable **meaning & when to enable** (human reference) |
+
+---
+
 ## What lives where
 
 | Location | Audience | In `ontorata/ratary` (public)? | Purpose |
 |----------|----------|----------------------------------|---------|
-| **`docs/`** | Humans | **Yes** | Descriptive guides — setup, architecture overview, examples |
-| **`.ai/`** | AI assistants & maintainers | **No** (development mirror) | Normative governance — constitution, ADRs, phases, Forge workflow |
+| **`docs/`** | Humans | **Yes** | Guides, configuration reference, examples |
+| **`.ai/`** | AI assistants & maintainers | **No** (development mirror) | Governance — constitution, ADRs, phases |
 
 **Rule:** `docs/` explains the system. It does **not** override implementation law in `.ai/`.
 
-If you cloned only the public repo, you have everything needed to **run and use** Ratary. For full test suite, phase gates, and Agent Forge SSOT, use the [development mirror](https://github.com/lutfi04/ai-brain) (same code boundary, separate remote).
+Full test suite & governance: [lutfi04/ai-brain](https://github.com/lutfi04/ai-brain).
 
 ---
 
@@ -24,49 +45,28 @@ If you cloned only the public repo, you have everything needed to **run and use*
 | Document | Purpose |
 |----------|---------|
 | [../README.md](../README.md) | Product vision, quick start, capabilities |
-| **[GUIDE.md](GUIDE.md)** | **Setup, daily usage, MCP, ops, troubleshooting** |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Human-readable system overview (summary only) |
-| [examples/](examples/) | MCP configs, IDE templates, SDK patterns |
-| [../MCP/README.md](../MCP/README.md) | Ratary MCP listing & tool reference |
+| [GUIDE.md](GUIDE.md) | Setup, daily usage, MCP, troubleshooting |
+| [CONFIGURATION.md](CONFIGURATION.md) | Environment variable reference by tier |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Human-readable system summary |
 
 ---
 
-## Reference
+## Reference & templates
 
 | Document | Purpose |
 |----------|---------|
-| [../.env.example](../.env.example) | Environment variables |
+| [../.env.example](../.env.example) | Env template — copy to `.env` |
+| [examples/](examples/) | MCP and IDE config **templates** |
+| [policies/](policies/) | **Authorization** policy samples (OPA/Rego) — not env |
 | [../SDK/](../SDK/) | Minimal `@ratary/sdk` example |
-| [policies/](policies/) | OPA / Rego authorization examples |
-| [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) | Prometheus / Grafana wiring |
+| [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) | Metrics & dashboards |
+| [../infrastructure/marketplace/catalog.json](../infrastructure/marketplace/catalog.json) | Plugin catalog (when `PLUGIN_MARKETPLACE_ENABLED`) |
 
 ---
 
-## Governance (development mirror — not in public tree)
+## Governance (development mirror only)
 
-Normative AI documentation lives under **`.ai/`** in the [lutfi04/ai-brain](https://github.com/lutfi04/ai-brain) checkout:
-
-| Topic | Path (mirror only) |
-|-------|---------------------|
-| Entry | `.ai/START-HERE.md` |
-| Constitution | `.ai/core/constitution/00-CONSTITUTION.md` |
-| Architecture law | `.ai/core/architecture/04-ARCHITECTURE.md` |
-| ADRs | `.ai/adr/` |
-| Phases & roadmap | `.ai/phases/` |
-| Agent Forge | `.ai/phases/07.1-agent-forge/` |
-
-**AI assistants** with a full dev checkout: read `.ai/START-HERE.md` before implementing structural changes.
-
----
-
-## Authority hierarchy (summary)
-
-```
-Owner instruction
-  → .ai/ constitution & ADRs (mirror)
-  → src/ (Ratary Server)
-  → docs/ (human explanation — must not contradict shipped behavior)
-```
+Normative AI docs live under **`.ai/`** in [lutfi04/ai-brain](https://github.com/lutfi04/ai-brain) — not in the public product tree.
 
 ---
 

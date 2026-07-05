@@ -359,10 +359,12 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 | | |
 |---|---|
 | [docs/GUIDE.md](docs/GUIDE.md) | Setup, daily usage, Ratary MCP configuration |
+| [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | Environment variables — what each flag does |
+| [docs/examples/](docs/examples/) | MCP and IDE config templates |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and boundaries |
-| [docs/examples/](docs/examples/) | Ratary MCP configs, IDE templates, SDK patterns |
 | [MCP/README.md](MCP/README.md) | Ratary MCP — stdio and `@ratary/mcp-server` |
-| [.env.example](.env.example) | Ratary Server environment reference |
+| [.env.example](.env.example) | Env template — meanings in [docs/CONFIGURATION.md](docs/CONFIGURATION.md) |
+| [docs/policies/](docs/policies/) | Authorization policy samples (OPA/Rego, enterprise) |
 
 **Ontorata ecosystem** (separate repositories — not in this tree):
 

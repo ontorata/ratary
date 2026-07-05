@@ -63,6 +63,9 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 | Need | Document |
 |------|----------|
 | Install & daily use | [GUIDE.md](GUIDE.md) |
+| Environment variables | [CONFIGURATION.md](CONFIGURATION.md) |
+| MCP / IDE templates | [examples/](examples/) |
+| Enterprise authorization (OPA) | [policies/](policies/) |
 | Docs index | [README.md](README.md) |
 | New dev machine | [GUIDE.md § 9](GUIDE.md#9-new-development-machine) |
 | Ecosystem & capabilities | [../README.md](../README.md) |

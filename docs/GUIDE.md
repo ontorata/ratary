@@ -2,6 +2,8 @@
 
 One guide for **setup, daily use, and Ratary MCP** (Cursor, Claude Code, Roo, Cline, Gemini CLI, and more).
 
+**Related docs:** [CONFIGURATION.md](CONFIGURATION.md) (what each `.env` variable does) · [examples/](examples/) (MCP/IDE templates) · [policies/](policies/) (enterprise authorization, not env)
+
 For per-harness plugin install (marketplace commands), see **[install/](install/)** when published (Phase 31). Quick path: `npm run setup` in this repo.
 
 ---
@@ -17,7 +19,7 @@ npm install
 cp .env.example .env
 ```
 
-Fill `.env` from the [Cloudflare Dashboard](https://dash.cloudflare.com):
+Fill `.env` from the [Cloudflare Dashboard](https://dash.cloudflare.com) — see **[CONFIGURATION.md § Tier 0](CONFIGURATION.md#tier-0--required-for-local-brain-d1--mcp-stdio)** for what each variable does.
 
 - `CLOUDFLARE_ACCOUNT_ID`
 - `D1_DATABASE_ID`
@@ -350,7 +352,7 @@ External adapters are **opt-in via env**. Defaults unchanged (D1, inline storage
 | `MEMORY_ACCESS_AUDIT` | `false` | Access trail |
 | `OTEL_ENABLED` | `false` | OpenTelemetry |
 
-Full reference: [.env.example](../.env.example)
+Full reference: **[CONFIGURATION.md](CONFIGURATION.md)** · template: [.env.example](../.env.example)
 
 ### Postgres metadata (Phase 11)
 
