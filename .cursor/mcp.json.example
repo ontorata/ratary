@@ -2,8 +2,8 @@
   "mcpServers": {
     "ratary": {
       "command": "npx",
-      "args": ["-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"],
-      "cwd": "D:/Apps/ai-brain"
+      "args": ["-y", "tsx", "D:/Apps/ratary/src/mcp/stdio.ts"],
+      "cwd": "D:/Apps/ratary"
     }
   }
 }

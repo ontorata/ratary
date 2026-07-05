@@ -8,7 +8,7 @@ Add to `.cursor/mcp.json` for **in-repo stdio** (recommended for IDE):
     "ratary": {
       "command": "npm",
       "args": ["run", "mcp"],
-      "cwd": "/path/to/ai-brain"
+      "cwd": "/path/to/ratary"
     }
   }
 }
@@ -19,12 +19,12 @@ For **remote hosted** deployment (Phase 16 installable MCP via SDK):
 ```json
 {
   "mcpServers": {
-    "ratary-remote": {
+    "ratary": {
       "command": "npx",
       "args": ["@ratary/mcp-server"],
       "env": {
-        "AI_BRAIN_BASE_URL": "https://your-host.example.com",
-        "AI_BRAIN_API_KEY": "aic_..."
+        "RATARY_BASE_URL": "https://ontorata.com",
+        "RATARY_API_KEY": "aic_..."
       }
     }
   }

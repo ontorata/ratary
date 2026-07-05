@@ -35,7 +35,11 @@ export class AiBrainClient {
   }
 }
 
-export { AiBrainApiError } from './errors.js';
+export { AiBrainApiError, AiBrainApiError as RataryApiError } from './errors.js';
 export type { IApiClient, RestTransportConfig } from './ports/iapi-client.js';
 export { RestTransport } from './transports/rest-transport.js';
 export * from './types.js';
+
+/** @deprecated Use RataryClient — alias kept for SDK migration. */
+export { AiBrainClient as RataryClient };
+export type { AiBrainClientOptions as RataryClientOptions };

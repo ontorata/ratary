@@ -1,12 +1,12 @@
 {
   "mcpServers": {
-    "ai-brain-remote": {
+    "ratary": {
       "command": "npx",
       "args": ["-y", "@ratary/mcp-server"],
       "env": {
-        "AI_BRAIN_BASE_URL": "https://your-deploy.vercel.app",
-        "AI_BRAIN_API_KEY": "aic_your_api_key_here",
-        "AI_BRAIN_WORKSPACE_ID": ""
+        "RATARY_BASE_URL": "https://ontorata.com",
+        "RATARY_API_KEY": "aic_your_api_key_here",
+        "RATARY_WORKSPACE_ID": ""
       }
     }
   }

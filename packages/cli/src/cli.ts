@@ -89,7 +89,7 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
   }
 
   if (group === 'federation' && sub === 'peers') {
-    if (!client.federation) throw new Error('Set AI_BRAIN_FEDERATION=true to use federation');
+    if (!client.federation) throw new Error('Set RATARY_FEDERATION=true to use federation');
     const peers = await client.federation.listPeers();
     console.log(JSON.stringify(peers, null, 2));
     return;

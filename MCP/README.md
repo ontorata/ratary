@@ -13,7 +13,7 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 | Mode | Location | When to use |
 |------|----------|-------------|
 | **Full server (27 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; direct Cloudflare D1 / Postgres |
-| **npm proxy (6 tools)** | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`) | Connect to hosted REST API with `AI_BRAIN_API_KEY` |
+| **npm proxy (6 tools)** | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`) | Connect to hosted REST API with `RATARY_API_KEY` |
 | **Remote HTTPS** | [`src/transport/mcp/remote/`](../src/transport/mcp/remote/) | `REMOTE_MCP_ENABLED=true` on Vercel deploy |
 
 Tool registry SSOT: [`src/capabilities/mcp-tool-names.ts`](../src/capabilities/mcp-tool-names.ts)
@@ -26,7 +26,7 @@ Tool registry SSOT: [`src/capabilities/mcp-tool-names.ts`](../src/capabilities/m
 
 ```bash
 git clone https://github.com/ontorata/ratary.git
-cd ai-brain
+cd ratary
 npm install
 cp .env.example .env
 # Fill CLOUDFLARE_ACCOUNT_ID, D1_DATABASE_ID, D1_API_TOKEN
@@ -67,8 +67,8 @@ For teams using a deployed Ratary REST endpoint:
 
 ```bash
 npm install -g @ratary/mcp-server
-export AI_BRAIN_BASE_URL=https://your-deploy.vercel.app
-export AI_BRAIN_API_KEY=aic_...
+export RATARY_BASE_URL=https://ontorata.com
+export RATARY_API_KEY=aic_...
 ratary-mcp
 ```
 
@@ -115,7 +115,7 @@ Details: [Phase 13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) · [ADR-0
 | **Short description** | Persistent coding memory for AI assistants — MCP stdio + remote URL, hybrid search, knowledge graph, token-efficient context. Self-host on Cloudflare D1 or Postgres. |
 | **Link** | `https://github.com/ontorata/ratary/tree/main/MCP` |
 | **Category** | Memory |
-| **Contact** | (your email) |
+| **Contact** | hello@ontorata.com |
 
 ---
 
