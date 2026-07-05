@@ -1,9 +1,11 @@
 # Configuration Reference
 
-**Purpose:** Explain **what each feature does**, **pros and cons**, **runtime effects**, and **which env vars to set**.  
+**Purpose:** Explain **what each feature does**, **when to enable it**, and **what changes at runtime**.  
 **Template file:** [.env.example](../.env.example) (copy → `.env` — never commit `.env`)  
 **How-to workflows:** [GUIDE.md](GUIDE.md) (setup, MCP, backfill commands)  
 **Documentation index:** [README.md](README.md)
+
+> **Defaults are the supported product.** Tier 0 + commented `.env.example` is a complete, production-viable brain on D1 — not a demo mode. Sections below describe **opt-in capabilities** and what to prepare before you flip a flag. **Before enabling** notes are operator checklists (infra, credentials, staging), not a catalog of product defects. Residual architecture risks are tracked in platform release review and phase governance — not listed here.
 
 ---
 
@@ -28,7 +30,9 @@
 | Field | Meaning |
 |-------|---------|
 | **What it does** | Role in the system |
-| **Pros / Cons** | Trade-offs for enabling |
+| **Benefits** | Why teams enable this (opt-in features) |
+| **Requirements** | What Tier 0 needs — credentials and guardrails |
+| **Before enabling** | Checklist before uncommenting optional flags |
 | **Effects when enabled** | What changes at runtime |
 | **Key variables** | Env vars to set |
 
@@ -50,8 +54,9 @@
 | `PORT` | Optional | REST port (default `3000`) |
 | `LOG_LEVEL` | Optional | `info` typical |
 
-**Pros:** Zero local database install; works with MCP stdio immediately.  
-**Cons:** D1 is Cloudflare-bound; not ideal for all enterprise Postgres workflows.  
+**Benefits:** Zero local database install; works with MCP stdio immediately.  
+**Requirements:** D1 credentials and `AUTH_SECRET` as in the table above.  
+**Scale path:** Postgres metadata via [Tier 2 → Postgres](#postgres-metadata-sql_providerpostgres) when you outgrow D1 — no rewrite required.  
 **Effects:** Without these, neither REST nor stdio MCP can persist memory.
 
 See [GUIDE — Setup](GUIDE.md#1-setup).
@@ -68,8 +73,8 @@ See [GUIDE — Setup](GUIDE.md#1-setup).
 | `MCP_WORKSPACE_ID` | Scope MCP tools to a workspace |
 | `MCP_AGENT_ID` | Attribution hint for agent registry |
 
-**Pros:** Strong isolation in production; supports multi-workspace teams.  
-**Cons:** Must bootstrap first to obtain owner UUID; misconfiguration blocks MCP startup in production.  
+**Benefits:** Strong isolation in production; supports multi-workspace teams.  
+**Production requirement:** Set `MCP_OWNER_ID` after bootstrap — intentional guard; MCP refuses to start in production without it so memory cannot run unscoped.  
 **Effects:** In `NODE_ENV=production`, MCP stdio **refuses to start** without `MCP_OWNER_ID`. REST can use `X-Workspace-Id` / `X-Agent-Id` headers similarly.
 
 See [GUIDE — Security](GUIDE.md#3-security).
@@ -88,8 +93,8 @@ Safe defaults. Enable only when you need the capability.
 |----------|---------|
 | `HYBRID_RETRIEVAL` | `false` |
 
-**Pros:** Better recall when wording differs from stored text; pairs well with embeddings.  
-**Cons:** Requires a real embedding provider and backfilled vectors; slightly higher retrieval latency.  
+**Benefits:** Better recall when wording differs from stored text; pairs well with embeddings.  
+**Before enabling:** Set `EMBEDDING_PROVIDER` and run embedding backfill first; expect modest retrieval latency increase.  
 **Effects:** `get_context` and related retrieval paths run SQL + vector legs and merge ranks. No effect on plain CRUD.
 
 **Related tuning:** `RETRIEVAL_POLICY`, `RETRIEVAL_POLICY_VERSION` (extension tracks).
@@ -108,8 +113,8 @@ Safe defaults. Enable only when you need the capability.
 | `GRAPH_MAX_NEIGHBORS` | `30` | Neighbor budget per query |
 | `RETRIEVAL_RELATION_NEIGHBOR_CAP` | `5` | One-hop neighbors in `get_context` |
 
-**Pros:** Surfaces related decisions and linked memories users forgot to mention; good for dense knowledge graphs.  
-**Cons:** Noisy on sparse graphs; dense graphs can inflate context — lower `RETRIEVAL_RELATION_NEIGHBOR_CAP` (e.g. 3).  
+**Benefits:** Surfaces related decisions and linked memories users forgot to mention; good for dense knowledge graphs.  
+**Before enabling:** Tune `RETRIEVAL_RELATION_NEIGHBOR_CAP` in staging (try 3 on dense graphs); sparse graphs may return little graph context until relations exist.  
 **Effects:** Retrieval pipeline adds graph BFS after seeds. Graph tools (`traverse_relations`, etc.) work **without** this flag for explicit exploration.
 
 Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
@@ -129,8 +134,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `EMBEDDING_BATCH_SIZE` | `32` | Batch size for backfill jobs |
 | `EMBEDDING_JOB_MAX_MEMORIES` | `10000` | Cap per backfill run |
 
-**Pros:** Enables semantic search and hybrid retrieval; provider-agnostic.  
-**Cons:** API cost and latency for backfill; `noop` means no vectors until you backfill.  
+**Benefits:** Enables semantic search and hybrid retrieval; provider-agnostic.  
+**Before enabling:** Configure embedding provider and budget for backfill API cost; default `noop` skips vectors until backfill runs.  
 **Effects:** New/changed memories queue embedding jobs. Delete cleans vectors. Run `npm run db:backfill-embeddings` → `:execute` after enabling.
 
 ---
@@ -148,8 +153,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `SQL_PROVIDER` | `d1` |
 | `DATABASE_URL` | — |
 
-**Pros:** Standard RDBMS ops, backups, replicas; required path for many enterprise deploys.  
-**Cons:** Migration from D1 needed; you operate Postgres.  
+**Benefits:** Standard RDBMS ops, backups, replicas; required path for many enterprise deploys.  
+**Before enabling:** Run D1 → Postgres migration scripts and verify parity in staging ([GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure)).  
 **Effects:** All SQL-backed repositories use Postgres. Run schema apply + D1 backfill — [GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure).
 
 ---
@@ -163,8 +168,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `VECTOR_PROVIDER` | `d1` |
 | `PGVECTOR_DATABASE_URL` | — (falls back to `DATABASE_URL`) |
 
-**Pros:** Scales vector search; co-locate with Postgres metadata.  
-**Cons:** Extra schema and backfill; hybrid retrieval still needs embeddings enabled.  
+**Benefits:** Scales vector search; co-locate with Postgres metadata.  
+**Before enabling:** Extra schema and backfill; hybrid retrieval still needs embeddings enabled.  
 **Effects:** Vector reads/writes go to pgvector table. Backfill: `npm run db:backfill-pgvector`.
 
 ---
@@ -178,8 +183,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `OBJECT_STORAGE_PROVIDER` | `inline` |
 | `R2_*` / `S3_*` | bucket, keys, region, endpoint |
 
-**Pros:** Keeps SQL rows small; cheaper bulk storage.  
-**Cons:** Another service to secure and monitor; slight read latency for offloaded bodies.  
+**Benefits:** Keeps SQL rows small; cheaper bulk storage.  
+**Before enabling:** Another service to secure and monitor; slight read latency for offloaded bodies.  
 **Effects:** Bodies above inline threshold stored externally. See `CONTENT_SCALE_*` for ops automation.
 
 ---
@@ -193,8 +198,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `SEARCH_PROVIDER` | `sql` |
 | `MEILISEARCH_HOST`, `MEILISEARCH_API_KEY`, `MEILISEARCH_INDEX` | — |
 
-**Pros:** Sub-second fuzzy search at scale; typo tolerance.  
-**Cons:** Sync lag until backfill; another cluster to run.  
+**Benefits:** Sub-second fuzzy search at scale; typo tolerance.  
+**Before enabling:** Sync lag until backfill; another cluster to run.  
 **Effects:** Search/browse APIs prefer Meilisearch index. Backfill: `npm run db:backfill-meilisearch`.
 
 ---
@@ -208,8 +213,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `GRAPH_PROVIDER` | `d1` |
 | `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD` | — |
 
-**Pros:** Native graph queries at large edge counts.  
-**Cons:** Operational overhead; D1 graph sufficient for many teams.  
+**Benefits:** Native graph queries at large edge counts.  
+**Before enabling:** Operational overhead; D1 graph sufficient for many teams.  
 **Effects:** Relation writes/traversals use Neo4j adapter. Backfill: `npm run db:backfill-neo4j`.
 
 ---
@@ -224,8 +229,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `REDIS_URL` | — |
 | `REDIS_KEY_PREFIX` | `ai-brain:cache:` |
 
-**Pros:** Lower latency on multi-instance deploys.  
-**Cons:** Cache invalidation complexity; stale reads if misconfigured.  
+**Benefits:** Lower latency on multi-instance deploys.  
+**Before enabling:** Cache invalidation complexity; stale reads if misconfigured.  
 **Effects:** Cache adapter active; no change to persistence semantics.
 
 ---
@@ -238,8 +243,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 |----------|---------|
 | `RATE_LIMIT_REDIS_URL` | Dedicated Redis for rate limits |
 
-**Pros:** Consistent throttling per IP/key across replicas.  
-**Cons:** Requires Upstash or self-hosted Redis.  
+**Benefits:** Consistent throttling per IP/key across replicas.  
+**Before enabling:** Requires Upstash or self-hosted Redis.  
 **Effects:** Without it, rate limits are per-instance only on serverless.
 
 ---
@@ -254,8 +259,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `EVENT_CONSUMERS_ENABLED` | `false` |
 | `REDIS_STREAM_PREFIX` | `ai-brain:events:` |
 
-**Pros:** Decouples heavy work from request path; enables horizontal workers.  
-**Cons:** Requires Redis and consumer processes.  
+**Benefits:** Decouples heavy work from request path; enables horizontal workers.  
+**Before enabling:** Requires Redis and consumer processes.  
 **Effects:** With `EVENT_CONSUMERS_ENABLED=true`, background workers process queued jobs.
 
 ---
@@ -269,8 +274,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `ANALYTICS_PROVIDER` | `none` |
 | `DUCKDB_PATH` | `:memory:` |
 
-**Pros:** Fast analytical queries without a warehouse.  
-**Cons:** Not a production BI replacement; file path needed for persistence.  
+**Benefits:** Fast analytical queries without a warehouse.  
+**Before enabling:** Not a production BI replacement; file path needed for persistence.  
 **Effects:** Signal/analytics writes route to DuckDB when enabled.
 
 ---
@@ -284,8 +289,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `ENTERPRISE_RBAC` | `false` |
 | `MEMORY_ACCESS_AUDIT` | `false` |
 
-**Pros:** Team isolation and compliance trail.  
-**Cons:** Setup overhead; all clients must send workspace context.  
+**Benefits:** Team isolation and compliance trail.  
+**Before enabling:** Setup overhead; all clients must send workspace context.  
 **Effects:** Unauthorized workspace access denied; audit rows appended when audit enabled.
 
 ---
@@ -300,8 +305,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `COMPRESSION_ENABLED`, `COMPRESSION_POLICY`, `COMPRESSION_SCHEDULER`, `SUMMARIZER_*` |
 
-**Pros:** Lower storage and retrieval token cost; cleaner long-term memory.  
-**Cons:** LLM summarization cost if `COMPRESSION_POLICY=llm`; irreversible without version history.  
+**Benefits:** Lower storage and retrieval token cost; cleaner long-term memory.  
+**Before enabling:** Enable memory evolution first if you need rollback; budget for summarizer API when `COMPRESSION_POLICY=llm`.  
 **Effects:** Scheduler queues compression jobs. CLI: `npm run compress:memories`.
 
 ---
@@ -312,8 +317,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `SIGNAL_INGEST_ENABLED`, `RANKING_ADAPTATION_ENABLED`, `LEARNING_ENGINE_ENABLED`, `LEARNING_STORE_PROVIDER` |
 
-**Pros:** Retrieval improves from real usage patterns.  
-**Cons:** Needs signal volume; harder to debug ranking changes.  
+**Benefits:** Retrieval improves from real usage patterns.  
+**Before enabling:** Needs signal volume; harder to debug ranking changes.  
 **Effects:** `submit_signal` MCP tool feeds store; learning engine updates policy snapshots async.
 
 ---
@@ -324,8 +329,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `INSPECTION_LEDGER_ENABLED`, `INSPECTION_LEDGER_STORE_PROVIDER`, `INSPECTION_CHARTER_ENABLED` |
 
-**Pros:** Audit trail for automated review pipelines.  
-**Cons:** Storage growth; niche for most solo devs.  
+**Benefits:** Audit trail for automated review pipelines.  
+**Before enabling:** Storage growth; niche for most solo devs.  
 **Effects:** Inspection signals persisted when enabled.
 
 ---
@@ -336,8 +341,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `PRECISION_SEARCH_ENABLED`, `SEARCH_DEFAULT_MODE`, `MULTI_QUERY_RRF_K`, `SEARCH_RERANK_ENABLED`, `RERANK_MODEL_PATH` |
 
-**Pros:** Fine-grained search for power users and agents.  
-**Cons:** More tuning surface; rerank adds latency.  
+**Benefits:** Fine-grained search for power users and agents.  
+**Before enabling:** More tuning surface; rerank adds latency.  
 **Effects:** Search MCP/REST tools expose additional modes and boosts.
 
 ---
@@ -348,8 +353,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `RELATION_INFERENCE_ENABLED`, `RELATION_INFERENCE_STORE_PROVIDER` |
 
-**Pros:** Graph grows automatically; less manual linking.  
-**Cons:** False-positive edges possible; needs periodic stewardship.  
+**Benefits:** Graph grows automatically; less manual linking.  
+**Before enabling:** False-positive edges possible; needs periodic stewardship.  
 **Effects:** Background jobs propose/write inferred relations.
 
 ---
@@ -360,8 +365,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `MEMORY_EVOLUTION_ENABLED`, `MEMORY_EVOLUTION_STORE_PROVIDER` |
 
-**Pros:** Safe edits; rollback bad agent writes.  
-**Cons:** Storage multiplier; API complexity.  
+**Benefits:** Safe edits; rollback bad agent writes.  
+**Before enabling:** Storage multiplier; API complexity.  
 **Effects:** REST version endpoints active; each update creates version row.
 
 ---
@@ -372,8 +377,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `MULTI_CLIENT_SYNC_ENABLED`, `MULTI_CLIENT_SYNC_STORE_PROVIDER`, `MULTI_CLIENT_SYNC_STRATEGY` (default `lww`) |
 
-**Pros:** Same brain across devices/offline clients.  
-**Cons:** Conflict edge cases; requires sync-aware clients.  
+**Benefits:** Same brain across devices/offline clients.  
+**Before enabling:** Conflict edge cases; requires sync-aware clients.  
 **Effects:** MCP `sync_pull`, `sync_push`, `sync_status` persist sync state.
 
 ---
@@ -384,8 +389,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `MEMORY_STEWARDSHIP_ENABLED`, `MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER`, `MEMORY_STEWARDSHIP_SCHEDULER` |
 
-**Pros:** Hands-off hygiene for long-running brains.  
-**Cons:** Aggressive rules can archive wanted memories — test in dry-run.  
+**Benefits:** Hands-off hygiene for long-running brains.  
+**Before enabling:** Run `npm run compress:memories` dry-run and review stewardship rules in staging before scheduling.  
 **Effects:** MCP `run_stewardship`; scheduled runs when scheduler set.
 
 ---
@@ -398,8 +403,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `GRPC_ENABLED`, `GRPC_PORT`, `GRPC_HOST`, `GRPC_TLS_*` |
 
-**Pros:** Efficient streaming for internal callers.  
-**Cons:** Requires long-running host (not Vercel serverless); TLS ops burden.  
+**Benefits:** Efficient streaming for internal callers.  
+**Before enabling:** Requires long-running host (not Vercel serverless); TLS ops burden.  
 **Effects:** gRPC server binds alongside REST when enabled.
 
 ---
@@ -410,8 +415,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `SSE_ENABLED`, `SSE_MAX_CONCURRENT_PER_IP`, rate limit vars |
 
-**Pros:** Lower time-to-first-token for large context builds.  
-**Cons:** Long-lived connections; not serverless-friendly.  
+**Benefits:** Lower time-to-first-token for large context builds.  
+**Before enabling:** Long-lived connections; not serverless-friendly.  
 **Effects:** `GET /api/v1/context/stream` available. Endpoint: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 ---
@@ -422,8 +427,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `WEBSOCKET_ENABLED`, `WEBSOCKET_PATH` |
 
-**Pros:** Interactive UIs and live updates.  
-**Cons:** Connection management complexity.  
+**Benefits:** Interactive UIs and live updates.  
+**Before enabling:** Connection management complexity.  
 **Effects:** WebSocket route mounted at configured path.
 
 ---
@@ -434,8 +439,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `REMOTE_MCP_ENABLED`, `REMOTE_MCP_PATH`, `REMOTE_MCP_PUBLIC_URL`, `REMOTE_MCP_CORS_ORIGINS`, `REMOTE_MCP_OAUTH_ENABLED` |
 
-**Pros:** ChatGPT New App, web MCP hosts connect without local install.  
-**Cons:** Needs long-running Node host; SSE sessions fragile on pure serverless.  
+**Benefits:** ChatGPT New App, web MCP hosts connect without local install.  
+**Before enabling:** Needs long-running Node host; SSE sessions fragile on pure serverless.  
 **Effects:** MCP protocol served over HTTP; OAuth discovery when OAuth enabled. See [GUIDE — ChatGPT](GUIDE.md#61-chatgpt).
 
 ---
@@ -446,8 +451,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `OTEL_ENABLED`, `OTEL_SERVICE_NAME`, `OTEL_EXPORTER_OTLP_ENDPOINT` |
 
-**Pros:** Debug latency across retrieval pipeline.  
-**Cons:** Collector infrastructure required.  
+**Benefits:** Debug latency across retrieval pipeline.  
+**Before enabling:** Collector infrastructure required.  
 **Effects:** Spans emitted on instrumented paths; no user-visible API change.
 
 ---
@@ -465,8 +470,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 | `OIDC_*` | — | Issuer, client id/secret |
 | `QUOTA_*` | — | Rate/write quotas per owner |
 
-**Pros:** Enterprise authz (OPA/Rego), SSO, quota enforcement.  
-**Cons:** Operational complexity — OPA cluster, IdP integration, policy authoring.  
+**Benefits:** Enterprise authz (OPA/Rego), SSO, quota enforcement.  
+**Before enabling:** OPA reachable, IdP configured, and policies tested in staging; set quotas from measured traffic.  
 **Effects:** API requests evaluated against policy engine; SSO replaces bootstrap-only auth when enabled; quotas return 429 when exceeded.
 
 **Authorization samples:** [policies/](policies/) — load Rego into OPA, not Ratary directly. See [policies/README.md](policies/README.md).
@@ -481,8 +486,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `FEDERATION_ENABLED`, `FEDERATION_NODE_ID`, `FEDERATION_PEERS_JSON`, trust/policy providers |
 
-**Pros:** Multi-region or multi-tenant brain mesh.  
-**Cons:** Trust configuration critical; sync conflict handling.  
+**Benefits:** Multi-region or multi-tenant brain mesh.  
+**Before enabling:** Define peer trust policy and allowlist; validate sync in a non-production node pair first.  
 **Effects:** Federation APIs and peer transport active.
 
 ---
@@ -493,8 +498,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `CONTROL_PLANE_ENABLED`, `USAGE_METER_ENABLED`, `DR_PLATFORM_ENABLED`, `CLOUD_*` |
 
-**Pros:** Hosted-style ops on self-managed infra.  
-**Cons:** Mostly relevant for platform operators.  
+**Benefits:** Hosted-style ops on self-managed infra.  
+**Before enabling:** Mostly relevant for platform operators.  
 **Effects:** Usage records persisted; cost gauges available with observability flags.
 
 ---
@@ -505,8 +510,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `OBSERVABILITY_PLATFORM`, `OBS_METRICS_PATH`, `OBS_LOG_SHIPPER`, `OBS_LOKI_PUSH_URL`, `OBS_COST_METRICS_ENABLED`, `COST_*` |
 
-**Pros:** Production visibility; SLO dashboards in `observability/`.  
-**Cons:** External Prometheus/Grafana/Loki stack.  
+**Benefits:** Production visibility; SLO dashboards in `observability/`.  
+**Before enabling:** External Prometheus/Grafana/Loki stack.  
 **Effects:** `/metrics` exposed; dashboards importable. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#10-observability).
 
 ---
@@ -517,8 +522,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 | Key variables | `PLUGIN_MARKETPLACE_ENABLED`, `PLUGIN_SIGNATURE_REQUIRED`, `PLUGIN_TRUSTED_PUBLIC_KEYS`, `PLUGIN_MARKETPLACE_SOURCE` |
 
-**Pros:** Extend Ratary without forking core.  
-**Cons:** Signature trust management; supply-chain risk if keys misconfigured.  
+**Benefits:** Extend Ratary without forking core.  
+**Before enabling:** Load `PLUGIN_TRUSTED_PUBLIC_KEYS`; keep `PLUGIN_SIGNATURE_REQUIRED=true` in production.  
 **Effects:** Plugin enable/install APIs gated by marketplace + policy engine.
 
 Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketplace/catalog.json).
@@ -531,8 +536,8 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 | Key variables | `SEARCH_GRAPH_PLATFORM_ENABLED`, `GRAPH_VECTOR_SEEDS_ENABLED` |
 
-**Pros:** Keeps external indexes consistent under load.  
-**Cons:** Background job monitoring required.  
+**Benefits:** Keeps external indexes consistent under load.  
+**Before enabling:** Background job monitoring required.  
 **Effects:** Scheduled sync workers run when platform flag enabled.
 
 ---
@@ -543,8 +548,8 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 | Key variables | `CONTENT_SCALE_PLATFORM_ENABLED`, `CONTENT_OFFLOAD_MIN_BYTES`, `CONTENT_OFFLOAD_CLEAR_INLINE` |
 
-**Pros:** Hands-off large-body migration.  
-**Cons:** Irreversible inline clear if misconfigured.  
+**Benefits:** Hands-off large-body migration.  
+**Before enabling:** Confirm object storage bucket and lifecycle rules; only set `CONTENT_OFFLOAD_CLEAR_INLINE=true` after verified backups.  
 **Effects:** Bodies migrated per threshold rules.
 
 ---
@@ -555,8 +560,8 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 | Key variables | `KNOWLEDGE_FABRIC_ENABLED`, `KNOWLEDGE_FABRIC_CATALOG_JSON`, `NOTION_API_TOKEN`, `GITHUB_TOKEN` |
 
-**Pros:** Unified brain from existing tools of record.  
-**Cons:** Token scope security; ingest volume management.  
+**Benefits:** Unified brain from existing tools of record.  
+**Before enabling:** Token scope security; ingest volume management.  
 **Effects:** Connector jobs write memories on schedule/trigger.
 
 ---
@@ -567,8 +572,8 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 | Key variables | `RATARY_PLATFORM_ENABLED`, `RATARY_PLATFORM_EDITION`, `PLATFORM_WEBHOOKS_ENABLED` |
 
-**Pros:** SKU differentiation; event-driven integrations.  
-**Cons:** Webhook delivery monitoring needed.  
+**Benefits:** SKU differentiation; event-driven integrations.  
+**Before enabling:** Webhook delivery monitoring needed.  
 **Effects:** Webhook payloads fire on configured domain events.
 
 ---
@@ -586,8 +591,8 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 Legacy aliases `AI_BRAIN_*` still accepted.
 
-**Pros:** Same brain from any machine without D1 creds in IDE config.  
-**Cons:** Requires deployed server and API key rotation discipline.  
+**Benefits:** Same brain from any machine without D1 creds in IDE config.  
+**Before enabling:** Requires deployed server and API key rotation discipline.  
 **Effects:** npm MCP proxy exposes 6 tools vs 28 for local stdio.
 
 Example: [examples/mcp/remote-api.mcp.json.example](examples/mcp/remote-api.mcp.json.example).
@@ -604,8 +609,8 @@ Example: [examples/mcp/remote-api.mcp.json.example](examples/mcp/remote-api.mcp.
 | `BACKUP_SYNC_DEBOUNCE_MS` | Debounce for file watcher |
 | `BACKUP_SYNC_POLL_MS` | Poll interval |
 
-**Pros:** Recover IDE chat logs into durable memory.  
-**Cons:** One-way sync — not a backup restore tool for full DB.  
+**Benefits:** Recover IDE chat logs into durable memory.  
+**Before enabling:** One-way sync — not a backup restore tool for full DB.  
 **Effects:** New/changed files under `BACKUP_ROOT` create or update memories.
 
 ---

@@ -250,7 +250,7 @@ Check active transports: `GET /api/v1/capabilities` → `transport` section.
 
 ## 7. Optional commands
 
-Feature reference (pros, cons, effects): **[CONFIGURATION.md](CONFIGURATION.md)**.
+Feature reference (what to prepare before optional flags): **[CONFIGURATION.md](CONFIGURATION.md)**.
 
 | Command | Purpose |
 |---------|---------|
@@ -317,7 +317,7 @@ CLI: `npm run compress:memories` (dry-run) · `compress:memories:execute`
 
 External adapters are **opt-in via env**. Defaults unchanged (D1, inline storage).
 
-Adapter reference (pros, cons, effects): **[CONFIGURATION.md Tier 2](CONFIGURATION.md#tier-2--platform-adapters)** · template: [.env.example](../.env.example)
+Adapter reference: **[CONFIGURATION.md Tier 2](CONFIGURATION.md#tier-2--platform-adapters)** · template: [.env.example](../.env.example)
 
 ### Postgres metadata
 
