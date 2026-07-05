@@ -6,9 +6,10 @@ import {
   NoOpProviderMarketplace,
 } from '../infrastructure-platform/adapters/local-provider-marketplace.js';
 import {
-  SchemaPluginManifestValidator,
   NoOpPluginManifestValidator,
 } from '../infrastructure-platform/adapters/schema-plugin-manifest-validator.js';
+import { SignedPluginManifestValidator } from '../infrastructure-platform/adapters/signed-plugin-manifest-validator.js';
+import { parseTrustedPublicKeys } from '../infrastructure-platform/adapters/plugin-manifest-signing.js';
 import { NoOpPluginAllowList } from '../infrastructure-platform/adapters/noop-plugin-allow-list.js';
 import { SqlPluginRegistry } from '../infrastructure/infrastructure-platform/sql-plugin-registry.js';
 import { SqlPluginAllowList } from '../infrastructure/infrastructure-platform/sql-plugin-allow-list.js';
@@ -83,8 +84,10 @@ export async function createInfrastructurePlatformPorts(
     return noop;
   }
 
-  const validator = new SchemaPluginManifestValidator({
+  const trustedPublicKeys = parseTrustedPublicKeys(env.PLUGIN_TRUSTED_PUBLIC_KEYS);
+  const validator = new SignedPluginManifestValidator({
     requireSignature: env.PLUGIN_SIGNATURE_REQUIRED,
+    trustedPublicKeys,
   });
   const pluginRegistry = new SqlPluginRegistry(sql, env, validator);
   await pluginRegistry.bootstrapFromEnv();

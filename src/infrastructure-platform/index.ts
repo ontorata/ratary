@@ -18,5 +18,12 @@ export {
   SchemaPluginManifestValidator,
   NoOpPluginManifestValidator,
 } from './adapters/schema-plugin-manifest-validator.js';
+export { SignedPluginManifestValidator } from './adapters/signed-plugin-manifest-validator.js';
+export {
+  parseTrustedPublicKeys,
+  canonicalPluginManifestPayload,
+  verifyPluginManifestSignature,
+  exportRawPublicKeyBase64,
+} from './adapters/plugin-manifest-signing.js';
 export { LocalProviderMarketplace, NoOpProviderMarketplace } from './adapters/local-provider-marketplace.js';
 export { NoOpPluginAllowList } from './adapters/noop-plugin-allow-list.js';

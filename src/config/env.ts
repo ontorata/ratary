@@ -320,6 +320,7 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+    PLUGIN_TRUSTED_PUBLIC_KEYS: z.string().optional(),
     PLUGIN_MARKETPLACE_SOURCE: z.enum(['local', 'remote']).default('local'),
     PLUGIN_FEDERATION_CATALOG_SYNC: z
       .enum(['true', 'false'])

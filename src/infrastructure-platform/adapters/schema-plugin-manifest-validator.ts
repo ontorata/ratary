@@ -29,10 +29,6 @@ export class SchemaPluginManifestValidator implements IPluginManifestValidator {
       errors.push('signature is required');
     }
 
-    if (manifest.signature && manifest.signature.length < 8) {
-      errors.push('signature is invalid');
-    }
-
     return { valid: errors.length === 0, errors };
   }
 }
