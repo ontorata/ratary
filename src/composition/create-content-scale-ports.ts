@@ -32,7 +32,7 @@ export interface ContentScalePorts {
 
 /**
  * Composition root for Phase 22 content & vector scale platform (ADR-021).
- * Gated by CONTENT_SCALE_PLATFORM_ENABLED — default off preserves inline/D1 behavior.
+ * Gated by CONTENT_SCALE_PLATFORM_ENABLED — default off preserves inline storage behavior.
  */
 export function createContentScalePorts(
   sql: ISqlDatabase,

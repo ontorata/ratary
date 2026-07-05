@@ -46,8 +46,8 @@ Ratary persists memory metadata through **`ISqlDatabase`** — same application 
 
 | Stack | `SQL_PROVIDER` | Required env | Setup guide |
 |-------|----------------|--------------|-------------|
+| **PostgreSQL** *(template default)* | `postgres` | `DATABASE_URL` | [Postgres (Tier 2)](#postgres-metadata-sql_providerpostgres) · [DOCKER postgres profile](DOCKER.md#quick-start-postgres-profile) |
 | **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | [D1 below](#cloudflare-d1-sql_providerd1) · `npm run db:migrate` |
-| **PostgreSQL** | `postgres` | `DATABASE_URL` | [Postgres (Tier 2)](#postgres-metadata-sql_providerpostgres) · [DOCKER postgres profile](DOCKER.md#quick-start-postgres-profile) |
 | **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [MariaDB (Tier 2)](#mariadb--mysql-metadata-sql_providermariadbmysql) · [DOCKER enterprise profile](DOCKER.md#profiles) |
 | **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | [TiDB/Cockroach (Tier 2)](#tidb--cockroachdb-metadata-sql_providertidcockroachdb) |
 

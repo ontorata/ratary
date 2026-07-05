@@ -69,7 +69,7 @@ const envSchema = z
     GRAPH_MAX_NEIGHBORS: z.coerce.number().int().positive().default(DEFAULT_GRAPH_MAX_NEIGHBORS),
 
     // Platform infrastructure (Phase 10)
-    SQL_PROVIDER: z.enum(['d1', 'postgres', 'mariadb', 'mysql', 'tidb', 'cockroachdb']).default('d1'),
+    SQL_PROVIDER: z.enum(['d1', 'postgres', 'mariadb', 'mysql', 'tidb', 'cockroachdb']).default('postgres'),
     MARIADB_CONNECTION_STRING: z.string().min(1).optional(),
     VECTOR_PROVIDER: z.enum(['d1', 'pgvector']).default('d1'),
     PGVECTOR_DATABASE_URL: z.string().url().optional(),
