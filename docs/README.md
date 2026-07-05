@@ -1,15 +1,21 @@
-# Human Documentation
+# Documentation
 
-**Purpose:** Project information for developers and operators.  
-**Audience:** Humans installing, deploying, and using Ratary.
+**Audience:** Developers and operators installing, deploying, and using Ratary.
 
-**Ontorata:** [ontorata.com](https://ontorata.com) · [hello@ontorata.com](mailto:hello@ontorata.com) · Founder [Lutfi Ramadhan](https://www.linkedin.com/in/lutfiramadhan/)
+**Ontorata:** [ontorata.com](https://ontorata.com) · [hello@ontorata.com](mailto:hello@ontorata.com)
 
-**Nature:** Everything in `docs/` is **descriptive** — it explains the system. It does **not** define AI implementation behavior.
+---
 
-> **AI assistants:** Do **not** treat this folder as implementation authority.  
-> Governance lives in local `.ai/` (not in the production GitHub repo).  
-> Read **[.ai/START-HERE.md](../.ai/START-HERE.md)** when present in a full dev checkout.
+## What lives where
+
+| Location | Audience | In `ontorata/ratary` (public)? | Purpose |
+|----------|----------|----------------------------------|---------|
+| **`docs/`** | Humans | **Yes** | Descriptive guides — setup, architecture overview, examples |
+| **`.ai/`** | AI assistants & maintainers | **No** (development mirror) | Normative governance — constitution, ADRs, phases, Forge workflow |
+
+**Rule:** `docs/` explains the system. It does **not** override implementation law in `.ai/`.
+
+If you cloned only the public repo, you have everything needed to **run and use** Ratary. For full test suite, phase gates, and Agent Forge SSOT, use the [development mirror](https://github.com/lutfi04/ai-brain) (same code boundary, separate remote).
 
 ---
 
@@ -17,9 +23,11 @@
 
 | Document | Purpose |
 |----------|---------|
-| [../README.md](../README.md) | Product vision, quick start, capability matrix |
-| [PANDUAN.md](PANDUAN.md) | Setup, usage, MCP, migration guide (Indonesian) |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | High-level system explanation (human-readable) |
+| [../README.md](../README.md) | Product vision, quick start, capabilities |
+| **[GUIDE.md](GUIDE.md)** | **Setup, daily usage, MCP, ops, troubleshooting** |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Human-readable system overview (summary only) |
+| [examples/](examples/) | MCP configs, IDE templates, SDK patterns |
+| [../MCP/README.md](../MCP/README.md) | Ratary MCP listing & tool reference |
 
 ---
 
@@ -27,51 +35,39 @@
 
 | Document | Purpose |
 |----------|---------|
-| [.ai/adr/](../.ai/adr/) | Architecture Decision Records (immutable decision text) |
-| [.ai/adr/POLICY.md](../.ai/adr/POLICY.md) | When and how to write ADRs |
-| [.ai/archive/](../.ai/archive/) | Historical phase designs — **read-only**, not implementation authority |
-| [../SDK/](../SDK/) | Minimal `@ratary/sdk` usage example |
-| [examples/](examples/) | MCP configs, IDE templates, and integration patterns |
-| [policies/](policies/) | OPA / Rego authorization policy examples |
+| [../.env.example](../.env.example) | Environment variables |
+| [../SDK/](../SDK/) | Minimal `@ratary/sdk` example |
+| [policies/](policies/) | OPA / Rego authorization examples |
+| [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) | Prometheus / Grafana wiring |
 
 ---
 
-## AI Operating System (not in this folder)
+## Governance (development mirror — not in public tree)
 
-All **normative** AI governance lives under **`.ai/`**:
+Normative AI documentation lives under **`.ai/`** in the [lutfi04/ai-brain](https://github.com/lutfi04/ai-brain) checkout:
 
-| Topic | Path |
-|-------|------|
-| Entry | [.ai/START-HERE.md](../.ai/START-HERE.md) |
-| Overview | [.ai/README.md](../.ai/README.md) |
-| Index | [.ai/core/constitution/INDEX.md](../.ai/core/constitution/INDEX.md) |
-| Constitution | [.ai/core/constitution/00-CONSTITUTION.md](../.ai/core/constitution/00-CONSTITUTION.md) |
-| Standards | [.ai/core/standards/](../.ai/core/standards/) |
-| Architecture law | [.ai/core/architecture/04-ARCHITECTURE.md](../.ai/core/architecture/04-ARCHITECTURE.md) |
-| Live phase status | [.ai/core/architecture/10-PHASE-STATUS.md](../.ai/core/architecture/10-PHASE-STATUS.md) |
-| Roadmap | [.ai/phases/roadmap/09-ROADMAP.md](../.ai/phases/roadmap/09-ROADMAP.md) |
-| Active task | [.ai/TASK_PROMPT.md](../.ai/TASK_PROMPT.md) |
-| Prompt library | [.ai/workflow/prompts/PROMPT-LIBRARY.md](../.ai/workflow/prompts/PROMPT-LIBRARY.md) |
+| Topic | Path (mirror only) |
+|-------|---------------------|
+| Entry | `.ai/START-HERE.md` |
+| Constitution | `.ai/core/constitution/00-CONSTITUTION.md` |
+| Architecture law | `.ai/core/architecture/04-ARCHITECTURE.md` |
+| ADRs | `.ai/adr/` |
+| Phases & roadmap | `.ai/phases/` |
+| Agent Forge | `.ai/phases/07.1-agent-forge/` |
+
+**AI assistants** with a full dev checkout: read `.ai/START-HERE.md` before implementing structural changes.
 
 ---
 
-## Authority rule
-
-Full chain: [.ai/core/constitution/INDEX.md](../.ai/core/constitution/INDEX.md#Authority-Hierarchy)
+## Authority hierarchy (summary)
 
 ```
 Owner instruction
-  → .ai/core/constitution/00-CONSTITUTION.md
-  → .ai/core/decision-framework/13-AI-DECISION-FRAMEWORK.md
-  → .ai/core/architecture/04-ARCHITECTURE.md
-  → .ai/adr/ (approved ADRs)
-  → .ai/core/standards/*
-  → .ai/TASK_PROMPT.md
-  → src/
+  → .ai/ constitution & ADRs (mirror)
+  → src/ (Ratary Server)
+  → docs/ (human explanation — must not contradict shipped behavior)
 ```
-
-Documentation in `docs/` **must not** override `.ai/`.
 
 ---
 
-*Human documentation index. AI corpus: [.ai/START-HERE.md](../.ai/START-HERE.md).*
+*Human documentation index. Product repo: [ontorata/ratary](https://github.com/ontorata/ratary).*

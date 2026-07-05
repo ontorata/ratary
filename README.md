@@ -20,7 +20,7 @@
   &nbsp;·&nbsp;
   <a href="https://ontorata.com">Website</a>
   &nbsp;·&nbsp;
-  <a href="docs/PANDUAN.md">Docs</a>
+  <a href="docs/GUIDE.md">Docs</a>
 </p>
 
 <p align="center">
@@ -122,7 +122,7 @@ curl -X POST http://localhost:3000/api/v1/memory \
   -d '{"title":"Hello brain","project":"demo","content":"Ratary remembers this."}'
 ```
 
-Full guide: **[docs/PANDUAN.md](docs/PANDUAN.md)** · SDK & MCP examples in [docs/examples/](docs/examples/)
+Full guide: **[docs/GUIDE.md](docs/GUIDE.md)** · SDK & MCP examples in [docs/examples/](docs/examples/)
 
 ---
 
@@ -358,7 +358,7 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 
 | | |
 |---|---|
-| [docs/PANDUAN.md](docs/PANDUAN.md) | Setup, daily usage, Ratary MCP configuration |
+| [docs/GUIDE.md](docs/GUIDE.md) | Setup, daily usage, Ratary MCP configuration |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and boundaries |
 | [docs/examples/](docs/examples/) | Ratary MCP configs, IDE templates, SDK patterns |
 | [MCP/README.md](MCP/README.md) | Ratary MCP — stdio and `@ratary/mcp-server` |

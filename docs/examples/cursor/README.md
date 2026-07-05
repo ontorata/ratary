@@ -45,4 +45,4 @@ Copy [mcp/remote-api.mcp.json.example](../mcp/remote-api.mcp.json.example) or:
 }
 ```
 
-See also [MCP listing](../../MCP/README.md) and [PANDUAN.md](../../PANDUAN.md).
+See also [MCP listing](../../MCP/README.md) and [GUIDE.md](../../GUIDE.md).

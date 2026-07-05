@@ -126,7 +126,7 @@ Details: [Phase 13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) · [ADR-0
 
 | Doc | Purpose |
 |-----|---------|
-| [docs/PANDUAN.md](../docs/PANDUAN.md) | Setup & usage (Indonesian) |
+| [docs/GUIDE.md](../docs/GUIDE.md) | Setup & usage |
 | [docs/README.md](../docs/README.md) | Human docs index |
 | [docs/examples/](../docs/examples/) | MCP configs, IDE templates, SDK patterns |
 

@@ -3,15 +3,14 @@
 **Purpose:** Human-readable explanation of Ratary structure.  
 **Audience:** Developers and operators onboarding to the project.
 
-> **Canonical structural law (AI authority):** [.ai/core/architecture/04-ARCHITECTURE.md](../.ai/core/architecture/04-ARCHITECTURE.md)  
-> **Live status:** [.ai/core/architecture/10-PHASE-STATUS.md](../.ai/core/architecture/10-PHASE-STATUS.md)  
-> **Do not implement from this file alone** — it summarizes; `.ai/` governs behavior.
+> **This file is a summary for humans.** It does not define implementation behavior.  
+> **Structural law** lives in `.ai/` on the [development mirror](https://github.com/lutfi04/ai-brain) — not shipped in the public `ontorata/ratary` tree.
 
 ---
 
 ## What this system is
 
-Ratary is a **memory foundation** for AI coding assistants. It stores durable knowledge, enriches metadata, ranks retrieval, and exposes access via **REST** and **MCP** — without embedding agent reasoning inside the repository.
+Ratary is a **memory foundation** for AI coding assistants. It stores durable knowledge, enriches metadata, ranks retrieval, and exposes access via **REST** and **Ratary MCP** — without embedding agent reasoning inside the repository.
 
 Higher capabilities (agents, planning, execution) integrate **externally** at protocol boundaries.
 
@@ -26,13 +25,11 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Graph →
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
-**Phase 07.1 Agent Forge** defines the **contributor workflow** for this repo (Cursor skills + MCP Recall/Remember) — not server runtime. See [.ai/phases/07.1-agent-forge/](../.ai/phases/07.1-agent-forge/README.md) and [PANDUAN.md § 2.1](PANDUAN.md#21-agent-forge-kontributor-di-repo-ini).
+**Agent Forge (Phase 07.1)** is the **contributor workflow** (Cursor skills + MCP Recall/Remember) — not server runtime. See [GUIDE.md § 2.1](GUIDE.md#21-agent-forge-contributors) and the mirror: `.ai/phases/07.1-agent-forge/`.
 
-**Phase 10 (Enterprise):** storage-agnostic infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) wired at the composition root with opt-in env flags. Default deployment remains D1-centric. See [ADR-008–016](adr/README.md) and [.ai/phases/10-enterprise/](../.ai/phases/10-enterprise/README.md).
+**Enterprise platform (Phase 10):** storage-agnostic adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) — all opt-in via env flags. Default deploy remains D1-centric.
 
-**Phase 19 (Observability):** Prometheus scrape, Grafana dashboard packs, SLO templates, and optional FinOps cost gauges bridged from Phase 18 usage metering (`OBS_COST_METRICS_ENABLED`). Default OFF — see [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md).
-
-**POST-MVP backlog (2026-07-05):** restore/merge version control (09.7), context audit identity/IP (12), async compression scheduler (05.5), ChatGPT remote MCP CI smoke (13.1). All default OFF — see [.ai/core/architecture/10-PHASE-STATUS.md](../.ai/core/architecture/10-PHASE-STATUS.md).
+**Observability (Phase 19):** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md).
 
 ---
 
@@ -44,8 +41,8 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 | **Application** | Services orchestrating use cases |
 | **Domain** | Memory, knowledge, search, ranking — business rules |
 | **Ports** | Vendor-neutral contracts (`ISqlDatabase`, `IVectorStore`, …) |
-| **Infrastructure** | Adapters (D1, Postgres, R2, pgvector, …) — Phase 10 |
-| **Composition root** | `server.ts`, `mcp/server.ts` — wires adapters |
+| **Infrastructure** | Adapters (D1, Postgres, R2, pgvector, …) |
+| **Composition root** | `server.ts`, MCP transport — wires adapters |
 
 **Rule:** REST and MCP share the same application services. No duplicated business logic.
 
@@ -61,40 +58,28 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 
 ---
 
-## Structural decisions
-
-Recorded in [adr/](adr/). ADR decision text is immutable; status may change (Proposed → Approved → Implemented).
-
-| ADR | Topic |
-|-----|-------|
-| [001](adr/001-multi-source-retrieval.md) | Hybrid retrieval (Phase 6) — **Implemented** |
-| [006](adr/006-igraph-provider.md) | Graph provider (Phase 8) — **Implemented** |
-| [007](adr/007-multi-ai-workspace-scope.md) | Multi-AI workspace scope — **Implemented** |
-| [008](adr/008-platform-architecture.md) | Platform ports (Phase 9.5) — **Implemented** |
-| [009–016](adr/README.md) | Phase 10 infrastructure adapters — **Approved** |
-| [019](../.ai/adr/019-memory-repository-module-split.md) | MemoryRepository reader/writer split (Phase 11C) — **Implemented** |
-| [040](../.ai/adr/040-memory-evolution-version-control.md) | Memory evolution restore/merge (Phase 09.7) — **Implemented** |
-
-Full index: [adr/README.md](adr/README.md).
-
----
-
-## Historical designs
-
-Phase design documents before ADR approval live in [archive/](archive/). They are **historical references only** — not implementation authority.
-
----
-
 ## Where to read next
 
 | Need | Document |
 |------|----------|
-| Install & use | [PANDUAN.md](PANDUAN.md) |
-| New dev environment | [README.md § Instalasi](../README.md#instalasi-pada-lingkungan-pengembangan-baru) |
-| AI governance | [.ai/START-HERE.md](../.ai/START-HERE.md) |
-| Contributor workflow | [.ai/phases/07.1-agent-forge/](../.ai/phases/07.1-agent-forge/README.md) |
-| Vocabulary | [.ai/core/glossary/GLOSSARY.md](../.ai/core/glossary/GLOSSARY.md) |
+| Install & daily use | [GUIDE.md](GUIDE.md) |
+| Docs index | [README.md](README.md) |
+| New dev machine | [GUIDE.md § 9](GUIDE.md#9-new-development-machine) |
+| Ecosystem & capabilities | [../README.md](../README.md) |
+| MCP tools | [../MCP/README.md](../MCP/README.md) |
+| AI governance (mirror) | [lutfi04/ai-brain](https://github.com/lutfi04/ai-brain) → `.ai/START-HERE.md` |
 
 ---
 
-*Human overview only. Structural law: `.ai/core/architecture/`.*
+## docs/ vs `.ai/`
+
+| Folder | Role |
+|--------|------|
+| **`docs/`** | Human guides — you are here |
+| **`.ai/`** | AI implementation authority — phases, ADRs, constitution (development mirror only) |
+
+Do not implement structural changes from `docs/` alone.
+
+---
+
+*Human overview only.*
