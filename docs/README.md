@@ -17,10 +17,9 @@
 
 | Document | Purpose |
 |----------|---------|
-| [../README.md](../README.md) | Product overview, quick start, tech stack |
-| [PANDUAN.md](PANDUAN.md) | Setup, usage, MCP, Agent Forge (Indonesian) |
+| [../README.md](../README.md) | Product vision, quick start, capability matrix |
+| [PANDUAN.md](PANDUAN.md) | Setup, usage, MCP, migration guide (Indonesian) |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | High-level system explanation (human-readable) |
-| [../README.md#instalasi-pada-lingkungan-pengembangan-baru](../README.md#instalasi-pada-lingkungan-pengembangan-baru) | Formal migration / new dev environment guide |
 
 ---
 
