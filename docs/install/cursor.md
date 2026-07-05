@@ -8,6 +8,7 @@
 
 - [Ratary Server](../../README.md#quick-start) running locally (`npm run dev`) **or** a hosted URL with API key
 - Node.js 24 (for stdio path)
+- **SQL metadata** configured — D1, Postgres, or MariaDB ([CONFIGURATION Tier 0](../../CONFIGURATION.md#sql-metadata-store-choose-one))
 
 ---
 
@@ -18,7 +19,7 @@ From your Ratary clone:
 ```bash
 npm install
 cp .env.example .env
-# Fill D1 credentials — see CONFIGURATION Tier 0
+# Fill SQL provider credentials — see CONFIGURATION Tier 0
 npm run db:migrate
 npm run setup
 ```
@@ -90,7 +91,7 @@ For marketplace installs, use Cursor's plugin update flow.
 
 | Issue | Fix |
 |-------|-----|
-| MCP red / not loading | Reload Window; check Node 24; verify `.env` D1 creds |
+| MCP red / not loading | Reload Window; check Node 24; verify SQL provider env |
 | Production MCP blocked | Set `MCP_OWNER_ID` or use `NODE_ENV=development` locally |
 
 Full guide: [GUIDE.md](../GUIDE.md).

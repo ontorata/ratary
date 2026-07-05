@@ -31,7 +31,7 @@ Generates `.cursor/mcp.json` and `.mcp.json` from your `.env` — no manual copy
 
 | Example | Use when |
 |---------|----------|
-| [mcp/cursor.mcp.json.example](mcp/cursor.mcp.json.example) | Cursor — local stdio (direct D1) |
+| [mcp/cursor.mcp.json.example](mcp/cursor.mcp.json.example) | Cursor — local stdio (any SQL provider) |
 | [mcp/claude-code.mcp.json.example](mcp/claude-code.mcp.json.example) | Claude Code — local stdio |
 | [mcp/remote-api.mcp.json.example](mcp/remote-api.mcp.json.example) | Any IDE — hosted API via `@ratary/mcp-server` |
 | [gemini-settings.json.example](gemini-settings.json.example) | Gemini CLI MCP block |
@@ -45,7 +45,7 @@ Replace `REPO_PATH` with your clone path (e.g. `D:/Apps/ratary`). Use forward sl
 
 | Pattern | Minimum `.env` | Docs |
 |---------|----------------|------|
-| Local stdio (examples above) | D1 credentials + `AUTH_SECRET` | [GUIDE — Setup](../GUIDE.md#1-setup) |
+| Local stdio (examples above) | `SQL_PROVIDER` + connection vars + `AUTH_SECRET` | [GUIDE — Setup](../GUIDE.md#1-setup) |
 | `@ratary/mcp-server` | `RATARY_BASE_URL` + `RATARY_API_KEY` on MCP env, not in repo `.env` | [CONFIGURATION — Client packages](../CONFIGURATION.md#client-packages-mcp--cli--sdk) |
 
 ---

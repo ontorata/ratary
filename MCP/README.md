@@ -14,7 +14,7 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 
 | Mode | Location | When to use |
 |------|----------|-------------|
-| **Full server (28 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; direct Cloudflare D1 / Postgres |
+| **Full server (28 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; any `SQL_PROVIDER` (D1, Postgres, MariaDB, …) |
 | **npm proxy (6 tools)** | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`) | Connect to hosted REST API with `RATARY_API_KEY` |
 | **Remote HTTPS** | [`src/transport/mcp/remote/`](../src/transport/mcp/remote/) | `REMOTE_MCP_ENABLED=true` on Vercel deploy |
 
@@ -22,7 +22,9 @@ Tool registry SSOT: [`src/capabilities/mcp-tool-names.ts`](../src/capabilities/m
 
 ---
 
-## Quick start (local stdio — recommended)
+## Quick start (local stdio)
+
+Configure **one SQL metadata provider** first — see [CONFIGURATION — SQL metadata store](../docs/CONFIGURATION.md#sql-metadata-store-choose-one).
 
 ### 1. Prerequisites
 
@@ -31,8 +33,8 @@ git clone https://github.com/ontorata/ratary.git
 cd ratary
 npm install
 cp .env.example .env
-# Fill CLOUDFLARE_ACCOUNT_ID, D1_DATABASE_ID, D1_API_TOKEN
-npm run db:migrate
+# Set SQL_PROVIDER + matching credentials (D1, DATABASE_URL, or MARIADB_CONNECTION_STRING)
+npm run db:migrate   # D1 only — use db:apply-postgres-schema for Postgres
 ```
 
 ### 2. Generate MCP config
@@ -128,7 +130,7 @@ Submit **Ratary Memory MCP** to public directories using the copy-paste pack in 
 | Field | Value |
 |-------|-------|
 | **Server name** | Ratary |
-| **Short description** | Persistent coding memory for AI assistants — save, search, hybrid retrieval, knowledge graph, token-efficient context. MCP stdio (28 tools), npm proxy, or remote Streamable HTTP. Self-host on D1, Postgres, or Docker. |
+| **Short description** | Persistent coding memory for AI assistants — save, search, hybrid retrieval, knowledge graph, token-efficient context. MCP stdio (28 tools), npm proxy, or remote Streamable HTTP. Self-host on D1, Postgres, MariaDB, or Docker. |
 | **Link** | `https://github.com/ontorata/ratary/tree/main/MCP` |
 | **Category** | Memory |
 | **Contact** | hello@ontorata.com |

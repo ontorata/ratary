@@ -23,7 +23,7 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Graph →
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
-**Platform adapters:** storage-agnostic backends — D1 (default), Postgres, MariaDB/MySQL, TiDB/Cockroach (Postgres wire), pgvector, R2/S3/MinIO, Azure Blob, GCS, Redis, Meilisearch, OpenSearch, Neo4j, DuckDB, ClickHouse, Redis Streams, OpenTelemetry — all opt-in via env flags. See [CONFIGURATION.md](CONFIGURATION.md) Tier 2 and [DOCKER.md](DOCKER.md) for compose profiles.
+**Platform adapters:** peer SQL backends (D1, Postgres, MariaDB/MySQL, TiDB/Cockroach) plus optional pgvector, R2/S3/MinIO, Azure Blob, GCS, Redis, Meilisearch, OpenSearch, Neo4j, DuckDB, ClickHouse — selected via env. See [CONFIGURATION.md](CONFIGURATION.md) Tier 0–2 and [DOCKER.md](DOCKER.md) compose profiles.
 
 **Observability:** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#10-observability).
 

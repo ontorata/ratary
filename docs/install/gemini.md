@@ -6,7 +6,7 @@
 
 ## Setup
 
-1. Clone Ratary and configure D1 — [GUIDE — Setup](../GUIDE.md#1-setup)
+1. Clone Ratary and configure your **SQL provider** — [GUIDE — Setup](../GUIDE.md#1-setup)
 2. Copy [docs/examples/gemini-settings.json.example](../examples/gemini-settings.json.example) to `.gemini/settings.json`
 3. Replace `REPO_PATH` with your clone path
 

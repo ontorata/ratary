@@ -39,7 +39,7 @@ Copy-paste materials for listing **Ratary Memory MCP** (`ratary`) on public MCP 
 
 ## One-line pitch (all directories)
 
-> Ratary Memory MCP — persistent coding memory with hybrid search, knowledge graph, and token-efficient context for Cursor, Claude Code, and remote MCP hosts. Self-host on D1/Postgres or connect via `@ratary/mcp-server`.
+> Ratary Memory MCP — persistent coding memory with hybrid search, knowledge graph, and token-efficient context for Cursor, Claude Code, and remote MCP hosts. Self-host on D1, Postgres, MariaDB, or connect via `@ratary/mcp-server`.
 
 ---
 

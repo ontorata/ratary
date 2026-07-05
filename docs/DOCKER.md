@@ -1,8 +1,6 @@
 # Ratary — Docker & Compose
 
-Run **Ratary Server** in a container alongside optional Postgres for self-hosted deployments.
-
-**Default OSS path** remains `npm run dev` with Cloudflare D1 — Docker is an additive distribution option.
+Run **Ratary Server** in a container with **Postgres** or **MariaDB + MinIO** — peer deployment paths alongside npm + D1 or any other `SQL_PROVIDER`.
 
 ---
 
@@ -47,7 +45,7 @@ Save the returned `apiKey` (`aic_...`) for REST and `@ratary/mcp-server`.
 
 Compose sets `SQL_PROVIDER=postgres` and `DATABASE_URL` automatically for the `postgres` profile.
 
-For Cloudflare D1 inside a container, build the image and run with your `.env` mounted — not covered by the bundled compose profile.
+For Cloudflare D1, run the container with your `.env` mounted and `SQL_PROVIDER=d1` — not bundled in compose profiles (use npm or custom compose).
 
 Full variable reference: [CONFIGURATION.md](CONFIGURATION.md).
 
@@ -57,7 +55,7 @@ Full variable reference: [CONFIGURATION.md](CONFIGURATION.md).
 
 | Profile | Stack | When to use |
 |---------|-------|-------------|
-| `postgres` | Ratary + Postgres 16 | Self-host without D1 |
+| `postgres` | Ratary + Postgres 16 | Self-host with PostgreSQL metadata |
 | `enterprise` | Ratary + MariaDB + MinIO + Redis | On-prem enterprise stack (MariaDB metadata + MinIO object storage) |
 
 ```bash

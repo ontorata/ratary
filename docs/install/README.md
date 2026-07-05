@@ -13,8 +13,9 @@ For daily usage after install, see **[GUIDE.md](../GUIDE.md)**. For environment 
 
 | Scenario | Path |
 |----------|------|
-| Local brain (clone + D1) | [GUIDE — Setup](../GUIDE.md#1-setup) → `npm run setup` |
-| Docker self-host (Postgres) | [DOCKER.md](../DOCKER.md) |
+| Local brain (clone + your SQL provider) | [GUIDE — Setup](../GUIDE.md#1-setup) → `npm run setup` |
+| Docker Postgres | [DOCKER.md](../DOCKER.md#quick-start-postgres-profile) |
+| Docker enterprise (MariaDB + MinIO) | [DOCKER.md](../DOCKER.md#profiles) |
 | Hosted brain (REST API key) | [Remote / hosted](remote.md) → `@ratary/mcp-server` |
 | Remote MCP URL (ChatGPT, web) | [Remote / hosted](remote.md) → deploy `/mcp` |
 

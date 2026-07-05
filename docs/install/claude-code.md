@@ -6,7 +6,7 @@
 
 ## Prerequisites
 
-- Ratary clone with D1 configured **or** hosted server + API key
+- Ratary clone with **SQL provider configured** (`SQL_PROVIDER` + connection vars) **or** hosted server + API key
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
 
 ---
@@ -83,6 +83,6 @@ Marketplace: `/plugin update ratary@ratary-marketplace`
 | Issue | Fix |
 |-------|-----|
 | Pending approval | Run `claude` inside repo; accept MCP |
-| No tools | Confirm `.mcp.json` exists; check D1 env |
+| No tools | Confirm `.mcp.json` exists; check SQL provider env |
 
 Full guide: [GUIDE.md](../GUIDE.md).

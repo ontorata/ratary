@@ -10,7 +10,7 @@ Target repos (submit to one or both):
 ## Markdown line (alphabetical insert under Memory / Development)
 
 ```markdown
-- [Ratary](https://github.com/ontorata/ratary/tree/main/MCP) - Persistent coding memory for AI assistants — hybrid search, knowledge graph, token-efficient context. MCP stdio (28 tools), npm `@ratary/mcp-server`, optional remote Streamable HTTP. Self-host D1/Postgres/Docker.
+- [Ratary](https://github.com/ontorata/ratary/tree/main/MCP) - Persistent coding memory for AI assistants — hybrid search, knowledge graph, token-efficient context. MCP stdio (28 tools), npm `@ratary/mcp-server`, optional remote Streamable HTTP. Self-host D1, Postgres, MariaDB, or Docker.
 ```
 
 ---

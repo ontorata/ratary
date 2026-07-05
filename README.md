@@ -101,16 +101,28 @@ The runnable deployment is **[Ratary Server](#quick-start)** — this repository
 
 **Ratary** is the product. **Ratary Server** is the open-source deployment you run — [ontorata/ratary](https://github.com/ontorata/ratary) (this repository). [`@ratary/sdk`](#ecosystem), [`@ratary/cli`](#ecosystem), and [**Ratary MCP**](#ecosystem) connect to it; sibling [Ontorata products](#ecosystem) use the same source of truth.
 
-**Prerequisites:** Node.js 24 · [Cloudflare](https://dash.cloudflare.com) account (D1)
+**Prerequisites:** Node.js 24 · **SQL metadata store** (D1, Postgres, MariaDB, … — [pick one](docs/CONFIGURATION.md#sql-metadata-store-choose-one))
+
+### Path A — Cloudflare D1
 
 ```bash
 git clone https://github.com/ontorata/ratary.git
 cd ratary && npm install
-cp .env.example .env   # fill D1 + AUTH_SECRET
+cp .env.example .env   # SQL_PROVIDER=d1 — fill D1 + AUTH_SECRET
 npm run db:migrate
 npm run setup          # wire Ratary MCP for Cursor, Claude Code, …
 npm run dev
 ```
+
+### Path B — PostgreSQL (Docker)
+
+```bash
+git clone https://github.com/ontorata/ratary.git && cd ratary
+export AUTH_SECRET="$(openssl rand -hex 32)"
+docker compose --profile postgres up --build
+```
+
+Details: **[docs/DOCKER.md](docs/DOCKER.md)** · **[docs/GUIDE.md](docs/GUIDE.md#choose-your-sql-stack)**
 
 → API `http://localhost:3000` · Swagger `/docs`
 
@@ -247,8 +259,8 @@ This diagram shows the **logical internal architecture** of Ratary — how memor
                              │
         ┌────────────────────▼────────────────────┐
         │     Pluggable storage (your choice)      │
-        │  D1 · Postgres · MariaDB · pgvector ·    │
-        │  Neo4j · R2/S3/MinIO · OpenSearch · …   │
+        │  Postgres · MariaDB · D1 · pgvector · Neo4j ·     │
+        │  R2/S3/MinIO · OpenSearch · ClickHouse · …        │
         └─────────────────────────────────────────┘
 ```
 
@@ -304,9 +316,9 @@ Quality signals, consolidation, and compression — optional pipelines that impr
 Capability manifests, workspace scoping, and **28 Ratary MCP tools**. External agents discover what the brain can do; Ratary never embeds agent reasoning — see [What Ratary is not](#what-ratary-is-not).
 
 ### Platform
-Pluggable adapters: Postgres, MariaDB/MySQL, pgvector, R2/S3/MinIO, Azure Blob, GCS, Meilisearch, OpenSearch, Neo4j, Redis, DuckDB, ClickHouse. Start on Cloudflare D1. Scale to enterprise storage without rewriting application logic.
+Pluggable adapters: choose **SQL metadata** (Postgres, MariaDB/MySQL, D1, TiDB/Cockroach) plus optional pgvector, R2/S3/MinIO, Azure Blob, GCS, Meilisearch, OpenSearch, Neo4j, Redis, DuckDB, ClickHouse. Same application code for every backend.
 
-**Self-host stacks:** [docs/DOCKER.md](docs/DOCKER.md) — `postgres` profile (Postgres metadata) or `enterprise` profile (MariaDB + MinIO + Redis).
+**Self-host stacks:** [docs/DOCKER.md](docs/DOCKER.md) — `postgres` or `enterprise` (MariaDB + MinIO + Redis) profiles.
 
 ### Cloud & enterprise
 Self-host, deploy to Vercel, or run a control plane with metering and federation. RBAC workspaces, audit trails, SSO, and policy hooks — opt-in when you need them.
@@ -388,7 +400,7 @@ Organized by direction — not sprints. **Repository scope** noted where work le
 
 | | Themes | Primary repository |
 |---|--------|-------------------|
-| **Today** | Ratary MCP + REST, hybrid retrieval, self-host on D1/Postgres/MariaDB, Docker compose, remote Ratary MCP | `ontorata/ratary` |
+| **Today** | Ratary MCP + REST, hybrid retrieval, multi-SQL self-host (D1/Postgres/MariaDB), Docker compose, remote Ratary MCP | `ontorata/ratary` |
 | **Next** | Deeper connectors, expanded SDK/CLI surface; Ontorata Studio operator UI | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) (separate) |
 | **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace | `ontorata/ratary` (platform) |
 

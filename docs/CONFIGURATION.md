@@ -5,7 +5,7 @@
 **How-to workflows:** [GUIDE.md](GUIDE.md) (setup, MCP, backfill commands)  
 **Documentation index:** [README.md](README.md)
 
-> **Defaults are the supported product.** Tier 0 + commented `.env.example` is a complete, production-viable brain on D1 — not a demo mode. Sections below describe **opt-in capabilities** and what to prepare before you flip a flag. **Before enabling** notes are operator checklists (infra, credentials, staging), not a catalog of product defects. Residual architecture risks are tracked in platform release review and phase governance — not listed here.
+> **Pick your SQL metadata store** — D1, Postgres, MariaDB/MySQL, TiDB, and CockroachDB are **peer choices** via `SQL_PROVIDER`, not a ladder with D1 as the reference deployment. Tier 0 covers auth and MCP scope; SQL connection vars depend on the provider you select. Optional adapters (vectors, object storage, search) are documented in Tier 2+.
 
 ---
 
@@ -13,8 +13,8 @@
 
 | You want to… | Read |
 |--------------|------|
-| First install (D1 + MCP) | [GUIDE — Setup](GUIDE.md#1-setup) — **Tier 0** vars below |
-| Turn on Postgres / Redis / enterprise flags | **Tier 2+** here + [GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure) for backfill commands |
+| First install | [GUIDE — Setup](GUIDE.md#1-setup) — pick SQL stack + **Tier 0** vars below |
+| Turn on Postgres / MariaDB / Redis / enterprise flags | **Tier 2+** here + [GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure) for backfill commands |
 | Copy MCP or IDE config | [examples/](examples/) — not env vars |
 | Write authorization rules (Rego) | [policies/](policies/) — separate from env |
 | Grafana / Prometheus | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
@@ -22,7 +22,7 @@
 **Convention in `.env.example`:**
 
 - Uncomment and set a variable to **opt in** to that feature.
-- Commented lines show **defaults** — Ratary runs without them on a fresh D1 install.
+- Commented lines show **template defaults** in `.env.example` — override `SQL_PROVIDER` and credentials for your chosen database.
 - `true`/`false` flags use string values in `.env` (e.g. `HYBRID_RETRIEVAL=true`).
 
 **Reading each feature block:**
@@ -38,14 +38,29 @@
 
 ---
 
-## Tier 0 — Required for local brain (D1 + MCP stdio)
+## Tier 0 — Core required (SQL + auth + MCP)
 
-### Cloudflare D1 + REST auth
+### SQL metadata store (choose one)
 
-**What it does:** Connects Ratary to your D1 database and secures REST API keys.
+Ratary persists memory metadata through **`ISqlDatabase`** — same application code, different adapter per `SQL_PROVIDER`.
 
-| Variable | Required | Purpose |
-|----------|----------|---------|
+| Stack | `SQL_PROVIDER` | Required env | Setup guide |
+|-------|----------------|--------------|-------------|
+| **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | [D1 below](#cloudflare-d1-sql_providerd1) · `npm run db:migrate` |
+| **PostgreSQL** | `postgres` | `DATABASE_URL` | [Postgres (Tier 2)](#postgres-metadata-sql_providerpostgres) · [DOCKER postgres profile](DOCKER.md#quick-start-postgres-profile) |
+| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [MariaDB (Tier 2)](#mariadb--mysql-metadata-sql_providermariadbmysql) · [DOCKER enterprise profile](DOCKER.md#profiles) |
+| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | [TiDB/Cockroach (Tier 2)](#tidb--cockroachdb-metadata-sql_providertidcockroachdb) |
+
+Pick **one** row. All paths support the same MCP tools and REST API.
+
+---
+
+### Cloudflare D1 (`SQL_PROVIDER=d1`)
+
+**What it does:** Connects Ratary to Cloudflare D1 via the HTTP API.
+
+| Variable | Required when `SQL_PROVIDER=d1` | Purpose |
+|----------|----------------------------------|---------|
 | `CLOUDFLARE_ACCOUNT_ID` | Yes | Cloudflare account for D1 HTTP API |
 | `D1_DATABASE_ID` | Yes | Target D1 database UUID |
 | `D1_API_TOKEN` | Yes | API token with D1 read/write |
@@ -54,10 +69,9 @@
 | `PORT` | Optional | REST port (default `3000`) |
 | `LOG_LEVEL` | Optional | `info` typical |
 
-**Benefits:** Zero local database install; works with MCP stdio immediately.  
-**Requirements:** D1 credentials and `AUTH_SECRET` as in the table above.  
-**Scale path:** Postgres metadata via [Tier 2 → Postgres](#postgres-metadata-sql_providerpostgres) when you outgrow D1 — no rewrite required.  
-**Effects:** Without these, neither REST nor stdio MCP can persist memory.
+**Benefits:** Serverless metadata on Cloudflare; no local RDBMS install.  
+**Requirements:** D1 credentials and `AUTH_SECRET` when this provider is selected.  
+**Effects:** Without SQL credentials + auth, neither REST nor stdio MCP can persist memory.
 
 See [GUIDE — Setup](GUIDE.md#1-setup).
 
@@ -142,31 +156,31 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 ## Tier 2 — Platform adapters
 
-**Master rule:** Keep `SQL_PROVIDER=d1` and `OBJECT_STORAGE_PROVIDER=inline` unless you explicitly migrate. All adapters default **off** or **D1-centric**.
+**Master rule:** Set **`SQL_PROVIDER`** to your metadata database (see [Tier 0 SQL table](#sql-metadata-store-choose-one)). Enable object storage, vectors, search, and analytics adapters only when you need them — each is independent of the SQL choice.
 
 ### Postgres metadata (`SQL_PROVIDER=postgres`)
 
-**What it does:** Stores memory metadata in PostgreSQL instead of D1.
+**What it does:** Stores memory metadata in PostgreSQL.
 
-| Variable | Default |
-|----------|---------|
-| `SQL_PROVIDER` | `d1` |
-| `DATABASE_URL` | — |
+| Variable | When required |
+|----------|---------------|
+| `SQL_PROVIDER` | `postgres` |
+| `DATABASE_URL` | Yes |
 
-**Benefits:** Standard RDBMS ops, backups, replicas; required path for many enterprise deploys.  
-**Before enabling:** Run D1 → Postgres migration scripts and verify parity in staging ([GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure)).  
-**Effects:** All SQL-backed repositories use Postgres. Run schema apply + D1 backfill — [GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure).
+**Benefits:** Standard RDBMS ops, backups, replicas; pairs with pgvector and Docker compose.  
+**Before enabling:** Apply schema and run data import if migrating from another SQL provider ([GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure)).  
+**Effects:** All SQL-backed repositories use the Postgres adapter.
 
 ---
 
 ### MariaDB / MySQL metadata (`SQL_PROVIDER=mariadb|mysql`)
 
-**What it does:** Stores memory metadata in MariaDB or MySQL instead of D1.
+**What it does:** Stores memory metadata in MariaDB or MySQL.
 
-| Variable | Default |
-|----------|---------|
-| `SQL_PROVIDER` | `d1` |
-| `MARIADB_CONNECTION_STRING` | — (`mysql://` or `mariadb://` URI) |
+| Variable | When required |
+|----------|---------------|
+| `SQL_PROVIDER` | `mariadb` or `mysql` |
+| `MARIADB_CONNECTION_STRING` | Yes (`mysql://` or `mariadb://` URI) |
 
 **Benefits:** Fits existing MySQL/MariaDB ops teams and Galera/RDS stacks.  
 **Before enabling:** Apply the same metadata schema as Postgres; verify dialect compatibility in staging.  
@@ -178,10 +192,10 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 **What it does:** Uses the Postgres wire-protocol adapter against TiDB or CockroachDB.
 
-| Variable | Default |
-|----------|---------|
-| `SQL_PROVIDER` | `d1` |
-| `DATABASE_URL` | — (Postgres-compatible URI) |
+| Variable | When required |
+|----------|---------------|
+| `SQL_PROVIDER` | `tidb` or `cockroachdb` |
+| `DATABASE_URL` | Yes (Postgres-compatible URI) |
 
 **Benefits:** Distributed SQL without a separate adapter implementation.  
 **Before enabling:** Confirm your cluster supports the Postgres dialect features Ratary migrations require.  
@@ -191,7 +205,7 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 ### External vectors (`VECTOR_PROVIDER=pgvector`)
 
-**What it does:** Stores embedding vectors in pgvector instead of D1 blob columns.
+**What it does:** Stores embedding vectors in pgvector (separate from inline SQL vector columns).
 
 | Variable | Default |
 |----------|---------|
@@ -293,7 +307,7 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `NEO4J_URI`, `NEO4J_USERNAME`, `NEO4J_PASSWORD` | — |
 
 **Benefits:** Native graph queries at large edge counts.  
-**Before enabling:** Operational overhead; D1 graph sufficient for many teams.  
+**Before enabling:** Operational overhead; built-in SQL graph leg is sufficient for many teams until edge counts grow.  
 **Effects:** Relation writes/traversals use Neo4j adapter. Backfill: `npm run db:backfill-neo4j`.
 
 ---
@@ -692,7 +706,7 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 Legacy aliases `AI_BRAIN_*` still accepted.
 
-**Benefits:** Same brain from any machine without D1 creds in IDE config.  
+**Benefits:** Same brain from any machine without local SQL creds in IDE config (hosted REST path).  
 **Before enabling:** Requires deployed server and API key rotation discipline.  
 **Effects:** npm MCP proxy exposes 6 tools vs 28 for local stdio.
 
@@ -702,7 +716,7 @@ Example: [examples/mcp/remote-api.mcp.json.example](examples/mcp/remote-api.mcp.
 
 ## Developer / backup scripts
 
-**What it does:** Watch a local folder and sync chat exports into D1.
+**What it does:** Watch a local folder and sync chat exports into your configured SQL metadata store.
 
 | Variable | Purpose |
 |----------|---------|

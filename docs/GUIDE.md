@@ -10,7 +10,7 @@ Quick path: `npm run setup` in this repo. Per-harness install: **[install/README
 
 ## 1. Setup
 
-**Prerequisites:** Node.js 24 · [Cloudflare](https://dash.cloudflare.com) account (D1)
+**Prerequisites:** Node.js 24 · a **SQL metadata store** (see table below) · `AUTH_SECRET` for REST
 
 ```bash
 git clone https://github.com/ontorata/ratary.git
@@ -19,16 +19,29 @@ npm install
 cp .env.example .env
 ```
 
-Fill `.env` from the [Cloudflare Dashboard](https://dash.cloudflare.com) — see **[CONFIGURATION — Tier 0](CONFIGURATION.md#tier-0--required-for-local-brain-d1--mcp-stdio)** for what each variable does.
+### Choose your SQL stack
+
+| Path | `SQL_PROVIDER` | What to configure | Guide |
+|------|----------------|-------------------|-------|
+| **Cloudflare D1** | `d1` | `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, `D1_API_TOKEN` | [CONFIGURATION — D1](CONFIGURATION.md#cloudflare-d1-sql_providerd1) |
+| **PostgreSQL** | `postgres` | `DATABASE_URL` | [DOCKER — postgres profile](DOCKER.md#quick-start-postgres-profile) or local Postgres |
+| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [DOCKER — enterprise profile](DOCKER.md#profiles) |
+| **Hosted API only** | (remote server) | `RATARY_API_KEY` | [install/remote.md](install/remote.md) — no local SQL |
+
+Set `AUTH_SECRET` (min 32 characters) for REST auth on every self-hosted path.
+
+**D1 example** — fill from [Cloudflare Dashboard](https://dash.cloudflare.com):
 
 - `CLOUDFLARE_ACCOUNT_ID`
 - `D1_DATABASE_ID`
 - `D1_API_TOKEN`
-- `AUTH_SECRET` (min 32 characters — required for REST auth)
+
+**Postgres / MariaDB** — set `SQL_PROVIDER` and the matching connection string; use Docker compose or your own instance.
 
 ```bash
-npm run db:migrate
-npm run setup    # writes .cursor/mcp.json and .mcp.json
+npm run db:migrate          # D1 schema via Cloudflare API
+# Postgres: npm run db:apply-postgres-schema
+npm run setup               # writes .cursor/mcp.json and .mcp.json
 ```
 
 **Cursor:** Settings → MCP → server `ratary` green → Reload Window  
@@ -315,7 +328,7 @@ CLI: `npm run compress:memories` (dry-run) · `compress:memories:execute`
 
 ## 8. Platform infrastructure
 
-External adapters are **opt-in via env**. Defaults unchanged (D1, inline storage).
+External adapters are **opt-in via env**. Set **`SQL_PROVIDER`** to your metadata database first; other adapters are independent.
 
 Adapter reference: **[CONFIGURATION.md Tier 2](CONFIGURATION.md#tier-2--platform-adapters)** · template: [.env.example](../.env.example)
 
@@ -380,7 +393,7 @@ All backfill scripts are **dry-run by default**; add `--execute` to write.
 Moving Ratary to a new workstation:
 
 1. Clone repo (or copy workspace)
-2. Copy `.env` securely (especially `AUTH_SECRET`, D1 credentials, `MCP_OWNER_ID` if set)
+2. Copy `.env` securely (especially `AUTH_SECRET`, SQL connection vars, `MCP_OWNER_ID` if set)
 3. `npm install && npm run db:migrate`
 4. `npm run setup` and reload MCP
 5. Optional: `npm run test:integration`

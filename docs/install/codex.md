@@ -25,7 +25,7 @@ Until listed, use manual MCP config from [cursor.md](cursor.md) (Codex supports 
 
 ## Fallback — local stdio
 
-Clone Ratary, configure D1, run `npm run setup`. Point Codex MCP config at the generated stdio entry — see [examples/mcp/cursor.mcp.json.example](../examples/mcp/cursor.mcp.json.example).
+Clone Ratary, configure **SQL_PROVIDER** + connection vars, run `npm run setup`. Point Codex MCP config at the generated stdio entry — see [examples/mcp/cursor.mcp.json.example](../examples/mcp/cursor.mcp.json.example).
 
 Hosted: [remote.md](remote.md).
 
