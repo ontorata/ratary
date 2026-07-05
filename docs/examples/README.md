@@ -45,8 +45,8 @@ Replace `REPO_PATH` with your clone path (e.g. `D:/Apps/ratary`). Use forward sl
 
 | Pattern | Minimum `.env` | Docs |
 |---------|----------------|------|
-| Local stdio (examples above) | D1 credentials + `AUTH_SECRET` | [GUIDE.md § 1](../GUIDE.md#1-setup) |
-| `@ratary/mcp-server` | `RATARY_BASE_URL` + `RATARY_API_KEY` on MCP env, not in repo `.env` | [CONFIGURATION.md § Client packages](../CONFIGURATION.md#client-packages-mcp--cli--sdk) |
+| Local stdio (examples above) | D1 credentials + `AUTH_SECRET` | [GUIDE — Setup](../GUIDE.md#1-setup) |
+| `@ratary/mcp-server` | `RATARY_BASE_URL` + `RATARY_API_KEY` on MCP env, not in repo `.env` | [CONFIGURATION — Client packages](../CONFIGURATION.md#client-packages-mcp--cli--sdk) |
 
 ---
 

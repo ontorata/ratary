@@ -11,8 +11,8 @@
 
 | You want to… | Read |
 |--------------|------|
-| First install (D1 + MCP) | [GUIDE.md § 1](GUIDE.md#1-setup) — **Tier 0** vars below |
-| Turn on Postgres / Redis / enterprise flags | **Tier 2+** here + [GUIDE.md § 8](GUIDE.md#8-platform-infrastructure) for backfill commands |
+| First install (D1 + MCP) | [GUIDE — Setup](GUIDE.md#1-setup) — **Tier 0** vars below |
+| Turn on Postgres / Redis / enterprise flags | **Tier 2+** here + [GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure) for backfill commands |
 | Copy MCP or IDE config | [examples/](examples/) — not env vars |
 | Write authorization rules (Rego) | [policies/](policies/) — separate from env |
 | Grafana / Prometheus | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
@@ -54,7 +54,7 @@
 **Cons:** D1 is Cloudflare-bound; not ideal for all enterprise Postgres workflows.  
 **Effects:** Without these, neither REST nor stdio MCP can persist memory.
 
-See [GUIDE.md § 1](GUIDE.md#1-setup).
+See [GUIDE — Setup](GUIDE.md#1-setup).
 
 ---
 
@@ -72,7 +72,7 @@ See [GUIDE.md § 1](GUIDE.md#1-setup).
 **Cons:** Must bootstrap first to obtain owner UUID; misconfiguration blocks MCP startup in production.  
 **Effects:** In `NODE_ENV=production`, MCP stdio **refuses to start** without `MCP_OWNER_ID`. REST can use `X-Workspace-Id` / `X-Agent-Id` headers similarly.
 
-See [GUIDE.md § 3](GUIDE.md#3-security).
+See [GUIDE — Security](GUIDE.md#3-security).
 
 ---
 
@@ -112,7 +112,7 @@ Safe defaults. Enable only when you need the capability.
 **Cons:** Noisy on sparse graphs; dense graphs can inflate context — lower `RETRIEVAL_RELATION_NEIGHBOR_CAP` (e.g. 3).  
 **Effects:** Retrieval pipeline adds graph BFS after seeds. Graph tools (`traverse_relations`, etc.) work **without** this flag for explicit exploration.
 
-Commands: [GUIDE.md § 7](GUIDE.md#7-optional-commands).
+Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 ---
 
@@ -150,7 +150,7 @@ Commands: [GUIDE.md § 7](GUIDE.md#7-optional-commands).
 
 **Pros:** Standard RDBMS ops, backups, replicas; required path for many enterprise deploys.  
 **Cons:** Migration from D1 needed; you operate Postgres.  
-**Effects:** All SQL-backed repositories use Postgres. Run schema apply + D1 backfill — [GUIDE.md § 8](GUIDE.md#8-platform-infrastructure).
+**Effects:** All SQL-backed repositories use Postgres. Run schema apply + D1 backfill — [GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure).
 
 ---
 
@@ -412,7 +412,7 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **Pros:** Lower time-to-first-token for large context builds.  
 **Cons:** Long-lived connections; not serverless-friendly.  
-**Effects:** `GET /api/v1/context/stream` available. Endpoint: [GUIDE.md § 7](GUIDE.md#7-optional-commands).
+**Effects:** `GET /api/v1/context/stream` available. Endpoint: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 ---
 
@@ -436,7 +436,7 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **Pros:** ChatGPT New App, web MCP hosts connect without local install.  
 **Cons:** Needs long-running Node host; SSE sessions fragile on pure serverless.  
-**Effects:** MCP protocol served over HTTP; OAuth discovery when OAuth enabled. See [GUIDE.md § 6.1](GUIDE.md#61-chatgpt).
+**Effects:** MCP protocol served over HTTP; OAuth discovery when OAuth enabled. See [GUIDE — ChatGPT](GUIDE.md#61-chatgpt).
 
 ---
 
@@ -507,7 +507,7 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **Pros:** Production visibility; SLO dashboards in `observability/`.  
 **Cons:** External Prometheus/Grafana/Loki stack.  
-**Effects:** `/metrics` exposed; dashboards importable. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE.md § 10](GUIDE.md#10-observability).
+**Effects:** `/metrics` exposed; dashboards importable. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#10-observability).
 
 ---
 

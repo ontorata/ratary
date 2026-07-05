@@ -50,7 +50,7 @@ docker run --rm -p 8181:8181 \
 
 4. Copy and extend Rego for your tenant rules — do not edit samples in place for production; fork to your own bundle repo.
 
-Full env reference: [CONFIGURATION.md § Tier 5](../CONFIGURATION.md#tier-5--enterprise-security).
+Full env reference: [CONFIGURATION — Tier 5](../CONFIGURATION.md#tier-5--enterprise-security).
 
 ---
 

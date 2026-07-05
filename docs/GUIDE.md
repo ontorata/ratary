@@ -19,7 +19,7 @@ npm install
 cp .env.example .env
 ```
 
-Fill `.env` from the [Cloudflare Dashboard](https://dash.cloudflare.com) — see **[CONFIGURATION.md § Tier 0](CONFIGURATION.md#tier-0--required-for-local-brain-d1--mcp-stdio)** for what each variable does.
+Fill `.env` from the [Cloudflare Dashboard](https://dash.cloudflare.com) — see **[CONFIGURATION — Tier 0](CONFIGURATION.md#tier-0--required-for-local-brain-d1--mcp-stdio)** for what each variable does.
 
 - `CLOUDFLARE_ACCOUNT_ID`
 - `D1_DATABASE_ID`
@@ -106,12 +106,12 @@ Never commit or share `.env`.
 | Symptom | Fix |
 |---------|-----|
 | MCP red | `npm run setup` → reload IDE |
-| Connection closed (Windows) | Use `command: "cmd"` — see §6 |
+| Connection closed (Windows) | Use `command: "cmd"` — see [section 6](#6-mcp--other-clients) |
 | AI ignores memory | Mention project + topic explicitly |
 | Empty memory | Normal on fresh DB — save first |
 | MCP error in production | Set `MCP_OWNER_ID`, or `NODE_ENV=development` for local stdio (loads `.env`). Reload MCP. |
 | Claude pending approval | Run `claude` in repo → approve |
-| ChatGPT | No local stdio — see §6.1 (Actions, Remote MCP, OAuth) |
+| ChatGPT | No local stdio — see [ChatGPT setup](#61-chatgpt) (Actions, Remote MCP, OAuth) |
 
 ---
 
@@ -122,7 +122,7 @@ ChatGPT does **not** run local MCP stdio like Cursor. Two paths:
 ### A — Custom GPT + REST Actions (recommended today)
 
 1. Deploy public API (e.g. Vercel) or tunnel to `npm run dev`
-2. Bootstrap → save API key `aic_...` (see §1)
+2. Bootstrap → save API key `aic_...` (see [Setup](#1-setup))
 3. **Custom GPT** → Configure → **Actions** → Import OpenAPI from `https://<host>/docs/json`
 4. Authentication: API Key → `Authorization: Bearer aic_...`
 5. GPT instructions: search by project, `POST /context` for tasks, save handoffs via `POST /memory`

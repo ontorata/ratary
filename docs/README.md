@@ -55,9 +55,9 @@
 ## Suggested reading order
 
 1. [../README.md](../README.md) — what Ratary is and quick start  
-2. [GUIDE.md](GUIDE.md) §1 — install and wire MCP  
+2. [GUIDE — Setup](GUIDE.md#1-setup) — install and wire MCP  
 3. [CONFIGURATION.md](CONFIGURATION.md) Tier 0 — required env vars  
-4. [GUIDE.md](GUIDE.md) §2 — daily usage  
+4. [GUIDE — Daily usage](GUIDE.md#2-daily-usage-just-chat) — daily usage  
 5. [ARCHITECTURE.md](ARCHITECTURE.md) — when you need structural context  
 
 Contributing: [../README.md#contributing](../README.md#contributing)

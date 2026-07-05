@@ -25,7 +25,7 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 
 **Platform adapters:** storage-agnostic backends (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) — all opt-in via env flags. Default deploy remains D1-centric. See [CONFIGURATION.md](CONFIGURATION.md) Tier 2.
 
-**Observability:** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE.md § 10](GUIDE.md#10-observability).
+**Observability:** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#10-observability).
 
 ---
 
@@ -65,7 +65,7 @@ Product-level diagrams and ecosystem map: [../README.md](../README.md#visual-arc
 | Environment variables | [CONFIGURATION.md](CONFIGURATION.md) |
 | MCP / IDE templates | [examples/](examples/) |
 | Enterprise authorization (OPA) | [policies/](policies/) |
-| New dev machine | [GUIDE.md § 9](GUIDE.md#9-new-development-machine) |
+| New dev machine | [GUIDE — New development machine](GUIDE.md#9-new-development-machine) |
 | Ecosystem & capabilities | [../README.md](../README.md) |
 | MCP tools | [../MCP/README.md](../MCP/README.md) |
 
