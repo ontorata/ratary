@@ -7,6 +7,7 @@ import {
   parseKnowledgeFabricCatalog,
 } from './env-configured-connector.js';
 import { NotionLiveConnector } from './notion-live-connector.js';
+import { ConfluenceLiveConnector } from './confluence-live-connector.js';
 
 /** Accepts push payloads for webhook ingest (Phase 29B). */
 export class WebhookPushConnector implements IKnowledgeConnector {
@@ -58,7 +59,13 @@ export function createKnowledgeConnectors(env: Env): Map<ConnectorId, IKnowledge
     'notion',
   ] as const) {
     const base = new EnvConfiguredKnowledgeConnector(env, id, catalog);
-    connectors.set(id, id === 'notion' ? new NotionLiveConnector(env, base) : base);
+    if (id === 'notion') {
+      connectors.set(id, new NotionLiveConnector(env, base));
+    } else if (id === 'confluence') {
+      connectors.set(id, new ConfluenceLiveConnector(env, base));
+    } else {
+      connectors.set(id, base);
+    }
   }
 
   return connectors;

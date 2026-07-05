@@ -4,14 +4,14 @@ Track operator submissions for **Ratary Memory MCP** (`ratary`). Update this fil
 
 | Directory | URL | Method | Status | Reference / date |
 |-----------|-----|--------|--------|------------------|
-| mcpservers.org | https://mcpservers.org/submit | Web form | **Ready** | Pack: [mcpservers-org.md](mcpservers-org.md) |
+| mcpservers.org | https://mcpservers.org/submit | Web form | **Submitted-ready** | Pack updated 2026-07-06 · `@ratary/mcp-server@1.1.0` |
 | Official MCP Registry | https://registry.modelcontextprotocol.io/ | CLI / API | **Ready** | [official-registry.server.json](official-registry.server.json) |
 | awesome-mcp-servers (punkpeye) | https://github.com/punkpeye/awesome-mcp-servers | GitHub PR | **Ready** | [awesome-mcp-servers-entry.md](awesome-mcp-servers-entry.md) |
 | awesome-mcp-servers (appcypher) | https://github.com/appcypher/awesome-mcp-servers | GitHub PR | **Ready** | same entry |
 | PulseMCP | https://pulsemcp.com/submit | Web form | **Ready** | Reuse mcpservers short description |
 | mcp.so | https://github.com/chatmcp/mcp.so | GitHub issue | **Optional** | Link MCP README |
 | Cursor marketplace | Cursor publisher program | Manual | **Ready** | [cursor-marketplace.md](cursor-marketplace.md) |
-| Claude Code marketplace | Anthropic plugin program | Manual | **Ready** | [claude-marketplace.md](claude-marketplace.md) |
+| Claude Code marketplace | Anthropic plugin program | Manual | **Submitted-ready** | Run `scripts/publish-marketplace.ps1` → `ontorata/ratary-marketplace` |
 | Smithery | https://smithery.ai/ | CLI | **Optional** | npm `@ratary/mcp-server` |
 | Glama.ai | Auto-index | Passive | **N/A** | Indexes from GitHub when public |
 
@@ -29,4 +29,4 @@ Track operator submissions for **Ratary Memory MCP** (`ratary`). Update this fil
 
 ---
 
-*Last pack update: 2026-07-05 (Phase 31L).*
+*Last pack update: 2026-07-06 (Phase 31L · npm 1.1.0).*

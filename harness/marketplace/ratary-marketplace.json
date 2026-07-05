@@ -8,8 +8,8 @@
     {
       "id": "ratary",
       "name": "Ratary Memory MCP",
-      "description": "Save, search, and assemble token-efficient coding memory. MCP server id: ratary.",
-      "version": "1.0.0",
+      "description": "Save, search, assemble memory; npm @ratary/mcp-server@1.1.0. MCP server id: ratary.",
+      "version": "1.1.0",
       "license": "MIT",
       "repository": "https://github.com/ontorata/ratary",
       "installDoc": "https://github.com/ontorata/ratary/blob/main/docs/install/claude-code.md",

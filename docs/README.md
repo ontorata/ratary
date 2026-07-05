@@ -11,7 +11,8 @@
 | Question | Document |
 |----------|----------|
 | How do I use `@ratary/sdk`, CLI, or npm MCP without cloning the server? | **[packages/README.md](../packages/README.md)** |
-| How do I sync Notion (or other connectors) into Ratary? | **[GUIDE.md — Knowledge fabric](GUIDE.md#11-knowledge-fabric-live-connectors)** |
+| How do I sync Notion or Confluence into Ratary? | **[GUIDE.md — Knowledge fabric](GUIDE.md#11-knowledge-fabric-live-connectors)** |
+| How do I enable knowledge fabric on production? | **[PRODUCTION-ENABLE.md](PRODUCTION-ENABLE.md)** |
 | What admin / operator APIs does the SDK expose? | **[packages/README.md](../packages/README.md)** · `@ratary/*@1.1.0` on [npm](https://www.npmjs.com/org/ratary) |
 | How do I install Ratary in my IDE / harness? | **[install/README.md](install/README.md)** |
 | How do I run Ratary in Docker? | **[DOCKER.md](DOCKER.md)** |

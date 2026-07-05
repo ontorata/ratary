@@ -407,6 +407,8 @@ const envSchema = z
     GITLAB_TOKEN: z.string().optional(),
     JIRA_API_TOKEN: z.string().optional(),
     CONFLUENCE_API_TOKEN: z.string().optional(),
+    CONFLUENCE_BASE_URL: z.string().optional(),
+    CONFLUENCE_EMAIL: z.string().optional(),
     GOOGLE_DRIVE_CREDENTIALS_JSON: z.string().optional(),
     SHAREPOINT_CLIENT_SECRET: z.string().optional(),
     FABRIC_EMAIL_IMAP_URL: z.string().optional(),

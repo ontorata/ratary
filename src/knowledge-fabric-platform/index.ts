@@ -37,6 +37,7 @@ export {
   WebhookPushConnector,
 } from './adapters/knowledge-connector-registry.js';
 export { NotionLiveConnector } from './adapters/notion-live-connector.js';
+export { ConfluenceLiveConnector } from './adapters/confluence-live-connector.js';
 export { ConnectorSyncJobRunner } from './sync/connector-sync-job-runner.js';
 export { verifyWebhookSignature, signWebhookPayload } from './sync/webhook-signature.js';
 export { DefaultFabricNormalizer } from './adapters/default-fabric-normalizer.js';
