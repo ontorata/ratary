@@ -30,7 +30,8 @@
 | [.ai/adr/](../.ai/adr/) | Architecture Decision Records (immutable decision text) |
 | [.ai/adr/POLICY.md](../.ai/adr/POLICY.md) | When and how to write ADRs |
 | [.ai/archive/](../.ai/archive/) | Historical phase designs — **read-only**, not implementation authority |
-| [examples/](examples/) | Sample configuration files |
+| [../SDK/](../SDK/) | Minimal `@ratary/sdk` usage example |
+| [examples/](examples/) | Sample MCP and config templates (`docs/examples/`, `MCP/examples/`) |
 
 ---
 

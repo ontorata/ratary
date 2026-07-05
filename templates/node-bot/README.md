@@ -20,4 +20,4 @@ await client.memory.create({
 });
 ```
 
-See [examples/node-basic](../../examples/node-basic/).
+See [SDK quick example](../../SDK/).
