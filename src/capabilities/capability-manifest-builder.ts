@@ -140,6 +140,9 @@ export class CapabilityManifestBuilder {
                     : {}),
                   oauthEnabled:
                     this.env.REMOTE_MCP_OAUTH_ENABLED && Boolean(this.env.OIDC_ISSUER_URL),
+                  sessionStore: 'memory',
+                  requiresPersistentHost: true,
+                  persistentHostAcknowledged: this.env.REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED,
                 }
               : {}),
           },

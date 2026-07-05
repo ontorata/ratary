@@ -269,6 +269,11 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+    /** Required in production — acknowledges in-memory MCP sessions need a persistent host (R-CFG-05). */
+    REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
     /** Maps validated OIDC access tokens to an existing owner scope for remote MCP OAuth. */
     OIDC_MCP_OWNER_ID: z.string().uuid().optional(),
 
@@ -285,7 +290,8 @@ const envSchema = z
     FEDERATION_PEERS_JSON: z.string().default('[]'),
     FEDERATION_REGISTRY_PROVIDER: z.enum(['static']).default('static'),
     FEDERATION_TRANSPORT_PROVIDER: z.enum(['in-process', 'grpc', 'rest']).default('in-process'),
-    FEDERATION_TRUST_PROVIDER: z.enum(['noop', 'file']).default('noop'),
+    FEDERATION_TRUST_PROVIDER: z.enum(['noop', 'registry', 'file']).default('noop'),
+    FEDERATION_TRUST_FILE_PATH: z.string().min(1).optional(),
     FEDERATION_POLICY_PROVIDER: z.enum(['rule-based']).default('rule-based'),
     FEDERATION_METADATA_PROVIDER: z.enum(['none', 'sql']).default('none'),
 
@@ -616,6 +622,23 @@ const envSchema = z
           message: 'OIDC_MCP_OWNER_ID is required when REMOTE_MCP_OAUTH_ENABLED=true',
         });
       }
+    }
+
+    if (env.REMOTE_MCP_ENABLED && env.NODE_ENV === 'production' && !env.REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED'],
+        message:
+          'Set REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED=true in production when REMOTE_MCP_ENABLED (persistent host or single instance required)',
+      });
+    }
+
+    if (env.FEDERATION_ENABLED && env.FEDERATION_TRUST_PROVIDER === 'file' && !env.FEDERATION_TRUST_FILE_PATH) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['FEDERATION_TRUST_FILE_PATH'],
+        message: 'FEDERATION_TRUST_FILE_PATH is required when FEDERATION_TRUST_PROVIDER=file',
+      });
     }
   });
 

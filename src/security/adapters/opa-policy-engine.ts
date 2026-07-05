@@ -34,22 +34,26 @@ export class OpaPolicyEngine implements IPolicyEngine {
       },
     };
 
-    const response = await this.fetchImpl(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
+    try {
+      const response = await this.fetchImpl(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
 
-    if (!response.ok) {
-      return { allowed: false, reason: `OPA HTTP ${response.status}`, policyId: 'opa' };
+      if (!response.ok) {
+        return { allowed: false, reason: `OPA HTTP ${response.status}`, policyId: 'opa' };
+      }
+
+      const parsed = (await response.json()) as { result?: { allow?: boolean; reason?: string } };
+      const allowed = parsed.result?.allow === true;
+      return {
+        allowed,
+        reason: parsed.result?.reason ?? (allowed ? undefined : 'OPA denied'),
+        policyId: 'opa',
+      };
+    } catch {
+      return { allowed: false, reason: 'OPA unreachable', policyId: 'opa' };
     }
-
-    const parsed = (await response.json()) as { result?: { allow?: boolean; reason?: string } };
-    const allowed = parsed.result?.allow === true;
-    return {
-      allowed,
-      reason: parsed.result?.reason ?? (allowed ? undefined : 'OPA denied'),
-      policyId: 'opa',
-    };
   }
 }

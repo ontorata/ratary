@@ -437,10 +437,11 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **What it does:** HTTPS MCP endpoint at `/mcp` for clients that cannot run stdio.
 
-| Key variables | `REMOTE_MCP_ENABLED`, `REMOTE_MCP_PATH`, `REMOTE_MCP_PUBLIC_URL`, `REMOTE_MCP_CORS_ORIGINS`, `REMOTE_MCP_OAUTH_ENABLED` |
+| Key variables | `REMOTE_MCP_ENABLED`, `REMOTE_MCP_PATH`, `REMOTE_MCP_PUBLIC_URL`, `REMOTE_MCP_CORS_ORIGINS`, `REMOTE_MCP_OAUTH_ENABLED`, `REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED` |
 
 **Benefits:** ChatGPT New App, web MCP hosts connect without local install.  
-**Before enabling:** Needs long-running Node host; SSE sessions fragile on pure serverless.  
+**Before enabling:** Deploy on a **persistent host** (Railway/VPS/Fly single instance). In production set `REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED=true` after confirming host layout — server refuses to start otherwise.  
+**Built-in mitigation:** In-memory session store; capabilities manifest exposes `requiresPersistentHost: true`.  
 **Effects:** MCP protocol served over HTTP; OAuth discovery when OAuth enabled. See [GUIDE — ChatGPT](GUIDE.md#61-chatgpt).
 
 ---
@@ -472,6 +473,7 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **Benefits:** Enterprise authz (OPA/Rego), SSO, quota enforcement.  
 **Before enabling:** OPA reachable, IdP configured, and policies tested in staging; set quotas from measured traffic.  
+**Built-in mitigation:** OPA HTTP errors and network failures **fail closed** (`allowed: false`, reason `OPA unreachable`). IdP userinfo failures return 401.  
 **Effects:** API requests evaluated against policy engine; SSO replaces bootstrap-only auth when enabled; quotas return 429 when exceeded.
 
 **Authorization samples:** [policies/](policies/) — load Rego into OPA, not Ratary directly. See [policies/README.md](policies/README.md).
@@ -484,11 +486,12 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **What it does:** Cross-node knowledge exchange between Ratary instances.
 
-| Key variables | `FEDERATION_ENABLED`, `FEDERATION_NODE_ID`, `FEDERATION_PEERS_JSON`, trust/policy providers |
+| Key variables | `FEDERATION_ENABLED`, `FEDERATION_NODE_ID`, `FEDERATION_PEERS_JSON`, `FEDERATION_TRUST_PROVIDER`, `FEDERATION_TRUST_FILE_PATH`, policy providers |
 
 **Benefits:** Multi-region or multi-tenant brain mesh.  
-**Before enabling:** Define peer trust policy and allowlist; validate sync in a non-production node pair first.  
-**Effects:** Federation APIs and peer transport active.
+**Before enabling:** Mark peers `"trusted": true` in `FEDERATION_PEERS_JSON` or use `FEDERATION_TRUST_PROVIDER=file` with an allowlist file. Validate sync in a staging node pair first.  
+**Built-in mitigation:** Production auto-uses **registry strict trust** (only `trusted: true` peers) even when `FEDERATION_TRUST_PROVIDER=noop`. Development keeps permissive noop trust.  
+**Effects:** Federation APIs and peer transport active; untrusted peers rejected at trust verification.
 
 ---
 
@@ -549,8 +552,9 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 | Key variables | `CONTENT_SCALE_PLATFORM_ENABLED`, `CONTENT_OFFLOAD_MIN_BYTES`, `CONTENT_OFFLOAD_CLEAR_INLINE` |
 
 **Benefits:** Hands-off large-body migration.  
-**Before enabling:** Confirm object storage bucket and lifecycle rules; only set `CONTENT_OFFLOAD_CLEAR_INLINE=true` after verified backups.  
-**Effects:** Bodies migrated per threshold rules.
+**Before enabling:** Confirm object storage bucket and lifecycle rules before `CONTENT_OFFLOAD_CLEAR_INLINE=true`.  
+**Built-in mitigation:** Offload verifies object **read-back matches** source body before updating SQL; mismatch aborts row and skips inline clear. Default `CONTENT_OFFLOAD_CLEAR_INLINE=false`.  
+**Effects:** Bodies migrated per threshold rules; inline cleared only after verified object storage write.
 
 ---
 

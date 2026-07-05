@@ -4,7 +4,7 @@ import { MemoryRepository } from '../repositories/memory.repository.js';
 import type { MemoryService } from '../services/memory.service.js';
 import { StaticFederationRegistry } from '../federation/adapters/static-federation-registry.adapter.js';
 import { InProcessFederationTransport } from '../federation/adapters/in-process-federation-transport.adapter.js';
-import { NoOpFederationTrustStore } from '../federation/adapters/noop-federation-trust-store.adapter.js';
+import { createFederationTrustStore } from '../federation/create-federation-trust-store.js';
 import { RuleBasedFederationPolicy } from '../federation/adapters/rule-based-federation-policy.adapter.js';
 import { DefaultFederationScopeMapper } from '../federation/adapters/default-federation-scope-mapper.adapter.js';
 import { LastWriteWinsFederationConflictResolver } from '../federation/adapters/last-write-wins-conflict-resolver.adapter.js';
@@ -74,7 +74,7 @@ export function createFederationPorts(sql: ISqlDatabase, env: Env): FederationPo
       ? new InProcessFederationTransport(registry, memoryRepository)
       : new InProcessFederationTransport(registry, memoryRepository);
 
-  const trustStore = new NoOpFederationTrustStore();
+  const trustStore = createFederationTrustStore(env, registry);
   const policy = new RuleBasedFederationPolicy(registry, metadataStore);
   const scopeMapper = new DefaultFederationScopeMapper(nodeId);
   const conflictResolver = new LastWriteWinsFederationConflictResolver();

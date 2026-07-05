@@ -405,6 +405,8 @@ export async function buildApp(options?: {
   );
 
   if (env.REMOTE_MCP_ENABLED) {
+    const { assertRemoteMcpHostingPolicy } = await import('../mcp/remote/remote-mcp-hosting-policy.js');
+    assertRemoteMcpHostingPolicy(env);
     const { registerRemoteMcpRoutes } = await import('../mcp/remote/register-remote-mcp-routes.js');
     await registerRemoteMcpRoutes(fastify, {
       env,

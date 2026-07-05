@@ -80,11 +80,26 @@ export async function backfillContentOffload(
 
         try {
           const objectKey = buildObjectKey(row);
+          const key = { segments: objectKey.split('/') };
           await options.objectStorage.put(
-            { segments: objectKey.split('/') },
+            key,
             row.content,
             { contentType: 'text/markdown; charset=utf-8', contentLength: byteLength },
           );
+
+          const stored = await options.objectStorage.get(key);
+          if (!stored || stored.body.length === 0) {
+            result.failed++;
+            continue;
+          }
+
+          const storedText = Buffer.from(stored.body).toString('utf8');
+          if (storedText !== row.content) {
+            await options.objectStorage.delete(key).catch(() => undefined);
+            result.failed++;
+            continue;
+          }
+
           await options.source.execute(
             `UPDATE memories SET object_key = ?, updated_at = updated_at WHERE id = ? AND owner_id = ?`,
             [objectKey, row.id, row.owner_id],
