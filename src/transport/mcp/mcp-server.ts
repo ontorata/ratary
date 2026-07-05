@@ -812,6 +812,7 @@ export async function startMcpStdioServer(): Promise<void> {
     scopeResolver,
     env,
     signalIngest: signalPorts.enabled ? { enabled: true, ...signalPorts.ingestDeps } : undefined,
+    memoryAccessAuditor,
   });
 
   const server = createMcpServer(

@@ -24,6 +24,7 @@ export class GraphRetrievalCandidateSource implements IRetrievalCandidateSource 
     private readonly graphProvider: IGraphProvider,
     private readonly memoryReader: IMemoryReader,
     private readonly config: GraphRetrievalConfig,
+    private readonly vectorSeedSource?: IRetrievalCandidateSource,
   ) {}
 
   async findCandidates(filters: RetrievalFilters): Promise<Memory[]> {
@@ -33,10 +34,12 @@ export class GraphRetrievalCandidateSource implements IRetrievalCandidateSource 
       return [];
     }
 
-    const seeds = await this.memoryReader.findRetrievalCandidates({
-      ...filters,
-      maxCandidates: this.config.seedCap,
-    });
+    const seeds = this.vectorSeedSource
+      ? await this.vectorSeedSource.findCandidates(filters)
+      : await this.memoryReader.findRetrievalCandidates({
+          ...filters,
+          maxCandidates: this.config.seedCap,
+        });
 
     if (seeds.length === 0) {
       return [];

@@ -4,6 +4,7 @@ import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import type { IGraphProvider } from '../../graph/igraph-provider.interface.js';
 import { D1GraphAdapter } from '../graph/d1/d1-graph.adapter.js';
 import { Neo4jGraphStoreAdapter } from '../graph/neo4j/neo4j-graph-store.adapter.js';
+import { NeptuneGraphProvider } from '../graph/neptune/neptune-graph-provider.js';
 import type { Neo4jQueryClient } from '../graph/neo4j/neo4j-graph-store.adapter.js';
 
 export function createGraphProvider(env: Env, sql: ISqlDatabase): IGraphProvider {
@@ -25,6 +26,10 @@ export function createGraphProvider(env: Env, sql: ISqlDatabase): IGraphProvider
       },
     };
     return new Neo4jGraphStoreAdapter(client);
+  }
+
+  if (env.GRAPH_PROVIDER === 'neptune') {
+    return new NeptuneGraphProvider(env);
   }
 
   if (env.GRAPH_PROVIDER !== 'd1') {

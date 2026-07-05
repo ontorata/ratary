@@ -51,10 +51,11 @@ export function createTransportHandlers(deps: TransportHandlerDeps): TransportHa
     aiBrainPlatformPorts,
     globalIntelligencePorts,
     signalIngest,
+    memoryAccessAuditor,
   } = deps;
 
   return {
-    memory: createMemoryHandlers({ memoryService, scopeResolver }),
+    memory: createMemoryHandlers({ memoryService, scopeResolver, memoryAccessAuditor }),
     context: createContextHandlers({ contextService, scopeResolver }),
     capabilities: createCapabilitiesHandlers({
       env,

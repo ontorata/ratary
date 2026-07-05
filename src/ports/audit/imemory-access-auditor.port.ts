@@ -1,4 +1,4 @@
-export type MemoryAccessSource = 'context.build';
+export type MemoryAccessSource = 'context.build' | 'memory.read';
 
 export interface MemoryAccessAuditEntry {
   memoryId: string;
