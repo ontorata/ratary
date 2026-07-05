@@ -2,17 +2,19 @@
 
 TypeScript client libraries for [Ratary Server](https://github.com/ontorata/ratary). Published on npm under the **`@ratary`** scope ([npm org](https://www.npmjs.com/org/ratary)), maintained by [Ontorata](https://ontorata.com).
 
+**Current release:** `@ratary/sdk`, `@ratary/cli`, and `@ratary/mcp-server` **v1.1.0** (Phase 28 admin surfaces + Phase 29 connector CLI).
+
 The scope matches the **product name** (Ratary), not the company name. GitHub and npm publisher identity remain **Ontorata** (`ontorata/ratary`).
 
 ---
 
 ## Packages
 
-| Package | npm | Use when |
-|---------|-----|----------|
-| [`@ratary/sdk`](sdk/) | [npmjs.com/package/@ratary/sdk](https://www.npmjs.com/package/@ratary/sdk) | Headless REST client in Node, Studio, or custom agents |
-| [`@ratary/cli`](cli/) | [npmjs.com/package/@ratary/cli](https://www.npmjs.com/package/@ratary/cli) | Operator commands against a hosted or local Ratary |
-| [`@ratary/mcp-server`](mcp-server/) | [npmjs.com/package/@ratary/mcp-server](https://www.npmjs.com/package/@ratary/mcp-server) | IDE stdio MCP proxy to a **remote** Ratary REST API |
+| Package | Version | npm | Use when |
+|---------|---------|-----|----------|
+| [`@ratary/sdk`](sdk/) | **1.1.0** | [npmjs.com/package/@ratary/sdk](https://www.npmjs.com/package/@ratary/sdk) | Headless REST client in Node, Studio, or custom agents |
+| [`@ratary/cli`](cli/) | **1.1.0** | [npmjs.com/package/@ratary/cli](https://www.npmjs.com/package/@ratary/cli) | Operator commands against a hosted or local Ratary |
+| [`@ratary/mcp-server`](mcp-server/) | **1.1.0** | [npmjs.com/package/@ratary/mcp-server](https://www.npmjs.com/package/@ratary/mcp-server) | IDE stdio MCP proxy to a **remote** Ratary REST API |
 
 ---
 

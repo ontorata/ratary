@@ -5,10 +5,10 @@ Headless integration with `@ratary/sdk` — no MCP, no IDE. Your agent loop stay
 ## Install
 
 ```bash
-npm install @ratary/sdk
+npm install @ratary/sdk@1.1.0
 ```
 
-Package docs: [packages/sdk/README.md](../packages/sdk/README.md) · [npm @ratary/sdk](https://www.npmjs.com/package/@ratary/sdk)
+Package docs: [packages/sdk/README.md](../packages/sdk/README.md) · [npm @ratary/sdk@1.1.0](https://www.npmjs.com/package/@ratary/sdk)
 
 For monorepo development, `npm run build:sdk` from the repo root. Examples below assume a running Ratary Server and API key (`aic_...`).
 
@@ -48,6 +48,12 @@ await client.memory.create({
   content: ctx.context,
   tags: ['handoff'],
 });
+
+// Operator / admin (SDK 1.1.0+)
+const fabric = await client.admin.knowledgeFabric.getStatus();
+await client.admin.knowledgeFabric.ingest('notion', { mode: 'incremental', dryRun: true });
 ```
 
 Legacy env aliases `AI_BRAIN_*` are still accepted.
+
+See also: [docs/GUIDE.md — Knowledge fabric](../docs/GUIDE.md#11-knowledge-fabric-live-connectors).

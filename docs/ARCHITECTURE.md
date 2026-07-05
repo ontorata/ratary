@@ -23,7 +23,9 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Graph →
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
-**npm clients (`@ratary`):** [`@ratary/sdk`](https://www.npmjs.com/package/@ratary/sdk), [`@ratary/cli`](https://www.npmjs.com/package/@ratary/cli), [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) — published under the Ratary product scope; source in `packages/`. See [packages/README.md](../packages/README.md).
+**npm clients (`@ratary`):** [`@ratary/sdk@1.1.0`](https://www.npmjs.com/package/@ratary/sdk), [`@ratary/cli@1.1.0`](https://www.npmjs.com/package/@ratary/cli), [`@ratary/mcp-server@1.1.0`](https://www.npmjs.com/package/@ratary/mcp-server) — SDK exposes `client.memory`, `client.context`, and **`client.admin`** (cloud, observability, infrastructure, platform, knowledgeFabric, federation). Source in `packages/`. See [packages/README.md](../packages/README.md).
+
+**Knowledge fabric (opt-in):** `src/knowledge-fabric-platform/` — live connectors (Notion), sync job runner, webhook HMAC. Default OFF; enable via [CONFIGURATION — Knowledge fabric](CONFIGURATION.md#knowledge-fabric-connectors).
 
 **Ontorata ecosystem (outside this repo):** [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio) operator UI (`@ratary/sdk` only) · [Ontorata MCP](https://github.com/ontorata/ontorata-mcp) ecosystem gateway.
 

@@ -697,13 +697,36 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 ### Knowledge fabric (connectors)
 
-**What it does:** Ingest from external systems (Notion, GitHub, catalog JSON).
+**What it does:** Ingest from external systems (Notion live, GitHub, catalog JSON). Phase 29 adds **live Notion sync**, webhook ingress, and job tracking on top of Phase 23 MVP.
 
-| Key variables | `KNOWLEDGE_FABRIC_ENABLED`, `KNOWLEDGE_FABRIC_CATALOG_JSON`, `NOTION_API_TOKEN`, `GITHUB_TOKEN` |
+| Key variables | See table below |
 
-**Benefits:** Unified brain from existing tools of record.  
-**Before enabling:** Token scope security; ingest volume management.  
-**Effects:** Connector jobs write memories on schedule/trigger.
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `KNOWLEDGE_FABRIC_ENABLED` | `false` | Master switch for fabric routes and ingest |
+| `KNOWLEDGE_FABRIC_CATALOG_JSON` | — | Static connector catalog override (optional) |
+| `CONNECTOR_SYNC_ENABLED` | `false` | Live sync jobs + REST `/knowledge-fabric/sync/*` |
+| `CONNECTOR_WEBHOOK_SECRET` | — | HMAC secret for `POST /knowledge-fabric/webhooks/:connectorId` |
+| `CONNECTOR_SYNC_INTERVAL_MS` | `0` | Background poll interval (`0` = manual/REST only) |
+| `NOTION_API_TOKEN` | — | Notion integration token (`ntn_...`) |
+| `NOTION_API_VERSION` | `2022-06-28` | Notion API version header |
+| `GITHUB_TOKEN` | — | GitHub connector (catalog / future live) |
+
+**REST (when enabled):**
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `POST` | `/knowledge-fabric/sync/:connectorId` | Start sync (`incremental` / `full`, optional `dryRun`) |
+| `GET` | `/knowledge-fabric/sync/jobs/:jobId` | Poll job status |
+| `POST` | `/knowledge-fabric/webhooks/:connectorId` | Signed webhook trigger |
+
+**Client surfaces:** `@ratary/sdk` `client.admin.knowledgeFabric.*` · `@ratary/cli` `ratary connectors sync notion` · smoke script `scripts/test-notion-sync.ts`.
+
+**Benefits:** Unified brain from existing tools of record; provenance tags (`fabric:notion`, `live: true`).  
+**Before enabling:** Restrict integration token scope; plan ingest volume; set webhook secret if exposing public URL.  
+**Effects:** Connector jobs write or update memories; Postgres/Supabase workspace scoping uses `workspaceScopeSql()` (not SQLite `IS ?` syntax).
+
+Setup walkthrough: [GUIDE.md — Knowledge fabric](GUIDE.md#11-knowledge-fabric-live-connectors).
 
 ---
 

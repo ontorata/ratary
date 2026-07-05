@@ -3,10 +3,10 @@
 TypeScript client for the [Ratary REST API](https://github.com/ontorata/ratary).
 
 ```bash
-npm install @ratary/sdk
+npm install @ratary/sdk@1.1.0
 ```
 
-**npm:** [npmjs.com/package/@ratary/sdk](https://www.npmjs.com/package/@ratary/sdk) · **Scope:** `@ratary` ([Ontorata](https://ontorata.com))
+**npm:** [@ratary/sdk@1.1.0](https://www.npmjs.com/package/@ratary/sdk) · **Scope:** `@ratary` ([Ontorata](https://ontorata.com))
 
 ---
 
@@ -29,9 +29,27 @@ await client.memory.create({
 
 const { results } = await client.memory.search({ query: 'auth' });
 const ctx = await client.context.build({ task: 'Implement feature X' });
+
+// v1.1.0 — admin / operator surfaces (requires server flags where applicable)
+await client.admin.cloud.getStatus();
+await client.admin.knowledgeFabric.listConnectors();
+await client.admin.knowledgeFabric.ingest('notion', { mode: 'incremental', dryRun: true });
 ```
 
 Legacy env aliases `AI_BRAIN_*` are still accepted by server-side tooling; prefer `RATARY_*` in new code.
+
+### Admin namespaces (`client.admin`)
+
+| Namespace | Examples |
+|-----------|----------|
+| `admin.cloud` | `getStatus()` |
+| `admin.observability` | metrics / SLO helpers |
+| `admin.infrastructure` | adapter status |
+| `admin.platform` | edition, webhooks |
+| `admin.knowledgeFabric` | connectors, ingest, sync jobs |
+| `admin.federation` | federation control plane |
+
+Full operator CLI: `@ratary/cli` — `ratary admin ...` · `ratary connectors sync`.
 
 ---
 

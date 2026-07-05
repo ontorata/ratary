@@ -29,6 +29,8 @@
   <img src="https://img.shields.io/badge/self--host-ready-brightgreen" alt="Self-host"/>
   <img src="https://img.shields.io/badge/node-24.x-green" alt="Node 24"/>
   <a href="https://www.npmjs.com/org/ratary"><img src="https://img.shields.io/npm/v/@ratary/sdk?label=%40ratary%2Fsdk&color=cb3837" alt="@ratary/sdk on npm"/></a>
+  <a href="https://www.npmjs.com/package/@ratary/cli"><img src="https://img.shields.io/npm/v/@ratary/cli?label=%40ratary%2Fcli&color=cb3837" alt="@ratary/cli on npm"/></a>
+  <a href="https://www.npmjs.com/package/@ratary/mcp-server"><img src="https://img.shields.io/npm/v/@ratary/mcp-server?label=%40ratary%2Fmcp-server&color=cb3837" alt="@ratary/mcp-server on npm"/></a>
 </p>
 
 <p align="center"><sub><em>Ratary is where AI remembers.</em> · Built by <a href="https://ontorata.com">Ontorata</a></sub></p>
@@ -142,16 +144,16 @@ Full guide: **[docs/GUIDE.md](docs/GUIDE.md)** · SDK & MCP examples in [docs/ex
 Client libraries ship on npm under the **`@ratary`** scope — product name, published by [Ontorata](https://ontorata.com). No server clone required for SDK, CLI, or hosted MCP.
 
 ```bash
-npm install @ratary/sdk
-npx @ratary/mcp-server          # remote REST → stdio MCP
-npm install -g @ratary/cli      # operator CLI
+npm install @ratary/sdk@1.1.0
+npx @ratary/mcp-server@1.1.0          # remote REST → stdio MCP
+npm install -g @ratary/cli@1.1.0      # operator CLI
 ```
 
-| Package | Install | Role |
-|---------|---------|------|
-| [`@ratary/sdk`](https://www.npmjs.com/package/@ratary/sdk) | `npm install @ratary/sdk` | Typed REST client |
-| [`@ratary/cli`](https://www.npmjs.com/package/@ratary/cli) | `npm install -g @ratary/cli` | Operator commands |
-| [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) | `npx @ratary/mcp-server` | IDE MCP → hosted API |
+| Package | Version | Install | Role |
+|---------|---------|---------|------|
+| [`@ratary/sdk`](https://www.npmjs.com/package/@ratary/sdk) | **1.1.0** | `npm install @ratary/sdk` | Typed REST client + `client.admin.*` |
+| [`@ratary/cli`](https://www.npmjs.com/package/@ratary/cli) | **1.1.0** | `npm install -g @ratary/cli` | Operator commands (`admin`, `connectors`) |
+| [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) | **1.1.0** | `npx @ratary/mcp-server` | IDE MCP → hosted API |
 
 Set `RATARY_BASE_URL` and `RATARY_API_KEY` (`aic_...`). Details: **[packages/README.md](packages/README.md)** · [remote MCP install](docs/install/remote.md).
 
@@ -346,7 +348,10 @@ Self-host, deploy to Vercel, or run a control plane with metering and federation
 OpenTelemetry, Prometheus metrics, SLO dashboards, and cost visibility for production brains.
 
 ### Developer experience
-OpenAPI, `@ratary/sdk`, `@ratary/cli`, **Ratary MCP** (`@ratary/mcp-server`), and one-command IDE setup (`npm run setup`).
+OpenAPI, npm **`@ratary/*@1.1.0`** — [`sdk`](https://www.npmjs.com/package/@ratary/sdk) (memory + **admin**), [`cli`](https://www.npmjs.com/package/@ratary/cli), [`mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) — and one-command IDE setup (`npm run setup`).
+
+### Knowledge fabric (opt-in)
+Ingest from external systems of record — **Notion live connector** (Phase 29), webhook HMAC, incremental sync jobs, provenance on memories. Enable with `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guide: [docs/GUIDE.md — Knowledge fabric](docs/GUIDE.md#11-knowledge-fabric-live-connectors).
 
 ---
 
@@ -420,8 +425,8 @@ Organized by direction — not sprints. **Repository scope** noted where work le
 
 | | Themes | Primary repository |
 |---|--------|-------------------|
-| **Today** | Ratary MCP + REST, hybrid retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, npm [`@ratary/*`](https://www.npmjs.com/org/ratary), [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), remote Ratary MCP | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
-| **Next** | Additional language SDKs, more live connectors (Confluence, Drive) | `ontorata/ratary` |
+| **Today** | Ratary MCP + REST, hybrid retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary) (SDK admin + CLI + MCP), **Notion live sync** (opt-in), [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), remote Ratary MCP | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
+| **Next** | Production deploy of knowledge fabric on hosted Ratary, additional live connectors (Confluence, Drive) | `ontorata/ratary` |
 | **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace | `ontorata/ratary` (platform) |
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean.
