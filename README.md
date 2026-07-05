@@ -205,16 +205,19 @@ Ratary is a platform — not a single binary.
 └──────────────────────────────┬──────────────────────────────┘
          │              │              │              │
          ▼              ▼              ▼              ▼
-   @ratary/sdk    @ratary/cli   @ratary/mcp-server   Ontorata Studio *
-         │              │              │              (future)
+   @ratary/sdk    @ratary/cli   @ratary/mcp-server   Ontorata Studio
+   (SDK)          (CLI)         (memory MCP proxy)    (separate repo)
+         │              │              │              │
          └──────────────┴──────────────┴──────────────┘
                                │
-                               ▼
-                          Ontory
-              consumer AI assistant · built on Ratary
+         ┌─────────────────────┴─────────────────────┐
+         ▼                     ▼                     ▼
+   Ontorata MCP           Ontorata Studio          Ontory
+   (ontorata-mcp repo)    (Ontorata-Studio repo)  (future)
+   ecosystem MCP          operator UI
 ```
 
-**Ratary Server** is the source of truth. Everything else connects to it. **[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** is the operator console ([ontorata/Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio.git) — not in this repo); MCP stays **`ratary`**.
+**Ratary Server** (this repo) is the memory source of truth. **Memory MCP** uses server id **`ratary`** (`@ratary/mcp-server` or stdio in this repo). **[Ontorata MCP](https://github.com/ontorata/ontorata-mcp)** and **[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** are separate Ontorata ecosystem repositories.
 
 ---
 
@@ -280,7 +283,9 @@ Full guide: **[docs/PANDUAN.md](docs/PANDUAN.md)** · SDK & MCP examples in [doc
 | [docs/PANDUAN.md](docs/PANDUAN.md) | Setup, daily usage, MCP configuration |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and boundaries |
 | [docs/examples/](docs/examples/) | MCP configs, IDE templates, SDK patterns |
-| [MCP/README.md](MCP/README.md) | MCP server listing & ChatGPT remote setup |
+| [MCP/README.md](MCP/README.md) | Ratary Memory MCP (`ratary`) — this repo |
+| [Ontorata MCP](https://github.com/ontorata/ontorata-mcp) | Ecosystem MCP server (separate repo) |
+| [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio) | Operator web console (separate repo) |
 | [.env.example](.env.example) | Full environment reference |
 
 ---
