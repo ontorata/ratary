@@ -23,7 +23,7 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Graph →
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
-**Platform adapters:** storage-agnostic backends (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) — all opt-in via env flags. Default deploy remains D1-centric. See [CONFIGURATION.md](CONFIGURATION.md) Tier 2.
+**Platform adapters:** storage-agnostic backends — D1 (default), Postgres, MariaDB/MySQL, TiDB/Cockroach (Postgres wire), pgvector, R2/S3/MinIO, Azure Blob, GCS, Redis, Meilisearch, OpenSearch, Neo4j, DuckDB, ClickHouse, Redis Streams, OpenTelemetry — all opt-in via env flags. See [CONFIGURATION.md](CONFIGURATION.md) Tier 2 and [DOCKER.md](DOCKER.md) for compose profiles.
 
 **Observability:** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#10-observability).
 
@@ -37,7 +37,7 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 | **Application** | Services orchestrating use cases |
 | **Domain** | Memory, knowledge, search, ranking — business rules |
 | **Ports** | Vendor-neutral contracts (`ISqlDatabase`, `IVectorStore`, …) |
-| **Infrastructure** | Adapters (D1, Postgres, R2, pgvector, …) |
+| **Infrastructure** | Adapters (D1, Postgres, MariaDB, R2/MinIO, pgvector, OpenSearch, ClickHouse, …) |
 | **Composition root** | `server.ts`, MCP transport — wires adapters |
 
 **Rule:** REST and MCP share the same application services. No duplicated business logic.

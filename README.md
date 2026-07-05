@@ -247,7 +247,8 @@ This diagram shows the **logical internal architecture** of Ratary — how memor
                              │
         ┌────────────────────▼────────────────────┐
         │     Pluggable storage (your choice)      │
-        │   D1 · Postgres · pgvector · Neo4j · R2   │
+        │  D1 · Postgres · MariaDB · pgvector ·    │
+        │  Neo4j · R2/S3/MinIO · OpenSearch · …   │
         └─────────────────────────────────────────┘
 ```
 
@@ -303,7 +304,9 @@ Quality signals, consolidation, and compression — optional pipelines that impr
 Capability manifests, workspace scoping, and **28 Ratary MCP tools**. External agents discover what the brain can do; Ratary never embeds agent reasoning — see [What Ratary is not](#what-ratary-is-not).
 
 ### Platform
-Pluggable adapters: Postgres, pgvector, R2/S3, Meilisearch, Neo4j, Redis, DuckDB. Start on Cloudflare D1. Scale without rewriting application logic.
+Pluggable adapters: Postgres, MariaDB/MySQL, pgvector, R2/S3/MinIO, Azure Blob, GCS, Meilisearch, OpenSearch, Neo4j, Redis, DuckDB, ClickHouse. Start on Cloudflare D1. Scale to enterprise storage without rewriting application logic.
+
+**Self-host stacks:** [docs/DOCKER.md](docs/DOCKER.md) — `postgres` profile (Postgres metadata) or `enterprise` profile (MariaDB + MinIO + Redis).
 
 ### Cloud & enterprise
 Self-host, deploy to Vercel, or run a control plane with metering and federation. RBAC workspaces, audit trails, SSO, and policy hooks — opt-in when you need them.
@@ -385,8 +388,8 @@ Organized by direction — not sprints. **Repository scope** noted where work le
 
 | | Themes | Primary repository |
 |---|--------|-------------------|
-| **Today** | Ratary MCP + REST, hybrid retrieval, self-host on D1/Postgres, remote Ratary MCP | `ontorata/ratary` |
-| **Next** | Deeper connectors, expanded SDK/CLI surface; **container images** ([DOCKER.md](docs/DOCKER.md)); Ontorata Studio operator UI | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) (separate) |
+| **Today** | Ratary MCP + REST, hybrid retrieval, self-host on D1/Postgres/MariaDB, Docker compose, remote Ratary MCP | `ontorata/ratary` |
+| **Next** | Deeper connectors, expanded SDK/CLI surface; Ontorata Studio operator UI | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) (separate) |
 | **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace | `ontorata/ratary` (platform) |
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean.

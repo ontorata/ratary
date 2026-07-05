@@ -333,6 +333,36 @@ npm run db:backfill-d1-to-postgres -- --execute
 npm run db:verify-postgres-parity
 ```
 
+### MariaDB / MySQL metadata
+
+| Env | Value |
+|-----|-------|
+| `SQL_PROVIDER` | `mariadb` or `mysql` |
+| `MARIADB_CONNECTION_STRING` | `mysql://user:pass@host:3306/ratary` |
+
+Use the same metadata schema as Postgres. For a full on-prem stack with object storage, see [DOCKER.md — enterprise profile](DOCKER.md#profiles).
+
+### Enterprise Docker stack (MariaDB + MinIO)
+
+```bash
+# Set AUTH_SECRET in .env first
+docker compose --profile enterprise up --build -d
+```
+
+Pre-wired env: `SQL_PROVIDER=mariadb`, `OBJECT_STORAGE_PROVIDER=minio`, `CACHE_PROVIDER=redis`. Details: [DOCKER.md](DOCKER.md).
+
+### Additional enterprise adapters
+
+See [CONFIGURATION.md Tier 2](CONFIGURATION.md#tier-2--platform-adapters) for:
+
+| Provider | Env flag | Use case |
+|----------|----------|----------|
+| MinIO | `OBJECT_STORAGE_PROVIDER=minio` | S3-compatible on-prem blobs |
+| OpenSearch | `SEARCH_PROVIDER=opensearch` | Cluster lexical search |
+| ClickHouse | `ANALYTICS_PROVIDER=clickhouse` | Production analytics warehouse |
+| Azure Blob / GCS | `OBJECT_STORAGE_PROVIDER=azure\|gcs` | Cloud procurement requirements |
+| TiDB / CockroachDB | `SQL_PROVIDER=tidb\|cockroachdb` | Distributed SQL (Postgres wire) |
+
 ### External provider backfills
 
 All backfill scripts are **dry-run by default**; add `--execute` to write.
