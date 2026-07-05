@@ -31,9 +31,14 @@ export type { IKnowledgeFabricOrchestrator } from './ports/iknowledge-fabric-orc
 
 export {
   createKnowledgeConnectors,
+  createWebhookConnectors,
   EnvConfiguredKnowledgeConnector,
   NoOpKnowledgeConnector,
+  WebhookPushConnector,
 } from './adapters/knowledge-connector-registry.js';
+export { NotionLiveConnector } from './adapters/notion-live-connector.js';
+export { ConnectorSyncJobRunner } from './sync/connector-sync-job-runner.js';
+export { verifyWebhookSignature, signWebhookPayload } from './sync/webhook-signature.js';
 export { DefaultFabricNormalizer } from './adapters/default-fabric-normalizer.js';
 export { RuleBasedFabricPolicy, DenyAllFabricPolicy } from './adapters/rule-based-fabric-policy.js';
 export {

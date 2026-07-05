@@ -1,20 +1,33 @@
+#!/usr/bin/env node
 import type { AiBrainClient } from '@ratary/sdk';
 
 function usage(): void {
   console.log(`Usage:
-  ai-brain capabilities
-  ai-brain ecosystem [list|get <type>]
-  ai-brain memory list [--project <name>] [--limit N]
-  ai-brain memory get <id>
-  ai-brain memory search <query> [--limit N] [--mode hybrid|semantic|fulltext|title] [--extended] [--rerank] [--snippet-length N]
-  ai-brain context build --task "<text>" [--project <name>]
-  ai-brain federation peers`);
+  ratary capabilities
+  ratary ecosystem [list|get <type>]
+  ratary memory list [--project <name>] [--limit N]
+  ratary memory get <id>
+  ratary memory search <query> [--limit N] [--mode hybrid|semantic|fulltext|title] [--extended] [--rerank] [--snippet-length N]
+  ratary context build --task "<text>" [--project <name>]
+  ratary federation peers|status
+  ratary admin cloud status|regions
+  ratary admin observability status
+  ratary admin infrastructure status|manifest
+  ratary admin platform status|manifest
+  ratary admin knowledge-fabric status|connectors|runs [--limit N]
+  ratary connectors list
+  ratary connectors sync <notion|confluence|...> [--mode full|incremental] [--async] [--dry-run] [--limit N]
+  ratary connectors state <connectorId>`);
 }
 
 function parseFlag(args: string[], flag: string): string | undefined {
   const idx = args.indexOf(flag);
   if (idx === -1 || idx + 1 >= args.length) return undefined;
   return args[idx + 1];
+}
+
+function hasFlag(args: string[], flag: string): boolean {
+  return args.includes(flag);
 }
 
 export async function runCli(client: AiBrainClient, args: string[]): Promise<void> {
@@ -70,7 +83,11 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
       if (!query) throw new Error('memory search requires query');
       const limit = parseFlag(rest, '--limit');
       const mode = parseFlag(rest, '--mode') as
-        'hybrid' | 'semantic' | 'fulltext' | 'title' | undefined;
+        | 'hybrid'
+        | 'semantic'
+        | 'fulltext'
+        | 'title'
+        | undefined;
       const extended = rest.includes('--extended');
       const rerank = rest.includes('--rerank');
       const snippetLength = parseFlag(rest, '--snippet-length');
@@ -97,11 +114,114 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
     return;
   }
 
-  if (group === 'federation' && sub === 'peers') {
-    if (!client.federation) throw new Error('Set RATARY_FEDERATION=true to use federation');
-    const peers = await client.federation.listPeers();
-    console.log(JSON.stringify(peers, null, 2));
-    return;
+  if (group === 'federation') {
+    const federation = client.federation ?? client.admin.federation;
+    if (sub === 'peers') {
+      const peers = await federation.listPeers();
+      console.log(JSON.stringify(peers, null, 2));
+      return;
+    }
+    if (sub === 'status') {
+      const status = await federation.getStatus();
+      console.log(JSON.stringify(status, null, 2));
+      return;
+    }
+    throw new Error(`Unknown federation subcommand: ${sub}`);
+  }
+
+  if (group === 'admin') {
+    const domain = sub;
+    const action = rest[0];
+    const tail = rest.slice(1);
+    if (domain === 'cloud') {
+      if (action === 'status') {
+        console.log(JSON.stringify(await client.admin.cloud.getStatus(), null, 2));
+        return;
+      }
+      if (action === 'regions') {
+        console.log(JSON.stringify(await client.admin.cloud.listRegions(), null, 2));
+        return;
+      }
+    }
+    if (domain === 'observability' && action === 'status') {
+      console.log(JSON.stringify(await client.admin.observability.getStatus(), null, 2));
+      return;
+    }
+    if (domain === 'infrastructure') {
+      if (action === 'status') {
+        console.log(JSON.stringify(await client.admin.infrastructure.getStatus(), null, 2));
+        return;
+      }
+      if (action === 'manifest') {
+        console.log(JSON.stringify(await client.admin.infrastructure.getManifest(), null, 2));
+        return;
+      }
+    }
+    if (domain === 'platform') {
+      if (action === 'status') {
+        console.log(JSON.stringify(await client.admin.platform.getStatus(), null, 2));
+        return;
+      }
+      if (action === 'manifest') {
+        console.log(JSON.stringify(await client.admin.platform.getManifest(), null, 2));
+        return;
+      }
+    }
+    if (domain === 'knowledge-fabric') {
+      if (action === 'status') {
+        console.log(JSON.stringify(await client.admin.knowledgeFabric.getStatus(), null, 2));
+        return;
+      }
+      if (action === 'connectors') {
+        console.log(JSON.stringify(await client.admin.knowledgeFabric.listConnectors(), null, 2));
+        return;
+      }
+      if (action === 'runs') {
+        const limit = parseFlag(tail, '--limit');
+        console.log(
+          JSON.stringify(
+            await client.admin.knowledgeFabric.listIngestRuns(
+              limit ? Number(limit) : undefined,
+            ),
+            null,
+            2,
+          ),
+        );
+        return;
+      }
+    }
+    throw new Error(`Unknown admin command: admin ${domain} ${action ?? ''}`.trim());
+  }
+
+  if (group === 'connectors') {
+    const kf = client.admin.knowledgeFabric;
+    if (sub === 'list') {
+      console.log(JSON.stringify(await kf.listConnectors(), null, 2));
+      return;
+    }
+    if (sub === 'state') {
+      const connectorId = rest[0];
+      if (!connectorId) throw new Error('connectors state requires connectorId');
+      console.log(JSON.stringify(await kf.getConnectorState(connectorId as 'notion'), null, 2));
+      return;
+    }
+    if (sub === 'sync') {
+      const connectorId = rest.find((a) => !a.startsWith('--'));
+      if (!connectorId) throw new Error('connectors sync requires connectorId');
+      const mode = (parseFlag(rest, '--mode') as 'full' | 'incremental' | undefined) ?? 'incremental';
+      const body = {
+        mode,
+        dryRun: hasFlag(rest, '--dry-run'),
+        limit: parseFlag(rest, '--limit') ? Number(parseFlag(rest, '--limit')) : undefined,
+      };
+      if (hasFlag(rest, '--async')) {
+        console.log(JSON.stringify(await kf.sync(connectorId as 'notion', body), null, 2));
+        return;
+      }
+      console.log(JSON.stringify(await kf.ingest(connectorId as 'notion', body), null, 2));
+      return;
+    }
+    throw new Error(`Unknown connectors subcommand: ${sub}`);
   }
 
   usage();

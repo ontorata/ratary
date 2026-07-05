@@ -412,6 +412,13 @@ const envSchema = z
     FABRIC_EMAIL_IMAP_URL: z.string().optional(),
     TEAMS_WEBHOOK_URL: z.string().optional(),
     NOTION_API_TOKEN: z.string().optional(),
+    NOTION_API_VERSION: z.string().default('2022-06-28'),
+    CONNECTOR_SYNC_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    CONNECTOR_WEBHOOK_SECRET: z.string().optional(),
+    CONNECTOR_SYNC_INTERVAL_MS: z.coerce.number().int().min(0).default(0),
 
     // Ratary platform umbrella (Phase 24) — ADR-044; edition + webhooks, default off
     RATARY_PLATFORM_ENABLED: z
