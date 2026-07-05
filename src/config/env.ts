@@ -128,10 +128,11 @@ const envSchema = z
     CLICKHOUSE_DATABASE: z.string().min(1).default('ratary'),
     CLICKHOUSE_USERNAME: z.string().min(1).default('default'),
     CLICKHOUSE_PASSWORD: z.string().optional(),
-    GRAPH_PROVIDER: z.enum(['d1', 'neo4j']).default('d1'),
+    GRAPH_PROVIDER: z.enum(['d1', 'neo4j', 'neptune']).default('d1'),
     NEO4J_URI: z.string().url().optional(),
     NEO4J_USERNAME: z.string().min(1).optional(),
     NEO4J_PASSWORD: z.string().min(1).optional(),
+    NEPTUNE_ENDPOINT: z.string().url().optional(),
     SEARCH_PROVIDER: z.enum(['sql', 'meilisearch', 'opensearch']).default('sql'),
     MEILISEARCH_HOST: z.string().url().optional(),
     MEILISEARCH_API_KEY: z.string().optional(),
@@ -695,6 +696,14 @@ const envSchema = z
           message: 'NEO4J_PASSWORD is required when GRAPH_PROVIDER=neo4j',
         });
       }
+    }
+
+    if (env.GRAPH_PROVIDER === 'neptune' && !env.NEPTUNE_ENDPOINT) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['NEPTUNE_ENDPOINT'],
+        message: 'NEPTUNE_ENDPOINT is required when GRAPH_PROVIDER=neptune',
+      });
     }
 
     if (env.GRPC_ENABLED) {

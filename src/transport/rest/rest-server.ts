@@ -364,6 +364,7 @@ export async function buildApp(options?: {
     aiBrainPlatformPorts,
     globalIntelligencePorts,
     signalIngest: signalPorts.enabled ? { enabled: true, ...signalPorts.ingestDeps } : undefined,
+    memoryAccessAuditor,
   });
 
   fastify.decorate('transportHandlers', transportHandlers);
