@@ -12,6 +12,7 @@
 - [x] `IPluginRegistry` port + SQL / in-memory adapters
 - [x] `IProviderMarketplace` port + local JSON catalog adapter
 - [x] `IPluginManifestValidator` port + JSON schema validation
+- [x] **D20-01** — Ed25519 manifest verifier + `PLUGIN_TRUSTED_PUBLIC_KEYS` (`SignedPluginManifestValidator`)
 - [x] `IPluginAllowList` port + Phase 18 SQL integration (noop when control plane off)
 - [x] `CapabilityManifestBuilder` extended with infrastructure section
 

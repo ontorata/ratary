@@ -49,7 +49,8 @@ tests/db/infrastructure-platform-migration.test.ts
 | Env | Default | Purpose |
 |-----|---------|---------|
 | `PLUGIN_MARKETPLACE_ENABLED` | `false` | Master gate — off preserves Phase 10 env adapters |
-| `PLUGIN_SIGNATURE_REQUIRED` | `false` | Require manifest signature field |
+| `PLUGIN_SIGNATURE_REQUIRED` | `false` | Require manifest signature + Ed25519 verify when trusted keys set |
+| `PLUGIN_TRUSTED_PUBLIC_KEYS` | _(empty)_ | Comma-separated base64 raw Ed25519 public keys (32 bytes) |
 | `PLUGIN_MARKETPLACE_SOURCE` | `local` | Catalog source (`local` / `remote` reserved) |
 | `PLUGIN_FEDERATION_CATALOG_SYNC` | `false` | Publish catalog metadata to federation peers |
 
@@ -84,7 +85,7 @@ tests/db/infrastructure-platform-migration.test.ts
 
 ## Deferred (documented)
 
-- Full ed25519 signature verification (schema checks signature presence only)
+- Ed25519 signature verification via `SignedPluginManifestValidator` + `PLUGIN_TRUSTED_PUBLIC_KEYS` (D20-01, 2026-07-05)
 - Runtime adapter hot-swap — enable applies on process restart
 - gRPC admin surface for plugin lifecycle
 - Plugin authoring guide (external package pattern)

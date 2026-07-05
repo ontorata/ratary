@@ -40,11 +40,11 @@ describe('SchemaPluginManifestValidator', () => {
     expect(result.errors.some((e) => e.includes('signature'))).toBe(true);
   });
 
-  it('accepts manifest with signature when required', () => {
+  it('accepts manifest with signature when required (schema-only)', () => {
     const validator = new SchemaPluginManifestValidator({ requireSignature: true });
     const result = validator.validate({
       ...validManifest,
-      signature: 'deadbeefcafebabe',
+      signature: Buffer.alloc(64).toString('base64'),
     });
     expect(result.valid).toBe(true);
   });

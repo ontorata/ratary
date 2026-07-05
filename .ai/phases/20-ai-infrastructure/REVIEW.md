@@ -34,7 +34,7 @@ Record architecture review findings and formal phase gate verdict.
 
 ## Known gaps (accepted)
 
-- ed25519 verification deferred
+- ~~ed25519 verification deferred~~ → **D20-01 closed** (2026-07-05)
 - Hot-swap deferred — restart required
 
 ---
