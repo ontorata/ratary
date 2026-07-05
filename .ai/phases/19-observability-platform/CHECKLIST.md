@@ -12,6 +12,7 @@
 - [x] `ITraceExporter` + OTel bridge
 - [x] `ILogShipper` + stdout/Loki adapters
 - [x] `IDashboardPack` — 6 Grafana JSON files
+- [x] **D19-01** — Phase 18 usage meter → cost gauges (`publishUsageCostMetrics`) + embedding usage wiring
 - [x] `ISloRegistry` + Alertmanager YAML
 
 ## Integration

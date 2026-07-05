@@ -32,20 +32,19 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 - gRPC/MCP dedicated hooks deferred
 - No bundled docker-compose stack
-- Cost gauges TBD
+- ~~Cost gauges TBD~~ → **D19-01 shipped** (2026-07-05)
 
 ---
 
 ## Accepted debt
 
 - External Prometheus/Grafana deployment only
-- Cost dashboard values not populated
 
 ---
 
 ## Recommendations
 
-- Wire Phase 18 usage export into cost metrics
+- Enable cost path in staging: `OBSERVABILITY_PLATFORM` + `CONTROL_PLANE_ENABLED` + `USAGE_METER_ENABLED` + `OBS_COST_METRICS_ENABLED`
 - Add gRPC/MCP instrumentation before combined prod enable
 
 ---

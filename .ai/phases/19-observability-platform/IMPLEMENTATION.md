@@ -18,6 +18,7 @@
 | 19F | REST middleware instrumentation | ✅ |
 | 19G | `GET /metrics` scrape endpoint | ✅ |
 | 19H | REST `/observability/*` admin API | ✅ |
+| **D19-01** | Usage meter → cost gauges + embedding usage wiring | ✅ 2026-07-05 |
 
 ---
 
@@ -27,9 +28,10 @@
 src/observability/
   types/           metrics, dashboard, slo, log types
   ports/           IMetricsExporter, ITraceExporter, ILogShipper, …
-  adapters/        Prometheus, OTel, stdout/Loki, file dashboard/SLO
+  adapters/        Prometheus, OTel, stdout/Loki, file dashboard/SLO, usage-cost-metrics-publisher
   catalog/         v1 metric namespace registrars
   middleware/      observability.middleware.ts
+src/cloud/adapters/usage-meter-embedding-provider.ts
 src/composition/create-observability-ports.ts
 src/controllers/observability.controller.ts
 src/routes/v1/observability.routes.ts
@@ -49,6 +51,9 @@ tests/api/observability.test.ts
 | `OBS_METRICS_PATH` | `/metrics` | Prometheus scrape path |
 | `OBS_LOG_SHIPPER` | `stdout` | `none`, `stdout`, `loki` |
 | `OBS_LOKI_PUSH_URL` | — | Loki push endpoint |
+| `OBS_COST_METRICS_ENABLED` | `false` | Sync Phase 18 usage meter → cost gauges on scrape |
+| `COST_EMBEDDING_USD_PER_REQUEST` | `0.00002` | FinOps estimate per embedding request |
+| `COST_ESTIMATED_BYTES_PER_MEMORY` | `4096` | Storage gauge estimate per memory write event |
 | `OTEL_ENABLED` | `false` | Trace export (existing C12; works with platform) |
 
 ---
