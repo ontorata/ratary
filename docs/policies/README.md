@@ -7,7 +7,7 @@
 
 ## Why this folder is named `policies`
 
-In Ratary, **policy** means *who may do what* on the API (enable plugin, access workspace, etc.) — evaluated by a **policy engine** when Phase 17 enterprise security is enabled.
+In Ratary, **policy** means *who may do what* on the API (enable plugin, access workspace, etc.) — evaluated by a **policy engine** when enterprise security is enabled (`ENTERPRISE_SECURITY_V2=true`).
 
 | Term in repo | Meaning |
 |--------------|---------|
@@ -50,7 +50,7 @@ docker run --rm -p 8181:8181 \
 
 4. Copy and extend Rego for your tenant rules — do not edit samples in place for production; fork to your own bundle repo.
 
-Full env reference: [CONFIGURATION.md § Tier 5](../CONFIGURATION.md#tier-5--enterprise-security-phase-17).
+Full env reference: [CONFIGURATION.md § Tier 5](../CONFIGURATION.md#tier-5--enterprise-security).
 
 ---
 

@@ -25,7 +25,7 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 
 **Platform adapters:** storage-agnostic backends (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) — all opt-in via env flags. Default deploy remains D1-centric. See [CONFIGURATION.md](CONFIGURATION.md) Tier 2.
 
-**Observability:** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE.md § 10](GUIDE.md#10-observability-phases-12--19).
+**Observability:** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE.md § 10](GUIDE.md#10-observability).
 
 ---
 

@@ -64,7 +64,7 @@ You do not need to type tool names. Speak naturally:
 
 **Tips:** mention **project name** (`ratary`, `mangroveapps`) and **topic** (`auth`, `hydration`). End sessions with a handoff.
 
-### Smart memory (Phase 4)
+### Smart memory
 
 The assistant selects relevant memory slices automatically — not a full dump. When MCP is green, **no extra setup**. Say *"continue work on …"*.
 
@@ -79,7 +79,7 @@ The assistant selects relevant memory slices automatically — not a full dump. 
 
 Without `MCP_OWNER_ID` in production, MCP **will not start** — prevents cross-user memory leaks.
 
-**Phase 9 — workspace (optional):**
+**Workspace scoping (optional):**
 
 | Variable | Purpose |
 |----------|---------|
@@ -127,7 +127,7 @@ ChatGPT does **not** run local MCP stdio like Cursor. Two paths:
 4. Authentication: API Key → `Authorization: Bearer aic_...`
 5. GPT instructions: search by project, `POST /context` for tasks, save handoffs via `POST /memory`
 
-### B — Remote MCP: New App → Server URL (Phase 13.1)
+### B — Remote MCP: New App → Server URL
 
 ChatGPT **New App** form → **Server URL** → `https://<host>/mcp` (not REST `/api/v1`).
 
@@ -145,7 +145,7 @@ REMOTE_MCP_CORS_ORIGINS=*
 | Method | Extra env | Notes |
 |--------|-----------|-------|
 | API key | — | `Authorization: Bearer aic_...` or `X-API-Key` |
-| OAuth (ChatGPT) | `REMOTE_MCP_OAUTH_ENABLED=true`, `OIDC_ISSUER_URL`, `OIDC_MCP_OWNER_ID` | Phase 17 OIDC; discovery at `/.well-known/oauth-protected-resource/mcp` |
+| OAuth (ChatGPT) | `REMOTE_MCP_OAUTH_ENABLED=true`, `OIDC_ISSUER_URL`, `OIDC_MCP_OWNER_ID` | OIDC discovery at `/.well-known/oauth-protected-resource/mcp` |
 
 Details: [MCP/README.md](../MCP/README.md) · Remote MCP smoke in repo tests.
 
@@ -233,7 +233,7 @@ npm run test:integration
 
 Both write to the **same brain** when pointed at the same backend.
 
-### Transport & gRPC (Phase 10.5)
+### Transport & gRPC
 
 REST, MCP, and gRPC share the **same application handlers** — no duplicated business logic.
 
@@ -250,6 +250,8 @@ Check active transports: `GET /api/v1/capabilities` → `transport` section.
 
 ## 7. Optional commands
 
+Feature reference (pros, cons, effects): **[CONFIGURATION.md](CONFIGURATION.md)**.
+
 | Command | Purpose |
 |---------|---------|
 | `npm run dev` | REST API + Swagger at `/docs` |
@@ -257,32 +259,28 @@ Check active transports: `GET /api/v1/capabilities` → `transport` section.
 | `npm run db:backfill-embeddings` | Embeddings dry-run |
 | `npm run db:backfill-embeddings:execute` | Run embedding backfill |
 
-### Embeddings (Phase 5)
+### Embeddings
 
 Backfill is **async** — CRUD never calls the embedding model on the hot path.
 
-1. Default: `EMBEDDING_PROVIDER=noop`
-2. OpenAI production: `EMBEDDING_PROVIDER=openai`, `EMBEDDING_API_KEY=sk-...`
+1. Default: `EMBEDDING_PROVIDER=noop` — see [CONFIGURATION → Embeddings](CONFIGURATION.md#embeddings)
+2. OpenAI: set `EMBEDDING_PROVIDER=openai`, `EMBEDDING_API_KEY=sk-...`
 3. Dry-run: `npm run db:backfill-embeddings`
 4. Execute: `npm run db:backfill-embeddings:execute`
 
 Deleting memory via REST/MCP cleans related vectors.
 
-### Hybrid & graph retrieval (Phases 6 + 8)
+### Hybrid & graph retrieval
 
-| Variable | Default | Effect |
-|----------|---------|--------|
-| `HYBRID_RETRIEVAL` | `false` | SQL + vector (RRF) — needs embedding provider |
-| `GRAPH_RETRIEVAL` | `false` | Graph leg in composite retrieval |
-| `GRAPH_MAX_DEPTH` | `2` | BFS depth (max 3) |
-| `GRAPH_SEED_CAP` | `5` | Lexical seeds per query |
-| `GRAPH_MAX_NEIGHBORS` | `30` | Neighbor budget |
+See [CONFIGURATION → Hybrid retrieval](CONFIGURATION.md#hybrid-retrieval) and [Graph retrieval](CONFIGURATION.md#graph-retrieval).
 
-Graph exploration without flags: MCP `get_graph_capabilities`, `traverse_relations`; REST `GET /api/v1/graph/capabilities`, `POST /api/v1/graph/traverse`.
+Graph exploration without retrieval flags: MCP `get_graph_capabilities`, `traverse_relations`; REST `GET /api/v1/graph/capabilities`, `POST /api/v1/graph/traverse`.
 
 **Dense graph tuning:** lower `RETRIEVAL_RELATION_NEIGHBOR_CAP` (default 5 → 3) if context feels noisy.
 
-### Protocol streaming (Phase 13)
+### Protocol streaming
+
+See [CONFIGURATION → SSE context streaming](CONFIGURATION.md#sse-context-streaming).
 
 ```env
 SSE_ENABLED=true
@@ -291,7 +289,9 @@ SSE_MAX_CONCURRENT_PER_IP=10
 
 Endpoint: `GET /api/v1/context/stream?query=...` (Bearer auth). Long-running host required.
 
-### Memory evolution (Phase 09.7)
+### Memory evolution
+
+See [CONFIGURATION → Memory evolution](CONFIGURATION.md#memory-evolution-version-control).
 
 ```env
 MEMORY_EVOLUTION_ENABLED=true
@@ -300,7 +300,9 @@ MEMORY_EVOLUTION_STORE_PROVIDER=sql
 
 REST: `GET /api/v1/memory/:id/versions`, restore/merge endpoints.
 
-### Semantic compression (Phase 05.5)
+### Semantic compression
+
+See [CONFIGURATION → Semantic compression](CONFIGURATION.md#semantic-compression).
 
 ```env
 COMPRESSION_ENABLED=true
@@ -311,27 +313,13 @@ CLI: `npm run compress:memories` (dry-run) · `compress:memories:execute`
 
 ---
 
-## 8. Platform infrastructure (Phases 10 + 11)
+## 8. Platform infrastructure
 
 External adapters are **opt-in via env**. Defaults unchanged (D1, inline storage).
 
-| Variable | Default | Providers |
-|----------|---------|-----------|
-| `SQL_PROVIDER` | `d1` | `d1` · `postgres` |
-| `VECTOR_PROVIDER` | `d1` | `d1` · `pgvector` |
-| `OBJECT_STORAGE_PROVIDER` | `inline` | `inline` · `r2` · `s3` |
-| `SEARCH_PROVIDER` | `sql` | `sql` · Meilisearch |
-| `GRAPH_PROVIDER` | `d1` | `d1` · Neo4j |
-| `CACHE_PROVIDER` | `none` | Redis |
-| `EVENT_BUS_PROVIDER` | `none` | Redis Streams |
-| `ANALYTICS_PROVIDER` | `none` | DuckDB |
-| `ENTERPRISE_RBAC` | `false` | Workspace RBAC |
-| `MEMORY_ACCESS_AUDIT` | `false` | Access trail |
-| `OTEL_ENABLED` | `false` | OpenTelemetry |
+Adapter reference (pros, cons, effects): **[CONFIGURATION.md Tier 2](CONFIGURATION.md#tier-2--platform-adapters)** · template: [.env.example](../.env.example)
 
-Full reference: **[CONFIGURATION.md](CONFIGURATION.md)** · template: [.env.example](../.env.example)
-
-### Postgres metadata (Phase 11)
+### Postgres metadata
 
 | Env | Value |
 |-----|-------|
@@ -369,7 +357,9 @@ Moving Ratary to a new workstation:
 
 ---
 
-## 10. Observability (Phases 12 / 19)
+## 10. Observability
+
+See [CONFIGURATION → Observability platform](CONFIGURATION.md#observability-platform).
 
 ```env
 OBSERVABILITY_PLATFORM=true
@@ -391,7 +381,9 @@ OBS_COST_METRICS_ENABLED=true
 
 ---
 
-## 11. Agent ecosystem (Phase 15)
+## 11. Agent ecosystem
+
+See [CONFIGURATION → Federation](CONFIGURATION.md#federation) and workspace vars in [Tier 0 → MCP memory scope](CONFIGURATION.md#mcp-memory-scope).
 
 | Feature | MCP / REST |
 |---------|------------|
