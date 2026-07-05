@@ -1,5 +1,9 @@
 import { nowISO } from '../../utils/memory-mapper.js';
-import type { IContentOffloadSyncer, IEmbeddingJobSyncer, IPgvectorIndexSyncer } from '../ports/index.js';
+import type {
+  IContentOffloadSyncer,
+  IEmbeddingJobSyncer,
+  IPgvectorIndexSyncer,
+} from '../ports/index.js';
 import type { IContentScaleSyncStore } from '../ports/icontent-scale-sync-store.port.js';
 import type {
   ContentScaleSyncInput,
@@ -50,7 +54,13 @@ export class ContentScaleOrchestrator {
 
     const runId = newContentScaleSyncRunId();
     const startedAt = nowISO();
-    const emptyStats = { scanned: 0, applied: 0, skipped: 0, failed: 0, dryRun: input.dryRun ?? false };
+    const emptyStats = {
+      scanned: 0,
+      applied: 0,
+      skipped: 0,
+      failed: 0,
+      dryRun: input.dryRun ?? false,
+    };
 
     await this.store.startRun({
       id: runId,

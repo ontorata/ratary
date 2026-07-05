@@ -5,5 +5,8 @@ import type { FederationTrustContext } from '../types/federation-exchange.types.
 
 export interface IFederationScopeMapper {
   toLocalScope(source: FederationScopeRef, trust: FederationTrustContext): Promise<MemoryScope>;
-  toRemoteScope(local: MemoryScope, targetNode: FederationNodeDescriptor): Promise<FederationScopeRef>;
+  toRemoteScope(
+    local: MemoryScope,
+    targetNode: FederationNodeDescriptor,
+  ): Promise<FederationScopeRef>;
 }

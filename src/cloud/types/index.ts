@@ -1,8 +1,4 @@
-export type {
-  CloudRegion,
-  WorkspaceRegionAssignment,
-  AssignRegionInput,
-} from './region.types.js';
+export type { CloudRegion, WorkspaceRegionAssignment, AssignRegionInput } from './region.types.js';
 export type {
   TenantMetadataRecord,
   TenantMetadataStatus,

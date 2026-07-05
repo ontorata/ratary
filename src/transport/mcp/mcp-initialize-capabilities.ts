@@ -65,7 +65,11 @@ export function buildMcpServerInfoDescription(
   condensed: CondensedMcpCapabilitySnapshot,
   negotiation?: CapabilityNegotiationResult,
 ): string {
-  const compatibility = negotiation ? (negotiation.compatible ? 'compatible' : 'incompatible') : 'unknown';
+  const compatibility = negotiation
+    ? negotiation.compatible
+      ? 'compatible'
+      : 'incompatible'
+    : 'unknown';
   return `Ratary (${condensed.protocolVersion}): ${condensed.mcp.toolCount} tools; manifest at ${condensed.capabilitiesUrl}; negotiation=${compatibility}`;
 }
 
@@ -98,44 +102,47 @@ export function wireMcpInitializeCapabilities(
 ): void {
   const inner = server.server as unknown as InitializeAwareServer;
 
-  inner.setRequestHandler(InitializeRequestSchema, async (request: {
-    params: {
-      protocolVersion: string;
-      capabilities: unknown;
-      clientInfo: unknown;
-      _meta?: Record<string, unknown>;
-    };
-  }) => {
-    inner._clientCapabilities = request.params.capabilities;
-    inner._clientVersion = request.params.clientInfo;
+  inner.setRequestHandler(
+    InitializeRequestSchema,
+    async (request: {
+      params: {
+        protocolVersion: string;
+        capabilities: unknown;
+        clientInfo: unknown;
+        _meta?: Record<string, unknown>;
+      };
+    }) => {
+      inner._clientCapabilities = request.params.capabilities;
+      inner._clientVersion = request.params.clientInfo;
 
-    const requestedVersion = request.params.protocolVersion;
-    const protocolVersion = SUPPORTED_PROTOCOL_VERSIONS.includes(requestedVersion)
-      ? requestedVersion
-      : LATEST_PROTOCOL_VERSION;
+      const requestedVersion = request.params.protocolVersion;
+      const protocolVersion = SUPPORTED_PROTOCOL_VERSIONS.includes(requestedVersion)
+        ? requestedVersion
+        : LATEST_PROTOCOL_VERSION;
 
-    const manifest = await Promise.resolve(resolveManifest());
-    const clientRequestRaw = request.params._meta?.[MCP_CAPABILITIES_REQUEST_META_KEY];
-    const { condensed, negotiation } = buildInitializeSnapshot(
-      manifest,
-      clientRequestRaw,
-      options,
-    );
+      const manifest = await Promise.resolve(resolveManifest());
+      const clientRequestRaw = request.params._meta?.[MCP_CAPABILITIES_REQUEST_META_KEY];
+      const { condensed, negotiation } = buildInitializeSnapshot(
+        manifest,
+        clientRequestRaw,
+        options,
+      );
 
-    return {
-      protocolVersion,
-      capabilities: inner.getCapabilities(),
-      serverInfo: {
-        name: 'ratary',
-        version: condensed.version,
-        title: 'Ratary',
-        description: buildMcpServerInfoDescription(condensed, negotiation),
-      },
-      instructions: buildMcpInitializeInstructions(condensed, negotiation),
-      _meta: {
-        [MCP_CAPABILITIES_META_KEY]: condensed,
-        ...(negotiation ? { [MCP_CAPABILITIES_NEGOTIATION_META_KEY]: negotiation } : {}),
-      },
-    };
-  });
+      return {
+        protocolVersion,
+        capabilities: inner.getCapabilities(),
+        serverInfo: {
+          name: 'ratary',
+          version: condensed.version,
+          title: 'Ratary',
+          description: buildMcpServerInfoDescription(condensed, negotiation),
+        },
+        instructions: buildMcpInitializeInstructions(condensed, negotiation),
+        _meta: {
+          [MCP_CAPABILITIES_META_KEY]: condensed,
+          ...(negotiation ? { [MCP_CAPABILITIES_NEGOTIATION_META_KEY]: negotiation } : {}),
+        },
+      };
+    },
+  );
 }

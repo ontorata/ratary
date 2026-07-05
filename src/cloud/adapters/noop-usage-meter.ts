@@ -1,5 +1,10 @@
 import type { IUsageMeter } from '../ports/iusage-meter.port.js';
-import type { UsageAggregate, UsageExportOptions, UsageMetricType, UsageRecord } from '../types/usage.types.js';
+import type {
+  UsageAggregate,
+  UsageExportOptions,
+  UsageMetricType,
+  UsageRecord,
+} from '../types/usage.types.js';
 
 const METRIC_TYPES: UsageMetricType[] = [
   'memory.created',

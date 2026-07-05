@@ -3,7 +3,10 @@ import { nowISO } from '../../utils/memory-mapper.js';
 import { NotFoundError, ValidationError } from '../../types/errors.js';
 import type { Env } from '../../config/env.js';
 import type { IPluginManifestValidator } from '../../infrastructure-platform/ports/iplugin-manifest-validator.port.js';
-import type { IPluginRegistry, RegisterPluginInput } from '../../infrastructure-platform/ports/iplugin-registry.port.js';
+import type {
+  IPluginRegistry,
+  RegisterPluginInput,
+} from '../../infrastructure-platform/ports/iplugin-registry.port.js';
 import type {
   PluginManifest,
   PluginType,

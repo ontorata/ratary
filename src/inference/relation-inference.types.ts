@@ -2,12 +2,7 @@ import type { RelationType } from '../types/knowledge.js';
 import type { MemoryScope } from '../types/memory-scope.js';
 
 export type InferenceSourceId =
-  | 'project'
-  | 'shared_tag'
-  | 'temporal'
-  | 'conversation'
-  | 'dependency'
-  | 'semantic_similarity';
+  'project' | 'shared_tag' | 'temporal' | 'conversation' | 'dependency' | 'semantic_similarity';
 
 export interface InferredRelationCandidate {
   sourceMemoryId: string;

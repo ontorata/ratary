@@ -9,10 +9,7 @@ import { RuleBasedFederationPolicy } from '../federation/adapters/rule-based-fed
 import { DefaultFederationScopeMapper } from '../federation/adapters/default-federation-scope-mapper.adapter.js';
 import { LastWriteWinsFederationConflictResolver } from '../federation/adapters/last-write-wins-conflict-resolver.adapter.js';
 import { NoOpFederationMetadataStore } from '../federation/adapters/noop-federation-metadata-store.adapter.js';
-import {
-  KnowledgeExchangeService,
-  NoOpKnowledgeExchangeService,
-} from '../federation/index.js';
+import { KnowledgeExchangeService, NoOpKnowledgeExchangeService } from '../federation/index.js';
 import type { IKnowledgeExchangeService } from '../federation/ports/iknowledge-exchange.port.js';
 import type { FederationNodeDescriptor } from '../federation/types/federation-node.descriptor.js';
 import { SqlFederationMetadataStore } from '../infrastructure/federation/sql-federation-metadata-store.js';

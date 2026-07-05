@@ -17,10 +17,7 @@ export {
   MeilisearchIndexSyncer,
   NoOpSearchIndexSyncer,
 } from './adapters/meilisearch-index-syncer.js';
-export {
-  Neo4jGraphIndexSyncer,
-  NoOpGraphIndexSyncer,
-} from './adapters/neo4j-graph-syncer.js';
+export { Neo4jGraphIndexSyncer, NoOpGraphIndexSyncer } from './adapters/neo4j-graph-syncer.js';
 
 export { SearchGraphOrchestrator } from './services/search-graph-orchestrator.js';
 export { SearchGraphManifestBuilder } from './builders/search-graph-manifest-builder.js';

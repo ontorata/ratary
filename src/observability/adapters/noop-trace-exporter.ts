@@ -6,7 +6,10 @@ export class NoOpTraceExporter implements ITraceExporter {
     return false;
   }
 
-  startSpan(_name: string, _attributes?: Record<string, string | number | boolean>): TraceSpanContext {
+  startSpan(
+    _name: string,
+    _attributes?: Record<string, string | number | boolean>,
+  ): TraceSpanContext {
     return {};
   }
 

@@ -15,18 +15,14 @@ export function createAiBrainPlatformController(
 ) {
   function assertEnabled(): void {
     if (!ports.enabled) {
-      throw new ForbiddenError(
-        'Ratary platform is disabled (RATARY_PLATFORM_ENABLED=false)',
-      );
+      throw new ForbiddenError('Ratary platform is disabled (RATARY_PLATFORM_ENABLED=false)');
     }
   }
 
   function assertWebhooksEnabled(): void {
     assertEnabled();
     if (!env.PLATFORM_WEBHOOKS_ENABLED) {
-      throw new ForbiddenError(
-        'Platform webhooks are disabled (PLATFORM_WEBHOOKS_ENABLED=false)',
-      );
+      throw new ForbiddenError('Platform webhooks are disabled (PLATFORM_WEBHOOKS_ENABLED=false)');
     }
   }
 

@@ -26,7 +26,9 @@ function shouldDeferMcpOAuthAuth(url: string): boolean {
   const env = getEnv();
   if (!env.REMOTE_MCP_OAUTH_ENABLED || !env.REMOTE_MCP_ENABLED) return false;
   const path = url.split('?')[0] ?? url;
-  const mcpPath = env.REMOTE_MCP_PATH.startsWith('/') ? env.REMOTE_MCP_PATH : `/${env.REMOTE_MCP_PATH}`;
+  const mcpPath = env.REMOTE_MCP_PATH.startsWith('/')
+    ? env.REMOTE_MCP_PATH
+    : `/${env.REMOTE_MCP_PATH}`;
   return path === mcpPath;
 }
 

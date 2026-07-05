@@ -52,11 +52,15 @@ export class GlobalSyncOrchestrator implements IGlobalSyncOrchestrator {
     };
 
     if (this.exchange && request.direction !== 'push') {
-      const pull = await this.exchange.pullAndApply(peerId, {
-        source: { ...scopeRef, nodeId: peerId },
-        target: scopeRef,
-        cursor: request.since ?? null,
-      }, scope);
+      const pull = await this.exchange.pullAndApply(
+        peerId,
+        {
+          source: { ...scopeRef, nodeId: peerId },
+          target: scopeRef,
+          cursor: request.since ?? null,
+        },
+        scope,
+      );
       accepted += pull.accepted;
       rejected += pull.rejected;
       cursor = pull.cursor ?? undefined;
@@ -126,7 +130,14 @@ export class SqlOfflineJournal implements IOfflineJournal {
         createdAt,
       ],
     );
-    return { ...entry, id, status: 'pending', createdAt, ownerId: scope.ownerId, workspaceId: scope.workspaceId };
+    return {
+      ...entry,
+      id,
+      status: 'pending',
+      createdAt,
+      ownerId: scope.ownerId,
+      workspaceId: scope.workspaceId,
+    };
   }
 
   async pending(scope: MemoryScope): Promise<SyncJournalEntry[]> {
@@ -147,7 +158,10 @@ export class SqlOfflineJournal implements IOfflineJournal {
     );
 
     return rows.map((row) => {
-      const parsed = JSON.parse(row.entry_json) as { action: string; payload: Record<string, unknown> };
+      const parsed = JSON.parse(row.entry_json) as {
+        action: string;
+        payload: Record<string, unknown>;
+      };
       return {
         id: row.id,
         ownerId: row.owner_id,

@@ -47,5 +47,7 @@ export interface SearchGraphPlatformManifest {
   neo4jConfigured: boolean;
   graphVectorSeedsEnabled: boolean;
   supportsIncrementalSync: boolean;
-  lastRuns: Partial<Record<SearchGraphSyncTarget, Pick<SearchGraphSyncRun, 'id' | 'status' | 'finishedAt'>>>;
+  lastRuns: Partial<
+    Record<SearchGraphSyncTarget, Pick<SearchGraphSyncRun, 'id' | 'status' | 'finishedAt'>>
+  >;
 }

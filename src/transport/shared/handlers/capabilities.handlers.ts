@@ -1,7 +1,5 @@
 import type { AICapabilityManifest } from '../../../capabilities/capability-manifest.types.js';
-import {
-  negotiateCapabilities,
-} from '../../../capabilities/capability-negotiation.js';
+import { negotiateCapabilities } from '../../../capabilities/capability-negotiation.js';
 import type { ClientCapabilityRequest } from '../../../capabilities/capability-negotiation.types.js';
 import type { CapabilityNegotiationResult } from '../../../capabilities/capability-negotiation.types.js';
 import type { Env } from '../../../config/env.js';
@@ -79,8 +77,7 @@ export function createCapabilitiesHandlers(deps: CapabilitiesHandlerDeps): Capab
     negotiate: {
       handle: async (_ctx, input) => {
         const manifest = await buildManifest({ openApiUrl: input.openApiUrl });
-        const { openApiUrl: _openApiUrl, capabilitiesUrl, negotiateUrl, ...clientRequest } =
-          input;
+        const { openApiUrl: _openApiUrl, capabilitiesUrl, negotiateUrl, ...clientRequest } = input;
         return negotiateCapabilities(manifest, clientRequest, {
           capabilitiesUrl: capabilitiesUrl ?? '/api/v1/capabilities',
           negotiateUrl: negotiateUrl ?? '/api/v1/capabilities/negotiate',

@@ -34,12 +34,7 @@ export class NoOpTelemetrySink implements ITelemetrySink {
 export class PrometheusTelemetrySink implements ITelemetrySink {
   readonly kind = 'prometheus' as const;
 
-  constructor(
-    private readonly record: (
-      name: string,
-      labels: Record<string, string>,
-    ) => void,
-  ) {}
+  constructor(private readonly record: (name: string, labels: Record<string, string>) => void) {}
 
   async emit(batch: readonly TelemetryEnvelope[]): Promise<void> {
     for (const envelope of batch) {

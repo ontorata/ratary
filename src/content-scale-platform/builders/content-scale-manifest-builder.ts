@@ -1,5 +1,9 @@
 import type { Env } from '../../config/env.js';
-import type { IContentOffloadSyncer, IEmbeddingJobSyncer, IPgvectorIndexSyncer } from '../ports/index.js';
+import type {
+  IContentOffloadSyncer,
+  IEmbeddingJobSyncer,
+  IPgvectorIndexSyncer,
+} from '../ports/index.js';
 import type { IContentScaleSyncStore } from '../ports/icontent-scale-sync-store.port.js';
 import type { ContentScalePlatformManifest } from '../types/sync.types.js';
 
@@ -31,13 +35,31 @@ export class ContentScaleManifestBuilder {
       supportsIncrementalSync: true,
       lastRuns: {
         ...(contentRun
-          ? { content: { id: contentRun.id, status: contentRun.status, finishedAt: contentRun.finishedAt } }
+          ? {
+              content: {
+                id: contentRun.id,
+                status: contentRun.status,
+                finishedAt: contentRun.finishedAt,
+              },
+            }
           : {}),
         ...(pgvectorRun
-          ? { pgvector: { id: pgvectorRun.id, status: pgvectorRun.status, finishedAt: pgvectorRun.finishedAt } }
+          ? {
+              pgvector: {
+                id: pgvectorRun.id,
+                status: pgvectorRun.status,
+                finishedAt: pgvectorRun.finishedAt,
+              },
+            }
           : {}),
         ...(embeddingRun
-          ? { embedding: { id: embeddingRun.id, status: embeddingRun.status, finishedAt: embeddingRun.finishedAt } }
+          ? {
+              embedding: {
+                id: embeddingRun.id,
+                status: embeddingRun.status,
+                finishedAt: embeddingRun.finishedAt,
+              },
+            }
           : {}),
       },
     };

@@ -14,14 +14,20 @@ export class MariaDBSqlDatabaseAdapter implements ISqlDatabase {
     const values = params ? [...params] : [];
     // mysql2 Pool.query/execute overloads don't resolve with readonly unknown[] params; cast at call site
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [rows] = (await (this.pool as any).query(sql, values)) as [mysql.RowDataPacket[], unknown[]];
+    const [rows] = (await (this.pool as any).query(sql, values)) as [
+      mysql.RowDataPacket[],
+      unknown[],
+    ];
     return rows as T[];
   }
 
   async execute(sql: string, params?: readonly unknown[]): Promise<SqlExecuteResult> {
     const values = params ? [...params] : [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [result] = (await (this.pool as any).execute(sql, values)) as [mysql.ResultSetHeader, unknown[]];
+    const [result] = (await (this.pool as any).execute(sql, values)) as [
+      mysql.ResultSetHeader,
+      unknown[],
+    ];
     return {
       results: [],
       meta: {
@@ -50,7 +56,9 @@ export interface CreateMariaDBSqlDatabaseInput {
 /**
  * Creates a MariaDB/MySQL adapter from individual connection parameters.
  */
-export function createMariaDBSqlDatabase(input: CreateMariaDBSqlDatabaseInput): MariaDBSqlDatabaseAdapter {
+export function createMariaDBSqlDatabase(
+  input: CreateMariaDBSqlDatabaseInput,
+): MariaDBSqlDatabaseAdapter {
   const pool = mysql.createPool({
     host: input.host,
     port: input.port ?? 3306,

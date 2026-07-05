@@ -50,7 +50,9 @@ export function createInfrastructureController(
     ): Promise<void> {
       assertEnabled();
       const q = request.query.q?.trim();
-      const entries = q ? await ports.marketplace.search(q) : (await ports.marketplace.getCatalog()).entries;
+      const entries = q
+        ? await ports.marketplace.search(q)
+        : (await ports.marketplace.getCatalog()).entries;
       reply.send({ entries, count: entries.length });
     },
 

@@ -445,7 +445,9 @@ function createMcpServer(
       transports: z
         .array(z.string())
         .optional()
-        .describe('Transports the client intends to use (rest, mcp, streamable-http, grpc, sse, websocket)'),
+        .describe(
+          'Transports the client intends to use (rest, mcp, streamable-http, grpc, sse, websocket)',
+        ),
       client_name: z.string().optional().describe('Client implementation name'),
       client_version: z.string().optional().describe('Client implementation version'),
     },
@@ -550,11 +552,7 @@ function createMcpServer(
       if (!options.clientSyncEnabled || !syncService) {
         return syncDisabledPayload;
       }
-      const result = await syncService.pull(
-        await mcpScope(),
-        params.platform_id,
-        params.cursor,
-      );
+      const result = await syncService.pull(await mcpScope(), params.platform_id, params.cursor);
       return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
     },
   );
@@ -691,9 +689,7 @@ function createMcpServer(
       source: z.enum(['forge_inspect', 'ci', 'mcp', 'rest']).optional(),
       task_id: z.string().optional(),
       severity: z.enum(['constitutional', 'critical', 'major']).optional(),
-      category: z
-        .enum(['boundary', 'adr', 'testing', 'security', 'phase_gate'])
-        .optional(),
+      category: z.enum(['boundary', 'adr', 'testing', 'security', 'phase_gate']).optional(),
       resolved: z.boolean().optional(),
       diff_scope: z
         .object({
@@ -736,9 +732,7 @@ function createMcpServer(
                     diffScope: {
                       ...(params.diff_scope.paths ? { paths: params.diff_scope.paths } : {}),
                       ...(params.diff_scope.modules ? { modules: params.diff_scope.modules } : {}),
-                      ...(params.diff_scope.adr_ids
-                        ? { adrIds: params.diff_scope.adr_ids }
-                        : {}),
+                      ...(params.diff_scope.adr_ids ? { adrIds: params.diff_scope.adr_ids } : {}),
                     },
                   }
                 : {}),

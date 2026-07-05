@@ -1,4 +1,7 @@
-import type { FederationNodeDescriptor, FederationPeerFilter } from '../types/federation-node.descriptor.js';
+import type {
+  FederationNodeDescriptor,
+  FederationPeerFilter,
+} from '../types/federation-node.descriptor.js';
 
 export interface IFederationRegistry {
   registerLocal(node: FederationNodeDescriptor): Promise<void>;

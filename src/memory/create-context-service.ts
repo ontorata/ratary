@@ -46,9 +46,7 @@ export function createContextService(
     platform?.sql && env.LEARNING_ENGINE_ENABLED
       ? createLearningPorts(platform.sql, env)
       : undefined;
-  const relationRepository = platform?.sql
-    ? new MemoryRelationRepository(platform.sql)
-    : undefined;
+  const relationRepository = platform?.sql ? new MemoryRelationRepository(platform.sql) : undefined;
 
   return new ContextService(repository, candidateSource, platform?.memoryAccessAuditor, {
     retrievalPolicy: progressive.policy,

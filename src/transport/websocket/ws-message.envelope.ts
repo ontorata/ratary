@@ -1,10 +1,6 @@
 /** WebSocket JSON envelope — wire only, no business logic (ADR-028 Phase 13). */
 export type WsOperation =
-  | 'memory.create'
-  | 'memory.search'
-  | 'context.build'
-  | 'context.stream'
-  | 'subscribe.events';
+  'memory.create' | 'memory.search' | 'context.build' | 'context.stream' | 'subscribe.events';
 
 export interface WsRequestEnvelope {
   readonly id: string;

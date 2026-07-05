@@ -26,17 +26,11 @@ export async function expandWithRelationNeighbors(
   const seeds = ranked.slice(0, Math.min(seedCount, ranked.length));
 
   for (const seed of seeds) {
-    const relations = await relationRepository.findByMemoryId(
-      seed.id,
-      scope.ownerId,
-      workspaceId,
-    );
+    const relations = await relationRepository.findByMemoryId(seed.id, scope.ownerId, workspaceId);
 
     for (const relation of relations) {
       const neighborId =
-        relation.sourceMemoryId === seed.id
-          ? relation.targetMemoryId
-          : relation.sourceMemoryId;
+        relation.sourceMemoryId === seed.id ? relation.targetMemoryId : relation.sourceMemoryId;
 
       if (seen.has(neighborId)) {
         continue;

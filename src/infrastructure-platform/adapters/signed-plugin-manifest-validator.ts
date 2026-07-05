@@ -33,8 +33,7 @@ export class SignedPluginManifestValidator implements IPluginManifestValidator {
     }
 
     const trustedKeys = this.options.trustedPublicKeys ?? [];
-    const shouldVerifyCrypto =
-      Boolean(this.options.requireSignature) || trustedKeys.length > 0;
+    const shouldVerifyCrypto = Boolean(this.options.requireSignature) || trustedKeys.length > 0;
 
     if (!shouldVerifyCrypto) {
       return schemaResult;

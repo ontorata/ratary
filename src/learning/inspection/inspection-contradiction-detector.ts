@@ -1,4 +1,7 @@
-import type { InspectionPattern, InspectionPatternContradiction } from './inspection-pattern.types.js';
+import type {
+  InspectionPattern,
+  InspectionPatternContradiction,
+} from './inspection-pattern.types.js';
 
 function pathsOverlap(a: InspectionPattern, b: InspectionPattern): boolean {
   const pathsA = a.trigger.paths ?? [];

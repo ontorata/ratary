@@ -27,10 +27,14 @@ export function createEvolutionController(
       const scope = await resolveMemoryScopeFromRequest(request, scopeResolver);
       const fromVersion = Number.parseInt(request.params.version, 10);
       const againstRaw = request.query.against ?? 'current';
-      const against =
-        againstRaw === 'current' ? 'current' : Number.parseInt(againstRaw, 10);
+      const against = againstRaw === 'current' ? 'current' : Number.parseInt(againstRaw, 10);
 
-      const diff = await evolutionService.diffVersions(scope, request.params.id, fromVersion, against);
+      const diff = await evolutionService.diffVersions(
+        scope,
+        request.params.id,
+        fromVersion,
+        against,
+      );
       reply.send(diff);
     },
 

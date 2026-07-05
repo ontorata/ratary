@@ -5,10 +5,7 @@ export interface CapSearchQueriesResult {
 }
 
 /** Trim, drop empties, and cap multi-query fan-out (R66-5). */
-export function capSearchQueries(
-  raw: string[],
-  maxQueries: number,
-): CapSearchQueriesResult {
+export function capSearchQueries(raw: string[], maxQueries: number): CapSearchQueriesResult {
   const filtered = raw.filter((query) => query.trim().length > 0);
   const originalCount = filtered.length;
 

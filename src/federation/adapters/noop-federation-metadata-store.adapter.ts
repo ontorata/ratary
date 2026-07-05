@@ -20,7 +20,11 @@ export class NoOpFederationMetadataStore implements IFederationMetadataStore {
     return null;
   }
 
-  async upsertPeerTrust(_peerId: string, _trusted: boolean, _organizationId?: string): Promise<void> {
+  async upsertPeerTrust(
+    _peerId: string,
+    _trusted: boolean,
+    _organizationId?: string,
+  ): Promise<void> {
     // no-op
   }
 

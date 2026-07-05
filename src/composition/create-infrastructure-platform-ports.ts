@@ -5,16 +5,17 @@ import {
   LocalProviderMarketplace,
   NoOpProviderMarketplace,
 } from '../infrastructure-platform/adapters/local-provider-marketplace.js';
-import {
-  NoOpPluginManifestValidator,
-} from '../infrastructure-platform/adapters/schema-plugin-manifest-validator.js';
+import { NoOpPluginManifestValidator } from '../infrastructure-platform/adapters/schema-plugin-manifest-validator.js';
 import { SignedPluginManifestValidator } from '../infrastructure-platform/adapters/signed-plugin-manifest-validator.js';
 import { parseTrustedPublicKeys } from '../infrastructure-platform/adapters/plugin-manifest-signing.js';
 import { NoOpPluginAllowList } from '../infrastructure-platform/adapters/noop-plugin-allow-list.js';
 import { SqlPluginRegistry } from '../infrastructure/infrastructure-platform/sql-plugin-registry.js';
 import { SqlPluginAllowList } from '../infrastructure/infrastructure-platform/sql-plugin-allow-list.js';
 import type { PluginType } from '../infrastructure-platform/types/plugin.types.js';
-import type { IPluginRegistry, RegisterPluginInput } from '../infrastructure-platform/ports/iplugin-registry.port.js';
+import type {
+  IPluginRegistry,
+  RegisterPluginInput,
+} from '../infrastructure-platform/ports/iplugin-registry.port.js';
 import type { RegisteredPlugin } from '../infrastructure-platform/types/plugin.types.js';
 import type { IProviderMarketplace } from '../infrastructure-platform/ports/iprovider-marketplace.port.js';
 import type { IPluginManifestValidator } from '../infrastructure-platform/ports/iplugin-manifest-validator.port.js';
@@ -76,7 +77,11 @@ export async function createInfrastructurePlatformPorts(
     marketplace: new NoOpProviderMarketplace(),
     manifestValidator: new NoOpPluginManifestValidator(),
     allowList: new NoOpPluginAllowList(),
-    manifestBuilder: new InfrastructureManifestBuilder(env, new NoOpPluginRegistry(), new NoOpProviderMarketplace()),
+    manifestBuilder: new InfrastructureManifestBuilder(
+      env,
+      new NoOpPluginRegistry(),
+      new NoOpProviderMarketplace(),
+    ),
     recordPluginLifecycle: () => undefined,
   };
 

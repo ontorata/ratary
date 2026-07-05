@@ -1,5 +1,8 @@
 import type { IFederationRegistry } from '../ports/ifederation-registry.port.js';
-import type { FederationNodeDescriptor, FederationPeerFilter } from '../types/federation-node.descriptor.js';
+import type {
+  FederationNodeDescriptor,
+  FederationPeerFilter,
+} from '../types/federation-node.descriptor.js';
 
 /** In-memory peer registry from configured node list (ADR-029 Phase 14). */
 export class StaticFederationRegistry implements IFederationRegistry {

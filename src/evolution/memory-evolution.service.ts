@@ -50,7 +50,10 @@ export class MemoryEvolutionService {
     private readonly coordinator: IMemoryEvolutionCoordinator,
   ) {}
 
-  async listVersions(scope: EvolutionScope, memoryId: string): Promise<{
+  async listVersions(
+    scope: EvolutionScope,
+    memoryId: string,
+  ): Promise<{
     head: MemoryHeadRecord | null;
     versions: MemoryVersionRecord[];
   }> {
@@ -83,7 +86,13 @@ export class MemoryEvolutionService {
       throw new NotFoundError('MemoryVersion', String(against));
     }
 
-    const diff = this.diffEngine.diff(memoryId, fromVersion, against, fromRecord.snapshot, toSnapshot);
+    const diff = this.diffEngine.diff(
+      memoryId,
+      fromVersion,
+      against,
+      fromRecord.snapshot,
+      toSnapshot,
+    );
     return { ...diff, confidence: this.confidenceScorer.score(diff) };
   }
 

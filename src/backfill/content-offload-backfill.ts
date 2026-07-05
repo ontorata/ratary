@@ -81,11 +81,10 @@ export async function backfillContentOffload(
         try {
           const objectKey = buildObjectKey(row);
           const key = { segments: objectKey.split('/') };
-          await options.objectStorage.put(
-            key,
-            row.content,
-            { contentType: 'text/markdown; charset=utf-8', contentLength: byteLength },
-          );
+          await options.objectStorage.put(key, row.content, {
+            contentType: 'text/markdown; charset=utf-8',
+            contentLength: byteLength,
+          });
 
           const stored = await options.objectStorage.get(key);
           if (!stored || stored.body.length === 0) {
