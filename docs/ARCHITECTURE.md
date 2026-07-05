@@ -30,6 +30,8 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 
 **Phase 10 (Enterprise):** storage-agnostic infrastructure adapters (Postgres, R2/S3, pgvector, Redis, Meilisearch, Neo4j, DuckDB, Redis Streams, OpenTelemetry) wired at the composition root with opt-in env flags. Default deployment remains D1-centric. See [ADR-008–016](adr/README.md) and [.ai/phases/10-enterprise/](../.ai/phases/10-enterprise/README.md).
 
+**Phase 19 (Observability):** Prometheus scrape, Grafana dashboard packs, SLO templates, and optional FinOps cost gauges bridged from Phase 18 usage metering (`OBS_COST_METRICS_ENABLED`). Default OFF — see [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md).
+
 ---
 
 ## Layer model (summary)

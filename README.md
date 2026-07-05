@@ -124,7 +124,7 @@ API keys, RBAC workspaces, audit trails, rate limits, and enterprise SSO/OPA (op
 Self-host locally, deploy to Vercel, or run a control plane with metering and federation (opt-in). No vendor lock-in on the memory layer.
 
 ### Observability
-OpenTelemetry, Prometheus metrics, SLO dashboards, and usage analytics — know what your brain is doing in production.
+OpenTelemetry, Prometheus metrics, SLO dashboards, and FinOps cost gauges (Phase 18 usage meter bridge) — know what your brain is doing in production.
 
 ### Developer experience
 OpenAPI, TypeScript SDK (`@ratary/sdk`), CLI (`@ratary/cli`), standalone MCP package (`@ratary/mcp-server`), and one-command IDE setup (`npm run setup`).

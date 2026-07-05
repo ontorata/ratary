@@ -10,6 +10,11 @@ export const AUTH_RATE_LIMITS = {
 } as const;
 
 export async function registerAuthRateLimit(fastify: FastifyInstance): Promise<void> {
+  await registerPerIpRateLimit(fastify);
+}
+
+/** Per-IP rate limit plugin for route-scoped configs (auth, SSE stream). */
+export async function registerPerIpRateLimit(fastify: FastifyInstance): Promise<void> {
   const redis = getRateLimitRedisClient();
 
   await fastify.register(rateLimit, {

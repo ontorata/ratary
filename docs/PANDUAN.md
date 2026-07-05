@@ -322,6 +322,22 @@ Saat graph banyak relasi (mis. `RELATION_INFERENCE_ENABLED=true`) dan context te
 
 Validasi praktis: bandingkan output `get_context` sebelum/sesudah ubah cap; jalankan `npm run benchmark:context-tokens` jika perlu bukti token.
 
+### Protocol streaming (Phase 13)
+
+SSE context stream opt-in — host long-running (bukan Vercel serverless):
+
+```env
+SSE_ENABLED=true
+# Ops: batasi koneksi concurrent per IP
+SSE_MAX_CONCURRENT_PER_IP=10
+SSE_STREAM_RATE_LIMIT_MAX=30
+SSE_STREAM_RATE_LIMIT_WINDOW=1 minute
+```
+
+Endpoint: `GET /api/v1/context/stream?query=...` (auth Bearer). HTTP **429** jika concurrent cap terlampaui. Multi-instance: set `RATE_LIMIT_REDIS_URL`.
+
+Detail ops: [.ai/phases/13-protocol-layer/IMPLEMENTATION.md](../.ai/phases/13-protocol-layer/IMPLEMENTATION.md).
+
 ---
 
 ## 8. Infrastruktur platform (Fase 10 + 11)
@@ -414,16 +430,30 @@ Opsi CLI: `--owner=<uuid>`, `--batch-size=100`, `--execute`.
 Enable structured telemetry without changing default deploy:
 
 ```env
-OBSERVABILITY_ENABLED=true
+OBSERVABILITY_PLATFORM=true
 OTEL_ENABLED=true
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318/v1/traces
 ```
 
-- Metrics: `GET /metrics` (Prometheus format when enabled)
-- Dashboards: import JSON from `observability/dashboards/`
+- Metrics: `GET /metrics` (Prometheus; path via `OBS_METRICS_PATH`, default `/metrics`)
+- Dashboards: import JSON from `observability/dashboards/` (6 packs including `cost.json`)
+- SLO / alerts: `observability/slo/`
 - Full stack wiring: [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md)
 
-Smoke: `npm test -- tests/observability`
+**Cost gauges (D19-01):** bridge Phase 18 usage meter → Prometheus on each scrape:
+
+```env
+CONTROL_PLANE_ENABLED=true
+USAGE_METER_ENABLED=true
+OBS_COST_METRICS_ENABLED=true
+# Optional FinOps tuning:
+# COST_EMBEDDING_USD_PER_REQUEST=0.00002
+# COST_ESTIMATED_BYTES_PER_MEMORY=4096
+```
+
+Gauges: `ratary_cost_embedding_estimate_usd`, `ratary_cost_storage_bytes`. Import `observability/dashboards/cost.json` after scrape shows values.
+
+Smoke: `npm test -- tests/observability tests/cloud/usage-meter-embedding-provider.test.ts`
 
 ---
 

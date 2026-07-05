@@ -1,57 +1,124 @@
-# External Observability Stack (Phase 19)
+# External Observability Stack
 
-Runbook for wiring Ratary metrics/traces/logs to a Prometheus/Grafana/Tempo/Loki stack.
+Ratary ships **dashboard packs**, **SLO templates**, and **Prometheus exposition** — not a bundled Prometheus/Grafana/Loki stack. Operators bring their own observability backend.
 
-## Prerequisites
+---
 
-- Ratary deployed with `OBSERVABILITY_ENABLED=true`
-- Optional: `OTEL_EXPORTER_OTLP_ENDPOINT` for trace export
+## Quick start
 
-## Prometheus
-
-Scrape the metrics endpoint (default REST):
+1. Enable the platform layer in Ratary:
 
 ```bash
-curl -s http://localhost:3000/metrics | head
+OBSERVABILITY_PLATFORM=true
 ```
 
-Add job to `prometheus.yml`:
+2. Scrape metrics from Ratary (default path `/metrics`):
+
+```bash
+curl -s http://localhost:3000/metrics
+```
+
+3. Import Grafana dashboards from `observability/dashboards/`:
+
+| Pack ID | File | Focus |
+|---------|------|-------|
+| `overview` | `overview.json` | Request rate, latency, errors |
+| `memory` | `memory.json` | Memory CRUD, search |
+| `embedding` | `embedding.json` | Embedding provider latency |
+| `graph` | `graph.json` | Knowledge graph ops |
+| `federation` | `federation.json` | Federation sync |
+| `cost` | `cost.json` | FinOps gauges (requires cost bridge — see below) |
+
+4. Apply SLO templates from `observability/slo/slo-definitions.json` and Alertmanager rules from `observability/slo/alertmanager-rules.yaml`.
+
+---
+
+## Environment flags
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `OBSERVABILITY_PLATFORM` | `false` | Master gate — metrics, traces, logs, admin API |
+| `OBS_METRICS_PATH` | `/metrics` | Prometheus scrape path |
+| `OBS_LOG_SHIPPER` | `stdout` | `none`, `stdout`, or `loki` |
+| `OBS_LOKI_PUSH_URL` | — | Loki push endpoint when shipper is `loki` |
+| `OTEL_ENABLED` | `false` | OpenTelemetry trace export (works with platform) |
+
+**Cost bridge (D19-01 — Phase 18 integration):**
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `OBS_COST_METRICS_ENABLED` | `false` | On each `/metrics` scrape, sync Phase 18 usage meter → cost gauges |
+| `COST_EMBEDDING_USD_PER_REQUEST` | `0.00002` | FinOps estimate per embedding request |
+| `COST_ESTIMATED_BYTES_PER_MEMORY` | `4096` | Storage gauge estimate per memory write event |
+
+Cost gauges require Phase 18 metering:
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CONTROL_PLANE_ENABLED` | `false` | Control plane (prerequisite for usage meter) |
+| `USAGE_METER_ENABLED` | `false` | Event-driven usage aggregation |
+
+**Staging enable path (cost dashboard populated):**
+
+```bash
+OBSERVABILITY_PLATFORM=true
+CONTROL_PLANE_ENABLED=true
+USAGE_METER_ENABLED=true
+OBS_COST_METRICS_ENABLED=true
+```
+
+---
+
+## Cost metrics (D19-01)
+
+When `OBS_COST_METRICS_ENABLED=true` and the usage meter is active, each Prometheus scrape publishes:
+
+| Gauge | Description |
+|-------|-------------|
+| `ratary_cost_embedding_estimate_usd` | Cumulative embedding cost estimate from meter events |
+| `ratary_cost_storage_bytes` | Estimated storage bytes from memory write events |
+
+Implementation: `src/observability/adapters/usage-cost-metrics-publisher.ts` reads the Phase 18 `IUsageMeter` snapshot and writes gauges before exposition. Embedding calls routed through `UsageMeterEmbeddingProvider` record `embedding.request` events.
+
+Import `observability/dashboards/cost.json` into Grafana after the gauges appear on scrape.
+
+---
+
+## Prometheus scrape config (example)
 
 ```yaml
 scrape_configs:
-  - job_name: ai-brain
+  - job_name: ratary
     static_configs:
-      - targets: ['host.docker.internal:3000']
+      - targets: ['localhost:3000']
+    metrics_path: /metrics
+    scrape_interval: 15s
 ```
 
-## Grafana
+---
 
-Import bundled dashboards from `observability/dashboards/`:
+## Loki log shipping
 
-- `overview.json` — request rate, latency, errors
-- `memory.json` — memory CRUD and retrieval
-- `embedding.json`, `graph.json`, `federation.json`, `cost.json`
+When `OBS_LOG_SHIPPER=loki` and `OBS_LOKI_PUSH_URL` is set, structured request logs ship to Loki. Default `stdout` requires no external stack.
 
-SLO definitions: `observability/slo/slo-definitions.json`  
-Alert rules: `observability/slo/alertmanager-rules.yaml`
+---
 
-## Tempo / OTLP traces
+## Admin API
 
-Set in `.env`:
+When `OBSERVABILITY_PLATFORM=true`:
 
-```env
-OTEL_ENABLED=true
-OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:4318/v1/traces
-```
+| Method | Path | Purpose |
+|--------|------|---------|
+| GET | `/api/v1/observability/status` | Layer status |
+| GET | `/api/v1/observability/dashboards` | List dashboard packs |
+| GET | `/api/v1/observability/dashboards/:packId` | Export Grafana JSON |
+| GET | `/api/v1/observability/slos` | SLO definitions |
+| GET | `/api/v1/observability/alerts` | Alert rule templates |
 
-## Loki
+---
 
-When `LOG_SHIPPER=loki`, configure `LOKI_URL` and verify structured logs include `requestId` and `ownerId` (no PII in message body).
+## Separation from Phase 12
 
-## Local smoke
+Phase 12 **business event bus** (webhooks, analytics consumers) is separate from Phase 19 **operational telemetry**. Observability hooks live at the HTTP middleware boundary — no OTLP handler on memory domain events.
 
-```bash
-npm test -- tests/observability
-```
-
-See [ADR-034](../../.ai/adr/034-observability-platform.md).
+See also: [docs/PANDUAN.md](../docs/PANDUAN.md) §10 · [.ai/phases/19-observability-platform/IMPLEMENTATION.md](../.ai/phases/19-observability-platform/IMPLEMENTATION.md)

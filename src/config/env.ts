@@ -252,6 +252,9 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
     WEBSOCKET_PATH: z.string().min(1).default('/api/v1/ws'),
+    SSE_MAX_CONCURRENT_PER_IP: z.coerce.number().int().min(1).max(1000).default(10),
+    SSE_STREAM_RATE_LIMIT_MAX: z.coerce.number().int().min(1).max(10_000).default(30),
+    SSE_STREAM_RATE_LIMIT_WINDOW: z.string().min(1).default('1 minute'),
 
     // Remote MCP (Phase 13.1) — ADR-048; ChatGPT Server URL, default off
     REMOTE_MCP_ENABLED: z

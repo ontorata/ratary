@@ -84,6 +84,13 @@ export const STANDARD_RATE_LIMITS: RateLimitDescriptor[] = [
     notes: 'Large payloads — respect maxMemoryContentBytes',
   },
   {
+    capabilityGroup: 'SSE context stream',
+    limit: '30 new streams/min; 10 concurrent/IP (defaults)',
+    scope: 'Per client IP',
+    notes:
+      'SSE_MAX_CONCURRENT_PER_IP + SSE_STREAM_RATE_LIMIT_*; Redis when RATE_LIMIT_REDIS_URL set',
+  },
+  {
     capabilityGroup: 'Health / docs / capabilities',
     limit: 'Unlimited',
     scope: 'Public',
