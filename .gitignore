@@ -9,6 +9,7 @@ coverage/
 .backup-sync-state.json
 .DS_Store
 Thumbs.db
+*.tsbuildinfo
 
 # ---------------------------------------------------------------------------
 # Ratary production boundary (github.com/ontorata/ratary — stable release only)

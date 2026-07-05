@@ -8,6 +8,8 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 
 **Ecosystem:** Built by [Ontorata](https://ontorata.com). This doc covers **Ratary Memory MCP** (id **`ratary`**). **[Ontorata MCP](https://github.com/ontorata/ontorata-mcp)** and **[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** are separate repos.
 
+**npm:** Hosted REST proxy — [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) ([`@ratary` org](https://www.npmjs.com/org/ratary)). Full stdio (28 tools) requires cloning this repo.
+
 ---
 
 ## Where is the server code?

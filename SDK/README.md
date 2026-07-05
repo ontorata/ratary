@@ -2,7 +2,15 @@
 
 Headless integration with `@ratary/sdk` — no MCP, no IDE. Your agent loop stays outside Ratary; the platform provides memory and context.
 
-Requires local server (`npm run dev`) and an API key.
+## Install
+
+```bash
+npm install @ratary/sdk
+```
+
+Package docs: [packages/sdk/README.md](../packages/sdk/README.md) · [npm @ratary/sdk](https://www.npmjs.com/package/@ratary/sdk)
+
+For monorepo development, `npm run build:sdk` from the repo root. Examples below assume a running Ratary Server and API key (`aic_...`).
 
 ## Quick start (`index.mjs`)
 

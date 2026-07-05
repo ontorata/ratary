@@ -10,6 +10,8 @@ Use when Ratary Server runs on **Vercel, Railway, VPS, Docker**, or any long-run
 
 Best for IDE harnesses that support stdio MCP but connect to a **remote REST API**.
 
+**npm:** [npmjs.com/package/@ratary/mcp-server](https://www.npmjs.com/package/@ratary/mcp-server) · scope [`@ratary`](https://www.npmjs.com/org/ratary) (Ontorata)
+
 ### 1. Bootstrap API key
 
 ```bash

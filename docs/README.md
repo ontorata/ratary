@@ -10,6 +10,7 @@
 
 | Question | Document |
 |----------|----------|
+| How do I use `@ratary/sdk`, CLI, or npm MCP without cloning the server? | **[packages/README.md](../packages/README.md)** |
 | How do I install Ratary in my IDE / harness? | **[install/README.md](install/README.md)** |
 | How do I run Ratary in Docker? | **[DOCKER.md](DOCKER.md)** |
 | How do I install and use Ratary daily? | **[GUIDE.md](GUIDE.md)** |
@@ -48,7 +49,8 @@
 | [../.env.example](../.env.example) | Env template — copy to `.env` |
 | [examples/](examples/) | MCP and IDE config **templates** |
 | [policies/](policies/) | **Authorization** policy samples (OPA/Rego) — not env |
-| [../SDK/](../SDK/) | Minimal `@ratary/sdk` example |
+| [../packages/README.md](../packages/README.md) | npm `@ratary/*` — install, env, publish |
+| [../SDK/](../SDK/) | Minimal `@ratary/sdk` example scripts |
 | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) | Metrics & dashboards |
 | [../infrastructure/marketplace/catalog.json](../infrastructure/marketplace/catalog.json) | Plugin catalog (when `PLUGIN_MARKETPLACE_ENABLED`) |
 

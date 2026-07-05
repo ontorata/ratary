@@ -1,17 +1,29 @@
 {
   "name": "@ratary/cli",
   "version": "1.0.0",
-  "description": "CLI for Ratary — uses @ratary/sdk only (Phase 16)",
+  "description": "CLI for Ratary — uses @ratary/sdk",
   "type": "module",
   "bin": {
     "ratary": "./dist/main.js"
   },
+  "files": ["dist"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@ratary/sdk": "1.0.0"
+    "@ratary/sdk": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ontorata/ratary.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/ontorata/ratary/tree/main/packages/cli",
+  "bugs": "https://github.com/ontorata/ratary/issues",
+  "publishConfig": {
+    "access": "public"
   },
   "engines": {
     "node": ">=20"

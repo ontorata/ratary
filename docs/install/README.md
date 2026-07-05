@@ -13,6 +13,7 @@ For daily usage after install, see **[GUIDE.md](../GUIDE.md)**. For environment 
 
 | Scenario | Path |
 |----------|------|
+| SDK / CLI only (no server clone) | [packages/README.md](../../packages/README.md) → `npm install @ratary/sdk` |
 | Local brain (clone + your SQL provider) | [GUIDE — Setup](../GUIDE.md#1-setup) → `npm run setup` |
 | Docker Postgres | [DOCKER.md](../DOCKER.md#quick-start-postgres-profile) |
 | Docker enterprise (MariaDB + MinIO) | [DOCKER.md](../DOCKER.md#profiles) |
