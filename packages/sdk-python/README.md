@@ -1,6 +1,6 @@
 # @ratary/sdk-python
 
-Python client. Hand-written thin wrapper; regenerate full client: `npm run generate:sdks`.
+Python client. **OpenAPI SSOT v1.1.0.** Regenerate: `npm run generate:sdks` (Java 11+).
 
 ```python
 from ratary_sdk.client import AiBrainClient

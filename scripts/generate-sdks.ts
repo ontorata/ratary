@@ -30,7 +30,7 @@ function runGenerator(generator: string, outDir: string, extra = ''): void {
     generator,
     '-o',
     absOut,
-    '--additional-properties=packageName=ratary_sdk,packageVersion=1.0.0',
+    '--additional-properties=packageName=ratary_sdk,packageVersion=1.1.0',
     extra,
   ]
     .filter(Boolean)

@@ -710,6 +710,9 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 | `CONNECTOR_SYNC_INTERVAL_MS` | `0` | Background poll interval (`0` = manual/REST only) |
 | `NOTION_API_TOKEN` | — | Notion integration token (`ntn_...`) |
 | `NOTION_API_VERSION` | `2022-06-28` | Notion API version header |
+| `CONFLUENCE_BASE_URL` | — | Confluence Cloud site (`https://your-domain.atlassian.net`) |
+| `CONFLUENCE_EMAIL` | — | Atlassian account email (Basic auth with API token) |
+| `CONFLUENCE_API_TOKEN` | — | Confluence API token |
 | `GITHUB_TOKEN` | — | GitHub connector (catalog / future live) |
 
 **REST (when enabled):**

@@ -485,6 +485,12 @@ curl -s "$RATARY_BASE_URL/health" | jq '.capabilities.supportsKnowledgeFabric'
 
 Create a [Notion integration](https://www.notion.so/my-integrations), copy the token, and **share** the pages/databases the integration should read.
 
+**Confluence Cloud (optional):** set `CONFLUENCE_BASE_URL`, `CONFLUENCE_EMAIL`, and `CONFLUENCE_API_TOKEN` (Atlassian API token with Confluence read scope).
+
+```bash
+ratary connectors sync confluence --mode incremental --dry-run
+```
+
 ### Sync via SDK or CLI
 
 Requires `@ratary/sdk@1.1.0+` and API key (`aic_...`):

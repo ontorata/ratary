@@ -1,6 +1,6 @@
 # @ratary/sdk-go
 
-Go client generated from OpenAPI SSOT. Regenerate: `npm run generate:sdks` from repo root.
+**Aligned with OpenAPI SSOT v1.1.0** (`packages/openapi/ratary-v1.openapi.json`). Regenerate: `npm run generate:sdks` (requires Java 11+).
 
 Hand-written thin wrapper until CI generator runs:
 

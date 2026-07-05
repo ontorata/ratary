@@ -1,6 +1,6 @@
 # @ratary/sdk-php
 
-PHP client. Regenerate: `npm run generate:sdks`. Hand-written wrapper: `src/AiBrainClient.php`.
+PHP client. **OpenAPI SSOT v1.1.0.** Regenerate: `npm run generate:sdks` (Java 11+). Hand-written wrapper: `src/AiBrainClient.php`.
 
 ```php
 $client = new \AiBrain\Sdk\AiBrainClient('http://localhost:3000', 'aic_...');

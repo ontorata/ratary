@@ -8,7 +8,13 @@ Source files for **Claude Code** and other harnesses that support third-party pl
 
 **Manifest:** [ratary-marketplace.json](ratary-marketplace.json)
 
-When publishing a dedicated marketplace repo (`ontorata/ratary-marketplace`), copy this directory or tag a release. Users then run:
+When publishing a dedicated marketplace repo (`ontorata/ratary-marketplace`), run from Ratary repo root:
+
+```powershell
+.\scripts\publish-marketplace.ps1
+```
+
+Or copy this directory manually. Users then run:
 
 ```text
 /plugin marketplace add ontorata/ratary-marketplace
