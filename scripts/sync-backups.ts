@@ -2,11 +2,12 @@ import 'dotenv/config';
 import { watch } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
+import { getEnv } from '../src/config/index.js';
+import { createSqlDatabase } from '../src/infrastructure/composition/create-sql-database.js';
 import { createMemoryService } from '../src/services/create-memory-service.js';
 import type { MemoryService } from '../src/services/memory.service.js';
 import { getMcpMemoryScope } from '../src/types/memory-scope.js';
 import { getD1Client } from '../src/db/index.js';
-import { D1SqlDatabaseAdapter } from '../src/infrastructure/sql/d1-sql-database.adapter.js';
 import {
   collectSyncCandidates,
   ensureBackupRoot,
@@ -53,6 +54,13 @@ function log(message: string): void {
 }
 
 const MEMORY_SCOPE = getMcpMemoryScope();
+
+function createSyncMemoryService(): MemoryService {
+  const env = getEnv();
+  const d1 = env.SQL_PROVIDER === 'd1' ? getD1Client() : null;
+  const sql = createSqlDatabase(d1, env);
+  return createMemoryService(sql);
+}
 
 async function findExistingMemoryIds(service: MemoryService, relPath: string): Promise<string[]> {
   const { memories } = await service.listMemories(MEMORY_SCOPE, { limit: 100, offset: 0 });
@@ -110,7 +118,7 @@ async function syncOneFile(
         syncedAt: new Date().toISOString(),
         title: relPath.split('/').pop() ?? relPath,
       });
-      log(`↻ ${relPath} sudah ada di D1 (${existingIds.length} memory), state di-bootstrap`);
+      log(`↻ ${relPath} sudah ada di DB (${existingIds.length} memory), state di-bootstrap`);
       return 'unchanged';
     }
   }
@@ -160,7 +168,7 @@ async function runSync(files?: string[]): Promise<void> {
     const state = await loadSyncState();
     state.backupRoot = BACKUP_ROOT;
 
-    const service = DRY_RUN ? null : createMemoryService(new D1SqlDatabaseAdapter(getD1Client()));
+    const service = DRY_RUN ? null : createSyncMemoryService();
     let synced = 0;
     let skipped = 0;
     let unchanged = 0;
