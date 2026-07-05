@@ -67,8 +67,9 @@ Save the returned `apiKey` (`aic_...`). Bootstrap works once when no identities 
 Use these when you **do not** need to clone Ratary Server — e.g. custom agents, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), or hosted MCP.
 
 ```bash
-npm install @ratary/sdk
-npx @ratary/mcp-server    # IDE → remote REST (see install/remote.md)
+npm install @ratary/sdk@1.1.0
+npx @ratary/mcp-server@1.1.0    # IDE → remote REST (see install/remote.md)
+npm install -g @ratary/cli@1.1.0
 ```
 
 | Variable | Purpose |
@@ -77,7 +78,7 @@ npx @ratary/mcp-server    # IDE → remote REST (see install/remote.md)
 | `RATARY_API_KEY` | `aic_...` from bootstrap or `npm run key:create` |
 | `RATARY_WORKSPACE_ID` | Optional workspace scope |
 
-Packages live on npm under scope **`@ratary`** ([npm org](https://www.npmjs.com/org/ratary)), maintained by Ontorata. Full reference: [packages/README.md](../packages/README.md).
+Packages live on npm under scope **`@ratary`** ([npm org](https://www.npmjs.com/org/ratary)), maintained by Ontorata. **Current:** `@ratary/sdk`, `@ratary/cli`, `@ratary/mcp-server` **v1.1.0**. Full reference: [packages/README.md](../packages/README.md).
 
 ### Ontorata Studio (web console)
 
@@ -458,7 +459,85 @@ OBS_COST_METRICS_ENABLED=true
 
 ---
 
-## 11. Agent ecosystem
+## 11. Knowledge fabric (live connectors)
+
+**Opt-in.** Ingest pages and records from external systems into Ratary memory with provenance. Phase 29 ships **Notion live sync**; other connectors remain catalog/MVP until flagged on.
+
+### Enable on the server
+
+Add to `.env` (see [CONFIGURATION — Knowledge fabric](CONFIGURATION.md#knowledge-fabric-connectors)):
+
+```env
+KNOWLEDGE_FABRIC_ENABLED=true
+CONNECTOR_SYNC_ENABLED=true
+NOTION_API_TOKEN=ntn_...          # Notion integration — keep secret
+NOTION_API_VERSION=2022-06-28
+# CONNECTOR_WEBHOOK_SECRET=...    # optional — for inbound webhooks
+# CONNECTOR_SYNC_INTERVAL_MS=0    # 0 = REST/CLI only
+```
+
+Restart Ratary (`npm run dev` from repo root). Verify capabilities:
+
+```bash
+curl -s "$RATARY_BASE_URL/health" | jq '.capabilities.supportsKnowledgeFabric'
+# true when fabric flags are on
+```
+
+Create a [Notion integration](https://www.notion.so/my-integrations), copy the token, and **share** the pages/databases the integration should read.
+
+### Sync via SDK or CLI
+
+Requires `@ratary/sdk@1.1.0+` and API key (`aic_...`):
+
+```typescript
+import { RataryClient } from '@ratary/sdk';
+
+const client = new RataryClient({
+  baseUrl: process.env.RATARY_BASE_URL!,
+  apiKey: process.env.RATARY_API_KEY!,
+});
+
+const status = await client.admin.knowledgeFabric.getStatus();
+const { connectors } = await client.admin.knowledgeFabric.listConnectors();
+
+await client.admin.knowledgeFabric.ingest('notion', {
+  mode: 'incremental',
+  dryRun: true,   // preview without writes
+  limit: 10,
+});
+```
+
+CLI (same env vars):
+
+```bash
+ratary admin knowledge-fabric status
+ratary connectors sync notion --mode incremental --dry-run
+ratary connectors sync notion --mode incremental
+```
+
+### Smoke test (monorepo)
+
+From repository root with `.env` configured:
+
+```bash
+npx tsx scripts/test-notion-sync.ts --url http://localhost:9876 --dry-run
+npx tsx scripts/test-notion-sync.ts --url http://localhost:9876 --live
+```
+
+Memories appear under project `knowledge-fabric` with tags like `fabric:notion`. Search via MCP or `client.memory.search({ query: '...' })`.
+
+### Production checklist
+
+1. Merge latest server to your production branch and redeploy.
+2. Set the same fabric env vars on the host (e.g. Vercel Production).
+3. Confirm `/health` reports `supportsKnowledgeFabric: true`.
+4. Run sync with `--dry-run` first, then live ingest.
+
+Hosted Ratary (`https://ratary.ontorata.com`) enables fabric only after deploy + env — not on legacy `main` until promoted from `staging`.
+
+---
+
+## 12. Agent ecosystem
 
 See [CONFIGURATION → Federation](CONFIGURATION.md#federation) and workspace vars in [Tier 0 → MCP memory scope](CONFIGURATION.md#mcp-memory-scope).
 
