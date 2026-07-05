@@ -22,7 +22,10 @@ import {
 } from '../intelligence/index.js';
 import type { ITelemetryRecorder } from '../intelligence/telemetry/ports/itelemetry.port.js';
 import type { IUsageAnalyticsService } from '../intelligence/analytics/ports/iusage-analytics.port.js';
-import type { IGlobalSyncOrchestrator, IOfflineJournal } from '../intelligence/sync/ports/iglobal-sync.port.js';
+import type {
+  IGlobalSyncOrchestrator,
+  IOfflineJournal,
+} from '../intelligence/sync/ports/iglobal-sync.port.js';
 import {
   NoOpIntelligenceStore,
   SqlIntelligenceStore,

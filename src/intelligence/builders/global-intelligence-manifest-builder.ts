@@ -22,9 +22,7 @@ export class GlobalIntelligenceManifestBuilder {
 
   async build(_scope?: MemoryScope): Promise<GlobalIntelligencePlatformManifest> {
     const telemetryEventCount =
-      typeof this.store.countAllTelemetry === 'function'
-        ? await this.store.countAllTelemetry()
-        : 0;
+      typeof this.store.countAllTelemetry === 'function' ? await this.store.countAllTelemetry() : 0;
 
     return {
       platform: 'global-ai-intelligence',

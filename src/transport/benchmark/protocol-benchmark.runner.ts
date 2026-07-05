@@ -52,12 +52,15 @@ export async function runProtocolBenchmark(
     });
 
     const grpcStart = performance.now();
-    await deps.handlers.memory.search.handle({ ...deps.ctx, source: 'grpc' }, {
-      q: 'handoff',
-      limit: 10,
-      offset: 0,
-      archived: false,
-    });
+    await deps.handlers.memory.search.handle(
+      { ...deps.ctx, source: 'grpc' },
+      {
+        q: 'handoff',
+        limit: 10,
+        offset: 0,
+        archived: false,
+      },
+    );
     samples.push({
       protocol: 'grpc',
       mode: 'unary',
@@ -78,11 +81,14 @@ export async function runProtocolBenchmark(
     });
 
     const wsStart = performance.now();
-    await deps.handlers.context.streamContext.handle({ ...deps.ctx, source: 'websocket' }, {
-      query: 'handoff',
-      limit: 5,
-      publisher: new CollectingPublisher(),
-    });
+    await deps.handlers.context.streamContext.handle(
+      { ...deps.ctx, source: 'websocket' },
+      {
+        query: 'handoff',
+        limit: 5,
+        publisher: new CollectingPublisher(),
+      },
+    );
     samples.push({
       protocol: 'websocket',
       mode: 'stream',

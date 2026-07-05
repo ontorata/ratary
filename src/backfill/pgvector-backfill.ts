@@ -43,7 +43,9 @@ export async function ensurePgvectorSchema(target: ISqlDatabase): Promise<void> 
   }
 }
 
-export async function backfillPgvector(options: PgvectorBackfillOptions): Promise<PgvectorBackfillResult> {
+export async function backfillPgvector(
+  options: PgvectorBackfillOptions,
+): Promise<PgvectorBackfillResult> {
   const result: PgvectorBackfillResult = {
     scanned: 0,
     upserted: 0,

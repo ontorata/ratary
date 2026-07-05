@@ -3,7 +3,9 @@ import type { InspectionDiffScope } from '../../ingest/memory-quality-signal.typ
 import type { InspectionOutcomeCategory } from '../../ingest/memory-quality-signal.types.js';
 import type { InspectionPatternTrigger } from './inspection-pattern.types.js';
 
-function normalizeTrigger(scope?: InspectionDiffScope | InspectionPatternTrigger): InspectionPatternTrigger {
+function normalizeTrigger(
+  scope?: InspectionDiffScope | InspectionPatternTrigger,
+): InspectionPatternTrigger {
   if (!scope) {
     return {};
   }

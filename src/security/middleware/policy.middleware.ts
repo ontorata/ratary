@@ -28,7 +28,10 @@ export interface PolicyMiddlewareDeps {
 }
 
 export function createPolicyMiddleware(deps: PolicyMiddlewareDeps) {
-  return async function enforcePolicy(request: FastifyRequest, _reply: FastifyReply): Promise<void> {
+  return async function enforcePolicy(
+    request: FastifyRequest,
+    _reply: FastifyReply,
+  ): Promise<void> {
     if (isPublicPath(request.url)) return;
     if (!request.user) return;
 

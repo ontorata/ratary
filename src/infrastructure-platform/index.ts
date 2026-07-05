@@ -10,9 +10,16 @@ export type {
 } from './types/index.js';
 export type { IPluginRegistry, RegisterPluginInput } from './ports/iplugin-registry.port.js';
 export type { IProviderMarketplace } from './ports/iprovider-marketplace.port.js';
-export type { IPluginManifestValidator, ManifestValidationResult } from './ports/iplugin-manifest-validator.port.js';
+export type {
+  IPluginManifestValidator,
+  ManifestValidationResult,
+} from './ports/iplugin-manifest-validator.port.js';
 export type { IPluginAllowList } from './ports/iplugin-allow-list.port.js';
-export { PROVIDER_PLUGIN_CATALOG, PLUGIN_TYPES, findCatalogPlugin } from './catalog/provider-plugin-catalog.js';
+export {
+  PROVIDER_PLUGIN_CATALOG,
+  PLUGIN_TYPES,
+  findCatalogPlugin,
+} from './catalog/provider-plugin-catalog.js';
 export { InfrastructureManifestBuilder } from './builders/infrastructure-manifest-builder.js';
 export {
   SchemaPluginManifestValidator,
@@ -25,5 +32,8 @@ export {
   verifyPluginManifestSignature,
   exportRawPublicKeyBase64,
 } from './adapters/plugin-manifest-signing.js';
-export { LocalProviderMarketplace, NoOpProviderMarketplace } from './adapters/local-provider-marketplace.js';
+export {
+  LocalProviderMarketplace,
+  NoOpProviderMarketplace,
+} from './adapters/local-provider-marketplace.js';
 export { NoOpPluginAllowList } from './adapters/noop-plugin-allow-list.js';

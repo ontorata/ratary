@@ -61,9 +61,10 @@ export class DefaultRecommendationEngine implements IRecommendationEngine {
 
 /** L23 — mines recurring event-type patterns in the batch. */
 export class DefaultPatternMiner implements IPatternMiner {
-  async mine(_scope: LearningScope, events: readonly LearningEvent[]): Promise<
-    { patternId: string; description: string; count: number }[]
-  > {
+  async mine(
+    _scope: LearningScope,
+    events: readonly LearningEvent[],
+  ): Promise<{ patternId: string; description: string; count: number }[]> {
     const byType = new Map<string, number>();
     for (const event of events) {
       byType.set(event.eventType, (byType.get(event.eventType) ?? 0) + 1);
@@ -81,9 +82,10 @@ export class DefaultPatternMiner implements IPatternMiner {
 
 /** L25 — groups memory ids by project tag from event payloads. */
 export class DefaultKnowledgeDiscoveryEngine implements IKnowledgeDiscoveryEngine {
-  async discover(_scope: LearningScope, events: readonly LearningEvent[]): Promise<
-    { topic: string; memoryIds: string[] }[]
-  > {
+  async discover(
+    _scope: LearningScope,
+    events: readonly LearningEvent[],
+  ): Promise<{ topic: string; memoryIds: string[] }[]> {
     const byProject = new Map<string, Set<string>>();
 
     for (const event of events) {
@@ -106,7 +108,11 @@ export class DefaultKnowledgeDiscoveryEngine implements IKnowledgeDiscoveryEngin
 
 /** L27 — adapts when enough helpful feedback exists in batch. */
 export class DefaultFeedbackLearningEngine implements IFeedbackLearningEngine {
-  async adapt(_scope: LearningScope, events: readonly LearningEvent[], analytics: BehaviorAnalyticsSummary) {
+  async adapt(
+    _scope: LearningScope,
+    events: readonly LearningEvent[],
+    analytics: BehaviorAnalyticsSummary,
+  ) {
     const adjusted =
       analytics.helpfulFeedbackCount >= LEARNING_MIN_FEEDBACK_EVENTS &&
       analytics.helpfulFeedbackCount > analytics.notHelpfulFeedbackCount;
@@ -145,7 +151,11 @@ export class DefaultLearningDatasetExporter implements ILearningDatasetExporter 
 
 /** L30 — evaluates batch quality from analytics summary. */
 export class DefaultLearningEvaluationEngine implements ILearningEvaluationEngine {
-  async evaluate(_scope: LearningScope, events: readonly LearningEvent[], analytics: BehaviorAnalyticsSummary) {
+  async evaluate(
+    _scope: LearningScope,
+    events: readonly LearningEvent[],
+    analytics: BehaviorAnalyticsSummary,
+  ) {
     const totalFeedback = analytics.helpfulFeedbackCount + analytics.notHelpfulFeedbackCount;
     const helpfulRatio = totalFeedback > 0 ? analytics.helpfulFeedbackCount / totalFeedback : 0;
     return {

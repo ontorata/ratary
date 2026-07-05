@@ -22,7 +22,10 @@ export type {
 export type { IKnowledgeConnector } from './ports/iknowledge-connector.port.js';
 export type { IFabricNormalizer } from './ports/ifabric-normalizer.port.js';
 export type { IFabricPolicy } from './ports/ifabric-policy.port.js';
-export type { IFabricExternalRefStore, FabricExternalRef } from './ports/ifabric-external-ref-store.port.js';
+export type {
+  IFabricExternalRefStore,
+  FabricExternalRef,
+} from './ports/ifabric-external-ref-store.port.js';
 export type { IKnowledgeFabricIngestStore } from './ports/iknowledge-fabric-ingest-store.port.js';
 export type { IKnowledgeFabricOrchestrator } from './ports/iknowledge-fabric-orchestrator.port.js';
 
@@ -32,10 +35,7 @@ export {
   NoOpKnowledgeConnector,
 } from './adapters/knowledge-connector-registry.js';
 export { DefaultFabricNormalizer } from './adapters/default-fabric-normalizer.js';
-export {
-  RuleBasedFabricPolicy,
-  DenyAllFabricPolicy,
-} from './adapters/rule-based-fabric-policy.js';
+export { RuleBasedFabricPolicy, DenyAllFabricPolicy } from './adapters/rule-based-fabric-policy.js';
 export {
   KnowledgeFabricOrchestrator,
   NoOpKnowledgeFabricOrchestrator,

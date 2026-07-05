@@ -5,7 +5,9 @@ import type {
 } from '../types/tenant.types.js';
 
 export interface ITenantMetadataStore {
-  upsert(input: ProvisionWorkspaceInput & { primaryRegionId: string }): Promise<TenantMetadataRecord>;
+  upsert(
+    input: ProvisionWorkspaceInput & { primaryRegionId: string },
+  ): Promise<TenantMetadataRecord>;
   findByWorkspace(
     organizationId: string,
     workspaceId: string,

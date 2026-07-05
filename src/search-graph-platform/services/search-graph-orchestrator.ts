@@ -44,7 +44,13 @@ export class SearchGraphOrchestrator {
 
     const runId = newSyncRunId();
     const startedAt = nowISO();
-    const emptyStats = { scanned: 0, applied: 0, skipped: 0, failed: 0, dryRun: input.dryRun ?? false };
+    const emptyStats = {
+      scanned: 0,
+      applied: 0,
+      skipped: 0,
+      failed: 0,
+      dryRun: input.dryRun ?? false,
+    };
 
     await this.store.startRun({
       id: runId,

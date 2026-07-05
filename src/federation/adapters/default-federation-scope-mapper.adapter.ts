@@ -8,7 +8,10 @@ import type { FederationTrustContext } from '../types/federation-exchange.types.
 export class DefaultFederationScopeMapper implements IFederationScopeMapper {
   constructor(private readonly localNodeId: string) {}
 
-  async toLocalScope(source: FederationScopeRef, _trust: FederationTrustContext): Promise<MemoryScope> {
+  async toLocalScope(
+    source: FederationScopeRef,
+    _trust: FederationTrustContext,
+  ): Promise<MemoryScope> {
     if (source.nodeId !== this.localNodeId) {
       // Remote source mapped to local owner/workspace on import target
       return {

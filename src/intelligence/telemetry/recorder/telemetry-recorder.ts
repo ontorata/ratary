@@ -1,5 +1,9 @@
 import { randomUUID } from 'node:crypto';
-import type { ITelemetryRecorder, ITelemetryRedactor, ITelemetrySink } from '../ports/itelemetry.port.js';
+import type {
+  ITelemetryRecorder,
+  ITelemetryRedactor,
+  ITelemetrySink,
+} from '../ports/itelemetry.port.js';
 import type {
   TelemetryEnvelope,
   TelemetryEvent,

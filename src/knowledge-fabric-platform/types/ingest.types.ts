@@ -53,10 +53,7 @@ export interface KnowledgeFabricPlatformManifest {
   connectors: Array<{ id: ConnectorId; configured: boolean }>;
   supportsIncrementalIngest: boolean;
   lastRuns: Partial<
-    Record<
-      ConnectorId,
-      Pick<FabricIngestRun, 'id' | 'status' | 'finishedAt' | 'connectorId'>
-    >
+    Record<ConnectorId, Pick<FabricIngestRun, 'id' | 'status' | 'finishedAt' | 'connectorId'>>
   >;
 }
 

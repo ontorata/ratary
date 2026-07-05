@@ -33,8 +33,7 @@ export interface ContextHandlers {
 
 export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers {
   const scope = (ctx: TransportContext) => resolveHandlerScope(ctx, deps.scopeResolver);
-  const streamSource =
-    deps.streamSource ?? new DefaultContextStreamSource(deps.contextService);
+  const streamSource = deps.streamSource ?? new DefaultContextStreamSource(deps.contextService);
 
   return {
     buildContext: {

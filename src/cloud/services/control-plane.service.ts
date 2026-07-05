@@ -35,16 +35,13 @@ export class ControlPlaneService implements IControlPlane {
     }
 
     const regionCode = input.primaryRegionId
-      ? (await this.regionRegistry.getRegionById(input.primaryRegionId))?.code ??
-        input.primaryRegionId
+      ? ((await this.regionRegistry.getRegionById(input.primaryRegionId))?.code ??
+        input.primaryRegionId)
       : this.options.defaultRegionCode;
 
     const primaryRegion = input.primaryRegionId
       ? await this.regionRegistry.getRegionById(input.primaryRegionId)
-      : await this.regionRegistry.ensureDefaultRegion(
-          this.options.defaultRegionCode,
-          'Local',
-        );
+      : await this.regionRegistry.ensureDefaultRegion(this.options.defaultRegionCode, 'Local');
 
     if (!primaryRegion) {
       throw new ValidationError('Primary region not found');

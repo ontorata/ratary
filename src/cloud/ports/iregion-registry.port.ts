@@ -1,4 +1,8 @@
-import type { AssignRegionInput, CloudRegion, WorkspaceRegionAssignment } from '../types/region.types.js';
+import type {
+  AssignRegionInput,
+  CloudRegion,
+  WorkspaceRegionAssignment,
+} from '../types/region.types.js';
 
 export interface IRegionRegistry {
   ensureDefaultRegion(code: string, displayName: string): Promise<CloudRegion>;

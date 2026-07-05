@@ -14,14 +14,19 @@ export interface IGlobalSyncOrchestrator {
 
 /** Durable offline sync journal (Phase 25). */
 export interface IOfflineJournal {
-  append(scope: MemoryScope, entry: Omit<SyncJournalEntry, 'id' | 'status' | 'createdAt'>): Promise<SyncJournalEntry>;
+  append(
+    scope: MemoryScope,
+    entry: Omit<SyncJournalEntry, 'id' | 'status' | 'createdAt'>,
+  ): Promise<SyncJournalEntry>;
   pending(scope: MemoryScope): Promise<SyncJournalEntry[]>;
   markApplied(entryId: string): Promise<void>;
 }
 
 /** Telemetry + sync persistence (Phase 25). */
 export interface IIntelligenceStore {
-  persistTelemetry(envelope: import('../../telemetry/types/telemetry-event.js').TelemetryEnvelope): Promise<void>;
+  persistTelemetry(
+    envelope: import('../../telemetry/types/telemetry-event.js').TelemetryEnvelope,
+  ): Promise<void>;
   countTelemetry(scope: MemoryScope, since?: string): Promise<number>;
   countTelemetryByType(scope: MemoryScope, type: string, since?: string): Promise<number>;
   setSyncCursor(scope: MemoryScope, tier: string, cursor: string, runId?: string): Promise<void>;

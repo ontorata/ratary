@@ -23,7 +23,10 @@ export class CompressionStatusReader implements ICompressionStatusReader {
     private readonly sql: ISqlDatabase,
     private readonly repository: IMemoryRepository,
     private readonly relationRepository: MemoryRelationRepository,
-    private readonly env: Pick<Env, 'COMPRESSION_ENABLED' | 'COMPRESSION_POLICY' | 'COMPRESSION_SCHEDULER'>,
+    private readonly env: Pick<
+      Env,
+      'COMPRESSION_ENABLED' | 'COMPRESSION_POLICY' | 'COMPRESSION_SCHEDULER'
+    >,
     private readonly policy: ICompressionPolicy,
   ) {}
 
@@ -33,9 +36,7 @@ export class CompressionStatusReader implements ICompressionStatusReader {
   ): Promise<CompressionOwnerStatus> {
     const projectId = query.projectId ?? null;
     const memories = await this.repository.findAllByOwner(scope.ownerId);
-    const scoped = projectId
-      ? memories.filter((m) => m.projectId === projectId)
-      : memories;
+    const scoped = projectId ? memories.filter((m) => m.projectId === projectId) : memories;
 
     const metaStats = await this.loadCompressionMetaStats(scope.ownerId, projectId);
     const pending = await this.loadPending(scope, query.projectId);

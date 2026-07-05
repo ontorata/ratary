@@ -13,10 +13,7 @@ import { SyncStaleDetector } from './sync-stale-detector.js';
 export class AcceptSyncManager implements ISyncManager {
   private readonly staleDetector: SyncStaleDetector;
 
-  constructor(
-    db: ISqlDatabase,
-    audit: AuditRepository,
-  ) {
+  constructor(db: ISqlDatabase, audit: AuditRepository) {
     this.staleDetector = new SyncStaleDetector(db, audit);
   }
 

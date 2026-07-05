@@ -197,7 +197,10 @@ export interface KnowledgeFabricManifest {
   enabled: boolean;
   connectors: Array<{ id: string; configured: boolean }>;
   supportsIncrementalIngest: boolean;
-  lastRuns: Record<string, { id: string; status: string; finishedAt?: string; connectorId?: string }>;
+  lastRuns: Record<
+    string,
+    { id: string; status: string; finishedAt?: string; connectorId?: string }
+  >;
 }
 
 export interface AiBrainPlatformManifest {

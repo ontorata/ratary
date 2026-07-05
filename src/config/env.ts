@@ -7,10 +7,16 @@ const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 loadDotenv({ path: resolve(projectRoot, '.env'), quiet: true });
 
 /** Legacy env aliases after Ratary rebrand (Ontorata). */
-if (process.env.RATARY_PLATFORM_ENABLED === undefined && process.env.AI_BRAIN_PLATFORM_ENABLED !== undefined) {
+if (
+  process.env.RATARY_PLATFORM_ENABLED === undefined &&
+  process.env.AI_BRAIN_PLATFORM_ENABLED !== undefined
+) {
   process.env.RATARY_PLATFORM_ENABLED = process.env.AI_BRAIN_PLATFORM_ENABLED;
 }
-if (process.env.RATARY_PLATFORM_EDITION === undefined && process.env.AI_BRAIN_PLATFORM_EDITION !== undefined) {
+if (
+  process.env.RATARY_PLATFORM_EDITION === undefined &&
+  process.env.AI_BRAIN_PLATFORM_EDITION !== undefined
+) {
   process.env.RATARY_PLATFORM_EDITION = process.env.AI_BRAIN_PLATFORM_EDITION;
 }
 
@@ -75,7 +81,9 @@ const envSchema = z
     MARIADB_CONNECTION_STRING: z.string().min(1).optional(),
     VECTOR_PROVIDER: z.enum(['d1', 'pgvector']).default('d1'),
     PGVECTOR_DATABASE_URL: z.string().url().optional(),
-    OBJECT_STORAGE_PROVIDER: z.enum(['inline', 'r2', 's3', 'minio', 'azure', 'gcs']).default('inline'),
+    OBJECT_STORAGE_PROVIDER: z
+      .enum(['inline', 'r2', 's3', 'minio', 'azure', 'gcs'])
+      .default('inline'),
     R2_BUCKET_NAME: z.string().min(1).optional(),
     R2_ACCESS_KEY_ID: z.string().min(1).optional(),
     R2_SECRET_ACCESS_KEY: z.string().min(1).optional(),
@@ -644,11 +652,15 @@ const envSchema = z
       });
     }
 
-    if ((env.SQL_PROVIDER === 'mariadb' || env.SQL_PROVIDER === 'mysql') && !env.MARIADB_CONNECTION_STRING) {
+    if (
+      (env.SQL_PROVIDER === 'mariadb' || env.SQL_PROVIDER === 'mysql') &&
+      !env.MARIADB_CONNECTION_STRING
+    ) {
       ctx.addIssue({
         code: 'custom',
         path: ['MARIADB_CONNECTION_STRING'],
-        message: 'MARIADB_CONNECTION_STRING is required when SQL_PROVIDER=mariadb or SQL_PROVIDER=mysql',
+        message:
+          'MARIADB_CONNECTION_STRING is required when SQL_PROVIDER=mariadb or SQL_PROVIDER=mysql',
       });
     }
 
@@ -746,7 +758,11 @@ const envSchema = z
       }
     }
 
-    if (env.REMOTE_MCP_ENABLED && env.NODE_ENV === 'production' && !env.REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED) {
+    if (
+      env.REMOTE_MCP_ENABLED &&
+      env.NODE_ENV === 'production' &&
+      !env.REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED
+    ) {
       ctx.addIssue({
         code: 'custom',
         path: ['REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED'],
@@ -755,7 +771,11 @@ const envSchema = z
       });
     }
 
-    if (env.FEDERATION_ENABLED && env.FEDERATION_TRUST_PROVIDER === 'file' && !env.FEDERATION_TRUST_FILE_PATH) {
+    if (
+      env.FEDERATION_ENABLED &&
+      env.FEDERATION_TRUST_PROVIDER === 'file' &&
+      !env.FEDERATION_TRUST_FILE_PATH
+    ) {
       ctx.addIssue({
         code: 'custom',
         path: ['FEDERATION_TRUST_FILE_PATH'],

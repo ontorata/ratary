@@ -13,7 +13,10 @@ export class NoOpControlPlane implements IControlPlane {
     throw new NotFoundError('ControlPlane', 'disabled');
   }
 
-  async deprovisionWorkspace(_organizationId: string, _workspaceId: string): Promise<TenantMetadataRecord> {
+  async deprovisionWorkspace(
+    _organizationId: string,
+    _workspaceId: string,
+  ): Promise<TenantMetadataRecord> {
     throw new NotFoundError('ControlPlane', 'disabled');
   }
 

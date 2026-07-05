@@ -1,5 +1,8 @@
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
-import type { SyncConflictRecord, SyncConflictStatus } from '../../client-sync/client-sync.types.js';
+import type {
+  SyncConflictRecord,
+  SyncConflictStatus,
+} from '../../client-sync/client-sync.types.js';
 import type {
   ISyncConflictStore,
   SyncConflictInsert,
@@ -79,17 +82,17 @@ export class SqlSyncConflictStore implements ISyncConflictStore {
   }
 
   async updateStatus(id: string, ownerId: string, status: SyncConflictStatus): Promise<void> {
-    await this.db.execute(
-      `UPDATE sync_conflicts SET status = ? WHERE id = ? AND owner_id = ?`,
-      [status, id, ownerId],
-    );
+    await this.db.execute(`UPDATE sync_conflicts SET status = ? WHERE id = ? AND owner_id = ?`, [
+      status,
+      id,
+      ownerId,
+    ]);
   }
 
-  private pendingFilter(filters: {
-    ownerId: string;
-    workspaceId?: string;
-    platformId?: string;
-  }): { sql: string; params: unknown[] } {
+  private pendingFilter(filters: { ownerId: string; workspaceId?: string; platformId?: string }): {
+    sql: string;
+    params: unknown[];
+  } {
     const conditions = ['owner_id = ?', "status = 'pending'"];
     const params: unknown[] = [filters.ownerId];
     const workspaceId = filters.workspaceId ?? null;

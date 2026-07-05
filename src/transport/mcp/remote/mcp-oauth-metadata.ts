@@ -6,7 +6,10 @@ export interface McpOAuthMetadataContext {
   issuerUrl: string;
 }
 
-export function buildMcpOAuthMetadataContext(env: Env, requestOrigin?: string): McpOAuthMetadataContext | null {
+export function buildMcpOAuthMetadataContext(
+  env: Env,
+  requestOrigin?: string,
+): McpOAuthMetadataContext | null {
   if (!env.REMOTE_MCP_OAUTH_ENABLED || !env.OIDC_ISSUER_URL) {
     return null;
   }
@@ -31,7 +34,9 @@ export function buildMcpOAuthMetadataContext(env: Env, requestOrigin?: string): 
   };
 }
 
-export function buildProtectedResourceMetadata(ctx: McpOAuthMetadataContext): Record<string, unknown> {
+export function buildProtectedResourceMetadata(
+  ctx: McpOAuthMetadataContext,
+): Record<string, unknown> {
   return {
     resource: ctx.resourceUrl,
     authorization_servers: [ctx.issuerUrl],

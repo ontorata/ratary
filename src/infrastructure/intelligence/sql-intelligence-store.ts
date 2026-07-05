@@ -60,13 +60,7 @@ export class SqlIntelligenceStore implements IIntelligenceStore {
           `SELECT COUNT(*) AS count FROM intelligence_telemetry_events
            WHERE owner_id = ? AND (workspace_id IS ? OR workspace_id = ?)
              AND event_type = ? AND occurred_at >= ?`,
-          [
-            scope.ownerId,
-            scope.workspaceId ?? null,
-            scope.workspaceId ?? null,
-            type,
-            since,
-          ],
+          [scope.ownerId, scope.workspaceId ?? null, scope.workspaceId ?? null, type, since],
         )
       : await this.sql.query<{ count: number }>(
           `SELECT COUNT(*) AS count FROM intelligence_telemetry_events
@@ -76,7 +70,12 @@ export class SqlIntelligenceStore implements IIntelligenceStore {
     return Number(rows[0]?.count ?? 0);
   }
 
-  async setSyncCursor(scope: MemoryScope, tier: string, cursor: string, runId?: string): Promise<void> {
+  async setSyncCursor(
+    scope: MemoryScope,
+    tier: string,
+    cursor: string,
+    runId?: string,
+  ): Promise<void> {
     const key = `${scopeKey(scope)}:${tier}`;
     const now = new Date().toISOString();
     await this.sql.execute(
@@ -87,15 +86,7 @@ export class SqlIntelligenceStore implements IIntelligenceStore {
          last_cursor = excluded.last_cursor,
          last_run_id = excluded.last_run_id,
          updated_at = excluded.updated_at`,
-      [
-        key,
-        tier,
-        scope.ownerId,
-        scope.workspaceId ?? null,
-        cursor,
-        runId ?? null,
-        now,
-      ],
+      [key, tier, scope.ownerId, scope.workspaceId ?? null, cursor, runId ?? null, now],
     );
   }
 

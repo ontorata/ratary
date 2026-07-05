@@ -57,7 +57,10 @@ export function applyIgnorePatternsToSql(patterns: readonly string[]): SqlIgnore
   for (const pattern of patterns) {
     const normalized = normalizePath(pattern);
     if (normalized.includes('**')) {
-      const segment = normalized.replace(/^\*\*\//, '').replace(/\/\*\*$/, '').replace(/\*\*/g, '');
+      const segment = normalized
+        .replace(/^\*\*\//, '')
+        .replace(/\/\*\*$/, '')
+        .replace(/\*\*/g, '');
       if (segment) {
         conditions.push('(source_path IS NULL OR source_path NOT LIKE ?)');
         params.push(`%${segment}%`);

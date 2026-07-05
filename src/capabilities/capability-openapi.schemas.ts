@@ -24,7 +24,10 @@ export const clientCapabilityRequestOpenApiSchema = {
     },
     transports: {
       type: 'array',
-      items: { type: 'string', enum: ['rest', 'mcp', 'stdio', 'mcp-remote', 'streamable-http', 'grpc'] },
+      items: {
+        type: 'string',
+        enum: ['rest', 'mcp', 'stdio', 'mcp-remote', 'streamable-http', 'grpc'],
+      },
       description: 'Transports the client can use',
     },
   },

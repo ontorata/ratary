@@ -95,7 +95,11 @@ export class SqlSearchGraphSyncStore implements ISearchGraphSyncStore {
     };
   }
 
-  async setWatermark(target: SearchGraphSyncTarget, watermark: string, runId: string): Promise<void> {
+  async setWatermark(
+    target: SearchGraphSyncTarget,
+    watermark: string,
+    runId: string,
+  ): Promise<void> {
     const updatedAt = nowISO();
     await this.sql.execute(
       `INSERT INTO search_graph_sync_state (target, last_watermark, last_run_id, updated_at)
@@ -155,7 +159,11 @@ export class InMemorySearchGraphSyncStore implements ISearchGraphSyncStore {
     return this.states.get(target) ?? null;
   }
 
-  async setWatermark(target: SearchGraphSyncTarget, watermark: string, runId: string): Promise<void> {
+  async setWatermark(
+    target: SearchGraphSyncTarget,
+    watermark: string,
+    runId: string,
+  ): Promise<void> {
     this.states.set(target, {
       target,
       lastWatermark: watermark,

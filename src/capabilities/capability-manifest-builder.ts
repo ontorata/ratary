@@ -87,7 +87,8 @@ export class CapabilityManifestBuilder {
         supportsMultiClientSync: this.env.MULTI_CLIENT_SYNC_ENABLED,
         supportsEventConsumers: this.env.EVENT_CONSUMERS_ENABLED,
         supportsRemoteMcp: this.env.REMOTE_MCP_ENABLED,
-        supportsContextStream: this.env.SSE_ENABLED || this.env.GRPC_ENABLED || this.env.WEBSOCKET_ENABLED,
+        supportsContextStream:
+          this.env.SSE_ENABLED || this.env.GRPC_ENABLED || this.env.WEBSOCKET_ENABLED,
         supportsFederation: this.env.FEDERATION_ENABLED,
         supportsAgentEcosystem: true,
         supportsDeveloperPlatform: true,
@@ -161,9 +162,7 @@ export class CapabilityManifestBuilder {
         ...(this.env.WEBSOCKET_ENABLED
           ? { websocket: { enabled: true, path: this.env.WEBSOCKET_PATH } }
           : {}),
-        ...(this.env.SSE_ENABLED
-          ? { sse: { enabled: true, path: '/api/v1/context/stream' } }
-          : {}),
+        ...(this.env.SSE_ENABLED ? { sse: { enabled: true, path: '/api/v1/context/stream' } } : {}),
         sdk: {
           packageName: '@ratary/sdk',
           status: 'published',
@@ -228,14 +227,14 @@ export class CapabilityManifestBuilder {
             },
           }
         : {}),
-      ...(this.options.infrastructure
-        ? { infrastructure: this.options.infrastructure }
-        : {}),
+      ...(this.options.infrastructure ? { infrastructure: this.options.infrastructure } : {}),
       ...(this.options.searchGraph ? { searchGraph: this.options.searchGraph } : {}),
       ...(this.options.contentScale ? { contentScale: this.options.contentScale } : {}),
       ...(this.options.knowledgeFabric ? { knowledgeFabric: this.options.knowledgeFabric } : {}),
       ...(this.options.aiBrainPlatform ? { aiBrainPlatform: this.options.aiBrainPlatform } : {}),
-      ...(this.options.globalIntelligence ? { globalIntelligence: this.options.globalIntelligence } : {}),
+      ...(this.options.globalIntelligence
+        ? { globalIntelligence: this.options.globalIntelligence }
+        : {}),
       ...(this.env.PRECISION_SEARCH_ENABLED
         ? {
             precisionSearch: {

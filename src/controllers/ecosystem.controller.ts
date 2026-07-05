@@ -1,9 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { Env } from '../config/env.js';
-import {
-  AgentEcosystemManifestBuilder,
-  DefaultAgentClientCatalog,
-} from '../ecosystem/index.js';
+import { AgentEcosystemManifestBuilder, DefaultAgentClientCatalog } from '../ecosystem/index.js';
 import type { AgentClientType } from '../ecosystem/types/agent-client-type.js';
 import { AGENT_CLIENT_TYPES } from '../ecosystem/types/agent-client-type.js';
 import { NotFoundError, ValidationError } from '../types/errors.js';

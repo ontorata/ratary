@@ -26,7 +26,9 @@ function scopeToMeterQuery(scope: MemoryScope, window: TimeWindow) {
   };
 }
 
-function buildMeterCostReport(aggregates: Array<{ metricType: string; totalQuantity: number }>): CostReport {
+function buildMeterCostReport(
+  aggregates: Array<{ metricType: string; totalQuantity: number }>,
+): CostReport {
   const usageByMetric: Record<string, number> = {};
   let totalUsageUnits = 0;
 

@@ -13,7 +13,10 @@ export type { IMemoryDiffEngine } from './imemory-diff-engine.interface.js';
 export type { IMemoryMergePolicy } from './imemory-merge-policy.interface.js';
 export type { IVersionConfidenceScorer } from './iversion-confidence-scorer.interface.js';
 export type { IMemoryEvolutionCoordinator } from './memory-evolution-coordinator.js';
-export { EVOLUTION_DEFAULT_BRANCH, EVOLUTION_MIN_MERGE_CONFIDENCE } from './memory-evolution.constants.js';
+export {
+  EVOLUTION_DEFAULT_BRANCH,
+  EVOLUTION_MIN_MERGE_CONFIDENCE,
+} from './memory-evolution.constants.js';
 export { DefaultMemoryDiffEngine } from './default-memory-diff-engine.js';
 export { DefaultMemoryMergePolicy } from './default-memory-merge-policy.js';
 export { DefaultVersionConfidenceScorer } from './default-version-confidence-scorer.js';

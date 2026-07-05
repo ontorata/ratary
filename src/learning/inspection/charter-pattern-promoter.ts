@@ -2,9 +2,7 @@ import type { Env } from '../../config/env.js';
 import type { IInspectionPatternStore } from './iinspection-pattern-store.interface.js';
 import type { MemoryScope } from '../../types/memory-scope.js';
 import type { InspectionPattern } from './inspection-pattern.types.js';
-import {
-  INSPECTION_CHARTER_WORKSPACE_THRESHOLD,
-} from './inspection-ledger.constants.js';
+import { INSPECTION_CHARTER_WORKSPACE_THRESHOLD } from './inspection-ledger.constants.js';
 
 export class CharterPatternPromoter {
   constructor(
@@ -12,7 +10,11 @@ export class CharterPatternPromoter {
     private readonly env: Env,
   ) {}
 
-  async promote(scope: MemoryScope, patterns: readonly InspectionPattern[], dryRun: boolean): Promise<number> {
+  async promote(
+    scope: MemoryScope,
+    patterns: readonly InspectionPattern[],
+    dryRun: boolean,
+  ): Promise<number> {
     if (!this.env.INSPECTION_CHARTER_ENABLED || !this.env.FEDERATION_ENABLED) {
       return 0;
     }

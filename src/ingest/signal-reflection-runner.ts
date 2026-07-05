@@ -1,6 +1,10 @@
 import type { ILearningArtifactStore } from '../learning/ilearning-artifact-store.port.js';
 import type { IRankingLearningEngine } from '../learning/iranking-learning-engine.interface.js';
-import type { LearningEvent, LearningScope, RankingPolicySnapshot } from '../learning/learning.types.js';
+import type {
+  LearningEvent,
+  LearningScope,
+  RankingPolicySnapshot,
+} from '../learning/learning.types.js';
 import type { IMemorySignalStore } from '../ports/signals/imemory-signal-store.port.js';
 import type { MemoryQualitySignal } from './memory-quality-signal.types.js';
 
@@ -51,12 +55,16 @@ export class SignalReflectionRunner {
     private readonly artifactStore?: ILearningArtifactStore,
   ) {}
 
-  async run(scope: LearningScope, options: SignalReflectionOptions): Promise<SignalReflectionReport> {
+  async run(
+    scope: LearningScope,
+    options: SignalReflectionOptions,
+  ): Promise<SignalReflectionReport> {
     const limit = options.limit ?? 500;
     const signals = await this.signalStore.listByScope(scope, limit);
     const events = signals.map(signalToLearningEvent);
-    const feedbackEvents = events.filter((event) => event.eventType === 'signal.explicit_feedback')
-      .length;
+    const feedbackEvents = events.filter(
+      (event) => event.eventType === 'signal.explicit_feedback',
+    ).length;
     const rankingSnapshot = this.rankingEngine.compute(scope, events) ?? undefined;
 
     if (!options.dryRun && rankingSnapshot && this.artifactStore) {

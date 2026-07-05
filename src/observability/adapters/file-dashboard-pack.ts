@@ -53,7 +53,8 @@ export class FileDashboardPack implements IDashboardPack {
         id,
         title: String(grafanaJson.title ?? id),
         version: String(grafanaJson.version ?? '1'),
-        description: typeof grafanaJson.description === 'string' ? grafanaJson.description : undefined,
+        description:
+          typeof grafanaJson.description === 'string' ? grafanaJson.description : undefined,
         grafanaJson,
       };
     } catch {

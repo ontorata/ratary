@@ -17,10 +17,7 @@ export interface IInspectionPatternStore {
   appendEventLink(patternId: string, signalId: string, observedAt: string): Promise<void>;
   recordContradiction(contradiction: InspectionPatternContradiction): Promise<void>;
   listContradictions(scope: MemoryScope): Promise<InspectionPatternContradiction[]>;
-  countWorkspacesByPatternKey(
-    ownerId: string,
-    patternKey: string,
-  ): Promise<number>;
+  countWorkspacesByPatternKey(ownerId: string, patternKey: string): Promise<number>;
   updateLifecycle(
     patternId: string,
     updates: Pick<

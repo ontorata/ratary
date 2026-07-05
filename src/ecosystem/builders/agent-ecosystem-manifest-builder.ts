@@ -9,7 +9,10 @@ import {
 export class AgentEcosystemManifestBuilder {
   private readonly catalog: IAgentClientCatalog;
 
-  constructor(private readonly env: Env, catalog?: IAgentClientCatalog) {
+  constructor(
+    private readonly env: Env,
+    catalog?: IAgentClientCatalog,
+  ) {
     this.catalog = catalog ?? new DefaultAgentClientCatalog(env);
   }
 

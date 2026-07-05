@@ -10,7 +10,11 @@ export interface CompressAdminBody {
   project?: string;
 }
 
-export function createCompressionAdminController(scopeResolver: IScopeResolver, sql: ISqlDatabase, env: Env) {
+export function createCompressionAdminController(
+  scopeResolver: IScopeResolver,
+  sql: ISqlDatabase,
+  env: Env,
+) {
   return {
     async compress(request: FastifyRequest, reply: FastifyReply): Promise<void> {
       const scope = await resolveMemoryScopeFromRequest(request, scopeResolver);

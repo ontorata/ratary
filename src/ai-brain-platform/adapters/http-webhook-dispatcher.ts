@@ -1,6 +1,9 @@
 import { createHmac } from 'node:crypto';
 import type { EventEnvelope } from '../../ports/events/ievent-bus.port.js';
-import type { IWebhookDispatcher, WebhookDispatchResult } from '../ports/iwebhook-dispatcher.port.js';
+import type {
+  IWebhookDispatcher,
+  WebhookDispatchResult,
+} from '../ports/iwebhook-dispatcher.port.js';
 import type { WebhookSubscription } from '../types/platform.types.js';
 
 /** HTTP POST webhook delivery with optional HMAC signature (Phase 24). */

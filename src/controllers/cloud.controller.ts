@@ -5,11 +5,7 @@ import { ForbiddenError, ValidationError } from '../types/errors.js';
 import { resolveMemoryScopeFromRequest } from '../scope/resolve-request-scope.js';
 import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
 
-export function createCloudController(
-  env: Env,
-  ports: CloudPorts,
-  scopeResolver: IScopeResolver,
-) {
+export function createCloudController(env: Env, ports: CloudPorts, scopeResolver: IScopeResolver) {
   function assertEnabled(): void {
     if (!ports.enabled) {
       throw new ForbiddenError('Cloud platform is disabled (CONTROL_PLANE_ENABLED=false)');
@@ -221,10 +217,7 @@ export function createCloudController(
       reply.send(snapshot);
     },
 
-    async verifyDr(
-      request: FastifyRequest,
-      reply: FastifyReply,
-    ): Promise<void> {
+    async verifyDr(request: FastifyRequest, reply: FastifyReply): Promise<void> {
       assertEnabled();
       if (!ports.drEnabled) {
         throw new ForbiddenError('DR platform is disabled (DR_PLATFORM_ENABLED=false)');
