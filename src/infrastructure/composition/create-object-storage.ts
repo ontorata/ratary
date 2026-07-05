@@ -1,6 +1,8 @@
 import type { Env } from '../../config/env.js';
 import type { IObjectStorage } from '../../ports/storage/iobject-storage.port.js';
 import { createS3ObjectCommands } from '../_shared/s3-object-storage.commands.js';
+import { createAzureBlobObjectStorage } from '../storage/azure-blob-object-storage.adapter.js';
+import { createGcsObjectStorage } from '../storage/gcs-object-storage.adapter.js';
 import { InlineObjectStorage } from '../storage/inline-object-storage.adapter.js';
 import {
   createR2ObjectStorage,
@@ -43,6 +45,50 @@ export function createObjectStorage(env: Env): IObjectStorage {
       forcePathStyle: env.S3_FORCE_PATH_STYLE,
     });
     return new R2ObjectStorageAdapter({ bucketName: env.S3_BUCKET_NAME }, commands);
+  }
+
+  if (env.OBJECT_STORAGE_PROVIDER === 'minio') {
+    if (
+      !env.MINIO_ENDPOINT ||
+      !env.MINIO_BUCKET ||
+      !env.MINIO_ACCESS_KEY_ID ||
+      !env.MINIO_SECRET_ACCESS_KEY
+    ) {
+      throw new Error(
+        'MINIO_ENDPOINT, MINIO_BUCKET, MINIO_ACCESS_KEY_ID, and MINIO_SECRET_ACCESS_KEY are required when OBJECT_STORAGE_PROVIDER=minio',
+      );
+    }
+    const commands = createS3ObjectCommands({
+      bucketName: env.MINIO_BUCKET,
+      region: env.MINIO_REGION,
+      accessKeyId: env.MINIO_ACCESS_KEY_ID,
+      secretAccessKey: env.MINIO_SECRET_ACCESS_KEY,
+      endpoint: env.MINIO_ENDPOINT,
+      forcePathStyle: true,
+    });
+    return new R2ObjectStorageAdapter({ bucketName: env.MINIO_BUCKET }, commands);
+  }
+
+  if (env.OBJECT_STORAGE_PROVIDER === 'azure') {
+    if (!env.AZURE_STORAGE_CONNECTION_STRING || !env.AZURE_CONTAINER_NAME) {
+      throw new Error(
+        'AZURE_STORAGE_CONNECTION_STRING and AZURE_CONTAINER_NAME are required when OBJECT_STORAGE_PROVIDER=azure',
+      );
+    }
+    return createAzureBlobObjectStorage({
+      connectionString: env.AZURE_STORAGE_CONNECTION_STRING,
+      containerName: env.AZURE_CONTAINER_NAME,
+    });
+  }
+
+  if (env.OBJECT_STORAGE_PROVIDER === 'gcs') {
+    if (!env.GCS_BUCKET_NAME) {
+      throw new Error('GCS_BUCKET_NAME is required when OBJECT_STORAGE_PROVIDER=gcs');
+    }
+    return createGcsObjectStorage({
+      bucketName: env.GCS_BUCKET_NAME,
+      keyFile: env.GCS_KEY_FILE,
+    });
   }
 
   if (env.OBJECT_STORAGE_PROVIDER !== 'inline') {

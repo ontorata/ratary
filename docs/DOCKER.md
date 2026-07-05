@@ -58,14 +58,14 @@ Full variable reference: [CONFIGURATION.md](CONFIGURATION.md).
 | Profile | Stack | When to use |
 |---------|-------|-------------|
 | `postgres` | Ratary + Postgres 16 | Self-host without D1 |
-| `enterprise` | Postgres + MariaDB + MinIO + Redis (scaffold) | Prep for enterprise adapters — wire env when enabled |
+| `enterprise` | Ratary + MariaDB + MinIO + Redis | On-prem enterprise stack (MariaDB metadata + MinIO object storage) |
 
 ```bash
 docker compose --profile postgres up --build -d
 docker compose --profile enterprise up --build -d
 ```
 
-The `enterprise` profile ships infrastructure services only. MariaDB/MinIO adapters require the corresponding platform env flags — see [CONFIGURATION — Tier 2](CONFIGURATION.md#tier-2--platform-storage--search).
+The `enterprise` profile runs `ratary-enterprise` with `SQL_PROVIDER=mariadb` and `OBJECT_STORAGE_PROVIDER=minio` pre-wired. Override credentials via `.env` — see [CONFIGURATION — Tier 2](CONFIGURATION.md#tier-2--platform-adapters).
 
 ---
 

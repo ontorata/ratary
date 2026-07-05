@@ -1,13 +1,13 @@
-# Ratary Server — optional compose profiles (Phase 27)
+# Ratary Server — optional compose profiles (Phase 27 + 30)
 # Postgres self-host: docker compose --profile postgres up --build
-# Enterprise scaffold (Phase 30 adapters): docker compose --profile enterprise up --build
+# Enterprise (MariaDB + MinIO): docker compose --profile enterprise up --build
 
 name: ratary
 
 services:
   ratary:
     build: .
-    profiles: [postgres, enterprise]
+    profiles: [postgres]
     ports:
       - "${PORT:-3000}:3000"
     environment:
@@ -32,9 +32,48 @@ services:
       retries: 5
       start_period: 45s
 
+  ratary-enterprise:
+    build: .
+    profiles: [enterprise]
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET — openssl rand -hex 32}
+      SQL_PROVIDER: mariadb
+      MARIADB_CONNECTION_STRING: mysql://ratary:${MARIADB_PASSWORD:-ratary}@mariadb:3306/ratary
+      OBJECT_STORAGE_PROVIDER: minio
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_BUCKET: ratary
+      MINIO_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-ratary}
+      MINIO_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-ratary-minio-secret}
+      MINIO_USE_SSL: "false"
+      CACHE_PROVIDER: redis
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      minio:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
   postgres:
     image: postgres:16-alpine
-    profiles: [postgres, enterprise]
+    profiles: [postgres]
     environment:
       POSTGRES_USER: ratary
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ratary}
@@ -47,7 +86,7 @@ services:
       timeout: 5s
       retries: 10
 
-  # Phase 30 enterprise profile — services only; enable adapters via env when 30A/30B ship.
+  # Enterprise profile — MariaDB + MinIO + Redis (Phase 30A/30B)
   mariadb:
     image: mariadb:11
     profiles: [enterprise]

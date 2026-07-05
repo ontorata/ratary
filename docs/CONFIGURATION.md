@@ -159,6 +159,36 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 ---
 
+### MariaDB / MySQL metadata (`SQL_PROVIDER=mariadb|mysql`)
+
+**What it does:** Stores memory metadata in MariaDB or MySQL instead of D1.
+
+| Variable | Default |
+|----------|---------|
+| `SQL_PROVIDER` | `d1` |
+| `MARIADB_CONNECTION_STRING` | — (`mysql://` or `mariadb://` URI) |
+
+**Benefits:** Fits existing MySQL/MariaDB ops teams and Galera/RDS stacks.  
+**Before enabling:** Apply the same metadata schema as Postgres; verify dialect compatibility in staging.  
+**Effects:** All SQL-backed repositories use the MariaDB adapter (`mysql2` pool).
+
+---
+
+### TiDB / CockroachDB metadata (`SQL_PROVIDER=tidb|cockroachdb`)
+
+**What it does:** Uses the Postgres wire-protocol adapter against TiDB or CockroachDB.
+
+| Variable | Default |
+|----------|---------|
+| `SQL_PROVIDER` | `d1` |
+| `DATABASE_URL` | — (Postgres-compatible URI) |
+
+**Benefits:** Distributed SQL without a separate adapter implementation.  
+**Before enabling:** Confirm your cluster supports the Postgres dialect features Ratary migrations require.  
+**Effects:** Same code path as `SQL_PROVIDER=postgres`.
+
+---
+
 ### External vectors (`VECTOR_PROVIDER=pgvector`)
 
 **What it does:** Stores embedding vectors in pgvector instead of D1 blob columns.
@@ -189,6 +219,39 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 
 ---
 
+### MinIO object storage (`OBJECT_STORAGE_PROVIDER=minio`)
+
+**What it does:** Offloads large memory bodies to MinIO (S3-compatible on-prem).
+
+| Variable | Default |
+|----------|---------|
+| `OBJECT_STORAGE_PROVIDER` | `inline` |
+| `MINIO_ENDPOINT`, `MINIO_BUCKET`, `MINIO_ACCESS_KEY_ID`, `MINIO_SECRET_ACCESS_KEY` | — |
+| `MINIO_REGION` | `us-east-1` |
+| `MINIO_USE_SSL` | `false` |
+
+**Benefits:** Private-cloud S3 API without AWS; pairs with Docker `enterprise` compose profile.  
+**Before enabling:** Create bucket and credentials; path-style access is enabled automatically.  
+**Effects:** Same offload semantics as R2/S3 via the shared S3 command layer.
+
+---
+
+### Azure Blob / GCS object storage (`OBJECT_STORAGE_PROVIDER=azure|gcs`)
+
+**What it does:** Offloads large memory bodies to Azure Blob Storage or Google Cloud Storage.
+
+| Variable | Default |
+|----------|---------|
+| `OBJECT_STORAGE_PROVIDER` | `inline` |
+| `AZURE_STORAGE_CONNECTION_STRING`, `AZURE_CONTAINER_NAME` | — (Azure) |
+| `GCS_BUCKET_NAME`, `GCS_KEY_FILE` | — (GCS; key file optional when ADC is configured) |
+
+**Benefits:** Native cloud blob stores for enterprise procurement requirements.  
+**Before enabling:** Container/bucket IAM and network egress policies.  
+**Effects:** Same offload semantics as other object storage providers.
+
+---
+
 ### External lexical search (`SEARCH_PROVIDER=meilisearch`)
 
 **What it does:** Indexes memory text in Meilisearch for fast full-text browse/search.
@@ -201,6 +264,22 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 **Benefits:** Sub-second fuzzy search at scale; typo tolerance.  
 **Before enabling:** Sync lag until backfill; another cluster to run.  
 **Effects:** Search/browse APIs prefer Meilisearch index. Backfill: `npm run db:backfill-meilisearch`.
+
+---
+
+### OpenSearch lexical search (`SEARCH_PROVIDER=opensearch`)
+
+**What it does:** Indexes memory text in OpenSearch (Elasticsearch-compatible) for cluster-scale search.
+
+| Variable | Default |
+|----------|---------|
+| `SEARCH_PROVIDER` | `sql` |
+| `OPENSEARCH_NODE`, `OPENSEARCH_INDEX` | — |
+| `OPENSEARCH_USERNAME`, `OPENSEARCH_PASSWORD` | optional basic auth |
+
+**Benefits:** HA search clusters with OpenSearch ecosystem plugins.  
+**Before enabling:** Index mapping for `owner_id`, `workspace_id`, and searchable text fields.  
+**Effects:** Lexical retrieval uses OpenSearch bool queries; hydrates hits from SQL metadata.
 
 ---
 
@@ -277,6 +356,24 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 **Benefits:** Fast analytical queries without a warehouse.  
 **Before enabling:** Not a production BI replacement; file path needed for persistence.  
 **Effects:** Signal/analytics writes route to DuckDB when enabled.
+
+---
+
+### Analytics (ClickHouse)
+
+**What it does:** Production OLAP warehouse for memory-access aggregates and usage events.
+
+| Variable | Default |
+|----------|---------|
+| `ANALYTICS_PROVIDER` | `none` |
+| `CLICKHOUSE_URL` | — |
+| `CLICKHOUSE_DATABASE` | `ratary` |
+| `CLICKHOUSE_USERNAME` | `default` |
+| `CLICKHOUSE_PASSWORD` | optional |
+
+**Benefits:** Columnar analytics at billions of events; append-only event tables.  
+**Before enabling:** Provision ClickHouse cluster; DDL runs on adapter startup.  
+**Effects:** Analytics port routes inserts/queries to ClickHouse when enabled.
 
 ---
 

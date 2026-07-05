@@ -69,10 +69,11 @@ const envSchema = z
     GRAPH_MAX_NEIGHBORS: z.coerce.number().int().positive().default(DEFAULT_GRAPH_MAX_NEIGHBORS),
 
     // Platform infrastructure (Phase 10)
-    SQL_PROVIDER: z.enum(['d1', 'postgres']).default('d1'),
+    SQL_PROVIDER: z.enum(['d1', 'postgres', 'mariadb', 'mysql', 'tidb', 'cockroachdb']).default('d1'),
+    MARIADB_CONNECTION_STRING: z.string().min(1).optional(),
     VECTOR_PROVIDER: z.enum(['d1', 'pgvector']).default('d1'),
     PGVECTOR_DATABASE_URL: z.string().url().optional(),
-    OBJECT_STORAGE_PROVIDER: z.enum(['inline', 'r2', 's3']).default('inline'),
+    OBJECT_STORAGE_PROVIDER: z.enum(['inline', 'r2', 's3', 'minio', 'azure', 'gcs']).default('inline'),
     R2_BUCKET_NAME: z.string().min(1).optional(),
     R2_ACCESS_KEY_ID: z.string().min(1).optional(),
     R2_SECRET_ACCESS_KEY: z.string().min(1).optional(),
@@ -86,6 +87,19 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+    MINIO_ENDPOINT: z.string().url().optional(),
+    MINIO_BUCKET: z.string().min(1).optional(),
+    MINIO_ACCESS_KEY_ID: z.string().min(1).optional(),
+    MINIO_SECRET_ACCESS_KEY: z.string().min(1).optional(),
+    MINIO_REGION: z.string().min(1).default('us-east-1'),
+    MINIO_USE_SSL: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    AZURE_STORAGE_CONNECTION_STRING: z.string().min(1).optional(),
+    AZURE_CONTAINER_NAME: z.string().min(1).optional(),
+    GCS_BUCKET_NAME: z.string().min(1).optional(),
+    GCS_KEY_FILE: z.string().min(1).optional(),
     CACHE_PROVIDER: z.enum(['none', 'memory', 'redis']).default('none'),
     REDIS_URL: z.string().url().optional(),
     RATE_LIMIT_REDIS_URL: z.string().url().optional(),
@@ -98,16 +112,24 @@ const envSchema = z
     REDIS_STREAM_PREFIX: z.string().default('ratary:events:'),
     REDIS_STREAM_CONSUMER_GROUP: z.string().default('ratary-consumers'),
     REDIS_STREAM_CONSUMER_NAME: z.string().default('ratary-worker'),
-    ANALYTICS_PROVIDER: z.enum(['none', 'duckdb']).default('none'),
+    ANALYTICS_PROVIDER: z.enum(['none', 'duckdb', 'clickhouse']).default('none'),
     DUCKDB_PATH: z.string().default(':memory:'),
+    CLICKHOUSE_URL: z.string().url().optional(),
+    CLICKHOUSE_DATABASE: z.string().min(1).default('ratary'),
+    CLICKHOUSE_USERNAME: z.string().min(1).default('default'),
+    CLICKHOUSE_PASSWORD: z.string().optional(),
     GRAPH_PROVIDER: z.enum(['d1', 'neo4j']).default('d1'),
     NEO4J_URI: z.string().url().optional(),
     NEO4J_USERNAME: z.string().min(1).optional(),
     NEO4J_PASSWORD: z.string().min(1).optional(),
-    SEARCH_PROVIDER: z.enum(['sql', 'meilisearch']).default('sql'),
+    SEARCH_PROVIDER: z.enum(['sql', 'meilisearch', 'opensearch']).default('sql'),
     MEILISEARCH_HOST: z.string().url().optional(),
     MEILISEARCH_API_KEY: z.string().optional(),
     MEILISEARCH_INDEX: z.string().min(1).optional(),
+    OPENSEARCH_NODE: z.string().url().optional(),
+    OPENSEARCH_INDEX: z.string().min(1).optional(),
+    OPENSEARCH_USERNAME: z.string().min(1).optional(),
+    OPENSEARCH_PASSWORD: z.string().optional(),
     OTEL_ENABLED: z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
@@ -443,11 +465,17 @@ const envSchema = z
       }
     }
 
-    if (env.SQL_PROVIDER === 'postgres' && !env.DATABASE_URL) {
+    if (
+      (env.SQL_PROVIDER === 'postgres' ||
+        env.SQL_PROVIDER === 'tidb' ||
+        env.SQL_PROVIDER === 'cockroachdb') &&
+      !env.DATABASE_URL
+    ) {
       ctx.addIssue({
         code: 'custom',
         path: ['DATABASE_URL'],
-        message: 'DATABASE_URL is required when SQL_PROVIDER=postgres',
+        message:
+          'DATABASE_URL is required when SQL_PROVIDER=postgres, tidb, or cockroachdb',
       });
     }
 
@@ -547,6 +575,80 @@ const envSchema = z
       }
     }
 
+    if (env.OBJECT_STORAGE_PROVIDER === 'minio') {
+      if (!env.MINIO_ENDPOINT) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['MINIO_ENDPOINT'],
+          message: 'MINIO_ENDPOINT is required when OBJECT_STORAGE_PROVIDER=minio',
+        });
+      }
+      if (!env.MINIO_BUCKET) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['MINIO_BUCKET'],
+          message: 'MINIO_BUCKET is required when OBJECT_STORAGE_PROVIDER=minio',
+        });
+      }
+      if (!env.MINIO_ACCESS_KEY_ID) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['MINIO_ACCESS_KEY_ID'],
+          message: 'MINIO_ACCESS_KEY_ID is required when OBJECT_STORAGE_PROVIDER=minio',
+        });
+      }
+      if (!env.MINIO_SECRET_ACCESS_KEY) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['MINIO_SECRET_ACCESS_KEY'],
+          message: 'MINIO_SECRET_ACCESS_KEY is required when OBJECT_STORAGE_PROVIDER=minio',
+        });
+      }
+    }
+
+    if (env.OBJECT_STORAGE_PROVIDER === 'azure') {
+      if (!env.AZURE_STORAGE_CONNECTION_STRING) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['AZURE_STORAGE_CONNECTION_STRING'],
+          message: 'AZURE_STORAGE_CONNECTION_STRING is required when OBJECT_STORAGE_PROVIDER=azure',
+        });
+      }
+      if (!env.AZURE_CONTAINER_NAME) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['AZURE_CONTAINER_NAME'],
+          message: 'AZURE_CONTAINER_NAME is required when OBJECT_STORAGE_PROVIDER=azure',
+        });
+      }
+    }
+
+    if (env.OBJECT_STORAGE_PROVIDER === 'gcs') {
+      if (!env.GCS_BUCKET_NAME) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['GCS_BUCKET_NAME'],
+          message: 'GCS_BUCKET_NAME is required when OBJECT_STORAGE_PROVIDER=gcs',
+        });
+      }
+    }
+
+    if (env.ANALYTICS_PROVIDER === 'clickhouse' && !env.CLICKHOUSE_URL) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['CLICKHOUSE_URL'],
+        message: 'CLICKHOUSE_URL is required when ANALYTICS_PROVIDER=clickhouse',
+      });
+    }
+
+    if ((env.SQL_PROVIDER === 'mariadb' || env.SQL_PROVIDER === 'mysql') && !env.MARIADB_CONNECTION_STRING) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['MARIADB_CONNECTION_STRING'],
+        message: 'MARIADB_CONNECTION_STRING is required when SQL_PROVIDER=mariadb or SQL_PROVIDER=mysql',
+      });
+    }
+
     if (env.GRAPH_PROVIDER === 'neo4j') {
       if (!env.NEO4J_URI) {
         ctx.addIssue({
@@ -596,6 +698,23 @@ const envSchema = z
           code: 'custom',
           path: ['MEILISEARCH_INDEX'],
           message: 'MEILISEARCH_INDEX is required when SEARCH_PROVIDER=meilisearch',
+        });
+      }
+    }
+
+    if (env.SEARCH_PROVIDER === 'opensearch') {
+      if (!env.OPENSEARCH_NODE) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['OPENSEARCH_NODE'],
+          message: 'OPENSEARCH_NODE is required when SEARCH_PROVIDER=opensearch',
+        });
+      }
+      if (!env.OPENSEARCH_INDEX) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['OPENSEARCH_INDEX'],
+          message: 'OPENSEARCH_INDEX is required when SEARCH_PROVIDER=opensearch',
         });
       }
     }

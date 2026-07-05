@@ -3,13 +3,25 @@ import type { Env } from '../../config/env.js';
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import { D1SqlDatabaseAdapter } from '../sql/d1-sql-database.adapter.js';
 import { createPostgresSqlDatabase } from '../sql/postgres-sql-database.adapter.js';
+import { createMariaDBSqlDatabaseFromUri } from '../sql/mariadb-sql-database.adapter.js';
 
 export function createSqlDatabase(d1Client: D1Client | null, env: Env): ISqlDatabase {
-  if (env.SQL_PROVIDER === 'postgres') {
+  if (env.SQL_PROVIDER === 'postgres' || env.SQL_PROVIDER === 'tidb' || env.SQL_PROVIDER === 'cockroachdb') {
     if (!env.DATABASE_URL) {
-      throw new Error('DATABASE_URL is required when SQL_PROVIDER=postgres');
+      throw new Error(
+        'DATABASE_URL is required when SQL_PROVIDER=postgres, tidb, or cockroachdb',
+      );
     }
     return createPostgresSqlDatabase(env.DATABASE_URL);
+  }
+
+  if (env.SQL_PROVIDER === 'mariadb' || env.SQL_PROVIDER === 'mysql') {
+    if (!env.MARIADB_CONNECTION_STRING) {
+      throw new Error(
+        'MARIADB_CONNECTION_STRING is required when SQL_PROVIDER=mariadb or SQL_PROVIDER=mysql',
+      );
+    }
+    return createMariaDBSqlDatabaseFromUri(env.MARIADB_CONNECTION_STRING);
   }
 
   if (!d1Client) {
