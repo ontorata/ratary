@@ -1,0 +1,21 @@
+{
+  "name": "ratary",
+  "version": "1.0.0",
+  "description": "Ratary Memory MCP — persistent coding memory for Claude Code (server id: ratary)",
+  "author": {
+    "name": "Ontorata",
+    "email": "hello@ontorata.com"
+  },
+  "homepage": "https://github.com/ontorata/ratary/blob/main/docs/install/claude-code.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ontorata/ratary.git"
+  },
+  "license": "MIT",
+  "keywords": ["mcp", "memory", "ratary", "coding-assistant"],
+  "install": {
+    "type": "documentation",
+    "url": "https://github.com/ontorata/ratary/blob/main/docs/install/claude-code.md",
+    "quickStart": "npm run setup"
+  }
+}

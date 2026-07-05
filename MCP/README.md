@@ -110,15 +110,42 @@ Details: [GUIDE — ChatGPT](../docs/GUIDE.md#61-chatgpt) · [CONFIGURATION — 
 
 ---
 
-## mcpservers.org submission
+## Directory listings (Phase 31L)
+
+Submit **Ratary Memory MCP** to public directories using the copy-paste pack in **[MCP/submission/](submission/README.md)**.
+
+| Pack file | Directory |
+|-----------|-----------|
+| [submission/mcpservers-org.md](submission/mcpservers-org.md) | [mcpservers.org/submit](https://mcpservers.org/submit) — **Memory** category |
+| [submission/official-registry.server.json](submission/official-registry.server.json) | [Official MCP Registry](https://registry.modelcontextprotocol.io/) |
+| [submission/awesome-mcp-servers-entry.md](submission/awesome-mcp-servers-entry.md) | awesome-mcp-servers GitHub PRs |
+| [submission/cursor-marketplace.md](submission/cursor-marketplace.md) | Cursor plugin marketplace |
+| [submission/claude-marketplace.md](submission/claude-marketplace.md) | Claude Code plugin marketplace |
+| [submission/directory-status.md](submission/directory-status.md) | Operator tracking (Ready → Submitted → Listed) |
+
+### mcpservers.org (quick copy)
 
 | Field | Value |
 |-------|-------|
 | **Server name** | Ratary |
-| **Short description** | Persistent coding memory for AI assistants — MCP stdio + remote URL, hybrid search, knowledge graph, token-efficient context. Self-host on Cloudflare D1 or Postgres. |
+| **Short description** | Persistent coding memory for AI assistants — save, search, hybrid retrieval, knowledge graph, token-efficient context. MCP stdio (28 tools), npm proxy, or remote Streamable HTTP. Self-host on D1, Postgres, or Docker. |
 | **Link** | `https://github.com/ontorata/ratary/tree/main/MCP` |
 | **Category** | Memory |
 | **Contact** | hello@ontorata.com |
+
+### Harness marketplace manifests
+
+| Path | Purpose |
+|------|---------|
+| [harness/marketplace/ratary-marketplace.json](../harness/marketplace/ratary-marketplace.json) | Claude Code `/plugin marketplace add` source |
+| [harness/claude-code/plugin.json](../harness/claude-code/plugin.json) | Plugin metadata stub |
+| [harness/marketplace/README.md](../harness/marketplace/README.md) | Publish instructions |
+
+### Metadata SSOT
+
+Repo-local metadata for tooling: [server.json](server.json) (stdio + npm + remote flags). Registry publish uses [submission/official-registry.server.json](submission/official-registry.server.json).
+
+**Boundary:** List **Ratary Memory MCP** (`ratary`) only — not [Ontorata MCP](https://github.com/ontorata/ontorata-mcp) or [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio).
 
 ---
 
@@ -127,6 +154,7 @@ Details: [GUIDE — ChatGPT](../docs/GUIDE.md#61-chatgpt) · [CONFIGURATION — 
 | Doc | Purpose |
 |-----|---------|
 | [docs/install/README.md](../docs/install/README.md) | Per-harness installation (Cursor, Claude, remote, …) |
+| [MCP/submission/README.md](submission/README.md) | Directory listing submission pack (31L) |
 | [docs/GUIDE.md](../docs/GUIDE.md) | Setup & usage |
 | [docs/DOCKER.md](../docs/DOCKER.md) | Container self-host |
 | [docs/README.md](../docs/README.md) | Human docs index |

@@ -1,13 +1,21 @@
 {
   "name": "ratary-marketplace",
   "description": "Ratary Memory MCP — persistent coding memory for AI assistants",
+  "owner": "ontorata",
+  "repository": "https://github.com/ontorata/ratary",
+  "documentation": "https://github.com/ontorata/ratary/tree/main/docs/install/README.md",
   "plugins": [
     {
       "id": "ratary",
       "name": "Ratary Memory MCP",
+      "description": "Save, search, and assemble token-efficient coding memory. MCP server id: ratary.",
+      "version": "1.0.0",
+      "license": "MIT",
       "repository": "https://github.com/ontorata/ratary",
-      "installDoc": "https://github.com/ontorata/ratary/blob/main/docs/install/README.md",
-      "mcpServerId": "ratary"
+      "installDoc": "https://github.com/ontorata/ratary/blob/main/docs/install/claude-code.md",
+      "mcpServerId": "ratary",
+      "categories": ["memory", "development"],
+      "pluginManifest": "harness/claude-code/plugin.json"
     }
   ]
 }

@@ -58,6 +58,6 @@ Re-run the harness-specific install command, or `npm run setup` after pulling th
 
 | Doc | Purpose |
 |-----|---------|
-| [MCP/README.md](../../MCP/README.md) | Tool list, stdio vs npm vs remote |
+| [MCP/README.md](../../MCP/README.md) | Tool list, stdio vs npm vs remote · [directory listings](../../MCP/submission/README.md) |
 | [examples/](../examples/) | Copy-paste JSON templates |
 | [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio) | Web console (separate repo) |

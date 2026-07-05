@@ -32,7 +32,7 @@ Run `claude` in the repo folder → approve MCP server **`ratary`** when prompte
 /plugin install ratary@ratary-marketplace
 ```
 
-Marketplace manifest ships under `harness/claude-code/` when published. Until then, use Option A.
+Marketplace manifest ships in [`harness/marketplace/`](../../harness/marketplace/). Publish to `ontorata/ratary-marketplace` when ready. Until then, use Option A.
 
 ---
 
