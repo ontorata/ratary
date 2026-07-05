@@ -66,8 +66,10 @@ export class IdentityRepository {
   }
 
   async countAll(): Promise<number> {
-    const rows = await this.db.query<{ count: number }>('SELECT COUNT(*) as count FROM identities');
-    return rows[0]?.count ?? 0;
+    const rows = await this.db.query<{ count: number | string }>(
+      'SELECT COUNT(*) as count FROM identities',
+    );
+    return Number(rows[0]?.count ?? 0);
   }
 
   async listByOwner(ownerId?: string): Promise<Identity[]> {
