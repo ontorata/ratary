@@ -80,6 +80,7 @@ export class GrpcTransportServer implements ITransportServer {
       relationService,
       scopeResolver: multiAi.scopeResolver,
       env,
+      memoryAccessAuditor,
     });
 
     const proto = loadAiBrainProto();

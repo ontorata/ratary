@@ -11,6 +11,7 @@ import type { GraphService } from '../../../services/graph.service.js';
 import type { MemoryRelationService } from '../../../services/memory-relation.service.js';
 import type { MemoryService } from '../../../services/memory.service.js';
 import type { SignalIngestDeps } from '../../../ingest/process-signal-ingest.js';
+import type { IMemoryAccessAuditor } from '../../../ports/audit/imemory-access-auditor.port.js';
 
 /** Shared dependencies for Phase 10.5B application handlers. */
 export interface TransportHandlerDeps {
@@ -19,6 +20,7 @@ export interface TransportHandlerDeps {
   graphService: GraphService;
   relationService: MemoryRelationService;
   scopeResolver: IScopeResolver;
+  memoryAccessAuditor?: IMemoryAccessAuditor;
   env: Env;
   infrastructurePorts?: InfrastructurePlatformPorts;
   searchGraphPorts?: SearchGraphPorts;

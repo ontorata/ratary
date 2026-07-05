@@ -89,13 +89,26 @@ function buildCompositeCandidateSource(
 
   if (useGraph) {
     const graphProvider = platform?.graphProvider ?? createGraphProvider(env, platform!.sql!);
+    const vectorSeedSource =
+      env.GRAPH_VECTOR_SEEDS_ENABLED && useVector
+        ? new VectorRetrievalCandidateSource(
+            platform!.vectorStore!,
+            platform!.embeddingProvider!,
+            repository,
+          )
+        : undefined;
     registered.push({
       role: 'graph',
-      source: new GraphRetrievalCandidateSource(graphProvider, repository, {
-        seedCap: env.GRAPH_SEED_CAP,
-        maxDepth: env.GRAPH_MAX_DEPTH,
-        maxNeighbors: env.GRAPH_MAX_NEIGHBORS,
-      }),
+      source: new GraphRetrievalCandidateSource(
+        graphProvider,
+        repository,
+        {
+          seedCap: env.GRAPH_SEED_CAP,
+          maxDepth: env.GRAPH_MAX_DEPTH,
+          maxNeighbors: env.GRAPH_MAX_NEIGHBORS,
+        },
+        vectorSeedSource,
+      ),
     });
   }
 

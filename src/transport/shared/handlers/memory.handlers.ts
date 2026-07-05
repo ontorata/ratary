@@ -1,5 +1,6 @@
 import type { MemoryService } from '../../../services/memory.service.js';
 import type { IScopeResolver } from '../../../scope/iscope-resolver.interface.js';
+import type { IMemoryAccessAuditor } from '../../../ports/audit/imemory-access-auditor.port.js';
 import type {
   BackupImportInput,
   CreateMemoryInput,
@@ -12,10 +13,12 @@ import type { ByPathQueryInput, SimilarMemoryQueryInput } from '../../../types/p
 import type { TransportContext } from '../transport-context.types.js';
 import type { IApplicationHandler } from '../iapplication-handler.interface.js';
 import { resolveHandlerScope } from './resolve-handler-scope.js';
+import { auditMemoryRead } from '../audit-memory-read.js';
 
 export interface MemoryHandlerDeps {
   memoryService: MemoryService;
   scopeResolver: IScopeResolver;
+  memoryAccessAuditor?: IMemoryAccessAuditor;
 }
 
 export interface MemoryHandlers {
@@ -61,14 +64,28 @@ export function createMemoryHandlers(deps: MemoryHandlerDeps): MemoryHandlers {
       handle: async (ctx, input) => deps.memoryService.createMemory(await scope(ctx), input),
     },
     getById: {
-      handle: async (ctx, { id }) => deps.memoryService.getMemoryById(await scope(ctx), id),
+      handle: async (ctx, { id }) => {
+        const resolvedScope = await scope(ctx);
+        const memory = await deps.memoryService.getMemoryById(resolvedScope, id);
+        await auditMemoryRead(deps.memoryAccessAuditor, ctx, resolvedScope, memory.id);
+        return memory;
+      },
     },
     getByCodename: {
-      handle: async (ctx, { codename }) =>
-        deps.memoryService.getMemoryByCodename(await scope(ctx), codename),
+      handle: async (ctx, { codename }) => {
+        const resolvedScope = await scope(ctx);
+        const memory = await deps.memoryService.getMemoryByCodename(resolvedScope, codename);
+        await auditMemoryRead(deps.memoryAccessAuditor, ctx, resolvedScope, memory.id);
+        return memory;
+      },
     },
     getBySlug: {
-      handle: async (ctx, { slug }) => deps.memoryService.getMemoryBySlug(await scope(ctx), slug),
+      handle: async (ctx, { slug }) => {
+        const resolvedScope = await scope(ctx);
+        const memory = await deps.memoryService.getMemoryBySlug(resolvedScope, slug);
+        await auditMemoryRead(deps.memoryAccessAuditor, ctx, resolvedScope, memory.id);
+        return memory;
+      },
     },
     update: {
       handle: async (ctx, { id, input }) =>
