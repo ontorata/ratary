@@ -191,6 +191,7 @@ const envSchema = z
     SEARCH_IGNORE_PATTERNS: z.string().optional(),
     SEARCH_DEFAULT_MODE: z.enum(['hybrid', 'semantic', 'fulltext', 'title']).default('hybrid'),
     MULTI_QUERY_RRF_K: z.coerce.number().int().min(1).max(500).default(60),
+    SEARCH_MAX_QUERIES: z.coerce.number().int().min(1).max(20).default(5),
     ALIAS_EXACT_BOOST: z.coerce.number().int().min(0).max(1000).default(500),
     TITLE_FUZZY_BOOST: z.coerce.number().int().min(1).max(10).default(3),
     SEARCH_ENRICH_LINK_CAP: z.coerce.number().int().min(0).max(100).default(20),

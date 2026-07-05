@@ -230,6 +230,7 @@ export interface PrecisionSearchManifest {
   supportsExtendedHits: boolean;
   supportsSimilarMemory: boolean;
   supportsByPath: boolean;
+  maxQueries: number;
 }
 
 export interface AICapabilityManifest {

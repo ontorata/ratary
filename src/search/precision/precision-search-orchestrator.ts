@@ -19,6 +19,7 @@ import { SEARCH_CANDIDATE_CAP } from '../ranking.config.js';
 import { rankMemories } from '../ranking.engine.js';
 import type { ScoredMemory } from '../search.service.js';
 import type { IReranker } from '../rerank/ireranker.port.js';
+import { capSearchQueries } from './cap-search-queries.js';
 import { parseIgnorePatterns } from './ignore-patterns.js';
 import type { IPrecisionSearchService } from './iprecision-search-service.interface.js';
 import { MultiQueryRrfFusion } from './multi-query-rrf.js';
@@ -46,9 +47,15 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
   ): Promise<PrecisionSearchResponse> {
     const mode = request.mode ?? (this.env.SEARCH_DEFAULT_MODE as PrecisionSearchMode);
     const warnings: string[] = [];
-    const queries = request.queries.filter((query) => query.trim().length > 0);
+    const capped = capSearchQueries(request.queries, this.env.SEARCH_MAX_QUERIES);
+    const queries = capped.queries;
+    if (capped.truncated) {
+      warnings.push(
+        `queries_truncated:${capped.originalCount}->${this.env.SEARCH_MAX_QUERIES}`,
+      );
+    }
 
-    if (queries.length === 0 && !request.filters && !request.tag && !request.project) {
+    if (capped.originalCount === 0 && !request.filters && !request.tag && !request.project) {
       const listed = await this.reader.findAll({
         ownerId: scope.ownerId,
         workspaceId: workspaceIdFromScope(scope),
@@ -65,7 +72,7 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
 
     const perQuery = new Map<string, Array<ScoredMemory>>();
 
-    for (const query of queries.length ? queries : ['']) {
+    for (const query of queries) {
       const ranked = await this.searchSingleQuery(scope, request, query.trim(), mode, warnings);
       perQuery.set(query, ranked);
     }
@@ -76,7 +83,7 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
         : [...perQuery.values()][0] ?? [];
 
     let hits: ScoredMemory[] = fused;
-    const primaryQuery = queries[0] ?? '';
+    const primaryQuery = queries[0] === '' ? '' : queries[0] ?? '';
 
     if (request.rerank && this.env.SEARCH_RERANK_ENABLED && primaryQuery) {
       const reranked = await this.reranker.rerank(

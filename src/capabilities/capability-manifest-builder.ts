@@ -245,6 +245,7 @@ export class CapabilityManifestBuilder {
               supportsExtendedHits: true,
               supportsSimilarMemory: true,
               supportsByPath: true,
+              maxQueries: this.env.SEARCH_MAX_QUERIES,
             },
           }
         : {}),
