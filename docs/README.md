@@ -8,8 +8,8 @@
 **Nature:** Everything in `docs/` is **descriptive** — it explains the system. It does **not** define AI implementation behavior.
 
 > **AI assistants:** Do **not** treat this folder as implementation authority.  
-> Read **[.ai/START-HERE.md](../.ai/START-HERE.md)** first, then **[.ai/core/constitution/INDEX.md](../.ai/core/constitution/INDEX.md)**.  
-> On conflict, **`.ai/` always wins.**
+> Governance lives in local `.ai/` (not in the production GitHub repo).  
+> Read **[.ai/START-HERE.md](../.ai/START-HERE.md)** when present in a full dev checkout.
 
 ---
 

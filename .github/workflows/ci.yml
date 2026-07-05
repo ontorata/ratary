@@ -27,14 +27,5 @@ jobs:
       - name: Format check
         run: npm run format:check
 
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Test with coverage threshold
-        run: npm run test:coverage
-        env:
-          CLOUDFLARE_ACCOUNT_ID: test-account
-          D1_DATABASE_ID: test-database
-          D1_API_TOKEN: test-token
-          AUTH_SECRET: test-auth-secret-minimum-32-characters!!
-          NODE_ENV: test
+      - name: Production build (typecheck)
+        run: npm run build

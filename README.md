@@ -9,6 +9,8 @@
 | **Founder** | [Lutfi Ramadhan](https://www.linkedin.com/in/lutfiramadhan/) |
 | **Source** | [github.com/ontorata/ratary](https://github.com/ontorata/ratary) |
 
+> **Production repo:** GitHub `ontorata/ratary` ships **stable runtime only** (`src/`, `api/`, `packages/`, human `docs/`). Folder `.ai/` (AI governance) and `tests/` are **gitignored** — keep them locally for development; they are not published to the production remote.
+
 Second brain untuk AI coding assistant — simpan, cari, dan akses seluruh knowledge coding Anda dari berbagai perangkat.
 
 Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemini CLI**, **ChatGPT (REST API)**, dan AI lain yang mendukung MCP stdio.  

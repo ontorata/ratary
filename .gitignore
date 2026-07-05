@@ -9,3 +9,20 @@ coverage/
 .backup-sync-state.json
 .DS_Store
 Thumbs.db
+
+# ---------------------------------------------------------------------------
+# Ratary production boundary (github.com/ontorata/ratary — stable release only)
+# Internal governance + QA stay local; not published to production remote.
+# ---------------------------------------------------------------------------
+
+# AI implementation authority, phases, ADRs (local dev / private workflow)
+.ai/
+
+# Test suite & QA tooling
+tests/
+packages/*/tests/
+vitest.config.ts
+tsconfig.check.json
+
+# Integration / staging test workflow (requires tests/ + Postgres)
+.github/workflows/postgres-staging.yml

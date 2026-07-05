@@ -1,4 +1,6 @@
+.ai/
 tests/
+packages/*/tests/
 dist/
 .env
 .env.local
