@@ -21,12 +21,6 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Vercel serverless SSE break | High | High | Document long-running Node requirement | Mitigated |
 | OAuth misconfiguration exposes owner | Medium | Critical | OIDC_MCP_OWNER_ID required when OAuth ON | Mitigated |
 
-## Deferred risks (carried forward)
-
-| ID | Risk | Mitigation path |
-|----|------|-----------------|
-| D131-01 | ChatGPT CI smoke | Staging manual record |
-
 ---
 
 *Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

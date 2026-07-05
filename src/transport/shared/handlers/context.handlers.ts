@@ -13,6 +13,7 @@ import type { IContextStreamSource } from '../streaming/icontext-stream-source.i
 import type { IStreamPublisher } from '../streaming/istream-publisher.interface.js';
 import { DefaultContextStreamSource } from '../streaming/default-context-stream-source.js';
 import { resolveHandlerScope } from './resolve-handler-scope.js';
+import { buildContextAuditFields } from '../context-audit-fields.js';
 
 export interface ContextHandlerDeps {
   contextService: ContextService;
@@ -40,8 +41,7 @@ export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers
       handle: async (ctx, request) =>
         deps.contextService.buildContext(await scope(ctx), {
           ...request,
-          auditIdentityId: ctx.auth?.identityId,
-          auditIpAddress: ctx.clientIp,
+          ...buildContextAuditFields(ctx),
         }),
     },
     buildPrompt: {
@@ -55,14 +55,16 @@ export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers
           context: body.context,
           task: body.task,
           systemRole: body.systemRole,
+          ...buildContextAuditFields(ctx),
         }),
     },
     streamContext: {
       handle: async (ctx, input) => {
         const { publisher, ...request } = input;
         const resolvedScope = await scope(ctx);
+        const auditedRequest = { ...request, ...buildContextAuditFields(ctx) };
         try {
-          for await (const chunk of streamSource.stream(request, resolvedScope)) {
+          for await (const chunk of streamSource.stream(auditedRequest, resolvedScope)) {
             await publisher.publish(chunk);
           }
           await publisher.close();

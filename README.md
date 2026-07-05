@@ -109,7 +109,7 @@ Hybrid search across SQL, vectors, lexical index, and graph — ranked, bounded,
 **Precision Search (Phase 6.6, opt-in):** When `PRECISION_SEARCH_ENABLED=true`, browse search adds explicit modes (`hybrid` | `semantic` | `fulltext` | `title`), multi-query RRF, alias/path-aware filters, similar-memory and by-path reads, optional rerank, and enriched hit envelopes — without changing the default OFF path.
 
 ### Learning
-Quality signals, reflection, consolidation, and evolution pipelines — optional, env-gated. Your brain gets smarter over time without retraining the model.
+Quality signals, reflection, consolidation, and **memory evolution** (version history, restore, merge) — optional, env-gated. Semantic compression runs on an **async queue** so LLM summarizers never block CRUD. Your brain gets smarter over time without retraining the model.
 
 ### Agent runtime boundary
 Capability manifests, workspace/agent scoping, and **28 MCP tools** — so external agents discover what the brain can do without embedding runtime inside Ratary.
@@ -268,7 +268,7 @@ src/
   routes/           HTTP routing
   controllers/      Request/response mapping
   services/         MemoryService, retrieval, context assembly
-  repositories/     Scoped data access
+  repositories/     Scoped data access (MemoryRepository facade + reader/writer SQL modules)
   ports/            Vendor-neutral contracts (ISqlDatabase, IVectorStore, …)
   infrastructure/   D1, Postgres, pgvector, R2, Redis, Neo4j adapters
   transport/mcp/    MCP server (28 tools)

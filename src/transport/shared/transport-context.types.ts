@@ -22,8 +22,10 @@ export interface TransportContext {
   readonly projectId?: string;
   readonly auth: AuthUser | null;
   readonly source: TransportSource;
-  /** Client IP when available (REST edge). */
+  /** Client IP when available (REST/SSE edge). */
   readonly clientIp?: string;
+  /** Caller identity when available without full auth (e.g. gRPC metadata). */
+  readonly auditIdentityId?: string;
 }
 
 /** Optional gRPC metadata keys for scope resolution (Phase 10.5E). */
@@ -34,4 +36,6 @@ export interface GrpcTransportMetadata {
   agentId?: string;
   organizationId?: string;
   projectId?: string;
+  identityId?: string;
+  clientIp?: string;
 }

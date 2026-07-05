@@ -62,7 +62,7 @@ Phase 10 landed the adapter; Phase 11 lands the **runbook automation** and **gat
 | **11B** | Staging harness + schema bootstrap | **P0 — gate blocker** |
 | **11A** | Backfill + parity scripts + `MIGRATION.md` | **P0** |
 | **11D** | PANDUAN §8 + README ops matrix | P1 |
-| **11C** | `MemoryRepository` reader/writer split | **P2 — deferred** until 11B PASS; ADR-019 if structural |
+| **11C** | `MemoryRepository` reader/writer split | ✅ **Implemented** 2026-07-05 — ADR-019 |
 
 **Recommended sequence:** 11B schema → 11B harness green → 11A scripts → 11A runbook → 11D docs → (optional) 11C.
 
@@ -204,15 +204,16 @@ npm run test:postgres-staging
 
 ---
 
-## Optional track 11C (deferred)
+## Track 11C (Implemented 2026-07-05)
 
-Split `MemoryRepository` into internal reader/writer modules — **not in initial commit plan**.
+Split `MemoryRepository` into internal reader/writer modules — **shipped** per ADR-019.
 
 | Gate | Requirement |
 |------|-------------|
-| Prerequisite | 11B staging harness PASS |
-| ADR | ADR-019 **Proposed** (2026-07-05) — **Approved** required before 11C code |
-| Scope | Refactor-only; zero behavior change; full suite green |
+| Prerequisite | 11B staging harness PASS ✅ |
+| ADR | ADR-019 **Implemented** (2026-07-05) |
+| Modules | `memory-reader.sql.ts`, `memory-writer.sql.ts`, `memory-sql.constants.ts` |
+| Scope | Refactor-only; zero behavior change; **832 tests** green |
 
 ---
 
@@ -305,7 +306,7 @@ If staging harness blocks CI: disable workflow with owner approval; track in `RI
 | COMPLETION.md | ✅ | [COMPLETION.md](COMPLETION.md) — success criteria evidence |
 | RETROSPECTIVE.md | ✅ | [RETROSPECTIVE.md](RETROSPECTIVE.md) — lessons learned |
 | Staging harness PASS | ✅ | Local 3/3 + CI workflow authored |
-| 11C repo split | ⏸️ Deferred | Optional; requires ADR-019 if structural |
+| 11C repo split | ✅ Implemented | ADR-019 — reader/writer modules (2026-07-05) |
 
 ---
 

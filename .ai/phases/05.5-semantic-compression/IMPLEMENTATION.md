@@ -15,7 +15,7 @@
 | Consolidator | Extended `MemoryConsolidator` — summary, archive, `consolidates` relation, metadata | ✅ |
 | Schema | `compression_meta`, `compression_version`, `lifecycle_state` columns | ✅ |
 | Job runner | `CompressionJobRunner` | ✅ |
-| Scheduler port | `ICompressionScheduler` + `LocalCompressionScheduler` | ✅ |
+| Scheduler port | `ICompressionScheduler` + `LocalCompressionScheduler` (async queue, D55-01) | ✅ |
 | Composition | `create-compression-ports.ts` | ✅ |
 | Env | `COMPRESSION_ENABLED`, `COMPRESSION_POLICY`, `COMPRESSION_SCHEDULER` | ✅ |
 | CLI | `compress:memories` / `compress:memories:execute` (dry-run default) | ✅ |
@@ -64,6 +64,8 @@ createCompressionPorts(sql, env) → {
   scheduler?: LocalCompressionScheduler,  // when COMPRESSION_SCHEDULER=local
 }
 ```
+
+`LocalCompressionScheduler.enqueue` buffers jobs; `runPending` drains via `CompressionJobRunner` — LLM summarizer work stays off the CRUD hot path (D55-01).
 
 Phase 04.7 stewardship reuses the same consolidator + policy when `COMPRESSION_ENABLED=true`.
 

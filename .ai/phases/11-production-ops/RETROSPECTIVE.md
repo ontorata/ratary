@@ -87,7 +87,7 @@ None — Phase 11 implementation completed without triggering any tracked risk.
 
 | Item | Severity | Recommendation |
 |------|----------|----------------|
-| T-01: `MemoryRepository` ~860 lines | Medium | Accepted — ADR-019 Proposed bounds 11C; not blocking cutover |
+| T-01: `MemoryRepository` ~860 lines | Medium | **Mitigated** — ADR-019 11C split into reader/writer modules (2026-07-05) |
 | Staging integration test skipped | Low | Document local reproduction; ensure Phase 13 CI has live service containers |
 | No E2E test at CI time for Postgres | Low | Staging harness CI job covers this when owner provisions Postgres |
 

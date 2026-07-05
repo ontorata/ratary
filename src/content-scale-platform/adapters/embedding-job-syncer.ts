@@ -41,6 +41,7 @@ export class EmbeddingJobSyncer implements IEmbeddingJobSyncer {
         ownerId,
         projectId: input.projectId,
         batchSize: input.batchSize ?? this.env.EMBEDDING_BATCH_SIZE,
+        maxMemories: this.env.EMBEDDING_JOB_MAX_MEMORIES,
         dryRun: input.dryRun ?? false,
         forceReembed: input.forceReembed ?? false,
       });

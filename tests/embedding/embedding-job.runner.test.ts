@@ -182,4 +182,21 @@ describe('EmbeddingJobRunner', () => {
     expect(report.embedded).toBe(0);
     expect(backfills).toHaveLength(0);
   });
+
+  it('should cap scanned memories via maxMemories', async () => {
+    pending = Array.from({ length: 50 }, (_, i) =>
+      makeMemory({ id: `mem-${i}`, title: `Title ${i}` }),
+    );
+
+    const runner = new EmbeddingJobRunner(reader, writer, provider, store);
+    const report = await runner.run({
+      ownerId: 'owner-1',
+      dryRun: true,
+      batchSize: 10,
+      maxMemories: 15,
+    });
+
+    expect(report.scanned).toBe(15);
+    expect(report.embedded).toBe(15);
+  });
 });

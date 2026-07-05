@@ -19,7 +19,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Last-write-wins silent data loss | Medium | High | Document LWW; manual_queue strategy | Mitigated |
 | Cross-workspace sync leak | Low | Critical | Scope on pull/push; isolation tests | Mitigated |
 | Stale write not rejected | Medium | Medium | SyncStaleDetector + reconcileWrite reject | Mitigated |
-| No MCP sync surface | Medium | Low | MCP tools `sync_status`, `sync_pull`, `sync_push` (ADR-042) | Mitigated (2026-07-05) |
+| No MCP sync surface | Medium | Low | MCP sync_status/pull/push tools + sync-tools.test.ts | Mitigated |
 
 ---
 

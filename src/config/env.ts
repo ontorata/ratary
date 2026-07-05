@@ -45,6 +45,7 @@ const envSchema = z
     EMBEDDING_API_KEY: z.string().optional(),
     EMBEDDING_BASE_URL: z.string().default('https://api.openai.com/v1'),
     EMBEDDING_BATCH_SIZE: z.coerce.number().int().positive().default(32),
+    EMBEDDING_JOB_MAX_MEMORIES: z.coerce.number().int().positive().default(10_000),
     EMBEDDING_MAX_RETRIES: z.coerce.number().int().positive().default(3),
 
     // Hybrid retrieval (Phase 6)

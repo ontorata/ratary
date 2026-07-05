@@ -19,7 +19,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Control plane mutates memories | Low | Critical | Metadata only; no CRUD in control plane | Mitigated |
 | Usage meter memory growth | Medium | Medium | In-memory default; SQL store option | Accepted |
 | DR restore partial write | Medium | High | Restore count-only MVP; manual import | Accepted |
-| Tenant topology stale | Medium | Low | Manual refresh; federation integration | Identified |
+| Tenant topology stale | Medium | Low | Live store read + `generatedAt` on response; no cache | Mitigated |
 
 ---
 

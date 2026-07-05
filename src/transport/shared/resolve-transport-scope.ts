@@ -84,6 +84,8 @@ export function buildTransportContextFromGrpcMetadata(
     projectId: metadata.projectId?.trim(),
     auth: null,
     source: 'grpc',
+    clientIp: metadata.clientIp?.trim(),
+    auditIdentityId: metadata.identityId?.trim(),
   };
 }
 

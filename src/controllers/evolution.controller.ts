@@ -33,6 +33,37 @@ export function createEvolutionController(
       const diff = await evolutionService.diffVersions(scope, request.params.id, fromVersion, against);
       reply.send(diff);
     },
+
+    async restoreVersion(
+      request: FastifyRequest<{ Params: { id: string; version: string } }>,
+      reply: FastifyReply,
+    ): Promise<void> {
+      const scope = await resolveMemoryScopeFromRequest(request, scopeResolver);
+      const versionNumber = Number.parseInt(request.params.version, 10);
+      const memory = await evolutionService.restoreToVersion(
+        scope,
+        request.params.id,
+        versionNumber,
+      );
+      reply.send(memory);
+    },
+
+    async mergeVersions(
+      request: FastifyRequest<{
+        Params: { id: string };
+        Body: { baseVersion: number; incomingVersion: number | 'current' };
+      }>,
+      reply: FastifyReply,
+    ): Promise<void> {
+      const scope = await resolveMemoryScopeFromRequest(request, scopeResolver);
+      const memory = await evolutionService.mergeVersions(
+        scope,
+        request.params.id,
+        request.body.baseVersion,
+        request.body.incomingVersion,
+      );
+      reply.send(memory);
+    },
   };
 }
 

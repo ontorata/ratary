@@ -15,7 +15,7 @@ Activate **async paths** declared in Phase 10 but not on the hot path: domain ev
 |-------|-------------|--------|
 | 12A | Domain event consumers via `IEventBus` | ✅ |
 | 12B | Audit fan-out — `memory.accessed` → analytics store | ✅ |
-| 12C | Request context on audit — identity/IP | ⏸ Deferred |
+| 12C | Request context on audit — identity/IP (D12-01) | ✅ |
 | 12D | OTel production runbook | ⏸ Deferred (Phase 19) |
 
 **Note:** Full observability platform (Grafana, SLO dashboards) is **Phase 19** — separate from Phase 12 **business** event bus.

@@ -20,21 +20,17 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 | Importance score manipulation | Medium | Medium | Bounded deltas; auth on REST ingest | Mitigated |
 | Signal store PII growth | Medium | Medium | Typed signals; no raw chat dump | Mitigated |
 | Ranking auto-mutation | Medium | High | RANKING_ADAPTATION_ENABLED=false default | Mitigated |
-| Signal ingest without MCP | Medium | Low | REST `POST /api/v1/signals` — **D85-01** | Accepted |
-| Learning bus vs store split | Low | Medium | **8.6** store bridge mitigates; **D85-02** bus open | Accepted |
-| Rank order untested E2E | Low | Low | Unit policy + ingest — **D85-04** | Accepted |
 
 ## Deferred risks (carried forward)
 
-| ID | Risk | Mitigation path | Status |
-|----|------|-----------------|--------|
-| D85-01 | MCP submit_signal gap | REST ingest | ✅ Closed |
-| D85-02 | No event bus fan-out on ingest | **8.6** learning store + Phase 12 publisher | ⏳ Open |
-| D85-03 | Ranking adaptation stub | Hot-path bumpImportance; CLI dry-run | ⏳ Open |
-| D85-04 | Rank order E2E gap | Unit tests | ⏳ Open |
-| D85-05 | REST E2E signals | Composition test + staging | ⏳ Open |
-| D85-06 | lifecycleState API | importance / access_count | ✅ Closed |
+| ID | Risk | Mitigation path |
+|----|------|-----------------|
+| D85-01 | MCP submit_signal | Closed — MCP + REST share processSignalIngest |
+| D85-02 | Event bus fan-out on ingest | Closed — LearningEventRecorder + DomainEventPublisher in processSignalIngest |
+| D85-03 | Ranking adaptation stub | Accepted — RANKING_ADAPTATION_ENABLED=false default; CLI dry-run |
+| D85-04 | Rank order E2E gap | Accepted — ranker + learning orchestrator unit tests |
+| D85-05 | REST E2E signals | Closed — tests/api/signals.test.ts (D85-05) |
 
 ---
 
-*Gate PASS 2026-07-04. Post-gate mitigations appended 2026-07-04.*
+*Gate PASS 2026-07-04 — realized risks locked; deferred items tracked above or in CHECKLIST.*

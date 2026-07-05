@@ -21,7 +21,7 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 | Metric | Value |
 |--------|-------|
 | Phase gate (2026-07-04) | 688 tests green |
-| Current regression | 689 passed | 3 skipped (default env, 2026-07-04) |
+| Current regression | 840 passed | 3 skipped (default env, 2026-07-05) |
 
 ---
 
@@ -34,6 +34,7 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 | `tests/auth/oidc-access-token.provider.test.ts` | OIDC bearer validation for MCP OAuth |
 | `tests/api/remote-mcp-oauth.test.ts` | 401 + WWW-Authenticate + resource_metadata on /mcp |
 | `tests/mcp/tools.test.ts` | 20 tools via stdio and remote binding parity |
+| `tests/transport/remote-mcp-chatgpt-smoke.test.ts` | D131-01 ChatGPT-style initialize + capabilities payload |
 
 ---
 
@@ -55,7 +56,7 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 
 ## Deferred tests
 
-- [ ] Automated ChatGPT remote connection smoke in CI
+- [x] Automated ChatGPT remote connection smoke in CI (D131-01 — `remote-mcp-chatgpt-smoke.test.ts`)
 - [ ] Vercel serverless long-lived SSE sessions
 
 ---

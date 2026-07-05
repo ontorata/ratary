@@ -39,6 +39,8 @@ npm run evolution:history -- --memory=<uuid> --owner=<ownerId>
 # REST (when enabled)
 GET /api/v1/memory/:id/versions
 GET /api/v1/memory/:id/versions/:version/diff?against=current
+POST /api/v1/memory/:id/versions/restore/:version   # D97-01
+POST /api/v1/memory/:id/versions/merge              # D97-02 — body: { baseVersion, incomingVersion }
 ```
 
 Updates automatically archive pre-update snapshots when evolution is enabled. `memories` row remains the **Current** head.

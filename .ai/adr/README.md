@@ -24,7 +24,7 @@
 | [016-redis-streams-event-bus.md](016-redis-streams-event-bus.md) | Redis Streams event bus | **Implemented** | Async events |
 | [017-memory-access-audit.md](017-memory-access-audit.md) | Memory access audit (opt-in) | **Implemented** | Compliance trail |
 | [018-production-postgres-cutover.md](018-production-postgres-cutover.md) | Production Postgres cutover | **Implemented** | Phase 11 gate PASS |
-| [019-memory-repository-module-split.md](019-memory-repository-module-split.md) | Memory repository module split (Phase 11C optional) | **Proposed** | Bounds optional 11C refactor |
+| [019-memory-repository-module-split.md](019-memory-repository-module-split.md) | Memory repository module split (Phase 11C optional) | **Implemented** | Reader/writer modules behind facade |
 | [020-event-consumer-architecture.md](020-event-consumer-architecture.md) | Event consumer architecture (Phase 12) | **Implemented** | Analytics fan-out, Phase 13 events |
 | [023-semantic-compression-policy.md](023-semantic-compression-policy.md) | Semantic compression policy (Phase 5.5) | **Implemented** | Token scale / consolidation |
 | [024-progressive-retrieval-policy.md](024-progressive-retrieval-policy.md) | Progressive retrieval policy (Phase 6.5) | **Implemented** | Context budget / staged hydration |
@@ -58,7 +58,7 @@
 
 **Implemented (2026-07-05):** ADR-060 (Phase 6.6 Precision Search) — default OFF via `PRECISION_SEARCH_ENABLED`.
 
-**Proposed (2026-07-05):** ADR-019 (Phase 11C optional `MemoryRepository` reader/writer split) — bounds scope; **no code** until owner marks **Approved**.
+**Implemented (2026-07-05):** ADR-019 Phase 11C — `memory-reader.sql.ts` + `memory-writer.sql.ts` behind `MemoryRepository` facade.
 
 **Rule:** No implementation of **Draft** ADRs until owner marks **Approved**. **Implemented** ADRs reflect shipped code (opt-in where noted).
 
@@ -68,4 +68,4 @@
 
 **Phases 10.5–25 ADR gates:** ADR-027–048 **Implemented** (2026-07-04) — platform phases default OFF via env where noted.
 
-**POST-ROADMAP:** [10-POST-ROADMAP.md](../phases/roadmap/10-POST-ROADMAP.md) — optional 11C bounded by ADR-019 **Proposed**.
+**POST-ROADMAP:** [10-POST-ROADMAP.md](../phases/roadmap/10-POST-ROADMAP.md) — optional 11C **Implemented** (ADR-019, 2026-07-05).

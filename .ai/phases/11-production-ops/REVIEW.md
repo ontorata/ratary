@@ -163,7 +163,7 @@ Canonical DDL source: `src/db/migrations.ts` → `runSchemaMigrations(client, 'p
 
 | Item | Reason | Gate |
 |------|--------|------|
-| 11C `MemoryRepository` reader/writer split | Optional; ADR-019 **Proposed** (2026-07-05) | Accepted risk — implement only after ADR Approved |
+| 11C `MemoryRepository` reader/writer split | ✅ Implemented — ADR-019 (2026-07-05) | `memory-reader.sql.ts` + `memory-writer.sql.ts` facade |
 | Production cutover (S2→S3) | Owner-only action; not automated | When production Postgres ready |
 
 ---

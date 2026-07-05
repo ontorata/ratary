@@ -15,6 +15,7 @@
 | 13.1B | `McpContextBinding` — stdio vs remote scope | ✅ |
 | 13.1C | Env + manifest `supportsRemoteMcp` | ✅ |
 | 13.1E | Remote MCP helper tests | ✅ |
+| POST-MVP | ChatGPT initialize smoke in CI (D131-01) | ✅ |
 | 13.1D | MCP OAuth discovery + OIDC bearer bridge | ✅ |
 
 ---
@@ -35,6 +36,7 @@ src/auth/providers/
 tests/transport/mcp-oauth-metadata.test.ts
 tests/auth/oidc-access-token.provider.test.ts
 tests/api/remote-mcp-oauth.test.ts
+tests/transport/remote-mcp-chatgpt-smoke.test.ts
 ```
 
 ---

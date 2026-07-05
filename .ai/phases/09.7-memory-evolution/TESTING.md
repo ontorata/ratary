@@ -14,6 +14,7 @@
 | `tests/composition/memory-evolution-ports.test.ts` | Env gating |
 | `tests/db/extension-tracks-migration.test.ts` | `memory_versions`, `memory_heads` |
 | `tests/capabilities/manifest-builder.test.ts` | `supportsMemoryEvolution` |
+| `tests/api/evolution.test.ts` | REST restore (D97-01) + merge (D97-02) E2E |
 
 ---
 
@@ -24,14 +25,11 @@
 - [x] Composition disabled by default
 - [x] Migration creates version + head tables
 - [x] MemoryService signatures unchanged when flag off
+- [x] E2E update → list versions → restore head (D97-01)
+- [x] E2E merge base version + current head via REST (D97-02)
 
 ---
 
-## Deferred tests
-
-- [ ] E2E update → list versions → diff REST
-- [ ] Coordinator integration with MockD1
-- [ ] Restore-to-version flow
 ## Current regression
 
-689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)
+840 passed | 3 skipped (default env, 2026-07-05) (full suite, all master flags OFF)

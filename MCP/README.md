@@ -85,6 +85,7 @@ REMOTE_MCP_ENABLED=true
 ```
 
 Endpoint: `https://your-host/mcp` (Bearer `aic_...` or OAuth when enabled).  
+CI smoke: `tests/transport/remote-mcp-chatgpt-smoke.test.ts` (ChatGPT-style initialize payload).  
 Details: [Phase 13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) · [ADR-048](../.ai/adr/048-remote-mcp-transport.md)
 
 ---

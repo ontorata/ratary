@@ -13,6 +13,7 @@
 | Publisher | `tests/events/domain-event-publisher.test.ts` | Publish + error isolation |
 | Analytics consumer | `tests/events/memory-access-analytics.consumer.test.ts` | Idempotent insert |
 | Manifest | `tests/capabilities/manifest-builder.test.ts` | `supportsEventConsumers` |
+| Context audit fields | `tests/transport/context-audit-fields.test.ts` | D12-01 identity/IP → `buildContext` audit |
 
 ---
 
@@ -39,4 +40,4 @@ npm run typecheck && npm run lint && npm test
 ```
 ## Current regression
 
-689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)
+840 passed | 3 skipped (default env, 2026-07-05) (full suite, all master flags OFF)

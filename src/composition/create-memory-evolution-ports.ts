@@ -37,19 +37,23 @@ export function createMemoryEvolutionPorts(sql: ISqlDatabase, env: Env): MemoryE
 
   const versionStore = new SqlMemoryVersionStore(sql);
   const headStore = new SqlMemoryHeadStore(sql);
-  const memoryReader = new MemoryRepository(sql);
+  const memoryRepository = new MemoryRepository(sql);
   const diffEngine = new DefaultMemoryDiffEngine();
   const confidenceScorer = new DefaultVersionConfidenceScorer();
+  const coordinator = new MemoryEvolutionCoordinator(versionStore, headStore);
 
   return {
     enabled: true,
-    coordinator: new MemoryEvolutionCoordinator(versionStore, headStore),
+    coordinator,
     service: new MemoryEvolutionService(
-      memoryReader,
+      memoryRepository,
+      memoryRepository,
       versionStore,
       headStore,
       diffEngine,
       confidenceScorer,
+      mergePolicy,
+      coordinator,
     ),
     mergePolicy,
   };

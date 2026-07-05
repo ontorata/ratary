@@ -28,6 +28,8 @@ export interface TenantTopology {
   organizationId: string;
   workspaceId: string;
   ownerId: string;
+  /** ISO timestamp when topology was assembled (live read — not cached). */
+  generatedAt: string;
   status: TenantMetadataStatus;
   primaryRegion: {
     id: string;

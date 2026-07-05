@@ -32,7 +32,6 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 - gRPC/MCP dedicated hooks deferred
 - No bundled docker-compose stack
-- ~~Cost gauges TBD~~ → **D19-01 shipped** (2026-07-05)
 
 ---
 
@@ -44,7 +43,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Recommendations
 
-- Enable cost path in staging: `OBSERVABILITY_PLATFORM` + `CONTROL_PLANE_ENABLED` + `USAGE_METER_ENABLED` + `OBS_COST_METRICS_ENABLED`
+- Enable cost path in staging: OBS_COST_METRICS_ENABLED + USAGE_METER_ENABLED (D19-01 shipped)
 - Add gRPC/MCP instrumentation before combined prod enable
 
 ---

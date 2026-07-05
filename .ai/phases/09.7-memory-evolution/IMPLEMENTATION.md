@@ -15,8 +15,10 @@
 | Diff | `DefaultMemoryDiffEngine` field-level diff | ✅ |
 | Merge | `DefaultMemoryMergePolicy` (non-destructive field merge) | ✅ |
 | Confidence | `DefaultVersionConfidenceScorer` | ✅ |
-| Service | `MemoryEvolutionService` list + diff | ✅ |
+| Service | `MemoryEvolutionService` list + diff + restore + merge | ✅ |
 | REST | `GET .../versions`, `GET .../versions/:n/diff` | ✅ |
+| REST | `POST .../versions/restore/:version` (D97-01) | ✅ |
+| REST | `POST .../versions/merge` (D97-02) | ✅ |
 | CLI | `evolution:history` | ✅ |
 | Composition | `create-memory-evolution-ports.ts` | ✅ |
 | Manifest | `supportsMemoryEvolution` | ✅ |

@@ -31,7 +31,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 ## What was harder than expected
 
 - Semantic similarity source not built
-- Phase 04.7 `GraphRepairTask` wraps relation inference orchestrator
+- Phase 04.7 graph-repair task not wired
 - Conversation/dependency sources deferred
 
 ---
@@ -45,6 +45,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Recommendations
 
+- Register graph-repair task in 04.7 orchestrator
 - Add embedding-based similarity source for scale
 
 ---

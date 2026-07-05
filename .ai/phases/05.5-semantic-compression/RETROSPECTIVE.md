@@ -30,6 +30,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## What was harder than expected
 
+- `ICompressionSummarizer` LLM adapter not built
 - Admin REST `/admin/compress` and MCP status tool deferred
 - Token benchmark evidence not archived in COMPLETION.md
 

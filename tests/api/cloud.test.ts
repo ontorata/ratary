@@ -105,6 +105,7 @@ describe('Cloud Platform API', () => {
     const body = response.json();
     expect(body.primaryRegion.code).toBe('local');
     expect(body.workspaceId).toBe(workspaceId);
+    expect(body.generatedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
 
   it('GET /api/v1/capabilities includes cloud section when enabled', async () => {

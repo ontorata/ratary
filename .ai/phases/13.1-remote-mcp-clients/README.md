@@ -18,6 +18,7 @@ Enable **cloud AI clients** (ChatGPT Custom MCP, Claude.ai web, future remote MC
 | **13.1B** | API-key auth at MCP boundary (reuse `aic_...`) | required when ON |
 | **13.1C** | ChatGPT setup runbook + OpenAPI Actions interim path | docs |
 | **13.1D** | MCP OAuth discovery + OIDC bearer at `/mcp` (Phase 17 bridge) | ✅ |
+| **POST-MVP** | ChatGPT initialize CI smoke (`remote-mcp-chatgpt-smoke.test.ts`) | ✅ D131-01 |
 
 **Interim (no code):** Custom GPT **Actions** via REST + `aic_...` — documented in [PANDUAN.md](../../../docs/PANDUAN.md) until 13.1 ships.
 

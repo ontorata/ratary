@@ -338,6 +338,40 @@ Endpoint: `GET /api/v1/context/stream?query=...` (auth Bearer). HTTP **429** jik
 
 Detail ops: [.ai/phases/13-protocol-layer/IMPLEMENTATION.md](../.ai/phases/13-protocol-layer/IMPLEMENTATION.md).
 
+### Memory evolution (Phase 09.7)
+
+Riwayat versi immutable + restore/merge head (default OFF):
+
+```env
+MEMORY_EVOLUTION_ENABLED=true
+MEMORY_EVOLUTION_STORE_PROVIDER=sql
+```
+
+```bash
+# CLI
+npm run evolution:history -- --memory=<uuid> --owner=<ownerId>
+
+# REST (auth Bearer)
+GET  /api/v1/memory/:id/versions
+GET  /api/v1/memory/:id/versions/:version/diff?against=current
+POST /api/v1/memory/:id/versions/restore/:version
+POST /api/v1/memory/:id/versions/merge
+# body merge: { "baseVersion": 1, "incomingVersion": "current" }
+```
+
+Detail: [.ai/phases/09.7-memory-evolution/README.md](../.ai/phases/09.7-memory-evolution/README.md).
+
+### Semantic compression async (Phase 05.5)
+
+Kompresi cluster duplikat + scheduler in-process (LLM summarizer tidak di hot path CRUD):
+
+```env
+COMPRESSION_ENABLED=true
+COMPRESSION_SCHEDULER=local   # enqueue + runPending (D55-01)
+```
+
+CLI: `npm run compress:memories` (dry-run default) · `compress:memories:execute`.
+
 ---
 
 ## 8. Infrastruktur platform (Fase 10 + 11)
@@ -356,6 +390,10 @@ Adapter eksternal diaktifkan melalui variabel lingkungan di composition root. **
 | `ANALYTICS_PROVIDER` | `none` | DuckDB | Dev analytics (Phase 12) |
 | `ENTERPRISE_RBAC` | `false` | RBAC | Workspace RBAC (Phase 10) |
 | `MEMORY_ACCESS_AUDIT` | `false` | Audit | `memory.accessed` trail (ADR-017) |
+| `EVENT_CONSUMERS_ENABLED` | `false` | Events | Domain event consumers (Phase 12) |
+| `MEMORY_EVOLUTION_ENABLED` | `false` | Evolution | Version history + restore/merge (Phase 09.7) |
+| `COMPRESSION_ENABLED` | `false` | Compression | Semantic compression (Phase 05.5) |
+| `COMPRESSION_SCHEDULER` | `none` | Compression | `local` = async queue (D55-01) |
 | `OTEL_ENABLED` | `false` | OTel | OpenTelemetry HTTP tracing |
 
 Rincian ADR: [.ai/adr/README.md](adr/README.md). Contoh variabel: [.env.example](../.env.example).

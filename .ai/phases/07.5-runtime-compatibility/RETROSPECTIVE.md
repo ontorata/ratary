@@ -31,25 +31,21 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 ## What was harder than expected
 
 - Condensed manifest in MCP `initialize` metadata not built
-- Remote capability negotiation handshake deferred → **closed D7.5-03**
+- Remote capability negotiation handshake deferred
 
 ---
 
 ## Accepted debt
 
-| ID | Item | Mitigation | Status |
-|----|------|------------|--------|
-| D7.5-01 | Full manifest requires explicit capabilities call | Optional condensed `serverInfo` snapshot | ✅ Closed — `_meta['io.aibrain/capabilities']` on initialize |
-| D7.5-02 | External SDK name drift (`@ratary/client`) | Phase 16 `@ratary/sdk` in monorepo | ✅ Closed |
-| D7.5-03 | No runtime negotiation protocol | Pull manifest; handshake deferred | ✅ Closed — REST POST + MCP initialize `_meta` + `negotiate_capabilities` |
+- Full manifest requires explicit capabilities call
+- No runtime negotiation protocol
 
 ---
 
 ## Recommendations
 
-- D7.5-01: embed condensed snapshot in MCP `initialize` `serverInfo` (Phase 13.1 follow-up)
-- D7.5-02: ✅ `@ratary/sdk` `CapabilitiesApi.get()` consumes manifest (Phase 16)
-- D7.5-03: ✅ REST `POST /capabilities/negotiate` + MCP initialize negotiation `_meta` + `negotiate_capabilities` tool
+- Embed condensed snapshot in MCP `initialize` serverInfo
+- Wire Phase 16 `@ratary/sdk` `getCapabilities()` to consume manifest
 
 ---
 

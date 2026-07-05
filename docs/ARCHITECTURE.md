@@ -32,6 +32,8 @@ Agent planning and execution stay **outside** this repository (MCP/REST consumer
 
 **Phase 19 (Observability):** Prometheus scrape, Grafana dashboard packs, SLO templates, and optional FinOps cost gauges bridged from Phase 18 usage metering (`OBS_COST_METRICS_ENABLED`). Default OFF — see [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md).
 
+**POST-MVP backlog (2026-07-05):** restore/merge version control (09.7), context audit identity/IP (12), async compression scheduler (05.5), ChatGPT remote MCP CI smoke (13.1). All default OFF — see [.ai/core/architecture/10-PHASE-STATUS.md](../.ai/core/architecture/10-PHASE-STATUS.md).
+
 ---
 
 ## Layer model (summary)
@@ -70,6 +72,8 @@ Recorded in [adr/](adr/). ADR decision text is immutable; status may change (Pro
 | [007](adr/007-multi-ai-workspace-scope.md) | Multi-AI workspace scope — **Implemented** |
 | [008](adr/008-platform-architecture.md) | Platform ports (Phase 9.5) — **Implemented** |
 | [009–016](adr/README.md) | Phase 10 infrastructure adapters — **Approved** |
+| [019](../.ai/adr/019-memory-repository-module-split.md) | MemoryRepository reader/writer split (Phase 11C) — **Implemented** |
+| [040](../.ai/adr/040-memory-evolution-version-control.md) | Memory evolution restore/merge (Phase 09.7) — **Implemented** |
 
 Full index: [adr/README.md](adr/README.md).
 

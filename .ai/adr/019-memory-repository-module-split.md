@@ -1,7 +1,8 @@
 # ADR-019: Memory Repository Module Split (Phase 11C — Optional)
 
-**Status:** Proposed  
-**Date:** 2026-07-05  
+**Status:** Implemented  
+**Approved:** 2026-07-05 (owner)  
+**Implemented:** 2026-07-05  
 **Deciders:** Project owner  
 **Phase:** 11 — Production Operations (optional track **11C**)  
 **Related:** [ADR-004](004-repository-port-types.md) Option B · [ADR-018](018-production-postgres-cutover.md) · [11-production-ops DESIGN](../phases/11-production-ops/DESIGN.md#11c--repository-hardening-optional)
@@ -92,7 +93,7 @@ Shared SQL helpers may live in `memory-sql.helpers.ts` if duplication appears �
 
 - **Gain:** Documented gate prevents unbounded 11C refactors.
 - **Accept:** Large monolith remains until owner approves and schedules 11C.
-- **Accept:** ADR-019 Proposed alone ships **no code**.
+- **Accept:** ADR-019 Accepted alone ships **no code** — bounds optional 11C until owner marks **Approved**.
 
 ---
 

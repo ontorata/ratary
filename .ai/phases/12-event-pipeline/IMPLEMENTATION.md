@@ -14,7 +14,7 @@
 | 12A | `DomainEventPublisher` + `IMemoryDomainEventCoordinator` | ✅ |
 | 12A | Post-commit hooks on MemoryService (fire-and-forget) | ✅ |
 | 12B | `memory.accessed` → `IAnalyticsStore` fan-out | ✅ |
-| 12C | Identity/IP on context audit | ⏸ Deferred (payload fields ready) |
+| 12C | Identity/IP on context audit (D12-01) | ✅ |
 | 12D | OTel production runbook | ⏸ Deferred (Phase 19 overlap) |
 | Composition | `create-event-pipeline-ports.ts` | ✅ |
 | Env | `EVENT_CONSUMERS_ENABLED=false` default | ✅ |
@@ -38,9 +38,12 @@ src/events/
   index.ts
 src/infrastructure/audit/event-publishing-memory-access-auditor.ts
 src/composition/create-event-pipeline-ports.ts
+src/transport/shared/
+  context-audit-fields.ts              buildContextAuditFields (D12-01)
+  transport-context.types.ts           auditIdentityId on TransportContext
 ```
 
-Wired in: `rest-server.ts`, `grpc-server.ts`, `mcp-server.ts` (stdio bootstrap).
+Wired in: `rest-server.ts`, `grpc-server.ts`, `mcp-server.ts` (stdio bootstrap). REST/MCP/gRPC context handlers pass `auditIdentityId` + `clientIp` into `context.build`.
 
 ---
 
@@ -70,7 +73,7 @@ Wired in: `rest-server.ts`, `grpc-server.ts`, `mcp-server.ts` (stdio bootstrap).
 ## Deferred
 
 - `memory.signal.received` publisher on signal ingest
-- REST/MCP request metadata → audit entry (12C)
+- ~~REST/MCP request metadata → audit entry (12C)~~ — closed D12-01
 - Webhook dispatcher consumer
 - CLI `events:status`
 

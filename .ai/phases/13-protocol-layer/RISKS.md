@@ -18,7 +18,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 |------|------------|--------|------------|--------|
 | Streaming duplicates ranking logic | Medium | High | Reuse chunksFromBuildContextResult | Mitigated |
 | WebSocket auth bypass | Medium | Critical | Same auth middleware as REST | Mitigated |
-| SSE connection exhaustion | Medium | Medium | Per-IP concurrent cap + stream rate limit; ops guidance in IMPLEMENTATION | Mitigated (2026-07-05) |
+| SSE connection exhaustion | Medium | Medium | SSE_MAX_CONCURRENT_PER_IP + stream rate limit; ops guidance | Mitigated |
 | All protocols default ON | Low | Critical | SSE/WS flags false default | Mitigated |
 
 ---

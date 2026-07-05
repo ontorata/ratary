@@ -342,11 +342,11 @@ const PHASES = [
       'Manifest `supportsMemoryEvolution`',
       'ADR-040 Implemented',
     ],
-    harderOrDeferred: ['Branch merge execute not implemented', 'Restore-to-version not implemented'],
-    acceptedDebt: ['Evolution branch merge execute deferred (D97-02)', 'Version history read-only'],
+    harderOrDeferred: ['MockD1 memory_heads param alignment for evolution tests'],
+    acceptedDebt: ['Multi-branch evolution out of scope', 'Version retention policy TBD'],
     recommendations: [
-      'Implement restore endpoint before multi-client sync prod',
-      'Wire branch merge into Phase 09.8 field_merge resolver',
+      'Wire evolution merge into Phase 09.8 field_merge when sync references version IDs',
+      'Add REST diff E2E when clients depend on diff UX',
     ],
   },
   {
@@ -361,7 +361,7 @@ const PHASES = [
       'Wired via `createMultiClientSyncPorts` → REST',
       'ADR-042 Accepted',
     ],
-    harderOrDeferred: ['REST E2E sync test not built', 'MCP pull/push deferred', '09.7 branch merge integration deferred'],
+    harderOrDeferred: ['REST E2E sync test not built', 'MCP pull/push deferred'],
     acceptedDebt: ['REST-only sync surface', 'Field merge ignores evolution branches'],
     recommendations: [
       'Add REST E2E two-client sync test before staging enable',

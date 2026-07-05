@@ -70,5 +70,7 @@ export function grpcMetadataToTransport(metadata: Metadata): GrpcTransportMetada
     agentId: metadataValue(metadata, 'agent-id'),
     organizationId: metadataValue(metadata, 'organization-id'),
     projectId: metadataValue(metadata, 'project-id'),
+    identityId: metadataValue(metadata, 'identity-id'),
+    clientIp: metadataValue(metadata, 'client-ip'),
   };
 }

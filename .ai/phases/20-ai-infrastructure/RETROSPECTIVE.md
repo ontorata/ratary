@@ -30,7 +30,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## What was harder than expected
 
-- ~~ed25519 verification deferred~~ → **D20-01 shipped** (2026-07-05): `SignedPluginManifestValidator` + `PLUGIN_TRUSTED_PUBLIC_KEYS`
+- ed25519 verification deferred
 - Hot-swap deferred — restart required
 
 ---

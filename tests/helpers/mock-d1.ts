@@ -79,6 +79,8 @@ export class MockD1Client implements D1Client {
   private workspaceMemberships: Map<string, WorkspaceMembershipRow> = new Map();
   private agents: Map<string, AgentRow> = new Map();
   private memorySignals: Map<string, Record<string, unknown>> = new Map();
+  private memoryHeads: Map<string, Record<string, unknown>> = new Map();
+  private memoryVersions: Map<string, Record<string, unknown>> = new Map();
   private settings: Map<string, string> = new Map();
   private auditLogs: unknown[] = [];
   private cloudRegions: Map<string, Record<string, unknown>> = new Map();
@@ -623,6 +625,56 @@ export class MockD1Client implements D1Client {
       return { results: [], success: true, meta: { changes: 1 } };
     }
 
+    if (normalizedSql.includes('INSERT INTO MEMORY_HEADS')) {
+      const memoryId = params[0] as string;
+      if (!this.memoryHeads.has(memoryId)) {
+        // SQL uses literal 0 for current_version: VALUES (?, ?, 0, ?, ?)
+        const usesLiteralZero = normalizedSql.includes('?, ?, 0,');
+        this.memoryHeads.set(memoryId, {
+          memory_id: memoryId,
+          owner_id: params[1] as string,
+          current_version: usesLiteralZero ? 0 : (params[2] as number),
+          branch_name: (usesLiteralZero ? params[2] : params[3]) as string,
+          updated_at: (usesLiteralZero ? params[3] : params[4]) as string,
+        });
+      }
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (normalizedSql.includes('INSERT INTO MEMORY_VERSIONS')) {
+      const id = params[0] as string;
+      const versionNumber = params[3] as number;
+      const memoryId = params[1] as string;
+      this.memoryVersions.set(`${memoryId}:${versionNumber}`, {
+        id,
+        memory_id: memoryId,
+        owner_id: params[2] as string,
+        version_number: versionNumber,
+        snapshot: params[4] as string,
+        created_by: params[5] as string | null,
+        merge_parent_ids: params[6] as string,
+        confidence: params[7] as number,
+        created_at: params[8] as string,
+      });
+      return { results: [], success: true, meta: { changes: 1 } };
+    }
+
+    if (
+      normalizedSql.includes('UPDATE MEMORY_HEADS') &&
+      normalizedSql.includes('CURRENT_VERSION = CURRENT_VERSION + 1')
+    ) {
+      const memoryId = params[1] as string;
+      const ownerId = params[2] as string;
+      const head = this.memoryHeads.get(memoryId);
+      if (head && head.owner_id === ownerId) {
+        head.updated_at = params[0] as string;
+        head.current_version = (head.current_version as number) + 1;
+        this.memoryHeads.set(memoryId, head);
+        return { results: [], success: true, meta: { changes: 1 } };
+      }
+      return { results: [], success: true, meta: { changes: 0 } };
+    }
+
     if (normalizedSql.startsWith('UPDATE MEMORY_EMBEDDINGS')) {
       const dimensions = params[0] as number;
       const vectorJson = params[1] as string;
@@ -1056,6 +1108,30 @@ export class MockD1Client implements D1Client {
         String(b.created_at ?? '').localeCompare(String(a.created_at ?? '')),
       );
       return { results: rows.slice(0, limit), success: true };
+    }
+
+    if (normalizedSql.includes('FROM MEMORY_HEADS')) {
+      const memoryId = params[0] as string;
+      const ownerId = params[1] as string;
+      const head = this.memoryHeads.get(memoryId);
+      if (head && head.owner_id === ownerId) {
+        return { results: [head], success: true };
+      }
+      return { results: [], success: true };
+    }
+
+    if (normalizedSql.includes('FROM MEMORY_VERSIONS')) {
+      const memoryId = params[0] as string;
+      const ownerId = params[1] as string;
+      let rows = [...this.memoryVersions.values()].filter(
+        (row) => row.memory_id === memoryId && row.owner_id === ownerId,
+      );
+      if (normalizedSql.includes('VERSION_NUMBER = ?')) {
+        const versionNumber = params[2] as number;
+        rows = rows.filter((row) => row.version_number === versionNumber);
+      }
+      rows.sort((a, b) => (a.version_number as number) - (b.version_number as number));
+      return { results: rows, success: true };
     }
 
     if (

@@ -16,6 +16,7 @@
 | `tests/capabilities/manifest-builder.test.ts` | `supportsSemanticCompression: false` when flag off |
 | `tests/memory/compression-status-reader.test.ts` | Owner counts, pending duplicates, compression meta |
 | `tests/mcp/tools.test.ts` | `get_compression_status` MCP handler |
+| `tests/jobs/local-compression-scheduler.test.ts` | Async enqueue / runPending queue (D55-01) |
 
 ---
 
@@ -49,4 +50,4 @@ npm run benchmark:context-tokens
 Documents token savings for summary-first context vs full body hydration. **Recorded 2026-07-04:** summary-only strategy **85.5%** vs naive dump (≥80% target) — see [COMPLETION.md](COMPLETION.md#token-benchmark-evidence-optional--sc-55-06).
 ## Current regression
 
-689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)
+840 passed | 3 skipped (default env, 2026-07-05) (full suite, all master flags OFF)

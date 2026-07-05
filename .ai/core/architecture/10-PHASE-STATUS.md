@@ -4,7 +4,7 @@
 **Audience:** AI assistants and maintainers.  
 **Authority:** Subordinate to [04-ARCHITECTURE.md](../04-ARCHITECTURE.md) (structural law) and [09-ROADMAP.md](../../phases/roadmap/09-ROADMAP.md) (phase narratives).
 
-**Last updated:** Phase 06.6 Precision Search implemented (2026-07-05, commit `66d72dc`)
+**Last updated:** POST-MVP backlog closed (2026-07-05) — D97, D12-01, D55-01, D131-01
 
 ---
 
@@ -20,7 +20,7 @@ Record **live** project metrics, deployment facts, and documented technical debt
 
 | Metric | Value |
 |--------|-------|
-| Tests passing | 804 (807 total, 3 skipped) |
+| Tests passing | 840 (843 total, 3 skipped) |
 | MCP tools | 28 |
 | Agent Forge skills | 13 (`.cursor/skills/forge-*`) |
 | Agent Forge rule | `.cursor/rules/agent-forge.mdc` |
@@ -40,8 +40,8 @@ Record **live** project metrics, deployment facts, and documented technical debt
 | **Core memory path** | Phases 1?11 ? ? default deploy unchanged |
 | **Enterprise platform** | Phases 10.5?25 ? Implemented ? **all default OFF** |
 | **Extension tracks** | 04.7, 05.5–09.8, **06.6 Precision Search (Implemented, default OFF)**, **07.1 Agent Forge**, **08.8 Inspection Ledger** | opt-in / workflow |
-| **Next gate** | None — Phase 6.6 gate PASS (2026-07-05) · follow-up D66-04/D66-05 in [COMPLETION](../../phases/06.6-precision-search/COMPLETION.md) |
-| **Last extension gate** | Phase 6.6 Precision Search PASS (2026-07-05) |
+| **Next gate** | None — POST-MVP backlog closed (2026-07-05) · maintenance mode |
+| **Last extension gate** | POST-MVP: 09.7 restore/merge, 12 audit fields, 05.5 async queue, 13.1 ChatGPT smoke |
 | **Last platform gate** | Phase 25 Global Intelligence (2026-07-04) |
 | **Active task** | Maintenance / POST-ROADMAP ? see [TASK_PROMPT.md](../../TASK_PROMPT.md) |
 | **Governance index** | [phases/README.md](../../phases/README.md) ? phases 1?25 |
@@ -78,10 +78,10 @@ New dev environment: [README.md ? Instalasi](../../../README.md#instalasi-pada-l
 | ~~D-02~~ | ~~Duplicate `MemoryRepository` in composition roots~~ | ? **Resolved** ? shared repository instance (2026-07-03) |
 | ~~D-03~~ | ~~`schema.sql` drift from `migrations.ts`~~ | ? **Resolved** ? schema.sql synced (2026-07-03) |
 | ~~D-04~~ | ~~ADR-001 merge policy must be unit-tested~~ | ? **Resolved** ? 13 unit tests (2026-07-03) |
-| ? | `MemoryRepository` ~622 lines | Additive methods only; split when Postgres adapter lands |
 | ~~O-04-2~~ | ~~Retrieval projection content exclusion~~ | ? **Resolved** ? regression test (2026-07-03) |
-| ~~?~~ | ~~N? `recordAccess` on context build~~ | ? **Resolved** ? `recordAccessBatch` (2026-07-03) |
+| ~~?~~ | ~~N× `recordAccess` on context build~~ | ? **Resolved** ? `recordAccessBatch` (2026-07-03) |
 | ~~?~~ | ~~D1 vector search in-process~~ | ? **Mitigated** ? pgvector adapter (ADR-011) |
+| ~~D-11C~~ | ~~`MemoryRepository` monolith (~622 lines)~~ | ? **Resolved** ? ADR-019 reader/writer split behind facade (2026-07-05) |
 | D-GOV | Phase governance scaffolds (Reserved/N/A) | ? **Mitigated** ? backfill script + manual close 2026-07-04 |
 
 Aggregate audit: [.ai/phases/audits/latest.md](../../phases/audits/latest.md).

@@ -93,11 +93,11 @@ const PHASES = [
     gateDate: '2026-07-04',
     risks: [
       ['Irreversible archive of wrong cluster', 'Medium', 'High', 'dry-run default; rule-based policy tests', 'Mitigated'],
-      ['LLM summarizer on hot path', 'Low', 'Critical', 'No sync summarizer; async adapter deferred', 'Mitigated'],
+      ['LLM summarizer on hot path', 'Low', 'Critical', 'LocalCompressionScheduler async queue (D55-01); no sync summarizer on CRUD', 'Mitigated'],
       ['Compression enabled by default', 'Low', 'High', 'COMPRESSION_ENABLED=false', 'Mitigated'],
       ['Consolidator breaks Phase 4 paths', 'Medium', 'High', 'Extended consolidator; regression suite', 'Mitigated'],
     ],
-    deferred: [['D55-01', 'ICompressionSummarizer LLM adapter', 'Async job queue ADR follow-up']],
+    deferred: [],
   },
   {
     dir: '06.5-progressive-retrieval',
@@ -131,7 +131,13 @@ const PHASES = [
       ['Signal store PII growth', 'Medium', 'Medium', 'Typed signals; no raw chat dump', 'Mitigated'],
       ['Ranking auto-mutation', 'Medium', 'High', 'RANKING_ADAPTATION_ENABLED=false default', 'Mitigated'],
     ],
-    deferred: [['D85-01', 'MCP submit_signal', 'Phase 13.1 remote path']],
+    deferred: [
+      ['D85-01', 'MCP submit_signal', 'Closed — MCP + REST share processSignalIngest'],
+      ['D85-02', 'Event bus fan-out on ingest', 'Closed — LearningEventRecorder + DomainEventPublisher in processSignalIngest'],
+      ['D85-03', 'Ranking adaptation stub', 'Accepted — RANKING_ADAPTATION_ENABLED=false default; CLI dry-run'],
+      ['D85-04', 'Rank order E2E gap', 'Accepted — ranker + learning orchestrator unit tests'],
+      ['D85-05', 'REST E2E signals', 'Closed — tests/api/signals.test.ts (D85-05)'],
+    ],
   },
   {
     dir: '08.6-learning-intelligence',
@@ -171,13 +177,10 @@ const PHASES = [
     gateDate: '2026-07-04',
     risks: [
       ['Version table growth unbounded', 'Medium', 'Medium', 'Archive on update; retention policy TBD', 'Accepted'],
-      ['Merge policy data loss', 'Medium', 'High', 'preferNonEmpty field merge + unit tests; branch merge D97-02 deferred', 'Mitigated'],
+      ['Merge policy data loss', 'Medium', 'High', 'preferNonEmpty field merge + REST merge D97-02 + evolution.test.ts', 'Mitigated'],
       ['Coordinator hooks break writes', 'Low', 'Critical', 'Flag off = no-op; MemoryService tests', 'Mitigated'],
     ],
-    deferred: [
-      ['D97-01', 'Restore-to-version', 'POST-MVP endpoint'],
-      ['D97-02', 'Evolution branch merge execute', 'POST-MVP'],
-    ],
+    deferred: [],
   },
   {
     dir: '09.8-multi-client-sync',
@@ -210,7 +213,7 @@ const PHASES = [
       ['Postgres cutover data loss', 'Medium', 'Critical', 'S0–S4 runbook; parity scripts; rollback', 'Mitigated'],
       ['Default D1 deploy broken', 'Low', 'Critical', 'SQL_PROVIDER=d1 unchanged default', 'Mitigated'],
       ['Staging harness false positive', 'Medium', 'High', 'postgres-staging.integration.test.ts (skipped CI)', 'Mitigated'],
-      ['Repository split scope creep', 'Medium', 'Medium', 'ADR-019 Proposed bounds 11C; optional owner-gated', 'Accepted'],
+      ['Repository split scope creep', 'Medium', 'Medium', 'ADR-019 Implemented — reader/writer modules behind facade', 'Mitigated'],
     ],
   },
   {
@@ -223,7 +226,7 @@ const PHASES = [
       ['Duplicate analytics rows', 'Medium', 'Medium', 'Idempotent consumer correlationId', 'Mitigated'],
       ['Silent noop with consumers ON but no redis', 'Medium', 'High', 'Env validation fails fast', 'Mitigated'],
     ],
-    deferred: [['D12-01', '12C identity/IP on audit', 'Transport audit context']],
+    deferred: [],
   },
   {
     dir: '13-protocol-layer',
@@ -246,7 +249,7 @@ const PHASES = [
       ['Vercel serverless SSE break', 'High', 'High', 'Document long-running Node requirement', 'Mitigated'],
       ['OAuth misconfiguration exposes owner', 'Medium', 'Critical', 'OIDC_MCP_OWNER_ID required when OAuth ON', 'Mitigated'],
     ],
-    deferred: [['D131-01', 'ChatGPT CI smoke', 'Staging manual record']],
+    deferred: [],
   },
   {
     dir: '14-federation',
@@ -300,7 +303,7 @@ const PHASES = [
       ['Control plane mutates memories', 'Low', 'Critical', 'Metadata only; no CRUD in control plane', 'Mitigated'],
       ['Usage meter memory growth', 'Medium', 'Medium', 'In-memory default; SQL store option', 'Accepted'],
       ['DR restore partial write', 'Medium', 'High', 'Restore count-only MVP; manual import', 'Accepted'],
-      ['Tenant topology stale', 'Medium', 'Low', 'Manual refresh; federation integration', 'Identified'],
+      ['Tenant topology stale', 'Medium', 'Low', 'Live store read + `generatedAt` on response; no cache', 'Mitigated'],
     ],
   },
   {
@@ -319,7 +322,7 @@ const PHASES = [
     title: 'Phase 20 — AI Infrastructure',
     gateDate: '2026-07-04',
     risks: [
-      ['Unsigned plugin manifest', 'High', 'Critical', 'Schema check only MVP; ed25519 deferred', 'Deferred'],
+      ['Unsigned plugin manifest', 'High', 'Critical', 'SignedPluginManifestValidator + Ed25519 + PLUGIN_TRUSTED_PUBLIC_KEYS (D20-01)', 'Mitigated'],
       ['Plugin enable hot-swap race', 'Medium', 'High', 'Restart required on enable', 'Accepted'],
       ['Third-party plugin vendor lock', 'Medium', 'Medium', 'Port mapping to ADR-008 adapters', 'Mitigated'],
       ['Marketplace default ON', 'Low', 'Critical', 'PLUGIN_MARKETPLACE_ENABLED=false', 'Mitigated'],
@@ -343,7 +346,7 @@ const PHASES = [
     risks: [
       ['R2 offload orphan inline content', 'Medium', 'Medium', 'CONTENT_OFFLOAD_CLEAR_INLINE opt-in', 'Accepted'],
       ['pgvector sync partial failure', 'Medium', 'High', 'Watermark + dry-run backfill scripts', 'Mitigated'],
-      ['Embedding job overload', 'Medium', 'Medium', 'Batch jobs; rate limits', 'Identified'],
+      ['Embedding job overload', 'Medium', 'Medium', 'EMBEDDING_JOB_MAX_MEMORIES + EMBEDDING_BATCH_SIZE caps; batch runner', 'Mitigated'],
       ['Object storage credentials exposure', 'Low', 'Critical', 'Env-only secrets; never in manifest', 'Mitigated'],
     ],
   },
@@ -387,6 +390,7 @@ const SKIP = new Set([
   '06-hybrid-retrieval',
   '07-agent-runtime',
   '08-knowledge-graph',
+  '08.8-inspection-pattern-ledger',
   '09-multi-ai',
   '10-enterprise',
 ]);

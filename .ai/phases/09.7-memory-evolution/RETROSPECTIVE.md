@@ -30,22 +30,21 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## What was harder than expected
 
-- Branch merge execute not implemented
-- Restore-to-version not implemented
+- MockD1 memory_heads param alignment for evolution tests
 
 ---
 
 ## Accepted debt
 
-- Evolution branch merge execute deferred (D97-02)
-- Version history read-only (restore D97-01)
+- Multi-branch evolution out of scope
+- Version retention policy TBD
 
 ---
 
 ## Recommendations
 
-- Implement restore endpoint before multi-client sync prod
-- Wire branch merge into Phase 09.8 field_merge resolver
+- Wire evolution merge into Phase 09.8 field_merge when sync references version IDs
+- Add REST diff E2E when clients depend on diff UX
 
 ---
 

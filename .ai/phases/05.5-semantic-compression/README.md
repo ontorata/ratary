@@ -41,6 +41,8 @@ npm run compress:memories:execute
 
 Manifest reports `capabilities.supportsSemanticCompression: true` when flag enabled.
 
+Async scheduler (`COMPRESSION_SCHEDULER=local`): jobs enqueue via `LocalCompressionScheduler` and drain with `runPending` — LLM summarizer work stays off the CRUD hot path (D55-01).
+
 ---
 
 ## Related

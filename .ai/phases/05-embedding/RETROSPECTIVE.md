@@ -35,27 +35,17 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ---
 
-## Accepted debt (at gate)
+## Accepted debt
 
 - Single embed provider path — no model routing yet
-- D1 vector store — Postgres/pgvector deferred to Phase 10+ (successor path)
+- D1 vector store — Postgres/pgvector deferred to Phase 11/22
 
 ---
 
-## Successor closure (2026-07-04)
+## Recommendations
 
-| Deferred item | Closed by |
-|---------------|-----------|
-| pgvector / vector scale (O-05-3) | Phase 10 — ADR-011 `PgVectorStoreAdapter`, `VECTOR_PROVIDER=pgvector` |
-| Hybrid retrieval / ranking | Phase 6 — ADR-001 gate PASS |
-| R2 content offload (`object_key`) | Phase 10 ADR-005 + Phase 22 ADR-021 `IContentOffloadSyncer` |
-
----
-
-## Recommendations (at gate)
-
-- Phase 6: composite retrieval sources — do not rewrite Retriever ✅ delivered
-- Phase 10+: cutover vector store to Postgres without touching MemoryService ✅ ADR-011
+- Phase 6: composite retrieval sources — do not rewrite Retriever
+- Phase 11: cutover vector store to Postgres without touching MemoryService
 
 ---
 

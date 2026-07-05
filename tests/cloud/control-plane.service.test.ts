@@ -124,6 +124,7 @@ describe('ControlPlaneService', () => {
     const topology = await service.getTenantTopology(orgId, workspaceId);
     expect(topology.primaryRegion.code).toBe('local');
     expect(topology.ownerId).toBe(ownerId);
+    expect(topology.generatedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
 
   it('deprovisions workspace metadata', async () => {

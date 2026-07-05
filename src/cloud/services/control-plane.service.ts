@@ -144,6 +144,7 @@ export class ControlPlaneService implements IControlPlane {
       organizationId,
       workspaceId,
       ownerId: tenant.ownerId,
+      generatedAt: new Date().toISOString(),
       status: tenant.status,
       primaryRegion: {
         id: primary.id,
