@@ -2,7 +2,8 @@
 
 **Purpose:** Explain **what each environment variable does** and **when to set it**.  
 **Template file:** [.env.example](../.env.example) (copy → `.env` — never commit `.env`)  
-**How-to workflows:** [GUIDE.md](GUIDE.md) (setup, MCP, troubleshooting)
+**How-to workflows:** [GUIDE.md](GUIDE.md) (setup, MCP, troubleshooting)  
+**Documentation index:** [README.md](README.md)
 
 ---
 

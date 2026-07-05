@@ -2,9 +2,9 @@
 
 One guide for **setup, daily use, and Ratary MCP** (Cursor, Claude Code, Roo, Cline, Gemini CLI, and more).
 
-**Related docs:** [CONFIGURATION.md](CONFIGURATION.md) (what each `.env` variable does) · [examples/](examples/) (MCP/IDE templates) · [policies/](policies/) (enterprise authorization, not env)
+**Related docs:** [README.md](README.md) (doc index) · [CONFIGURATION.md](CONFIGURATION.md) (env vars) · [ARCHITECTURE.md](ARCHITECTURE.md) · [examples/](examples/) · [policies/](policies/)
 
-For per-harness plugin install (marketplace commands), see **[install/](install/)** when published (Phase 31). Quick path: `npm run setup` in this repo.
+Quick path: `npm run setup` in this repo. Per-harness install docs will ship under `docs/install/` when available.
 
 ---
 
@@ -67,29 +67,6 @@ You do not need to type tool names. Speak naturally:
 ### Smart memory (Phase 4)
 
 The assistant selects relevant memory slices automatically — not a full dump. When MCP is green, **no extra setup**. Say *"continue work on …"*.
-
----
-
-## 2.1 Agent Forge (contributors)
-
-**Phase 07.1** defines the required workflow when AI changes code in this repo — **Cursor skills + rule**, not server runtime.
-
-| Stage | Skill | When |
-|-------|-------|------|
-| Recall | `forge-recall` | Session start — MCP `search_memory` |
-| Intent | `forge-intent` | Before non-trivial design/code |
-| Isolate | `forge-isolate` | Isolated branch/worktree |
-| Blueprint | `forge-blueprint` | Task plan before implementation |
-| Execute | `forge-execute` | Implementation |
-| Prove / Inspect | `forge-prove`, `forge-inspect` | Tests + review between tasks |
-| Land | `forge-land` | Merge / PR / discard |
-| Remember | `forge-remember` | Session end — MCP handoff |
-
-Governance lives in the **development mirror** (`.ai/` — not in the public `ontorata/ratary` tree). Full test suite: [github.com/lutfi04/ai-brain](https://github.com/lutfi04/ai-brain).
-
-Rule: `.cursor/rules/agent-forge.mdc` · Skills: `.cursor/skills/forge-*`
-
-For multi-file or structural work, do not skip **Intent → Isolate → Blueprint**.
 
 ---
 
@@ -424,16 +401,14 @@ OBS_COST_METRICS_ENABLED=true
 
 ---
 
-## Contributors & governance
+## More documentation
 
-| Need | Where |
-|------|-------|
-| This guide | `docs/GUIDE.md` — human operators & daily use |
-| Architecture overview | [ARCHITECTURE.md](ARCHITECTURE.md) — human-readable summary |
-| AI implementation law | `.ai/` — **development mirror only** ([lutfi04/ai-brain](https://github.com/lutfi04/ai-brain)) |
-| ADRs, phases, Forge | Not shipped in public `ontorata/ratary`; clone the mirror for full governance |
-
-Public repo = **Ratary Server** product code + human docs. Governance corpus stays in the mirror by design.
+| Need | Document |
+|------|----------|
+| Documentation index | [README.md](README.md) |
+| Architecture overview | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Environment reference | [CONFIGURATION.md](CONFIGURATION.md) |
+| Contributing | [../README.md#contributing](../README.md#contributing) |
 
 ---
 

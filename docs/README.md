@@ -15,6 +15,7 @@
 | What is Ratary architecturally? | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | Copy MCP / IDE config | [examples/](examples/) |
 | Enterprise authorization (OPA/Rego) | [policies/](policies/) |
+| Ratary MCP tools & transport | [../MCP/README.md](../MCP/README.md) |
 | Grafana / Prometheus setup | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
 | Product overview & quick start | [../README.md](../README.md) |
 
@@ -24,19 +25,6 @@
 |------|------|
 | [../.env.example](../.env.example) | Variable **names & defaults** (machine-readable template) |
 | [CONFIGURATION.md](CONFIGURATION.md) | Variable **meaning & when to enable** (human reference) |
-
----
-
-## What lives where
-
-| Location | Audience | In `ontorata/ratary` (public)? | Purpose |
-|----------|----------|----------------------------------|---------|
-| **`docs/`** | Humans | **Yes** | Guides, configuration reference, examples |
-| **`.ai/`** | AI assistants & maintainers | **No** (development mirror) | Governance — constitution, ADRs, phases |
-
-**Rule:** `docs/` explains the system. It does **not** override implementation law in `.ai/`.
-
-Full test suite & governance: [lutfi04/ai-brain](https://github.com/lutfi04/ai-brain).
 
 ---
 
@@ -64,10 +52,16 @@ Full test suite & governance: [lutfi04/ai-brain](https://github.com/lutfi04/ai-b
 
 ---
 
-## Governance (development mirror only)
+## Suggested reading order
 
-Normative AI docs live under **`.ai/`** in [lutfi04/ai-brain](https://github.com/lutfi04/ai-brain) — not in the public product tree.
+1. [../README.md](../README.md) — what Ratary is and quick start  
+2. [GUIDE.md](GUIDE.md) §1 — install and wire MCP  
+3. [CONFIGURATION.md](CONFIGURATION.md) Tier 0 — required env vars  
+4. [GUIDE.md](GUIDE.md) §2 — daily usage  
+5. [ARCHITECTURE.md](ARCHITECTURE.md) — when you need structural context  
+
+Contributing: [../README.md#contributing](../README.md#contributing)
 
 ---
 
-*Human documentation index. Product repo: [ontorata/ratary](https://github.com/ontorata/ratary).*
+*Human documentation index · [ontorata/ratary](https://github.com/ontorata/ratary)*
