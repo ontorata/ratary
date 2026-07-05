@@ -40,7 +40,7 @@ const envSchema = z
     AUTH_SECRET: z.string().min(32, 'AUTH_SECRET must be at least 32 characters').optional(),
 
     // Embedding layer (Phase 5)
-    EMBEDDING_PROVIDER: z.enum(['noop', 'openai']).default('noop'),
+    EMBEDDING_PROVIDER: z.enum(['noop', 'openai', 'local']).default('noop'),
     EMBEDDING_MODEL: z.string().default('text-embedding-3-small'),
     EMBEDDING_API_KEY: z.string().optional(),
     EMBEDDING_BASE_URL: z.string().default('https://api.openai.com/v1'),
@@ -182,6 +182,23 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+
+    // Precision search platform (Phase 6.6) — ADR-060
+    PRECISION_SEARCH_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    SEARCH_IGNORE_PATTERNS: z.string().optional(),
+    SEARCH_DEFAULT_MODE: z.enum(['hybrid', 'semantic', 'fulltext', 'title']).default('hybrid'),
+    MULTI_QUERY_RRF_K: z.coerce.number().int().min(1).max(500).default(60),
+    ALIAS_EXACT_BOOST: z.coerce.number().int().min(0).max(1000).default(500),
+    TITLE_FUZZY_BOOST: z.coerce.number().int().min(1).max(10).default(3),
+    SEARCH_ENRICH_LINK_CAP: z.coerce.number().int().min(0).max(100).default(20),
+    SEARCH_RERANK_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    RERANK_MODEL_PATH: z.string().optional(),
 
     // Graph relation inference (Phase 8.7) — ADR-041, async inferred edges
     RELATION_INFERENCE_ENABLED: z

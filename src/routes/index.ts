@@ -7,6 +7,7 @@ import {
   searchQuerySchema,
   backupImportSchema,
 } from '../types/memory.js';
+import { similarMemoryQuerySchema, byPathQuerySchema } from '../types/precision-search.js';
 import { createRelationBodySchema } from '../types/knowledge.js';
 import type { MemoryController } from '../controllers/index.js';
 import type { MemoryRelationController } from '../controllers/knowledge.controller.js';
@@ -175,6 +176,30 @@ export async function memoryRoutes(
       },
     },
     controller.search.bind(controller),
+  );
+
+  fastify.get(
+    '/memory/similar',
+    {
+      preValidation: [validateQuery(similarMemoryQuerySchema)],
+      schema: {
+        tags: ['Search'],
+        summary: 'Find memories similar to a target memory',
+      },
+    },
+    controller.findSimilar.bind(controller),
+  );
+
+  fastify.get(
+    '/memory/by-path',
+    {
+      preValidation: [validateQuery(byPathQuerySchema)],
+      schema: {
+        tags: ['Search'],
+        summary: 'Read memory by vault source path',
+      },
+    },
+    controller.getByPath.bind(controller),
   );
 
   fastify.get(

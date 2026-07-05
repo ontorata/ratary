@@ -34,6 +34,8 @@ export function createGraphHandlers(deps: GraphHandlerDeps): GraphHandlers {
           memoryId: body.memoryId,
           depth: body.depth,
           types: body.types,
+          direction: body.direction,
+          seed: body.seed,
         }),
     },
   };

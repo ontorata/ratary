@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { knowledgeMetadataSchema, memoryTypeSchema } from './knowledge.js';
 import { MEMORY_LEVELS, type MemoryLevel } from './memory-level.js';
+import { precisionSearchQueryExtensions } from './precision-search.js';
 
 export { MEMORY_LEVELS, DEFAULT_MEMORY_LEVEL } from './memory-level.js';
 export type { MemoryLevel } from './memory-level.js';
@@ -38,6 +39,8 @@ export const memoryRowSchema = z.object({
   workspace_id: z.string().nullable().optional(),
   last_modified_by_agent_id: z.string().nullable().optional(),
   lifecycle_state: z.string().nullable().optional(),
+  aliases: z.string().optional(),
+  source_path: z.string().nullable().optional(),
 });
 
 export type MemoryRow = z.infer<typeof memoryRowSchema>;
@@ -68,6 +71,8 @@ export interface Memory {
   objectKey: string | null;
   semanticHash: string | null;
   lifecycleState?: MemoryLifecycleState | null;
+  aliases: string[];
+  sourcePath: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -104,24 +109,26 @@ export const listMemoriesQuerySchema = z.object({
   offset: z.coerce.number().int().min(0).default(0),
 });
 
-export const searchQuerySchema = z.object({
-  q: z.string().optional(),
-  tag: z.string().optional(),
-  project: z.string().optional(),
-  category: z.string().optional(),
-  memory_type: memoryTypeSchema.optional(),
-  importance_min: z.coerce.number().int().min(0).max(100).optional(),
-  favorite: z
-    .enum(['true', 'false'])
-    .optional()
-    .transform((v) => (v === undefined ? undefined : v === 'true')),
-  archived: z
-    .enum(['true', 'false'])
-    .optional()
-    .transform((v) => (v === undefined ? false : v === 'true')),
-  limit: z.coerce.number().int().min(1).max(100).default(50),
-  offset: z.coerce.number().int().min(0).default(0),
-});
+export const searchQuerySchema = z
+  .object({
+    q: z.string().optional(),
+    tag: z.string().optional(),
+    project: z.string().optional(),
+    category: z.string().optional(),
+    memory_type: memoryTypeSchema.optional(),
+    importance_min: z.coerce.number().int().min(0).max(100).optional(),
+    favorite: z
+      .enum(['true', 'false'])
+      .optional()
+      .transform((v) => (v === undefined ? undefined : v === 'true')),
+    archived: z
+      .enum(['true', 'false'])
+      .optional()
+      .transform((v) => (v === undefined ? false : v === 'true')),
+    limit: z.coerce.number().int().min(1).max(100).default(50),
+    offset: z.coerce.number().int().min(0).default(0),
+  })
+  .extend(precisionSearchQueryExtensions);
 
 export const backupImportSchema = z.object({
   memories: z.array(

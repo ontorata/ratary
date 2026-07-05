@@ -11,6 +11,7 @@ import {
   toBackupResponse,
   toMemoryListResponse,
   toMemoryResponse,
+  toScoredMemoryResponse,
   toSearchResponse,
 } from '../utils/memory-response.js';
 import { createAuthController, AuthController } from './auth.controller.js';
@@ -120,6 +121,26 @@ export class MemoryController {
     const ctx = buildTransportContextFromRestRequest(request);
     const result = await this.handlers.search.handle(ctx, request.query as never);
     reply.send(toSearchResponse(result));
+  }
+
+  async findSimilar(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const ctx = buildTransportContextFromRestRequest(request);
+    const result = await this.handlers.findSimilar.handle(ctx, request.query as never);
+    reply.send({
+      hits: result.hits.map(toScoredMemoryResponse),
+      total: result.total,
+      mode: result.mode,
+      warnings: result.warnings,
+    });
+  }
+
+  async getByPath(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const ctx = buildTransportContextFromRestRequest(request);
+    const result = await this.handlers.getByPath.handle(ctx, request.query as never);
+    reply.send({
+      memory: result.memory ? toScoredMemoryResponse(result.memory) : undefined,
+      suggestions: result.suggestions,
+    });
   }
 
   async listProjects(request: FastifyRequest, reply: FastifyReply): Promise<void> {

@@ -27,6 +27,8 @@ export interface GraphTraversalOptions {
   remainingBudget: number;
   /** When set, only traverse these relation types. */
   relationTypes?: RelationType[];
+  /** Phase 6.6 — filter hop direction; default traverses both legs. */
+  direction?: 'outgoing' | 'incoming' | 'both';
 }
 
 export interface GraphNeighbor {

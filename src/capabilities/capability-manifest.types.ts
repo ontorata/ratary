@@ -60,6 +60,7 @@ export interface CapabilityFlags {
   supportsKnowledgeFabric: boolean;
   supportsAiBrainPlatform: boolean;
   supportsGlobalIntelligencePlatform: boolean;
+  supportsPrecisionSearch: boolean;
 }
 
 export interface CapabilityLimits {
@@ -219,6 +220,18 @@ export interface GlobalIntelligenceManifest {
   telemetryEventCount: number;
 }
 
+export interface PrecisionSearchManifest {
+  enabled: boolean;
+  defaultMode: string;
+  modes: string[];
+  rerankAvailable: boolean;
+  localEmbeddingAvailable: boolean;
+  supportsMultiQuery: boolean;
+  supportsExtendedHits: boolean;
+  supportsSimilarMemory: boolean;
+  supportsByPath: boolean;
+}
+
 export interface AICapabilityManifest {
   protocolVersion: string;
   version: string;
@@ -246,6 +259,7 @@ export interface AICapabilityManifest {
   knowledgeFabric?: KnowledgeFabricManifest;
   aiBrainPlatform?: AiBrainPlatformManifest;
   globalIntelligence?: GlobalIntelligenceManifest;
+  precisionSearch?: PrecisionSearchManifest;
   ecosystem: AgentEcosystemManifest;
   retrieval: {
     progressivePolicyVersion: string;

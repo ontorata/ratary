@@ -27,6 +27,11 @@ export function scoreMemory(memory: Memory, query: SearchQueryContext): number {
     if (exact(memory.title, q)) score += RANKING_WEIGHTS.titleExact;
     else if (contains(memory.title, q)) score += RANKING_WEIGHTS.titleContains;
 
+    for (const alias of memory.aliases ?? []) {
+      if (exact(alias, q)) score += RANKING_WEIGHTS.aliasExact;
+      else if (contains(alias, q)) score += RANKING_WEIGHTS.aliasContains;
+    }
+
     if (memory.summary && contains(memory.summary, q)) {
       score += RANKING_WEIGHTS.summaryContains;
     }

@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS memories (
   embedding_id TEXT,
   object_key TEXT,
   semantic_hash TEXT,
+  aliases TEXT NOT NULL DEFAULT '[]',
+  source_path TEXT,
   workspace_id TEXT,
   last_modified_by_agent_id TEXT,
   compression_meta TEXT,
@@ -54,6 +56,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_codename
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_slug
   ON memories(owner_id, slug) WHERE slug IS NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_source_path
+  ON memories(owner_id, source_path) WHERE source_path IS NOT NULL;
 
 -- Phase 9 multi-AI index (ADR-007)
 CREATE INDEX IF NOT EXISTS idx_memories_workspace ON memories(workspace_id);

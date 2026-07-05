@@ -25,6 +25,7 @@ export function traverseBidirectional(
   }
 
   const allowedTypes = options.relationTypes ? new Set(options.relationTypes) : null;
+  const direction = options.direction ?? 'both';
   const outgoing = new Map<string, RelationEdge[]>();
   const incoming = new Map<string, RelationEdge[]>();
 
@@ -54,34 +55,38 @@ export function traverseBidirectional(
 
     const nextDepth = current.depth + 1;
 
-    for (const edge of outgoing.get(current.memoryId) ?? []) {
-      if (results.length >= budget) break;
-      const neighborId = edge.targetMemoryId;
-      if (visited.has(neighborId)) continue;
+    if (direction !== 'incoming') {
+      for (const edge of outgoing.get(current.memoryId) ?? []) {
+        if (results.length >= budget) break;
+        const neighborId = edge.targetMemoryId;
+        if (visited.has(neighborId)) continue;
 
-      visited.add(neighborId);
-      results.push({
-        memoryId: neighborId,
-        depth: nextDepth,
-        relationType: edge.relation,
-        direction: 'outgoing',
-      });
-      queue.push({ memoryId: neighborId, depth: nextDepth });
+        visited.add(neighborId);
+        results.push({
+          memoryId: neighborId,
+          depth: nextDepth,
+          relationType: edge.relation,
+          direction: 'outgoing',
+        });
+        queue.push({ memoryId: neighborId, depth: nextDepth });
+      }
     }
 
-    for (const edge of incoming.get(current.memoryId) ?? []) {
-      if (results.length >= budget) break;
-      const neighborId = edge.sourceMemoryId;
-      if (visited.has(neighborId)) continue;
+    if (direction !== 'outgoing') {
+      for (const edge of incoming.get(current.memoryId) ?? []) {
+        if (results.length >= budget) break;
+        const neighborId = edge.sourceMemoryId;
+        if (visited.has(neighborId)) continue;
 
-      visited.add(neighborId);
-      results.push({
-        memoryId: neighborId,
-        depth: nextDepth,
-        relationType: edge.relation,
-        direction: 'incoming',
-      });
-      queue.push({ memoryId: neighborId, depth: nextDepth });
+        visited.add(neighborId);
+        results.push({
+          memoryId: neighborId,
+          depth: nextDepth,
+          relationType: edge.relation,
+          direction: 'incoming',
+        });
+        queue.push({ memoryId: neighborId, depth: nextDepth });
+      }
     }
   }
 

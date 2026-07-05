@@ -100,6 +100,7 @@ export class CapabilityManifestBuilder {
         supportsKnowledgeFabric: this.env.KNOWLEDGE_FABRIC_ENABLED,
         supportsAiBrainPlatform: this.env.RATARY_PLATFORM_ENABLED,
         supportsGlobalIntelligencePlatform: this.env.GLOBAL_INTELLIGENCE_PLATFORM_ENABLED,
+        supportsPrecisionSearch: this.env.PRECISION_SEARCH_ENABLED,
       },
       limits: {
         maxContextTokens: Math.floor(MAX_CONTEXT_MAX_CHARS / 4) || MANIFEST_MAX_CONTEXT_TOKENS,
@@ -232,6 +233,21 @@ export class CapabilityManifestBuilder {
       ...(this.options.knowledgeFabric ? { knowledgeFabric: this.options.knowledgeFabric } : {}),
       ...(this.options.aiBrainPlatform ? { aiBrainPlatform: this.options.aiBrainPlatform } : {}),
       ...(this.options.globalIntelligence ? { globalIntelligence: this.options.globalIntelligence } : {}),
+      ...(this.env.PRECISION_SEARCH_ENABLED
+        ? {
+            precisionSearch: {
+              enabled: true,
+              defaultMode: this.env.SEARCH_DEFAULT_MODE,
+              modes: ['hybrid', 'semantic', 'fulltext', 'title'],
+              rerankAvailable: this.env.SEARCH_RERANK_ENABLED,
+              localEmbeddingAvailable: this.env.EMBEDDING_PROVIDER === 'local',
+              supportsMultiQuery: true,
+              supportsExtendedHits: true,
+              supportsSimilarMemory: true,
+              supportsByPath: true,
+            },
+          }
+        : {}),
       ecosystem: new AgentEcosystemManifestBuilder(this.env).buildSync(),
       retrieval: {
         progressivePolicyVersion: this.env.RETRIEVAL_POLICY_VERSION,

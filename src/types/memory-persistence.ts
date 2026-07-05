@@ -28,6 +28,8 @@ export interface InsertMemoryData {
   accessCount?: number;
   lastAccessed?: string | null;
   lastModifiedByAgentId?: string | null;
+  aliases?: string[];
+  sourcePath?: string | null;
 }
 
 export interface UpdateMemoryData {
@@ -48,6 +50,8 @@ export interface UpdateMemoryData {
   projectId?: string;
   level?: MemoryLevel;
   lastModifiedByAgentId?: string | null;
+  aliases?: string[];
+  sourcePath?: string | null;
 }
 
 export interface ListFilters {
@@ -73,4 +77,8 @@ export interface SearchFilters {
   archived?: boolean;
   limit: number;
   offset: number;
+  /** Phase 6.6 — multi-value include/exclude filters. */
+  grammar?: import('../search/precision/search-filter-grammar.js').SearchFilterGrammar;
+  /** Phase 6.6 — glob patterns excluding source_path rows. */
+  ignorePatterns?: string[];
 }

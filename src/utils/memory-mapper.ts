@@ -37,6 +37,8 @@ export function rowToMemory(row: {
   object_key?: string | null;
   semantic_hash?: string | null;
   lifecycle_state?: string | null;
+  aliases?: string;
+  source_path?: string | null;
 }): import('../types/memory.js').Memory {
   let tags: string[] = [];
   try {
@@ -52,6 +54,14 @@ export function rowToMemory(row: {
     if (!Array.isArray(keywords)) keywords = [];
   } catch {
     keywords = [];
+  }
+
+  let aliases: string[] = [];
+  try {
+    aliases = JSON.parse(row.aliases ?? '[]') as string[];
+    if (!Array.isArray(aliases)) aliases = [];
+  } catch {
+    aliases = [];
   }
 
   return {
@@ -80,6 +90,8 @@ export function rowToMemory(row: {
     objectKey: row.object_key ?? null,
     semanticHash: row.semantic_hash ?? null,
     lifecycleState: parseLifecycleState(row.lifecycle_state),
+    aliases,
+    sourcePath: row.source_path ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -99,4 +111,8 @@ export function tagsToJson(tags: string[]): string {
 
 export function keywordsToJson(keywords: string[]): string {
   return JSON.stringify(keywords);
+}
+
+export function aliasesToJson(aliases: string[]): string {
+  return JSON.stringify(aliases);
 }

@@ -8,6 +8,7 @@ import type {
   SearchQuery,
   UpdateMemoryInput,
 } from '../../../types/memory.js';
+import type { ByPathQueryInput, SimilarMemoryQueryInput } from '../../../types/precision-search.js';
 import type { TransportContext } from '../transport-context.types.js';
 import type { IApplicationHandler } from '../iapplication-handler.interface.js';
 import { resolveHandlerScope } from './resolve-handler-scope.js';
@@ -26,6 +27,14 @@ export interface MemoryHandlers {
   delete: IApplicationHandler<{ id: string }, void>;
   list: IApplicationHandler<ListMemoriesQuery, Awaited<ReturnType<MemoryService['listMemories']>>>;
   search: IApplicationHandler<SearchQuery, Awaited<ReturnType<MemoryService['searchMemory']>>>;
+  findSimilar: IApplicationHandler<
+    SimilarMemoryQueryInput,
+    Awaited<ReturnType<MemoryService['findSimilarMemories']>>
+  >;
+  getByPath: IApplicationHandler<
+    ByPathQueryInput,
+    Awaited<ReturnType<MemoryService['getMemoryByPath']>>
+  >;
   listProjects: IApplicationHandler<Record<string, never>, string[]>;
   listTags: IApplicationHandler<Record<string, never>, string[]>;
   toggleFavorite: IApplicationHandler<{ id: string }, Memory>;
@@ -75,6 +84,13 @@ export function createMemoryHandlers(deps: MemoryHandlerDeps): MemoryHandlers {
     },
     search: {
       handle: async (ctx, query) => deps.memoryService.searchMemory(await scope(ctx), query),
+    },
+    findSimilar: {
+      handle: async (ctx, query) =>
+        deps.memoryService.findSimilarMemories(await scope(ctx), query),
+    },
+    getByPath: {
+      handle: async (ctx, query) => deps.memoryService.getMemoryByPath(await scope(ctx), query),
     },
     listProjects: {
       handle: async (ctx) => deps.memoryService.listProjects(await scope(ctx)),

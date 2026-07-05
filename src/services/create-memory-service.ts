@@ -6,6 +6,7 @@ import { MemoryRepository } from '../repositories/memory.repository.js';
 import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
 import { KnowledgeService } from '../knowledge/knowledge.service.js';
 import { SearchService } from '../search/search.service.js';
+import { createPrecisionSearchService } from '../composition/create-precision-search-ports.js';
 import { MemoryService } from './memory.service.js';
 import { MemoryRelationService } from './memory-relation.service.js';
 import type { IMemoryEvolutionCoordinator } from '../evolution/memory-evolution-coordinator.js';
@@ -25,6 +26,7 @@ export function createMemoryService(
   const memRepo = repository ?? new MemoryRepository(db);
   const knowledge = new KnowledgeService(memRepo);
   const search = new SearchService(memRepo);
+  const precisionSearch = createPrecisionSearchService(db, memRepo);
   const embeddingStore = new D1EmbeddingStore(db);
   return new MemoryService(
     memRepo,
@@ -35,6 +37,7 @@ export function createMemoryService(
     multiAi?.agentIdentity,
     evolution,
     domainEvents,
+    precisionSearch,
   );
 }
 

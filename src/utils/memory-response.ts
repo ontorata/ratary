@@ -1,5 +1,6 @@
 import type { Memory } from '../types/memory.js';
 import type { ScoredMemory } from '../search/search.service.js';
+import type { PrecisionSearchHit } from '../types/precision-search.js';
 import { formatWIB } from './format-wib.js';
 
 export interface MemoryResponse extends Memory {
@@ -9,6 +10,9 @@ export interface MemoryResponse extends Memory {
 
 export interface ScoredMemoryResponse extends MemoryResponse {
   relevanceScore: number;
+  snippet?: string;
+  outgoingLinks?: PrecisionSearchHit['outgoingLinks'];
+  backlinks?: PrecisionSearchHit['backlinks'];
 }
 
 export function toMemoryResponse(memory: Memory): MemoryResponse {
@@ -24,11 +28,17 @@ export function toMemoryResponse(memory: Memory): MemoryResponse {
   return response;
 }
 
-export function toScoredMemoryResponse(memory: ScoredMemory): ScoredMemoryResponse {
-  return {
+export function toScoredMemoryResponse(
+  memory: ScoredMemory & Partial<PrecisionSearchHit>,
+): ScoredMemoryResponse {
+  const response: ScoredMemoryResponse = {
     ...toMemoryResponse(memory),
     relevanceScore: memory.relevanceScore,
   };
+  if (memory.snippet) response.snippet = memory.snippet;
+  if (memory.outgoingLinks) response.outgoingLinks = memory.outgoingLinks;
+  if (memory.backlinks) response.backlinks = memory.backlinks;
+  return response;
 }
 
 export function toMemoryListResponse(result: { memories: Memory[]; total: number }): {
@@ -41,13 +51,22 @@ export function toMemoryListResponse(result: { memories: Memory[]; total: number
   };
 }
 
-export function toSearchResponse(result: { memories: ScoredMemory[]; total: number }): {
+export function toSearchResponse(result: {
+  memories: Array<ScoredMemory & Partial<PrecisionSearchHit>>;
+  total: number;
+  mode?: string;
+  warnings?: string[];
+}): {
   memories: ScoredMemoryResponse[];
   total: number;
+  mode?: string;
+  warnings?: string[];
 } {
   return {
     memories: result.memories.map(toScoredMemoryResponse),
     total: result.total,
+    ...(result.mode ? { mode: result.mode } : {}),
+    ...(result.warnings ? { warnings: result.warnings } : {}),
   };
 }
 

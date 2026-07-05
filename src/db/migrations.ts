@@ -1022,6 +1022,29 @@ export async function migrateExtensionTracksPhase8(client: ISqlDatabase): Promis
   }
 }
 
+const PRECISION_SEARCH_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
+  { name: 'aliases', ddl: "ALTER TABLE memories ADD COLUMN aliases TEXT NOT NULL DEFAULT '[]'" },
+  { name: 'source_path', ddl: 'ALTER TABLE memories ADD COLUMN source_path TEXT' },
+];
+
+/** Phase 6.6A — precision search columns + source_path uniqueness (ADR-060). */
+export async function migratePrecisionSearchPhase1(
+  client: ISqlDatabase,
+  dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
+  for (const column of PRECISION_SEARCH_MEMORY_COLUMNS) {
+    const hasColumn = await tableHasColumn(client, 'memories', column.name, dialect);
+    if (!hasColumn) {
+      await client.execute(column.ddl);
+    }
+  }
+
+  await client.execute(
+    `CREATE UNIQUE INDEX IF NOT EXISTS idx_memories_owner_source_path
+     ON memories(owner_id, source_path) WHERE source_path IS NOT NULL`,
+  );
+}
+
 /** Phase 2.6 M3 — unique indexes after backfill. */
 export async function migrateKnowledgeFoundationPhase3(client: ISqlDatabase): Promise<void> {
   await client.execute(
@@ -1080,6 +1103,7 @@ export async function runSchemaMigrations(
   await migrateExtensionTracksPhase6(client);
   await migrateExtensionTracksPhase7(client);
   await migrateExtensionTracksPhase8(client);
+  await migratePrecisionSearchPhase1(client, dialect);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

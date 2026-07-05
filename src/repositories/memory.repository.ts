@@ -6,6 +6,7 @@ import {
   rowToMemory,
   tagsToJson,
   keywordsToJson,
+  aliasesToJson,
 } from '../utils/memory-mapper.js';
 import { DatabaseError } from '../types/errors.js';
 import type { Memory, MemoryLifecycleState } from '../types/memory.js';
@@ -26,18 +27,23 @@ import type {
 } from '../types/memory-persistence.js';
 import type { IMemoryRepository } from './memory.repository.interface.js';
 import { appendWorkspaceFilter } from './repository-scope.js';
+import {
+  applyIgnorePatternsToSql,
+  applySearchFilterGrammarToSql,
+  parseSearchFilterGrammar,
+} from '../search/precision/index.js';
 
 const CODENAME_MAX_RETRIES = 3;
 
 const RETRIEVAL_MEMORY_SELECT = `id, title, project, '' as content, summary, tags, favorite, archived,
   owner_id, created_at, updated_at, codename, slug, keywords, category, memory_type,
   importance, language, notes, project_id, level, last_accessed, access_count,
-  embedding_id, object_key, semantic_hash, lifecycle_state`;
+  embedding_id, object_key, semantic_hash, aliases, source_path, lifecycle_state`;
 
 const MEMORY_SELECT = `id, title, project, content, summary, tags, favorite, archived,
   owner_id, created_at, updated_at, codename, slug, keywords, category, memory_type,
   importance, language, notes, project_id, level, last_accessed, access_count,
-  embedding_id, object_key, semantic_hash, workspace_id, last_modified_by_agent_id, lifecycle_state`;
+  embedding_id, object_key, semantic_hash, aliases, source_path, workspace_id, last_modified_by_agent_id, lifecycle_state`;
 
 export class MemoryRepository implements IMemoryRepository {
   constructor(private readonly db: ISqlDatabase) {}
@@ -95,8 +101,8 @@ export class MemoryRepository implements IMemoryRepository {
             owner_id, created_at, updated_at,
             codename, slug, keywords, category, memory_type, importance, language, notes,
             project_id, level, last_accessed, access_count, embedding_id, object_key, semantic_hash,
-            workspace_id, last_modified_by_agent_id
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            aliases, source_path, workspace_id, last_modified_by_agent_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             id,
             data.title,
@@ -124,6 +130,8 @@ export class MemoryRepository implements IMemoryRepository {
             null,
             null,
             data.semanticHash ?? null,
+            aliasesToJson(data.aliases ?? []),
+            data.sourcePath ?? null,
             data.workspaceId ?? null,
             data.lastModifiedByAgentId ?? null,
           ],
@@ -171,6 +179,8 @@ export class MemoryRepository implements IMemoryRepository {
       language: data.language ?? existing.language,
       notes: data.notes ?? existing.notes,
       slug: data.slug ?? existing.slug,
+      aliases: data.aliases ?? existing.aliases,
+      sourcePath: data.sourcePath !== undefined ? data.sourcePath : existing.sourcePath,
       level: data.level ?? existing.level,
       favorite: data.favorite ?? existing.favorite,
       archived: data.archived ?? existing.archived,
@@ -191,6 +201,8 @@ export class MemoryRepository implements IMemoryRepository {
       updated.language,
       updated.notes,
       updated.slug,
+      aliasesToJson(updated.aliases),
+      updated.sourcePath,
       updated.projectId,
       updated.level,
       updated.favorite ? 1 : 0,
@@ -206,7 +218,7 @@ export class MemoryRepository implements IMemoryRepository {
       `UPDATE memories
        SET title = ?, project = ?, content = ?, summary = ?, tags = ?,
            keywords = ?, category = ?, memory_type = ?, importance = ?,
-           language = ?, notes = ?, slug = ?, project_id = ?, level = ?,
+           language = ?, notes = ?, slug = ?, aliases = ?, source_path = ?, project_id = ?, level = ?,
            favorite = ?, archived = ?, updated_at = ?, last_modified_by_agent_id = ?
        WHERE ${updateConditions.join(' AND ')}`,
       updateParams,
@@ -302,6 +314,23 @@ export class MemoryRepository implements IMemoryRepository {
     return rowToMemory(rows[0]);
   }
 
+  async findBySourcePath(
+    ownerId: string,
+    sourcePath: string,
+    workspaceId?: string,
+  ): Promise<Memory | null> {
+    const conditions = ['owner_id = ?', 'source_path = ?'];
+    const params: unknown[] = [ownerId, sourcePath.replace(/\\/g, '/')];
+    appendWorkspaceFilter(conditions, params, workspaceId);
+
+    const rows = await this.db.query<MemoryRow>(
+      `SELECT ${MEMORY_SELECT} FROM memories WHERE ${conditions.join(' AND ')}`,
+      params,
+    );
+    if (rows.length === 0) return null;
+    return rowToMemory(rows[0]);
+  }
+
   async findAll(filters: ListFilters): Promise<{ memories: Memory[]; total: number }> {
     const conditions: string[] = ['owner_id = ?'];
     const params: unknown[] = [filters.ownerId];
@@ -346,6 +375,11 @@ export class MemoryRepository implements IMemoryRepository {
   async findSearchCandidates(
     filters: SearchFilters,
   ): Promise<{ memories: Memory[]; total: number }> {
+    const grammar = parseSearchFilterGrammar(filters.grammar);
+    if (grammar || (filters.ignorePatterns && filters.ignorePatterns.length > 0)) {
+      return this.searchWithPrecisionFilters(filters, grammar);
+    }
+
     if (filters.tag) {
       return this.searchByTag(filters.tag, filters);
     }
@@ -355,11 +389,12 @@ export class MemoryRepository implements IMemoryRepository {
     if (filters.query) {
       const conditions: string[] = [
         'owner_id = ?',
-        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ?)',
+        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ? OR aliases LIKE ?)',
       ];
       const likePattern = `%${filters.query}%`;
       const params: unknown[] = [
         filters.ownerId,
+        likePattern,
         likePattern,
         likePattern,
         likePattern,
@@ -383,6 +418,53 @@ export class MemoryRepository implements IMemoryRepository {
       limit: filters.limit,
       offset: filters.offset,
     });
+  }
+
+  private async searchWithPrecisionFilters(
+    filters: SearchFilters,
+    grammar: ReturnType<typeof parseSearchFilterGrammar>,
+  ): Promise<{ memories: Memory[]; total: number }> {
+    const conditions: string[] = ['owner_id = ?'];
+    const params: unknown[] = [filters.ownerId];
+    appendWorkspaceFilter(conditions, params, filters.workspaceId);
+
+    if (grammar) {
+      const fragment = applySearchFilterGrammarToSql(grammar);
+      conditions.push(...fragment.conditions);
+      params.push(...fragment.params);
+    }
+
+    if (filters.ignorePatterns?.length) {
+      const ignoreFragment = applyIgnorePatternsToSql(filters.ignorePatterns);
+      conditions.push(...ignoreFragment.conditions);
+      params.push(...ignoreFragment.params);
+    }
+
+    if (filters.query?.trim()) {
+      const likePattern = `%${filters.query.trim()}%`;
+      conditions.push(
+        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ? OR aliases LIKE ?)',
+      );
+      params.push(
+        likePattern,
+        likePattern,
+        likePattern,
+        likePattern,
+        likePattern,
+        likePattern,
+        likePattern,
+      );
+    } else if (filters.tag) {
+      conditions.push('(tags LIKE ? OR keywords LIKE ?)');
+      params.push(`%"${filters.tag}"%`, `%"${filters.tag}"%`);
+    } else if (filters.project) {
+      conditions.push('project = ?');
+      params.push(filters.project);
+    }
+
+    this.applyExtendedFilters(conditions, params, filters);
+
+    return this.executeSearch(conditions, params, filters.limit, filters.offset);
   }
 
   async search(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }> {

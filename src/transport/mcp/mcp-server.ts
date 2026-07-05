@@ -183,6 +183,11 @@ function createMcpServer(
     'Search memories by keyword, tag, or project with relevance ranking',
     {
       q: z.string().optional().describe('Full-text search keyword'),
+      queries: z.array(z.string()).optional().describe('Multi-query fan-out (Phase 6.6)'),
+      mode: z.enum(['hybrid', 'semantic', 'fulltext', 'title']).optional(),
+      rerank: z.boolean().optional(),
+      snippetLength: z.number().int().min(0).max(2000).optional(),
+      extended: z.boolean().optional(),
       tag: z.string().optional().describe('Filter by tag'),
       project: z.string().optional().describe('Filter by project'),
       category: z.string().optional(),
@@ -196,6 +201,11 @@ function createMcpServer(
     async (params) => {
       const result = await handlers.memory.search.handle(mcpCtx(), {
         q: params.q,
+        queries: params.queries,
+        mode: params.mode,
+        rerank: params.rerank,
+        snippet_length: params.snippetLength,
+        extended: params.extended,
         tag: params.tag,
         project: params.project,
         category: params.category,
@@ -205,6 +215,24 @@ function createMcpServer(
         archived: params.archived ?? false,
         limit: params.limit ?? 50,
         offset: params.offset ?? 0,
+      });
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    },
+  );
+
+  server.tool(
+    'get_memory_by_path',
+    'Read a memory by vault source_path (Phase 6.6, gated)',
+    {
+      path: z.string().min(1),
+      suggest: z.boolean().optional().describe('Return fuzzy path suggestions on miss'),
+    },
+    async (params) => {
+      const result = await handlers.memory.getByPath.handle(mcpCtx(), {
+        path: params.path,
+        suggest: params.suggest ?? false,
       });
       return {
         content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
@@ -618,15 +646,25 @@ function createMcpServer(
     'traverse_relations',
     'Traverse memory relations via bidirectional BFS from a seed memory',
     {
-      memoryId: z.string().uuid().describe('Seed memory UUID'),
+      memoryId: z.string().uuid().optional().describe('Seed memory UUID'),
       depth: z.number().int().min(1).max(3).optional().describe('BFS depth cap'),
       types: z.array(z.enum(RELATION_TYPES)).optional().describe('Filter by relation types'),
+      direction: z.enum(['outgoing', 'incoming', 'both']).optional(),
+      seed: z
+        .object({
+          memoryId: z.string().uuid().optional(),
+          slug: z.string().optional(),
+          sourcePath: z.string().optional(),
+        })
+        .optional(),
     },
     async (params) => {
       const result = await handlers.graph.traverse.handle(mcpCtx(), {
         memoryId: params.memoryId,
         depth: params.depth,
         types: params.types,
+        direction: params.direction,
+        seed: params.seed,
       });
       return {
         content: [

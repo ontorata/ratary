@@ -10,6 +10,8 @@ export const RANKING_WEIGHTS = {
   codenameContains: 80,
   titleExact: 90,
   titleContains: 70,
+  aliasExact: 85,
+  aliasContains: 65,
   keywordMatch: 60,
   tagMatch: 55,
   summaryContains: 50,

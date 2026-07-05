@@ -28,6 +28,7 @@ export interface IMemoryReader {
   findByIdsWithContent(ids: string[], ownerId: string, workspaceId?: string): Promise<Memory[]>;
   findByCodename(ownerId: string, codename: string, workspaceId?: string): Promise<Memory | null>;
   findBySlug(ownerId: string, slug: string, workspaceId?: string): Promise<Memory | null>;
+  findBySourcePath(ownerId: string, sourcePath: string, workspaceId?: string): Promise<Memory | null>;
   findAll(filters: ListFilters): Promise<{ memories: Memory[]; total: number }>;
   findSearchCandidates(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }>;
   search(filters: SearchFilters): Promise<{ memories: Memory[]; total: number }>;

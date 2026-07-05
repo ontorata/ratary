@@ -3,6 +3,13 @@ import type { IEmbeddingStore } from '../embedding/embedding.store.interface.js'
 import type { IAgentIdentity } from '../agent/iagent-identity.interface.js';
 import type { KnowledgeService } from '../knowledge/knowledge.service.js';
 import type { SearchService } from '../search/search.service.js';
+import type { IPrecisionSearchService } from '../search/precision/iprecision-search-service.interface.js';
+import { getEnv } from '../config/index.js';
+import {
+  mapSearchQueryToPrecisionRequest,
+  type ByPathQueryInput,
+  type SimilarMemoryQueryInput,
+} from '../types/precision-search.js';
 import type {
   Memory,
   CreateMemoryInput,
@@ -32,6 +39,7 @@ export class MemoryService {
     private readonly agentIdentity?: IAgentIdentity,
     private readonly evolution?: IMemoryEvolutionCoordinator,
     private readonly domainEvents?: IMemoryDomainEventCoordinator,
+    private readonly precisionSearch?: IPrecisionSearchService,
   ) {}
 
   private async resolveAttributionAgentId(scope: MemoryScope): Promise<string | undefined> {
@@ -271,7 +279,29 @@ export class MemoryService {
   }
 
   async searchMemory(scope: MemoryScope, query: SearchQuery) {
+    if (this.precisionSearch) {
+      const env = getEnv();
+      const result = await this.precisionSearch.search(
+        scope,
+        mapSearchQueryToPrecisionRequest(query, env.SEARCH_DEFAULT_MODE),
+      );
+      return { memories: result.hits, total: result.total, mode: result.mode, warnings: result.warnings };
+    }
     return this.search.search(scope, query);
+  }
+
+  async findSimilarMemories(scope: MemoryScope, query: SimilarMemoryQueryInput) {
+    if (!this.precisionSearch) {
+      throw new Error('Precision search is disabled');
+    }
+    return this.precisionSearch.findSimilar(scope, query);
+  }
+
+  async getMemoryByPath(scope: MemoryScope, query: ByPathQueryInput) {
+    if (!this.precisionSearch) {
+      throw new Error('Precision search is disabled');
+    }
+    return this.precisionSearch.getByPath(scope, query);
   }
 
   async toggleFavorite(scope: MemoryScope, id: string): Promise<Memory> {

@@ -6,6 +6,7 @@ export const MCP_TOOL_NAMES = [
   'get_memory',
   'get_memory_by_codename',
   'search_memory',
+  'get_memory_by_path',
   'get_context',
   'build_prompt',
   'list_projects',

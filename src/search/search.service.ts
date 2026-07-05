@@ -4,6 +4,8 @@ import type { Memory } from '../types/memory.js';
 import type { SearchQuery } from '../types/memory.js';
 import type { MemoryScope } from '../types/memory-scope.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
+import { getEnv } from '../config/index.js';
+import { parseIgnorePatterns } from './precision/index.js';
 import { SEARCH_CANDIDATE_CAP } from './ranking.config.js';
 import { rankMemories } from './ranking.engine.js';
 
@@ -32,6 +34,11 @@ export class SearchService {
       limit: SEARCH_CANDIDATE_CAP,
       offset: 0,
     };
+
+    const env = getEnv();
+    if (env.PRECISION_SEARCH_ENABLED) {
+      filters.ignorePatterns = parseIgnorePatterns(env.SEARCH_IGNORE_PATTERNS);
+    }
 
     const { memories: candidates, total } = await this.repository.findSearchCandidates(filters);
 

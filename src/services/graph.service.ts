@@ -20,9 +20,15 @@ export interface GraphServiceConfig {
 }
 
 export interface TraverseGraphRequest {
-  memoryId: string;
+  memoryId?: string;
   depth?: number;
   types?: RelationType[];
+  direction?: 'outgoing' | 'incoming' | 'both';
+  seed?: {
+    memoryId?: string;
+    slug?: string;
+    sourcePath?: string;
+  };
 }
 
 export interface TraverseGraphResult {
@@ -54,22 +60,24 @@ export class GraphService {
     request: TraverseGraphRequest,
   ): Promise<TraverseGraphResult> {
     const workspaceId = workspaceIdFromScope(scope);
-    const memory = await this.memoryReader.findById(request.memoryId, scope.ownerId, workspaceId);
+    const memoryId = await this.resolveSeedMemoryId(scope, request);
+    const memory = await this.memoryReader.findById(memoryId, scope.ownerId, workspaceId);
     if (!memory) {
-      throw new NotFoundError('Memory', request.memoryId);
+      throw new NotFoundError('Memory', memoryId);
     }
 
     const maxDepth = Math.min(request.depth ?? this.config.maxDepth, DEFAULT_GRAPH_MAX_DEPTH_MVP);
 
-    const neighbors = await this.graphProvider.traverseNeighbors(request.memoryId, scope.ownerId, {
+    const neighbors = await this.graphProvider.traverseNeighbors(memoryId, scope.ownerId, {
       maxDepth,
       remainingBudget: this.config.maxNeighbors,
       relationTypes: request.types,
+      direction: request.direction,
     });
 
     if (neighbors.length === 0) {
       return {
-        seedMemoryId: request.memoryId,
+        seedMemoryId: memoryId,
         neighbors: [],
         memoryIds: [],
       };
@@ -83,10 +91,41 @@ export class GraphService {
     const activeNeighbors = neighbors.filter((neighbor) => activeIds.has(neighbor.memoryId));
 
     return {
-      seedMemoryId: request.memoryId,
+      seedMemoryId: memoryId,
       neighbors: activeNeighbors,
       memoryIds: activeNeighbors.map((neighbor) => neighbor.memoryId),
     };
+  }
+
+  private async resolveSeedMemoryId(
+    scope: MemoryScope,
+    request: TraverseGraphRequest,
+  ): Promise<string> {
+    const workspaceId = workspaceIdFromScope(scope);
+    if (request.memoryId) return request.memoryId;
+    if (request.seed?.memoryId) return request.seed.memoryId;
+
+    if (request.seed?.slug) {
+      const memory = await this.memoryReader.findBySlug(
+        scope.ownerId,
+        request.seed.slug,
+        workspaceId,
+      );
+      if (!memory) throw new NotFoundError('Memory', request.seed.slug);
+      return memory.id;
+    }
+
+    if (request.seed?.sourcePath) {
+      const memory = await this.memoryReader.findBySourcePath(
+        scope.ownerId,
+        request.seed.sourcePath,
+        workspaceId,
+      );
+      if (!memory) throw new NotFoundError('Memory', request.seed.sourcePath);
+      return memory.id;
+    }
+
+    throw new NotFoundError('Memory', 'seed');
   }
 }
 

@@ -6,7 +6,7 @@ function usage(): void {
   ai-brain ecosystem [list|get <type>]
   ai-brain memory list [--project <name>] [--limit N]
   ai-brain memory get <id>
-  ai-brain memory search <query> [--limit N]
+  ai-brain memory search <query> [--limit N] [--mode hybrid|semantic|fulltext|title] [--extended] [--rerank] [--snippet-length N]
   ai-brain context build --task "<text>" [--project <name>]
   ai-brain federation peers`);
 }
@@ -69,9 +69,22 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
       const query = rest.find((a) => !a.startsWith('--'));
       if (!query) throw new Error('memory search requires query');
       const limit = parseFlag(rest, '--limit');
+      const mode = parseFlag(rest, '--mode') as
+        | 'hybrid'
+        | 'semantic'
+        | 'fulltext'
+        | 'title'
+        | undefined;
+      const extended = rest.includes('--extended');
+      const rerank = rest.includes('--rerank');
+      const snippetLength = parseFlag(rest, '--snippet-length');
       const result = await client.memory.search({
         q: query,
         limit: limit ? Number(limit) : undefined,
+        mode,
+        extended,
+        rerank,
+        snippet_length: snippetLength ? Number(snippetLength) : undefined,
       });
       console.log(JSON.stringify(result, null, 2));
       return;
