@@ -9,6 +9,8 @@
   Persistent memory, structured knowledge, and intelligent retrieval — for every AI you build.
 </p>
 
+<p align="center"><em>Ratary is where AI remembers.</em></p>
+
 <p align="center">
   <a href="https://ontorata.com">Website</a> ·
   <a href="https://github.com/ontorata/ratary">GitHub</a> ·
@@ -26,9 +28,27 @@
 
 ---
 
-**Ratary is an AI Brain Platform that gives AI persistent memory, structured knowledge, intelligent retrieval, and continuous learning — without turning your stack into yet another agent framework.**
+## Philosophy
 
-Built by [Ontorata](https://ontorata.com). Open source. Self-hostable. Designed for developers who ship production AI systems.
+> **AI should remember.**  
+> **Developers should own that memory.**
+
+**Developer-first.** Memory-native. Agent-agnostic.  
+Ratary is the brain layer between AI and knowledge — not another chat wrapper, vector dump, or agent framework.
+
+Built by [Ontorata](https://ontorata.com). Open source. Self-hostable.
+
+---
+
+## Why now?
+
+AI models are getting cheaper. Context windows are getting larger. Agents are getting capable.
+
+**But AI still forgets.**
+
+The bottleneck is no longer reasoning. It's **memory** — durable, structured, retrievable, and owned by you.
+
+That's why Ratary exists.
 
 ---
 
@@ -41,34 +61,6 @@ Your model forgets yesterday's architecture decisions. Your agent loses customer
 Vector databases store chunks. RAG pipelines retrieve documents. Agent frameworks orchestrate tools. **None of them give AI a durable brain.**
 
 That's the gap Ratary closes.
-
----
-
-## Architecture at a glance
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     Your AI Clients                             │
-│   Cursor · Claude Code · Custom Agents · REST · ChatGPT Actions  │
-└────────────────────────────┬────────────────────────────────────┘
-                             │ MCP · REST · gRPC (opt-in)
-┌────────────────────────────▼────────────────────────────────────┐
-│                        Ratary Platform                          │
-│  ┌──────────┐  ┌───────────┐  ┌──────────┐  ┌───────────────┐ │
-│  │  Memory  │  │ Knowledge │  │ Retrieval│  │ Agent Runtime │ │
-│  │  Layer   │  │   Graph   │  │  Engine  │  │   Boundary    │ │
-│  └────┬─────┘  └─────┬─────┘  └────┬─────┘  └───────┬───────┘ │
-│       └──────────────┴─────────────┴────────────────┘         │
-│                         Shared Services                         │
-└────────────────────────────┬────────────────────────────────────┘
-                             │
-┌────────────────────────────▼────────────────────────────────────┐
-│              Storage & Infrastructure (pluggable)               │
-│         D1 · PostgreSQL · pgvector · R2/S3 · Redis · Neo4j      │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-Ratary sits **between** your AI clients and your data — one brain, many surfaces.
 
 ---
 
@@ -87,6 +79,71 @@ Ratary **is** the **brain beneath** them.
 A memory foundation that persists what AI learns, structures it as knowledge, retrieves it intelligently, and exposes it through protocols your stack already speaks — **MCP**, **REST**, and optional **gRPC**.
 
 Use Ratary with LangChain, LangGraph, custom agents, IDE assistants, or enterprise search. **Bring your model. Ratary brings the memory.**
+
+---
+
+## Why not just…?
+
+Developers ask this first. Here is the honest answer.
+
+| If you only use… | You get… | What you miss |
+|------------------|----------|---------------|
+| **pgvector** (or any vector DB) | Similarity search over embeddings | Structured memory, summaries, graph relations, MCP for IDEs, context packing |
+| **Mem0** (or memory SaaS) | Fast memory API, often hosted | Full self-host control, knowledge graph, hybrid SQL+vector+graph retrieval, enterprise adapters |
+| **Letta** | Agent + memory in one runtime | A clear boundary — keep *your* agent; Ratary stays substrate, not orchestration |
+| **LangGraph** | Agent workflow and tool routing | A durable memory layer agents can share across sessions, clients, and workspaces |
+| **RAG** | Document chunks for Q&A | *Memory* — decisions, handoffs, codenames, relations that evolve across time |
+
+Ratary **complements** these tools. Point pgvector at embeddings. Point LangGraph at orchestration. Point Ratary at **everything your AI must remember**.
+
+---
+
+## Ratary ecosystem
+
+One platform direction — from server to surfaces:
+
+```
+Ratary Server          ← this repo — memory, retrieval, REST, MCP
+       ↓
+@ratary/sdk            ← TypeScript client for apps and agents
+       ↓
+@ratary/cli            ← operators — migrate, backfill, compress, sync
+       ↓
+@ratary/mcp-server     ← standalone MCP proxy for hosted deployments
+       ↓
+Ontory                 ← AI assistant on Ontorata — consumer face of the brain
+```
+
+**Ratary Server** is the source of truth. Everything else connects to it.  
+**Ontory** is where end users meet the memory layer — built on the same platform.
+
+---
+
+## Architecture at a glance
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Your AI Clients                             │
+│   Cursor · Claude Code · Custom Agents · REST · ChatGPT Actions  │
+└────────────────────────────┬────────────────────────────────────┘
+                             │ MCP · REST · gRPC (opt-in)
+┌────────────────────────────▼────────────────────────────────────┐
+│                        Ratary Platform                          │
+│  ┌──────────┐  ┌───────────┐  ┌──────────┐  ┌───────────────┐ │
+│  │  Memory  │  │ Knowledge │  │ Retrieval│  │    Agent      │ │
+│  │  Layer   │  │   Graph   │  │  Engine  │  │   Boundary    │ │
+│  └────┬─────┘  └─────┬─────┘  └────┬─────┘  └───────┬───────┘ │
+│       └──────────────┴─────────────┴────────────────┘         │
+│                         Shared Services                         │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+┌────────────────────────────▼────────────────────────────────────┐
+│              Storage & Infrastructure (pluggable)               │
+│         D1 · PostgreSQL · pgvector · R2/S3 · Redis · Neo4j      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+Ratary sits **between** your AI clients and your data — one brain, many surfaces.
 
 ---
 
@@ -293,24 +350,6 @@ Deep dive: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
 ---
 
-## Why Ratary?
-
-| | Vector DB | Memory libraries | Traditional RAG | Agent frameworks |
-|---|-----------|------------------|-------------------|------------------|
-| **Primary job** | Similarity search | Key-value recall | Document Q&A | Tool orchestration |
-| **Structured memory** | ❌ | ⚠️ | ❌ | ⚠️ |
-| **Graph & relations** | ❌ | ❌ | ❌ | ⚠️ |
-| **MCP for IDEs** | ❌ | ⚠️ | ❌ | ⚠️ |
-| **Context token economics** | ❌ | ⚠️ | ❌ | ⚠️ |
-| **Self-host sovereignty** | ✅ | ⚠️ | ⚠️ | ⚠️ |
-| **Clear agent boundary** | N/A | N/A | N/A | ❌ (bundled) |
-
-**Ratary doesn't replace your stack. It completes it.**
-
-Point your vector DB at documents. Point your agent at tools. Point Ratary at **everything your AI needs to remember.**
-
----
-
 ## Documentation
 
 | Document | Description |
@@ -361,11 +400,12 @@ Questions: [hello@ontorata.com](mailto:hello@ontorata.com)
 
 ## Vision
 
-> **AI should remember. Developers should own that memory.**
+Today every application has a database.  
+Tomorrow every AI will have a brain.
 
-Ratary exists because the next generation of AI systems won't be judged by how clever a single prompt is — but by how well they **accumulate knowledge**, **respect boundaries**, and **stay coherent across time**.
+**Ratary is building that layer.**
 
-We're building the brain layer the industry is missing: open, portable, self-hostable, and protocol-native. Not another chat wrapper. Not another vector dump. A **real memory platform** for the age of agents.
+Open, portable, self-hostable, and protocol-native — so knowledge **accumulates**, boundaries are **respected**, and agents stay **coherent across time**.
 
 **Bring your model. Bring your agent. Ratary brings the brain.**
 
@@ -373,7 +413,7 @@ We're building the brain layer the industry is missing: open, portable, self-hos
 
 <p align="center">
   <sub>
-    Ratary · by <a href="https://ontorata.com">Ontorata</a> ·
+    <strong>Ratary</strong> · where AI remembers · by <a href="https://ontorata.com">Ontorata</a> ·
     <a href="https://www.linkedin.com/in/lutfiramadhan/">Lutfi Ramadhan</a> ·
     MIT License
   </sub>
