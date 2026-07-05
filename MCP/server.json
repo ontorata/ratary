@@ -1,7 +1,7 @@
 {
   "name": "ratary",
   "title": "Ratary",
-  "description": "Persistent coding memory for AI assistants — save, search, token-efficient context, knowledge graph, multi-client sync. MCP stdio (27 tools) or remote HTTPS.",
+  "description": "Persistent coding memory for AI assistants — save, search, token-efficient context, knowledge graph, multi-client sync. MCP stdio (28 tools) or remote HTTPS.",
   "version": "1.0.0",
   "license": "MIT",
   "repository": "https://github.com/ontorata/ratary",

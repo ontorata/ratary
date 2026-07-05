@@ -106,11 +106,13 @@ Context assembly tuned for LLMs: progressive retrieval, token budgets, and summa
 ### Retrieval
 Hybrid search across SQL, vectors, lexical index, and graph — ranked, bounded, and predictable. Separate browse (search) from inject (retrieval).
 
+**Precision Search (Phase 6.6, opt-in):** When `PRECISION_SEARCH_ENABLED=true`, browse search adds explicit modes (`hybrid` | `semantic` | `fulltext` | `title`), multi-query RRF, alias/path-aware filters, similar-memory and by-path reads, optional rerank, and enriched hit envelopes — without changing the default OFF path.
+
 ### Learning
 Quality signals, reflection, consolidation, and evolution pipelines — optional, env-gated. Your brain gets smarter over time without retraining the model.
 
 ### Agent runtime boundary
-Capability manifests, workspace/agent scoping, and 20 MCP tools — so external agents discover what the brain can do without embedding runtime inside Ratary.
+Capability manifests, workspace/agent scoping, and **28 MCP tools** — so external agents discover what the brain can do without embedding runtime inside Ratary.
 
 ### Platform
 Pluggable adapters: Postgres, pgvector, R2/S3, Meilisearch, Neo4j, Redis, DuckDB. Start on Cloudflare D1. Scale to enterprise storage without rewriting app logic.
@@ -193,8 +195,12 @@ curl -X POST http://localhost:3000/api/v1/memory \
   -H "Content-Type: application/json" \
   -d '{"title":"Architecture decision","project":"my-app","content":"We chose event sourcing for audit trail.","tags":["architecture"]}'
 
-# Search
+# Search (default path — same as always)
 curl "http://localhost:3000/api/v1/search?q=architecture" \
+  -H "Authorization: Bearer aic_YOUR_KEY"
+
+# Precision search (opt-in — set PRECISION_SEARCH_ENABLED=true in .env)
+curl "http://localhost:3000/api/v1/search?q=architecture&mode=hybrid&extended=true" \
   -H "Authorization: Bearer aic_YOUR_KEY"
 ```
 
@@ -217,7 +223,7 @@ console.log(results.data);
 
 ### MCP (IDE assistants)
 
-After `npm run setup`, reload your editor. Ratary exposes **20 MCP tools** — `save_memory`, `search_memory`, `get_context`, `traverse_relations`, and more — shared across Cursor, Claude Code, Roo Code, Cline, Gemini CLI, and VS Code.
+After `npm run setup`, reload your editor. Ratary exposes **28 MCP tools** — `save_memory`, `search_memory`, `get_memory_by_path`, `get_context`, `traverse_relations`, and more — shared across Cursor, Claude Code, Roo Code, Cline, Gemini CLI, and VS Code.
 
 ---
 
@@ -243,6 +249,7 @@ After `npm run setup`, reload your editor. Ratary exposes **20 MCP tools** — `
 | MCP-native (IDE integration) | ✅ | ❌ | ⚠️ | ❌ |
 | REST + OpenAPI + SDK | ✅ | ⚠️ | ✅ | ⚠️ |
 | Hybrid retrieval (SQL + vector + graph) | ✅ | ⚠️ | ⚠️ | ⚠️ |
+| Precision search modes (hybrid/semantic/fulltext/title) | ✅ (opt-in) | ❌ | ⚠️ | ⚠️ |
 | Knowledge graph & relations | ✅ | ❌ | ⚠️ | ❌ |
 | Token-efficient context assembly | ✅ | ❌ | ⚠️ | ❌ |
 | Multi-AI / workspace isolation | ✅ | ❌ | ⚠️ | ⚠️ |
@@ -264,7 +271,8 @@ src/
   repositories/     Scoped data access
   ports/            Vendor-neutral contracts (ISqlDatabase, IVectorStore, …)
   infrastructure/   D1, Postgres, pgvector, R2, Redis, Neo4j adapters
-  transport/mcp/    MCP server (20 tools)
+  transport/mcp/    MCP server (28 tools)
+  search/precision/ Precision search orchestrator (Phase 6.6, gated)
   composition/      Wiring at server startup
 
 packages/
@@ -277,7 +285,7 @@ packages/
 
 | Pipeline | Purpose |
 |----------|---------|
-| **Search** | Paginated browse for humans and APIs |
+| **Search** | Paginated browse for humans and APIs (`SearchService`; `IPrecisionSearchService` when flag ON) |
 | **Retrieval** | Bounded, ranked candidates for LLM context |
 | **Embedding** | Async enrichment — never blocks CRUD |
 

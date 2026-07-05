@@ -12,7 +12,7 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 
 | Mode | Location | When to use |
 |------|----------|-------------|
-| **Full server (27 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; direct Cloudflare D1 / Postgres |
+| **Full server (28 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; direct Cloudflare D1 / Postgres |
 | **npm proxy (6 tools)** | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`) | Connect to hosted REST API with `RATARY_API_KEY` |
 | **Remote HTTPS** | [`src/transport/mcp/remote/`](../src/transport/mcp/remote/) | `REMOTE_MCP_ENABLED=true` on Vercel deploy |
 
@@ -89,12 +89,12 @@ Details: [Phase 13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) · [ADR-0
 
 ---
 
-## Tools (full server — 27)
+## Tools (full server — 28)
 
 | Tool | Purpose |
 |------|---------|
 | `save_memory`, `update_memory`, `delete_memory` | CRUD |
-| `get_memory`, `get_memory_by_codename`, `search_memory` | Read & search |
+| `get_memory`, `get_memory_by_codename`, `get_memory_by_path`, `search_memory` | Read & search (precision modes when `PRECISION_SEARCH_ENABLED=true`) |
 | `get_context`, `build_prompt` | Token-efficient context (~85% savings default) |
 | `list_projects`, `list_tags` | Navigation |
 | `link_memories`, `list_relations`, `traverse_relations`, `get_graph_capabilities` | Knowledge graph |
