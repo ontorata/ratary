@@ -6,7 +6,7 @@ import {
   MEILISEARCH_INDEX_SETTINGS,
   type MeilisearchIndexWriter,
   type MeilisearchMemoryDocument,
-} from '../../../scripts/lib/meilisearch-backfill.js';
+} from '../../backfill/meilisearch-backfill.js';
 import type { ISearchIndexSyncer } from '../ports/isearch-index-syncer.port.js';
 import type { SearchGraphSyncInput, SearchGraphSyncStats } from '../types/sync.types.js';
 

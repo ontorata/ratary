@@ -7,7 +7,7 @@ import {
   NEO4J_MERGE_RELATION_CYPHER,
   type Neo4jGraphWriter,
   type Neo4jRelationRow,
-} from '../../../scripts/lib/neo4j-backfill.js';
+} from '../../backfill/neo4j-backfill.js';
 import type { IGraphIndexSyncer } from '../ports/igraph-index-syncer.port.js';
 import type { SearchGraphSyncInput, SearchGraphSyncStats } from '../types/sync.types.js';
 

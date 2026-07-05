@@ -1,7 +1,7 @@
 import type { Env } from '../../config/env.js';
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import type { IVectorStore } from '../../ports/vector/ivector-store.port.js';
-import { backfillPgvector } from '../../../scripts/lib/pgvector-backfill.js';
+import { backfillPgvector } from '../../backfill/pgvector-backfill.js';
 import type { IPgvectorIndexSyncer } from '../ports/index.js';
 import type { ContentScaleSyncInput, ContentScaleSyncStats } from '../types/sync.types.js';
 

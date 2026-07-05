@@ -1,7 +1,7 @@
 import type { Env } from '../../config/env.js';
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import type { IObjectStorage } from '../../ports/storage/iobject-storage.port.js';
-import { backfillContentOffload } from '../../../scripts/lib/content-offload-backfill.js';
+import { backfillContentOffload } from '../../backfill/content-offload-backfill.js';
 import type { IContentOffloadSyncer } from '../ports/index.js';
 import type { ContentScaleSyncInput, ContentScaleSyncStats } from '../types/sync.types.js';
 
