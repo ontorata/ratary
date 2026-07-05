@@ -1121,7 +1121,7 @@ export async function executeTransaction(
 ): Promise<void> {
   if (statements.length === 0) return;
 
-  await client.execute('BEGIN IMMEDIATE');
+  await client.execute('BEGIN');
   try {
     for (const { sql, params } of statements) {
       await client.execute(sql, params ?? []);
