@@ -1,0 +1,74 @@
+{
+  "name": "agent-forge",
+  "version": "1.0.0",
+  "description": "Memory-governed agent pipeline for Ratary — mandatory stage activation with MCP recall/remember bookends",
+  "phase": ".ai/phases/07.1-agent-forge",
+  "authority": ".ai/core/constitution/00-CONSTITUTION.md",
+  "skillsRoot": ".cursor/skills",
+  "designDrafts": ".ai/designs/drafts",
+  "stages": [
+    {
+      "id": "recall",
+      "skill": "forge-recall",
+      "activates": "session_start",
+      "mcpTools": ["search_memory", "get_memory_by_codename"]
+    },
+    {
+      "id": "intent",
+      "skill": "forge-intent",
+      "activates": "before_design_or_code",
+      "output": ".ai/designs/drafts/{slug}.md",
+      "promptRef": "architecture/system-design-brief"
+    },
+    {
+      "id": "isolate",
+      "skill": "forge-isolate",
+      "activates": "after_intent_approved",
+      "requires": ["git"]
+    },
+    {
+      "id": "blueprint",
+      "skill": "forge-blueprint",
+      "activates": "after_isolate_ready",
+      "output": ".ai/designs/drafts/{slug}-plan.md",
+      "promptRef": "planning/work-breakdown"
+    },
+    {
+      "id": "execute",
+      "skill": "forge-execute",
+      "activates": "blueprint_approved",
+      "modes": ["sequential_checkpoints", "subagent_per_task"]
+    },
+    {
+      "id": "prove",
+      "skill": "forge-prove",
+      "activates": "during_execute",
+      "promptRef": "testing/unit-test-design"
+    },
+    {
+      "id": "inspect",
+      "skill": "forge-inspect",
+      "activates": "between_tasks",
+      "promptRef": "review/code-review",
+      "blockingSeverities": ["critical", "constitutional"]
+    },
+    {
+      "id": "land",
+      "skill": "forge-land",
+      "activates": "all_tasks_done",
+      "options": ["merge_local", "open_pr", "keep_branch", "discard"]
+    },
+    {
+      "id": "remember",
+      "skill": "forge-remember",
+      "activates": "session_end",
+      "mcpTools": ["save_memory"]
+    }
+  ],
+  "supporting": [
+    { "id": "diagnose", "skill": "forge-diagnose", "activates": "on_failure" },
+    { "id": "parallel", "skill": "forge-parallel", "activates": "blueprint_has_independent_tracks" },
+    { "id": "skillcraft", "skill": "forge-skillcraft", "activates": "authoring_new_skill" },
+    { "id": "intro", "skill": "forge-intro", "activates": "first_use" }
+  ]
+}
