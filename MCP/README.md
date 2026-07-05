@@ -6,6 +6,8 @@
 
 Persistent **coding memory** for AI assistants — save, search, build token-efficient context, knowledge graph traversal, and multi-client sync. Works with **Cursor**, **Claude Code**, **Roo**, **Cline**, **Gemini CLI**, and remote MCP hosts (ChatGPT App URL when deployed).
 
+**Ecosystem:** Built by [Ontorata](https://ontorata.com). MCP server id stays **`ratary`**. Operator UI: **[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** (separate repo).
+
 ---
 
 ## Where is the server code?

@@ -214,7 +214,7 @@ Ratary is a platform — not a single binary.
               consumer AI assistant · built on Ratary
 ```
 
-**Ratary Server** is the source of truth. Everything else connects to it. **Ontorata Studio** is the operator console (Ontorata ecosystem); MCP stays **`ratary`**.
+**Ratary Server** is the source of truth. Everything else connects to it. **[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** is the operator console ([ontorata/Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio.git) — not in this repo); MCP stays **`ratary`**.
 
 ---
 
