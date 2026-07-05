@@ -1,5 +1,7 @@
 import type { Env } from '../config/env.js';
 import type { FastifyInstance } from 'fastify';
+import type { IUsageMeter } from '../cloud/ports/iusage-meter.port.js';
+import { NoOpUsageMeter } from '../cloud/adapters/noop-usage-meter.js';
 import {
   NoOpMetricsExporter,
   PrometheusMetricsExporter,
@@ -14,12 +16,18 @@ import {
   NoOpSloRegistry,
   registerObservabilityMetricCatalog,
   registerObservabilityMiddleware,
+  publishUsageCostMetrics,
   type IMetricsExporter,
   type ITraceExporter,
   type ILogShipper,
   type IDashboardPack,
   type ISloRegistry,
 } from '../observability/index.js';
+
+export interface UsageCostMetricsDeps {
+  usageMeter: IUsageMeter;
+  usageMeterEnabled: boolean;
+}
 
 export interface ObservabilityPorts {
   enabled: boolean;
@@ -29,7 +37,7 @@ export interface ObservabilityPorts {
   dashboardPack: IDashboardPack;
   sloRegistry: ISloRegistry;
   registerMiddleware(fastify: FastifyInstance): void;
-  registerMetricsRoute(fastify: FastifyInstance): void;
+  registerMetricsRoute(fastify: FastifyInstance, costMetrics?: UsageCostMetricsDeps): void;
 }
 
 /**
@@ -45,7 +53,9 @@ export function createObservabilityPorts(env: Env): ObservabilityPorts {
     dashboardPack: new NoOpDashboardPack(),
     sloRegistry: new NoOpSloRegistry(),
     registerMiddleware: () => undefined,
-    registerMetricsRoute: () => undefined,
+    registerMetricsRoute(_fastify: FastifyInstance, _costMetrics?: UsageCostMetricsDeps) {
+      return undefined;
+    },
   };
 
   if (!env.OBSERVABILITY_PLATFORM) {
@@ -75,8 +85,16 @@ export function createObservabilityPorts(env: Env): ObservabilityPorts {
         logShipper,
       });
     },
-    registerMetricsRoute(fastify: FastifyInstance) {
+    registerMetricsRoute(fastify: FastifyInstance, costMetrics?: UsageCostMetricsDeps) {
       fastify.get(env.OBS_METRICS_PATH, async (_request, reply) => {
+        if (
+          env.OBS_COST_METRICS_ENABLED &&
+          costMetrics?.usageMeterEnabled &&
+          costMetrics.usageMeter &&
+          !(costMetrics.usageMeter instanceof NoOpUsageMeter)
+        ) {
+          await publishUsageCostMetrics(costMetrics.usageMeter, metricsExporter, env);
+        }
         reply.header('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
         reply.send(metricsExporter.exportPrometheusText());
       });

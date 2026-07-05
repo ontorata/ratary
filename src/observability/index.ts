@@ -9,6 +9,10 @@ export { OtelTraceExporter } from './adapters/otel-trace-exporter.js';
 export { NoOpLogShipper, StdoutLogShipper } from './adapters/stdout-log-shipper.js';
 export { LokiLogShipper } from './adapters/loki-log-shipper.js';
 export { FileDashboardPack, NoOpDashboardPack } from './adapters/file-dashboard-pack.js';
+export {
+  publishUsageCostMetrics,
+  computeUsageCostGaugeValues,
+} from './adapters/usage-cost-metrics-publisher.js';
 export { FileSloRegistry, NoOpSloRegistry } from './adapters/file-slo-registry.js';
 export {
   registerObservabilityMetricCatalog,

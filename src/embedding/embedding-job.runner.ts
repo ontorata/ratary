@@ -130,6 +130,7 @@ export class EmbeddingJobRunner {
       {
         memoryId: memory.id,
         text: buildEmbedText(memory.title, memory.summary, memory.content),
+        ownerId,
       },
     ]);
 

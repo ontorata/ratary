@@ -282,7 +282,9 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
       return rankMemories(fallbackCandidates, { q: query });
     }
 
-    const [embedded] = await this.embeddingProvider.embed([{ memoryId: 'query', text: query }]);
+    const [embedded] = await this.embeddingProvider.embed([
+      { memoryId: 'query', text: query, ownerId: scope.ownerId, workspaceId: scope.workspaceId },
+    ]);
     const matches = await this.embeddingStore.searchSimilar(
       embedded.vector,
       scope.ownerId,

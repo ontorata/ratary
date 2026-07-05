@@ -131,7 +131,6 @@ export async function buildApp(options?: {
   const observabilityPorts = createObservabilityPorts(env);
   if (observabilityPorts.enabled) {
     observabilityPorts.registerMiddleware(fastify);
-    observabilityPorts.registerMetricsRoute(fastify);
   }
 
   if (enableLogger) {
@@ -184,6 +183,12 @@ export async function buildApp(options?: {
       return memoryServiceRef.exportBackup(scope);
     },
   });
+  if (observabilityPorts.enabled) {
+    observabilityPorts.registerMetricsRoute(fastify, {
+      usageMeter: cloudPorts.usageMeter,
+      usageMeterEnabled: cloudPorts.usageMeterEnabled,
+    });
+  }
   const aiBrainPlatformPorts = createAiBrainPlatformPorts(platform.sql, env);
   const globalIntelligencePorts = createGlobalIntelligencePorts(
     platform.sql,
@@ -226,7 +231,10 @@ export async function buildApp(options?: {
   const authController = createAuthController(authLayer.identityService, authLayer.clientService);
   const knowledgeController = createKnowledgeController(memoryService, scopeResolver);
   const relationController = createMemoryRelationController(relationService, scopeResolver);
-  const embeddingProvider = createEmbeddingProvider();
+  const embeddingProvider = createEmbeddingProvider({
+    usageMeter: cloudPorts.usageMeter,
+    usageMeterEnabled: cloudPorts.usageMeterEnabled,
+  });
   const embeddingJobRunner = new EmbeddingJobRunner(
     repository,
     repository,

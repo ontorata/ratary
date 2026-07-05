@@ -26,7 +26,7 @@ export class VectorRetrievalCandidateSource implements IRetrievalCandidateSource
     }
 
     const embeddingResults = await this.embeddingProvider.embed([
-      { memoryId: '__query__', text: query },
+      { memoryId: '__query__', text: query, ownerId, workspaceId: filters.workspaceId },
     ]);
 
     if (!embeddingResults[0]) {

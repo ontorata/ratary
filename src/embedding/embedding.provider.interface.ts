@@ -1,6 +1,9 @@
 export interface EmbeddingInput {
   memoryId: string;
   text: string;
+  /** Owner scope for usage metering (Phase 18 / D19-01). */
+  ownerId?: string;
+  workspaceId?: string;
 }
 
 export interface EmbeddingResult {

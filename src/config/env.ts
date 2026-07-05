@@ -310,6 +310,12 @@ const envSchema = z
     OBS_METRICS_PATH: z.string().min(1).default('/metrics'),
     OBS_LOG_SHIPPER: z.enum(['none', 'stdout', 'loki']).default('stdout'),
     OBS_LOKI_PUSH_URL: z.string().url().optional(),
+    OBS_COST_METRICS_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    COST_EMBEDDING_USD_PER_REQUEST: z.coerce.number().min(0).default(0.00002),
+    COST_ESTIMATED_BYTES_PER_MEMORY: z.coerce.number().int().min(0).default(4096),
 
     // AI infrastructure platform (Phase 20) — ADR-035; plugin marketplace, default off
     PLUGIN_MARKETPLACE_ENABLED: z
