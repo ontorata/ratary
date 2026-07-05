@@ -226,6 +226,83 @@ function buildUpsertSql(spec: BackfillTableSpec): string {
     ON CONFLICT (${spec.primaryKey}) DO UPDATE SET ${updates}`;
 }
 
+const MEMORIES_SPEC = METADATA_BACKFILL_TABLES.find((entry) => entry.table === 'memories')!;
+
+function buildMemoriesUpsertSql(conflict: 'id' | 'owner_codename' | 'owner_slug'): string {
+  const spec = MEMORIES_SPEC;
+  const columnList = spec.columns.join(', ');
+  const placeholders = spec.columns.map(() => '?').join(', ');
+  const updates = spec.columns
+    .filter((column) => column !== 'id')
+    .map((column) => `${column} = EXCLUDED.${column}`)
+    .join(', ');
+
+  const insert = `INSERT INTO memories (${columnList}) VALUES (${placeholders})`;
+  if (conflict === 'owner_codename') {
+    return `${insert} ON CONFLICT (owner_id, codename) WHERE codename IS NOT NULL DO UPDATE SET ${updates} RETURNING id`;
+  }
+  if (conflict === 'owner_slug') {
+    return `${insert} ON CONFLICT (owner_id, slug) WHERE slug IS NOT NULL DO UPDATE SET ${updates} RETURNING id`;
+  }
+  return `${insert} ON CONFLICT (id) DO UPDATE SET ${updates} RETURNING id`;
+}
+
+function hasNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0;
+}
+
+async function upsertMemoryRow(
+  target: ISqlDatabase,
+  row: Record<string, unknown>,
+): Promise<string> {
+  const values = MEMORIES_SPEC.columns.map((column) => row[column] ?? null);
+  const sql = hasNonEmptyString(row.codename)
+    ? buildMemoriesUpsertSql('owner_codename')
+    : hasNonEmptyString(row.slug)
+      ? buildMemoriesUpsertSql('owner_slug')
+      : buildMemoriesUpsertSql('id');
+
+  const result = await target.execute(sql, values);
+  const returnedId = result.results?.[0]?.id;
+  return returnedId != null ? String(returnedId) : String(row.id);
+}
+
+function remapMemoryForeignKeys(
+  row: Record<string, unknown>,
+  memoryIdMap: Map<string, string>,
+  spec: BackfillTableSpec,
+): Record<string, unknown> {
+  if (memoryIdMap.size === 0) {
+    return row;
+  }
+
+  if (spec.table === 'memory_embeddings') {
+    const memoryId = row.memory_id;
+    if (memoryId == null) {
+      return row;
+    }
+    const mapped = memoryIdMap.get(String(memoryId));
+    return mapped ? { ...row, memory_id: mapped } : row;
+  }
+
+  if (spec.table === 'memory_relations') {
+    let next = row;
+    for (const column of ['source_memory_id', 'target_memory_id'] as const) {
+      const raw = next[column];
+      if (raw == null) {
+        continue;
+      }
+      const mapped = memoryIdMap.get(String(raw));
+      if (mapped) {
+        next = { ...next, [column]: mapped };
+      }
+    }
+    return next;
+  }
+
+  return row;
+}
+
 function buildSelectSql(spec: BackfillTableSpec, ownerId?: string): { sql: string; params: unknown[] } {
   const columnList = spec.columns.join(', ');
   let sql = `SELECT ${columnList} FROM ${spec.table}`;
@@ -252,11 +329,49 @@ async function fetchBatch(
   return source.query<Record<string, unknown>>(sql, params);
 }
 
+async function backfillMemoriesTable(
+  source: ISqlDatabase,
+  target: ISqlDatabase,
+  options: Pick<D1ToPostgresBackfillOptions, 'ownerId' | 'batchSize' | 'dryRun'>,
+): Promise<{ stats: TableBackfillStats; memoryIdMap: Map<string, string> }> {
+  const stats: TableBackfillStats = { table: 'memories', scanned: 0, upserted: 0 };
+  const memoryIdMap = new Map<string, string>();
+  let offset = 0;
+
+  while (true) {
+    const rows = await fetchBatch(source, MEMORIES_SPEC, options.ownerId, options.batchSize, offset);
+    if (rows.length === 0) {
+      break;
+    }
+
+    for (const row of rows) {
+      stats.scanned++;
+      const sourceId = String(row.id);
+      if (options.dryRun) {
+        memoryIdMap.set(sourceId, sourceId);
+        continue;
+      }
+
+      const targetId = await upsertMemoryRow(target, row);
+      memoryIdMap.set(sourceId, targetId);
+      stats.upserted++;
+    }
+
+    offset += rows.length;
+    if (rows.length < options.batchSize) {
+      break;
+    }
+  }
+
+  return { stats, memoryIdMap };
+}
+
 async function backfillTable(
   source: ISqlDatabase,
   target: ISqlDatabase,
   spec: BackfillTableSpec,
   options: Pick<D1ToPostgresBackfillOptions, 'ownerId' | 'batchSize' | 'dryRun'>,
+  memoryIdMap: Map<string, string> = new Map(),
 ): Promise<TableBackfillStats> {
   const stats: TableBackfillStats = { table: spec.table, scanned: 0, upserted: 0 };
   const upsertSql = buildUpsertSql(spec);
@@ -274,7 +389,8 @@ async function backfillTable(
         continue;
       }
 
-      const values = spec.columns.map((column) => row[column] ?? null);
+      const mappedRow = remapMemoryForeignKeys(row, memoryIdMap, spec);
+      const values = spec.columns.map((column) => mappedRow[column] ?? null);
       await target.execute(upsertSql, values);
       stats.upserted++;
     }
@@ -292,9 +408,19 @@ export async function backfillD1ToPostgres(
   options: D1ToPostgresBackfillOptions,
 ): Promise<D1ToPostgresBackfillResult> {
   const tables: TableBackfillStats[] = [];
+  let memoryIdMap = new Map<string, string>();
 
   for (const spec of METADATA_BACKFILL_TABLES) {
-    tables.push(await backfillTable(options.source, options.target, spec, options));
+    if (spec.table === 'memories') {
+      const result = await backfillMemoriesTable(options.source, options.target, options);
+      memoryIdMap = result.memoryIdMap;
+      tables.push(result.stats);
+      continue;
+    }
+
+    tables.push(
+      await backfillTable(options.source, options.target, spec, options, memoryIdMap),
+    );
   }
 
   return {
