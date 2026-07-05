@@ -25,6 +25,17 @@
       "tags": ["storage"]
     },
     {
+      "id": "storage-supabase",
+      "type": "storage",
+      "displayName": "Supabase Postgres",
+      "description": "Supabase hosted Postgres via DATABASE_URL (Postgres wire protocol)",
+      "version": "1.0.0",
+      "vendor": "ai-brain",
+      "implements": "ISqlDatabase",
+      "curated": true,
+      "tags": ["storage"]
+    },
+    {
       "id": "embedding-noop",
       "type": "embedding",
       "displayName": "No-op Embedding",

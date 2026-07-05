@@ -28,7 +28,7 @@ function resolvePgVectorDatabase(env: Env, sql: ISqlDatabase): ISqlDatabase {
     return createPostgresSqlDatabase(dedicatedUrl);
   }
 
-  if (env.SQL_PROVIDER === 'postgres') {
+  if (env.SQL_PROVIDER === 'postgres' || env.SQL_PROVIDER === 'supabase') {
     return sql;
   }
 

@@ -6,10 +6,15 @@ import { createPostgresSqlDatabase } from '../sql/postgres-sql-database.adapter.
 import { createMariaDBSqlDatabaseFromUri } from '../sql/mariadb-sql-database.adapter.js';
 
 export function createSqlDatabase(d1Client: D1Client | null, env: Env): ISqlDatabase {
-  if (env.SQL_PROVIDER === 'postgres' || env.SQL_PROVIDER === 'tidb' || env.SQL_PROVIDER === 'cockroachdb') {
+  if (
+    env.SQL_PROVIDER === 'postgres' ||
+    env.SQL_PROVIDER === 'tidb' ||
+    env.SQL_PROVIDER === 'cockroachdb' ||
+    env.SQL_PROVIDER === 'supabase'
+  ) {
     if (!env.DATABASE_URL) {
       throw new Error(
-        'DATABASE_URL is required when SQL_PROVIDER=postgres, tidb, or cockroachdb',
+        'DATABASE_URL is required when SQL_PROVIDER=postgres, tidb, cockroachdb, or supabase',
       );
     }
     return createPostgresSqlDatabase(env.DATABASE_URL);

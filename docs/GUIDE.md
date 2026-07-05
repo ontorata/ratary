@@ -25,6 +25,7 @@ cp .env.example .env
 |------|----------------|-------------------|-------|
 | **Cloudflare D1** | `d1` | `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, `D1_API_TOKEN` | [CONFIGURATION — D1](CONFIGURATION.md#cloudflare-d1-sql_providerd1) |
 | **PostgreSQL** | `postgres` | `DATABASE_URL` | [DOCKER — postgres profile](DOCKER.md#quick-start-postgres-profile) or local Postgres |
+| **Supabase** | `supabase` | `DATABASE_URL` (Supabase dashboard URI) | [CONFIGURATION — Supabase](CONFIGURATION.md#supabase-metadata-sql_providersupabase) |
 | **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [DOCKER — enterprise profile](DOCKER.md#profiles) |
 | **Hosted API only** | (remote server) | `RATARY_API_KEY` | [install/remote.md](install/remote.md) — no local SQL |
 
@@ -36,7 +37,7 @@ Set `AUTH_SECRET` (min 32 characters) for REST auth on every self-hosted path.
 - `D1_DATABASE_ID`
 - `D1_API_TOKEN`
 
-**Postgres / MariaDB** — set `SQL_PROVIDER` and the matching connection string; use Docker compose or your own instance.
+**Postgres / Supabase / MariaDB** — set `SQL_PROVIDER` and the matching connection string; use Docker compose, Supabase dashboard URI, or your own instance.
 
 ```bash
 npm run db:migrate          # D1 schema via Cloudflare API

@@ -259,7 +259,7 @@ This diagram shows the **logical internal architecture** of Ratary — how memor
                              │
         ┌────────────────────▼────────────────────┐
         │     Pluggable storage (your choice)      │
-        │  Postgres · MariaDB · D1 · pgvector · Neo4j ·     │
+        │  Postgres · Supabase · MariaDB · D1 · pgvector · Neo4j · │
         │  R2/S3/MinIO · OpenSearch · ClickHouse · …        │
         └─────────────────────────────────────────┘
 ```
@@ -316,7 +316,7 @@ Quality signals, consolidation, and compression — optional pipelines that impr
 Capability manifests, workspace scoping, and **28 Ratary MCP tools**. External agents discover what the brain can do; Ratary never embeds agent reasoning — see [What Ratary is not](#what-ratary-is-not).
 
 ### Platform
-Pluggable adapters: choose **SQL metadata** (Postgres, MariaDB/MySQL, D1, TiDB/Cockroach) plus optional pgvector, R2/S3/MinIO, Azure Blob, GCS, Meilisearch, OpenSearch, Neo4j, Redis, DuckDB, ClickHouse. Same application code for every backend.
+Pluggable adapters: choose **SQL metadata** (Postgres, Supabase, MariaDB/MySQL, D1, TiDB/Cockroach) plus optional pgvector, R2/S3/MinIO, Azure Blob, GCS, Meilisearch, OpenSearch, Neo4j, Redis, DuckDB, ClickHouse. Same application code for every backend.
 
 **Self-host stacks:** [docs/DOCKER.md](docs/DOCKER.md) — `postgres` or `enterprise` (MariaDB + MinIO + Redis) profiles.
 

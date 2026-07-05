@@ -69,7 +69,9 @@ const envSchema = z
     GRAPH_MAX_NEIGHBORS: z.coerce.number().int().positive().default(DEFAULT_GRAPH_MAX_NEIGHBORS),
 
     // Platform infrastructure (Phase 10)
-    SQL_PROVIDER: z.enum(['d1', 'postgres', 'mariadb', 'mysql', 'tidb', 'cockroachdb']).default('postgres'),
+    SQL_PROVIDER: z
+      .enum(['d1', 'postgres', 'mariadb', 'mysql', 'tidb', 'cockroachdb', 'supabase'])
+      .default('postgres'),
     MARIADB_CONNECTION_STRING: z.string().min(1).optional(),
     VECTOR_PROVIDER: z.enum(['d1', 'pgvector']).default('d1'),
     PGVECTOR_DATABASE_URL: z.string().url().optional(),
@@ -468,14 +470,15 @@ const envSchema = z
     if (
       (env.SQL_PROVIDER === 'postgres' ||
         env.SQL_PROVIDER === 'tidb' ||
-        env.SQL_PROVIDER === 'cockroachdb') &&
+        env.SQL_PROVIDER === 'cockroachdb' ||
+        env.SQL_PROVIDER === 'supabase') &&
       !env.DATABASE_URL
     ) {
       ctx.addIssue({
         code: 'custom',
         path: ['DATABASE_URL'],
         message:
-          'DATABASE_URL is required when SQL_PROVIDER=postgres, tidb, or cockroachdb',
+          'DATABASE_URL is required when SQL_PROVIDER=postgres, tidb, cockroachdb, or supabase',
       });
     }
 

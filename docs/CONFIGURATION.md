@@ -5,7 +5,7 @@
 **How-to workflows:** [GUIDE.md](GUIDE.md) (setup, MCP, backfill commands)  
 **Documentation index:** [README.md](README.md)
 
-> **Pick your SQL metadata store** — D1, Postgres, MariaDB/MySQL, TiDB, and CockroachDB are **peer choices** via `SQL_PROVIDER`, not a ladder with D1 as the reference deployment. Tier 0 covers auth and MCP scope; SQL connection vars depend on the provider you select. Optional adapters (vectors, object storage, search) are documented in Tier 2+.
+> **Pick your SQL metadata store** — D1, Postgres, Supabase, MariaDB/MySQL, TiDB, and CockroachDB are **peer choices** via `SQL_PROVIDER`, not a ladder with D1 as the reference deployment. Tier 0 covers auth and MCP scope; SQL connection vars depend on the provider you select. Optional adapters (vectors, object storage, search) are documented in Tier 2+.
 
 ---
 
@@ -47,6 +47,7 @@ Ratary persists memory metadata through **`ISqlDatabase`** — same application 
 | Stack | `SQL_PROVIDER` | Required env | Setup guide |
 |-------|----------------|--------------|-------------|
 | **PostgreSQL** *(template default)* | `postgres` | `DATABASE_URL` | [Postgres (Tier 2)](#postgres-metadata-sql_providerpostgres) · [DOCKER postgres profile](DOCKER.md#quick-start-postgres-profile) |
+| **Supabase** | `supabase` | `DATABASE_URL` (from Supabase dashboard) | [Supabase (Tier 2)](#supabase-metadata-sql_providersupabase) |
 | **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | [D1 below](#cloudflare-d1-sql_providerd1) · `npm run db:migrate` |
 | **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [MariaDB (Tier 2)](#mariadb--mysql-metadata-sql_providermariadbmysql) · [DOCKER enterprise profile](DOCKER.md#profiles) |
 | **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | [TiDB/Cockroach (Tier 2)](#tidb--cockroachdb-metadata-sql_providertidcockroachdb) |
@@ -200,6 +201,31 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 **Benefits:** Distributed SQL without a separate adapter implementation.  
 **Before enabling:** Confirm your cluster supports the Postgres dialect features Ratary migrations require.  
 **Effects:** Same code path as `SQL_PROVIDER=postgres`.
+
+---
+
+### Supabase metadata (`SQL_PROVIDER=supabase`)
+
+**What it does:** Uses the Postgres wire-protocol adapter against [Supabase](https://supabase.com) hosted Postgres (same engine as self-hosted Postgres).
+
+| Variable | When required |
+|----------|---------------|
+| `SQL_PROVIDER` | `supabase` |
+| `DATABASE_URL` | Yes — **URI** from Supabase → **Project Settings → Database → Connection string** |
+
+**Benefits:** Managed Postgres with optional [pgvector](https://supabase.com/docs/guides/database/extensions/pgvector) on the same database — set `VECTOR_PROVIDER=pgvector` without a separate vector host.  
+**Before enabling:** Run `npm run db:apply-postgres-schema` once against the Supabase database (use **Session** or **Direct** connection for DDL; transaction pooler `:6543` is fine for app runtime).  
+**Effects:** Same adapter as `SQL_PROVIDER=postgres`; manifest reports `sqlProvider: supabase`.
+
+**Example `.env`:**
+
+```env
+SQL_PROVIDER=supabase
+DATABASE_URL=postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres
+AUTH_SECRET=your_auth_secret_min_32_characters_long
+# Optional — Supabase includes pgvector:
+# VECTOR_PROVIDER=pgvector
+```
 
 ---
 

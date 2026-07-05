@@ -23,6 +23,16 @@ export const PROVIDER_PLUGIN_CATALOG: readonly PluginManifest[] = [
     envAdapterValue: 'postgres',
   },
   {
+    id: 'storage-supabase',
+    version: '1.0.0',
+    type: 'storage',
+    displayName: 'Supabase Postgres',
+    description: 'Supabase hosted Postgres via DATABASE_URL (Postgres wire protocol)',
+    implements: 'ISqlDatabase',
+    envAdapterKey: 'SQL_PROVIDER',
+    envAdapterValue: 'supabase',
+  },
+  {
     id: 'embedding-noop',
     version: '1.0.0',
     type: 'embedding',

@@ -54,10 +54,6 @@ export function createPlatformAdapters(
 
   const organizationStore = new D1OrganizationStore(sql);
 
-  if (env.SQL_PROVIDER !== 'd1' && env.SQL_PROVIDER !== 'postgres') {
-    throw new Error(`SQL_PROVIDER=${env.SQL_PROVIDER} is not implemented`);
-  }
-
   return {
     sql,
     embeddingStore,
