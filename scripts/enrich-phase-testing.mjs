@@ -328,7 +328,7 @@ const PHASES = [
   },
   {
     dir: '24-ai-brain-platform',
-    title: 'Phase 24 — AI-Brain Platform',
+    title: 'Phase 24 — Ratary Platform',
     gateDate: '2026-07-04',
     gateTests: '673',
     suites: [

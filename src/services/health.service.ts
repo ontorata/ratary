@@ -17,7 +17,7 @@ export class HealthService {
 
     return {
       status: database === 'ok' ? 'ok' : 'degraded',
-      service: 'ai-memory-cloud',
+      service: 'ratary',
       timestamp: new Date().toISOString(),
       checks: { database },
     };

@@ -62,7 +62,7 @@ Phase 19 adds **observability ports + exporters + dashboard packs** — adapters
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  AI Brain Server — handlers & services (unchanged logic)         │
+│  Ratary Server — handlers & services (unchanged logic)         │
 │  MemoryService │ ContextService │ Federation │ …                 │
 └───────┬─────────────────┬─────────────────┬───────────────────┘
         │ spans           │ structured logs   │ internal counters
@@ -113,13 +113,13 @@ Optional async handlers               Sidecar export only
 
 | Namespace | Examples |
 |-----------|----------|
-| `ai_brain_memory_*` | CRUD latency, search QPS, cache hit ratio |
-| `ai_brain_embedding_*` | Provider latency, token count, error rate |
-| `ai_brain_graph_*` | Traversal latency, node/edge ops |
-| `ai_brain_federation_*` | Peer sync lag, egress bytes |
-| `ai_brain_cost_*` | Embedding cost estimate, storage bytes (gauge) |
-| `ai_brain_protocol_*` | REST/gRPC/MCP request duration (Phase 13) |
-| `ai_brain_cloud_*` | Control plane ops (Phase 18, optional) |
+| `ratary_memory_*` | CRUD latency, search QPS, cache hit ratio |
+| `ratary_embedding_*` | Provider latency, token count, error rate |
+| `ratary_graph_*` | Traversal latency, node/edge ops |
+| `ratary_federation_*` | Peer sync lag, egress bytes |
+| `ratary_cost_*` | Embedding cost estimate, storage bytes (gauge) |
+| `ratary_protocol_*` | REST/gRPC/MCP request duration (Phase 13) |
+| `ratary_cloud_*` | Control plane ops (Phase 18, optional) |
 
 ### Trace propagation
 

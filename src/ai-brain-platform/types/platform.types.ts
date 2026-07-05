@@ -20,7 +20,7 @@ export interface PlatformPlaneStatus {
 }
 
 export interface AiBrainPlatformManifest {
-  platform: 'ai-brain-platform';
+  platform: 'ratary-platform';
   edition: PlatformEdition;
   planes: PlatformPlaneStatus[];
   webhooksEnabled: boolean;

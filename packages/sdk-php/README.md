@@ -1,4 +1,4 @@
-# @ai-brain/sdk-php
+# @ratary/sdk-php
 
 PHP client. Regenerate: `npm run generate:sdks`. Hand-written wrapper: `src/AiBrainClient.php`.
 

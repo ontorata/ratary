@@ -1,4 +1,4 @@
-package ai_brain.authz
+package ratary.authz
 
 default allow = false
 

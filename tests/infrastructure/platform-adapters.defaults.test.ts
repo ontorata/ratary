@@ -62,7 +62,7 @@ describe('createPlatformAdapters defaults', () => {
 
   it('should wire PostgresSqlDatabaseAdapter when SQL_PROVIDER=postgres', () => {
     vi.stubEnv('SQL_PROVIDER', 'postgres');
-    vi.stubEnv('DATABASE_URL', 'postgresql://user:pass@localhost:5432/ai_brain_test');
+    vi.stubEnv('DATABASE_URL', 'postgresql://user:pass@localhost:5432/ratary_test');
 
     const platform = createPlatformAdapters(new MinimalD1Client(), getEnv());
     expect(platform.sql.constructor.name).toBe('PostgresSqlDatabaseAdapter');

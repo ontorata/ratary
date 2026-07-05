@@ -17,8 +17,8 @@ Include:
 - **Pending:** unchecked tasks, blockers
 - **Next:** first action for next session
 
-Tags: `["handoff", "ai-brain"]` (+ feature slug if any)  
-Project: `ai-brain`
+Tags: `["handoff", "ratary"]` (+ feature slug if any)  
+Project: `ratary`
 
 When inspect blockers were **resolved** in the session, optionally emit MCP `submit_signal` with `type: inspection_outcome` (severity ≥ major, `resolved: true`, `diffScope.paths`) so Phase 8.8 ledger can learn — see [08.8-inspection-pattern-ledger](../../.ai/phases/08.8-inspection-pattern-ledger/README.md).
 

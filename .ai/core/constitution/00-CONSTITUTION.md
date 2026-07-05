@@ -9,7 +9,7 @@
 
 # Purpose
 
-Establish the permanent governing law of the AI Brain project.
+Establish the permanent governing law of the Ratary project.
 
 Define non-negotiable philosophy, architectural law, and decision hierarchy that remain valid across phases, storage engines, vendors, and AI tooling generations.
 
@@ -144,7 +144,7 @@ Provide AI assistants a single authoritative source when instructions, tools, or
 
 ## System identity
 
-- This repository is the **memory and knowledge foundation** of AI Brain.
+- This repository is the **memory and knowledge foundation** of Ratary.
 - It provides durable storage, retrieval, enrichment, authorization, and protocol access.
 - It does not host agent reasoning, task planning, or autonomous execution loops.
 

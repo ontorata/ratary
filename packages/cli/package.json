@@ -1,17 +1,17 @@
 {
-  "name": "@ai-brain/cli",
+  "name": "@ratary/cli",
   "version": "1.0.0",
-  "description": "CLI for AI Memory Cloud — uses @ai-brain/sdk only (Phase 16)",
+  "description": "CLI for Ratary — uses @ratary/sdk only (Phase 16)",
   "type": "module",
   "bin": {
-    "ai-brain": "./dist/main.js"
+    "ratary": "./dist/main.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@ai-brain/sdk": "1.0.0"
+    "@ratary/sdk": "1.0.0"
   },
   "engines": {
     "node": ">=20"

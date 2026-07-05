@@ -1,7 +1,9 @@
 # Human Documentation
 
 **Purpose:** Project information for developers and operators.  
-**Audience:** Humans installing, deploying, and using AI Memory Cloud.
+**Audience:** Humans installing, deploying, and using Ratary.
+
+**Ontorata:** [ontorata.com](https://ontorata.com) · [hello@ontorata.com](mailto:hello@ontorata.com) · Founder [Lutfi Ramadhan](https://www.linkedin.com/in/lutfiramadhan/)
 
 **Nature:** Everything in `docs/` is **descriptive** — it explains the system. It does **not** define AI implementation behavior.
 

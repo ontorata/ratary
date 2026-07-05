@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "AI Memory Cloud API",
+    "title": "Ratary API",
     "description": "Second brain for AI coding assistants. Store, search, and access coding knowledge across devices.",
     "version": "1.0.0"
   },

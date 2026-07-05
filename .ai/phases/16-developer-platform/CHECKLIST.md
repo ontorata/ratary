@@ -16,9 +16,9 @@ Executable gate checklist — one item per milestone or success criterion.
 
 - [x] ADR-031 Implemented
 - [x] OpenAPI snapshot pipeline (`snapshot:openapi`, `build:packages`)
-- [x] `@ai-brain/sdk` TypeScript reference client
-- [x] `@ai-brain/cli` uses SDK only — no direct fetch
-- [x] `@ai-brain/mcp-server` uses SDK only
+- [x] `@ratary/sdk` TypeScript reference client
+- [x] `@ratary/cli` uses SDK only — no direct fetch
+- [x] `@ratary/mcp-server` uses SDK only
 - [x] 6 language thin wrappers + manifest `transport.sdk`
 
 ---

@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-// AI-Brain transport wire contract v1 (ADR-027 Phase 10.5E).
+// Ratary transport wire contract v1 (ADR-027 Phase 10.5E).
 // Breaking changes MUST introduce a new package (ai.brain.v2).
-package ai.brain.v1;
+package ontorata.ratary.v1;
 
 // ---------------------------------------------------------------------------
 // Common messages

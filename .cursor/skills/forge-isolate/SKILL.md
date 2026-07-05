@@ -15,8 +15,8 @@ description: >-
 3. Optional worktree (parallel work):
 
 ```bash
-git worktree add ../ai-brain-{slug} -b forge/{slug}
-cd ../ai-brain-{slug} && npm install
+git worktree add ../ratary-{slug} -b forge/{slug}
+cd ../ratary-{slug} && npm install
 ```
 
 4. Run baseline: `npm test` — record pass count; **stop if red** on main-equivalent baseline

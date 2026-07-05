@@ -1,10 +1,10 @@
 # External Observability Stack (Phase 19)
 
-Runbook for wiring AI Brain metrics/traces/logs to a Prometheus/Grafana/Tempo/Loki stack.
+Runbook for wiring Ratary metrics/traces/logs to a Prometheus/Grafana/Tempo/Loki stack.
 
 ## Prerequisites
 
-- AI Brain deployed with `OBSERVABILITY_ENABLED=true`
+- Ratary deployed with `OBSERVABILITY_ENABLED=true`
 - Optional: `OTEL_EXPORTER_OTLP_ENDPOINT` for trace export
 
 ## Prometheus

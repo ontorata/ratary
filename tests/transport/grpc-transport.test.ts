@@ -36,7 +36,7 @@ const sampleMemory: Memory = {
 };
 
 describe('gRPC transport (Phase 10.5E)', () => {
-  it('loads ai.brain.v1 proto with the four v1 services', () => {
+  it('loads ontorata.ratary.v1 proto with the four v1 services', () => {
     const proto = loadAiBrainProto();
 
     expect(Object.keys(proto.MemoryService.service)).toEqual(

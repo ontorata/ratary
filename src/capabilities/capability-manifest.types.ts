@@ -102,7 +102,7 @@ export interface TransportManifest {
     path?: string;
   };
   sdk: {
-    packageName: '@ai-brain/sdk';
+    packageName: '@ratary/sdk';
     status: 'planned' | 'published' | 'preview';
     languages?: string[];
     cliPackage?: string;

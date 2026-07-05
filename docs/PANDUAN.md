@@ -1,4 +1,4 @@
-# Panduan — AI Memory Cloud
+# Panduan — Ratary
 
 Satu panduan untuk **setup, pemakaian sehari-hari, dan MCP** (Cursor, Claude Code, Roo, Cline, Gemini CLI, dll.).
 
@@ -7,8 +7,8 @@ Satu panduan untuk **setup, pemakaian sehari-hari, dan MCP** (Cursor, Claude Cod
 ## 1. Setup (3 langkah)
 
 ```bash
-git clone https://github.com/lutfi04/ai-brain.git
-cd ai-brain
+git clone https://github.com/ontorata/ratary.git
+cd ratary
 npm install
 cp .env.example .env
 ```
@@ -24,10 +24,10 @@ npm run db:migrate
 npm run setup
 ```
 
-**Cursor:** Settings → MCP → `ai-memory-cloud` hijau → Reload Window  
-**Claude Code:** `claude` di folder repo → approve `ai-memory-cloud`
+**Cursor:** Settings → MCP → `ratary` hijau → Reload Window  
+**Claude Code:** `claude` di folder repo → approve `ratary`
 
-Uji: *"cari memory tentang ai-brain"*
+Uji: *"cari memory tentang ratary"*
 
 ---
 
@@ -37,13 +37,13 @@ Tidak perlu mengetik nama tool. Bilang natural:
 
 | Anda ingin… | Contoh |
 |-------------|--------|
-| Lanjut kerja | `Lanjut kerja ai-brain — fokus dokumentasi` |
+| Lanjut kerja | `Lanjut kerja ratary — fokus dokumentasi` |
 | Baca konteks dulu | `Baca memory tentang auth sebelum coding` |
 | Simpan handoff | `Simpan handoff: selesai fix MCP, besok lanjut test` |
 | Cari topik | `Cari memory tentang deployment Vercel` |
 | Ringkas keputusan | `Ringkas apa yang sudah kita putuskan untuk mangroveapps` |
 
-**Tips:** sebut **nama proyek** (`ai-brain`, `mangroveapps`) dan **topik** (`auth`, `hydration`). Akhiri sesi dengan handoff.
+**Tips:** sebut **nama proyek** (`ratary`, `mangroveapps`) dan **topik** (`auth`, `hydration`). Akhiri sesi dengan handoff.
 
 ### Memory pintar (Fase 4)
 
@@ -53,7 +53,7 @@ AI otomatis memilih cuplikan memory yang paling relevan — bukan dump semua cat
 
 ## 2.1 Agent Forge (kontributor di repo ini)
 
-**Phase 07.1** mendefinisikan alur wajib saat AI mengubah kode di repo `ai-brain` — bukan runtime di server, melainkan **workflow Cursor** (skills + rule).
+**Phase 07.1** mendefinisikan alur wajib saat AI mengubah kode di repo `ratary` — bukan runtime di server, melainkan **workflow Cursor** (skills + rule).
 
 | Tahap | Skill | Kapan |
 |-------|-------|-------|
@@ -169,9 +169,9 @@ REMOTE_MCP_CORS_ORIGINS=*
 ```json
 {
   "mcpServers": {
-    "ai-memory-cloud": {
+    "ratary": {
       "command": "npx",
-      "args": ["-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"],
+      "args": ["-y", "tsx", "D:/Apps/ratary/src/mcp/stdio.ts"],
       "env": {
         "CLOUDFLARE_ACCOUNT_ID": "...",
         "D1_DATABASE_ID": "...",
@@ -190,7 +190,7 @@ Ganti path repo. Windows: gunakan slash `/`.
 
 ```json
 "command": "cmd",
-"args": ["/c", "npx", "-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"]
+"args": ["/c", "npx", "-y", "tsx", "D:/Apps/ratary/src/mcp/stdio.ts"]
 ```
 
 ### Lokasi config per client
@@ -232,7 +232,7 @@ Semua protokol (REST, MCP, gRPC) memanggil **handler bersama yang sama** → ser
 | REST `/api/v1` | Integrator publik, ChatGPT Actions | ✅ selalu aktif |
 | MCP stdio | AI clients di IDE (Cursor, Claude, …) | ✅ selalu aktif |
 | MCP remote (ChatGPT URL) | Cloud MCP hosts | ✅ opt-in — `REMOTE_MCP_ENABLED=true` · [13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) |
-| gRPC `ai.brain.v1` | Backend internal / enterprise, streaming context | ❌ opsional |
+| gRPC `ontorata.ratary.v1` | Backend internal / enterprise, streaming context | ❌ opsional |
 
 gRPC **mati secara default**. Untuk mengaktifkan (butuh Node yang berjalan lama — K8s/VM, **bukan** Vercel):
 

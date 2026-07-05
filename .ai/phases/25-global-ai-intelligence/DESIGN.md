@@ -26,7 +26,7 @@ Phase 25 is a **capstone composition**, not a new silo. It reuses ports that ear
 
 ## 1. Why this phase, why now
 
-To become the world's leading Collaborative Memory Intelligence Platform, AI-Brain must **learn from its own usage** and **be present everywhere the team works** — while honoring Vision Principle #1 (knowledge independence) and #2 (team ownership).
+To become the world's leading Collaborative Memory Intelligence Platform, Ratary must **learn from its own usage** and **be present everywhere the team works** — while honoring Vision Principle #1 (knowledge independence) and #2 (team ownership).
 
 Two capabilities are missing today:
 
@@ -164,7 +164,7 @@ interface TelemetryEnvelope<E extends TelemetryEvent = TelemetryEvent> {
   readonly type: E['type'];
   readonly occurredAt: string;         // ISO-8601
   readonly scope: TelemetryScopeRef;   // workspace/org/agent — never raw content
-  readonly nodeId: string;             // originating AI-Brain node
+  readonly nodeId: string;             // originating Ratary node
   readonly traceId?: string;           // W3C trace context (Phase 19)
   readonly spanId?: string;
   readonly attributes: Readonly<Record<string, string | number | boolean>>;
@@ -203,12 +203,12 @@ interface ITelemetryRedactor {
 
 ### 3.5 OpenTelemetry / OTLP mapping
 
-| AI-Brain concept | OTel construct |
+| Ratary concept | OTel construct |
 |------------------|----------------|
 | `TelemetryEnvelope` | Span (for latency events) + Log record (for state events) |
 | `attributes` | OTel attributes (typed, bounded cardinality) |
-| `ModelInvoked.costEstimate` | Metric — `ai_brain_model_cost` (gauge/counter) |
-| `SearchExecuted.latencyMs` | Histogram — `ai_brain_search_latency_ms` |
+| `ModelInvoked.costEstimate` | Metric — `ratary_model_cost` (gauge/counter) |
+| `SearchExecuted.latencyMs` | Histogram — `ratary_search_latency_ms` |
 | `traceId` / `spanId` | W3C trace context propagated from Phase 13 middleware |
 | Export transport | OTLP/gRPC + OTLP/HTTP; Prometheus scrape; Jaeger/Tempo |
 
@@ -522,7 +522,7 @@ interface GlobalSyncRequest {
 
 | Question | Answer |
 |----------|--------|
-| **Why needed?** | AI-Brain must learn from its own usage and be globally present, without collecting content |
+| **Why needed?** | Ratary must learn from its own usage and be globally present, without collecting content |
 | **Why Phase 25?** | Requires events (12), protocol (13), federation (14), cloud (18), observability (19), infra (20) |
 | **What changes?** | New `src/intelligence/` module: telemetry, analytics, sync orchestration ports + adapters |
 | **What stays?** | `MemoryService`, repositories, REST v1, MCP tool schemas |

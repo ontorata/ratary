@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform — REVIEW
+# Phase 24 — Ratary Platform — REVIEW
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -16,7 +16,7 @@ Record architecture review findings and formal phase gate verdict.
 
 | Check | Result |
 |-------|--------|
-| AI_BRAIN_PLATFORM_ENABLED default false | ✅ Umbrella manifest opt-in |
+| RATARY_PLATFORM_ENABLED default false | ✅ Umbrella manifest opt-in |
 | Manifest aggregates child flags only | ✅ No false capability claims |
 | HMAC webhook CRUD + delivery | ✅ Signed payload tests |
 | Phase 12 delivery consumer | ✅ Requires EVENT_CONSUMERS + Redis documented |

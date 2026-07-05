@@ -135,7 +135,7 @@ Full lifecycle: [PHASE-DOCUMENT-SCHEMA.md](PHASE-DOCUMENT-SCHEMA.md).
 | 21 Search & Graph Prod | [21-search-graph-prod/](21-search-graph-prod/README.md) | ADR-022 |
 | 22 Content Scale | [22-content-scale/](22-content-scale/README.md) | ADR-021 |
 | 23 Knowledge Fabric | [23-enterprise-knowledge-fabric/](23-enterprise-knowledge-fabric/README.md) | ADR-047 |
-| 24 AI-Brain Platform | [24-ai-brain-platform/](24-ai-brain-platform/README.md) | ADR-044 |
+| 24 Ratary Platform | [24-ai-brain-platform/](24-ai-brain-platform/README.md) | ADR-044 |
 | 25 Global Intelligence | [25-global-ai-intelligence/](25-global-ai-intelligence/README.md) | ADR-036/037/038/043 |
 
 **Default:** all enterprise modules **OFF** until env flags enabled — see [README.md](../../README.md) § Platform enterprise.

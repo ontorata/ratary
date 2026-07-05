@@ -16,7 +16,7 @@ Define an **observation and quality-signal pipeline** that ingests usage data, n
 
 **Naming note:** This phase retains the stakeholder label *Observation, Reflection & Learning* but **redefines** terms per Constitution:
 
-| Term in phase name | Meaning in AI Brain | Forbidden meaning |
+| Term in phase name | Meaning in Ratary | Forbidden meaning |
 |--------------------|---------------------|-------------------|
 | **Observation** | Ingest scoped signals (access, explicit feedback, ingest events) | Agent self-observation loops |
 | **Reflection** | *Structured replay* of signals into rank weights (pure function) | LLM reflection / chain-of-thought |

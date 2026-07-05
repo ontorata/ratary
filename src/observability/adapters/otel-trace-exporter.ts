@@ -5,7 +5,7 @@ import type { ITraceExporter, TraceSpanContext } from '../ports/itrace-exporter.
 
 /** Bridges observability platform to existing OTel SDK (Phase 19 + C12). */
 export class OtelTraceExporter implements ITraceExporter {
-  private readonly tracer = trace.getTracer('ai-brain-observability');
+  private readonly tracer = trace.getTracer('ratary-observability');
 
   constructor(private readonly env: Env) {}
 

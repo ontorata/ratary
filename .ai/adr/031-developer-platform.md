@@ -8,9 +8,9 @@
 
 ## Context
 
-AI Brain exposes REST, MCP stdio, and (Phase 13) gRPC. External developers and enterprise teams need **typed client libraries**, CLI, installable MCP server, and starter templates — without duplicating business logic inside clients.
+Ratary exposes REST, MCP stdio, and (Phase 13) gRPC. External developers and enterprise teams need **typed client libraries**, CLI, installable MCP server, and starter templates — without duplicating business logic inside clients.
 
-Phase 7.5 placed `@ai-brain/client` **outside** core repo as principle; Phase 16 **formalizes** a **developer platform monorepo slice** (`packages/`) generated from OpenAPI/proto SSOT.
+Phase 7.5 placed `@ratary/client` **outside** core repo as principle; Phase 16 **formalizes** a **developer platform monorepo slice** (`packages/`) generated from OpenAPI/proto SSOT.
 
 ## Problem
 
@@ -32,9 +32,9 @@ Phase 7.5 placed `@ai-brain/client` **outside** core repo as principle; Phase 16
 
 1. OpenAPI Generator + proto gen pipeline (CI).
 2. SDK languages: TypeScript, Go, Python, Java, Rust, C#, PHP (minimal surface: memory, context, search, capabilities).
-3. `@ai-brain/cli` uses TypeScript SDK.
+3. `@ratary/cli` uses TypeScript SDK.
 4. Dashboard (optional SPA in `apps/dashboard/`) uses TypeScript SDK only.
-5. `@ai-brain/mcp-server` — installable npm; remote MCP over HTTP/SSE (Phase 13); delegates to SDK.
+5. `@ratary/mcp-server` — installable npm; remote MCP over HTTP/SSE (Phase 13); delegates to SDK.
 6. Starter templates + examples repo folder.
 
 SDK **calls server** — never embeds ranking, retrieval, or SQL.

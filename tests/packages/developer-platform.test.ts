@@ -42,7 +42,7 @@ describe('Developer platform — zero business logic in packages/', () => {
 
   it('OpenAPI SSOT exists', () => {
     const spec = readFileSync(
-      join(PACKAGES_ROOT, 'openapi/ai-brain-v1.openapi.json'),
+      join(PACKAGES_ROOT, 'openapi/ratary-v1.openapi.json'),
       'utf8',
     );
     const parsed = JSON.parse(spec) as { paths: Record<string, unknown> };

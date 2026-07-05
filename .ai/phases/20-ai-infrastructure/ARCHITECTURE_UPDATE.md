@@ -11,7 +11,7 @@
 
 Replace "planned" enterprise table row for Phase 20 with **implemented design**:
 
-> AI Brain = **AI Memory Infrastructure** — unified entry via REST, gRPC, MCP, WebSocket, SSE, SDK, CLI, Dashboard, Federation.
+> Ratary = **AI Memory Infrastructure** — unified entry via REST, gRPC, MCP, WebSocket, SSE, SDK, CLI, Dashboard, Federation.
 
 ### 2. Plugin registry ports
 

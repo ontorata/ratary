@@ -1,4 +1,4 @@
-import type { AiBrainClient } from '@ai-brain/sdk';
+import type { AiBrainClient } from '@ratary/sdk';
 import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 
 export interface ToolHandlers {

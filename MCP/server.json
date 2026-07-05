@@ -1,11 +1,11 @@
 {
-  "name": "ai-memory-cloud",
-  "title": "AI Memory Cloud",
+  "name": "ratary",
+  "title": "Ratary",
   "description": "Persistent coding memory for AI assistants — save, search, token-efficient context, knowledge graph, multi-client sync. MCP stdio (27 tools) or remote HTTPS.",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "https://github.com/lutfi04/ai-brain",
-  "homepage": "https://github.com/lutfi04/ai-brain/tree/main/MCP",
+  "repository": "https://github.com/ontorata/ratary",
+  "homepage": "https://github.com/ontorata/ratary/tree/main/MCP",
   "categories": ["memory", "development", "productivity"],
   "transports": {
     "stdio": {
@@ -19,8 +19,8 @@
     }
   },
   "packages": {
-    "npm": "@ai-brain/mcp-server",
-    "bin": "ai-brain-mcp"
+    "npm": "@ratary/mcp-server",
+    "bin": "ratary-mcp"
   },
   "toolCount": 27,
   "toolsRef": "src/capabilities/mcp-tool-names.ts"

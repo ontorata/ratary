@@ -8,7 +8,7 @@
 
 # Purpose
 
-Define enforceable engineering rules for implementing, extending, and maintaining the AI Brain memory foundation.
+Define enforceable engineering rules for implementing, extending, and maintaining the Ratary memory foundation.
 
 Translate constitutional law into layer-specific obligations, operational conventions, and decision criteria applicable across frameworks, vendors, and AI tooling generations.
 

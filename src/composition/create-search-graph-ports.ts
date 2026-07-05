@@ -58,7 +58,7 @@ export function createSearchGraphPorts(sql: ISqlDatabase, env: Env): SearchGraph
     recordSyncLifecycle(metricsExporter, target, status) {
       if (!metricsExporter) return;
       metricsExporter.incrementCounter({
-        name: 'ai_brain_search_graph_sync_total',
+        name: 'ratary_search_graph_sync_total',
         labels: { target, status },
       });
     },

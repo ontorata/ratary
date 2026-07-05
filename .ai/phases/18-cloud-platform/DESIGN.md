@@ -5,7 +5,7 @@
 
 ## 1. Mengapa phase ini diperlukan?
 
-Enterprise cloud deployments need **operational control** beyond a single-node AI Brain instance: workspace provisioning at scale, multi-region topology, usage metering for billing export, disaster recovery runbooks, and tenant isolation guarantees — all **provider-agnostic**.
+Enterprise cloud deployments need **operational control** beyond a single-node Ratary instance: workspace provisioning at scale, multi-region topology, usage metering for billing export, disaster recovery runbooks, and tenant isolation guarantees — all **provider-agnostic**.
 
 Without Phase 18:
 

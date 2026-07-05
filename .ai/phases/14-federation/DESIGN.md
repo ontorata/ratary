@@ -86,7 +86,7 @@ flowchart LR
 
 ## 2. Purpose
 
-Multiple AI Brain deployments must exchange knowledge **without**:
+Multiple Ratary deployments must exchange knowledge **without**:
 
 - Rewriting `MemoryService`
 - Hardcoding cloud provider or region
@@ -499,7 +499,7 @@ Applied via **KnowledgeService enrichment on import** — not required for Phase
 
 | Question | Answer |
 |----------|--------|
-| **Mengapa diperlukan?** | Multi-node AI Brain must share knowledge under policy |
+| **Mengapa diperlukan?** | Multi-node Ratary must share knowledge under policy |
 | **Mengapa Phase 14?** | Requires protocol (13), org scope (10), events (12) |
 | **Apa yang berubah?** | New `federation/` module, ports, additive API |
 | **Apa yang tetap?** | MemoryService, repositories, core memory schema |

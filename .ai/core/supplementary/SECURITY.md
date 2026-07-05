@@ -8,7 +8,7 @@
 
 # Purpose
 
-Define mandatory security rules for all current and future implementations of the AI Brain memory foundation.
+Define mandatory security rules for all current and future implementations of the Ratary memory foundation.
 
 Establish a durable, provider-agnostic security baseline valid across storage engines, deployment targets, protocol surfaces, and AI tooling generations.
 

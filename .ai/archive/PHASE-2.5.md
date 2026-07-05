@@ -136,7 +136,7 @@ Response sukses:
 ```json
 {
   "status": "ok",
-  "service": "ai-memory-cloud",
+  "service": "ratary",
   "timestamp": "...",
   "checks": { "database": "ok" }
 }

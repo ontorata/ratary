@@ -16,7 +16,7 @@ export function createAiBrainPlatformController(
   function assertEnabled(): void {
     if (!ports.enabled) {
       throw new ForbiddenError(
-        'AI Brain platform is disabled (AI_BRAIN_PLATFORM_ENABLED=false)',
+        'Ratary platform is disabled (RATARY_PLATFORM_ENABLED=false)',
       );
     }
   }
@@ -42,7 +42,7 @@ export function createAiBrainPlatformController(
     async getStatus(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
       reply.send({
         enabled: ports.enabled,
-        edition: env.AI_BRAIN_PLATFORM_EDITION,
+        edition: env.RATARY_PLATFORM_EDITION,
         webhooksEnabled: env.PLATFORM_WEBHOOKS_ENABLED,
       });
     },

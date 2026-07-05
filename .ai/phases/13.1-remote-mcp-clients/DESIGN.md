@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-ChatGPT and other **browser/cloud AI products** expose MCP integration via a **Server URL** (HTTPS + SSE / Streamable HTTP) — not local stdio. AI Memory Cloud today only ships **MCP stdio** (`src/mcp/stdio.ts`) for IDE clients.
+ChatGPT and other **browser/cloud AI products** expose MCP integration via a **Server URL** (HTTPS + SSE / Streamable HTTP) — not local stdio. Ratary today only ships **MCP stdio** (`src/mcp/stdio.ts`) for IDE clients.
 
 Phase 13.1 adds an **opt-in remote MCP transport** on the existing Fastify server so users can paste a URL like:
 
@@ -41,7 +41,7 @@ into ChatGPT **New App → Server URL**, with the **same 20 MCP tools** and shar
 | Item | Owner phase |
 |------|-------------|
 | OAuth / ChatGPT OAuth auto-discovery production | Phase 17 |
-| `@ai-brain/mcp-server` npm installable proxy | Phase 16 |
+| `@ratary/mcp-server` npm installable proxy | Phase 16 |
 | MCP tool signature changes | Forbidden |
 | Business logic in transport | Forbidden |
 | Agent runtime inside repo | Forbidden |
@@ -166,7 +166,7 @@ Optional additive server capability advertisement in MCP `initialize` result:
 ```json
 {
   "serverInfo": {
-    "name": "ai-memory-cloud",
+    "name": "ratary",
     "version": "1.0.0"
   },
   "capabilities": {
@@ -225,7 +225,7 @@ Production URL in swagger today (`ai-brain-beryl.vercel.app`) remains valid for 
 | **10.5** | Extends MCP transport; stdio unchanged |
 | **13** | Shares SSE/stream patterns; 13.1 can land as 13A track or parallel extension |
 | **12** | Optional: `memory.accessed` audit from remote MCP sessions (via existing auditor) |
-| **16** | npm `@ai-brain/mcp-server` may point at 13.1 URL or embed SDK |
+| **16** | npm `@ratary/mcp-server` may point at 13.1 URL or embed SDK |
 | **17** | OAuth for ChatGPT dropdown |
 
 ---

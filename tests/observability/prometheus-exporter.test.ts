@@ -8,20 +8,20 @@ describe('PrometheusMetricsExporter', () => {
     registerObservabilityMetricCatalog(exporter);
 
     exporter.incrementCounter({
-      name: 'ai_brain_http_requests_total',
+      name: 'ratary_http_requests_total',
       labels: { method: 'GET', route: '/api/v1/health', status: '200', transport: 'rest' },
     });
 
     exporter.observeHistogram({
-      name: 'ai_brain_http_request_duration_seconds',
+      name: 'ratary_http_request_duration_seconds',
       labels: { method: 'GET', route: '/api/v1/health', transport: 'rest' },
       valueSeconds: 0.042,
     });
 
     const text = exporter.exportPrometheusText();
-    expect(text).toContain('# HELP ai_brain_http_requests_total');
-    expect(text).toContain('ai_brain_http_requests_total{');
-    expect(text).toContain('ai_brain_http_request_duration_seconds_bucket');
-    expect(text).toContain('ai_brain_http_request_duration_seconds_count');
+    expect(text).toContain('# HELP ratary_http_requests_total');
+    expect(text).toContain('ratary_http_requests_total{');
+    expect(text).toContain('ratary_http_request_duration_seconds_bucket');
+    expect(text).toContain('ratary_http_request_duration_seconds_count');
   });
 });

@@ -11,7 +11,7 @@
 
 ## Purpose
 
-Close the **capability discovery gap** left by Phase 7 design approval: external agent runtimes MUST discover AI Brain limits, feature flags, and protocol versions **without** trial-and-error or reading source code.
+Close the **capability discovery gap** left by Phase 7 design approval: external agent runtimes MUST discover Ratary limits, feature flags, and protocol versions **without** trial-and-error or reading source code.
 
 Phase 7.5 delivers:
 
@@ -45,7 +45,7 @@ Phase 7.5 does **not** implement:
 
 | Capability | Location |
 |------------|----------|
-| Official SDK | **Phase 16** — `@ai-brain/sdk` in `packages/` (ADR-031; supersedes `@ai-brain/client` name here) |
+| Official SDK | **Phase 16** — `@ratary/sdk` in `packages/` (ADR-031; supersedes `@ratary/client` name here) |
 | Agent orchestration | External runtime |
 | Cursor / Claude MCP config | User environment |
 
@@ -291,7 +291,7 @@ Phase 7.5 core gate closed **2026-07-04** (ADR-025). Deferred tracks **D7.5-01 /
 | ID | Deliverable | Status |
 |----|-------------|--------|
 | **D7.5-01** | Condensed manifest in MCP `initialize` — `_meta['io.aibrain/capabilities']`, enriched `serverInfo.description`, `instructions` | ✅ 2026-07-05 |
-| **D7.5-02** | Client SDK — `@ai-brain/sdk` `CapabilitiesApi.get()` (Phase 16, ADR-031) | ✅ Phase 16 |
+| **D7.5-02** | Client SDK — `@ratary/sdk` `CapabilitiesApi.get()` (Phase 16, ADR-031) | ✅ Phase 16 |
 | **D7.5-03** | Bidirectional negotiation — `POST /api/v1/capabilities/negotiate`, MCP `negotiate_capabilities`, initialize `_meta['io.aibrain/capabilities-request' \| 'capabilities-negotiation']`; SDK `CapabilitiesApi.negotiate()` | ✅ 2026-07-05 |
 
 ### Successor phases — manifest extensions (closed)

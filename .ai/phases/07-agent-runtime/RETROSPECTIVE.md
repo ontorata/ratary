@@ -24,7 +24,7 @@ Capture lessons learned, accepted debt, and recommendations for the next phase.
 
 ## Summary
 
-Phase 7 closed as a **documentation-only boundary phase**: agent planning and execution remain external; AI Brain exposes stable MCP/REST contracts only. Gate PASS 2026-07-03 with 196 tests and no `src/` changes. Successor phases 7.5, 8, 9, and 10 landed without breaking the boundary; MCP SSOT is **22 tools** (`MCP_TOOL_NAMES`, 2026-07-04).
+Phase 7 closed as a **documentation-only boundary phase**: agent planning and execution remain external; Ratary exposes stable MCP/REST contracts only. Gate PASS 2026-07-03 with 196 tests and no `src/` changes. Successor phases 7.5, 8, 9, and 10 landed without breaking the boundary; MCP SSOT is **22 tools** (`MCP_TOOL_NAMES`, 2026-07-04).
 
 ---
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Remote MCP server — thin proxy to REST API via @ai-brain/sdk.
+ * Remote MCP server — thin proxy to REST API via @ratary/sdk.
  * Configure: AI_BRAIN_BASE_URL, AI_BRAIN_API_KEY, optional AI_BRAIN_WORKSPACE_ID
  */
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
@@ -9,7 +9,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { AiBrainClient } from '@ai-brain/sdk';
+import { AiBrainClient } from '@ratary/sdk';
 import { createToolHandlers } from './tools.js';
 
 const baseUrl = process.env.AI_BRAIN_BASE_URL ?? 'http://localhost:3000';

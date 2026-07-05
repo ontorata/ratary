@@ -106,7 +106,7 @@ export async function createInfrastructurePlatformPorts(
     recordPluginLifecycle(metricsExporter, action, pluginId) {
       if (!metricsExporter) return;
       metricsExporter.incrementCounter({
-        name: 'ai_brain_plugin_lifecycle_total',
+        name: 'ratary_plugin_lifecycle_total',
         labels: { action, plugin_id: pluginId },
       });
     },

@@ -44,7 +44,7 @@ export function buildMcpInitializeInstructions(
   negotiation?: CapabilityNegotiationResult,
 ): string {
   const parts = [
-    'AI Brain memory cloud. Use search_memory with project name; save handoffs with save_memory.',
+    'Ratary memory cloud. Use search_memory with project name; save handoffs with save_memory.',
     `Full deployment manifest: call get_capabilities or GET ${condensed.capabilitiesUrl}.`,
     `Condensed snapshot: protocolVersion=${condensed.protocolVersion}, toolCount=${condensed.mcp.toolCount}.`,
   ];
@@ -66,7 +66,7 @@ export function buildMcpServerInfoDescription(
   negotiation?: CapabilityNegotiationResult,
 ): string {
   const compatibility = negotiation ? (negotiation.compatible ? 'compatible' : 'incompatible') : 'unknown';
-  return `AI Brain (${condensed.protocolVersion}): ${condensed.mcp.toolCount} tools; manifest at ${condensed.capabilitiesUrl}; negotiation=${compatibility}`;
+  return `Ratary (${condensed.protocolVersion}): ${condensed.mcp.toolCount} tools; manifest at ${condensed.capabilitiesUrl}; negotiation=${compatibility}`;
 }
 
 function buildInitializeSnapshot(
@@ -126,9 +126,9 @@ export function wireMcpInitializeCapabilities(
       protocolVersion,
       capabilities: inner.getCapabilities(),
       serverInfo: {
-        name: 'ai-memory-cloud',
+        name: 'ratary',
         version: condensed.version,
-        title: 'AI Brain Memory Cloud',
+        title: 'Ratary',
         description: buildMcpServerInfoDescription(condensed, negotiation),
       },
       instructions: buildMcpInitializeInstructions(condensed, negotiation),

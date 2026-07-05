@@ -9,7 +9,7 @@
 
 ## EXECUTIVE SUMMARY
 
-The Phase 7 Agent Runtime Boundary design is fundamentally sound and achieves its primary objective of defining a stable contract between AI Brain (memory foundation) and external agent runtimes. The document correctly excludes agent logic, preserves storage-agnosticism, and provides clear boundaries.
+The Phase 7 Agent Runtime Boundary design is fundamentally sound and achieves its primary objective of defining a stable contract between Ratary (memory foundation) and external agent runtimes. The document correctly excludes agent logic, preserves storage-agnosticism, and provides clear boundaries.
 
 **Final Verdict:** APPROVED WITH MINOR CHANGES
 
@@ -94,10 +94,10 @@ None.
 
 | Constitution Rule | Status | Evidence |
 |------------------|--------|----------|
-| AI Brain remains storage-agnostic | ✅ | Ports defined in §11, §12 |
-| AI Brain remains retrieval-focused | ✅ | IRRetrievalCandidateSource in §3 |
-| AI Brain remains context-focused | ✅ | ContextBuilder in §5 |
-| AI Brain never becomes agent runtime | ✅ | Boundary enforced §7 |
+| Ratary remains storage-agnostic | ✅ | Ports defined in §11, §12 |
+| Ratary remains retrieval-focused | ✅ | IRRetrievalCandidateSource in §3 |
+| Ratary remains context-focused | ✅ | ContextBuilder in §5 |
+| Ratary never becomes agent runtime | ✅ | Boundary enforced §7 |
 | External systems via stable protocols | ✅ | MCP + REST only §8 |
 | No planner/executor/workflow | ✅ | Forbidden patterns §6 |
 | Clean Architecture preserved | ✅ | Layer diagram §4 |

@@ -1,4 +1,4 @@
-# Arsitektur — AI Memory Cloud
+# Arsitektur — Ratary
 
 **Status:** Phase 4 ✅ production · Phase 5 ✅ complete  
 **Rules:** [AI_BRAIN_CONSTITUTION.md](AI_BRAIN_CONSTITUTION.md) (immutable)  

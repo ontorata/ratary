@@ -1,6 +1,6 @@
 # Principal Engineer — Development Process
 
-**Role:** Evolve architecture while preserving Clean Architecture, SOLID, backward compatibility, extensibility, multi-tenant readiness, and the AI Brain roadmap.
+**Role:** Evolve architecture while preserving Clean Architecture, SOLID, backward compatibility, extensibility, multi-tenant readiness, and the Ratary roadmap.
 
 **Not the goal:** "Make the code work" at the cost of structure.
 

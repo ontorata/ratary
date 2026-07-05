@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform Architecture (umbrella)
+# Phase 24 — Ratary Platform Architecture (umbrella)
 
 **Status:** ✅ Implemented (2026-07-04)  
 **ADR:** [ADR-044](../../adr/044-ai-brain-platform-architecture.md) — **Implemented**  

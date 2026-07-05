@@ -1,7 +1,7 @@
 {
-  "name": "ai-memory-cloud",
+  "name": "ratary",
   "version": "1.0.0",
-  "description": "AI Memory Cloud - Second brain for AI coding assistants powered by Cloudflare D1",
+  "description": "Ratary - Second brain for AI coding assistants powered by Cloudflare D1",
   "type": "module",
   "workspaces": [
     "packages/sdk",
@@ -74,9 +74,9 @@
     "setup": "tsx scripts/setup-mcp.ts",
     "snapshot:openapi": "tsx scripts/snapshot-openapi.ts",
     "generate:sdks": "tsx scripts/generate-sdks.ts",
-    "build:sdk": "npm run build -w @ai-brain/sdk",
-    "build:cli": "npm run build -w @ai-brain/cli",
-    "build:mcp-server": "npm run build -w @ai-brain/mcp-server",
+    "build:sdk": "npm run build -w @ratary/sdk",
+    "build:cli": "npm run build -w @ratary/cli",
+    "build:mcp-server": "npm run build -w @ratary/mcp-server",
     "build:packages": "npm run build:sdk && npm run build:cli && npm run build:mcp-server",
     "test:packages": "vitest run packages/sdk/tests tests/packages"
   },

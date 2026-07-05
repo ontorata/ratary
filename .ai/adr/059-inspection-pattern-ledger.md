@@ -10,7 +10,7 @@
 
 ## Context
 
-Stakeholders want **evidence-based institutional memory** from inspection workflows (Agent Forge Inspect, CI, MCP signals) — similar in *intent* to external PR review learning products, but implemented as AI Brain memory-cloud + learning pipeline extensions.
+Stakeholders want **evidence-based institutional memory** from inspection workflows (Agent Forge Inspect, CI, MCP signals) — similar in *intent* to external PR review learning products, but implemented as Ratary memory-cloud + learning pipeline extensions.
 
 Phase 08.5 ingests quality signals; Phase 08.6 defines learning engines with **L23 Pattern Mining** and **L27 Feedback Learning** still stubbed. Phase 07.1 Agent Forge defines Inspect/Remember stages without persistent pattern extraction.
 

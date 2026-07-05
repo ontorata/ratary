@@ -24,8 +24,8 @@ export interface AiBrainPlatformPorts {
 }
 
 /**
- * Composition root for Phase 24 AI-Brain platform umbrella (ADR-044).
- * Gated by AI_BRAIN_PLATFORM_ENABLED — default off preserves pre-Phase-24 behavior.
+ * Composition root for Phase 24 Ratary platform umbrella (ADR-044).
+ * Gated by RATARY_PLATFORM_ENABLED — default off preserves pre-Phase-24 behavior.
  */
 export function createAiBrainPlatformPorts(sql: ISqlDatabase, env: Env): AiBrainPlatformPorts {
   const noopStore = new NoOpWebhookSubscriptionStore();
@@ -37,7 +37,7 @@ export function createAiBrainPlatformPorts(sql: ISqlDatabase, env: Env): AiBrain
     recordWebhookLifecycle: () => undefined,
   };
 
-  if (!env.AI_BRAIN_PLATFORM_ENABLED) {
+  if (!env.RATARY_PLATFORM_ENABLED) {
     return noop;
   }
 
@@ -58,7 +58,7 @@ export function createAiBrainPlatformPorts(sql: ISqlDatabase, env: Env): AiBrain
     recordWebhookLifecycle(metricsExporter, status) {
       if (!metricsExporter) return;
       metricsExporter.incrementCounter({
-        name: 'ai_brain_platform_webhook_dispatch_total',
+        name: 'ratary_platform_webhook_dispatch_total',
         labels: { status },
       });
     },

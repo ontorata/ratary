@@ -9,7 +9,7 @@
 
 ## Summary
 
-Enable **multiple AI Brain nodes** to exchange knowledge across workspace, region, organization, and cloud boundaries — entirely through **federation ports**. `MemoryService` **unchanged**; local persistence via existing APIs only.
+Enable **multiple Ratary nodes** to exchange knowledge across workspace, region, organization, and cloud boundaries — entirely through **federation ports**. `MemoryService` **unchanged**; local persistence via existing APIs only.
 
 | Dimension | Supported via |
 |-----------|---------------|

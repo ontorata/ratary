@@ -8,7 +8,7 @@
 
 ## Summary
 
-Phase 25 lets AI-Brain **observe how it is used** and **synchronize knowledge across the globe** without collecting user content unnecessarily. It introduces four cooperating pillars, each behind ports, each **default OFF**, none altering `MemoryService`.
+Phase 25 lets Ratary **observe how it is used** and **synchronize knowledge across the globe** without collecting user content unnecessarily. It introduces four cooperating pillars, each behind ports, each **default OFF**, none altering `MemoryService`.
 
 | Pillar | Capability | Builds on | ADR gate |
 |--------|------------|-----------|----------|

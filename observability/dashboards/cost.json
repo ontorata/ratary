@@ -1,5 +1,5 @@
 {
-  "title": "AI Brain — Cost",
+  "title": "Ratary — Cost",
   "uid": "ai-brain-cost",
   "description": "Embedding spend estimate and storage growth",
   "schemaVersion": 39,
@@ -10,13 +10,13 @@
       "id": 1,
       "title": "Embedding Cost Estimate (USD)",
       "type": "timeseries",
-      "targets": [{ "expr": "ai_brain_cost_embedding_estimate_usd" }]
+      "targets": [{ "expr": "ratary_cost_embedding_estimate_usd" }]
     },
     {
       "id": 2,
       "title": "Storage Bytes",
       "type": "timeseries",
-      "targets": [{ "expr": "ai_brain_cost_storage_bytes" }]
+      "targets": [{ "expr": "ratary_cost_storage_bytes" }]
     }
   ]
 }

@@ -1,7 +1,7 @@
-# Phase 7 — Agent Runtime Boundary — DESIGN
+# Phase 7 ï¿½ Agent Runtime Boundary ï¿½ DESIGN
 
 **Document:** DESIGN  
-**Phase status:** ? Closed — gate PASS (2026-07-03  )  
+**Phase status:** ? Closed ï¿½ gate PASS (2026-07-03  )  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 
@@ -9,16 +9,16 @@
 
 ## 1. Purpose
 
-Define the permanent boundary between the AI Brain memory foundation and external agent runtimes.
+Define the permanent boundary between the Ratary memory foundation and external agent runtimes.
 
-AI Brain provides:
+Ratary provides:
 - Durable memory storage and retrieval
 - Knowledge enrichment
 - Context assembly
 - Prompt building
 - MCP tools and REST API
 
-AI Brain does **not** provide:
+Ratary does **not** provide:
 - Agent planning or reasoning
 - Task orchestration
 - Workflow execution
@@ -69,53 +69,53 @@ This phase is **documentation-only**. No implementation code is added. The docum
 
 ## 3. Architecture Overview
 
-AI Brain operates as a **stateless memory service** consumed by stateful external agent runtimes.
+Ratary operates as a **stateless memory service** consumed by stateful external agent runtimes.
 
 ```
 +-----------------------------------------------------------------------------+
-¦                         External Agent Runtime                                ¦
-¦  +-------------+  +--------------+  +---------------------+                ¦
-¦  ¦   Planner   ¦? ¦   Executor   ¦? ¦   Tool Orchestrator ¦                ¦
-¦  +-------------+  +--------------+  +---------------------+                ¦
-¦                              ¦                                                ¦
-¦                              ¦ "What do I know about X?"                     ¦
-¦                              ?                                                ¦
+ï¿½                         External Agent Runtime                                ï¿½
+ï¿½  +-------------+  +--------------+  +---------------------+                ï¿½
+ï¿½  ï¿½   Planner   ï¿½? ï¿½   Executor   ï¿½? ï¿½   Tool Orchestrator ï¿½                ï¿½
+ï¿½  +-------------+  +--------------+  +---------------------+                ï¿½
+ï¿½                              ï¿½                                                ï¿½
+ï¿½                              ï¿½ "What do I know about X?"                     ï¿½
+ï¿½                              ?                                                ï¿½
 +------------------------------+----------------------------------------------+
-                               ¦
+                               ï¿½
                     +---------------------+
-                    ¦    MCP / REST        ¦
-                    ¦   Protocol Layer     ¦
+                    ï¿½    MCP / REST        ï¿½
+                    ï¿½   Protocol Layer     ï¿½
                     +---------------------+
-                               ¦
+                               ï¿½
 +------------------------------+----------------------------------------------+
-¦                         AI Brain                                             ¦
-¦                                                                              ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦  ¦                     Protocol Contracts                                 ¦   ¦
-¦  ¦  MCP Tools (22 — SSOT)   ¦    REST API (/api/v1)                     ¦   ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦                                                                              ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦  ¦                    Application Services                               ¦   ¦
-¦  ¦  MemoryService  ¦  ContextService  ¦  SearchService  ¦  KnowledgeService¦   ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦                                                                              ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦  ¦                    Persistence Layer                                  ¦   ¦
-¦  ¦  MemoryRepository  ¦  EmbeddingStore  ¦  RelationRepository            ¦   ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦                                                                              ¦
-¦  Memory ? Knowledge ? Embedding ? Retrieval ? Context ? Prompt               ¦
+ï¿½                         Ratary                                             ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½  ï¿½                     Protocol Contracts                                 ï¿½   ï¿½
+ï¿½  ï¿½  MCP Tools (22 ï¿½ SSOT)   ï¿½    REST API (/api/v1)                     ï¿½   ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½  ï¿½                    Application Services                               ï¿½   ï¿½
+ï¿½  ï¿½  MemoryService  ï¿½  ContextService  ï¿½  SearchService  ï¿½  KnowledgeServiceï¿½   ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½  ï¿½                    Persistence Layer                                  ï¿½   ï¿½
+ï¿½  ï¿½  MemoryRepository  ï¿½  EmbeddingStore  ï¿½  RelationRepository            ï¿½   ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  Memory ? Knowledge ? Embedding ? Retrieval ? Context ? Prompt               ï¿½
 +------------------------------------------------------------------------------+
 ```
 
 ### Design invariants
 
-1. **No agent logic inside AI Brain** — Planner, executor, and orchestrator belong to external systems.
-2. **AI Brain is storage-agnostic** — Any storage engine via ports.
-3. **AI Brain is retrieval-focused** — Bounded context within configurable budget.
-4. **AI Brain is context-focused** — Assembles relevant memories for agent consumption.
-5. **External systems communicate only through stable protocols** — MCP or REST.
+1. **No agent logic inside Ratary** ï¿½ Planner, executor, and orchestrator belong to external systems.
+2. **Ratary is storage-agnostic** ï¿½ Any storage engine via ports.
+3. **Ratary is retrieval-focused** ï¿½ Bounded context within configurable budget.
+4. **Ratary is context-focused** ï¿½ Assembles relevant memories for agent consumption.
+5. **External systems communicate only through stable protocols** ï¿½ MCP or REST.
 
 ---
 
@@ -123,89 +123,89 @@ AI Brain operates as a **stateless memory service** consumed by stateful externa
 
 ```
                            +-------------------------------------+
-                           ¦       External Agent Runtime         ¦
-                           ¦  (Planner + Executor + Tools)       ¦
+                           ï¿½       External Agent Runtime         ï¿½
+                           ï¿½  (Planner + Executor + Tools)       ï¿½
                            +-------------------------------------+
-                                              ¦
+                                              ï¿½
                           +---------------------------------------+
-                          ¦        AI Brain Protocol              ¦
-                          ¦  (MCP stdio / REST HTTP)              ¦
+                          ï¿½        Ratary Protocol              ï¿½
+                          ï¿½  (MCP stdio / REST HTTP)              ï¿½
                           +---------------------------------------+
-                                              ¦
+                                              ï¿½
 +---------------------------------------------+---------------------------------------------+
-¦                                             ¦                                              ¦
-¦  +-------------------------------------------------------------------------------------+  ¦
-¦  ¦                            AI Brain Memory Foundation                                ¦  ¦
-¦  ¦                                                                                      ¦  ¦
-¦  ¦  +------------------------------------------------------------------------------+  ¦  ¦
-¦  ¦  ¦                         Transport Layer                                      ¦  ¦  ¦
-¦  ¦  ¦  +----------------------------+    +-------------------------------------+   ¦  ¦  ¦
-¦  ¦  ¦  ¦      MCP Server            ¦    ¦        REST Server (Fastify)        ¦   ¦  ¦  ¦
-¦  ¦  ¦  ¦  • stdio transport        ¦    ¦  • HTTP routing                    ¦   ¦  ¦  ¦
-¦  ¦  ¦  ¦  • JSON-RPC 2.0           ¦    ¦  • Schema validation               ¦   ¦  ¦  ¦
-¦  ¦  ¦  ¦  • Tool definitions       ¦    ¦  • Auth middleware                ¦   ¦  ¦  ¦
-¦  ¦  ¦  +--------------------------+    +-------------------------------------+   ¦  ¦  ¦
-¦  ¦  +----------------+--------------------------------+---------------------------+  ¦
-¦  ¦                   ¦                                ¦                              ¦
-¦  ¦                   +--------------------------------+                              ¦
-¦  ¦                              ?                                                   ¦
-¦  ¦  +----------------------------------------------------------------------------+ ¦  ¦
-¦  ¦  ¦                       Application Layer                                     ¦ ¦  ¦
-¦  ¦  ¦  +------------------+ +------------------+ +----------------------------+ ¦ ¦  ¦
-¦  ¦  ¦  ¦  MemoryService   ¦ ¦  ContextService  ¦ ¦    SearchService           ¦ ¦ ¦  ¦
-¦  ¦  ¦  ¦  • CRUD         ¦ ¦  • Retrieval     ¦ ¦    • Paginated search      ¦ ¦ ¦  ¦
-¦  ¦  ¦  ¦  • Backup       ¦ ¦  • Ranking       ¦ ¦    • Hybrid sources        ¦ ¦ ¦  ¦
-¦  ¦  ¦  ¦  • Relations    ¦ ¦  • Budget        ¦ ¦                            ¦ ¦ ¦  ¦
-¦  ¦  ¦  +------------------+ +------------------+ +----------------------------+ ¦ ¦  ¦
-¦  ¦  ¦  +------------------+ +------------------+                              ¦ ¦  ¦
-¦  ¦  ¦  ¦ KnowledgeService ¦ ¦  AuthService     ¦                              ¦ ¦  ¦
-¦  ¦  ¦  ¦  • Enrichment   ¦ ¦  • Identity      ¦                              ¦ ¦  ¦
-¦  ¦  ¦  ¦  • Generators   ¦ ¦  • Permissions   ¦                              ¦ ¦  ¦
-¦  ¦  ¦  +------------------+ +------------------+                              ¦ ¦  ¦
-¦  ¦  +----------------------------------------------------------------------------+ ¦  ¦
-¦  ¦                              ¦                                                   ¦
-¦  ¦  +----------------------------------------------------------------------------+ ¦
-¦  ¦  ¦                          Domain Layer                                       ¦ ¦
-¦  ¦  ¦  Pure functions: ranking, scoring, normalization, text preparation        ¦ ¦
-¦  ¦  +----------------------------------------------------------------------------+ ¦
-¦  ¦                                                                                 ¦
-¦  ¦  +----------------------------------------------------------------------------+ ¦
-¦  ¦  ¦                      Persistence Layer                                      ¦ ¦
-¦  ¦  ¦  +---------------------+  +-----------------+  +----------------------+  ¦ ¦  ¦
-¦  ¦  ¦  ¦  IMemoryRepository  ¦  ¦  IEmbeddingStore ¦  ¦ IRelationRepository  ¦  ¦ ¦  ¦
-¦  ¦  ¦  ¦  (D1 adapter)       ¦  ¦  (D1 adapter)    ¦  ¦ (D1 adapter)        ¦  ¦ ¦  ¦
-¦  ¦  ¦  +---------------------+  +-----------------+  +----------------------+  ¦ ¦  ¦
-¦  ¦  +----------------------------------------------------------------------------+ ¦
-¦  ¦                                                                                 ¦
-¦  +---------------------------------------------------------------------------------+
-¦                                                                                     ¦
+ï¿½                                             ï¿½                                              ï¿½
+ï¿½  +-------------------------------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½                            Ratary Memory Foundation                                ï¿½  ï¿½
+ï¿½  ï¿½                                                                                      ï¿½  ï¿½
+ï¿½  ï¿½  +------------------------------------------------------------------------------+  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½                         Transport Layer                                      ï¿½  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  +----------------------------+    +-------------------------------------+   ï¿½  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½      MCP Server            ï¿½    ï¿½        REST Server (Fastify)        ï¿½   ï¿½  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ stdio transport        ï¿½    ï¿½  ï¿½ HTTP routing                    ï¿½   ï¿½  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ JSON-RPC 2.0           ï¿½    ï¿½  ï¿½ Schema validation               ï¿½   ï¿½  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ Tool definitions       ï¿½    ï¿½  ï¿½ Auth middleware                ï¿½   ï¿½  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  +--------------------------+    +-------------------------------------+   ï¿½  ï¿½  ï¿½
+ï¿½  ï¿½  +----------------+--------------------------------+---------------------------+  ï¿½
+ï¿½  ï¿½                   ï¿½                                ï¿½                              ï¿½
+ï¿½  ï¿½                   +--------------------------------+                              ï¿½
+ï¿½  ï¿½                              ?                                                   ï¿½
+ï¿½  ï¿½  +----------------------------------------------------------------------------+ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½                       Application Layer                                     ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  +------------------+ +------------------+ +----------------------------+ ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  MemoryService   ï¿½ ï¿½  ContextService  ï¿½ ï¿½    SearchService           ï¿½ ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ CRUD         ï¿½ ï¿½  ï¿½ Retrieval     ï¿½ ï¿½    ï¿½ Paginated search      ï¿½ ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ Backup       ï¿½ ï¿½  ï¿½ Ranking       ï¿½ ï¿½    ï¿½ Hybrid sources        ï¿½ ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ Relations    ï¿½ ï¿½  ï¿½ Budget        ï¿½ ï¿½                            ï¿½ ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  +------------------+ +------------------+ +----------------------------+ ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  +------------------+ +------------------+                              ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½ KnowledgeService ï¿½ ï¿½  AuthService     ï¿½                              ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ Enrichment   ï¿½ ï¿½  ï¿½ Identity      ï¿½                              ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  ï¿½ Generators   ï¿½ ï¿½  ï¿½ Permissions   ï¿½                              ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  +------------------+ +------------------+                              ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  +----------------------------------------------------------------------------+ ï¿½  ï¿½
+ï¿½  ï¿½                              ï¿½                                                   ï¿½
+ï¿½  ï¿½  +----------------------------------------------------------------------------+ ï¿½
+ï¿½  ï¿½  ï¿½                          Domain Layer                                       ï¿½ ï¿½
+ï¿½  ï¿½  ï¿½  Pure functions: ranking, scoring, normalization, text preparation        ï¿½ ï¿½
+ï¿½  ï¿½  +----------------------------------------------------------------------------+ ï¿½
+ï¿½  ï¿½                                                                                 ï¿½
+ï¿½  ï¿½  +----------------------------------------------------------------------------+ ï¿½
+ï¿½  ï¿½  ï¿½                      Persistence Layer                                      ï¿½ ï¿½
+ï¿½  ï¿½  ï¿½  +---------------------+  +-----------------+  +----------------------+  ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  IMemoryRepository  ï¿½  ï¿½  IEmbeddingStore ï¿½  ï¿½ IRelationRepository  ï¿½  ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  ï¿½  (D1 adapter)       ï¿½  ï¿½  (D1 adapter)    ï¿½  ï¿½ (D1 adapter)        ï¿½  ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½  +---------------------+  +-----------------+  +----------------------+  ï¿½ ï¿½  ï¿½
+ï¿½  ï¿½  +----------------------------------------------------------------------------+ ï¿½
+ï¿½  ï¿½                                                                                 ï¿½
+ï¿½  +---------------------------------------------------------------------------------+
+ï¿½                                                                                     ï¿½
 +-------------------------------------------------------------------------------------+
 ```
 
 ### External agent interaction flow
 
 ```
-Agent Runtime                                    AI Brain
-      ¦                                              ¦
-      ¦  1. save_memory({ content, metadata })      ¦
-      ¦ ------------------------------------------? ¦
-      ¦                                              ¦
-      ¦  2. get_context({ query, limit })           ¦
-      ¦ ------------------------------------------? ¦
-      ¦                                              ¦
-      ¦  ?--------- Context assembly                 ¦
-      ¦  { memories[], summary, relations[] }        ¦
-      ¦                                              ¦
-      ¦  3. build_prompt({ context, template })     ¦
-      ¦ ------------------------------------------? ¦
-      ¦                                              ¦
-      ¦  ?--------- Formatted prompt                ¦
-      ¦  { prompt, system, user }                    ¦
-      ¦                                              ¦
-      ¦  4. search_memories({ query, filters })     ¦
-      ¦ ------------------------------------------? ¦
-      ¦                                              ¦
-      ¦  ?--------- Search results (paginated)      ¦
+Agent Runtime                                    Ratary
+      ï¿½                                              ï¿½
+      ï¿½  1. save_memory({ content, metadata })      ï¿½
+      ï¿½ ------------------------------------------? ï¿½
+      ï¿½                                              ï¿½
+      ï¿½  2. get_context({ query, limit })           ï¿½
+      ï¿½ ------------------------------------------? ï¿½
+      ï¿½                                              ï¿½
+      ï¿½  ?--------- Context assembly                 ï¿½
+      ï¿½  { memories[], summary, relations[] }        ï¿½
+      ï¿½                                              ï¿½
+      ï¿½  3. build_prompt({ context, template })     ï¿½
+      ï¿½ ------------------------------------------? ï¿½
+      ï¿½                                              ï¿½
+      ï¿½  ?--------- Formatted prompt                ï¿½
+      ï¿½  { prompt, system, user }                    ï¿½
+      ï¿½                                              ï¿½
+      ï¿½  4. search_memories({ query, filters })     ï¿½
+      ï¿½ ------------------------------------------? ï¿½
+      ï¿½                                              ï¿½
+      ï¿½  ?--------- Search results (paginated)      ï¿½
 ```
 
 ---
@@ -223,7 +223,7 @@ Agent Runtime                                    AI Brain
 | **Domain Logic** | Pure ranking, scoring, text transformation | I/O, persistence |
 | **Persistence** | Scoped queries, row mapping, adapter-specific errors | Business rules, ranking |
 
-### AI Brain responsibilities
+### Ratary responsibilities
 
 | Concern | Owner | Notes |
 |---------|-------|-------|
@@ -253,7 +253,7 @@ Agent Runtime                                    AI Brain
 
 ## 6. Repository Boundary
 
-### What AI Brain owns
+### What Ratary owns
 
 ```
 src/
@@ -274,7 +274,7 @@ src/
 +-- utils/               # Mappers, formatters
 ```
 
-### What AI Brain does NOT own
+### What Ratary does NOT own
 
 ```
 # Forbidden inside src/
@@ -311,26 +311,26 @@ External systems (outside this repository):
 
 ### Protocol boundary definition
 
-External agents communicate with AI Brain through two protocol channels:
+External agents communicate with Ratary through two protocol channels:
 
 ```
 +---------------------------------------------------------+
-¦                  Protocol Boundary                        ¦
-+---------------------------------------------------------¦
-¦                                                          ¦
-¦  +-------------------+      +-----------------------+   ¦
-¦  ¦   MCP (Primary)    ¦      ¦   REST (Alternative)  ¦   ¦
-¦  ¦   stdio transport  ¦      ¦   HTTP transport      ¦   ¦
-¦  ¦   JSON-RPC 2.0     ¦      ¦   JSON over HTTPS     ¦   ¦
-¦  ¦   22 tools (SSOT)     ¦      ¦   REST endpoints      ¦   ¦
-¦  +-------------------+      +-----------------------+   ¦
-¦                                                          ¦
+ï¿½                  Protocol Boundary                        ï¿½
++---------------------------------------------------------ï¿½
+ï¿½                                                          ï¿½
+ï¿½  +-------------------+      +-----------------------+   ï¿½
+ï¿½  ï¿½   MCP (Primary)    ï¿½      ï¿½   REST (Alternative)  ï¿½   ï¿½
+ï¿½  ï¿½   stdio transport  ï¿½      ï¿½   HTTP transport      ï¿½   ï¿½
+ï¿½  ï¿½   JSON-RPC 2.0     ï¿½      ï¿½   JSON over HTTPS     ï¿½   ï¿½
+ï¿½  ï¿½   22 tools (SSOT)     ï¿½      ï¿½   REST endpoints      ï¿½   ï¿½
+ï¿½  +-------------------+      +-----------------------+   ï¿½
+ï¿½                                                          ï¿½
 +---------------------------------------------------------+
 ```
 
 ### Agent integration contract
 
-| Requirement | AI Brain obligation | Agent obligation |
+| Requirement | Ratary obligation | Agent obligation |
 |------------|---------------------|------------------|
 | Protocol | Provide MCP + REST | Implement client |
 | Auth | Validate credentials | Provide valid credentials |
@@ -341,28 +341,28 @@ External agents communicate with AI Brain through two protocol channels:
 
 ### Boundary enforcement
 
-1. **No inbound agent state** — AI Brain does not store agent execution state.
-2. **No outbound agent commands** — AI Brain does not invoke external systems.
-3. **No bidirectional loops** — AI Brain responds to requests; agents initiate.
-4. **No shared memory between agents** — Each agent operates in its scoped context.
+1. **No inbound agent state** ï¿½ Ratary does not store agent execution state.
+2. **No outbound agent commands** ï¿½ Ratary does not invoke external systems.
+3. **No bidirectional loops** ï¿½ Ratary responds to requests; agents initiate.
+4. **No shared memory between agents** ï¿½ Each agent operates in its scoped context.
 
 ---
 
-## 8. AI Brain Protocol
+## 8. Ratary Protocol
 
 ### Protocol definition
 
-The AI Brain Protocol is the stable contract external agents use to interact with the memory foundation.
+The Ratary Protocol is the stable contract external agents use to interact with the memory foundation.
 
 ```
 +------------------------------------------------------------+
-¦                    AI Brain Protocol                        ¦
-¦                                                            ¦
-¦  Transport: MCP (stdio) / REST (HTTPS)                    ¦
-¦  Format: JSON-RPC 2.0 (MCP) / JSON (REST)                ¦
-¦  Authentication: API Key / JWT / OAuth                   ¦
-¦  Scope: Owner-based isolation                             ¦
-¦                                                            ¦
+ï¿½                    Ratary Protocol                        ï¿½
+ï¿½                                                            ï¿½
+ï¿½  Transport: MCP (stdio) / REST (HTTPS)                    ï¿½
+ï¿½  Format: JSON-RPC 2.0 (MCP) / JSON (REST)                ï¿½
+ï¿½  Authentication: API Key / JWT / OAuth                   ï¿½
+ï¿½  Scope: Owner-based isolation                             ï¿½
+ï¿½                                                            ï¿½
 +------------------------------------------------------------+
 ```
 
@@ -407,7 +407,7 @@ MCP:    MCP-Protocol-Version: 1.0
 REST:   X-API-Version: 1
 ```
 
-AI Brain responds with supported version or error if incompatible.
+Ratary responds with supported version or error if incompatible.
 
 ### Backward compatibility policy
 
@@ -430,7 +430,7 @@ A breaking change requires:
 
 ### Capability discovery contract
 
-Agents discover AI Brain capabilities through an explicit metadata endpoint.
+Agents discover Ratary capabilities through an explicit metadata endpoint.
 
 ```typescript
 interface AICapabilityManifest {
@@ -518,8 +518,8 @@ MCP tools surface failures as `isError: true` on the tool result with message te
 |------------------|-------|-------|-------------|
 | Auth bootstrap / identities | 5/h bootstrap; 20/min create; 10/min rotate | Per client IP | REST `@fastify/rate-limit` (`src/plugins/rate-limit.ts`); Redis when `RATE_LIMIT_REDIS_URL` set |
 | Memory CRUD / search / context | 100 req/min (design advisory) | Per owner | Not hard-limited on MCP stdio; REST global advisory |
-| Graph traverse | Same as memory | Per owner | Expensive BFS — keep `depth` =3 |
-| Backup import/export | Same as memory | Per owner | Large payloads — respect `maxMemoryContentBytes` |
+| Graph traverse | Same as memory | Per owner | Expensive BFS ï¿½ keep `depth` =3 |
+| Backup import/export | Same as memory | Per owner | Large payloads ï¿½ respect `maxMemoryContentBytes` |
 | Health / docs / graph capabilities | Unlimited | Public | No auth on `/health`, `/docs` |
 
 ### Capability endpoints
@@ -620,7 +620,7 @@ MCP uses **JSON-RPC 2.0** over stdio. Tool invocations use `tools/call`; respons
     "content": [
       {
         "type": "text",
-        "text": "{ \"id\": \"…\", \"codename\": \"AUTH-0001\", \"title\": \"Auth middleware pattern\" }"
+        "text": "{ \"id\": \"ï¿½\", \"codename\": \"AUTH-0001\", \"title\": \"Auth middleware pattern\" }"
       }
     ],
     "isError": false
@@ -635,13 +635,13 @@ MCP uses **JSON-RPC 2.0** over stdio. Tool invocations use `tools/call`; respons
   "jsonrpc": "2.0",
   "id": 1,
   "result": {
-    "content": [{ "type": "text", "text": "Memory with id '…' not found" }],
+    "content": [{ "type": "text", "text": "Memory with id 'ï¿½' not found" }],
     "isError": true
   }
 }
 ```
 
-**Per-tool `arguments` ? `content[].text` payload (22 tools — SSOT `MCP_TOOL_NAMES`; gate verified 19, implementation `src/transport/mcp/mcp-server.ts`):**
+**Per-tool `arguments` ? `content[].text` payload (22 tools ï¿½ SSOT `MCP_TOOL_NAMES`; gate verified 19, implementation `src/transport/mcp/mcp-server.ts`):**
 
 | Tool | Example `arguments` | Response `text` (JSON) |
 |------|---------------------|-------------------------|
@@ -697,12 +697,12 @@ Contract tests: `tests/mcp/tools.test.ts` (`EXPECTED_TOOLS` ? `MCP_TOOL_NAMES`).
 
 ### REST contract rules
 
-1. **Path structure** — All memory endpoints under `/api/v1/memories`.
-2. **Response format** — `{ data, meta? }` for success; `{ error, message, details? }` for errors.
-3. **Pagination** — Cursor-based with `limit` (default 20, max 100) and `offset`.
-4. **Field naming** — camelCase in JSON; snake_case in database.
-5. **Timestamps** — ISO 8601 UTC strings.
-6. **Content-Type** — `application/json` for all requests and responses.
+1. **Path structure** ï¿½ All memory endpoints under `/api/v1/memories`.
+2. **Response format** ï¿½ `{ data, meta? }` for success; `{ error, message, details? }` for errors.
+3. **Pagination** ï¿½ Cursor-based with `limit` (default 20, max 100) and `offset`.
+4. **Field naming** ï¿½ camelCase in JSON; snake_case in database.
+5. **Timestamps** ï¿½ ISO 8601 UTC strings.
+6. **Content-Type** ï¿½ `application/json` for all requests and responses.
 
 ### REST versioning
 
@@ -715,26 +715,26 @@ Contract tests: `tests/mcp/tools.test.ts` (`EXPECTED_TOOLS` ? `MCP_TOOL_NAMES`).
 
 | Resource | URL | Notes |
 |----------|-----|-------|
-| Swagger UI | `GET /docs` | Interactive explorer (disabled on Vercel serverless — `skipSwagger` when `VERCEL` set) |
+| Swagger UI | `GET /docs` | Interactive explorer (disabled on Vercel serverless ï¿½ `skipSwagger` when `VERCEL` set) |
 | OpenAPI JSON | `GET /docs/json` | OpenAPI 3.0 document generated by `@fastify/swagger` |
 | OpenAPI YAML | `GET /docs/yaml` | Same spec, YAML encoding |
 | Source | `src/plugins/swagger.ts` | Tags: Health, Auth, Memory, Knowledge, Search, Backup |
 
-**Example — discover spec locally:**
+**Example ï¿½ discover spec locally:**
 
 ```bash
 curl -s http://localhost:3000/docs/json | jq '.info,.paths["/api/v1/memory"]'
 ```
 
-**Auth in OpenAPI:** `components.securitySchemes.ApiKeyAuth` (`X-API-Key`) and `BearerAuth` (`Authorization: Bearer aic_…`).
+**Auth in OpenAPI:** `components.securitySchemes.ApiKeyAuth` (`X-API-Key`) and `BearerAuth` (`Authorization: Bearer aic_ï¿½`).
 
-**Canonical paths:** Memory routes live under `/api/v1/memory` (singular), not `/memories` — see `src/routes/index.ts` + route registration in `src/routes/v1/index.ts`.
+**Canonical paths:** Memory routes live under `/api/v1/memory` (singular), not `/memories` ï¿½ see `src/routes/index.ts` + route registration in `src/routes/v1/index.ts`.
 
 ---
 
 ## 13. Compatibility Matrix
 
-> **Snapshot note:** Matrix authored at Phase 7 gate (2026-07-03). **Updated 2026-07-04** — Graph (Phase 8) and downstream MCP tools reflected below. All listed clients share the **same server surface**; differences are client UX only.
+> **Snapshot note:** Matrix authored at Phase 7 gate (2026-07-03). **Updated 2026-07-04** ï¿½ Graph (Phase 8) and downstream MCP tools reflected below. All listed clients share the **same server surface**; differences are client UX only.
 
 ### Known agent clients
 
@@ -750,11 +750,11 @@ curl -s http://localhost:3000/docs/json | jq '.info,.paths["/api/v1/memory"]'
 | **OpenAI SDK** | ? Full | ? Full | ? Full | ? Full | ? Full | ? Phase 8+ | ? Phase 6+ opt-in |
 | **Custom Agent** | ? Full | ? Full | ? Full | ? Full | ? Full | ? Phase 8+ | ? Phase 6+ opt-in |
 
-**Graph:** MCP `get_graph_capabilities`, `traverse_relations` (BFS depth 1–3). Composite graph leg + one-hop relations in `get_context` when `GRAPH_RETRIEVAL=true` (Phase 6.5 relations stage).
+**Graph:** MCP `get_graph_capabilities`, `traverse_relations` (BFS depth 1ï¿½3). Composite graph leg + one-hop relations in `get_context` when `GRAPH_RETRIEVAL=true` (Phase 6.5 relations stage).
 
 **Hybrid / vector:** Composite vector leg when `HYBRID_RETRIEVAL=true` + embedding provider configured; default deploy remains SQL-only.
 
-### Post–Phase 7 MCP extensions (same client compatibility)
+### Postï¿½Phase 7 MCP extensions (same client compatibility)
 
 | Capability | Landed | MCP tool / REST |
 |------------|--------|-----------------|
@@ -789,7 +789,7 @@ Registry SSOT: `src/capabilities/mcp-tool-names.ts` (22 tools at 2026-07-04).
 | 4 | + Context | + Context | Intelligence |
 | 5 | + Embedding | + Embedding | Async enrichment |
 | 6 | + Hybrid | + Hybrid | Vector + SQL (opt-in) |
-| 7 | Stable | Stable | **Boundary defined — agent external** |
+| 7 | Stable | Stable | **Boundary defined ï¿½ agent external** |
 | 8 | + Graph | + Graph | `traverse_relations`, graph leg |
 | 9 | + Workspace | + Workspace / agents | Multi-AI scope |
 | 10 | + Org | + Org | Enterprise adapters |
@@ -802,7 +802,7 @@ Registry SSOT: `src/capabilities/mcp-tool-names.ts` (22 tools at 2026-07-04).
 
 ### Actor types
 
-AI Brain tracks actors as metadata on memory operations. Actors are **metadata only** — no execution state is stored.
+Ratary tracks actors as metadata on memory operations. Actors are **metadata only** ï¿½ no execution state is stored.
 
 | Actor Type | Definition | Identifier | Phase |
 |------------|------------|------------|-------|
@@ -843,10 +843,10 @@ type ActorType =
 
 ### Actor tracking rules
 
-1. **No execution state** — AI Brain stores who did what, not what they were doing.
-2. **Audit trail** — Actor metadata enables future audit requirements.
-3. **Attribution** — Phase 9 enables `agentId` attribution for multi-AI scenarios.
-4. **Isolation** — Actor type does not affect scope enforcement.
+1. **No execution state** ï¿½ Ratary stores who did what, not what they were doing.
+2. **Audit trail** ï¿½ Actor metadata enables future audit requirements.
+3. **Attribution** ï¿½ Phase 9 enables `agentId` attribution for multi-AI scenarios.
+4. **Isolation** ï¿½ Actor type does not affect scope enforcement.
 
 ### `organizationId` on actors (P1)
 
@@ -860,10 +860,10 @@ Enterprise actors (Phase 10+) carry optional `organizationId` on `ActorMetadata`
 
 **Population rules:**
 
-1. **Phase 7–9** — `organizationId` omitted on all actor records; scope remains `ownerId` (+ optional `workspaceId` / `agentId` from Phase 9).
-2. **Phase 10** — When JWT includes `organization_id`, copy to `ActorMetadata.organizationId` on mutating operations for audit correlation.
-3. **Mismatch forbidden** — If `organizationId` is set on actor metadata, it must equal the resolved `MemoryScope.organizationId` for that operation; otherwise treat as `FORBIDDEN`.
-4. **Not a scope substitute** — `organizationId` on actor metadata is attribution/audit; enforcement still flows through `MemoryScope` + `IScopeResolver`.
+1. **Phase 7ï¿½9** ï¿½ `organizationId` omitted on all actor records; scope remains `ownerId` (+ optional `workspaceId` / `agentId` from Phase 9).
+2. **Phase 10** ï¿½ When JWT includes `organization_id`, copy to `ActorMetadata.organizationId` on mutating operations for audit correlation.
+3. **Mismatch forbidden** ï¿½ If `organizationId` is set on actor metadata, it must equal the resolved `MemoryScope.organizationId` for that operation; otherwise treat as `FORBIDDEN`.
+4. **Not a scope substitute** ï¿½ `organizationId` on actor metadata is attribution/audit; enforcement still flows through `MemoryScope` + `IScopeResolver`.
 
 **Example (Phase 10 enterprise actor):**
 
@@ -894,40 +894,40 @@ const actor: ActorMetadata = {
 
 ```
 +---------------------------------------------------------------------+
-¦                     Persistent Memory                                 ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  • Durable memories owned by owner                            ¦  ¦
-¦  ¦  • Survives sessions                                          ¦  ¦
-¦  ¦  • Accessed via: save_memory, get_memory, search_memories    ¦  ¦
-¦  ¦  • Scope: ownerId (required)                                  ¦  ¦
-¦  ¦  • Lifetime: Until explicitly deleted                         ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
-¦                                                                      ¦
-¦                     Workspace Memory                                 ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  • Shared pool for team/product (Phase 9)                    ¦  ¦
-¦  ¦  • Multiple agents can read/write                              ¦  ¦
-¦  ¦  • Scope: ownerId + workspaceId (Phase 9)                     ¦  ¦
-¦  ¦  • Lifetime: Until workspace deleted or memory removed        ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
-¦                                                                      ¦
-¦                     Session Memory                                   ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  • Ephemeral context for single task (Phase 7 boundary)       ¦  ¦
-¦  ¦  • NOT stored in AI Brain                                      ¦  ¦
-¦  ¦  • External agent manages session state                         ¦  ¦
-¦  ¦  • Scope: Agent's in-memory context                            ¦  ¦
-¦  ¦  • Lifetime: Until agent session ends                          ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
-¦                                                                      ¦
-¦                     Temporary Context                                ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  • Bounded context assembled for LLM consumption              ¦  ¦
-¦  ¦  • NOT persisted beyond retrieval                              ¦  ¦
-¦  ¦  • Assembled via: get_context, build_prompt                   ¦  ¦
-¦  ¦  • Scope: Retrieval query + context budget                     ¦  ¦
-¦  ¦  • Lifetime: Single request/response cycle                    ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
+ï¿½                     Persistent Memory                                 ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  ï¿½ Durable memories owned by owner                            ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Survives sessions                                          ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Accessed via: save_memory, get_memory, search_memories    ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Scope: ownerId (required)                                  ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Lifetime: Until explicitly deleted                         ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½                                                                      ï¿½
+ï¿½                     Workspace Memory                                 ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  ï¿½ Shared pool for team/product (Phase 9)                    ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Multiple agents can read/write                              ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Scope: ownerId + workspaceId (Phase 9)                     ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Lifetime: Until workspace deleted or memory removed        ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½                                                                      ï¿½
+ï¿½                     Session Memory                                   ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  ï¿½ Ephemeral context for single task (Phase 7 boundary)       ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ NOT stored in Ratary                                      ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ External agent manages session state                         ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Scope: Agent's in-memory context                            ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Lifetime: Until agent session ends                          ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½                                                                      ï¿½
+ï¿½                     Temporary Context                                ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  ï¿½ Bounded context assembled for LLM consumption              ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ NOT persisted beyond retrieval                              ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Assembled via: get_context, build_prompt                   ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Scope: Retrieval query + context budget                     ï¿½  ï¿½
+ï¿½  ï¿½  ï¿½ Lifetime: Single request/response cycle                    ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
 +---------------------------------------------------------------------+
 ```
 
@@ -938,14 +938,14 @@ const actor: ActorMetadata = {
 | **Persistent** | Owner | Owner only | Owner only | Permanent |
 | **Workspace** | Workspace | Workspace members | Workspace members | Until deleted |
 | **Session** | Agent runtime | Agent only | Agent only | Session only |
-| **Temporary** | AI Brain | Requester only | N/A | Request only |
+| **Temporary** | Ratary | Requester only | N/A | Request only |
 
 ### Session boundaries
 
-1. **AI Brain is stateless** — No session state stored in the foundation.
-2. **Agents manage sessions** — External runtime tracks agent session state.
-3. **Context is request-scoped** — `get_context` assembles per request.
-4. **No session cookies** — REST uses Bearer tokens; MCP uses env credentials.
+1. **Ratary is stateless** ï¿½ No session state stored in the foundation.
+2. **Agents manage sessions** ï¿½ External runtime tracks agent session state.
+3. **Context is request-scoped** ï¿½ `get_context` assembles per request.
+4. **No session cookies** ï¿½ REST uses Bearer tokens; MCP uses env credentials.
 
 ### Future session extensions
 
@@ -963,7 +963,7 @@ const actor: ActorMetadata = {
 
 ```typescript
 interface MemoryScope {
-  ownerId: string;  // Required — identity anchor
+  ownerId: string;  // Required ï¿½ identity anchor
 }
 ```
 
@@ -979,18 +979,18 @@ interface MemoryScope {
 
 1. **Every query** includes `ownerId` filter.
 2. **Every write** includes `ownerId` in scope validation.
-3. **Cross-scope access** returns 404 — never 403 (prevents enumeration).
-4. **Scope is immutable** — Cannot be changed after memory creation.
+3. **Cross-scope access** returns 404 ï¿½ never 403 (prevents enumeration).
+4. **Scope is immutable** ï¿½ Cannot be changed after memory creation.
 
 ### Future scope extensions (per ADR-002)
 
 ```typescript
-// Phase 9+ (additive — no breaking changes)
+// Phase 9+ (additive ï¿½ no breaking changes)
 interface MemoryScope {
-  ownerId: string;              // Required — legacy + identity anchor
+  ownerId: string;              // Required ï¿½ legacy + identity anchor
   organizationId?: string;        // Phase 10
   workspaceId?: string;          // Phase 9+
-  agentId?: string;             // Phase 9+ — actor attribution
+  agentId?: string;             // Phase 9+ ï¿½ actor attribution
   projectId?: string;           // Filter hint (Phase 2.6+)
 }
 ```
@@ -1009,7 +1009,7 @@ interface MemoryScope {
 
 ## 17. Event Model
 
-> **Successor (Phase 12 — landed 2026-07-04):** `IEventBus` consumers, audit fan-out (`memory.accessed`), domain topics. Default `EVENT_BUS_PROVIDER=none` — zero hot-path change. Contract below authored at Phase 7 gate; shapes align with Phase 12 implementation (ADR-020).
+> **Successor (Phase 12 ï¿½ landed 2026-07-04):** `IEventBus` consumers, audit fan-out (`memory.accessed`), domain topics. Default `EVENT_BUS_PROVIDER=none` ï¿½ zero hot-path change. Contract below authored at Phase 7 gate; shapes align with Phase 12 implementation (ADR-020).
 
 ### Event contract (Phase 7 design ? Phase 12 implementation)
 
@@ -1070,17 +1070,17 @@ Event subscriptions are scoped to `ownerId` in all phases through Phase 9. Organ
 
 | Phase | Subscribe scope | Auth proof | Events delivered | Cross-scope |
 |-------|-----------------|------------|------------------|-------------|
-| 7–8 | `ownerId` only | API key or JWT with matching `ownerId` | `memory.*`, `context.*`, `relation.*` for that owner | Forbidden — 404 on mismatch |
+| 7ï¿½8 | `ownerId` only | API key or JWT with matching `ownerId` | `memory.*`, `context.*`, `relation.*` for that owner | Forbidden ï¿½ 404 on mismatch |
 | 9 | `ownerId` + optional `workspaceId` | JWT/API key + workspace membership when RBAC on | Above + `agent.*`, `workspace.*` filtered to workspace | Workspace A cannot subscribe to workspace B |
 | 10 | `ownerId` + optional `workspaceId` + optional `organizationId` | JWT with `organization_id` + membership ([ADR-010](../../adr/010-workspace-membership-rbac.md)) | Above + `organization.*`, `audit.*` within org boundary | Org-level handlers receive only org-scoped events |
 
 **Authorization rules:**
 
-1. **Subscriber identity** — `subscribe()` requires the same credentials as REST/MCP; anonymous subscriptions are forbidden.
-2. **Scope binding** — Each handler registration stores `{ ownerId, workspaceId?, organizationId? }`; the bus filters before delivery.
-3. **No wildcard tenancy** — Patterns like `subscribe('*')` or cross-owner fan-out are forbidden.
-4. **Audit-only** — Subscribers receive notifications; AI Brain does not execute agent logic in handlers (external consumers only).
-5. **Phase 7** — Contract only; no bus implementation or live subscriptions.
+1. **Subscriber identity** ï¿½ `subscribe()` requires the same credentials as REST/MCP; anonymous subscriptions are forbidden.
+2. **Scope binding** ï¿½ Each handler registration stores `{ ownerId, workspaceId?, organizationId? }`; the bus filters before delivery.
+3. **No wildcard tenancy** ï¿½ Patterns like `subscribe('*')` or cross-owner fan-out are forbidden.
+4. **Audit-only** ï¿½ Subscribers receive notifications; Ratary does not execute agent logic in handlers (external consumers only).
+5. **Phase 7** ï¿½ Contract only; no bus implementation or live subscriptions.
 
 ```typescript
 interface EventSubscriptionScope {
@@ -1090,7 +1090,7 @@ interface EventSubscriptionScope {
 }
 
 interface IEventBus {
-  // Phase 10+ — not implemented in Phase 7
+  // Phase 10+ ï¿½ not implemented in Phase 7
   publish(event: DomainEvent): Promise<void>;
   subscribe(
     eventType: string,
@@ -1103,10 +1103,10 @@ interface IEventBus {
 
 ### Event model constraints
 
-1. **No event bus in Phase 7** — Events are future contract only.
-2. **No event handlers** — AI Brain does not react to external events.
-3. **Events are audit-only** — Future audit trail, not trigger mechanism.
-4. **Scope-enforced** — Events only visible to owning scope.
+1. **No event bus in Phase 7** ï¿½ Events are future contract only.
+2. **No event handlers** ï¿½ Ratary does not react to external events.
+3. **Events are audit-only** ï¿½ Future audit trail, not trigger mechanism.
+4. **Scope-enforced** ï¿½ Events only visible to owning scope.
 
 ### Future event extensions
 
@@ -1131,7 +1131,7 @@ interface IEventBus {
 
 ```
 1.0.0 ? 1.1.0 (additive) ? 1.2.0 (additive) ? 2.0.0 (breaking)
-   ¦                                              ¦
+   ï¿½                                              ï¿½
    +-------- Stable ------------------------------+
 ```
 
@@ -1140,7 +1140,7 @@ interface IEventBus {
 | Version | Prefix | Status | Sunset date |
 |---------|--------|--------|-------------|
 | 1 | `/api/v1/` | Current | TBD |
-| 2 | `/api/v2/` | Reserved | — |
+| 2 | `/api/v2/` | Reserved | ï¿½ |
 
 ### Tool versioning
 
@@ -1178,9 +1178,9 @@ interface IEventBus {
 | 12 | Complete | Event pipeline / async bus (ADR-020; opt-in `EVENT_BUS_PROVIDER`) |
 | 13 | Complete | Protocol layer (streaming SSE/WS/gRPC) |
 | 13.1 | Complete | Remote MCP (ADR-048) |
-| 19 | Future | Full observability platform (Grafana/SLO — distinct from Phase 12 bus) |
+| 19 | Future | Full observability platform (Grafana/SLO ï¿½ distinct from Phase 12 bus) |
 
-> **Snapshot note:** Table updated post-gate (2026-07-05). Phase 7 gate (2026-07-03) listed Phase 12 as Future — D7-03 closed when Phase 12 landed (2026-07-04).
+> **Snapshot note:** Table updated post-gate (2026-07-05). Phase 7 gate (2026-07-03) listed Phase 12 as Future ï¿½ D7-03 closed when Phase 12 landed (2026-07-04).
 
 ### Future migration policy
 
@@ -1194,9 +1194,9 @@ interface IEventBus {
 
 ## 19. Future Compatibility
 
-> **Successor closure (2026-07-04):** Phases 7.5, 8, 9, and 10 landed without rewriting Phase 7 boundary contracts. Readiness tables below remain the **design rationale** at gate time; current agent surface is in §13 and [COMPLETION.md](COMPLETION.md) successor closure.
+> **Successor closure (2026-07-04):** Phases 7.5, 8, 9, and 10 landed without rewriting Phase 7 boundary contracts. Readiness tables below remain the **design rationale** at gate time; current agent surface is in ï¿½13 and [COMPLETION.md](COMPLETION.md) successor closure.
 
-### Phase 8 — Knowledge Graph (landed)
+### Phase 8 ï¿½ Knowledge Graph (landed)
 
 Phase 7 design enabled Phase 8 integration without rewrites:
 
@@ -1209,7 +1209,7 @@ Phase 7 design enabled Phase 8 integration without rewrites:
 
 **Landed:** MCP `get_graph_capabilities`, `traverse_relations`; opt-in `GRAPH_RETRIEVAL` composite leg (Phase 6.5 relations stage).
 
-### Phase 9 — Multi-AI (landed)
+### Phase 9 ï¿½ Multi-AI (landed)
 
 Phase 7 design enabled Phase 9 integration without rewrites:
 
@@ -1221,10 +1221,10 @@ Phase 7 design enabled Phase 9 integration without rewrites:
 
 **Landed:** `list_workspaces`, `list_agents`, `register_agent`; scope resolver with optional `agentId`.
 
-### ISyncManager contract (Phase 9 — orchestration external)
+### ISyncManager contract (Phase 9 ï¿½ orchestration external)
 
 ```typescript
-// Multi-agent write reconciliation contract (Phase 9 — not implemented in Phase 7)
+// Multi-agent write reconciliation contract (Phase 9 ï¿½ not implemented in Phase 7)
 interface ISyncManager {
   reconcileWrite(event: MemoryWriteEvent): Promise<'accept' | 'merge' | 'reject'>;
   resolveConflict(memoryId: string, versions: MemoryVersion[]): Promise<ResolvedMemory>;
@@ -1245,7 +1245,7 @@ type SyncStrategy = 'last-write-wins' | 'agent-priority' | 'merge';
 
 | MCP tools | Additive scope fields | Tool schemas unchanged |
 
-### Phase 10 — Enterprise (landed, opt-in)
+### Phase 10 ï¿½ Enterprise (landed, opt-in)
 
 Phase 7 design enabled Phase 10 integration without rewrites:
 
@@ -1256,32 +1256,32 @@ Phase 7 design enabled Phase 10 integration without rewrites:
 | Audit | Event contracts defined | ? Phase 12 `IEventBus` + audit fan-out (opt-in) |
 | Storage | Postgres adapter | Same ports; D1 adapter unchanged |
 
-**Landed:** Org RBAC adapters (opt-in); JWT `organization_id`; actor rules §14.
+**Landed:** Org RBAC adapters (opt-in); JWT `organization_id`; actor rules ï¿½14.
 
-### Phase 12 — Event pipeline (landed)
+### Phase 12 ï¿½ Event pipeline (landed)
 
 | Design element (D7-03) | Phase 12 outcome |
 |------------------------|------------------|
-| Event subscription contract §17 | ? Domain consumers via `IEventBus` (ADR-020) |
+| Event subscription contract ï¿½17 | ? Domain consumers via `IEventBus` (ADR-020) |
 | `memory.created/updated/deleted/accessed` | ? MemoryService post-commit publishers |
-| Agent-facing event API | ? Not in Phase 7 scope — bus is internal/async |
+| Agent-facing event API | ? Not in Phase 7 scope ï¿½ bus is internal/async |
 
 **Partial follow-ups (outside Phase 7):** Phase 12C request metadata audit; `memory.signal.received` bridge (8.5 D85-02); Phase 19 OTel runbook.
 
-### Phase 7.5 — Capability manifest (landed)
+### Phase 7.5 ï¿½ Capability manifest (landed)
 
 | Gap (D7-01) | Landed | Agent impact |
 |-------------|--------|--------------|
 | No runtime capability discovery | `get_capabilities` + REST manifest (ADR-025) | Agents read flags/limits without trial-and-error |
 
-### Three-phase horizon guarantee (gate-time — validated post-gate)
+### Three-phase horizon guarantee (gate-time ï¿½ validated post-gate)
 
 The Phase 7 boundary design guarantees:
 
-1. **No agent logic inside** — Phases 8-10 add graph, workspace, org — not agent orchestration.
-2. **Ports unchanged** — Existing ports (`IMemoryRepository`, `IRetrievalCandidateSource`) survive Phases 8-10.
-3. **Contracts additive** — New capabilities extend scope types, not replace them.
-4. **MCP/REST stable** — Tool names and REST paths remain stable across phases.
+1. **No agent logic inside** ï¿½ Phases 8-10 add graph, workspace, org ï¿½ not agent orchestration.
+2. **Ports unchanged** ï¿½ Existing ports (`IMemoryRepository`, `IRetrievalCandidateSource`) survive Phases 8-10.
+3. **Contracts additive** ï¿½ New capabilities extend scope types, not replace them.
+4. **MCP/REST stable** ï¿½ Tool names and REST paths remain stable across phases.
 
 ### Design decisions preventing rewrites
 
@@ -1329,10 +1329,10 @@ The Phase 7 boundary design guarantees:
 
 ### Constitutional checklist
 
-- [x] AI Brain remains storage-agnostic (ports defined)
-- [x] AI Brain remains retrieval-focused (pipeline documented)
-- [x] AI Brain remains context-focused (ContextBuilder described)
-- [x] AI Brain never becomes an agent runtime (boundary enforced)
+- [x] Ratary remains storage-agnostic (ports defined)
+- [x] Ratary remains retrieval-focused (pipeline documented)
+- [x] Ratary remains context-focused (ContextBuilder described)
+- [x] Ratary never becomes an agent runtime (boundary enforced)
 - [x] External AI systems communicate only through stable protocols (MCP + REST)
 - [x] No planner, executor, workflow engine, or autonomous loop in repo
 - [x] Clean Architecture preserved (layers documented)
@@ -1351,38 +1351,38 @@ Mapped to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md):
 
 | Principle group | Rule | Phase 7 evidence |
 |-----------------|------|------------------|
-| Philosophy | System not snapshot; capability stack | §19 three-phase horizon |
-| Philosophy | Boundary discipline; replaceability | §7 inside/outside; §11–§12 ports |
-| Architecture | Inward dependencies; layer separation | §4 layer diagram |
-| Architecture | Single canonical owner; composition root | §3 architecture; no duplicate services |
-| SOLID | SRP, OCP, LSP, ISP, DIP | Ports per ADR-004; additive contracts §18 |
-| Compatibility | Stable public surface; additive first | §11 tool schema rules; §18 versioning |
-| Extensibility | Port before implementation; extension over rewrite | §19 future ports |
-| Multi-tenancy | Scope by identity; isolation default | §16 `MemoryScope`; 404 cross-scope |
-| Multi-tenancy | Future-ready scope contract | §16 optional `organizationId`, `workspaceId`, `agentId` |
-| AI-first | Protocol-native access; context efficiency | §11 MCP; §5 context budget |
+| Philosophy | System not snapshot; capability stack | ï¿½19 three-phase horizon |
+| Philosophy | Boundary discipline; replaceability | ï¿½7 inside/outside; ï¿½11ï¿½ï¿½12 ports |
+| Architecture | Inward dependencies; layer separation | ï¿½4 layer diagram |
+| Architecture | Single canonical owner; composition root | ï¿½3 architecture; no duplicate services |
+| SOLID | SRP, OCP, LSP, ISP, DIP | Ports per ADR-004; additive contracts ï¿½18 |
+| Compatibility | Stable public surface; additive first | ï¿½11 tool schema rules; ï¿½18 versioning |
+| Extensibility | Port before implementation; extension over rewrite | ï¿½19 future ports |
+| Multi-tenancy | Scope by identity; isolation default | ï¿½16 `MemoryScope`; 404 cross-scope |
+| Multi-tenancy | Future-ready scope contract | ï¿½16 optional `organizationId`, `workspaceId`, `agentId` |
+| AI-first | Protocol-native access; context efficiency | ï¿½11 MCP; ï¿½5 context budget |
 | Maintainability | Document hierarchy; evidence-based completion | This DESIGN + CHECKLIST gate |
 
 ### ADR compliance checklist (P1)
 
 | ADR | Status | Phase 7 evidence |
 |-----|--------|------------------|
-| [ADR-001](../../adr/001-multi-source-retrieval.md) | Implemented | `CompositeRetrievalCandidateSource` §3 |
-| [ADR-002](../../adr/002-workspace-identity-model.md) | Implemented | `MemoryScope` §16; actor `organizationId` §14 |
-| [ADR-003](../../adr/003-embedding-storage-mvp.md) | Implemented | `IEmbeddingStore` §19 |
-| [ADR-004](../../adr/004-repository-port-types.md) | Implemented | Repository ports §11–§12 |
-| [ADR-005](../../adr/005-content-object-store.md) | Implemented | Future blob offload §19 |
-| [ADR-007](../../adr/007-multi-ai-workspace-scope.md) | Implemented | `workspaceId` / `agentId` optional §16 |
-| [ADR-010](../../adr/010-workspace-membership-rbac.md) | Implemented | Org scope + event subscription §17 |
+| [ADR-001](../../adr/001-multi-source-retrieval.md) | Implemented | `CompositeRetrievalCandidateSource` ï¿½3 |
+| [ADR-002](../../adr/002-workspace-identity-model.md) | Implemented | `MemoryScope` ï¿½16; actor `organizationId` ï¿½14 |
+| [ADR-003](../../adr/003-embedding-storage-mvp.md) | Implemented | `IEmbeddingStore` ï¿½19 |
+| [ADR-004](../../adr/004-repository-port-types.md) | Implemented | Repository ports ï¿½11ï¿½ï¿½12 |
+| [ADR-005](../../adr/005-content-object-store.md) | Implemented | Future blob offload ï¿½19 |
+| [ADR-007](../../adr/007-multi-ai-workspace-scope.md) | Implemented | `workspaceId` / `agentId` optional ï¿½16 |
+| [ADR-010](../../adr/010-workspace-membership-rbac.md) | Implemented | Org scope + event subscription ï¿½17 |
 
 ### Section deliverables checklist (23 sections)
 
-- [x] §1 Purpose · §2 Scope · §3 Architecture · §4–§6 Boundaries & forbidden patterns
-- [x] §7 Inside/outside table · §8 Protocol versioning · §9 Capability negotiation
-- [x] §10 Capability manifest · §11 MCP tools · §12 REST API · §13 Compatibility matrix
-- [x] §14 Actor model · §15 Session model · §16 Integration patterns · §17 Event model
-- [x] §18 Deprecation policy · §19 Future compatibility · §20 Constitution compliance
-- [x] §21 Success criteria · §22 Risks · §23 References
+- [x] ï¿½1 Purpose ï¿½ ï¿½2 Scope ï¿½ ï¿½3 Architecture ï¿½ ï¿½4ï¿½ï¿½6 Boundaries & forbidden patterns
+- [x] ï¿½7 Inside/outside table ï¿½ ï¿½8 Protocol versioning ï¿½ ï¿½9 Capability negotiation
+- [x] ï¿½10 Capability manifest ï¿½ ï¿½11 MCP tools ï¿½ ï¿½12 REST API ï¿½ ï¿½13 Compatibility matrix
+- [x] ï¿½14 Actor model ï¿½ ï¿½15 Session model ï¿½ ï¿½16 Integration patterns ï¿½ ï¿½17 Event model
+- [x] ï¿½18 Deprecation policy ï¿½ ï¿½19 Future compatibility ï¿½ ï¿½20 Constitution compliance
+- [x] ï¿½21 Success criteria ï¿½ ï¿½22 Risks ï¿½ ï¿½23 References
 
 ---
 
@@ -1393,13 +1393,13 @@ Mapped to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md):
 | Criterion | Verification | Evidence |
 |-----------|--------------|----------|
 | Protocol defined | Stable contracts documented | This document |
-| MCP contracts stable | 22 tools (SSOT `MCP_TOOL_NAMES`) | Section 11 + addendum §13 |
+| MCP contracts stable | 22 tools (SSOT `MCP_TOOL_NAMES`) | Section 11 + addendum ï¿½13 |
 | REST contracts stable | Endpoints documented | Section 12 |
 | Compatibility matrix | 9 agent clients mapped | Section 13 |
 | Actor model defined | 9 actor types defined | Section 14 |
 | Session model defined | 4 memory levels defined | Section 15 |
 | Event model reserved | Future contract documented | Section 17 |
-| Future compatibility | Successor phases 7.5–10 landed | Section 19 + §13 |
+| Future compatibility | Successor phases 7.5ï¿½10 landed | Section 19 + ï¿½13 |
 | Constitution compliance | 17 checklist items + 23 section deliverables | Section 20 |
 
 ### Success indicators
@@ -1453,7 +1453,7 @@ Mapped to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md):
 
 | Risk | Mitigation strategy |
 |------|---------------------|
-| Agent assumes shared state | Section 15: AI Brain is stateless |
+| Agent assumes shared state | Section 15: Ratary is stateless |
 | Agent stores execution state in repo | Section 6: Forbidden patterns documented |
 | Phase 8 requires RelationsV2 | Section 19: Graph port separate from relations |
 | Phase 9 requires `MemoryService` rewrite | Section 19: Scope resolver pattern preserves services |
@@ -1497,13 +1497,13 @@ Mapped to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md):
 | Phase | Document | Phase 7 relation |
 |-------|----------|-----------------|
 | 6 | [06-hybrid-retrieval/DESIGN.md](../06-hybrid-retrieval/DESIGN.md) | Hybrid retrieval enables richer context |
-| 8 | [08-knowledge-graph/DESIGN.md](../08-knowledge-graph/DESIGN.md) | Graph-augmented retrieval; `IGraphProvider` §19 |
-| 9 | [09-multi-ai/DESIGN.md](../09-multi-ai/DESIGN.md) | Workspace scope, `agentId`, `ISyncManager` §19 |
+| 8 | [08-knowledge-graph/DESIGN.md](../08-knowledge-graph/DESIGN.md) | Graph-augmented retrieval; `IGraphProvider` ï¿½19 |
+| 9 | [09-multi-ai/DESIGN.md](../09-multi-ai/DESIGN.md) | Workspace scope, `agentId`, `ISyncManager` ï¿½19 |
 | 9.5 | [09.5-platform-architecture/DESIGN.md](../09.5-platform-architecture/DESIGN.md) | Platform ports that extend agent boundary |
-| 10 | [10-enterprise/DESIGN.md](../10-enterprise/DESIGN.md) | `organizationId`, RBAC, event bus §17 |
-| 11 | [11-production-ops/DESIGN.md](../11-production-ops/DESIGN.md) | Postgres cutover, ops — no agent logic |
+| 10 | [10-enterprise/DESIGN.md](../10-enterprise/DESIGN.md) | `organizationId`, RBAC, event bus ï¿½17 |
+| 11 | [11-production-ops/DESIGN.md](../11-production-ops/DESIGN.md) | Postgres cutover, ops ï¿½ no agent logic |
 
-Roadmap index: [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) · Phase status: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
+Roadmap index: [09-ROADMAP.md](../../roadmap/09-ROADMAP.md) ï¿½ Phase status: [10-PHASE-STATUS.md](../../core/architecture/10-PHASE-STATUS.md)
 
 ### External references
 

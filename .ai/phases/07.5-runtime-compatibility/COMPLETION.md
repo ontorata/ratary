@@ -36,7 +36,7 @@ Map roadmap success criteria to durable evidence.
 | SC-75-05 | Regression suite | ✅ 736 passed \| 3 skipped (2026-07-05) |
 | SC-75-06 | D7.5-01 condensed MCP initialize | ✅ `_meta['io.aibrain/capabilities']` |
 | SC-75-07 | D7.5-03 capability negotiation | ✅ REST POST + MCP tool + initialize `_meta` |
-| SC-75-08 | D7.5-02 SDK consumption | ✅ `@ai-brain/sdk` `CapabilitiesApi` |
+| SC-75-08 | D7.5-02 SDK consumption | ✅ `@ratary/sdk` `CapabilitiesApi` |
 
 **Result:** 8/8 PASS. Phase gate closed 2026-07-04; deferred tracks closed 2026-07-05.
 

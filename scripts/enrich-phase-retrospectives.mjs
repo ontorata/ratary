@@ -243,7 +243,7 @@ const PHASES = [
     acceptedDebt: ['Full manifest requires explicit capabilities call', 'No runtime negotiation protocol'],
     recommendations: [
       'Embed condensed snapshot in MCP `initialize` serverInfo',
-      'Wire Phase 16 `@ai-brain/sdk` `getCapabilities()` to consume manifest',
+      'Wire Phase 16 `@ratary/sdk` `getCapabilities()` to consume manifest',
     ],
   },
   {
@@ -449,7 +449,7 @@ const PHASES = [
     title: 'Phase 16 — Developer Platform',
     gateDate: '2026-07-04',
     summary:
-      '`@ai-brain/sdk`, `@ai-brain/cli`, `@ai-brain/mcp-server`, OpenAPI SSOT, thin multi-language wrappers. ADR-031 Implemented.',
+      '`@ratary/sdk`, `@ratary/cli`, `@ratary/mcp-server`, OpenAPI SSOT, thin multi-language wrappers. ADR-031 Implemented.',
     workedWell: [
       '`snapshot:openapi` + `build:packages` pipeline',
       'CLI/MCP boundary: SDK only, no direct fetch',
@@ -598,10 +598,10 @@ const PHASES = [
   },
   {
     dir: '24-ai-brain-platform',
-    title: 'Phase 24 — AI-Brain Platform',
+    title: 'Phase 24 — Ratary Platform',
     gateDate: '2026-07-04',
     summary:
-      'Umbrella manifest (edition planes), HMAC webhooks, Phase 12 delivery consumer, REST `/platform/*`. Gated by `AI_BRAIN_PLATFORM_ENABLED=false`.',
+      'Umbrella manifest (edition planes), HMAC webhooks, Phase 12 delivery consumer, REST `/platform/*`. Gated by `RATARY_PLATFORM_ENABLED=false`.',
     workedWell: [
       'Manifest aggregates child phase flags only',
       'Webhook CRUD + HMAC-signed delivery tested',

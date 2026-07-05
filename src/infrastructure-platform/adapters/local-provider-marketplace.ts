@@ -18,7 +18,7 @@ function catalogFromCode(): MarketplaceCatalog {
       displayName: p.displayName,
       description: p.description ?? '',
       version: p.version,
-      vendor: 'ai-brain',
+      vendor: 'ontorata',
       implements: p.implements,
       curated: true,
       tags: [p.type],

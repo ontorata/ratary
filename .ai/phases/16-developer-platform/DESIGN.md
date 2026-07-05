@@ -27,12 +27,12 @@ Enterprise adoption requires **developer-grade tooling**: typed SDKs, CLI, insta
 | Deliverable | Detail |
 |-------------|--------|
 | **OpenAPI Generator pipeline** | SSOT: `GET /docs/json` + checked-in openapi snapshot |
-| **Proto generator** | From Phase 13 `ai.brain.v1` |
-| **SDK — TypeScript** | `@ai-brain/sdk` — reference implementation |
+| **Proto generator** | From Phase 13 `ontorata.ratary.v1` |
+| **SDK — TypeScript** | `@ratary/sdk` — reference implementation |
 | **SDK — Go, Python, Java, Rust, C#, PHP** | Generated + thin runtime wrapper |
-| **CLI** | `@ai-brain/cli` — **uses TypeScript SDK only** |
+| **CLI** | `@ratary/cli` — **uses TypeScript SDK only** |
 | **Dashboard** | `apps/dashboard/` — **uses TypeScript SDK only** (optional SPA) |
-| **Installable MCP Server** | `@ai-brain/mcp-server` — remote MCP via HTTP/SSE; **uses SDK**; may target [Phase 13.1](../13.1-remote-mcp-clients/DESIGN.md) server endpoint |
+| **Installable MCP Server** | `@ratary/mcp-server` — remote MCP via HTTP/SSE; **uses SDK**; may target [Phase 13.1](../13.1-remote-mcp-clients/DESIGN.md) server endpoint |
 | **Remote MCP** | MCP transport adapter calling REST/gRPC through SDK |
 | **Starter templates** | `templates/` — Cursor, Node bot, Python agent |
 | **Examples** | `examples/` — CRUD, context, handoff |
@@ -54,7 +54,7 @@ Enterprise adoption requires **developer-grade tooling**: typed SDKs, CLI, insta
 └───────────────────────────┬─────────────────────────────┘
                             │ REST / gRPC / Remote MCP
 ┌───────────────────────────▼─────────────────────────────┐
-│  AI Brain Server (unchanged business logic)              │
+│  Ratary Server (unchanged business logic)              │
 │  MemoryService │ ContextService │ …                      │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -103,7 +103,7 @@ MCP Server → SDK → HTTP/gRPC
 | Step | Action | Server impact |
 |------|--------|---------------|
 | M1 | Add `packages/` to repo; CI gen job | None |
-| M2 | Publish `@ai-brain/sdk` npm (optional registry) | None |
+| M2 | Publish `@ratary/sdk` npm (optional registry) | None |
 | M3 | CLI/Dashboard/MCP packages | None |
 | M4 | Deprecate manual curl in docs → SDK examples | Docs only |
 

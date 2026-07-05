@@ -8,7 +8,7 @@
 
 ## Context
 
-AI Brain is a **memory foundation** consumed by multiple AI coding assistants. Phases 7 and 7.5 defined the agent runtime **outside** the repository and implemented capability discovery (ADR-025). Phase 9 added workspace-scoped **agent identity** (`IAgentIdentity`, `register_agent` MCP tool). Phases 10.5–14 add transport, streaming protocols, and federation.
+Ratary is a **memory foundation** consumed by multiple AI coding assistants. Phases 7 and 7.5 defined the agent runtime **outside** the repository and implemented capability discovery (ADR-025). Phase 9 added workspace-scoped **agent identity** (`IAgentIdentity`, `register_agent` MCP tool). Phases 10.5–14 add transport, streaming protocols, and federation.
 
 Users need **Cursor, Claude (Code/Desktop), OpenAI (API/Agents SDK), Gemini CLI, Codex, Continue, Qwen** — and future clients — to operate on the **same Memory Cloud** without forking memory per vendor.
 
@@ -29,7 +29,7 @@ Constitution §3 and §55: reasoning, planning, execution, and agent orchestrati
 - **`MemoryService` unchanged** — ecosystem layer is metadata + manifest + optional catalog ports.
 - **Additive** — existing MCP tools and REST v1 stable.
 - Agent **identity** uses existing `IAgentIdentity` — no new orchestration service.
-- External `@ai-brain/client` SDK remains **outside** repo (ADR-025).
+- External `@ratary/client` SDK remains **outside** repo (ADR-025).
 
 ## Alternatives
 

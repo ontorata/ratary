@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "AI Memory Cloud API — SDK v1 surface",
-    "description": "Curated OpenAPI SSOT for @ai-brain/sdk generation (Phase 16). Full spec at GET /docs/json.",
+    "title": "Ratary API — SDK v1 surface",
+    "description": "Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.",
     "version": "1.0.0"
   },
   "servers": [{ "url": "http://localhost:3000/api/v1" }],

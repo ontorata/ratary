@@ -1,9 +1,9 @@
 # Node bot template
 
-Headless agent using `@ai-brain/sdk`:
+Headless agent using `@ratary/sdk`:
 
 ```typescript
-import { AiBrainClient } from '@ai-brain/sdk';
+import { AiBrainClient } from '@ratary/sdk';
 
 const client = new AiBrainClient({
   baseUrl: process.env.AI_BRAIN_BASE_URL!,

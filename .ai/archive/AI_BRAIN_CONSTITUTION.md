@@ -1,4 +1,4 @@
-# AI Brain Constitution
+# Ratary Constitution
 
 > **Alias:** `ARCHITECT_RULES.md` — same document.
 
@@ -24,7 +24,7 @@ If work conflicts with this constitution → **stop and ask**. Do not improvise 
 
 ## 1. Vision
 
-This repo is **one component** of AI Brain:
+This repo is **one component** of Ratary:
 
 ```
 Memory → Knowledge → Embedding → Vector → Graph → Reasoning → Planning → Execution → Multi-Agent

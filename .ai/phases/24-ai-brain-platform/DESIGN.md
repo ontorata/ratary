@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform — DESIGN
+# Phase 24 — Ratary Platform — DESIGN
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-04  )  
 **ADR:** [ADR-044 Implemented](../../adr/044-ai-brain-platform-architecture.md)
@@ -32,7 +32,7 @@ AiBrainPlatformManifestBuilder (umbrella manifest)
        ├─► IWebhookSubscriptionStore
        └─► WebhookDeliveryConsumer → IEventBus (Phase 12)
 
-REST /api/v1/platform/*  (AI_BRAIN_PLATFORM_ENABLED)
+REST /api/v1/platform/*  (RATARY_PLATFORM_ENABLED)
 ```
 
 ## Ports

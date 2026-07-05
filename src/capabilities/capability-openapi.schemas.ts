@@ -3,7 +3,7 @@
 export const clientCapabilityRequestOpenApiSchema = {
   type: 'object',
   properties: {
-    protocolVersion: { type: 'string', description: 'Client AI Brain protocol version' },
+    protocolVersion: { type: 'string', description: 'Client Ratary protocol version' },
     clientInfo: {
       type: 'object',
       properties: {

@@ -14,7 +14,7 @@
 | 10.5B | `IApplicationHandler` + 23 shared handlers | ✅ |
 | 10.5C | REST → `transport/rest/` + `RestTransportServer` | ✅ |
 | 10.5D | MCP → `transport/mcp/` + `McpTransportServer` | ✅ |
-| 10.5E | gRPC `ai.brain.v1` behind `GRPC_ENABLED=false` | ✅ |
+| 10.5E | gRPC `ontorata.ratary.v1` behind `GRPC_ENABLED=false` | ✅ |
 | 10.5F | Manifest `transport` section + docs | ✅ |
 
 ---
@@ -42,7 +42,7 @@ src/transport/
     mcp-server.ts                     stdio tool dispatch → handlers
     mcp-transport-server.ts
   grpc/
-    proto/ai/brain/v1/ai_brain.proto
+    proto/ontorata/ratary/v1/ratary.proto
     grpc-server.ts                    GrpcTransportServer
     grpc-services.ts
     grpc-mappers.ts

@@ -1,12 +1,12 @@
 /**
- * Generate language SDKs from packages/openapi/ai-brain-v1.openapi.json via OpenAPI Generator.
+ * Generate language SDKs from packages/openapi/ratary-v1.openapi.json via OpenAPI Generator.
  * Requires: npx @openapitools/openapi-generator-cli (Java runtime optional for some generators).
  */
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const SPEC = resolve(process.cwd(), 'packages/openapi/ai-brain-v1.openapi.json');
+const SPEC = resolve(process.cwd(), 'packages/openapi/ratary-v1.openapi.json');
 
 const TARGETS: Array<{ generator: string; outDir: string; extra?: string }> = [
   { generator: 'go', outDir: 'packages/sdk-go/generated' },
@@ -30,7 +30,7 @@ function runGenerator(generator: string, outDir: string, extra = ''): void {
     generator,
     '-o',
     absOut,
-    '--additional-properties=packageName=ai_brain_sdk,packageVersion=1.0.0',
+    '--additional-properties=packageName=ratary_sdk,packageVersion=1.0.0',
     extra,
   ]
     .filter(Boolean)

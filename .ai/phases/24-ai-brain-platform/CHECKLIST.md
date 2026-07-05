@@ -22,8 +22,8 @@
 
 ## Feature flags
 
-- [x] `AI_BRAIN_PLATFORM_ENABLED=false` default
-- [x] `AI_BRAIN_PLATFORM_EDITION=core` default
+- [x] `RATARY_PLATFORM_ENABLED=false` default
+- [x] `RATARY_PLATFORM_EDITION=core` default
 - [x] `PLATFORM_WEBHOOKS_ENABLED=false` default
 
 ## Documentation & gate
@@ -39,7 +39,7 @@
 |-------|-------|
 | **Verdict** | **PASS** — 2026-07-04 |
 | **ADR** | ADR-044 |
-| **Master flag** | `AI_BRAIN_PLATFORM_ENABLED=false` (default OFF) |
+| **Master flag** | `RATARY_PLATFORM_ENABLED=false` (default OFF) |
 | **Regression** | 689 passed, 3 skipped (default env) |
 | **Review** | [REVIEW.md](REVIEW.md) PASS |
 

@@ -43,7 +43,7 @@ describe('wireMcpInitializeCapabilities', () => {
 
   it('returns condensed snapshot without client request', async () => {
     const manifest = new CapabilityManifestBuilder(getEnv()).build();
-    const server = new McpServer({ name: 'ai-memory-cloud', version: '1.0.0' });
+    const server = new McpServer({ name: 'ratary', version: '1.0.0' });
     wireMcpInitializeCapabilities(server, () => manifest);
 
     const result = (await getInitializeHandler(server)(
@@ -64,7 +64,7 @@ describe('wireMcpInitializeCapabilities', () => {
       _meta?: Record<string, unknown>;
     };
 
-    expect(result.serverInfo.name).toBe('ai-memory-cloud');
+    expect(result.serverInfo.name).toBe('ratary');
     expect(result._meta?.[MCP_CAPABILITIES_META_KEY]).toBeDefined();
     expect(result._meta?.[MCP_CAPABILITIES_NEGOTIATION_META_KEY]).toBeUndefined();
     expect(result.instructions).toContain('get_capabilities');
@@ -72,7 +72,7 @@ describe('wireMcpInitializeCapabilities', () => {
 
   it('returns negotiation result when client sends capabilities-request meta', async () => {
     const manifest = new CapabilityManifestBuilder(getEnv()).build();
-    const server = new McpServer({ name: 'ai-memory-cloud', version: '1.0.0' });
+    const server = new McpServer({ name: 'ratary', version: '1.0.0' });
     wireMcpInitializeCapabilities(server, () => manifest);
 
     const result = (await getInitializeHandler(server)(

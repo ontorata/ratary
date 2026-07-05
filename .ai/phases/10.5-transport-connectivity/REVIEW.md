@@ -46,7 +46,7 @@ Gate verdict for Phase 10.5 — Transport & Connectivity Layer. Confirms Clean A
 | Service logic changes | No diff in MemoryService orchestration rules |
 | Repository / SQL in transport | Grep `src/transport/` — no repository imports |
 | GraphQL | Not present |
-| In-repo SDK | `@ai-brain/client` status `planned` only |
+| In-repo SDK | `@ratary/client` status `planned` only |
 | gRPC on Vercel default path | Documented; flag off |
 
 ---

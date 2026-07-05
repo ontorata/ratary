@@ -41,7 +41,7 @@
 - [x] gRPC GetCapabilities extended — mitigated: shared REST handler deps; gRPC uses same manifest slice
 - [x] MCP capability snapshot updated — `MCP_TOOL_NAMES` SSOT (27 tools incl. sync_*)
 - [x] WS/SSE optional capability on connect — manifest via Phase 13 streaming adapters
-- [x] SDK/CLI `getCapabilities()` reflects manifest — `@ai-brain/sdk` uses REST `/capabilities`
+- [x] SDK/CLI `getCapabilities()` reflects manifest — `@ratary/sdk` uses REST `/capabilities`
 
 ## Feature flags & compatibility
 

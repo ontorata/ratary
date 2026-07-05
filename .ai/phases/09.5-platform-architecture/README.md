@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Transform AI Brain from a D1-oriented application into a **storage-agnostic platform** by declaring canonical ports. No new user-facing features; no provider implementations in this phase.
+Transform Ratary from a D1-oriented application into a **storage-agnostic platform** by declaring canonical ports. No new user-facing features; no provider implementations in this phase.
 
 ---
 

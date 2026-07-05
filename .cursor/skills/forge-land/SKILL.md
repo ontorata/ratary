@@ -31,7 +31,7 @@ Ask owner (or infer from prior instruction):
 ## Cleanup
 
 ```bash
-git worktree remove ../ai-brain-{slug}   # if used
+git worktree remove ../ratary-{slug}   # if used
 git branch -d forge/{slug}               # after merge
 ```
 

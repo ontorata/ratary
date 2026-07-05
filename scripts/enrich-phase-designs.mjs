@@ -20,7 +20,7 @@ const PHASES = [
     gateDate: '2026-06-28',
     classic: true,
     archive: null,
-    goal: 'Establish the minimal AI Memory Cloud: D1-backed persistence, repository port, unified `MemoryService`, and dual transport (REST + MCP stdio) with semantic parity.',
+    goal: 'Establish the minimal Ratary: D1-backed persistence, repository port, unified `MemoryService`, and dual transport (REST + MCP stdio) with semantic parity.',
     architecture: `\
 \`\`\`
 Transport (REST / MCP)

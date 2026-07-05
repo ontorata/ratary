@@ -22,7 +22,7 @@ export class HealthController {
 
   async root(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
     reply.send({
-      service: 'ai-memory-cloud',
+      service: 'ratary',
       status: 'ok',
       endpoints: {
         health: '/health',

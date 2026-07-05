@@ -357,7 +357,7 @@ const PHASES = [
   },
   {
     dir: '24-ai-brain-platform',
-    title: 'Phase 24 — AI-Brain Platform',
+    title: 'Phase 24 — Ratary Platform',
     gateDate: '2026-07-04',
     risks: [
       ['Webhook SSRF', 'Medium', 'Critical', 'URL validation; HMAC signing', 'Mitigated'],

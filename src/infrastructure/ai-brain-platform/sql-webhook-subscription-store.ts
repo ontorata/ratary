@@ -237,11 +237,11 @@ export class InMemoryWebhookSubscriptionStore implements IWebhookSubscriptionSto
 
 export class NoOpWebhookSubscriptionStore implements IWebhookSubscriptionStore {
   async create(): Promise<WebhookSubscription> {
-    throw new Error('AI Brain platform disabled');
+    throw new Error('Ratary platform disabled');
   }
 
   async update(): Promise<WebhookSubscription> {
-    throw new Error('AI Brain platform disabled');
+    throw new Error('Ratary platform disabled');
   }
 
   async delete(): Promise<void> {

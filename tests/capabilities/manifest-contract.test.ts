@@ -33,7 +33,7 @@ const baseEnv = {
   GRAPH_PROVIDER: 'd1',
   SEARCH_PROVIDER: 'sql',
   OTEL_ENABLED: false,
-  OTEL_SERVICE_NAME: 'ai-memory-cloud',
+  OTEL_SERVICE_NAME: 'ratary',
   OTEL_EXPORTER_OTLP_ENDPOINT: 'http://127.0.0.1:4318/v1/traces',
   ENTERPRISE_RBAC: false,
   MEMORY_ACCESS_AUDIT: false,
@@ -49,7 +49,7 @@ const baseEnv = {
   REMOTE_MCP_CORS_ORIGINS: '*',
   FEDERATION_ENABLED: false,
   FEDERATION_NODE_ID: '00000000-0000-4000-8000-000000000001',
-  FEDERATION_NODE_DISPLAY_NAME: 'ai-memory-cloud',
+  FEDERATION_NODE_DISPLAY_NAME: 'ratary',
   FEDERATION_PEERS_JSON: '[]',
   FEDERATION_REGISTRY_PROVIDER: 'static',
   FEDERATION_TRANSPORT_PROVIDER: 'in-process',
@@ -99,7 +99,7 @@ describe('Capability manifest contract', () => {
     });
     expect(manifest.transport.grpc.enabled).toBe(false);
     expect(manifest.transport.grpc.port).toBeUndefined();
-    expect(manifest.transport.sdk.packageName).toBe('@ai-brain/sdk');
+    expect(manifest.transport.sdk.packageName).toBe('@ratary/sdk');
     expect(manifest.transport.sdk.status).toBe('published');
     expect(manifest.capabilities.supportsDeveloperPlatform).toBe(true);
   });

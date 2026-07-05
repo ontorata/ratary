@@ -40,7 +40,7 @@ Record architecture review findings and formal phase gate verdict.
 | ID | Item | Status |
 |----|------|--------|
 | D7.5-01 | Condensed manifest in MCP `initialize` metadata | ✅ Closed 2026-07-05 |
-| D7.5-02 | Client SDK | ✅ Phase 16 `@ai-brain/sdk` (ADR-031) |
+| D7.5-02 | Client SDK | ✅ Phase 16 `@ratary/sdk` (ADR-031) |
 | D7.5-03 | Remote capability negotiation handshake | ✅ Closed 2026-07-05 |
 
 See [CHECKLIST.md](CHECKLIST.md) deferred table — **no open D7.5 items**.

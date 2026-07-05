@@ -29,7 +29,7 @@ Map roadmap success criteria to durable evidence.
 
 | ID | Criterion | Evidence |
 |----|-----------|----------|
-| SC-16-01 | @ai-brain/sdk + CLI + MCP server packages | ✅ OpenAPI SSOT pipeline |
+| SC-16-01 | @ratary/sdk + CLI + MCP server packages | ✅ OpenAPI SSOT pipeline |
 | SC-16-02 | snapshot:openapi + build:packages | ✅ CI wired |
 | SC-16-03 | 7-language thin wrappers | ✅ Manifest transport.sdk |
 | SC-16-04 | MemoryService unchanged | ✅ Client packages only |

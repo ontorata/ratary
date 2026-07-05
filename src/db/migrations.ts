@@ -666,7 +666,7 @@ export async function migrateKnowledgeFabricPlatformPhase1(client: ISqlDatabase)
   }
 }
 
-/** AI-Brain platform umbrella (Phase 24) — ADR-044. */
+/** Ratary platform umbrella (Phase 24) — ADR-044. */
 const AI_BRAIN_PLATFORM_SQL = `
 CREATE TABLE IF NOT EXISTS platform_webhook_subscriptions (
   id TEXT PRIMARY KEY,

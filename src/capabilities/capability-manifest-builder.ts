@@ -98,7 +98,7 @@ export class CapabilityManifestBuilder {
         supportsSearchGraphPlatform: this.env.SEARCH_GRAPH_PLATFORM_ENABLED,
         supportsContentScalePlatform: this.env.CONTENT_SCALE_PLATFORM_ENABLED,
         supportsKnowledgeFabric: this.env.KNOWLEDGE_FABRIC_ENABLED,
-        supportsAiBrainPlatform: this.env.AI_BRAIN_PLATFORM_ENABLED,
+        supportsAiBrainPlatform: this.env.RATARY_PLATFORM_ENABLED,
         supportsGlobalIntelligencePlatform: this.env.GLOBAL_INTELLIGENCE_PLATFORM_ENABLED,
       },
       limits: {
@@ -161,12 +161,12 @@ export class CapabilityManifestBuilder {
           ? { sse: { enabled: true, path: '/api/v1/context/stream' } }
           : {}),
         sdk: {
-          packageName: '@ai-brain/sdk',
+          packageName: '@ratary/sdk',
           status: 'published',
           languages: ['typescript', 'go', 'python', 'java', 'rust', 'csharp', 'php'],
-          cliPackage: '@ai-brain/cli',
-          mcpServerPackage: '@ai-brain/mcp-server',
-          openApiSpec: 'packages/openapi/ai-brain-v1.openapi.json',
+          cliPackage: '@ratary/cli',
+          mcpServerPackage: '@ratary/mcp-server',
+          openApiSpec: 'packages/openapi/ratary-v1.openapi.json',
         },
         benchmark: {
           cliCommand: 'npm run benchmark:protocols',

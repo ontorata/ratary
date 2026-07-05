@@ -1,6 +1,6 @@
 # Architecture Overview
 
-**Purpose:** Human-readable explanation of AI Memory Cloud structure.  
+**Purpose:** Human-readable explanation of Ratary structure.  
 **Audience:** Developers and operators onboarding to the project.
 
 > **Canonical structural law (AI authority):** [.ai/core/architecture/04-ARCHITECTURE.md](../.ai/core/architecture/04-ARCHITECTURE.md)  
@@ -11,7 +11,7 @@
 
 ## What this system is
 
-AI Memory Cloud is a **memory foundation** for AI coding assistants. It stores durable knowledge, enriches metadata, ranks retrieval, and exposes access via **REST** and **MCP** — without embedding agent reasoning inside the repository.
+Ratary is a **memory foundation** for AI coding assistants. It stores durable knowledge, enriches metadata, ranks retrieval, and exposes access via **REST** and **MCP** — without embedding agent reasoning inside the repository.
 
 Higher capabilities (agents, planning, execution) integrate **externally** at protocol boundaries.
 

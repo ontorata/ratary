@@ -53,7 +53,7 @@ describe('Observability Platform API', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.headers['content-type']).toContain('text/plain');
-    expect(response.body).toContain('ai_brain_http_requests_total');
+    expect(response.body).toContain('ratary_http_requests_total');
   });
 
   it('GET /api/v1/observability/status returns enabled layers', async () => {

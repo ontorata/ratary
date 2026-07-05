@@ -64,7 +64,7 @@ flowchart LR
 | **21** | Search & Graph Production *(renumbered)* | P2 | Phase 11 · ADR-022 |
 | **22** | Content & Vector Scale *(renumbered)* | P1 | Phase 11 · ADR-021 |
 | **23** | Enterprise Knowledge Fabric | P1 | Phase 11 · ADR-047 |
-| **24** | AI-Brain Platform (umbrella) | P1 | Phases 16–23 · ADR-044 |
+| **24** | Ratary Platform (umbrella) | P1 | Phases 16–23 · ADR-044 |
 
 **Enterprise roadmap:** [11-ENTERPRISE-ROADMAP.md](11-ENTERPRISE-ROADMAP.md) · Phases 1–15 scopes **unchanged**.
 
@@ -108,7 +108,7 @@ Formalize **Transport & Connectivity** as canonical outer layer. REST and MCP st
 ## Non-goals
 
 - GraphQL (deferred)
-- `@ai-brain/client` SDK in repo
+- `@ratary/client` SDK in repo
 - Agent runtime
 - Repository / storage / schema changes
 - gRPC on Vercel serverless default path
@@ -451,7 +451,7 @@ External enterprise knowledge connectors with provenance into MemoryService SSOT
 
 ---
 
-# Phase 24 — AI-Brain Platform (umbrella)
+# Phase 24 — Ratary Platform (umbrella)
 
 **Status:** ✅ Implemented (2026-07-04)  
 **Folder:** [.ai/phases/24-ai-brain-platform/](../24-ai-brain-platform/README.md)
@@ -472,7 +472,7 @@ Umbrella platform manifest + outbound webhooks composing Phases 10.5–23.
 
 ## Success criteria
 
-- [x] Platform manifest + admin REST (`AI_BRAIN_PLATFORM_ENABLED`)
+- [x] Platform manifest + admin REST (`RATARY_PLATFORM_ENABLED`)
 - [x] Webhook CRUD + delivery consumer
 - [x] Default env unchanged
 - [ ] Live webhook receiver smoke — deferred
@@ -497,7 +497,7 @@ Umbrella platform manifest + outbound webhooks composing Phases 10.5–23.
 
 ## Scope
 
-Multiple AI Brain nodes exchange knowledge across **workspace, region, organization, and cloud** — all via **federation ports**. `MemoryService` **unchanged**; local apply through existing APIs only.
+Multiple Ratary nodes exchange knowledge across **workspace, region, organization, and cloud** — all via **federation ports**. `MemoryService` **unchanged**; local apply through existing APIs only.
 
 | Track | Deliverable |
 |-------|-------------|

@@ -19,8 +19,8 @@ Gate verdict for Phase 11 — Production Operations. Documents readiness, record
 | Document | Status | Date |
 |----------|--------|------|
 | [DESIGN.md](DESIGN.md) | ✅ Ready — Owner Approved | 2026-07-03 |
-| [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/018-production-postgres-cutover.md) | ✅ Approved | 2026-07-03 |
-| [ADR-009](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/009-postgresql-metadata-adapter.md) | ✅ Implemented | Phase 10 |
+| [ADR-018](https://github.com/ontorata/ratary/blob/main/.ai/adr/018-production-postgres-cutover.md) | ✅ Approved | 2026-07-03 |
+| [ADR-009](https://github.com/ontorata/ratary/blob/main/.ai/adr/009-postgresql-metadata-adapter.md) | ✅ Implemented | Phase 10 |
 | Phase 10 gate | ✅ PASS | 2026-07-03 |
 
 ---
@@ -183,7 +183,7 @@ Canonical DDL source: `src/db/migrations.ts` → `runSchemaMigrations(client, 'p
 
 ## Owner Sign-Off
 
-I confirm that the Phase 11 design and implementation are complete per [DESIGN.md](DESIGN.md) and [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/018-production-postgres-cutover.md).
+I confirm that the Phase 11 design and implementation are complete per [DESIGN.md](DESIGN.md) and [ADR-018](https://github.com/ontorata/ratary/blob/main/.ai/adr/018-production-postgres-cutover.md).
 
 I authorize the staging harness run and production cutover procedure as documented in [MIGRATION.md](MIGRATION.md).
 

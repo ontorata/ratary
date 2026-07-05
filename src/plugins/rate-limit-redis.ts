@@ -1,7 +1,7 @@
 import { Redis } from 'ioredis';
 import { getEnv } from '../config/index.js';
 
-const RATE_LIMIT_KEY_PREFIX = 'ai-brain:ratelimit:';
+const RATE_LIMIT_KEY_PREFIX = 'ratary:ratelimit:';
 
 let sharedClient: Redis | undefined;
 

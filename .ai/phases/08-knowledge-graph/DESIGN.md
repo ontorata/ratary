@@ -1,8 +1,8 @@
-# Phase 8 — Knowledge Graph — DESIGN
+# Phase 8 ï¿½ Knowledge Graph ï¿½ DESIGN
 
 **Document:** DESIGN  
-**Phase status:** ? Closed — gate PASS (2026-07-03)  
-**Platform snapshot:** 2026-07-04 — Neo4j adapter, successor phases 6.5 / 8.7 / 21 documented in §19  
+**Phase status:** ? Closed ï¿½ gate PASS (2026-07-03)  
+**Platform snapshot:** 2026-07-04 ï¿½ Neo4j adapter, successor phases 6.5 / 8.7 / 21 documented in ï¿½19  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **Authority:** Subordinate to [00-CONSTITUTION.md](../../core/constitution/00-CONSTITUTION.md) through [04-ARCHITECTURE.md](../../core/architecture/04-ARCHITECTURE.md)
 
@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-Define the integration of a Knowledge Graph layer into the AI Brain memory foundation through the `IGraphProvider` port pattern.
+Define the integration of a Knowledge Graph layer into the Ratary memory foundation through the `IGraphProvider` port pattern.
 
 Phase 8 adds:
 - Graph traversal capabilities via `IGraphProvider`
@@ -35,7 +35,7 @@ This phase is **implementation-ready design**. The document defines the port con
 |------------|--------|
 | `IGraphProvider` port | ? Implemented |
 | D1 in-process BFS adapter | ? Implemented |
-| Neo4j adapter (opt-in) | ? Post-gate — `GRAPH_PROVIDER=neo4j` |
+| Neo4j adapter (opt-in) | ? Post-gate ï¿½ `GRAPH_PROVIDER=neo4j` |
 | Graph retrieval candidate source | ? Implemented |
 | Composite retrieval extension | ? Phase 6 pattern |
 | Flat `memory_relations` | ? Phase 2.6 unchanged |
@@ -44,7 +44,7 @@ This phase is **implementation-ready design**. The document defines the port con
 
 | Capability | Location |
 |------------|----------|
-| Neptune / Dgraph / Memgraph adapters | Future — port pattern only |
+| Neptune / Dgraph / Memgraph adapters | Future ï¿½ port pattern only |
 | GraphQL API | External service |
 | Graph visualization | External tooling |
 
@@ -64,32 +64,32 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 
 ```
 +-----------------------------------------------------------------------------+
-¦                         Retrieval Pipeline (Phase 8)                          ¦
-¦                                                                              ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦  ¦                    CompositeRetrievalCandidateSource                      ¦   ¦
-¦  ¦                                                                        ¦   ¦
-¦  ¦  +-----------------+  +-----------------+  +---------------------+  ¦   ¦
-¦  ¦  ¦  SQL Source     ¦  ¦  Vector Source  ¦  ¦  Graph Source      ¦  ¦   ¦
-¦  ¦  ¦ (Phase 4)      ¦  ¦  (Phase 5-6)    ¦  ¦  (Phase 8 NEW)    ¦  ¦   ¦
-¦  ¦  +-----------------+  +-----------------+  +---------------------+  ¦   ¦
-¦  ¦                                                                        ¦   ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦                                    ¦                                           ¦
-¦                                    ?                                           ¦
-¦  +-----------------------------------------------------------------------+   ¦
-¦  ¦                    Ranker ? ContextBuilder ? Output                    ¦   ¦
-¦  +-----------------------------------------------------------------------+   ¦
+ï¿½                         Retrieval Pipeline (Phase 8)                          ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½  ï¿½                    CompositeRetrievalCandidateSource                      ï¿½   ï¿½
+ï¿½  ï¿½                                                                        ï¿½   ï¿½
+ï¿½  ï¿½  +-----------------+  +-----------------+  +---------------------+  ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½  SQL Source     ï¿½  ï¿½  Vector Source  ï¿½  ï¿½  Graph Source      ï¿½  ï¿½   ï¿½
+ï¿½  ï¿½  ï¿½ (Phase 4)      ï¿½  ï¿½  (Phase 5-6)    ï¿½  ï¿½  (Phase 8 NEW)    ï¿½  ï¿½   ï¿½
+ï¿½  ï¿½  +-----------------+  +-----------------+  +---------------------+  ï¿½   ï¿½
+ï¿½  ï¿½                                                                        ï¿½   ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½                                    ï¿½                                           ï¿½
+ï¿½                                    ?                                           ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
+ï¿½  ï¿½                    Ranker ? ContextBuilder ? Output                    ï¿½   ï¿½
+ï¿½  +-----------------------------------------------------------------------+   ï¿½
 +-----------------------------------------------------------------------------+
 ```
 
 ### Design invariants
 
-1. **Flat relations unchanged** — `memory_relations` table remains; no migration to graph-native format.
-2. **Graph is a retrieval adapter** — `GraphRetrievalCandidateSource` implements `IRetrievalCandidateSource` and wraps `IGraphProvider`.
-3. **Neighborhood expansion bounded** — Traversal depth limited by context cap.
-4. **No graph-native storage** — adapters query flat `memory_relations` (in-process BFS or Neo4j index).
-5. **Port pattern preserved** — `IGraphProvider` swappable for external graph engine.
+1. **Flat relations unchanged** ï¿½ `memory_relations` table remains; no migration to graph-native format.
+2. **Graph is a retrieval adapter** ï¿½ `GraphRetrievalCandidateSource` implements `IRetrievalCandidateSource` and wraps `IGraphProvider`.
+3. **Neighborhood expansion bounded** ï¿½ Traversal depth limited by context cap.
+4. **No graph-native storage** ï¿½ adapters query flat `memory_relations` (in-process BFS or Neo4j index).
+5. **Port pattern preserved** ï¿½ `IGraphProvider` swappable for external graph engine.
 
 ---
 
@@ -97,44 +97,44 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 
 ```
 +-----------------------------------------------------------------------------+
-¦                    Retrieval Pipeline — Full View                             ¦
+ï¿½                    Retrieval Pipeline ï¿½ Full View                             ï¿½
 +-----------------------------------------------------------------------------+
 
                          Query: "How do I authenticate?"
-                                    ¦
+                                    ï¿½
                                     ?
 +-----------------------------------------------------------------------------+
-¦                     CompositeRetrievalCandidateSource                          ¦
-¦                                                                              ¦
-¦  +------------------+   +------------------+   +----------------------+    ¦
-¦  ¦ SqlRetrieval     ¦   ¦ VectorRetrieval  ¦   ¦ GraphRetrieval      ¦    ¦
-¦  ¦ CandidateSource   ¦   ¦ CandidateSource  ¦   ¦ CandidateSource     ¦    ¦
-¦  ¦                  ¦   ¦                  ¦   ¦                     ¦    ¦
-¦  ¦ • Keyword match  ¦   ¦ • Cosine sim    ¦   ¦ • BFS from seed   ¦    ¦
-¦  ¦ • Title boost    ¦   ¦ • Top-k by dist ¦   ¦ • N-hop neighbors ¦    ¦
-¦  ¦ • Recency boost  ¦   ¦ • Owner filter  ¦   ¦ • Relation types   ¦    ¦
-¦  +------------------+   +------------------+   +----------------------+    ¦
-¦           ¦                      ¦                      ¦                    ¦
-¦           +----------------------+----------------------+                    ¦
-¦                                  ¦                                           ¦
+ï¿½                     CompositeRetrievalCandidateSource                          ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  +------------------+   +------------------+   +----------------------+    ï¿½
+ï¿½  ï¿½ SqlRetrieval     ï¿½   ï¿½ VectorRetrieval  ï¿½   ï¿½ GraphRetrieval      ï¿½    ï¿½
+ï¿½  ï¿½ CandidateSource   ï¿½   ï¿½ CandidateSource  ï¿½   ï¿½ CandidateSource     ï¿½    ï¿½
+ï¿½  ï¿½                  ï¿½   ï¿½                  ï¿½   ï¿½                     ï¿½    ï¿½
+ï¿½  ï¿½ ï¿½ Keyword match  ï¿½   ï¿½ ï¿½ Cosine sim    ï¿½   ï¿½ ï¿½ BFS from seed   ï¿½    ï¿½
+ï¿½  ï¿½ ï¿½ Title boost    ï¿½   ï¿½ ï¿½ Top-k by dist ï¿½   ï¿½ ï¿½ N-hop neighbors ï¿½    ï¿½
+ï¿½  ï¿½ ï¿½ Recency boost  ï¿½   ï¿½ ï¿½ Owner filter  ï¿½   ï¿½ ï¿½ Relation types   ï¿½    ï¿½
+ï¿½  +------------------+   +------------------+   +----------------------+    ï¿½
+ï¿½           ï¿½                      ï¿½                      ï¿½                    ï¿½
+ï¿½           +----------------------+----------------------+                    ï¿½
+ï¿½                                  ï¿½                                           ï¿½
 +----------------------------------+-------------------------------------------+
-                                   ¦
+                                   ï¿½
                                    ?
 +-----------------------------------------------------------------------------+
-¦                          Ranker (RRF Fusion)                                 ¦
-¦                                                                              ¦
-¦  • Reciprocal Rank Fusion across sources                                    ¦
-¦  • Deduplication by memoryId                                                ¦
-¦  • Configurable source weights                                              ¦
-¦  • Cap at configurable limit (default: 20)                                 ¦
+ï¿½                          Ranker (RRF Fusion)                                 ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  ï¿½ Reciprocal Rank Fusion across sources                                    ï¿½
+ï¿½  ï¿½ Deduplication by memoryId                                                ï¿½
+ï¿½  ï¿½ Configurable source weights                                              ï¿½
+ï¿½  ï¿½ Cap at configurable limit (default: 20)                                 ï¿½
 +-----------------------------------------------------------------------------+
-                                   ¦
+                                   ï¿½
                                    ?
 +-----------------------------------------------------------------------------+
-¦                         ContextBuilder                                       ¦
-¦                                                                              ¦
-¦  • Bounded by token budget (default: 4096)                                  ¦
-¦  • Assembles memories + summary + relations                                 ¦
+ï¿½                         ContextBuilder                                       ï¿½
+ï¿½                                                                              ï¿½
+ï¿½  ï¿½ Bounded by token budget (default: 4096)                                  ï¿½
+ï¿½  ï¿½ Assembles memories + summary + relations                                 ï¿½
 +-----------------------------------------------------------------------------+
 ```
 
@@ -142,33 +142,33 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 
 ```
 +-----------------------------------------------------------------------------+
-¦                        IGraphProvider Traversal                                ¦
+ï¿½                        IGraphProvider Traversal                                ï¿½
 +-----------------------------------------------------------------------------+
 
   Seed Memory ID          Relation Type        Depth Limit
-        ¦                      ¦                   ¦
+        ï¿½                      ï¿½                   ï¿½
         ?                      ?                   ?
 +-----------------------------------------------------------------------------+
-¦                           traverseNeighbors()                                 ¦
-¦                                                                              ¦
-¦   D1 CTE Query (bidirectional BFS — see ADR-006):                            ¦
-¦   Canonical columns: source_memory_id, target_memory_id, relation, owner_id ¦
-¦   WITH RECURSIVE graph AS (                                                 ¦
-¦     -- outgoing: source ? target                                            ¦
-¦     SELECT target_memory_id, relation, 1 AS depth                           ¦
-¦     FROM memory_relations                                                   ¦
-¦     WHERE source_memory_id = ? AND owner_id = ?                           ¦
-¦     UNION ALL                                                               ¦
-¦     -- incoming: target ? source                                            ¦
-¦     SELECT source_memory_id, relation, 1 AS depth                           ¦
-¦     FROM memory_relations                                                   ¦
-¦     WHERE target_memory_id = ? AND owner_id = ?                             ¦
-¦     UNION ALL                                                               ¦
-¦     SELECT ... (recursive hops, depth < GRAPH_MAX_DEPTH)                    ¦
-¦   )                                                                          ¦
-¦   SELECT DISTINCT memory_id FROM graph                                      ¦
+ï¿½                           traverseNeighbors()                                 ï¿½
+ï¿½                                                                              ï¿½
+ï¿½   D1 CTE Query (bidirectional BFS ï¿½ see ADR-006):                            ï¿½
+ï¿½   Canonical columns: source_memory_id, target_memory_id, relation, owner_id ï¿½
+ï¿½   WITH RECURSIVE graph AS (                                                 ï¿½
+ï¿½     -- outgoing: source ? target                                            ï¿½
+ï¿½     SELECT target_memory_id, relation, 1 AS depth                           ï¿½
+ï¿½     FROM memory_relations                                                   ï¿½
+ï¿½     WHERE source_memory_id = ? AND owner_id = ?                           ï¿½
+ï¿½     UNION ALL                                                               ï¿½
+ï¿½     -- incoming: target ? source                                            ï¿½
+ï¿½     SELECT source_memory_id, relation, 1 AS depth                           ï¿½
+ï¿½     FROM memory_relations                                                   ï¿½
+ï¿½     WHERE target_memory_id = ? AND owner_id = ?                             ï¿½
+ï¿½     UNION ALL                                                               ï¿½
+ï¿½     SELECT ... (recursive hops, depth < GRAPH_MAX_DEPTH)                    ï¿½
+ï¿½   )                                                                          ï¿½
+ï¿½   SELECT DISTINCT memory_id FROM graph                                      ï¿½
 +-----------------------------------------------------------------------------+
-                                   ¦
+                                   ï¿½
                                    ?
                             Memory IDs (bounded)
 ```
@@ -181,14 +181,14 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 
 | Layer | Responsibility | Forbidden |
 |-------|---------------|-----------|
-| **Transport** | Additive graph endpoints under `/api/v1/graph/`; MCP graph tools | Breaking changes to Phase 1–7 routes/tools |
+| **Transport** | Additive graph endpoints under `/api/v1/graph/`; MCP graph tools | Breaking changes to Phase 1ï¿½7 routes/tools |
 | **Controllers** | Thin handlers delegating to `GraphService` | Traversal logic in controllers |
 | **Application Services** | `GraphService` for explore API; retrieval via existing services | Duplicating RRF merge |
 | **Retrieval** | Graph source integration | Direct relation queries in retriever |
 | **Domain** | Traversal algorithms (pure) | I/O |
 | **Persistence** | `IGraphProvider` adapter | Business rules |
 
-### AI Brain responsibilities (Phase 8)
+### Ratary responsibilities (Phase 8)
 
 | Concern | Owner | Change |
 |---------|-------|--------|
@@ -207,15 +207,15 @@ Phase 8 extends the retrieval pipeline with a graph traversal layer:
 ```
 src/
 +-- graph/
-¦   +-- ports/
-¦   ¦   +-- IGraphProvider.ts       # Port interface
-¦   +-- adapters/
-¦   ¦   +-- D1GraphAdapter.ts      # D1 CTE implementation
-¦   ¦   +-- FutureGraphAdapter.ts   # External graph engine (future)
-¦   +-- retrieval/
-¦   ¦   +-- GraphRetrievalCandidateSource.ts  # Implements IRretrievalCandidateSource
-¦   +-- domain/
-¦       +-- traversal.ts             # Pure traversal algorithms
+ï¿½   +-- ports/
+ï¿½   ï¿½   +-- IGraphProvider.ts       # Port interface
+ï¿½   +-- adapters/
+ï¿½   ï¿½   +-- D1GraphAdapter.ts      # D1 CTE implementation
+ï¿½   ï¿½   +-- FutureGraphAdapter.ts   # External graph engine (future)
+ï¿½   +-- retrieval/
+ï¿½   ï¿½   +-- GraphRetrievalCandidateSource.ts  # Implements IRretrievalCandidateSource
+ï¿½   +-- domain/
+ï¿½       +-- traversal.ts             # Pure traversal algorithms
 ```
 
 ### What Phase 8 does NOT modify
@@ -249,13 +249,13 @@ Phase 8 defines the `IGraphProvider` port; no external graph database is require
 
 ```
 +---------------------------------------------------------+
-¦                  IGraphProvider Port                     ¦
-+---------------------------------------------------------¦
-¦                                                          ¦
-¦  Current: D1GraphAdapter (in-process BFS on flat relations)     ¦
-¦  Opt-in:  Neo4jGraphStoreAdapter (`GRAPH_PROVIDER=neo4j`)       ¦
-¦  Future:  Neptune / Dgraph / Memgraph adapters                  ¦
-¦                                                          ¦
+ï¿½                  IGraphProvider Port                     ï¿½
++---------------------------------------------------------ï¿½
+ï¿½                                                          ï¿½
+ï¿½  Current: D1GraphAdapter (in-process BFS on flat relations)     ï¿½
+ï¿½  Opt-in:  Neo4jGraphStoreAdapter (`GRAPH_PROVIDER=neo4j`)       ï¿½
+ï¿½  Future:  Neptune / Dgraph / Memgraph adapters                  ï¿½
+ï¿½                                                          ï¿½
 +---------------------------------------------------------+
 ```
 
@@ -266,14 +266,14 @@ Phase 8 defines the `IGraphProvider` port; no external graph database is require
 | D1 / SQL flat edges | `D1GraphAdapter` | SQL | ? Default (`GRAPH_PROVIDER=d1`) | Phase 8 |
 | Neo4j | `Neo4jGraphStoreAdapter` | Bolt / Cypher | ? Opt-in (`GRAPH_PROVIDER=neo4j`) | Post-gate |
 | Amazon Neptune | `NeptuneGraphAdapter` | HTTP / Gremlin | ?? Future | **D8-03** |
-| Dgraph | `DgraphGraphAdapter` | gRPC / GraphQL± | ?? Future | **D8-03** |
+| Dgraph | `DgraphGraphAdapter` | gRPC / GraphQLï¿½ | ?? Future | **D8-03** |
 | Memgraph | `MemgraphGraphAdapter` | Bolt | ?? Future | **D8-03** |
 
-New engines implement `IGraphProvider` and register in `createGraphProvider()` — no changes to `GraphService`, composite retrieval, or relation CRUD.
+New engines implement `IGraphProvider` and register in `createGraphProvider()` ï¿½ no changes to `GraphService`, composite retrieval, or relation CRUD.
 
 ---
 
-## 8. AI Brain Graph Protocol
+## 8. Ratary Graph Protocol
 
 ### Protocol definition
 
@@ -281,13 +281,13 @@ The `IGraphProvider` port defines the graph traversal contract.
 
 ```
 +------------------------------------------------------------+
-¦                    IGraphProvider Protocol                  ¦
-¦                                                            ¦
-¦  Interface: TypeScript port                                 ¦
-¦  Implementation: D1 in-process BFS (default) + Neo4j (opt-in) ¦
-¦  Future: Additional external graph adapters                    ¦
-¦  Contract: Traversal results only; no storage writes       ¦
-¦                                                            ¦
+ï¿½                    IGraphProvider Protocol                  ï¿½
+ï¿½                                                            ï¿½
+ï¿½  Interface: TypeScript port                                 ï¿½
+ï¿½  Implementation: D1 in-process BFS (default) + Neo4j (opt-in) ï¿½
+ï¿½  Future: Additional external graph adapters                    ï¿½
+ï¿½  Contract: Traversal results only; no storage writes       ï¿½
+ï¿½                                                            ï¿½
 +------------------------------------------------------------+
 ```
 
@@ -305,9 +305,9 @@ The `IGraphProvider` port defines the graph traversal contract.
 
 ### Breaking change policy
 
-1. **Port methods** — Never remove; only add optional parameters.
-2. **Adapter implementations** — Versioned internally.
-3. **Traversal results** — Additive fields only.
+1. **Port methods** ï¿½ Never remove; only add optional parameters.
+2. **Adapter implementations** ï¿½ Versioned internally.
+3. **Traversal results** ï¿½ Additive fields only.
 
 ---
 
@@ -350,9 +350,9 @@ All Phase 1-7 MCP tools remain unchanged in Phase 8.
 
 ### MCP tool schema rules
 
-1. **New tools are additive** — No existing tools modified.
-2. **Traversal results bounded** — Enforced by adapter.
-3. **Error responses** — Standard shape: `{ error, message, code }`.
+1. **New tools are additive** ï¿½ No existing tools modified.
+2. **Traversal results bounded** ï¿½ Enforced by adapter.
+3. **Error responses** ï¿½ Standard shape: `{ error, message, code }`.
 
 ---
 
@@ -371,9 +371,9 @@ All Phase 1-7 REST endpoints remain unchanged in Phase 8.
 
 ### REST contract rules
 
-1. **Path structure** — Graph endpoints under `/api/v1/graph/`.
-2. **Response format** — `{ data, meta? }` for success; `{ error, message, details? }` for errors.
-3. **Pagination** — Not applicable for traversal; results bounded by adapter.
+1. **Path structure** ï¿½ Graph endpoints under `/api/v1/graph/`.
+2. **Response format** ï¿½ `{ data, meta? }` for success; `{ error, message, details? }` for errors.
+3. **Pagination** ï¿½ Not applicable for traversal; results bounded by adapter.
 
 ---
 
@@ -400,11 +400,11 @@ All Phase 1-7 REST endpoints remain unchanged in Phase 8.
 |--------|---------------------|---------------------------|---------------|------------------|--------|---------------|
 | D1 in-process BFS | ? | `D1GraphAdapter` | SQL flat edges | ? Implemented | ? **Default** | `GRAPH_PROVIDER=d1` |
 | Neo4j | ? | `Neo4jGraphStoreAdapter` | Bolt / Cypher | ? Implemented | ? **Opt-in** | `GRAPH_PROVIDER=neo4j` + credentials |
-| Amazon Neptune | ? (via same graph API) | `NeptuneGraphAdapter` | HTTP / Gremlin | ?? Not built | ?? **Future** | **D8-03** — port pattern only |
-| Dgraph | ? (via same graph API) | `DgraphGraphAdapter` | gRPC / GraphQL± | ?? Not built | ?? **Future** | **D8-03** — port pattern only |
-| Memgraph | ? (via same graph API) | `MemgraphGraphAdapter` | Bolt (Neo4j-compatible) | ?? Not built | ?? **Future** | **D8-03** — port pattern only |
+| Amazon Neptune | ? (via same graph API) | `NeptuneGraphAdapter` | HTTP / Gremlin | ?? Not built | ?? **Future** | **D8-03** ï¿½ port pattern only |
+| Dgraph | ? (via same graph API) | `DgraphGraphAdapter` | gRPC / GraphQLï¿½ | ?? Not built | ?? **Future** | **D8-03** ï¿½ port pattern only |
+| Memgraph | ? (via same graph API) | `MemgraphGraphAdapter` | Bolt (Neo4j-compatible) | ?? Not built | ?? **Future** | **D8-03** ï¿½ port pattern only |
 
-**Runtime factory:** `createGraphProvider()` in `src/infrastructure/composition/create-graph-provider.ts` — implements `d1` and `neo4j` only; unknown `GRAPH_PROVIDER` values fail fast at startup.
+**Runtime factory:** `createGraphProvider()` in `src/infrastructure/composition/create-graph-provider.ts` ï¿½ implements `d1` and `neo4j` only; unknown `GRAPH_PROVIDER` values fail fast at startup.
 
 **Mitigation while D8-03 open:** production scale ? Neo4j adapter + Phase 21 sync (`IndexRepairTask` / `GraphRepairTask`); zero-ops ? D1 default.
 
@@ -416,7 +416,7 @@ All Phase 1-7 REST endpoints remain unchanged in Phase 8.
 | **D8-02** | Vector seeds for composite graph leg | ? **Open** | `GRAPH_VECTOR_SEEDS_ENABLED` flag + manifest `graphVectorSeedsEnabled`; **no runtime seed leg yet** ? **Phase 21C** materialization |
 | **D8-03** | Alternate engines (Neptune, Dgraph, Memgraph) | ? **Open** | `IGraphProvider` port + factory swap; only D1 + Neo4j adapters shipped |
 
-See [COMPLETION.md](COMPLETION.md) deferred table · [RETROSPECTIVE.md](RETROSPECTIVE.md) accepted debt.
+See [COMPLETION.md](COMPLETION.md) deferred table ï¿½ [RETROSPECTIVE.md](RETROSPECTIVE.md) accepted debt.
 
 ---
 
@@ -446,31 +446,31 @@ Phase 8 adds graph traversal to the retrieval layer:
 
 ```
 +---------------------------------------------------------------------+
-¦                  Session Context — Graph Extended                     ¦
-¦                                                                      ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  Memory Retrieval (SQL)                                       ¦  ¦
-¦  ¦  ? Candidate memories from keyword/search                     ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
-¦                              ¦                                       ¦
-¦                              ?                                       ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  Semantic Retrieval (Vector) — Optional Phase 6              ¦  ¦
-¦  ¦  ? Candidate memories from embedding similarity               ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
-¦                              ¦                                       ¦
-¦                              ?                                       ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  Graph Traversal (Phase 8) — NEW                            ¦  ¦
-¦  ¦  ? Neighborhood expansion from seed memories                 ¦  ¦
-¦  ¦  ? Relation-type filtering                                   ¦  ¦
-¦  ¦  ? Bounded depth traversal                                    ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
-¦                              ¦                                       ¦
-¦                              ?                                       ¦
-¦  +---------------------------------------------------------------+  ¦
-¦  ¦  Ranker — Fusion + Deduplication                            ¦  ¦
-¦  +---------------------------------------------------------------+  ¦
+ï¿½                  Session Context ï¿½ Graph Extended                     ï¿½
+ï¿½                                                                      ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  Memory Retrieval (SQL)                                       ï¿½  ï¿½
+ï¿½  ï¿½  ? Candidate memories from keyword/search                     ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½                              ï¿½                                       ï¿½
+ï¿½                              ?                                       ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  Semantic Retrieval (Vector) ï¿½ Optional Phase 6              ï¿½  ï¿½
+ï¿½  ï¿½  ? Candidate memories from embedding similarity               ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½                              ï¿½                                       ï¿½
+ï¿½                              ?                                       ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  Graph Traversal (Phase 8) ï¿½ NEW                            ï¿½  ï¿½
+ï¿½  ï¿½  ? Neighborhood expansion from seed memories                 ï¿½  ï¿½
+ï¿½  ï¿½  ? Relation-type filtering                                   ï¿½  ï¿½
+ï¿½  ï¿½  ? Bounded depth traversal                                    ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½                              ï¿½                                       ï¿½
+ï¿½                              ?                                       ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
+ï¿½  ï¿½  Ranker ï¿½ Fusion + Deduplication                            ï¿½  ï¿½
+ï¿½  +---------------------------------------------------------------+  ï¿½
 +---------------------------------------------------------------------+
 ```
 
@@ -484,9 +484,9 @@ Graph traversal respects `MemoryScope`:
 
 | Field | Graph behavior |
 |-------|---------------|
-| `ownerId` | **Required** — All traversal filtered by owner |
+| `ownerId` | **Required** ï¿½ All traversal filtered by owner |
 | `workspaceId` | Filter on memory hydration (Phase 9+) |
-| `agentId` | Metadata only — no traverse state (Phase 9+) |
+| `agentId` | Metadata only ï¿½ no traverse state (Phase 9+) |
 
 ### Traversal boundary
 
@@ -497,7 +497,7 @@ const traverseNeighbors = async (
   scope: MemoryScope,  // Contains ownerId
   options: TraversalOptions
 ): Promise<string[]> => {
-  // WHERE owner_id = scope.ownerId — enforced in adapter
+  // WHERE owner_id = scope.ownerId ï¿½ enforced in adapter
 };
 ```
 
@@ -539,20 +539,20 @@ No schema migration required for Phase 8:
 
 > **Successor closure (2026-07-04):** Phases 6.5, 8.7, 9, 10, and 21 extended graph capabilities without rewriting `IGraphProvider` or relation CRUD.
 
-### Phase 6.5 — Progressive retrieval (landed)
+### Phase 6.5 ï¿½ Progressive retrieval (landed)
 
 | Design element | Impact | Outcome |
 |---------------|--------|---------|
 | Relations stage | One-hop neighbor summaries in context | `expandWithRelationNeighbors` when `GRAPH_RETRIEVAL=true` |
-| Deep BFS | MCP `traverse_relations` depth 1–3 | Intentional split — not deferred debt |
+| Deep BFS | MCP `traverse_relations` depth 1ï¿½3 | Intentional split ï¿½ not deferred debt |
 
-### Phase 8.7 — Relation inference (landed)
+### Phase 8.7 ï¿½ Relation inference (landed)
 
 | Design element | Impact | Outcome |
 |---------------|--------|---------|
 | Edge population | Inferred `memory_relations` | Async jobs; manual edges immutable (ADR-041) |
 
-### Phase 9 — Multi-AI (landed)
+### Phase 9 ï¿½ Multi-AI (landed)
 
 Phase 8 design enabled Phase 9 integration:
 
@@ -561,34 +561,34 @@ Phase 8 design enabled Phase 9 integration:
 | `IGraphProvider` | Workspace filter on hydration | Port unchanged |
 | Traversal results | Agent-scoped memories | Owner isolation preserved |
 
-### Phase 10 — Enterprise (landed, opt-in)
+### Phase 10 ï¿½ Enterprise (landed, opt-in)
 
 | Design element | Phase 10 impact | Outcome |
 |---------------|----------------|---------|
 | `IGraphProvider` | Org RBAC on API | Adapter swap unchanged |
 | Graph events | Audit trail | Bus ? Phase 12 |
 
-### Phase 21 — Search & graph production (landed)
+### Phase 21 ï¿½ Search & graph production (landed)
 
 | Design element | Impact | Outcome |
 |---------------|--------|---------|
 | Index sync | Meilisearch + Neo4j orchestration | `SEARCH_GRAPH_PLATFORM_ENABLED` (ADR-022) |
 | Stewardship | `IndexRepairTask`, `GraphRepairTask` | Phase 04.7 pipeline |
-| Vector seeds (21C) | `GRAPH_VECTOR_SEEDS_ENABLED` flag reserved | **D8-02 open** — manifest only; runtime seed leg not built |
+| Vector seeds (21C) | `GRAPH_VECTOR_SEEDS_ENABLED` flag reserved | **D8-02 open** ï¿½ manifest only; runtime seed leg not built |
 
 ### Open deferred (D8-02 / D8-03)
 
 | ID | Item | Continuation |
 |----|------|--------------|
-| **D8-02** | Vector seeds for graph composite leg | Phase **21C** — materialize vector-derived traversal seeds when flag enabled |
+| **D8-02** | Vector seeds for graph composite leg | Phase **21C** ï¿½ materialize vector-derived traversal seeds when flag enabled |
 | **D8-03** | Neptune / Dgraph / Memgraph adapters | New `IGraphProvider` implementations; Neptune via HTTP/Gremlin first candidate |
 
-### Three-phase guarantee (gate-time — validated post-gate)
+### Three-phase guarantee (gate-time ï¿½ validated post-gate)
 
-1. **Port pattern** — `IGraphProvider` survives Phases 8-10.
-2. **Flat relations** — No graph-native storage migration.
-3. **Composite integration** — Graph source plugs into existing pipeline.
-4. **Adapter swap** — External engines via new adapter, not replacement.
+1. **Port pattern** ï¿½ `IGraphProvider` survives Phases 8-10.
+2. **Flat relations** ï¿½ No graph-native storage migration.
+3. **Composite integration** ï¿½ Graph source plugs into existing pipeline.
+4. **Adapter swap** ï¿½ External engines via new adapter, not replacement.
 
 ---
 
@@ -628,7 +628,7 @@ Phase 8 design enabled Phase 9 integration:
 | Graph source in composite | Integration test | TESTING.md |
 | Traversal bounded | Configurable depth cap | Section 10 |
 | No relation service changes | API compatibility test | TESTING.md |
-| MCP/REST graph API | Additive tools + endpoints | Section 11–12 |
+| MCP/REST graph API | Additive tools + endpoints | Section 11ï¿½12 |
 
 ### Deliverables
 

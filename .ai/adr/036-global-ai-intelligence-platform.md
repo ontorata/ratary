@@ -8,7 +8,7 @@
 
 ## Context
 
-AI-Brain has federation (Phase 14), cloud control plane (Phase 18), and observability exporters (Phase 19) reserved. What is missing is a **composition capstone** that turns AI-Brain into a globally distributed AI Intelligence Platform: one that observes its own usage and synchronizes knowledge across the globe **without collecting user content unnecessarily**.
+Ratary has federation (Phase 14), cloud control plane (Phase 18), and observability exporters (Phase 19) reserved. What is missing is a **composition capstone** that turns Ratary into a globally distributed AI Intelligence Platform: one that observes its own usage and synchronizes knowledge across the globe **without collecting user content unnecessarily**.
 
 Design: [.ai/phases/25-global-ai-intelligence/DESIGN.md](../../.ai/phases/25-global-ai-intelligence/DESIGN.md)
 

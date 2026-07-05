@@ -307,8 +307,8 @@ const PHASES = [
     gateDate: '2026-07-04',
     adr: 'ADR-031',
     compliance: [
-      ['@ai-brain/sdk package', '✅ OpenAPI SSOT consumer'],
-      ['@ai-brain/cli + @ai-brain/mcp-server', '✅ SDK boundary — no direct fetch in CLI'],
+      ['@ratary/sdk package', '✅ OpenAPI SSOT consumer'],
+      ['@ratary/cli + @ratary/mcp-server', '✅ SDK boundary — no direct fetch in CLI'],
       ['snapshot:openapi + build:packages', '✅ CI pipeline wired'],
       ['7-language thin wrappers', '✅ Manifest transport.sdk accurate'],
       ['Examples + Cursor/Node templates', '✅ Onboarding artifacts present'],
@@ -429,11 +429,11 @@ const PHASES = [
   },
   {
     dir: '24-ai-brain-platform',
-    title: 'Phase 24 — AI-Brain Platform',
+    title: 'Phase 24 — Ratary Platform',
     gateDate: '2026-07-04',
     adr: 'ADR-044',
     compliance: [
-      ['AI_BRAIN_PLATFORM_ENABLED default false', '✅ Umbrella manifest opt-in'],
+      ['RATARY_PLATFORM_ENABLED default false', '✅ Umbrella manifest opt-in'],
       ['Manifest aggregates child flags only', '✅ No false capability claims'],
       ['HMAC webhook CRUD + delivery', '✅ Signed payload tests'],
       ['Phase 12 delivery consumer', '✅ Requires EVENT_CONSUMERS + Redis documented'],

@@ -1,4 +1,4 @@
-import type { AiBrainClient } from '@ai-brain/sdk';
+import type { AiBrainClient } from '@ratary/sdk';
 
 function usage(): void {
   console.log(`Usage:

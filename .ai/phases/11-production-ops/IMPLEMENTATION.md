@@ -157,7 +157,7 @@ jobs:
         image: postgres:16
         env:
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: ai_brain_test
+          POSTGRES_DB: ratary_test
         ports: ['5432:5432']
         options: >-
           --health-cmd "pg_isready -U postgres"
@@ -169,11 +169,11 @@ jobs:
       - run: npm run db:apply-postgres-schema
         env:
           SQL_PROVIDER: postgres
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ai_brain_test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ratary_test
       - run: npm test
         env:
           SQL_PROVIDER: postgres
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ai_brain_test
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ratary_test
           AUTH_SECRET: test-auth-secret-minimum-32-characters!!
           NODE_ENV: test
 ```
@@ -186,8 +186,8 @@ jobs:
 **Option B — Local Compose (manual):**
 
 ```bash
-docker run --rm -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=ai_brain_dev postgres:16
-export SQL_PROVIDER=postgres DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ai_brain_dev POSTGRES_STAGING=1
+docker run --rm -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=ratary_dev postgres:16
+export SQL_PROVIDER=postgres DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ratary_dev POSTGRES_STAGING=1
 npm run db:apply-postgres-schema
 npm run test:postgres-staging
 ```
@@ -299,7 +299,7 @@ If staging harness blocks CI: disable workflow with owner approval; track in `RI
 | Postgres CI job | ✅ | `.github/workflows/postgres-staging.yml`, `npm run test:postgres-staging` |
 | Backfill + parity scripts | ✅ | `scripts/lib/d1-to-postgres-backfill.ts`, `scripts/backfill-d1-to-postgres.ts`, `scripts/verify-postgres-parity.ts`, `tests/scripts/d1-to-postgres-backfill.test.ts` |
 | `MIGRATION.md` runbook | ✅ | [MIGRATION.md](MIGRATION.md) — cutover S0→S4, rollback, FK order |
-| Ops docs (11D) | ✅ | [PANDUAN.md §8](https://github.com/lutfi04/ai-brain/blob/main/docs/PANDUAN.md#8-infrastruktur-platform-fase-10--11) — Postgres ops matrix |
+| Ops docs (11D) | ✅ | [PANDUAN.md §8](https://github.com/ontorata/ratary/blob/main/docs/PANDUAN.md#8-infrastruktur-platform-fase-10--11) — Postgres ops matrix |
 | TESTING.md | ✅ | [TESTING.md](TESTING.md) — gate evidence |
 | REVIEW.md | ✅ | [REVIEW.md](REVIEW.md) — gate PASS 2026-07-04 |
 | COMPLETION.md | ✅ | [COMPLETION.md](COMPLETION.md) — success criteria evidence |

@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform — RETROSPECTIVE
+# Phase 24 — Ratary Platform — RETROSPECTIVE
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
@@ -13,7 +13,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-Umbrella manifest (edition planes), HMAC webhooks, Phase 12 delivery consumer, REST `/platform/*`. Gated by `AI_BRAIN_PLATFORM_ENABLED=false`.
+Umbrella manifest (edition planes), HMAC webhooks, Phase 12 delivery consumer, REST `/platform/*`. Gated by `RATARY_PLATFORM_ENABLED=false`.
 
 Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 

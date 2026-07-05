@@ -137,7 +137,7 @@ function runBenchmark(): void {
     };
   });
 
-  console.log('\n=== AI Brain Context Token Benchmark ===\n');
+  console.log('\n=== Ratary Context Token Benchmark ===\n');
   console.log(`Fixture: ${MEMORY_COUNT} memories × ~${CONTENT_CHARS} chars body + auto summary (≤300 chars)`);
   console.log(`Baseline (naive dump): ~${baseline.toLocaleString()} tokens\n`);
   console.log('Strategy'.padEnd(52) + 'Chars'.padStart(8) + 'Tokens'.padStart(8) + 'Saved'.padStart(8));

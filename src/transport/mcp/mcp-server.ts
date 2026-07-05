@@ -62,7 +62,7 @@ function createMcpServer(
   const mcpCtx = () => binding.getTransportContext();
   const mcpScope = () => binding.resolveMemoryScope();
   const server = new McpServer({
-    name: 'ai-memory-cloud',
+    name: 'ratary',
     version: '1.0.0',
   });
 
@@ -388,7 +388,7 @@ function createMcpServer(
 
   server.tool(
     'get_capabilities',
-    'Discover AI Memory Cloud deployment capabilities, limits, and MCP tool registry',
+    'Discover Ratary deployment capabilities, limits, and MCP tool registry',
     {},
     async () => {
       const manifest = await handlers.capabilities.getManifest.handle(mcpCtx(), {});
@@ -405,7 +405,7 @@ function createMcpServer(
       protocol_version: z
         .string()
         .optional()
-        .describe('Client AI Brain protocol version (e.g. 1.0.0)'),
+        .describe('Client Ratary protocol version (e.g. 1.0.0)'),
       required_capabilities: z
         .array(z.string())
         .optional()

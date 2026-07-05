@@ -36,4 +36,4 @@
 
 1. Phase 13: add SSE/WebSocket as new `ITransportServer` implementations — do not fork ContextService.
 2. Phase 14 federation: reuse `TransportContext` metadata propagation.
-3. Keep `@ai-brain/client` SDK external to repo per constitution.
+3. Keep `@ratary/client` SDK external to repo per constitution.

@@ -13,7 +13,7 @@ const REQUIRED_ENV = ['CLOUDFLARE_ACCOUNT_ID', 'D1_DATABASE_ID', 'D1_API_TOKEN']
 function buildMcpConfig(): string {
   const config = {
     mcpServers: {
-      'ai-memory-cloud': {
+      'ratary': {
         command: 'npx',
         args: ['-y', 'tsx', `${repoPath}/src/mcp/stdio.ts`],
         cwd: repoPath,
@@ -33,7 +33,7 @@ async function fileExists(path: string): Promise<boolean> {
 }
 
 async function main(): Promise<void> {
-  console.log('AI Memory Cloud — setup MCP\n');
+  console.log('Ratary — setup MCP\n');
 
   if (!(await fileExists(resolve(repoRoot, '.env')))) {
     console.error('❌ File .env belum ada.');
@@ -63,14 +63,14 @@ Selesai. Credential D1 dibaca dari .env — tidak perlu salin ke mcp.json.
 Langkah berikutnya (pilih client Anda):
 
   Cursor
-    1. Cursor → Settings → MCP → pastikan ai-memory-cloud hijau
+    1. Cursor → Settings → MCP → pastikan ratary hijau
     2. Reload Window
     3. Chat: "cari memory tentang [proyek]"
 
   Claude Code
     1. cd ${repoPath}
     2. claude
-    3. Approve server ai-memory-cloud saat diminta
+    3. Approve server ratary saat diminta
     4. Chat: "cari memory tentang [proyek]"
 
 Opsional (sekali): npm run db:migrate

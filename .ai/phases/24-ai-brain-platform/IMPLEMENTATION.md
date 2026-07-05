@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform — IMPLEMENTATION
+# Phase 24 — Ratary Platform — IMPLEMENTATION
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -44,8 +44,8 @@ tests/db/ai-brain-platform-migration.test.ts
 
 | Env | Default | Purpose |
 |-----|---------|---------|
-| `AI_BRAIN_PLATFORM_ENABLED` | `false` | Master gate for platform admin API |
-| `AI_BRAIN_PLATFORM_EDITION` | `core` | Edition tier (`core` / `standard` / `enterprise`) |
+| `RATARY_PLATFORM_ENABLED` | `false` | Master gate for platform admin API |
+| `RATARY_PLATFORM_EDITION` | `core` | Edition tier (`core` / `standard` / `enterprise`) |
 | `PLATFORM_WEBHOOKS_ENABLED` | `false` | Outbound webhook delivery + CRUD API |
 
 Requires `EVENT_CONSUMERS_ENABLED=true` + `EVENT_BUS_PROVIDER=redis` for webhook fan-out.

@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { context, SpanStatusCode, trace } from '@opentelemetry/api';
 
-const tracer = trace.getTracer('ai-memory-cloud');
+const tracer = trace.getTracer('ratary');
 
 /**
  * Fastify plugin — creates one HTTP span per request when OTEL is enabled.

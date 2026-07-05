@@ -10,7 +10,7 @@
 
 ## Summary
 
-Enable **cloud AI clients** (ChatGPT Custom MCP, Claude.ai web, future remote MCP hosts) to connect to AI Memory Cloud via a **public HTTPS MCP endpoint** — without stdio spawn.
+Enable **cloud AI clients** (ChatGPT Custom MCP, Claude.ai web, future remote MCP hosts) to connect to Ratary via a **public HTTPS MCP endpoint** — without stdio spawn.
 
 | Track | Deliverable | Default |
 |-------|-------------|---------|
@@ -70,7 +70,7 @@ PANDUAN currently states: *"ChatGPT — MCP stdio tidak didukung — pakai REST 
 
 | Concern | Phase 13.1 | Phase 16 |
 |---------|------------|----------|
-| Location | **In-repo** server route `/mcp` | **`@ai-brain/mcp-server`** npm package |
+| Location | **In-repo** server route `/mcp` | **`@ratary/mcp-server`** npm package |
 | Role | Host MCP for ChatGPT URL field | Installable proxy for self-hosters |
 | Business logic | None — same MCP tool registry | None — SDK client only |
 

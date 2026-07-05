@@ -1,4 +1,4 @@
-# @ai-brain/sdk-java
+# @ratary/sdk-java
 
 Java client. Regenerate from OpenAPI: `npm run generate:sdks`.
 

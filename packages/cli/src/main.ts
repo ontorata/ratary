@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { AiBrainClient } from '@ai-brain/sdk';
+import { AiBrainClient } from '@ratary/sdk';
 import { runCli } from './cli.js';
 
 const baseUrl = process.env.AI_BRAIN_BASE_URL ?? 'http://localhost:3000';

@@ -47,7 +47,7 @@ describe('Capabilities API', () => {
     expect(body.transport.rest.enabled).toBe(true);
     expect(body.transport.mcp.toolCount).toBe(MCP_TOOL_NAMES.length);
     expect(body.transport.grpc.enabled).toBe(false);
-    expect(body.transport.sdk.packageName).toBe('@ai-brain/sdk');
+    expect(body.transport.sdk.packageName).toBe('@ratary/sdk');
     expect(body.transport.sdk.status).toBe('published');
     expect(body.capabilities.supportsDeveloperPlatform).toBe(true);
   });

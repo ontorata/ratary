@@ -7,7 +7,7 @@
       "description": "Ratio of successful memory search requests",
       "target": 0.999,
       "window": "30d",
-      "metric": "ai_brain_memory_operations_total",
+      "metric": "ratary_memory_operations_total",
       "threshold": "status!~\"5..\""
     },
     {
@@ -16,7 +16,7 @@
       "description": "99th percentile search latency under 500ms",
       "target": 0.99,
       "window": "30d",
-      "metric": "ai_brain_memory_search_duration_seconds",
+      "metric": "ratary_memory_search_duration_seconds",
       "threshold": "le=\"0.5\""
     },
     {
@@ -25,7 +25,7 @@
       "description": "Embedding provider error rate below 0.1%",
       "target": 0.999,
       "window": "30d",
-      "metric": "ai_brain_embedding_requests_total",
+      "metric": "ratary_embedding_requests_total",
       "threshold": "status=\"error\""
     },
     {
@@ -34,7 +34,7 @@
       "description": "Peer sync lag under 5 minutes",
       "target": 0.99,
       "window": "7d",
-      "metric": "ai_brain_federation_sync_lag_seconds",
+      "metric": "ratary_federation_sync_lag_seconds",
       "threshold": "lt 300"
     }
   ],
@@ -42,7 +42,7 @@
     {
       "id": "high-error-rate",
       "name": "HighHTTPErrorRate",
-      "expr": "sum(rate(ai_brain_http_requests_total{status=~\"5..\"}[5m])) / sum(rate(ai_brain_http_requests_total[5m])) > 0.05",
+      "expr": "sum(rate(ratary_http_requests_total{status=~\"5..\"}[5m])) / sum(rate(ratary_http_requests_total[5m])) > 0.05",
       "for": "5m",
       "severity": "critical",
       "annotations": {
@@ -52,7 +52,7 @@
     {
       "id": "high-latency-p99",
       "name": "HighHTTPLatencyP99",
-      "expr": "histogram_quantile(0.99, sum(rate(ai_brain_http_request_duration_seconds_bucket[5m])) by (le)) > 2",
+      "expr": "histogram_quantile(0.99, sum(rate(ratary_http_request_duration_seconds_bucket[5m])) by (le)) > 2",
       "for": "10m",
       "severity": "warning",
       "annotations": {
@@ -62,7 +62,7 @@
     {
       "id": "embedding-failures",
       "name": "EmbeddingFailureSpike",
-      "expr": "sum(rate(ai_brain_embedding_requests_total{status=\"error\"}[5m])) > 0.1",
+      "expr": "sum(rate(ratary_embedding_requests_total{status=\"error\"}[5m])) > 0.1",
       "for": "5m",
       "severity": "warning",
       "annotations": {

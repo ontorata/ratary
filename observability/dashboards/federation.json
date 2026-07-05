@@ -1,5 +1,5 @@
 {
-  "title": "AI Brain — Federation",
+  "title": "Ratary — Federation",
   "uid": "ai-brain-federation",
   "description": "Peer sync lag, egress, conflict signals",
   "schemaVersion": 39,
@@ -10,13 +10,13 @@
       "id": 1,
       "title": "Federation Sync Lag",
       "type": "timeseries",
-      "targets": [{ "expr": "ai_brain_federation_sync_lag_seconds" }]
+      "targets": [{ "expr": "ratary_federation_sync_lag_seconds" }]
     },
     {
       "id": 2,
       "title": "Federation Egress",
       "type": "timeseries",
-      "targets": [{ "expr": "rate(ai_brain_federation_egress_bytes_total[5m])" }]
+      "targets": [{ "expr": "rate(ratary_federation_egress_bytes_total[5m])" }]
     }
   ]
 }

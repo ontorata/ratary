@@ -9,7 +9,7 @@ describe('AiBrainPlatformManifestBuilder', () => {
     const builder = new AiBrainPlatformManifestBuilder(getEnv(), store);
     const manifest = await builder.build({ ownerId: 'owner-1' });
 
-    expect(manifest.platform).toBe('ai-brain-platform');
+    expect(manifest.platform).toBe('ratary-platform');
     expect(manifest.edition).toBe('core');
     expect(manifest.planes.length).toBeGreaterThan(0);
     expect(manifest.composedPhases).toContain('16-developer');

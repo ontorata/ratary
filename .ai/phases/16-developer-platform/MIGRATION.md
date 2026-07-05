@@ -14,7 +14,7 @@ Record schema and data migrations: forward path, rollback, idempotency, and prod
 
 ## Migrations
 
-**N/A — no DDL — `@ai-brain/sdk`, CLI, MCP server packages; OpenAPI snapshot only**
+**N/A — no DDL — `@ratary/sdk`, CLI, MCP server packages; OpenAPI snapshot only**
 
 | Property | Value |
 |----------|-------|

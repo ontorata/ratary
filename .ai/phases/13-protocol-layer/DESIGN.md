@@ -207,7 +207,7 @@ src/
         sse-context.controller.ts     # SSE adapter
     grpc/
       grpc-protocol-server.ts
-      proto/ai/brain/v1/
+      proto/ontorata/ratary/v1/
       services/                       # gRPC → handlers
     websocket/
       websocket-protocol-server.ts

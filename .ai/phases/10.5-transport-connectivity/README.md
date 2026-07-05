@@ -62,7 +62,7 @@ curl http://localhost:3000/api/v1/capabilities | jq .transport
 - Business logic changes in application services
 - Repository or storage port changes
 - Breaking REST v1 or MCP tool schemas
-- In-repo `@ai-brain/client` SDK
+- In-repo `@ratary/client` SDK
 
 ---
 

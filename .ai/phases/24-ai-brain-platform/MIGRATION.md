@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform — MIGRATION
+# Phase 24 — Ratary Platform — MIGRATION
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  
@@ -28,7 +28,7 @@ Applied via `migrateAiBrainPlatformPhase1()` in `src/db/migrations.ts` (ADR-044)
 
 | Property | Value |
 |----------|-------|
-| Rollback | `AI_BRAIN_PLATFORM_ENABLED=false` — subscriptions persist; delivery consumer off when flag OFF |
+| Rollback | `RATARY_PLATFORM_ENABLED=false` — subscriptions persist; delivery consumer off when flag OFF |
 | Idempotency | Migration runner applies forward-only steps; `CREATE IF NOT EXISTS` / column guards |
 | Production | Opt-in where flagged; default deploy unchanged |
 | Delivery dependency | `EVENT_CONSUMERS_ENABLED=true` + Redis event bus for live delivery |

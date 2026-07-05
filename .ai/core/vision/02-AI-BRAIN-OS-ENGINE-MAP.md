@@ -1,4 +1,4 @@
-# AI-Brain OS — Engine Map
+# Ratary OS — Engine Map
 
 **Status:** Draft (2026-07-04)  
 **Authority:** [01-COLLABORATIVE-MEMORY-PLATFORM.md](01-COLLABORATIVE-MEMORY-PLATFORM.md)
@@ -18,7 +18,7 @@
 
 ## External OS layers (sibling products)
 
-| Engine | Location | AI-Brain provides |
+| Engine | Location | Ratary provides |
 |--------|----------|-------------------|
 | **Agent** | External (Phase 7) | MCP, REST, context API |
 | **Model** | External (Models OS) | `IEmbeddingProvider`, `IMLProvider` ports |

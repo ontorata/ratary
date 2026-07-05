@@ -275,7 +275,7 @@ const PHASES = [
     adr: 'ADR-031',
     tests: REGRESSION,
     criteria: [
-      ['SC-16-01', '@ai-brain/sdk + CLI + MCP server packages', '✅ OpenAPI SSOT pipeline'],
+      ['SC-16-01', '@ratary/sdk + CLI + MCP server packages', '✅ OpenAPI SSOT pipeline'],
       ['SC-16-02', 'snapshot:openapi + build:packages', '✅ CI wired'],
       ['SC-16-03', '7-language thin wrappers', '✅ Manifest transport.sdk'],
       ['SC-16-04', 'MemoryService unchanged', '✅ Client packages only'],
@@ -383,9 +383,9 @@ const PHASES = [
   },
   {
     dir: '24-ai-brain-platform',
-    title: 'Phase 24 — AI-Brain Platform',
+    title: 'Phase 24 — Ratary Platform',
     gateDate: '2026-07-04',
-    flag: 'AI_BRAIN_PLATFORM_ENABLED=false',
+    flag: 'RATARY_PLATFORM_ENABLED=false',
     adr: 'ADR-044',
     tests: REGRESSION,
     criteria: [

@@ -17,7 +17,7 @@
 | 20E | `InfrastructureManifestBuilder` + capabilities merge | ✅ |
 | 20F | REST `/infrastructure/*` admin API | ✅ |
 | 20G | Curated provider catalog (9 plugins) | ✅ |
-| 20H | Plugin lifecycle metric (`ai_brain_plugin_lifecycle_total`) | ✅ |
+| 20H | Plugin lifecycle metric (`ratary_plugin_lifecycle_total`) | ✅ |
 
 ---
 

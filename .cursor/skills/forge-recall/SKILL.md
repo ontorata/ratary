@@ -10,7 +10,7 @@ description: >-
 
 ## Steps
 
-1. Call MCP `search_memory` with project name (`ai-brain`) or task topic
+1. Call MCP `search_memory` with project name (`ratary`) or task topic
 2. When Phase **8.8** ledger is enabled: also search tag `inspection-pattern` or `GET /api/v1/inspection-patterns?path=<diff-prefix>` for scoped recall
 3. If user said "lanjut" / handoff: search `handoff` or use `get_memory_by_codename`
 4. Read [.ai/TASK_PROMPT.md](../../.ai/TASK_PROMPT.md) and [.ai/core/constitution/INDEX.md](../../.ai/core/constitution/INDEX.md)

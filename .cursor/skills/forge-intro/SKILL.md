@@ -8,7 +8,7 @@ description: >-
 
 Agent Forge is this repo's **memory-governed** pipeline — different from generic skill packs:
 
-- **Recall / Remember** use MCP `ai-memory-cloud` (persistent handoffs)
+- **Recall / Remember** use MCP `ratary` (persistent handoffs)
 - Stages map to `.ai/` governance (constitution, ADR, phases)
 - Skills live in `.cursor/skills/forge-*`
 

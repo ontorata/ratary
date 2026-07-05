@@ -1,10 +1,10 @@
 /**
- * Minimal Node.js example — uses @ai-brain/sdk only.
+ * Minimal Node.js example — uses @ratary/sdk only.
  *
  * Usage:
  *   AI_BRAIN_API_KEY=aic_... node examples/node-basic/index.mjs
  */
-import { AiBrainClient } from '@ai-brain/sdk';
+import { AiBrainClient } from '@ratary/sdk';
 
 const client = new AiBrainClient({
   baseUrl: process.env.AI_BRAIN_BASE_URL ?? 'http://localhost:3000',

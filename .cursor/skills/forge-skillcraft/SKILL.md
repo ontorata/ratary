@@ -27,7 +27,7 @@ description: >-
 ## Quality bar
 
 - Under 150 lines; link to `.ai/` for depth
-- Unique to AI Brain — no copy-paste from external skill packs
+- Unique to Ratary — no copy-paste from external skill packs
 - Reference existing prompts by path, don't duplicate
 - Include verify/stop conditions
 

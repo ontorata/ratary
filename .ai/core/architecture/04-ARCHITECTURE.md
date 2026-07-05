@@ -8,7 +8,7 @@
 
 # Purpose
 
-Define the structural architecture of the AI Brain memory foundation.
+Define the structural architecture of the Ratary memory foundation.
 
 Specify layer boundaries, dependency direction, capability domains, ports, and extension points that remain valid across storage engines, deployment targets, and future capability phases.
 
@@ -323,7 +323,7 @@ transport/
   shared/     TransportContext, IApplicationHandler, handlers (thin), scope unify, errors
   rest/       rest-server.ts (buildApp) + RestTransportServer   ← src/server.ts re-exports
   mcp/        mcp-server.ts (stdio) + McpTransportServer         ← src/mcp/server.ts re-exports
-  grpc/       ai.brain.v1 proto + GrpcTransportServer (GRPC_ENABLED=false default)
+  grpc/       ontorata.ratary.v1 proto + GrpcTransportServer (GRPC_ENABLED=false default)
   registry/   ITransportServer, TransportRegistry, startTransports()
 ```
 
@@ -335,7 +335,7 @@ transport/
 - MCP does not traverse REST (preserved).
 - `services/` MUST NOT import Fastify, MCP SDK, or gRPC libraries.
 - REST remains **public API** (`/api/v1`). MCP remains **AI protocol** (stdio). gRPC is **internal/enterprise opt-in**.
-- SDK (`@ai-brain/client`) lives **outside** repo — repo publishes OpenAPI + proto only.
+- SDK (`@ratary/client`) lives **outside** repo — repo publishes OpenAPI + proto only.
 - GraphQL deferred — separate ADR required.
 
 **Protocol roles:**

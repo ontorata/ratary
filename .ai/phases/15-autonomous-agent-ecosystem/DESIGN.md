@@ -87,7 +87,7 @@ flowchart TB
 Multiple autonomous agents from **different vendors** must read/write the **same workspace-scoped Memory Cloud** without:
 
 - Duplicating memory per client
-- Implementing agent runtimes inside AI Brain
+- Implementing agent runtimes inside Ratary
 - Breaking constitution boundary from Phase 7
 
 Phase 15 provides the **ecosystem contract layer**: who can connect, how, with which protocol, and which scope/env — so every external runtime integrates consistently.
@@ -124,8 +124,8 @@ Phase 15 provides the **ecosystem contract layer**: who can connect, how, with w
 | Task orchestration / loops | External runtime |
 | Tool execution router | External runtime |
 | LangGraph / CrewAI / AutoGen runtime | External |
-| `@ai-brain/agent` package | External (if ever) |
-| `@ai-brain/client` SDK implementation | External npm repo |
+| `@ratary/agent` package | External (if ever) |
+| `@ratary/client` SDK implementation | External npm repo |
 
 ### Repository provides (unchanged role)
 
@@ -139,12 +139,12 @@ Phase 15 provides the **ecosystem contract layer**: who can connect, how, with w
 
 ## 4. Memory Cloud model
 
-**Memory Cloud** = one AI Brain deployment (or federated mesh per Phase 14) exposing shared **workspace-scoped** memory to many **external agent identities**.
+**Memory Cloud** = one Ratary deployment (or federated mesh per Phase 14) exposing shared **workspace-scoped** memory to many **external agent identities**.
 
 ```
                     ┌─────────────────────────────────┐
                     │         Memory Cloud             │
-                    │  (AI Brain deployment / mesh)    │
+                    │  (Ratary deployment / mesh)    │
                     └───────────────┬─────────────────┘
                                     │
               ┌─────────────────────┼─────────────────────┐
@@ -163,7 +163,7 @@ Phase 15 provides the **ecosystem contract layer**: who can connect, how, with w
 1. All agents in a workspace share **the same memory pool** (Phase 9).
 2. Each agent has **`agentId` attribution** on writes (`IAgentIdentity`).
 3. **Owner/org isolation** unchanged (Phase 3/10).
-4. Agents never talk to each other through AI Brain — only through **shared memory** + external coordination.
+4. Agents never talk to each other through Ratary — only through **shared memory** + external coordination.
 
 ---
 
@@ -311,7 +311,7 @@ interface AgentEcosystemManifest {
   };
   externalRuntimes: {
     note: 'Agent loops live outside this repository';
-    sdkPackage: '@ai-brain/client';
+    sdkPackage: '@ratary/client';
     sdkLocation: 'external';
   };
 }
@@ -330,7 +330,7 @@ interface AgentEcosystemManifest {
 7. Handoff: save_memory tags=[handoff, project]
 ```
 
-AI Brain participates in steps 2–5 and tool calls only — **not step 6 loop**.
+Ratary participates in steps 2–5 and tool calls only — **not step 6 loop**.
 
 ---
 

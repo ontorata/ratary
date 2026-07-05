@@ -1,5 +1,5 @@
 {
-  "title": "AI Brain — Embedding",
+  "title": "Ratary — Embedding",
   "uid": "ai-brain-embedding",
   "description": "Embedding provider latency, throughput, failures",
   "schemaVersion": 39,
@@ -10,13 +10,13 @@
       "id": 1,
       "title": "Embedding Requests",
       "type": "timeseries",
-      "targets": [{ "expr": "rate(ai_brain_embedding_requests_total[5m])" }]
+      "targets": [{ "expr": "rate(ratary_embedding_requests_total[5m])" }]
     },
     {
       "id": 2,
       "title": "Embedding p99 Latency",
       "type": "timeseries",
-      "targets": [{ "expr": "histogram_quantile(0.99, rate(ai_brain_embedding_duration_seconds_bucket[5m]))" }]
+      "targets": [{ "expr": "histogram_quantile(0.99, rate(ratary_embedding_duration_seconds_bucket[5m]))" }]
     }
   ]
 }

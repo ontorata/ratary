@@ -8,11 +8,11 @@
 
 ## Identity
 
-AI-Brain is **not** a chatbot, AI agent, or vector database.
+Ratary is **not** a chatbot, AI agent, or vector database.
 
-AI-Brain is a **Collaborative Memory Intelligence Platform** — the shared knowledge foundation for multiple developers, AI assistants, repositories, projects, and organizations.
+Ratary is a **Collaborative Memory Intelligence Platform** — the shared knowledge foundation for multiple developers, AI assistants, repositories, projects, and organizations.
 
-> **Git manages source code. AI-Brain manages knowledge.**
+> **Git manages source code. Ratary manages knowledge.**
 
 ---
 

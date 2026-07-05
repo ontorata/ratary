@@ -11,10 +11,10 @@
 | Track | Deliverable | Status |
 |-------|-------------|--------|
 | 16A | OpenAPI SSOT + snapshot pipeline | ✅ |
-| 16B | `@ai-brain/sdk` TypeScript reference | ✅ |
+| 16B | `@ratary/sdk` TypeScript reference | ✅ |
 | 16C | SDK Go, Python, Java, Rust, C#, PHP (thin wrappers + gen script) | ✅ |
-| 16D | `@ai-brain/cli` via SDK only | ✅ |
-| 16E | `@ai-brain/mcp-server` installable MCP via SDK | ✅ |
+| 16D | `@ratary/cli` via SDK only | ✅ |
+| 16E | `@ratary/mcp-server` installable MCP via SDK | ✅ |
 | 16F | `examples/` + `templates/` | ✅ |
 | 16G | Dashboard SPA | ⏸ Deferred |
 
@@ -24,11 +24,11 @@
 
 ```
 packages/
-  openapi/           ai-brain-v1.openapi.json (curated SSOT), openapi.snapshot.json
-  proto/             ai/brain/v1/ai_brain.proto (copy of server proto)
-  sdk/               @ai-brain/sdk — TypeScript reference client
-  cli/               @ai-brain/cli — command-line interface
-  mcp-server/        @ai-brain/mcp-server — stdio MCP proxy via SDK
+  openapi/           ratary-v1.openapi.json (curated SSOT), openapi.snapshot.json
+  proto/             ontorata/ratary/v1/ratary.proto (copy of server proto)
+  sdk/               @ratary/sdk — TypeScript reference client
+  cli/               @ratary/cli — command-line interface
+  mcp-server/        @ratary/mcp-server — stdio MCP proxy via SDK
   sdk-go/            Go thin wrapper + OpenAPI gen target
   sdk-python/        Python thin wrapper
   sdk-java/          Java thin wrapper
@@ -67,7 +67,7 @@ scripts/snapshot-openapi.ts, scripts/generate-sdks.ts
 ## Manifest updates
 
 - `capabilities.supportsDeveloperPlatform: true`
-- `transport.sdk`: `@ai-brain/sdk`, status `published`, 7 languages, CLI + MCP package names
+- `transport.sdk`: `@ratary/sdk`, status `published`, 7 languages, CLI + MCP package names
 
 ---
 
@@ -75,7 +75,7 @@ scripts/snapshot-openapi.ts, scripts/generate-sdks.ts
 
 - **Zero business logic** in `packages/` — thin HTTP clients only
 - **`MemoryService` unchanged**
-- CLI/MCP **must not** call `fetch()` directly — use `@ai-brain/sdk`
+- CLI/MCP **must not** call `fetch()` directly — use `@ratary/sdk`
 - Server REST v1 stable
 
 ---

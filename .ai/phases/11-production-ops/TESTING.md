@@ -33,7 +33,7 @@ Phase 11 is an **operational proof** phase — no application behavior changes. 
 | SC-11-03 | Default D1 deploy unchanged; 546 tests at default env | `npm run typecheck && npm test` → 546 pass (2026-07-04) | ✅ |
 | SC-11-04 | No `MemoryService` / `Retriever` rewrite | Grep: zero `pg` imports outside `src/infrastructure/` | ✅ |
 | SC-11-05 | Owner sign-off on cutover strategy | `REVIEW.md` sign-off section | ✅ Lutfi Ramadhan 2026-07-04 |
-| SC-11-06 | ADR-018 **Approved** before merge | [ADR-018](https://github.com/lutfi04/ai-brain/blob/main/.ai/adr/018-production-postgres-cutover.md) | ✅ Approved 2026-07-03 |
+| SC-11-06 | ADR-018 **Approved** before merge | [ADR-018](https://github.com/ontorata/ratary/blob/main/.ai/adr/018-production-postgres-cutover.md) | ✅ Approved 2026-07-03 |
 
 ---
 
@@ -173,10 +173,10 @@ tests/db/postgres-staging.integration.test.ts
 ```bash
 docker run --rm -d -p 5432:5432 \
   -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_DB=ai_brain_test \
+  -e POSTGRES_DB=ratary_test \
   postgres:16
 
-export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ai_brain_test
+export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ratary_test
 export POSTGRES_STAGING=1
 npm run test:postgres-staging
 ```

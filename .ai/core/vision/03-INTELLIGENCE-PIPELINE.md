@@ -17,7 +17,7 @@ Developer / AI → Memory Engine → Knowledge Engine → Retrieval Engine → C
 Developer / AI → Observation Engine (08.5)
               → Learning Engine (08.6)
               → Recommendation / Prediction
-              → Dataset Generator → Fine-Tuning (external) → AI-Brain Model (external port)
+              → Dataset Generator → Fine-Tuning (external) → Ratary Model (external port)
               → Improved Retrieval (policy snapshot)
               → (loop) Continuous Learning (08.6-L30)
 ```

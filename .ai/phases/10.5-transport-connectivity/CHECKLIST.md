@@ -117,7 +117,7 @@
 
 ### 10.5E — gRPC opt-in
 
-- [x] Proto v1 `ai.brain.v1` — `transport/grpc/proto/ai/brain/v1/ai_brain.proto`
+- [x] Proto v1 `ontorata.ratary.v1` — `transport/grpc/proto/ontorata/ratary/v1/ratary.proto`
 - [x] `GrpcTransportServer implements ITransportServer`
 - [x] `GRPC_ENABLED=false` default; `@grpc/grpc-js` loaded only when enabled
 - [x] Memory (unary) + Search (unary) + Context (server-stream) + Health RPCs

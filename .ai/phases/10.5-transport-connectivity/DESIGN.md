@@ -54,7 +54,7 @@ flowchart LR
 | Cross-region memory fabric | gRPC + `TransportContext` metadata |
 | MCP HTTP/SSE (spec evolution) | `ITransportServer` registry |
 | Enterprise service mesh | mTLS gRPC interceptors |
-| `@ai-brain/client` SDK | OpenAPI + proto artifacts |
+| `@ratary/client` SDK | OpenAPI + proto artifacts |
 
 ### 1.3 Extension points
 
@@ -65,7 +65,7 @@ flowchart LR
 | `IApplicationHandler<TIn,TOut>` | `transport/shared/handlers/` | Single use-case entry per operation |
 | `AICapabilityManifest.transport` | `capabilities/` | Discoverable transport matrix |
 | gRPC interceptors | `transport/grpc/interceptors/` | Auth, tracing, compression |
-| Proto package `ai.brain.v1` | `transport/grpc/proto/` | Versioned wire contract |
+| Proto package `ontorata.ratary.v1` | `transport/grpc/proto/` | Versioned wire contract |
 
 ### 1.4 Interface impact
 
@@ -175,7 +175,7 @@ Phase 10.5 **closes the architectural gap** between Phase 9.5 (storage ports) an
 ### Excluded
 
 - GraphQL
-- `@ai-brain/client` npm package in repo
+- `@ratary/client` npm package in repo
 - Agent runtime
 - Business logic / repository / storage changes
 - gRPC on Vercel serverless (document limitation)
@@ -251,7 +251,7 @@ src/
       tool-registry.ts                # SSOT with MCP_TOOL_NAMES
     grpc/
       grpc-server.ts
-      proto/ai/brain/v1/*.proto
+      proto/ontorata/ratary/v1/*.proto
       services/                       # gRPC → handler
       interceptors/                   # auth, logging
     registry/
@@ -313,7 +313,7 @@ interface ITransportRegistry {
 | `HealthService` | Check | Liveness | Unary |
 | `EmbeddingIngestService` | *(Phase 13)* | `EmbeddingJobRunner` | Client stream — **stub/defer OK in 10.5E** |
 
-Proto package: `ai.brain.v1`. Breaking changes → new package `ai.brain.v2`.
+Proto package: `ontorata.ratary.v1`. Breaking changes → new package `ai.brain.v2`.
 
 ### 5.6 Transport capability matrix
 
@@ -337,7 +337,7 @@ transport: {
   rest: { enabled: true; version: 'v1'; baseUrl: string };
   mcp: { enabled: true; transport: 'stdio'; toolCount: number };
   grpc: { enabled: boolean; port?: number; protoVersion?: string };
-  sdk: { packageName: '@ai-brain/client'; status: 'planned' | 'published' };
+  sdk: { packageName: '@ratary/client'; status: 'planned' | 'published' };
 };
 ```
 
@@ -350,7 +350,7 @@ transport: {
 | Protocol adapters, handlers, registry | Business rules |
 | Scope bootstrap at edge | Domain ranking/scoring |
 | gRPC proto + server | Storage adapters |
-| Transport section in manifest | `@ai-brain/client` implementation |
+| Transport section in manifest | `@ratary/client` implementation |
 | Auth hook invocation | Permission policy definition (auth/) |
 | Folder migration | Repository decomposition (Phase 11C) |
 

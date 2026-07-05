@@ -37,7 +37,7 @@ export class AgentEcosystemManifestBuilder {
       },
       externalRuntimes: {
         note: 'Agent loops live outside this repository',
-        sdkPackage: '@ai-brain/client',
+        sdkPackage: '@ratary/client',
         sdkLocation: 'external',
       },
     };

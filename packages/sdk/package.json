@@ -1,7 +1,7 @@
 {
-  "name": "@ai-brain/sdk",
+  "name": "@ratary/sdk",
   "version": "1.0.0",
-  "description": "TypeScript client for AI Memory Cloud REST API (Phase 16 reference SDK)",
+  "description": "TypeScript client for Ratary REST API (Phase 16 reference SDK)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

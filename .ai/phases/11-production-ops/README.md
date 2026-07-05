@@ -49,7 +49,7 @@ npm test
 
 # Postgres schema bootstrap (staging / cutover prep)
 export SQL_PROVIDER=postgres
-export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ai_brain_dev
+export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/ratary_dev
 npm run db:apply-postgres-schema
 
 # Staging integration tests (requires live Postgres)

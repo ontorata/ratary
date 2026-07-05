@@ -1,6 +1,8 @@
-# AI Brain — Start Here
+# Ratary — Start Here
 
 **ONE ENTRY POINT FOR ALL AI ASSISTANTS**
+
+Product by **[Ontorata](https://ontorata.com)** · [hello@ontorata.com](mailto:hello@ontorata.com) · Founder [Lutfi Ramadhan](https://www.linkedin.com/in/lutfiramadhan/)
 
 `.ai/` is **normative** — it defines how AI must work on this repository.  
 `docs/` is **descriptive** — for humans only; never overrides `.ai/`.
@@ -119,7 +121,7 @@ External Agent Runtime
    MCP / REST
         │
         ▼
-   AI Brain (this repo)
+   Ratary (this repo)
         │
         ▼
    Memory → Knowledge → Retrieval → Context
@@ -157,4 +159,4 @@ Not implementation authority for AI:
 
 ---
 
-*AI Brain — Memory Foundation for AI*
+*Ratary — Memory Foundation for AI*

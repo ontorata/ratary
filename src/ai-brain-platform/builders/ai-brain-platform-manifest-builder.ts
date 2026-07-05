@@ -31,7 +31,7 @@ export class AiBrainPlatformManifestBuilder {
   ) {}
 
   async build(scope?: MemoryScope): Promise<AiBrainPlatformManifest> {
-    const edition = this.env.AI_BRAIN_PLATFORM_EDITION;
+    const edition = this.env.RATARY_PLATFORM_EDITION;
     const webhookCount = scope ? await this.webhookStore.countActive(scope) : 0;
 
     const planes: PlatformPlaneStatus[] = [
@@ -84,7 +84,7 @@ export class AiBrainPlatformManifestBuilder {
     ];
 
     return {
-      platform: 'ai-brain-platform',
+      platform: 'ratary-platform',
       edition,
       planes,
       webhooksEnabled: this.env.PLATFORM_WEBHOOKS_ENABLED,

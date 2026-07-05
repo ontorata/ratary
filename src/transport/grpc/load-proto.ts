@@ -15,12 +15,12 @@ export interface AiBrainProtoV1 {
 }
 
 interface LoadedProto {
-  ai: { brain: { v1: AiBrainProtoV1 } };
+  ontorata: { ratary: { v1: AiBrainProtoV1 } };
 }
 
-const PROTO_RELATIVE_PATH = 'proto/ai/brain/v1/ai_brain.proto';
+const PROTO_RELATIVE_PATH = 'proto/ontorata/ratary/v1/ratary.proto';
 
-/** Loads the `ai.brain.v1` package definition (ADR-027 Phase 10.5E). */
+/** Loads the `ontorata.ratary.v1` package definition (ADR-027 Phase 10.5E). */
 export function loadAiBrainProto(): AiBrainProtoV1 {
   const here = dirname(fileURLToPath(import.meta.url));
   const protoPath = resolve(here, PROTO_RELATIVE_PATH);
@@ -34,5 +34,5 @@ export function loadAiBrainProto(): AiBrainProtoV1 {
   });
 
   const loaded = loadPackageDefinition(packageDefinition) as unknown as LoadedProto;
-  return loaded.ai.brain.v1;
+  return loaded.ontorata.ratary.v1;
 }

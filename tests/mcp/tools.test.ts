@@ -252,7 +252,7 @@ describe('MCP tools', () => {
 
   it('includes condensed capability snapshot in MCP initialize metadata', async () => {
     const serverInfo = client.getServerVersion();
-    expect(serverInfo?.name).toBe('ai-memory-cloud');
+    expect(serverInfo?.name).toBe('ratary');
     expect(serverInfo?.description).toContain('/api/v1/capabilities');
     expect(serverInfo?.description).toContain(String(EXPECTED_TOOLS.length));
 

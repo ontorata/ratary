@@ -6,6 +6,14 @@ import { config as loadDotenv } from 'dotenv';
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 loadDotenv({ path: resolve(projectRoot, '.env'), quiet: true });
 
+/** Legacy env aliases after Ratary rebrand (Ontorata). */
+if (process.env.RATARY_PLATFORM_ENABLED === undefined && process.env.AI_BRAIN_PLATFORM_ENABLED !== undefined) {
+  process.env.RATARY_PLATFORM_ENABLED = process.env.AI_BRAIN_PLATFORM_ENABLED;
+}
+if (process.env.RATARY_PLATFORM_EDITION === undefined && process.env.AI_BRAIN_PLATFORM_EDITION !== undefined) {
+  process.env.RATARY_PLATFORM_EDITION = process.env.AI_BRAIN_PLATFORM_EDITION;
+}
+
 import { z } from 'zod';
 import {
   DEFAULT_GRAPH_MAX_DEPTH,
@@ -80,15 +88,15 @@ const envSchema = z
     CACHE_PROVIDER: z.enum(['none', 'memory', 'redis']).default('none'),
     REDIS_URL: z.string().url().optional(),
     RATE_LIMIT_REDIS_URL: z.string().url().optional(),
-    REDIS_KEY_PREFIX: z.string().default('ai-brain:cache:'),
+    REDIS_KEY_PREFIX: z.string().default('ratary:cache:'),
     EVENT_BUS_PROVIDER: z.enum(['none', 'noop', 'redis']).default('none'),
     EVENT_CONSUMERS_ENABLED: z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
-    REDIS_STREAM_PREFIX: z.string().default('ai-brain:events:'),
-    REDIS_STREAM_CONSUMER_GROUP: z.string().default('ai-brain-consumers'),
-    REDIS_STREAM_CONSUMER_NAME: z.string().default('ai-brain-worker'),
+    REDIS_STREAM_PREFIX: z.string().default('ratary:events:'),
+    REDIS_STREAM_CONSUMER_GROUP: z.string().default('ratary-consumers'),
+    REDIS_STREAM_CONSUMER_NAME: z.string().default('ratary-worker'),
     ANALYTICS_PROVIDER: z.enum(['none', 'duckdb']).default('none'),
     DUCKDB_PATH: z.string().default(':memory:'),
     GRAPH_PROVIDER: z.enum(['d1', 'neo4j']).default('d1'),
@@ -103,7 +111,7 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
-    OTEL_SERVICE_NAME: z.string().default('ai-memory-cloud'),
+    OTEL_SERVICE_NAME: z.string().default('ratary'),
     OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().default('http://127.0.0.1:4318/v1/traces'),
     ENTERPRISE_RBAC: z
       .enum(['true', 'false'])
@@ -248,7 +256,7 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
     FEDERATION_NODE_ID: z.string().uuid().default('00000000-0000-4000-8000-000000000001'),
-    FEDERATION_NODE_DISPLAY_NAME: z.string().default('ai-memory-cloud'),
+    FEDERATION_NODE_DISPLAY_NAME: z.string().default('ratary'),
     FEDERATION_NODE_REGION: z.string().optional(),
     FEDERATION_NODE_CLOUD: z.string().optional(),
     FEDERATION_NODE_BASE_URL: z.string().url().optional(),
@@ -338,12 +346,12 @@ const envSchema = z
     TEAMS_WEBHOOK_URL: z.string().optional(),
     NOTION_API_TOKEN: z.string().optional(),
 
-    // AI-Brain platform umbrella (Phase 24) — ADR-044; edition + webhooks, default off
-    AI_BRAIN_PLATFORM_ENABLED: z
+    // Ratary platform umbrella (Phase 24) — ADR-044; edition + webhooks, default off
+    RATARY_PLATFORM_ENABLED: z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
-    AI_BRAIN_PLATFORM_EDITION: z.enum(['core', 'standard', 'enterprise']).default('core'),
+    RATARY_PLATFORM_EDITION: z.enum(['core', 'standard', 'enterprise']).default('core'),
     PLATFORM_WEBHOOKS_ENABLED: z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')

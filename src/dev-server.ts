@@ -25,7 +25,7 @@ async function main(): Promise<void> {
   process.on('SIGINT', () => void shutdown('SIGINT'));
   process.on('SIGTERM', () => void shutdown('SIGTERM'));
 
-  console.log(`AI Memory Cloud running at http://localhost:${env.PORT}`);
+  console.log(`Ratary running at http://localhost:${env.PORT}`);
   console.log(`API docs at http://localhost:${env.PORT}/docs`);
   console.log(`Active transports: ${registry.listActive().join(', ')}`);
   if (env.GRPC_ENABLED) {

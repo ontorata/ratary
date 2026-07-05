@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "ai-memory-cloud": {
+    "ratary": {
       "command": "npx",
       "args": ["-y", "tsx", "REPO_PATH/src/mcp/stdio.ts"],
       "cwd": "REPO_PATH"

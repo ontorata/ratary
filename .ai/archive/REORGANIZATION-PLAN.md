@@ -1,4 +1,4 @@
-# AI Brain — Documentation Reorganization Plan
+# Ratary — Documentation Reorganization Plan
 
 **Date:** 2026-07-03  
 **Purpose:** Simplify documentation structure for better AI discoverability

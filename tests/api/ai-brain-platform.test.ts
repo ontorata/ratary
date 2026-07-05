@@ -12,14 +12,14 @@ vi.stubEnv('D1_API_TOKEN', 'test-token');
 vi.stubEnv('AUTH_SECRET', 'test-auth-secret-minimum-32-characters!!');
 vi.stubEnv('NODE_ENV', 'test');
 
-describe('AI Brain Platform API', () => {
+describe('Ratary Platform API', () => {
   let app: FastifyInstance;
   let apiKey: string;
 
   beforeEach(async () => {
-    vi.stubEnv('AI_BRAIN_PLATFORM_ENABLED', 'true');
+    vi.stubEnv('RATARY_PLATFORM_ENABLED', 'true');
     vi.stubEnv('PLATFORM_WEBHOOKS_ENABLED', 'true');
-    vi.stubEnv('AI_BRAIN_PLATFORM_EDITION', 'enterprise');
+    vi.stubEnv('RATARY_PLATFORM_EDITION', 'enterprise');
     resetEnvCache();
     resetD1Client();
     setD1Client(new MockD1Client());
@@ -62,7 +62,7 @@ describe('AI Brain Platform API', () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json().platform).toBe('ai-brain-platform');
+    expect(response.json().platform).toBe('ratary-platform');
     expect(response.json().planes.length).toBeGreaterThan(0);
   });
 
@@ -90,15 +90,15 @@ describe('AI Brain Platform API', () => {
     expect(response.statusCode).toBe(200);
     const body = response.json();
     expect(body.capabilities.supportsAiBrainPlatform).toBe(true);
-    expect(body.aiBrainPlatform.platform).toBe('ai-brain-platform');
+    expect(body.aiBrainPlatform.platform).toBe('ratary-platform');
   });
 });
 
-describe('AI Brain Platform API (disabled)', () => {
+describe('Ratary Platform API (disabled)', () => {
   let app: FastifyInstance;
 
   beforeEach(async () => {
-    vi.stubEnv('AI_BRAIN_PLATFORM_ENABLED', 'false');
+    vi.stubEnv('RATARY_PLATFORM_ENABLED', 'false');
     resetEnvCache();
     resetD1Client();
     setD1Client(new MockD1Client());

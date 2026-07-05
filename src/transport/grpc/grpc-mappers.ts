@@ -2,7 +2,7 @@ import type { Metadata } from '@grpc/grpc-js';
 import type { Memory } from '../../types/memory.js';
 import type { GrpcTransportMetadata } from '../shared/transport-context.types.js';
 
-/** Wire representation of a Memory (proto `ai.brain.v1.Memory`, keepCase). */
+/** Wire representation of a Memory (proto `ontorata.ratary.v1.Memory`, keepCase). */
 export interface ProtoMemory {
   id: string;
   codename: string;

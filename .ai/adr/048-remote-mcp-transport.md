@@ -6,7 +6,7 @@
 
 ## Context
 
-AI Memory Cloud ships MCP **stdio** for IDE clients (Cursor, Claude Code). ChatGPT and other cloud products require a **public HTTPS MCP endpoint** (Streamable HTTP / SSE) via "Server URL" — not local process spawn.
+Ratary ships MCP **stdio** for IDE clients (Cursor, Claude Code). ChatGPT and other cloud products require a **public HTTPS MCP endpoint** (Streamable HTTP / SSE) via "Server URL" — not local process spawn.
 
 [PANDUAN.md](../../docs/PANDUAN.md) currently directs ChatGPT users to REST Actions only.
 
@@ -53,7 +53,7 @@ Without a server-hosted remote MCP transport:
 3. Authenticate with Bearer / `X-API-Key` `aic_...`
 4. Delegate to existing `createMcpServer()` instance
 5. Keep REST Custom GPT Actions documented as fallback
-6. Phase 16 `@ai-brain/mcp-server` MAY consume this endpoint via SDK
+6. Phase 16 `@ratary/mcp-server` MAY consume this endpoint via SDK
 
 ## Tradeoffs
 

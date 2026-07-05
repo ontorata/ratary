@@ -8,7 +8,7 @@
 
 # Purpose
 
-Define mandatory testing practices for the AI Brain memory foundation.
+Define mandatory testing practices for the Ratary memory foundation.
 
 Ensure every change is verified at the appropriate level — unit, repository, service, API, MCP, integration, and regression — with consistent organization, naming, mocking, and coverage expectations.
 

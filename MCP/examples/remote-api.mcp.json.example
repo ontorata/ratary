@@ -2,7 +2,7 @@
   "mcpServers": {
     "ai-brain-remote": {
       "command": "npx",
-      "args": ["-y", "@ai-brain/mcp-server"],
+      "args": ["-y", "@ratary/mcp-server"],
       "env": {
         "AI_BRAIN_BASE_URL": "https://your-deploy.vercel.app",
         "AI_BRAIN_API_KEY": "aic_your_api_key_here",

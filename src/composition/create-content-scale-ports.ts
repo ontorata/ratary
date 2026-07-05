@@ -85,7 +85,7 @@ export function createContentScalePorts(
     recordSyncLifecycle(metricsExporter, target, status) {
       if (!metricsExporter) return;
       metricsExporter.incrementCounter({
-        name: 'ai_brain_content_scale_sync_total',
+        name: 'ratary_content_scale_sync_total',
         labels: { target, status },
       });
     },

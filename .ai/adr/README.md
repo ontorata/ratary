@@ -50,7 +50,7 @@
 | [037-ai-telemetry-event-model.md](037-ai-telemetry-event-model.md) | AI Telemetry Event Model (Phase 25) | **Implemented** | Semantic OTLP telemetry |
 | [038-usage-analytics-engine.md](038-usage-analytics-engine.md) | Usage Analytics Engine (Phase 25) | **Implemented** | Quality/adoption/cost KPIs |
 | [043-cloud-federation-sync-topology.md](043-cloud-federation-sync-topology.md) | Cloud Federation Sync Topology (Phase 25) | **Implemented** | 5-tier global sync |
-| [044-ai-brain-platform-architecture.md](044-ai-brain-platform-architecture.md) | AI-Brain Platform Architecture (Phase 24) | **Implemented** | Umbrella manifest + webhooks |
+| [044-ai-brain-platform-architecture.md](044-ai-brain-platform-architecture.md) | Ratary Platform Architecture (Phase 24) | **Implemented** | Umbrella manifest + webhooks |
 | [047-enterprise-knowledge-fabric.md](047-enterprise-knowledge-fabric.md) | Enterprise Knowledge Fabric (Phase 23) | **Implemented** | External connector ingest |
 | [048-remote-mcp-transport.md](048-remote-mcp-transport.md) | Remote MCP transport (Phase 13.1) | **Implemented** | Streamable HTTP MCP |
 

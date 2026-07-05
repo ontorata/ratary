@@ -1,8 +1,8 @@
-# AI Memory Cloud — MCP Server
+# Ratary — MCP Server
 
 **Category:** Memory · **Transport:** stdio (local) + Streamable HTTP (remote, opt-in)  
-**Repository:** [github.com/lutfi04/ai-brain](https://github.com/lutfi04/ai-brain)  
-**Listing:** submit to [mcpservers.org](https://mcpservers.org/submit) with link `https://github.com/lutfi04/ai-brain/tree/main/MCP`
+**Repository:** [github.com/ontorata/ratary](https://github.com/ontorata/ratary)  
+**Listing:** submit to [mcpservers.org](https://mcpservers.org/submit) with link `https://github.com/ontorata/ratary/tree/main/MCP`
 
 Persistent **coding memory** for AI assistants — save, search, build token-efficient context, knowledge graph traversal, and multi-client sync. Works with **Cursor**, **Claude Code**, **Roo**, **Cline**, **Gemini CLI**, and remote MCP hosts (ChatGPT App URL when deployed).
 
@@ -13,7 +13,7 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 | Mode | Location | When to use |
 |------|----------|-------------|
 | **Full server (27 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; direct Cloudflare D1 / Postgres |
-| **npm proxy (6 tools)** | [`packages/mcp-server/`](../packages/mcp-server/) (`@ai-brain/mcp-server`) | Connect to hosted REST API with `AI_BRAIN_API_KEY` |
+| **npm proxy (6 tools)** | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`) | Connect to hosted REST API with `AI_BRAIN_API_KEY` |
 | **Remote HTTPS** | [`src/transport/mcp/remote/`](../src/transport/mcp/remote/) | `REMOTE_MCP_ENABLED=true` on Vercel deploy |
 
 Tool registry SSOT: [`src/capabilities/mcp-tool-names.ts`](../src/capabilities/mcp-tool-names.ts)
@@ -25,7 +25,7 @@ Tool registry SSOT: [`src/capabilities/mcp-tool-names.ts`](../src/capabilities/m
 ### 1. Prerequisites
 
 ```bash
-git clone https://github.com/lutfi04/ai-brain.git
+git clone https://github.com/ontorata/ratary.git
 cd ai-brain
 npm install
 cp .env.example .env
@@ -48,7 +48,7 @@ See [examples/cursor.mcp.json.example](examples/cursor.mcp.json.example) — rep
 ```json
 {
   "mcpServers": {
-    "ai-memory-cloud": {
+    "ratary": {
       "command": "npx",
       "args": ["-y", "tsx", "REPO_PATH/src/mcp/stdio.ts"],
       "cwd": "REPO_PATH"
@@ -63,13 +63,13 @@ Reload MCP in your IDE. No API key needed in Cursor when using direct D1 mode.
 
 ## Remote / hosted API (npm package)
 
-For teams using a deployed AI Brain REST endpoint:
+For teams using a deployed Ratary REST endpoint:
 
 ```bash
-npm install -g @ai-brain/mcp-server
+npm install -g @ratary/mcp-server
 export AI_BRAIN_BASE_URL=https://your-deploy.vercel.app
 export AI_BRAIN_API_KEY=aic_...
-ai-brain-mcp
+ratary-mcp
 ```
 
 Config example: [examples/remote-api.mcp.json.example](examples/remote-api.mcp.json.example)
@@ -111,9 +111,9 @@ Details: [Phase 13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) · [ADR-0
 
 | Field | Value |
 |-------|-------|
-| **Server name** | AI Memory Cloud |
+| **Server name** | Ratary |
 | **Short description** | Persistent coding memory for AI assistants — MCP stdio + remote URL, hybrid search, knowledge graph, token-efficient context. Self-host on Cloudflare D1 or Postgres. |
-| **Link** | `https://github.com/lutfi04/ai-brain/tree/main/MCP` |
+| **Link** | `https://github.com/ontorata/ratary/tree/main/MCP` |
 | **Category** | Memory |
 | **Contact** | (your email) |
 

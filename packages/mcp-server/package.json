@@ -1,17 +1,17 @@
 {
-  "name": "@ai-brain/mcp-server",
+  "name": "@ratary/mcp-server",
   "version": "1.0.0",
-  "description": "Installable MCP server proxying AI Memory Cloud REST via @ai-brain/sdk (Phase 16)",
+  "description": "Installable MCP server proxying Ratary REST via @ratary/sdk (Phase 16)",
   "type": "module",
   "bin": {
-    "ai-brain-mcp": "./dist/server.js"
+    "ratary-mcp": "./dist/server.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@ai-brain/sdk": "1.0.0",
+    "@ratary/sdk": "1.0.0",
     "@modelcontextprotocol/sdk": "^1.12.1"
   },
   "engines": {

@@ -1,13 +1,13 @@
 ---
-description: AI Memory Cloud — baca/simpan memory otomatis via MCP (tanpa REST API)
+description: Ratary — baca/simpan memory otomatis via MCP (tanpa REST API)
 alwaysApply: true
 ---
 
-# AI Memory Cloud
+# Ratary
 
 **Arsitektur (AI authority):** Baca [.ai/START-HERE.md](../.ai/START-HERE.md) → [.ai/core/constitution/INDEX.md](../.ai/core/constitution/INDEX.md). `.ai/` = satu-satunya otoritas implementasi. Manusia: [docs/README.md](../docs/README.md), [docs/PANDUAN.md](../docs/PANDUAN.md). Ikuti [.ai/core/ai-rules/11-AI-RULES.md](../.ai/core/ai-rules/11-AI-RULES.md) — balas user dalam Indonesian; kode, komentar, commit, ADR dalam English; jangan terjemahkan source code yang sudah ada.
 
-Server MCP **ai-memory-cloud** terhubung langsung ke Cloudflare D1. Di Cursor, **tidak perlu** API key `aic_...`, `npm start`, atau curl.
+Server MCP **ratary** terhubung langsung ke Cloudflare D1. Di Cursor, **tidak perlu** API key `aic_...`, `npm start`, atau curl.
 
 ## Awal chat / lanjut pekerjaan
 

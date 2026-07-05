@@ -1,4 +1,4 @@
-# @ai-brain/sdk-go
+# @ratary/sdk-go
 
 Go client generated from OpenAPI SSOT. Regenerate: `npm run generate:sdks` from repo root.
 

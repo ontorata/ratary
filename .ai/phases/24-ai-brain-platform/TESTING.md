@@ -1,4 +1,4 @@
-# Phase 24 — AI-Brain Platform — TESTING
+# Phase 24 — Ratary Platform — TESTING
 
 **Phase status:** Closed  
 **Gate:** PASS 2026-07-04  

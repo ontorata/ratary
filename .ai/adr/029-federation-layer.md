@@ -6,7 +6,7 @@
 
 ## Context
 
-AI Brain today operates as a **single-node memory foundation** with workspace/org scope (Phases 9–10), optional multi-protocol access (Phase 13), and event pipeline (Phase 12). Enterprise deployments need **multiple AI Brain instances** to share knowledge across:
+Ratary today operates as a **single-node memory foundation** with workspace/org scope (Phases 9–10), optional multi-protocol access (Phase 13), and event pipeline (Phase 12). Enterprise deployments need **multiple Ratary instances** to share knowledge across:
 
 - **Workspaces** (different teams, same org)
 - **Regions** (data residency, latency)

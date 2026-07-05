@@ -70,7 +70,7 @@ export function createKnowledgeFabricPorts(
     recordIngestLifecycle(metricsExporter, connectorId, status) {
       if (!metricsExporter) return;
       metricsExporter.incrementCounter({
-        name: 'ai_brain_knowledge_fabric_ingest_total',
+        name: 'ratary_knowledge_fabric_ingest_total',
         labels: { connector: connectorId, status },
       });
     },

@@ -14,7 +14,7 @@ export class OpaPolicyEngine implements IPolicyEngine {
 
   constructor(private readonly options: OpaPolicyEngineOptions) {
     this.fetchImpl = options.fetchImpl ?? fetch;
-    this.policyPath = options.policyPath ?? 'ai_brain/authz';
+    this.policyPath = options.policyPath ?? 'ratary/authz';
   }
 
   async evaluate(input: PolicyEvaluationInput): Promise<PolicyEvaluationResult> {

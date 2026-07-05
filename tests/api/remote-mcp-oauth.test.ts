@@ -19,7 +19,7 @@ describe('Remote MCP OAuth API (Phase 13.1D)', () => {
     vi.stubEnv('REMOTE_MCP_OAUTH_ENABLED', 'true');
     vi.stubEnv('REMOTE_MCP_PUBLIC_URL', 'https://memory.test.example/mcp');
     vi.stubEnv('OIDC_ISSUER_URL', 'https://auth.test.example/realms/ai-brain');
-    vi.stubEnv('OIDC_CLIENT_ID', 'ai-brain-mcp');
+    vi.stubEnv('OIDC_CLIENT_ID', 'ratary-mcp');
     vi.stubEnv('OIDC_MCP_OWNER_ID', '00000000-0000-4000-8000-000000000099');
     resetEnvCache();
     resetD1Client();

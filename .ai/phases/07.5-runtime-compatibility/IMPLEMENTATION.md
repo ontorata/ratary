@@ -21,7 +21,7 @@
 | Transport | Shared `IApplicationHandler` via capabilities handlers | ✅ |
 | Composition | `create-runtime-compatibility-ports.ts` | ✅ |
 | OpenAPI | Capabilities tag in swagger | ✅ |
-| SDK | `@ai-brain/sdk` `CapabilitiesApi.get()` + `.negotiate()` — D7.5-02 | ✅ |
+| SDK | `@ratary/sdk` `CapabilitiesApi.get()` + `.negotiate()` — D7.5-02 | ✅ |
 | Extension flags | 5.5/6.5/04.7/10.5 fields in manifest | ✅ |
 
 ---

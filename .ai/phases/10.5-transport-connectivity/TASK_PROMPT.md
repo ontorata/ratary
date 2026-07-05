@@ -59,7 +59,7 @@ Implement **Phase 10.5 — Transport & Connectivity Layer**: formalize `src/tran
 - Backward compatible REST v1 + MCP tool schemas
 - No `*V2` classes, no agent runtime
 - One concern per commit
-- SDK (`@ai-brain/client`) **not** in this repo
+- SDK (`@ratary/client`) **not** in this repo
 
 ### Forbidden
 

@@ -13,7 +13,7 @@ Capture lessons learned, accepted debt, and recommendations for subsequent phase
 
 ## Summary
 
-`@ai-brain/sdk`, `@ai-brain/cli`, `@ai-brain/mcp-server`, OpenAPI SSOT, thin multi-language wrappers. ADR-031 Implemented.
+`@ratary/sdk`, `@ratary/cli`, `@ratary/mcp-server`, OpenAPI SSOT, thin multi-language wrappers. ADR-031 Implemented.
 
 Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · [CHECKLIST.md](CHECKLIST.md).
 

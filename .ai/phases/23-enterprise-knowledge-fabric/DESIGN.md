@@ -52,7 +52,7 @@ REST /api/v1/knowledge-fabric/*  (KNOWLEDGE_FABRIC_ENABLED)
 
 | Phase | Scope |
 |-------|-------|
-| Phase 14 | AI-Brain node ↔ node federation |
+| Phase 14 | Ratary node ↔ node federation |
 | Phase 09.8 | AI client sync (Cursor, MCP) |
 | Phase 23 | Enterprise SaaS connectors → SSOT |
 

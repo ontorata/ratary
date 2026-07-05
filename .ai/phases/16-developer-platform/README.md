@@ -6,7 +6,7 @@
 
 ## Summary
 
-Developer-grade tooling: `@ai-brain/sdk` (TypeScript reference), CLI, installable MCP server, OpenAPI SSOT, and thin wrappers for Go/Python/Java/Rust/C#/PHP — **all consume server API; zero business logic in clients**.
+Developer-grade tooling: `@ratary/sdk` (TypeScript reference), CLI, installable MCP server, OpenAPI SSOT, and thin wrappers for Go/Python/Java/Rust/C#/PHP — **all consume server API; zero business logic in clients**.
 
 ## Document index
 

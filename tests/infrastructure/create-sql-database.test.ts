@@ -34,7 +34,7 @@ describe('createSqlDatabase', () => {
 
   it('should return PostgresSqlDatabaseAdapter when configured', () => {
     vi.stubEnv('SQL_PROVIDER', 'postgres');
-    vi.stubEnv('DATABASE_URL', 'postgresql://user:pass@localhost:5432/ai_brain_test');
+    vi.stubEnv('DATABASE_URL', 'postgresql://user:pass@localhost:5432/ratary_test');
     const sql = createSqlDatabase(new MinimalD1Client(), getEnv());
     expect(sql).toBeInstanceOf(PostgresSqlDatabaseAdapter);
   });

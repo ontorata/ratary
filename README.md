@@ -1,13 +1,22 @@
-# AI Memory Cloud
+# Ratary
+
+**Collaborative memory platform for AI coding assistants** — by [Ontorata](https://ontorata.com).
+
+| | |
+|---|---|
+| **Website** | [ontorata.com](https://ontorata.com) |
+| **Contact** | [hello@ontorata.com](mailto:hello@ontorata.com) |
+| **Founder** | [Lutfi Ramadhan](https://www.linkedin.com/in/lutfiramadhan/) |
+| **Source** | [github.com/ontorata/ratary](https://github.com/ontorata/ratary) |
 
 Second brain untuk AI coding assistant — simpan, cari, dan akses seluruh knowledge coding Anda dari berbagai perangkat.
 
 Kompatibel dengan: **Cursor**, **Claude Code**, **Roo Code**, **Cline**, **Gemini CLI**, **ChatGPT (REST API)**, dan AI lain yang mendukung MCP stdio.  
 → Panduan lengkap: **[docs/PANDUAN.md](docs/PANDUAN.md)**
 
-## Kenapa AI Brain?
+## Kenapa Ratary?
 
-AI Brain bukan sekadar “simpan catatan” — ini **memory foundation** yang dirancang khusus untuk asisten coding: scoped per owner, diakses lewat **MCP + REST** dengan logic yang sama, dan dioptimalkan agar **hemat token** tanpa kehilangan jejak knowledge (codename, relasi, graph).
+Ratary bukan sekadar “simpan catatan” — ini **memory foundation** yang dirancang khusus untuk asisten coding: scoped per owner, diakses lewat **MCP + REST** dengan logic yang sama, dan dioptimalkan agar **hemat token** tanpa kehilangan jejak knowledge (codename, relasi, graph).
 
 ### Benchmark token context
 
@@ -34,7 +43,7 @@ Progressive retrieval (`IRetrievalPolicy`) dan capability manifest (`GET /api/v1
 
 ### Perbandingan singkat vs proyek sejenis
 
-| Aspek | AI Brain | Mem0 / Zep (hosted memory) | Cursor memory built-in | RAG generik (vector DB + chunk) |
+| Aspek | Ratary | Mem0 / Zep (hosted memory) | Cursor memory built-in | RAG generik (vector DB + chunk) |
 |-------|----------|----------------------------|------------------------|----------------------------------|
 | **Self-host & data sovereignty** | ✅ D1/Postgres milik Anda | ⚠️ SaaS / cloud vendor | ❌ Terikat Cursor | ⚠️ Tergantung stack |
 | **MCP native (Cursor, Claude Code, …)** | ✅ 20 tools + stdio | ✅ (Mem0 MCP) | ✅ (hanya Cursor) | ❌ Perlu glue code |
@@ -54,7 +63,7 @@ Progressive retrieval (`IRetrievalPolicy`) dan capability manifest (`GET /api/v1
 | **Opportunities (Peluang)** | Tim multi-AI (Cursor + Claude Code + ChatGPT MCP) sharing satu brain; federation & cloud control plane (fase 14–18); observability + global intelligence capstone (fase 19–25); semantic compression & quality signals (tracks 5.5–8.5); integrasi CI/handoff otomatis via MCP |
 | **Threats (Ancaman)** | Vendor memory SaaS (Mem0, Zep) bergerak cepat; Cursor/IDE menambah memory native yang “cukup baik” untuk solo dev; risiko scope creep ke agent runtime (dicegah konstitusi) |
 
-**Kapan pilih AI Brain?** Anda butuh **memori coding persisten, portable antar AI client, terukur token-nya, dan under your control** — bukan sekadar chat history atau RAG dokumen generik.
+**Kapan pilih Ratary?** Anda butuh **memori coding persisten, portable antar AI client, terukur token-nya, dan under your control** — bukan sekadar chat history atau RAG dokumen generik.
 
 **Kapan pertimbangkan alternatif?** Solo dev yang hanya pakai Cursor dan tidak peduli portability → built-in memory mungkin cukup. Tim yang ingin zero-ops sepenuhnya → SaaS memory layer. Use case pure document Q&A tanpa struktur memory → RAG vector store saja.
 
@@ -125,7 +134,7 @@ Semua modul di bawah **sudah diimplementasi** — aktifkan via env; tanpa flag, 
 | **21** Search & Graph Prod | Meilisearch/Neo4j sync ops | `SEARCH_GRAPH_PLATFORM_ENABLED` |
 | **22** Content Scale | R2/S3 offload, pgvector jobs | `CONTENT_SCALE_PLATFORM_ENABLED` |
 | **23** Knowledge Fabric | External connector ingest | `KNOWLEDGE_FABRIC_ENABLED` |
-| **24** AI-Brain Platform | Umbrella manifest + webhooks | `AI_BRAIN_PLATFORM_ENABLED` |
+| **24** Ratary Platform | Umbrella manifest + webhooks | `RATARY_PLATFORM_ENABLED` |
 | **25** Global Intelligence | Telemetry, analytics, sync | `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED` |
 
 Indeks lengkap: [.ai/phases/README.md](.ai/phases/README.md) · POST-ROADMAP: [.ai/phases/roadmap/10-POST-ROADMAP.md](.ai/phases/roadmap/10-POST-ROADMAP.md)
@@ -219,7 +228,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 | 21 — Search & Graph Prod | ✅ | [.ai/phases/21-search-graph-prod/](.ai/phases/21-search-graph-prod/) · [ADR-022](.ai/adr/022-search-graph-production-platform.md) |
 | 22 — Content Scale | ✅ | [.ai/phases/22-content-scale/](.ai/phases/22-content-scale/) · [ADR-021](.ai/adr/021-content-vector-scale-platform.md) |
 | 23 — Knowledge Fabric | ✅ | [.ai/phases/23-enterprise-knowledge-fabric/](.ai/phases/23-enterprise-knowledge-fabric/) · [ADR-047](.ai/adr/047-enterprise-knowledge-fabric.md) |
-| 24 — AI-Brain Platform | ✅ | [.ai/phases/24-ai-brain-platform/](.ai/phases/24-ai-brain-platform/) · [ADR-044](.ai/adr/044-ai-brain-platform-architecture.md) |
+| 24 — Ratary Platform | ✅ | [.ai/phases/24-ai-brain-platform/](.ai/phases/24-ai-brain-platform/) · [ADR-044](.ai/adr/044-ai-brain-platform-architecture.md) |
 | 25 — Global Intelligence | ✅ | [.ai/phases/25-global-ai-intelligence/](.ai/phases/25-global-ai-intelligence/) · [ADR-036](.ai/adr/036-global-ai-intelligence-platform.md) |
 
 *688 tests green (default flags OFF). Desain historis: [.ai/archive/](.ai/archive/). Ops & backfill: [10-PHASE-STATUS.md](.ai/core/architecture/10-PHASE-STATUS.md).*
@@ -235,7 +244,7 @@ REST API dan MCP **berbagi logic yang sama** melalui `MemoryService`.
 ```bash
 # Buat database D1 di Cloudflare Dashboard
 # atau via Wrangler:
-npx wrangler d1 create ai-memory-cloud
+npx wrangler d1 create ratary
 ```
 
 Catat:
@@ -300,7 +309,7 @@ Contoh konfigurasi (sesuaikan path):
 ```json
 {
   "mcpServers": {
-    "ai-memory-cloud": {
+    "ratary": {
       "command": "npx",
       "args": ["-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"],
       "env": {
@@ -321,7 +330,7 @@ Contoh konfigurasi (sesuaikan path):
 
 Setelah simpan config:
 1. Reload / restart client AI
-2. Pastikan server `ai-memory-cloud` connected (hijau / tools ter-list)
+2. Pastikan server `ratary` connected (hijau / tools ter-list)
 3. Uji: `search_memory` dengan query apa saja
 
 Atau jalankan MCP standalone:
@@ -334,7 +343,7 @@ npm run mcp
 
 ## Instalasi pada Lingkungan Pengembangan Baru
 
-Panduan formal untuk memindahkan instalasi **AI Memory Cloud** ke perangkat atau lingkungan pengembangan baru.  
+Panduan formal untuk memindahkan instalasi **Ratary** ke perangkat atau lingkungan pengembangan baru.  
 Dokumen ini relevan apabila Anda berganti workstation, memulihkan environment setelah reinstall, atau menstandarkan setup tim.
 
 ### Apa yang perlu disalin vs tetap di cloud
@@ -387,7 +396,7 @@ Generate `AUTH_SECRET` baru **hanya** jika database masih kosong dan bootstrap b
 | Cursor | stabil terbaru | — |
 
 Akun yang diperlukan:
-- [GitHub](https://github.com/lutfi04/ai-brain) — clone repositori
+- [GitHub](https://github.com/ontorata/ratary) — clone repositori
 - [Cloudflare](https://dash.cloudflare.com) — database D1
 - [Vercel](https://vercel.com) (opsional) — API produksi
 
@@ -396,7 +405,7 @@ Akun yang diperlukan:
 ### Langkah 1 — Clone repositori dan instalasi dependensi
 
 ```bash
-git clone https://github.com/lutfi04/ai-brain.git
+git clone https://github.com/ontorata/ratary.git
 cd ai-brain
 npm install
 ```
@@ -517,7 +526,7 @@ Ringkasan Cursor:
 cp .cursor/mcp.json.example .cursor/mcp.json
 ```
 
-Sesuaikan path absolut dan kredensial D1 → **Settings → MCP** → status `ai-memory-cloud` aktif → uji `search_memory`.
+Sesuaikan path absolut dan kredensial D1 → **Settings → MCP** → status `ratary` aktif → uji `search_memory`.
 
 ---
 
@@ -862,7 +871,7 @@ Master flags (semua default `false`). Rincian per fase: [.ai/phases/README.md](.
 | `SEARCH_GRAPH_PLATFORM_ENABLED` | 21 | Meilisearch/Neo4j sync |
 | `CONTENT_SCALE_PLATFORM_ENABLED` | 22 | R2/pgvector scale ops |
 | `KNOWLEDGE_FABRIC_ENABLED` | 23 | External connectors |
-| `AI_BRAIN_PLATFORM_ENABLED` | 24 | Umbrella + webhooks |
+| `RATARY_PLATFORM_ENABLED` | 24 | Umbrella + webhooks |
 | `GLOBAL_INTELLIGENCE_PLATFORM_ENABLED` | 25 | Telemetry + analytics + sync |
 
 Backfill provider eksternal (dry-run default): `db:backfill-pgvector`, `db:backfill-meilisearch`, `db:backfill-neo4j` — lihat [PANDUAN.md](docs/PANDUAN.md). Postgres metadata cutover: [.ai/phases/11-production-ops/MIGRATION.md](.ai/phases/11-production-ops/MIGRATION.md).

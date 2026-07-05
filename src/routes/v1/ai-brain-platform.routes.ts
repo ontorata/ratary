@@ -7,31 +7,31 @@ export async function aiBrainPlatformRoutes(
 ): Promise<void> {
   fastify.get(
     '/platform/status',
-    { schema: { tags: ['AI-Brain Platform'], summary: 'Platform status (Phase 24)' } },
+    { schema: { tags: ['Ratary Platform'], summary: 'Platform status (Phase 24)' } },
     controller.getStatus.bind(controller),
   );
 
   fastify.get(
     '/platform/manifest',
-    { schema: { tags: ['AI-Brain Platform'], summary: 'Umbrella platform manifest' } },
+    { schema: { tags: ['Ratary Platform'], summary: 'Umbrella platform manifest' } },
     controller.getManifest.bind(controller),
   );
 
   fastify.get(
     '/platform/webhooks',
-    { schema: { tags: ['AI-Brain Platform'], summary: 'List webhook subscriptions' } },
+    { schema: { tags: ['Ratary Platform'], summary: 'List webhook subscriptions' } },
     controller.listWebhooks.bind(controller),
   );
 
   fastify.post(
     '/platform/webhooks',
-    { schema: { tags: ['AI-Brain Platform'], summary: 'Create webhook subscription' } },
+    { schema: { tags: ['Ratary Platform'], summary: 'Create webhook subscription' } },
     controller.createWebhook.bind(controller),
   );
 
   fastify.delete(
     '/platform/webhooks/:id',
-    { schema: { tags: ['AI-Brain Platform'], summary: 'Delete webhook subscription' } },
+    { schema: { tags: ['Ratary Platform'], summary: 'Delete webhook subscription' } },
     controller.deleteWebhook.bind(controller),
   );
 }

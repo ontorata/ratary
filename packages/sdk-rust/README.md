@@ -1,4 +1,4 @@
-# @ai-brain/sdk-rust
+# @ratary/sdk-rust
 
 Rust client. Add to Cargo.toml: `reqwest`, `serde_json`. Regenerate: `npm run generate:sdks`.
 

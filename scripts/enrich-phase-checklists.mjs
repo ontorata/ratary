@@ -134,9 +134,9 @@ const FULL = [
         items: [
           [true, 'ADR-031 Implemented'],
           [true, 'OpenAPI snapshot pipeline (`snapshot:openapi`, `build:packages`)'],
-          [true, '`@ai-brain/sdk` TypeScript reference client'],
-          [true, '`@ai-brain/cli` uses SDK only — no direct fetch'],
-          [true, '`@ai-brain/mcp-server` uses SDK only'],
+          [true, '`@ratary/sdk` TypeScript reference client'],
+          [true, '`@ratary/cli` uses SDK only — no direct fetch'],
+          [true, '`@ratary/mcp-server` uses SDK only'],
           [true, '6 language thin wrappers + manifest `transport.sdk`'],
         ],
       },
@@ -249,7 +249,7 @@ const APPEND_GATE_ONLY = [
   { dir: '21-search-graph-prod', gateDate: '2026-07-04', adr: 'ADR-022', flag: 'SEARCH_GRAPH_PLATFORM_ENABLED=false', tests: REGRESSION },
   { dir: '22-content-scale', gateDate: '2026-07-04', adr: 'ADR-021', flag: 'CONTENT_SCALE_PLATFORM_ENABLED=false', tests: REGRESSION },
   { dir: '23-enterprise-knowledge-fabric', gateDate: '2026-07-04', adr: 'ADR-047', flag: 'KNOWLEDGE_FABRIC_ENABLED=false', tests: REGRESSION },
-  { dir: '24-ai-brain-platform', gateDate: '2026-07-04', adr: 'ADR-044', flag: 'AI_BRAIN_PLATFORM_ENABLED=false', tests: REGRESSION },
+  { dir: '24-ai-brain-platform', gateDate: '2026-07-04', adr: 'ADR-044', flag: 'RATARY_PLATFORM_ENABLED=false', tests: REGRESSION },
   { dir: '25-global-ai-intelligence', gateDate: '2026-07-04', adr: 'ADR-036/037/038/043', flag: 'GLOBAL_INTELLIGENCE_PLATFORM_ENABLED=false', tests: REGRESSION },
   { dir: '19-observability-platform', gateDate: '2026-07-04', adr: 'ADR-034', flag: 'OBSERVABILITY_PLATFORM=false', tests: REGRESSION },
 ];

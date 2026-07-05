@@ -8,7 +8,7 @@
 
 ## Goal
 
-Implement **remote MCP transport** on the existing Fastify server so ChatGPT **New App → Server URL** can connect to AI Memory Cloud with the **same 20 tools** as Cursor stdio — without changing `MemoryService`, repositories, or MCP tool schemas.
+Implement **remote MCP transport** on the existing Fastify server so ChatGPT **New App → Server URL** can connect to Ratary with the **same 20 tools** as Cursor stdio — without changing `MemoryService`, repositories, or MCP tool schemas.
 
 ---
 
@@ -38,7 +38,7 @@ Implement **remote MCP transport** on the existing Fastify server so ChatGPT **N
 
 ## Out of scope
 
-- `@ai-brain/mcp-server` npm package (Phase 16)
+- `@ratary/mcp-server` npm package (Phase 16)
 - OAuth for ChatGPT
 - New MCP tools or breaking schema changes
 

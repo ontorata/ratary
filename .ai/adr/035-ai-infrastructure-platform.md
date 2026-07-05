@@ -8,7 +8,7 @@
 
 ## Context
 
-Phases 16–19 deliver developer UX, security, cloud ops, and observability. Phase 20 **unifies** AI Brain as **AI Memory Infrastructure**: plugin marketplace, provider registry for storage/embedding/vector/graph/LLM, federation capstone, single capability surface for all protocols (REST/gRPC/MCP/WS/SSE/SDK/CLI/Dashboard).
+Phases 16–19 deliver developer UX, security, cloud ops, and observability. Phase 20 **unifies** Ratary as **AI Memory Infrastructure**: plugin marketplace, provider registry for storage/embedding/vector/graph/LLM, federation capstone, single capability surface for all protocols (REST/gRPC/MCP/WS/SSE/SDK/CLI/Dashboard).
 
 ## Problem
 

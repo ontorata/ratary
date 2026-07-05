@@ -34,7 +34,7 @@
 | MCP | `initialize` `_meta['io.aibrain/capabilities']` | Condensed snapshot (D7.5-01) |
 | MCP | `initialize` `_meta` request/negotiation keys | Bidirectional handshake (D7.5-03) |
 | OpenAPI | `GET /docs/json` | Public (existing) |
-| SDK | `@ai-brain/sdk` `CapabilitiesApi.get()` / `.negotiate()` | Phase 16 (D7.5-02) |
+| SDK | `@ratary/sdk` `CapabilitiesApi.get()` / `.negotiate()` | Phase 16 (D7.5-02) |
 
 Response includes `X-Protocol-Version` header on REST capabilities and negotiate routes.
 

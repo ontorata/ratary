@@ -50,7 +50,7 @@ flowchart LR
 
 ## Cross-cutting invariants
 
-1. **Business logic** remains in AI Brain server `src/services/` — SDK/CLI/Dashboard are **consumers**.
+1. **Business logic** remains in Ratary server `src/services/` — SDK/CLI/Dashboard are **consumers**.
 2. **All providers** = adapters at composition root (ADR-008).
 3. **All protocols** = adapters (Phase 13).
 4. **Agent runtime** = external (Phase 7, 15).

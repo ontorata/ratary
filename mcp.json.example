@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "ai-memory-cloud": {
+    "ratary": {
       "command": "npx",
       "args": ["-y", "tsx", "D:/Apps/ai-brain/src/mcp/stdio.ts"],
       "cwd": "D:/Apps/ai-brain"

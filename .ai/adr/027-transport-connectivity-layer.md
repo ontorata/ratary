@@ -29,7 +29,7 @@ Phase 7.5 delivered `GET /api/v1/capabilities` and MCP `get_capabilities` (ADR-0
 - REST `/api/v1/*` and MCP tool schemas remain **stable** (additive only).
 - gRPC **opt-in** via `GRPC_ENABLED=false` default.
 - gRPC **not** on Vercel serverless edge initially (long-running Node/K8s/VM only).
-- SDK (`@ai-brain/client`) **outside** this repository (Phase 7.5 DESIGN).
+- SDK (`@ratary/client`) **outside** this repository (Phase 7.5 DESIGN).
 - No agent runtime, planner, or executor in repo.
 - Phase 11 P0 (Postgres cutover) must not be blocked.
 
@@ -124,7 +124,7 @@ All six tracks landed with zero behavior change at default env (D1 + REST + MCP 
 | 10.5B | `IApplicationHandler` + ≥10 shared handlers (memory, context, capabilities, graph, relations); REST controllers and MCP tools delegate to the same handlers |
 | 10.5C | REST bootstrap moved to `transport/rest/rest-server.ts`; `src/server.ts` re-export shim; `RestTransportServer implements ITransportServer` |
 | 10.5D | MCP bootstrap moved to `transport/mcp/mcp-server.ts`; `src/mcp/server.ts` re-export shim (stdio entrypoint unchanged); `McpTransportServer` |
-| 10.5E | `transport/grpc/` — `ai.brain.v1` proto (Memory unary, Search unary, Context server-stream, Health), `GrpcTransportServer` behind `GRPC_ENABLED=false`; `@grpc/grpc-js` loaded only when enabled via dynamic import in `start-transports.ts` |
+| 10.5E | `transport/grpc/` — `ontorata.ratary.v1` proto (Memory unary, Search unary, Context server-stream, Health), `GrpcTransportServer` behind `GRPC_ENABLED=false`; `@grpc/grpc-js` loaded only when enabled via dynamic import in `start-transports.ts` |
 | 10.5F | `AICapabilityManifest.transport` additive block (rest/mcp/grpc/sdk); `TransportRegistry` composition root |
 
 **New env:** `GRPC_ENABLED` (default `false`), `GRPC_PORT` (default `50051`, `0` = ephemeral), `GRPC_HOST`, `GRPC_TLS_CERT_PATH`, `GRPC_TLS_KEY_PATH` (mTLS — both or neither).

@@ -9,7 +9,7 @@
 
 # Purpose
 
-Define the phased evolution of the AI Brain memory foundation from Phase 1 through Phase 10.
+Define the phased evolution of the Ratary memory foundation from Phase 1 through Phase 10.
 
 Record what is completed, what is in progress, what is planned, dependencies between phases, risks, success criteria, and architecture evolution at each stage.
 

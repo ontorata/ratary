@@ -7,4 +7,4 @@ npm run build:sdk
 AI_BRAIN_API_KEY=aic_... node examples/node-basic/index.mjs
 ```
 
-Uses `@ai-brain/sdk` only — no direct fetch.
+Uses `@ratary/sdk` only — no direct fetch.

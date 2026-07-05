@@ -2,7 +2,7 @@ import type { ErrorCodeDescriptor, RateLimitDescriptor } from './capability-mani
 
 export const PROTOCOL_VERSION = '1.0.0';
 
-/** AI Brain application protocol versions accepted during capability negotiation (D7.5-03). */
+/** Ratary application protocol versions accepted during capability negotiation (D7.5-03). */
 export const SUPPORTED_AI_BRAIN_PROTOCOL_VERSIONS = [PROTOCOL_VERSION] as const;
 
 /** MCP initialize `_meta` keys for capability discovery and negotiation. */

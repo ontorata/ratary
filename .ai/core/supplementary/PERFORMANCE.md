@@ -8,7 +8,7 @@
 
 # Purpose
 
-Define measurable performance engineering standards for the AI Brain memory foundation from Phase 1 through Phase 10.
+Define measurable performance engineering standards for the Ratary memory foundation from Phase 1 through Phase 10.
 
 Establish budgets, limits, and decision criteria so latency, throughput, resource use, and scale remain predictable as retrieval, embedding, vector, graph, and enterprise capabilities are added.
 

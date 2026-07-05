@@ -1,9 +1,9 @@
-# Phase 24 — AI-Brain Platform — COMPLETION
+# Phase 24 — Ratary Platform — COMPLETION
 
 **Phase status:** ✅ Closed — gate PASS (2026-07-04)  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)  
 **ADR:** ADR-044
-**Master flag:** `AI_BRAIN_PLATFORM_ENABLED=false` (default OFF — zero behavior change without opt-in)
+**Master flag:** `RATARY_PLATFORM_ENABLED=false` (default OFF — zero behavior change without opt-in)
 
 
 ---
@@ -48,7 +48,7 @@ Map roadmap success criteria to durable evidence.
 
 ## Rollback
 
-Set `AI_BRAIN_PLATFORM_ENABLED=false`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
+Set `RATARY_PLATFORM_ENABLED=false`. See [MIGRATION.md](MIGRATION.md) and [IMPLEMENTATION.md](IMPLEMENTATION.md).
 
 
 ---
