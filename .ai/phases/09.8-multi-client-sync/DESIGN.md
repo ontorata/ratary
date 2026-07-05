@@ -57,13 +57,15 @@ Optional branch merge via Phase 09.7 evolution is deferred — evolution archive
 - Per-client OAuth — reuse Phase 3/17 identity paths
 - Real-time websocket bidirectional sync (REST pull/push at gate)
 
-## REST (gated)
+## REST + MCP (gated)
 
 ```
 GET  /api/v1/sync/status?platformId=cursor
 GET  /api/v1/sync/pull?platformId=cursor&cursor=<iso>
 POST /api/v1/sync/push  { platformId, changes[], cursor? }
 ```
+
+MCP tools (same service, `MULTI_CLIENT_SYNC_ENABLED=true`): `sync_status`, `sync_pull`, `sync_push`.
 
 ## Rollback
 

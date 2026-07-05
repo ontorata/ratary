@@ -26,6 +26,7 @@ npm run lint && npm run format:check && npm run typecheck && npm test
 | `tests/transport/transport-registry.test.ts` | Registry lifecycle |
 | `tests/transport/grpc-transport.test.ts` | Proto mappers, service bindings |
 | `tests/transport/grpc-boot.test.ts` | Ephemeral port boot when gRPC enabled |
+| `tests/transport/grpc-e2e.test.ts` | **D105-01** — live `@grpc/grpc-js` client: Health, Memory CRUD, Search, Context stream |
 | `tests/capabilities/manifest-contract.test.ts` | `transport` section (REST/MCP/gRPC/sdk) |
 
 ---
@@ -51,6 +52,12 @@ MCP: `tests/mcp/tools.test.ts` — 20 tools unchanged.
 
 ---
 
+## gRPC E2E (D105-01)
+
+`tests/transport/grpc-e2e.test.ts` starts `GrpcTransportServer` on ephemeral port and exercises all four v1 services via real `@grpc/grpc-js` clients with `owner-id` metadata.
+
+---
+
 ## Optional gRPC job
 
 gRPC boot test runs on ephemeral port; not required for default CI gate when `GRPC_ENABLED=false`.
@@ -59,5 +66,5 @@ gRPC boot test runs on ephemeral port; not required for default CI gate when `GR
 
 ## Deferred
 
-- Full gRPC E2E against live client
-- Transport benchmark CLI (Phase 13)
+- ~~Full gRPC E2E against live client~~ → **D105-01 closed** (2026-07-05)
+- Transport benchmark CLI (Phase 13) — shipped in Phase 13

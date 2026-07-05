@@ -38,7 +38,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Accepted debt
 
-- REST-only sync surface
+- MCP sync tools shipped: `sync_status`, `sync_pull`, `sync_push` in `mcp-server.ts` (verified `tests/mcp/sync-tools.test.ts`).
 - Field merge ignores evolution branches
 
 ---
@@ -46,7 +46,7 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 ## Recommendations
 
 - Add REST E2E two-client sync test before staging enable
-- Expose MCP sync tools for Cursor remote workflow
+- Expose MCP sync tools for Cursor remote workflow — **done** (sync_* tools + E2E test)
 
 ---
 

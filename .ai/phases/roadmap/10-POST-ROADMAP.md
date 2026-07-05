@@ -143,7 +143,7 @@ Move from *adapters exist* to *adapters proven in staging/production* for metada
 | ADR | Title | Purpose |
 |-----|-------|---------|
 | ADR-018 | Production Postgres cutover | ✅ Approved (2026-07-03) |
-| (optional) ADR-019 | Repository module split | Boundaries if 11C proceeds |
+| (optional) ADR-019 | Repository module split | **Proposed** (2026-07-05) — bounds 11C; Approve before code |
 
 ## Success criteria
 
@@ -550,7 +550,7 @@ Full index: [phases/README.md](../README.md#phase-index--extension-tracks-opt-in
 
 | ID | Item | Target phase | Status |
 |----|------|--------------|--------|
-| T-01 | `MemoryRepository` ~622 lines | 11C | Open |
+| T-01 | `MemoryRepository` ~860 lines | 11C | Open — ADR-019 Proposed bounds scope |
 | T-05 | D1 in-process graph BFS | 21B | Open |
 | T-06 | Audit identity at context.build | 12C | Open |
 | T-07 | `GET /memory/:id` audit | 12C or ADR-017 amend | Open |

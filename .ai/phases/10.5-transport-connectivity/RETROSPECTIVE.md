@@ -17,7 +17,7 @@
 
 - gRPC surface is minimal (Memory, Search, Context stream, Health) — Phase 13 should extend without duplicating ranking logic.
 - MCP remains a separate process entrypoint (not in `startTransports`) — document clearly for operators.
-- Full gRPC E2E client test deferred.
+- Full gRPC E2E client test shipped (D105-01, 2026-07-05).
 
 ---
 

@@ -11,7 +11,7 @@
 ```text
 npm run lint      → PASS
 npm run typecheck → PASS
-npm test          → 402 passed (72 files)
+npm test          → 825 passed | 3 skipped (238 files, 2026-07-05)
 ```
 
 Baseline at default env (`ENTERPRISE_RBAC=false`): **unchanged regression surface** vs pre-Phase-10 (310+ target exceeded).
@@ -24,7 +24,8 @@ Baseline at default env (`ENTERPRISE_RBAC=false`): **unchanged regression surfac
 |------|------|-------|
 | D1 SQL adapter | `tests/infrastructure/d1-sql-database.adapter.test.ts` | 3 |
 | Vector bridge | `tests/infrastructure/d1-vector-store.bridge.test.ts` | 3 |
-| Platform factory | `tests/infrastructure/platform-adapters.defaults.test.ts` | 3 |
+| Platform factory | `tests/infrastructure/platform-adapters.defaults.test.ts` | 4 |
+| Enterprise RBAC boundary | `tests/infrastructure/enterprise-layer-boundaries.test.ts` | 1 |
 | Enterprise DDL | `tests/db/enterprise-migration.test.ts` | 4 |
 | Org backfill | `tests/scripts/organization-backfill.test.ts` | 1 |
 | RBAC E2E | `tests/api/cross-organization-leak.test.ts` | 12 |

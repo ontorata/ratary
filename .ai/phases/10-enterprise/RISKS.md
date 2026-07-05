@@ -1,25 +1,27 @@
 ﻿# Phase 10 — Enterprise — RISKS (Verification)
 
 **Document:** RISKS  
-**Phase status:** Verified at gate  
+**Phase status:** Verified at gate · re-verified 2026-07-05  
 **Schema:** [PHASE-DOCUMENT-SCHEMA.md](../PHASE-DOCUMENT-SCHEMA.md)
 
 ---
 
 ## Risk register verification
 
-| ID | Risk | Mitigation | Verification |
-|----|------|------------|--------------|
-| R10-01 | Adapter wiring breaks regression | Default flags = current behavior | **337 tests** green at default env |
-| R10-02 | Dual port naming confusion | Bridges only in infrastructure | Single `createPlatformAdapters()` factory |
-| R10-03 | Postgres dialect drift | Mitigated at adapter layer | ADR-009 Implemented; production cutover Phase 11 |
-| R10-04 | RBAC leaks into MemoryService | Auth boundary only | Grep: no membership checks in services |
-| R10-05 | Org schema migration on live D1 | Idempotent DDL + backfill | Migration + backfill tests |
-| R10-06 | Object storage dual-write | Inline default | `InlineObjectStorage` only; R2 gated |
-| R10-07 | Scope expansion breaks E2E | Extended leak tests | cross-workspace (17) + cross-org (12) PASS |
-| R10-08 | Premature Redis/Kafka | NoOp defaults | NoOp event bus / analytics |
-| R10-09 | Repository refactor scope creep | Incremental ISqlDatabase | One adapter family per commit area |
-| R10-10 | Performance regression | Thin bridge | No benchmark regression gate required; indirection minimal |
+| ID | Risk | Mitigation | Verification (2026-07-05) |
+|----|------|------------|---------------------------|
+| R10-01 | Adapter wiring breaks regression | Default flags = current behavior | **825 tests** pass \| 3 skipped at default env (`npm test`) |
+| R10-02 | Dual port naming confusion | Bridges only in infrastructure | Single `createPlatformAdapters()` — `platform-adapters.defaults.test.ts` |
+| R10-03 | Postgres dialect drift | Mitigated at adapter layer | ADR-009 Implemented; Phase 11 staging harness 3/3 PASS (ADR-018) |
+| R10-04 | RBAC leaks into MemoryService | Auth boundary only | `enterprise-layer-boundaries.test.ts` — no membership in services/memory/repos |
+| R10-05 | Org schema migration on live D1 | Idempotent DDL + backfill | `enterprise-migration.test.ts` + `organization-backfill.test.ts` |
+| R10-06 | Object storage dual-write | Inline default | `OBJECT_STORAGE_PROVIDER=inline` default; R2/S3 gated in `createObjectStorage()` |
+| R10-07 | Scope expansion breaks E2E | Extended leak tests | `cross-workspace-leak.test.ts` (17) + `cross-organization-leak.test.ts` (12) PASS |
+| R10-08 | Premature Redis/Kafka | NoOp defaults | `EVENT_BUS_PROVIDER=noop`; `NoOpEventBus` in `create-event-bus.ts` |
+| R10-09 | Repository refactor scope creep | Incremental ISqlDatabase | One adapter family per commit; optional 11C bounded by **ADR-019 Proposed** |
+| R10-10 | Performance regression | Thin bridge | Accepted — no benchmark gate; bridge delegates only |
+
+**Verdict:** All ten risks **mitigated or accepted**. No new gate blockers.
 
 ---
 
@@ -27,7 +29,7 @@
 
 | Risk | Notes |
 |------|-------|
-| Postgres not production-proven at full-suite scale | Adapter Implemented (ADR-009); cutover runbook Phase 11 (ADR-018) |
+| Postgres full-suite on live cluster | Adapter + staging harness PASS (Phase 11); production cutover remains owner-runbook (ADR-018) |
 | JWT enterprise claims not auto-populated on issueToken | Additive schema only; membership enforced via DB port |
 | RBAC requires manual membership seeding | Expected for enterprise; backfill script covers org linkage only |
 
@@ -45,4 +47,4 @@ These are **production deployment actions** — not phase gate blockers. Phase 1
 
 ---
 
-*Verified 2026-07-03 against DESIGN §7.*
+*Verified 2026-07-03 at gate; re-verified 2026-07-05 against DESIGN §7 and full regression suite.*

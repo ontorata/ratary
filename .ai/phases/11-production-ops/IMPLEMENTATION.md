@@ -211,7 +211,7 @@ Split `MemoryRepository` into internal reader/writer modules — **not in initia
 | Gate | Requirement |
 |------|-------------|
 | Prerequisite | 11B staging harness PASS |
-| ADR | ADR-019 Approved if new public types or port moves |
+| ADR | ADR-019 **Proposed** (2026-07-05) — **Approved** required before 11C code |
 | Scope | Refactor-only; zero behavior change; full suite green |
 
 ---

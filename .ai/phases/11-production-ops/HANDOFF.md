@@ -82,7 +82,7 @@ npm run test:postgres-staging
 | **P1** | Verify staging harness hijau | `npm run test:postgres-staging` di CI |
 | **P2** | Owner review MIGRATION.md | Runbook cutover perlu owner eyes |
 | **P3** | Ops docs (11D) close | CHECKLIST §4-§5 |
-| **Deferred** | 11C `MemoryRepository` reader/writer split | Gated by 11B PASS |
+| **Deferred** | 11C `MemoryRepository` reader/writer split | ADR-019 Proposed — owner Approve to implement |
 
 ---
 

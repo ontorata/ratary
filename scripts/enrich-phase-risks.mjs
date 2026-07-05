@@ -184,7 +184,7 @@ const PHASES = [
       ['Last-write-wins silent data loss', 'Medium', 'High', 'Document LWW; manual_queue strategy', 'Mitigated'],
       ['Cross-workspace sync leak', 'Low', 'Critical', 'Scope on pull/push; isolation tests', 'Mitigated'],
       ['Stale write not rejected', 'Medium', 'Medium', 'SyncStaleDetector + reconcileWrite reject', 'Mitigated'],
-      ['No MCP sync surface', 'Medium', 'Low', 'REST only MVP', 'Deferred'],
+      ['No MCP sync surface', 'Medium', 'Low', 'MCP sync_status/pull/push tools + sync-tools.test.ts', 'Mitigated'],
     ],
   },
   {
@@ -197,7 +197,7 @@ const PHASES = [
       ['Transport imports in services/', 'Medium', 'Critical', 'layer-boundaries.test.ts', 'Mitigated'],
       ['Breaking stdio MCP spawn', 'Medium', 'Critical', 'Strangler re-exports; mcp/server.ts unchanged path', 'Mitigated'],
     ],
-    deferred: [['D105-01', 'Full gRPC E2E client test', 'Post-gate']],
+    deferred: [],
   },
   {
     dir: '11-production-ops',
@@ -207,7 +207,7 @@ const PHASES = [
       ['Postgres cutover data loss', 'Medium', 'Critical', 'S0–S4 runbook; parity scripts; rollback', 'Mitigated'],
       ['Default D1 deploy broken', 'Low', 'Critical', 'SQL_PROVIDER=d1 unchanged default', 'Mitigated'],
       ['Staging harness false positive', 'Medium', 'High', 'postgres-staging.integration.test.ts (skipped CI)', 'Mitigated'],
-      ['Repository split scope creep', 'Medium', 'Medium', '11C deferred optional ADR-019', 'Deferred'],
+      ['Repository split scope creep', 'Medium', 'Medium', 'ADR-019 Proposed bounds 11C; optional owner-gated', 'Accepted'],
     ],
   },
   {

@@ -1,7 +1,7 @@
 # Phase 09.8 — Multi-Client Sync — TESTING
 
 **Phase status:** Closed  
-**Gate:** PASS 2026-07-04
+**Gate:** PASS 2026-07-04 · MCP surface verified 2026-07-05
 
 ---
 
@@ -17,6 +17,15 @@
 
 ---
 
+## Integration tests
+
+| File | Coverage |
+|------|----------|
+| `tests/api/client-sync.test.ts` | REST pull → push round-trip (`field_merge`) |
+| `tests/mcp/sync-tools.test.ts` | MCP `sync_status`, `sync_pull`, `sync_push`; flag-off guard |
+
+---
+
 ## Manual verification
 
 ```bash
@@ -25,13 +34,14 @@ MULTI_CLIENT_SYNC_ENABLED=true MULTI_CLIENT_SYNC_STORE_PROVIDER=sql npm run sync
 
 REST pull/push with `X-API-Key` + optional `X-Workspace-Id` when enterprise RBAC enabled.
 
+MCP (stdio): `sync_status`, `sync_pull`, `sync_push` when `MULTI_CLIENT_SYNC_ENABLED=true`.
+
 ---
 
 ## Deferred
 
-- REST E2E pull/push integration test
-- MCP sync tools (future)
 - Branch merge via 09.7 evolution on conflict
+
 ## Current regression
 
-689 passed | 3 skipped (default env, 2026-07-04) (full suite, all master flags OFF)
+825+ passed at default env (2026-07-05); sync suites require `MULTI_CLIENT_SYNC_ENABLED=true` in test env.

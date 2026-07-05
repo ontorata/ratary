@@ -15,7 +15,7 @@ Prove Postgres metadata path in staging and deliver a **reversible production cu
 |-------|-------------|
 | 11A | D1→Postgres backfill + parity scripts + `MIGRATION.md` runbook |
 | 11B | Staging harness — schema bootstrap + CI + integration tests |
-| 11C | `MemoryRepository` split | ⏸️ Deferred (optional ADR-019) |
+| 11C | `MemoryRepository` split | ⏸️ Optional — ADR-019 **Proposed** (2026-07-05); Approve before code |
 | 11D | PANDUAN §8 + ops env matrix |
 
 **Default:** `SQL_PROVIDER=d1` unchanged. Postgres is opt-in via `SQL_PROVIDER=postgres` + `DATABASE_URL`.

@@ -25,7 +25,7 @@ Phase-specific risk register: identified, mitigated, realized, and deferred risk
 
 | ID | Risk | Mitigation path |
 |----|------|-----------------|
-| D105-01 | Full gRPC E2E client test | Post-gate |
+| ~~D105-01~~ | ~~Full gRPC E2E client test~~ | ✅ **Closed 2026-07-05** — `tests/transport/grpc-e2e.test.ts` |
 
 ---
 
