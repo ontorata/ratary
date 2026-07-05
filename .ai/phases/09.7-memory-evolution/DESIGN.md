@@ -25,7 +25,7 @@ Enable memories to evolve over time with immutable versions and a Current head p
 | `IMemoryVersionStore` | `SqlMemoryVersionStore` | ✅ |
 | `IMemoryHeadStore` | `SqlMemoryHeadStore` | ✅ |
 | `IMemoryDiffEngine` | `DefaultMemoryDiffEngine` | ✅ |
-| `IMemoryMergePolicy` | `DefaultMemoryMergePolicy` | ✅ |
+| `IMemoryMergePolicy` | `DefaultMemoryMergePolicy` (non-destructive field merge) | ✅ |
 | `IVersionConfidenceScorer` | `DefaultVersionConfidenceScorer` | ✅ |
 | Coordinator | `MemoryEvolutionCoordinator` | ✅ |
 

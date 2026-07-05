@@ -171,10 +171,13 @@ const PHASES = [
     gateDate: '2026-07-04',
     risks: [
       ['Version table growth unbounded', 'Medium', 'Medium', 'Archive on update; retention policy TBD', 'Accepted'],
-      ['Merge policy data loss', 'Medium', 'High', 'DefaultMemoryMergePolicy stub; merge deferred', 'Deferred'],
+      ['Merge policy data loss', 'Medium', 'High', 'preferNonEmpty field merge + unit tests; branch merge D97-02 deferred', 'Mitigated'],
       ['Coordinator hooks break writes', 'Low', 'Critical', 'Flag off = no-op; MemoryService tests', 'Mitigated'],
     ],
-    deferred: [['D97-01', 'Restore-to-version', 'POST-MVP endpoint']],
+    deferred: [
+      ['D97-01', 'Restore-to-version', 'POST-MVP endpoint'],
+      ['D97-02', 'Evolution branch merge execute', 'POST-MVP'],
+    ],
   },
   {
     dir: '09.8-multi-client-sync',

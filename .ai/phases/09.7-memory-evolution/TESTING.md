@@ -20,7 +20,7 @@
 ## Scenarios verified
 
 - [x] Diff detects title/content changes
-- [x] Merge unions tags and prefers incoming text
+- [x] Merge unions tags; empty incoming never wipes base text (`memory-merge-policy.test.ts`)
 - [x] Composition disabled by default
 - [x] Migration creates version + head tables
 - [x] MemoryService signatures unchanged when flag off

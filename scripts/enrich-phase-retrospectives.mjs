@@ -343,7 +343,7 @@ const PHASES = [
       'ADR-040 Implemented',
     ],
     harderOrDeferred: ['Branch merge execute not implemented', 'Restore-to-version not implemented'],
-    acceptedDebt: ['Merge policy is stub', 'Version history read-only'],
+    acceptedDebt: ['Evolution branch merge execute deferred (D97-02)', 'Version history read-only'],
     recommendations: [
       'Implement restore endpoint before multi-client sync prod',
       'Wire branch merge into Phase 09.8 field_merge resolver',

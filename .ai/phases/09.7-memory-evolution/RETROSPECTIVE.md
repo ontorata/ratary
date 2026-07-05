@@ -37,8 +37,8 @@ Evidence: [IMPLEMENTATION.md](IMPLEMENTATION.md) · [TESTING.md](TESTING.md) · 
 
 ## Accepted debt
 
-- Merge policy is stub
-- Version history read-only
+- Evolution branch merge execute deferred (D97-02)
+- Version history read-only (restore D97-01)
 
 ---
 

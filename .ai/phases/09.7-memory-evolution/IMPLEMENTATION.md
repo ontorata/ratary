@@ -13,7 +13,7 @@
 | Stores | `memory_versions`, `memory_heads` + SQL adapters | ✅ |
 | Coordinator | Archive pre-update on `updateMemory` | ✅ |
 | Diff | `DefaultMemoryDiffEngine` field-level diff | ✅ |
-| Merge | `DefaultMemoryMergePolicy` (field merge stub) | ✅ |
+| Merge | `DefaultMemoryMergePolicy` (non-destructive field merge) | ✅ |
 | Confidence | `DefaultVersionConfidenceScorer` | ✅ |
 | Service | `MemoryEvolutionService` list + diff | ✅ |
 | REST | `GET .../versions`, `GET .../versions/:n/diff` | ✅ |
