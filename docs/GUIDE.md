@@ -62,6 +62,22 @@ curl -X POST http://localhost:3000/api/v1/auth/bootstrap \
 
 Save the returned `apiKey` (`aic_...`). Bootstrap works once when no identities exist.
 
+### Ontorata Studio (web console)
+
+**[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** is the operator web UI for this Ratary server — browse memories, search, graph, and workspaces via `@ratary/sdk`. It lives in a **separate repository** (not bundled in the server Docker image).
+
+```bash
+git clone https://github.com/ontorata/Ontorata-Studio.git
+cd Ontorata-Studio
+npm install
+cp .env.example .env
+# VITE_RATARY_BASE_URL=http://localhost:3000
+# VITE_RATARY_API_KEY=aic_...
+npm run dev
+```
+
+Open `http://localhost:5173`. Memory MCP in your IDE remains server id **`ratary`**.
+
 ---
 
 ## 2. Daily usage (just chat)
