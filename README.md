@@ -421,7 +421,7 @@ Organized by direction — not sprints. **Repository scope** noted where work le
 | | Themes | Primary repository |
 |---|--------|-------------------|
 | **Today** | Ratary MCP + REST, hybrid retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, npm [`@ratary/*`](https://www.npmjs.com/org/ratary), [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), remote Ratary MCP | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
-| **Next** | SDK surface expansion, live knowledge connectors (Notion/Confluence), additional language SDKs | `ontorata/ratary` |
+| **Next** | Additional language SDKs, more live connectors (Confluence, Drive) | `ontorata/ratary` |
 | **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace | `ontorata/ratary` (platform) |
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean.

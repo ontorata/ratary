@@ -36,6 +36,10 @@ const client = new RataryClient({
 });
 
 const results = await client.memory.search({ query: 'deployment' });
+
+// Phase 28 — admin surfaces (cloud, observability, infrastructure, platform, fabric, federation)
+const cloudStatus = await client.admin.cloud.getStatus();
+const connectors = await client.admin.knowledgeFabric.listConnectors();
 ```
 
 ### MCP (hosted brain)
@@ -63,7 +67,11 @@ Full guide: [docs/install/remote.md](../docs/install/remote.md).
 export RATARY_BASE_URL=https://your-host.example.com
 export RATARY_API_KEY=aic_...
 ratary --help
+ratary admin cloud status
+ratary connectors sync notion --mode incremental
 ```
+
+**Live connector sync (Phase 29):** requires server `KNOWLEDGE_FABRIC_ENABLED=true` and `CONNECTOR_SYNC_ENABLED=true` plus vendor token (e.g. `NOTION_API_TOKEN`).
 
 ---
 

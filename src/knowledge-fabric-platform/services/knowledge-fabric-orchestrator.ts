@@ -42,8 +42,12 @@ export class KnowledgeFabricOrchestrator implements IKnowledgeFabricOrchestrator
     private readonly memoryService: MemoryService,
   ) {}
 
-  async ingest(input: FabricIngestInput, scope: MemoryScope): Promise<FabricIngestRun> {
-    const connector = this.connectors.get(input.connectorId);
+  async ingest(
+    input: FabricIngestInput,
+    scope: MemoryScope,
+    connectorOverride?: IKnowledgeConnector,
+  ): Promise<FabricIngestRun> {
+    const connector = connectorOverride ?? this.connectors.get(input.connectorId);
     if (!connector?.isConfigured()) {
       throw new Error(`${input.connectorId} connector is not configured — check env credentials`);
     }
