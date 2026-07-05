@@ -388,7 +388,7 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 | | |
 |---|---|
 | [ontorata/ontorata-mcp](https://github.com/ontorata/ontorata-mcp) | Ontorata MCP — ecosystem gateway |
-| [ontorata/Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) | Ontorata Studio — operator UI |
+| [ontorata/Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) | Ontorata Studio — operator UI ([setup](docs/GUIDE.md#ontorata-studio-web-console)) |
 
 ---
 
@@ -400,8 +400,8 @@ Organized by direction — not sprints. **Repository scope** noted where work le
 
 | | Themes | Primary repository |
 |---|--------|-------------------|
-| **Today** | Ratary MCP + REST, hybrid retrieval, multi-SQL self-host (D1/Postgres/MariaDB), Docker compose, remote Ratary MCP | `ontorata/ratary` |
-| **Next** | Deeper connectors, expanded SDK/CLI surface; Ontorata Studio operator UI | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) (separate) |
+| **Today** | Ratary MCP + REST, hybrid retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), remote Ratary MCP | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
+| **Next** | SDK surface expansion, live knowledge connectors (Notion/Confluence), deeper CLI | `ontorata/ratary` |
 | **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace | `ontorata/ratary` (platform) |
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean.

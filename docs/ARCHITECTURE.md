@@ -23,7 +23,9 @@ Memory → Knowledge → Search → Embedding → Hybrid Retrieval → Graph →
 
 Agent planning and execution stay **outside** this repository (MCP/REST consumers only).
 
-**Platform adapters:** peer SQL backends (D1, Postgres, MariaDB/MySQL, TiDB/Cockroach) plus optional pgvector, R2/S3/MinIO, Azure Blob, GCS, Redis, Meilisearch, OpenSearch, Neo4j, DuckDB, ClickHouse — selected via env. See [CONFIGURATION.md](CONFIGURATION.md) Tier 0–2 and [DOCKER.md](DOCKER.md) compose profiles.
+**Ontorata ecosystem (outside this repo):** [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio) operator UI (`@ratary/sdk` only) · [Ontorata MCP](https://github.com/ontorata/ontorata-mcp) ecosystem gateway.
+
+**Platform adapters:** peer SQL backends (D1, Postgres, Supabase, MariaDB/MySQL, TiDB/Cockroach) plus optional pgvector, R2/S3/MinIO, Azure Blob, GCS, Redis, Meilisearch, OpenSearch, Neo4j, DuckDB, ClickHouse — selected via env. See [CONFIGURATION.md](CONFIGURATION.md) Tier 0–2 and [DOCKER.md](DOCKER.md) compose profiles.
 
 **Observability:** Prometheus, Grafana dashboards, optional cost gauges — default OFF. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#10-observability).
 
@@ -68,6 +70,7 @@ Product-level diagrams and ecosystem map: [../README.md](../README.md#visual-arc
 | New dev machine | [GUIDE — New development machine](GUIDE.md#9-new-development-machine) |
 | Ecosystem & capabilities | [../README.md](../README.md) |
 | MCP tools | [../MCP/README.md](../MCP/README.md) |
+| Ontorata Studio | [GUIDE — Studio](GUIDE.md#ontorata-studio-web-console) |
 
 ---
 

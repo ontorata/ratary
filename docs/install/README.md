@@ -16,6 +16,7 @@ For daily usage after install, see **[GUIDE.md](../GUIDE.md)**. For environment 
 | Local brain (clone + your SQL provider) | [GUIDE — Setup](../GUIDE.md#1-setup) → `npm run setup` |
 | Docker Postgres | [DOCKER.md](../DOCKER.md#quick-start-postgres-profile) |
 | Docker enterprise (MariaDB + MinIO) | [DOCKER.md](../DOCKER.md#profiles) |
+| Ontorata Studio (web console) | [GUIDE — Studio](../GUIDE.md#ontorata-studio-web-console) |
 | Hosted brain (REST API key) | [Remote / hosted](remote.md) → `@ratary/mcp-server` |
 | Remote MCP URL (ChatGPT, web) | [Remote / hosted](remote.md) → deploy `/mcp` |
 
@@ -61,4 +62,4 @@ Re-run the harness-specific install command, or `npm run setup` after pulling th
 |-----|---------|
 | [MCP/README.md](../../MCP/README.md) | Tool list, stdio vs npm vs remote · [directory listings](../../MCP/submission/README.md) |
 | [examples/](../examples/) | Copy-paste JSON templates |
-| [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio) | Web console (separate repo) |
+| [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio) | Operator web UI — [setup guide](../GUIDE.md#ontorata-studio-web-console) |
