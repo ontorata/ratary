@@ -359,6 +359,8 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 | | |
 |---|---|
 | [docs/GUIDE.md](docs/GUIDE.md) | Setup, daily usage, Ratary MCP configuration |
+| [docs/install/README.md](docs/install/README.md) | Per-harness MCP / plugin installation |
+| [docs/DOCKER.md](docs/DOCKER.md) | Container & Compose self-host |
 | [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | Environment variables — what each flag does |
 | [docs/examples/](docs/examples/) | MCP and IDE config templates |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and boundaries |
@@ -384,7 +386,7 @@ Organized by direction — not sprints. **Repository scope** noted where work le
 | | Themes | Primary repository |
 |---|--------|-------------------|
 | **Today** | Ratary MCP + REST, hybrid retrieval, self-host on D1/Postgres, remote Ratary MCP | `ontorata/ratary` |
-| **Next** | Deeper connectors, expanded SDK/CLI surface, container images for Ratary Server; Ontorata Studio operator UI | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) (separate) |
+| **Next** | Deeper connectors, expanded SDK/CLI surface; **container images** ([DOCKER.md](docs/DOCKER.md)); Ontorata Studio operator UI | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) (separate) |
 | **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace | `ontorata/ratary` (platform) |
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean.

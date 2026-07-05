@@ -4,7 +4,7 @@ One guide for **setup, daily use, and Ratary MCP** (Cursor, Claude Code, Roo, Cl
 
 **Related docs:** [README.md](README.md) (doc index) · [CONFIGURATION.md](CONFIGURATION.md) (env vars) · [ARCHITECTURE.md](ARCHITECTURE.md) · [examples/](examples/) · [policies/](policies/)
 
-Quick path: `npm run setup` in this repo. Per-harness install docs will ship under `docs/install/` when available.
+Quick path: `npm run setup` in this repo. Per-harness install: **[install/README.md](install/README.md)**.
 
 ---
 

@@ -1,0 +1,95 @@
+# Ratary Server — optional compose profiles (Phase 27)
+# Postgres self-host: docker compose --profile postgres up --build
+# Enterprise scaffold (Phase 30 adapters): docker compose --profile enterprise up --build
+
+name: ratary
+
+services:
+  ratary:
+    build: .
+    profiles: [postgres, enterprise]
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET — openssl rand -hex 32}
+      SQL_PROVIDER: postgres
+      DATABASE_URL: postgresql://ratary:${POSTGRES_PASSWORD:-ratary}@postgres:5432/ratary
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 45s
+
+  postgres:
+    image: postgres:16-alpine
+    profiles: [postgres, enterprise]
+    environment:
+      POSTGRES_USER: ratary
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ratary}
+      POSTGRES_DB: ratary
+    volumes:
+      - ratary_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ratary -d ratary"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Phase 30 enterprise profile — services only; enable adapters via env when 30A/30B ship.
+  mariadb:
+    image: mariadb:11
+    profiles: [enterprise]
+    environment:
+      MARIADB_USER: ratary
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-ratary}
+      MARIADB_DATABASE: ratary
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-ratary-root}
+    volumes:
+      - ratary_mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    profiles: [enterprise]
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-ratary}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-ratary-minio-secret}
+    volumes:
+      - ratary_minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  redis:
+    image: redis:7-alpine
+    profiles: [enterprise]
+    volumes:
+      - ratary_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  ratary_pg_data:
+  ratary_mariadb_data:
+  ratary_minio_data:
+  ratary_redis_data:

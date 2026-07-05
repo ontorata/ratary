@@ -10,6 +10,8 @@
 
 | Question | Document |
 |----------|----------|
+| How do I install Ratary in my IDE / harness? | **[install/README.md](install/README.md)** |
+| How do I run Ratary in Docker? | **[DOCKER.md](DOCKER.md)** |
 | How do I install and use Ratary daily? | **[GUIDE.md](GUIDE.md)** |
 | What does each `.env` variable do? | **[CONFIGURATION.md](CONFIGURATION.md)** |
 | What is Ratary architecturally? | [ARCHITECTURE.md](ARCHITECTURE.md) |

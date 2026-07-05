@@ -126,7 +126,9 @@ Details: [GUIDE — ChatGPT](../docs/GUIDE.md#61-chatgpt) · [CONFIGURATION — 
 
 | Doc | Purpose |
 |-----|---------|
+| [docs/install/README.md](../docs/install/README.md) | Per-harness installation (Cursor, Claude, remote, …) |
 | [docs/GUIDE.md](../docs/GUIDE.md) | Setup & usage |
+| [docs/DOCKER.md](../docs/DOCKER.md) | Container self-host |
 | [docs/README.md](../docs/README.md) | Human docs index |
 | [docs/examples/](../docs/examples/) | MCP configs, IDE templates, SDK patterns |
 

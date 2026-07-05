@@ -1,0 +1,17 @@
+node_modules
+dist
+.git
+.github
+.ai
+tests
+coverage
+.env
+.env.*
+!.env.example
+*.md
+!docs/assets/**
+.cursor
+.vscode
+agent-transcripts
+**/*.test.ts
+**/__snapshots__
