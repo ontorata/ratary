@@ -1,18 +1,30 @@
 {
   "name": "@ratary/mcp-server",
   "version": "1.0.0",
-  "description": "Installable MCP server proxying Ratary REST via @ratary/sdk (Phase 16)",
+  "description": "MCP server proxying Ratary REST via @ratary/sdk",
   "type": "module",
   "bin": {
     "ratary-mcp": "./dist/server.js"
   },
+  "files": ["dist"],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@ratary/sdk": "1.0.0",
+    "@ratary/sdk": "^1.0.0",
     "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ontorata/ratary.git",
+    "directory": "packages/mcp-server"
+  },
+  "homepage": "https://github.com/ontorata/ratary/tree/main/packages/mcp-server",
+  "bugs": "https://github.com/ontorata/ratary/issues",
+  "publishConfig": {
+    "access": "public"
   },
   "engines": {
     "node": ">=20"

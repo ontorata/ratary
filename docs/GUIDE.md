@@ -62,6 +62,23 @@ curl -X POST http://localhost:3000/api/v1/auth/bootstrap \
 
 Save the returned `apiKey` (`aic_...`). Bootstrap works once when no identities exist.
 
+### npm client packages (`@ratary`)
+
+Use these when you **do not** need to clone Ratary Server — e.g. custom agents, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), or hosted MCP.
+
+```bash
+npm install @ratary/sdk
+npx @ratary/mcp-server    # IDE → remote REST (see install/remote.md)
+```
+
+| Variable | Purpose |
+|----------|---------|
+| `RATARY_BASE_URL` | Server URL (`http://localhost:3000` or production host) |
+| `RATARY_API_KEY` | `aic_...` from bootstrap or `npm run key:create` |
+| `RATARY_WORKSPACE_ID` | Optional workspace scope |
+
+Packages live on npm under scope **`@ratary`** ([npm org](https://www.npmjs.com/org/ratary)), maintained by Ontorata. Full reference: [packages/README.md](../packages/README.md).
+
 ### Ontorata Studio (web console)
 
 **[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** is the operator web UI for this Ratary server — browse memories, search, graph, and workspaces via `@ratary/sdk`. It lives in a **separate repository** (not bundled in the server Docker image).
