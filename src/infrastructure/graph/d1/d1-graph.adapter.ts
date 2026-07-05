@@ -23,6 +23,8 @@ interface RelationEdgeRow {
  * Semantically equivalent to recursive CTE; swap to SQL CTE when relation count exceeds MVP ceiling.
  */
 export class D1GraphAdapter implements IGraphProvider {
+  private readonly edgeCache = new Map<string, RelationEdge[]>();
+
   constructor(private readonly db: ISqlDatabase) {}
 
   async traverseNeighbors(
@@ -45,15 +47,22 @@ export class D1GraphAdapter implements IGraphProvider {
   }
 
   private async loadOwnerEdges(ownerId: string): Promise<RelationEdge[]> {
+    const cached = this.edgeCache.get(ownerId);
+    if (cached) {
+      return cached;
+    }
+
     const rows = await this.db.query<RelationEdgeRow>(
       'SELECT source_memory_id, target_memory_id, relation FROM memory_relations WHERE owner_id = ?',
       [ownerId],
     );
 
-    return rows.map((row) => ({
+    const mapped = rows.map((row) => ({
       sourceMemoryId: row.source_memory_id,
       targetMemoryId: row.target_memory_id,
       relation: row.relation as RelationType,
     }));
+    this.edgeCache.set(ownerId, mapped);
+    return mapped;
   }
 }
