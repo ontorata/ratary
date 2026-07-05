@@ -1,7 +1,11 @@
 import type { Env } from '../../config/env.js';
 import type { IAgentClientCatalog } from '../ports/iagent-client-catalog.port.js';
 import type { AgentClientProfile } from '../types/agent-client-profile.js';
-import type { AgentClientProtocol, AgentClientType, DeploymentProtocolFlags } from '../types/agent-client-type.js';
+import type {
+  AgentClientProtocol,
+  AgentClientType,
+  DeploymentProtocolFlags,
+} from '../types/agent-client-type.js';
 import { AGENT_CLIENT_PROFILES } from './agent-client-registry.js';
 
 function deploymentFlagsFromEnv(env: Env): DeploymentProtocolFlags {
@@ -59,7 +63,9 @@ export class DefaultAgentClientCatalog implements IAgentClientCatalog {
     );
   }
 
-  async listCompatibleProfiles(deployment?: DeploymentProtocolFlags): Promise<AgentClientProfile[]> {
+  async listCompatibleProfiles(
+    deployment?: DeploymentProtocolFlags,
+  ): Promise<AgentClientProfile[]> {
     return this.listCompatibleProfilesSync(deployment);
   }
 }

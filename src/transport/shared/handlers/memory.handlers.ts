@@ -86,8 +86,7 @@ export function createMemoryHandlers(deps: MemoryHandlerDeps): MemoryHandlers {
       handle: async (ctx, query) => deps.memoryService.searchMemory(await scope(ctx), query),
     },
     findSimilar: {
-      handle: async (ctx, query) =>
-        deps.memoryService.findSimilarMemories(await scope(ctx), query),
+      handle: async (ctx, query) => deps.memoryService.findSimilarMemories(await scope(ctx), query),
     },
     getByPath: {
       handle: async (ctx, query) => deps.memoryService.getMemoryByPath(await scope(ctx), query),

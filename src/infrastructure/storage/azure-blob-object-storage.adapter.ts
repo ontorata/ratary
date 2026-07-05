@@ -78,9 +78,7 @@ export function createAzureBlobObjectStorage(
   return new AzureBlobObjectStorageAdapter(config);
 }
 
-async function streamToBuffer(
-  stream: NodeJS.ReadableStream | undefined,
-): Promise<Buffer | null> {
+async function streamToBuffer(stream: NodeJS.ReadableStream | undefined): Promise<Buffer | null> {
   if (!stream) {
     return null;
   }

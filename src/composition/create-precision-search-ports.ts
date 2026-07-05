@@ -5,7 +5,10 @@ import { createEmbeddingProvider } from '../embedding/create-embedding-provider.
 import type { IMemoryReader } from '../repositories/memory.repository.interface.js';
 import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
 import { NoopReranker } from '../search/rerank/noop-reranker.js';
-import { LexicalCrossEncoderReranker, OnnxCrossEncoderReranker } from '../search/rerank/onnx-cross-encoder-reranker.js';
+import {
+  LexicalCrossEncoderReranker,
+  OnnxCrossEncoderReranker,
+} from '../search/rerank/onnx-cross-encoder-reranker.js';
 import type { IReranker } from '../search/rerank/ireranker.port.js';
 import type { IPrecisionSearchService } from '../search/precision/iprecision-search-service.interface.js';
 import { PrecisionSearchOrchestrator } from '../search/precision/precision-search-orchestrator.js';

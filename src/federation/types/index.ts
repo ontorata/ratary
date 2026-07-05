@@ -1,4 +1,7 @@
-export type { FederationNodeDescriptor, FederationPeerFilter } from './federation-node.descriptor.js';
+export type {
+  FederationNodeDescriptor,
+  FederationPeerFilter,
+} from './federation-node.descriptor.js';
 export type { FederationScopeRef } from './federation-scope-ref.js';
 export type {
   FederatedMemoryBundle,

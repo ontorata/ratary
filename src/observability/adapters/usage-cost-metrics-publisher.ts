@@ -36,10 +36,7 @@ export function computeUsageCostGaugeValues(
 export async function publishUsageCostMetrics(
   usageMeter: IUsageMeter,
   metricsExporter: IMetricsExporter,
-  env: Pick<
-    Env,
-    'COST_EMBEDDING_USD_PER_REQUEST' | 'COST_ESTIMATED_BYTES_PER_MEMORY'
-  >,
+  env: Pick<Env, 'COST_EMBEDDING_USD_PER_REQUEST' | 'COST_ESTIMATED_BYTES_PER_MEMORY'>,
   now = new Date(),
 ): Promise<UsageCostGaugeValues> {
   const periodEnd = now.toISOString();

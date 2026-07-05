@@ -70,11 +70,7 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
       if (!query) throw new Error('memory search requires query');
       const limit = parseFlag(rest, '--limit');
       const mode = parseFlag(rest, '--mode') as
-        | 'hybrid'
-        | 'semantic'
-        | 'fulltext'
-        | 'title'
-        | undefined;
+        'hybrid' | 'semantic' | 'fulltext' | 'title' | undefined;
       const extended = rest.includes('--extended');
       const rerank = rest.includes('--rerank');
       const snippetLength = parseFlag(rest, '--snippet-length');

@@ -95,7 +95,11 @@ export class SqlContentScaleSyncStore implements IContentScaleSyncStore {
     };
   }
 
-  async setWatermark(target: ContentScaleSyncTarget, watermark: string, runId: string): Promise<void> {
+  async setWatermark(
+    target: ContentScaleSyncTarget,
+    watermark: string,
+    runId: string,
+  ): Promise<void> {
     const updatedAt = nowISO();
     await this.sql.execute(
       `INSERT INTO content_scale_sync_state (target, last_watermark, last_run_id, updated_at)
@@ -154,7 +158,11 @@ export class InMemoryContentScaleSyncStore implements IContentScaleSyncStore {
     return this.states.get(target) ?? null;
   }
 
-  async setWatermark(target: ContentScaleSyncTarget, watermark: string, runId: string): Promise<void> {
+  async setWatermark(
+    target: ContentScaleSyncTarget,
+    watermark: string,
+    runId: string,
+  ): Promise<void> {
     this.states.set(target, {
       target,
       lastWatermark: watermark,

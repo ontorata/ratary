@@ -8,11 +8,7 @@ import type {
 
 /** Hub SSOT pull/push sync for AI clients (ADR-042). */
 export interface IClientSyncService {
-  pull(
-    scope: MemoryScope,
-    platformId: string,
-    cursor?: string | null,
-  ): Promise<PullChangesResult>;
+  pull(scope: MemoryScope, platformId: string, cursor?: string | null): Promise<PullChangesResult>;
   push(
     scope: MemoryScope,
     platformId: string,

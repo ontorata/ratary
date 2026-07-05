@@ -30,11 +30,16 @@ export class InspectionLedgerOrchestrator implements IInspectionLedgerOrchestrat
     this.charterPromoter = new CharterPatternPromoter(deps.patternStore, deps.env);
   }
 
-  async run(scope: MemoryScope, options: InspectionLedgerRunOptions): Promise<InspectionLedgerRunReport> {
+  async run(
+    scope: MemoryScope,
+    options: InspectionLedgerRunOptions,
+  ): Promise<InspectionLedgerRunReport> {
     const now = new Date().toISOString();
     const limit = options.limit ?? 500;
     const events = await this.deps.eventStore.listUnprocessed(scope, limit);
-    const inspectionEvents = events.filter((event) => event.eventType === 'signal.inspection_outcome');
+    const inspectionEvents = events.filter(
+      (event) => event.eventType === 'signal.inspection_outcome',
+    );
 
     const candidates = this.miner.mine(scope, inspectionEvents);
     let patternsUpserted = 0;
@@ -108,11 +113,7 @@ export class InspectionLedgerOrchestrator implements IInspectionLedgerOrchestrat
       }
     }
 
-    const charterPromoted = await this.charterPromoter.promote(
-      scope,
-      allPatterns,
-      options.dryRun,
-    );
+    const charterPromoted = await this.charterPromoter.promote(scope, allPatterns, options.dryRun);
 
     if (!options.dryRun && inspectionEvents.length > 0) {
       await this.deps.eventStore.markProcessed(inspectionEvents.map((event) => event.id));

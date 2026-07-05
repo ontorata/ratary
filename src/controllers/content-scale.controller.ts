@@ -94,7 +94,12 @@ export function createContentScaleController(
 
     async syncPgvector(
       request: FastifyRequest<{
-        Body: { mode?: ContentScaleSyncMode; ownerId?: string; dryRun?: boolean; batchSize?: number };
+        Body: {
+          mode?: ContentScaleSyncMode;
+          ownerId?: string;
+          dryRun?: boolean;
+          batchSize?: number;
+        };
       }>,
       reply: FastifyReply,
     ): Promise<void> {

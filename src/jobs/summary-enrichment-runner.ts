@@ -24,7 +24,10 @@ export class SummaryEnrichmentRunner {
     private readonly summarizer: ICompressionSummarizer,
   ) {}
 
-  async run(scope: MemoryScope, options: SummaryEnrichmentOptions = {}): Promise<SummaryEnrichmentReport> {
+  async run(
+    scope: MemoryScope,
+    options: SummaryEnrichmentOptions = {},
+  ): Promise<SummaryEnrichmentReport> {
     const dryRun = options.dryRun ?? true;
     const limit = options.limit ?? 500;
     const report: SummaryEnrichmentReport = {

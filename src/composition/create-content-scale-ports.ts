@@ -69,7 +69,12 @@ export function createContentScalePorts(
   const contentSyncer = new ObjectStorageContentOffloadSyncer(sql, env, deps.objectStorage);
   const pgvectorSyncer = new PgvectorIndexSyncer(sql, env, deps.vectorStore);
   const embeddingSyncer = new EmbeddingJobSyncer(sql, env, deps.embeddingJobRunner);
-  const orchestrator = new ContentScaleOrchestrator(contentSyncer, pgvectorSyncer, embeddingSyncer, store);
+  const orchestrator = new ContentScaleOrchestrator(
+    contentSyncer,
+    pgvectorSyncer,
+    embeddingSyncer,
+    store,
+  );
   const manifestBuilder = new ContentScaleManifestBuilder(
     env,
     store,

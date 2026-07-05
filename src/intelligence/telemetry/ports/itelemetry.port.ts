@@ -1,4 +1,8 @@
-import type { TelemetryEnvelope, TelemetryEvent, TelemetryScopeRef } from '../types/telemetry-event.js';
+import type {
+  TelemetryEnvelope,
+  TelemetryEvent,
+  TelemetryScopeRef,
+} from '../types/telemetry-event.js';
 
 /** Fire-and-forget semantic telemetry recorder (Phase 25 / ADR-037). */
 export interface ITelemetryRecorder {

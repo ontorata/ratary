@@ -51,9 +51,7 @@ export function applySearchFilterGrammarToSql(grammar: ParsedSearchFilterGrammar
         params.push(`%"${tag}"%`, `%"${tag}"%`);
       }
     } else {
-      const tagClauses = grammar.tags.map(
-        () => '(tags LIKE ? OR keywords LIKE ?)',
-      );
+      const tagClauses = grammar.tags.map(() => '(tags LIKE ? OR keywords LIKE ?)');
       conditions.push(`(${tagClauses.join(' OR ')})`);
       for (const tag of grammar.tags) {
         params.push(`%"${tag}"%`, `%"${tag}"%`);

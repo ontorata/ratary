@@ -1,6 +1,9 @@
 import { generateId, nowISO } from '../../utils/memory-mapper.js';
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
-import type { IFabricExternalRefStore, FabricExternalRef } from '../../knowledge-fabric-platform/ports/ifabric-external-ref-store.port.js';
+import type {
+  IFabricExternalRefStore,
+  FabricExternalRef,
+} from '../../knowledge-fabric-platform/ports/ifabric-external-ref-store.port.js';
 import type { IKnowledgeFabricIngestStore } from '../../knowledge-fabric-platform/ports/iknowledge-fabric-ingest-store.port.js';
 import type { ConnectorId } from '../../knowledge-fabric-platform/types/connector.types.js';
 import type {
@@ -62,7 +65,9 @@ function mapIngestRun(row: IngestRunRow): FabricIngestRun {
 }
 
 /** SQL-backed fabric ingest runs, cursors, and external refs (Phase 23). */
-export class SqlKnowledgeFabricStore implements IFabricExternalRefStore, IKnowledgeFabricIngestStore {
+export class SqlKnowledgeFabricStore
+  implements IFabricExternalRefStore, IKnowledgeFabricIngestStore
+{
   constructor(private readonly sql: ISqlDatabase) {}
 
   async startRun(run: Omit<FabricIngestRun, 'finishedAt' | 'errorMessage'>): Promise<void> {
@@ -223,7 +228,9 @@ export class SqlKnowledgeFabricStore implements IFabricExternalRefStore, IKnowle
   }
 }
 
-export class InMemoryKnowledgeFabricStore implements IFabricExternalRefStore, IKnowledgeFabricIngestStore {
+export class InMemoryKnowledgeFabricStore
+  implements IFabricExternalRefStore, IKnowledgeFabricIngestStore
+{
   private readonly runs = new Map<string, FabricIngestRun>();
   private readonly refs = new Map<string, FabricExternalRef>();
   private readonly states = new Map<string, FabricConnectorState>();
@@ -275,10 +282,13 @@ export class InMemoryKnowledgeFabricStore implements IFabricExternalRefStore, IK
   }
 
   async upsert(ref: FabricExternalRef): Promise<void> {
-    this.refs.set(this.refKey(ref.connectorId, ref.externalId, {
-      ownerId: ref.ownerId,
-      workspaceId: ref.workspaceId,
-    }), ref);
+    this.refs.set(
+      this.refKey(ref.connectorId, ref.externalId, {
+        ownerId: ref.ownerId,
+        workspaceId: ref.workspaceId,
+      }),
+      ref,
+    );
   }
 
   async getCursor(connectorId: ConnectorId, scope: MemoryScope): Promise<string | null> {
@@ -306,7 +316,9 @@ export class InMemoryKnowledgeFabricStore implements IFabricExternalRefStore, IK
   }
 }
 
-export class NoOpKnowledgeFabricStore implements IFabricExternalRefStore, IKnowledgeFabricIngestStore {
+export class NoOpKnowledgeFabricStore
+  implements IFabricExternalRefStore, IKnowledgeFabricIngestStore
+{
   async startRun(): Promise<void> {
     // intentionally empty
   }

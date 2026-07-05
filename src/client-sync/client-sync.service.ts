@@ -49,8 +49,7 @@ export class ClientSyncService implements IClientSyncService {
 
     const hasMore = memories.length > DEFAULT_SYNC_PULL_LIMIT;
     const page = hasMore ? memories.slice(0, DEFAULT_SYNC_PULL_LIMIT) : memories;
-    const nextCursor =
-      page.length > 0 ? page[page.length - 1]!.updatedAt : since || nowISO();
+    const nextCursor = page.length > 0 ? page[page.length - 1]!.updatedAt : since || nowISO();
 
     await this.cursorStore.upsert({
       ownerId: scope.ownerId,
@@ -197,7 +196,7 @@ export class ClientSyncService implements IClientSyncService {
     const merged =
       this.strategy === 'field_merge' && change.data
         ? this.mergeFields(existing, change.data)
-        : change.data ?? {};
+        : (change.data ?? {});
 
     await memoryService.updateMemory(scope, change.memoryId, {
       ...merged,

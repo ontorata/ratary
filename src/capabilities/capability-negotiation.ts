@@ -125,9 +125,7 @@ export function negotiateCapabilities(
   const transports = matchTransports(manifest, request.transports);
 
   const compatible =
-    protocol.compatible &&
-    required.missing.length === 0 &&
-    transports.missing.length === 0;
+    protocol.compatible && required.missing.length === 0 && transports.missing.length === 0;
 
   return {
     compatible,

@@ -105,7 +105,12 @@ export class Neo4jGraphIndexSyncer implements IGraphIndexSyncer {
     for (const { owner_id: ownerId } of owners) {
       let offset = 0;
       while (true) {
-        const rows = await this.fetchRelationBatch(ownerId, batchSize, offset, input.sinceWatermark);
+        const rows = await this.fetchRelationBatch(
+          ownerId,
+          batchSize,
+          offset,
+          input.sinceWatermark,
+        );
         if (rows.length === 0) break;
 
         for (const row of rows) {

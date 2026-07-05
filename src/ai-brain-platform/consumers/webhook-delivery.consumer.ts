@@ -3,7 +3,10 @@ import type { IEventConsumer } from '../../events/ievent-consumer.interface.js';
 import { DomainEventTopics } from '../../events/domain-event-topics.js';
 import type { IWebhookDispatcher } from '../ports/iwebhook-dispatcher.port.js';
 import type { IWebhookSubscriptionStore } from '../ports/iwebhook-subscription-store.port.js';
-import type { MemoryAccessedEventPayload, MemoryCreatedEventPayload } from '../../events/domain-event.types.js';
+import type {
+  MemoryAccessedEventPayload,
+  MemoryCreatedEventPayload,
+} from '../../events/domain-event.types.js';
 
 const WEBHOOK_TOPICS = [
   DomainEventTopics.MEMORY_CREATED,

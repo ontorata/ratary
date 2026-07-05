@@ -32,7 +32,9 @@ export class FileFederationTrustStore implements IFederationTrustStore {
     const raw = await readFile(this.trustFilePath, 'utf8');
     const parsed = JSON.parse(raw) as TrustFilePayload;
     const ids = Array.isArray(parsed.trustedPeerIds) ? parsed.trustedPeerIds : [];
-    this.trustedPeerIds = new Set(ids.filter((id): id is string => typeof id === 'string' && id.length > 0));
+    this.trustedPeerIds = new Set(
+      ids.filter((id): id is string => typeof id === 'string' && id.length > 0),
+    );
     return this.trustedPeerIds;
   }
 }

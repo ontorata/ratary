@@ -44,7 +44,9 @@ function isPublicOrAuthPath(path: string): boolean {
   if (path.startsWith('/docs')) return true;
   if (path.startsWith('/api/v1/auth/')) return true;
   const env = getEnv();
-  const mcpPath = env.REMOTE_MCP_PATH.startsWith('/') ? env.REMOTE_MCP_PATH : `/${env.REMOTE_MCP_PATH}`;
+  const mcpPath = env.REMOTE_MCP_PATH.startsWith('/')
+    ? env.REMOTE_MCP_PATH
+    : `/${env.REMOTE_MCP_PATH}`;
   if (path === mcpPath) return true;
   return false;
 }

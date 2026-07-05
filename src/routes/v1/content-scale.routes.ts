@@ -7,7 +7,12 @@ export async function contentScaleRoutes(
 ): Promise<void> {
   fastify.get(
     '/content-scale/status',
-    { schema: { tags: ['Content & Vector Scale'], summary: 'Content scale platform status (Phase 22)' } },
+    {
+      schema: {
+        tags: ['Content & Vector Scale'],
+        summary: 'Content scale platform status (Phase 22)',
+      },
+    },
     controller.getStatus.bind(controller),
   );
 
@@ -36,7 +41,12 @@ export async function contentScaleRoutes(
 
   fastify.post(
     '/content-scale/sync/content',
-    { schema: { tags: ['Content & Vector Scale'], summary: 'Offload large memory content to R2/S3' } },
+    {
+      schema: {
+        tags: ['Content & Vector Scale'],
+        summary: 'Offload large memory content to R2/S3',
+      },
+    },
     controller.syncContent.bind(controller),
   );
 

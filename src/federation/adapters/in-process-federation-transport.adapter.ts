@@ -38,11 +38,7 @@ export class InProcessFederationTransport implements IFederationTransport {
       memories = (
         await Promise.all(
           request.memoryIds.map((id) =>
-            this.memoryRepository.findById(
-              id,
-              request.source.ownerId,
-              request.source.workspaceId,
-            ),
+            this.memoryRepository.findById(id, request.source.ownerId, request.source.workspaceId),
           ),
         )
       ).filter((m): m is NonNullable<typeof m> => m != null);

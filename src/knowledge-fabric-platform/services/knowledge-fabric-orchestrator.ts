@@ -87,11 +87,7 @@ export class KnowledgeFabricOrchestrator implements IKnowledgeFabricOrchestrator
         dryRun: input.dryRun,
       });
 
-      const items = await this.policy.filterIngestable(
-        pullResult.items,
-        input.connectorId,
-        scope,
-      );
+      const items = await this.policy.filterIngestable(pullResult.items, input.connectorId, scope);
 
       const stats: FabricIngestStats = { ...emptyStats, fetched: items.length };
 
@@ -189,12 +185,7 @@ export class KnowledgeFabricOrchestrator implements IKnowledgeFabricOrchestrator
       });
 
       if (!input.dryRun && pullResult.nextCursor) {
-        await this.refStore.setCursor(
-          input.connectorId,
-          scope,
-          pullResult.nextCursor,
-          runId,
-        );
+        await this.refStore.setCursor(input.connectorId, scope, pullResult.nextCursor, runId);
       }
 
       return run;

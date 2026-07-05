@@ -50,9 +50,7 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
     const capped = capSearchQueries(request.queries, this.env.SEARCH_MAX_QUERIES);
     const queries = capped.queries;
     if (capped.truncated) {
-      warnings.push(
-        `queries_truncated:${capped.originalCount}->${this.env.SEARCH_MAX_QUERIES}`,
-      );
+      warnings.push(`queries_truncated:${capped.originalCount}->${this.env.SEARCH_MAX_QUERIES}`);
     }
 
     if (capped.originalCount === 0 && !request.filters && !request.tag && !request.project) {
@@ -80,17 +78,13 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
     const fused =
       perQuery.size > 1
         ? this.fusion.fuse(perQuery, { k: this.env.MULTI_QUERY_RRF_K })
-        : [...perQuery.values()][0] ?? [];
+        : ([...perQuery.values()][0] ?? []);
 
     let hits: ScoredMemory[] = fused;
-    const primaryQuery = queries[0] === '' ? '' : queries[0] ?? '';
+    const primaryQuery = queries[0] === '' ? '' : (queries[0] ?? '');
 
     if (request.rerank && this.env.SEARCH_RERANK_ENABLED && primaryQuery) {
-      const reranked = await this.reranker.rerank(
-        primaryQuery,
-        hits,
-        request.limit ?? hits.length,
-      );
+      const reranked = await this.reranker.rerank(primaryQuery, hits, request.limit ?? hits.length);
       hits = reranked;
     }
 
@@ -120,7 +114,10 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
     const workspaceId = workspaceIdFromScope(scope);
     const target = await this.resolveTargetMemory(scope, query);
     if (!target) {
-      throw new NotFoundError('Memory', query.memoryId ?? query.slug ?? query.sourcePath ?? 'unknown');
+      throw new NotFoundError(
+        'Memory',
+        query.memoryId ?? query.slug ?? query.sourcePath ?? 'unknown',
+      );
     }
 
     const warnings: string[] = [];
@@ -185,15 +182,11 @@ export class PrecisionSearchOrchestrator implements IPrecisionSearchService {
     const memory = await this.reader.findBySourcePath(scope.ownerId, query.path, workspaceId);
 
     if (memory) {
-      const enriched = await this.enricher.enrich(
-        scope,
-        [{ ...memory, relevanceScore: 100 }],
-        {
-          snippetLength: 200,
-          linkCap: this.env.SEARCH_ENRICH_LINK_CAP,
-          extended: true,
-        },
-      );
+      const enriched = await this.enricher.enrich(scope, [{ ...memory, relevanceScore: 100 }], {
+        snippetLength: 200,
+        linkCap: this.env.SEARCH_ENRICH_LINK_CAP,
+        extended: true,
+      });
       return { memory: enriched[0] };
     }
 

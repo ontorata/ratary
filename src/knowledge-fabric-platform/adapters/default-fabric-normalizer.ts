@@ -1,5 +1,8 @@
 import type { ExternalKnowledgeItem } from '../types/connector.types.js';
-import type { IFabricNormalizer, FabricNormalizeContext } from '../ports/ifabric-normalizer.port.js';
+import type {
+  IFabricNormalizer,
+  FabricNormalizeContext,
+} from '../ports/ifabric-normalizer.port.js';
 import type { NormalizedFabricMemory } from '../types/ingest.types.js';
 
 /** Default normalizer — provenance in tags and notes (Phase 23). */

@@ -77,9 +77,7 @@ export function createCloudPorts(
   const tenantStore = new SqlTenantMetadataStore(sql);
 
   const cloudProvisioner =
-    env.CLOUD_PROVISIONER === 'manual'
-      ? new ManualCloudProvisioner()
-      : new NoOpCloudProvisioner();
+    env.CLOUD_PROVISIONER === 'manual' ? new ManualCloudProvisioner() : new NoOpCloudProvisioner();
 
   void regionRegistry.ensureDefaultRegion(env.CLOUD_DEFAULT_REGION, 'Default Region');
 
@@ -108,8 +106,7 @@ export function createCloudPorts(
     eventConsumers.push(new UsageMeterEventConsumer(usageMeter));
   }
 
-  const exportBackup =
-    deps?.exportBackup ?? (async () => ({ memories: [] }));
+  const exportBackup = deps?.exportBackup ?? (async () => ({ memories: [] }));
 
   const disasterRecovery: IDisasterRecovery = env.DR_PLATFORM_ENABLED
     ? new LocalDisasterRecovery(sql, regionRegistry, exportBackup)

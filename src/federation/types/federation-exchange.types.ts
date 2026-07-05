@@ -37,6 +37,11 @@ export interface FederationStatusResult {
   readonly enabled: boolean;
   readonly nodeId: string;
   readonly peerCount: number;
-  readonly peers: Array<{ nodeId: string; displayName?: string; region?: string; trusted?: boolean }>;
+  readonly peers: Array<{
+    nodeId: string;
+    displayName?: string;
+    region?: string;
+    trusted?: boolean;
+  }>;
   readonly lastExchangeAt?: string;
 }

@@ -77,11 +77,7 @@ export class DomainEventPublisher implements IDomainEventPublisher {
     );
   }
 
-  private async safePublish<T>(
-    topic: string,
-    payload: T,
-    correlationId?: string,
-  ): Promise<void> {
+  private async safePublish<T>(topic: string, payload: T, correlationId?: string): Promise<void> {
     try {
       await this.eventBus.publish(topic, payload, {
         correlationId: correlationId ?? crypto.randomUUID(),

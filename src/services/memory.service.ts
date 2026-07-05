@@ -210,12 +210,7 @@ export class MemoryService {
       throw new NotFoundError('Memory', id);
     }
 
-    await this.reconcileMemoryWrite(
-      scope,
-      id,
-      'delete',
-      expectedUpdatedAt ?? existing.updatedAt,
-    );
+    await this.reconcileMemoryWrite(scope, id, 'delete', expectedUpdatedAt ?? existing.updatedAt);
 
     const deleted = await this.repository.delete(id, scope.ownerId, workspaceId);
     if (!deleted) {
@@ -285,7 +280,12 @@ export class MemoryService {
         scope,
         mapSearchQueryToPrecisionRequest(query, env.SEARCH_DEFAULT_MODE),
       );
-      return { memories: result.hits, total: result.total, mode: result.mode, warnings: result.warnings };
+      return {
+        memories: result.hits,
+        total: result.total,
+        mode: result.mode,
+        warnings: result.warnings,
+      };
     }
     return this.search.search(scope, query);
   }

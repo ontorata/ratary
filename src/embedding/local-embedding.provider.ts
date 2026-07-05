@@ -1,4 +1,8 @@
-import type { EmbeddingInput, EmbeddingResult, IEmbeddingProvider } from './embedding.provider.interface.js';
+import type {
+  EmbeddingInput,
+  EmbeddingResult,
+  IEmbeddingProvider,
+} from './embedding.provider.interface.js';
 
 const DEFAULT_MODEL_ID = 'local-hash-v1';
 const DEFAULT_DIMENSIONS = 64;

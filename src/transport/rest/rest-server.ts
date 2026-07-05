@@ -51,7 +51,10 @@ import { createMultiAiPorts } from '../../composition/create-multi-ai-ports.js';
 import type { MultiAiPorts } from '../../composition/create-multi-ai-ports.js';
 import { createWorkspaceMembershipMiddleware } from '../../auth/workspace-membership.middleware.js';
 import type { PlatformAdapters } from '../../infrastructure/composition/create-platform-adapters.js';
-import { createTransportHandlers, type TransportHandlers } from '../shared/handlers/create-transport-handlers.js';
+import {
+  createTransportHandlers,
+  type TransportHandlers,
+} from '../shared/handlers/create-transport-handlers.js';
 import { createCapabilitiesHandlers } from '../shared/handlers/capabilities.handlers.js';
 import { createFederationPorts } from '../../composition/create-federation-ports.js';
 import { createSecurityPorts } from '../../composition/create-security-ports.js';
@@ -202,7 +205,9 @@ export async function buildApp(options?: {
   const eventConsumers = [
     ...cloudPorts.eventConsumers,
     ...(aiBrainPlatformPorts.webhookConsumer ? [aiBrainPlatformPorts.webhookConsumer] : []),
-    ...(globalIntelligencePorts.telemetryConsumer ? [globalIntelligencePorts.telemetryConsumer] : []),
+    ...(globalIntelligencePorts.telemetryConsumer
+      ? [globalIntelligencePorts.telemetryConsumer]
+      : []),
   ];
   const eventPipeline = createEventPipelinePorts(
     env,
@@ -405,7 +410,8 @@ export async function buildApp(options?: {
   );
 
   if (env.REMOTE_MCP_ENABLED) {
-    const { assertRemoteMcpHostingPolicy } = await import('../mcp/remote/remote-mcp-hosting-policy.js');
+    const { assertRemoteMcpHostingPolicy } =
+      await import('../mcp/remote/remote-mcp-hosting-policy.js');
     assertRemoteMcpHostingPolicy(env);
     const { registerRemoteMcpRoutes } = await import('../mcp/remote/register-remote-mcp-routes.js');
     await registerRemoteMcpRoutes(fastify, {
@@ -418,9 +424,8 @@ export async function buildApp(options?: {
       corsOrigins: env.REMOTE_MCP_CORS_ORIGINS,
     });
     if (env.REMOTE_MCP_OAUTH_ENABLED) {
-      const { registerRemoteMcpOAuthRoutes } = await import(
-        '../mcp/remote/register-remote-mcp-oauth-routes.js'
-      );
+      const { registerRemoteMcpOAuthRoutes } =
+        await import('../mcp/remote/register-remote-mcp-oauth-routes.js');
       await registerRemoteMcpOAuthRoutes(fastify, env);
     }
   }

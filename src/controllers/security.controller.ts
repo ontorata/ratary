@@ -33,8 +33,7 @@ export function createSecurityController(env: Env, ports: SecurityPorts) {
         throw new ValidationError('Authentication required');
       }
       const transportOrg = request.headers['x-organization-id'];
-      const organizationId =
-        typeof transportOrg === 'string' ? transportOrg : undefined;
+      const organizationId = typeof transportOrg === 'string' ? transportOrg : undefined;
       const status = await ports.quotaEnforcer.getStatus(ownerId, organizationId);
       reply.send(status);
     },

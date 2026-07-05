@@ -40,9 +40,7 @@ export function buildContextRequestFromQuery(query: Record<string, unknown>): Bu
     query: typeof query.query === 'string' ? query.query : undefined,
     projectId: typeof query.projectId === 'string' ? query.projectId : undefined,
     tags: Array.isArray(tags) ? tags.map(String) : typeof tags === 'string' ? [tags] : undefined,
-    levels: Array.isArray(levels)
-      ? (levels as BuildContextRequest['levels'])
-      : undefined,
+    levels: Array.isArray(levels) ? (levels as BuildContextRequest['levels']) : undefined,
     limit: query.limit != null ? Number(query.limit) : undefined,
     context:
       query.maxChars != null || query.summaryOnly != null || query.format != null

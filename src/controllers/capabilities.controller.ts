@@ -56,7 +56,9 @@ export function createCapabilitiesController(env: Env, handlers?: CapabilitiesHa
           : {}),
         ...(Array.isArray(body.transports)
           ? {
-              transports: body.transports.filter((item): item is string => typeof item === 'string'),
+              transports: body.transports.filter(
+                (item): item is string => typeof item === 'string',
+              ),
             }
           : {}),
       });

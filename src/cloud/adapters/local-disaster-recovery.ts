@@ -90,10 +90,10 @@ export class LocalDisasterRecovery implements IDisasterRecovery {
     };
 
     this.snapshots.set(scheduleId, snapshot);
-    await this.sql.execute(
-      `UPDATE cloud_dr_schedules SET last_run_at = ? WHERE id = ?`,
-      [snapshot.capturedAt, scheduleId],
-    );
+    await this.sql.execute(`UPDATE cloud_dr_schedules SET last_run_at = ? WHERE id = ?`, [
+      snapshot.capturedAt,
+      scheduleId,
+    ]);
 
     return snapshot;
   }

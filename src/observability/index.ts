@@ -3,7 +3,10 @@ export type { ITraceExporter, TraceSpanContext } from './ports/itrace-exporter.p
 export type { ILogShipper } from './ports/ilog-shipper.port.js';
 export type { IDashboardPack } from './ports/idashboard-pack.port.js';
 export type { ISloRegistry } from './ports/islo-registry.port.js';
-export { NoOpMetricsExporter, PrometheusMetricsExporter } from './adapters/prometheus-metrics-exporter.js';
+export {
+  NoOpMetricsExporter,
+  PrometheusMetricsExporter,
+} from './adapters/prometheus-metrics-exporter.js';
 export { NoOpTraceExporter } from './adapters/noop-trace-exporter.js';
 export { OtelTraceExporter } from './adapters/otel-trace-exporter.js';
 export { NoOpLogShipper, StdoutLogShipper } from './adapters/stdout-log-shipper.js';
