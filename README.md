@@ -5,50 +5,32 @@
 <h1 align="center">Ratary</h1>
 
 <p align="center">
-  <strong>The AI Brain Platform</strong><br/>
-  Persistent memory, structured knowledge, and intelligent retrieval — for every AI you build.
-</p>
-
-<p align="center"><em>Ratary is where AI remembers.</em></p>
-
-<p align="center">
-  <a href="https://ontorata.com">Website</a> ·
-  <a href="https://github.com/ontorata/ratary">GitHub</a> ·
-  <a href="docs/PANDUAN.md">Docs</a> ·
-  <a href="https://ontorata.com/docs">API</a>
+  <strong>Build AI that remembers.</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/ontorata/ratary"><img src="https://img.shields.io/github/stars/ontorata/ratary?style=social" alt="GitHub stars"/></a>
+  Ratary is the open-source <strong>AI Brain Platform</strong> — persistent memory,<br/>
+  structured knowledge, and intelligent retrieval for every model and agent you run.
+</p>
+
+<p align="center">
+  <a href="#quick-start"><strong>Get started →</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/ontorata/ratary">Star on GitHub</a>
+  &nbsp;·&nbsp;
+  <a href="https://ontorata.com">Website</a>
+  &nbsp;·&nbsp;
+  <a href="docs/PANDUAN.md">Docs</a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"/>
-  <img src="https://img.shields.io/badge/node-24.x-green" alt="Node 24"/>
   <img src="https://img.shields.io/badge/MCP-native-indigo" alt="MCP native"/>
   <img src="https://img.shields.io/badge/self--host-ready-brightgreen" alt="Self-host"/>
+  <img src="https://img.shields.io/badge/node-24.x-green" alt="Node 24"/>
 </p>
 
----
-
-## Philosophy
-
-> **AI should remember.**  
-> **Developers should own that memory.**
-
-**Developer-first.** Memory-native. Agent-agnostic.  
-Ratary is the brain layer between AI and knowledge — not another chat wrapper, vector dump, or agent framework.
-
-Built by [Ontorata](https://ontorata.com). Open source. Self-hostable.
-
----
-
-## Why now?
-
-AI models are getting cheaper. Context windows are getting larger. Agents are getting capable.
-
-**But AI still forgets.**
-
-The bottleneck is no longer reasoning. It's **memory** — durable, structured, retrievable, and owned by you.
-
-That's why Ratary exists.
+<p align="center"><sub><em>Ratary is where AI remembers.</em> · Built by <a href="https://ontorata.com">Ontorata</a></sub></p>
 
 ---
 
@@ -56,365 +38,290 @@ That's why Ratary exists.
 
 Every AI session starts from zero.
 
-Your model forgets yesterday's architecture decisions. Your agent loses customer context between runs. Your coding assistant can't remember why you chose Postgres over DynamoDB. Teams paste the same context into Cursor, Claude, ChatGPT, and custom bots — and still watch knowledge drift.
+Your model forgets yesterday's architecture decisions. Your agent drops customer context between runs. Your coding assistant can't recall why you chose Postgres over DynamoDB. Teams paste the same background into Cursor, Claude, ChatGPT, and custom bots — and knowledge still drifts.
 
-Vector databases store chunks. RAG pipelines retrieve documents. Agent frameworks orchestrate tools. **None of them give AI a durable brain.**
+Vector databases store chunks. RAG pipelines retrieve documents. Agent frameworks orchestrate tools.
 
-That's the gap Ratary closes.
-
----
-
-## What is Ratary?
-
-Ratary is **not**:
-
-| | |
-|---|---|
-| ❌ A vector database | Vectors are one retrieval signal, not the product |
-| ❌ A RAG framework | Ratary stores and retrieves *memory*, not just documents |
-| ❌ An agent framework | Reasoning and planning stay in your agent — Ratary is the substrate |
-
-Ratary **is** the **brain beneath** them.
-
-A memory foundation that persists what AI learns, structures it as knowledge, retrieves it intelligently, and exposes it through protocols your stack already speaks — **MCP**, **REST**, and optional **gRPC**.
-
-Use Ratary with LangChain, LangGraph, custom agents, IDE assistants, or enterprise search. **Bring your model. Ratary brings the memory.**
+**None of them give AI a durable brain.**
 
 ---
 
-## Why not just…?
+## Why Ratary exists
 
-Developers ask this first. Here is the honest answer.
+AI models are getting cheaper. Context windows are getting larger. Agents are getting capable.
+
+**But AI still forgets.**
+
+The bottleneck is no longer reasoning. It's **memory** — durable, structured, retrievable, and owned by you.
+
+Every serious application eventually needed a database. Every serious AI system will need a **brain layer**: persistent intelligence that sits between your models and your storage — independent of any single vendor, IDE, or agent framework.
+
+> **AI should remember.**  
+> **Developers should own that memory.**
+
+Ratary exists to be that layer. Applications bring models. **Ratary brings the brain.**
+
+---
+
+## What Ratary is
+
+Ratary is an **AI Brain Platform** — infrastructure that gives AI:
+
+- **Persistent memory** — durable, owner-scoped, versioned
+- **Structured knowledge** — metadata, relations, graph traversal
+- **Intelligent retrieval** — hybrid search + bounded context assembly
+- **Protocol access** — MCP, REST, optional gRPC
+
+It sits **between** AI clients and storage. One brain, many surfaces — Cursor, Claude Code, custom agents, enterprise APIs, and remote MCP hosts.
+
+**Bring your model. Ratary brings the memory.**
+
+---
+
+## What Ratary is not
+
+| | Vector DB | Memory API | RAG | Agent framework | **Ratary** |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Primary job** | Similarity search | Key-value recall | Document Q&A | Tool orchestration | **Durable AI memory** |
+| **Structured knowledge & graph** | ❌ | ⚠️ | ❌ | ⚠️ | ✅ |
+| **MCP-native IDE integration** | ❌ | ⚠️ | ❌ | ⚠️ | ✅ |
+| **Token-efficient context assembly** | ❌ | ⚠️ | ❌ | ⚠️ | ✅ |
+| **Self-host & data sovereignty** | ✅ | ⚠️ | ⚠️ | ⚠️ | ✅ |
+| **Clear agent boundary** | N/A | ⚠️ | N/A | ❌ bundled | ✅ substrate only |
+
+Ratary **complements** your stack — it does not replace pgvector, LangGraph, or your agent of choice.
+
+<details>
+<summary><strong>Why not just pgvector, Mem0, Letta, LangGraph, or RAG?</strong></summary>
 
 | If you only use… | You get… | What you miss |
 |------------------|----------|---------------|
-| **pgvector** (or any vector DB) | Similarity search over embeddings | Structured memory, summaries, graph relations, MCP for IDEs, context packing |
-| **Mem0** (or memory SaaS) | Fast memory API, often hosted | Full self-host control, knowledge graph, hybrid SQL+vector+graph retrieval, enterprise adapters |
-| **Letta** | Agent + memory in one runtime | A clear boundary — keep *your* agent; Ratary stays substrate, not orchestration |
-| **LangGraph** | Agent workflow and tool routing | A durable memory layer agents can share across sessions, clients, and workspaces |
-| **RAG** | Document chunks for Q&A | *Memory* — decisions, handoffs, codenames, relations that evolve across time |
+| **pgvector** | Embedding similarity | Structured memory, graph, MCP, context packing |
+| **Mem0** | Fast hosted memory API | Full self-host, hybrid retrieval, enterprise adapters |
+| **Letta** | Agent + memory bundled | Your agent stays yours — Ratary is substrate, not runtime |
+| **LangGraph** | Workflow & tool routing | Shared durable memory across sessions and clients |
+| **RAG** | Document chunks | Evolving memory — decisions, handoffs, relations |
 
-Ratary **complements** these tools. Point pgvector at embeddings. Point LangGraph at orchestration. Point Ratary at **everything your AI must remember**.
-
----
-
-## Ratary ecosystem
-
-One platform direction — from server to surfaces:
-
-```
-Ratary Server          ← this repo — memory, retrieval, REST, MCP
-       ↓
-@ratary/sdk            ← TypeScript client for apps and agents
-       ↓
-@ratary/cli            ← operators — migrate, backfill, compress, sync
-       ↓
-@ratary/mcp-server     ← standalone MCP proxy for hosted deployments
-       ↓
-Ontory                 ← AI assistant on Ontorata — consumer face of the brain
-```
-
-**Ratary Server** is the source of truth. Everything else connects to it.  
-**Ontory** is where end users meet the memory layer — built on the same platform.
+</details>
 
 ---
 
-## Architecture at a glance
+## Visual architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                     Your AI Clients                             │
-│   Cursor · Claude Code · Custom Agents · REST · ChatGPT Actions  │
-└────────────────────────────┬────────────────────────────────────┘
-                             │ MCP · REST · gRPC (opt-in)
-┌────────────────────────────▼────────────────────────────────────┐
-│                        Ratary Platform                          │
-│  ┌──────────┐  ┌───────────┐  ┌──────────┐  ┌───────────────┐ │
-│  │  Memory  │  │ Knowledge │  │ Retrieval│  │    Agent      │ │
-│  │  Layer   │  │   Graph   │  │  Engine  │  │   Boundary    │ │
-│  └────┬─────┘  └─────┬─────┘  └────┬─────┘  └───────┬───────┘ │
-│       └──────────────┴─────────────┴────────────────┘         │
-│                         Shared Services                         │
-└────────────────────────────┬────────────────────────────────────┘
+        ┌─────────────────────────────────────────┐
+        │           Your AI applications           │
+        │  Cursor · Claude · Agents · REST · MCP   │
+        └────────────────────┬────────────────────┘
                              │
-┌────────────────────────────▼────────────────────────────────────┐
-│              Storage & Infrastructure (pluggable)               │
-│         D1 · PostgreSQL · pgvector · R2/S3 · Redis · Neo4j      │
-└─────────────────────────────────────────────────────────────────┘
+                    MCP · REST · gRPC
+                             │
+        ┌────────────────────▼────────────────────┐
+        │              RATARY PLATFORM             │
+        │  ┌─────────┐ ┌──────────┐ ┌───────────┐ │
+        │  │ Memory  │ │Knowledge │ │ Retrieval │ │
+        │  └────┬────┘ └────┬─────┘ └─────┬─────┘ │
+        │       └───────────┴─────────────┘       │
+        │         Context · Learning · Protocols   │
+        └────────────────────┬────────────────────┘
+                             │
+        ┌────────────────────▼────────────────────┐
+        │     Pluggable storage (your choice)      │
+        │   D1 · Postgres · pgvector · Neo4j · R2   │
+        └─────────────────────────────────────────┘
 ```
 
-Ratary sits **between** your AI clients and your data — one brain, many surfaces.
+**Search** browses. **Retrieval** injects context. **Embedding** enriches asynchronously — never on the CRUD hot path.
+
+Details: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
 
 ---
 
 ## Core capabilities
 
-Organized by what you get — not how we built it.
-
-### Memory
-Durable, owner-scoped memories with summaries, codenames, favorites, archives, and handoffs. Built for long-running AI work — not ephemeral chat logs.
+### Memory intelligence
+Durable memories with summaries, codenames, favorites, archives, and handoffs. Version history with restore and merge — built for long-running work, not chat logs.
 
 ### Knowledge
-Structured metadata, semantic enrichment, relation linking, and graph traversal. Memory becomes navigable knowledge — not a flat pile of notes.
-
-### Reasoning support
-Context assembly tuned for LLMs: progressive retrieval, token budgets, and summary-first defaults that cut context cost by **~85%** vs naive full dumps.
+Semantic enrichment, relation linking, and graph traversal. Memory becomes navigable knowledge — not a flat pile of notes.
 
 ### Retrieval
-Hybrid search across SQL, vectors, lexical index, and graph — ranked, bounded, and predictable. Separate browse (search) from inject (retrieval).
+Hybrid search across SQL, vectors, lexical index, and graph. Separate **browse** from **inject**. Optional precision modes (hybrid, semantic, fulltext, title) when you need more control.
 
-**Precision Search (Phase 6.6, opt-in):** When `PRECISION_SEARCH_ENABLED=true`, browse search adds explicit modes (`hybrid` | `semantic` | `fulltext` | `title`), multi-query RRF, alias/path-aware filters, similar-memory and by-path reads, optional rerank, and enriched hit envelopes — without changing the default OFF path.
+### Reasoning support
+Progressive retrieval, token budgets, and summary-first context assembly — typically **~85% fewer tokens** than dumping full memory bodies into prompts.
 
 ### Learning
-Quality signals, reflection, consolidation, and **memory evolution** (version history, restore, merge) — optional, env-gated. Semantic compression runs on an **async queue** so LLM summarizers never block CRUD. Your brain gets smarter over time without retraining the model.
+Quality signals, consolidation, and compression — optional pipelines that improve the brain over time without retraining your model.
 
-### Agent runtime boundary
-Capability manifests, workspace/agent scoping, and **28 MCP tools** — so external agents discover what the brain can do without embedding runtime inside Ratary.
+### Agent runtime
+Capability manifests, workspace scoping, and **28 MCP tools**. External agents discover what the brain can do; Ratary never embeds agent reasoning.
 
 ### Platform
-Pluggable adapters: Postgres, pgvector, R2/S3, Meilisearch, Neo4j, Redis, DuckDB. Start on Cloudflare D1. Scale to enterprise storage without rewriting app logic.
+Pluggable adapters: Postgres, pgvector, R2/S3, Meilisearch, Neo4j, Redis, DuckDB. Start on Cloudflare D1. Scale without rewriting application logic.
 
-### Security
-API keys, RBAC workspaces, audit trails, rate limits, and enterprise SSO/OPA (opt-in). Your data stays under your control.
-
-### Cloud
-Self-host locally, deploy to Vercel, or run a control plane with metering and federation (opt-in). No vendor lock-in on the memory layer.
+### Cloud & enterprise
+Self-host, deploy to Vercel, or run a control plane with metering and federation. RBAC workspaces, audit trails, SSO, and policy hooks — opt-in when you need them.
 
 ### Observability
-OpenTelemetry, Prometheus metrics, SLO dashboards, and FinOps cost gauges (Phase 18 usage meter bridge) — know what your brain is doing in production.
+OpenTelemetry, Prometheus metrics, SLO dashboards, and cost visibility for production brains.
 
 ### Developer experience
-OpenAPI, TypeScript SDK (`@ratary/sdk`), CLI (`@ratary/cli`), standalone MCP package (`@ratary/mcp-server`), and one-command IDE setup (`npm run setup`).
+OpenAPI, `@ratary/sdk`, `@ratary/cli`, `@ratary/mcp-server`, and one-command IDE setup (`npm run setup`).
 
 ---
 
 ## How Ratary works
 
 ```
-  Write                    Enrich                   Retrieve
-┌─────────┐              ┌─────────┐              ┌─────────────┐
-│ AI saves│─────────────▶│ Summary │─────────────▶│ Rank & pack │
-│ memory  │   async      │ embed   │   on demand  │ context for │
-│ via MCP │              │ relate  │              │ your prompt │
-│ or REST │              │ graph   │              │             │
-└─────────┘              └─────────┘              └─────────────┘
-      │                        │                         │
-      └────────────────────────┴─────────────────────────┘
-                    One brain · many AI clients
+   Write          Enrich         Retrieve        Learn          Reuse
+     │               │               │              │              │
+     ▼               ▼               ▼              ▼              ▼
+  Save via       Summarize,      Rank & pack    Signals,       Same memory
+  MCP/REST       embed, link     context for    consolidate,   powers every
+                 relations       your prompt    evolve         client
 ```
 
-1. **Capture** — AI (or your app) saves memory through MCP or REST.
-2. **Enrich** — Ratary summarizes, embeds, and links knowledge asynchronously.
-3. **Retrieve** — When context is needed, Ratary assembles the smallest useful slice — not everything you ever stored.
-4. **Reuse** — The same memory powers Cursor, Claude Code, custom bots, and enterprise APIs.
+1. **Write** — Persist memory through MCP or REST.
+2. **Enrich** — Summarize, embed, and relate — asynchronously.
+3. **Retrieve** — Assemble the smallest useful context slice.
+4. **Learn** — Optional signals and consolidation improve recall over time.
+5. **Reuse** — One brain across IDEs, agents, and APIs.
 
 ---
 
-## Quick start
+## Ecosystem
 
-### Prerequisites
+Ratary is a platform — not a single binary.
 
-- **Node.js 24.x**
-- A [Cloudflare](https://dash.cloudflare.com) account (D1 database)
-
-### Install
-
-```bash
-git clone https://github.com/ontorata/ratary.git
-cd ratary
-npm install
-cp .env.example .env
-# Fill CLOUDFLARE_ACCOUNT_ID, D1_DATABASE_ID, D1_API_TOKEN, AUTH_SECRET
-npm run db:migrate
-npm run setup    # wires MCP for Cursor, Claude Code, and more
-npm run dev
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Ratary Cloud (opt-in)                   │
+│              hosted brain · metering · federation              │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+┌──────────────────────────────▼──────────────────────────────┐
+│  Ratary Server          ← this repo · memory · REST · MCP     │
+└──────────────────────────────┬──────────────────────────────┘
+         │              │              │              │
+         ▼              ▼              ▼              ▼
+   @ratary/sdk    @ratary/cli   @ratary/mcp-server   Studio *
+         │              │              │         (future)
+         └──────────────┴──────────────┴──────────────┘
+                               │
+                               ▼
+                          Ontory
+              consumer AI assistant · built on Ratary
 ```
 
-API: `http://localhost:3000` · Swagger: `http://localhost:3000/docs`
-
-Full setup guide: **[docs/PANDUAN.md](docs/PANDUAN.md)**
-
-### Docker
-
-Ratary ships as a Node.js service. Container images are on the roadmap — today, run via `npm run dev` or deploy to [Vercel](https://vercel.com). For Postgres-backed enterprise stacks, set `SQL_PROVIDER=postgres` and configure adapters in `.env.example`.
-
-### REST example
-
-```bash
-# Bootstrap once (empty database)
-curl -X POST http://localhost:3000/api/v1/auth/bootstrap \
-  -H "Content-Type: application/json" \
-  -d '{"name":"dev","client":{"name":"dev","type":"api"}}'
-
-# Save memory
-curl -X POST http://localhost:3000/api/v1/memory \
-  -H "Authorization: Bearer aic_YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Architecture decision","project":"my-app","content":"We chose event sourcing for audit trail.","tags":["architecture"]}'
-
-# Search (default path — same as always)
-curl "http://localhost:3000/api/v1/search?q=architecture" \
-  -H "Authorization: Bearer aic_YOUR_KEY"
-
-# Precision search (opt-in — set PRECISION_SEARCH_ENABLED=true in .env)
-curl "http://localhost:3000/api/v1/search?q=architecture&mode=hybrid&extended=true" \
-  -H "Authorization: Bearer aic_YOUR_KEY"
-```
-
-### SDK example
-
-```typescript
-import { RataryClient } from '@ratary/sdk';
-
-const ratary = new RataryClient({
-  baseUrl: 'http://localhost:3000',
-  apiKey: 'aic_YOUR_KEY',
-});
-
-const caps = await ratary.capabilities.get();
-console.log(caps.data.features);
-
-const results = await ratary.memory.search({ q: 'architecture', limit: 5 });
-console.log(results.data);
-```
-
-### MCP (IDE assistants)
-
-After `npm run setup`, reload your editor. Ratary exposes **28 MCP tools** — `save_memory`, `search_memory`, `get_memory_by_path`, `get_context`, `traverse_relations`, and more — shared across Cursor, Claude Code, Roo Code, Cline, Gemini CLI, and VS Code.
+**Ratary Server** is the source of truth. Everything else connects to it.
 
 ---
 
-## Example use cases
+## Use cases
 
-| Use case | What Ratary gives you |
-|----------|----------------------|
-| **Coding assistant** | Persistent project memory across sessions, IDEs, and handoffs |
-| **Customer support bot** | Durable customer context without re-prompting every ticket |
-| **Enterprise search** | Hybrid retrieval over structured knowledge, not just file chunks |
-| **Personal AI** | A private second brain you own — self-hosted, exportable |
-| **Multi-agent systems** | One shared memory layer with workspace and agent scoping |
-| **Knowledge management** | Graph-linked memories with codenames, relations, and summaries |
-| **CI / automation** | REST API for bots that remember build decisions and incident postmortems |
+| | What you build | What Ratary provides |
+|---|----------------|---------------------|
+| **Developer AI** | Coding assistants across IDEs and sessions | Persistent project memory, MCP tools, handoffs |
+| **Enterprise search** | Internal knowledge discovery | Hybrid retrieval over structured memory, not just files |
+| **Customer support** | AI that handles tickets | Durable customer context without re-prompting every thread |
+| **Knowledge management** | Team second brain | Graph-linked memories, codenames, relations, summaries |
+| **Autonomous agents** | Multi-agent systems | Shared memory layer with workspace and agent scoping |
+| **Personal AI** | Private assistant you own | Self-hosted, exportable, sovereign data |
 
 ---
 
 ## Capability matrix
 
-| Capability | Ratary | Typical vector DB | Memory SaaS | Generic RAG |
-|------------|:------:|:-----------------:|:-----------:|:-----------:|
-| Persistent structured memory | ✅ | ❌ | ✅ | ⚠️ |
-| MCP-native (IDE integration) | ✅ | ❌ | ⚠️ | ❌ |
-| REST + OpenAPI + SDK | ✅ | ⚠️ | ✅ | ⚠️ |
-| Hybrid retrieval (SQL + vector + graph) | ✅ | ⚠️ | ⚠️ | ⚠️ |
-| Precision search modes (hybrid/semantic/fulltext/title) | ✅ (opt-in) | ❌ | ⚠️ | ⚠️ |
-| Knowledge graph & relations | ✅ | ❌ | ⚠️ | ❌ |
-| Token-efficient context assembly | ✅ | ❌ | ⚠️ | ❌ |
-| Multi-AI / workspace isolation | ✅ | ❌ | ⚠️ | ⚠️ |
-| Self-host & data sovereignty | ✅ | ✅ | ❌ | ⚠️ |
-| Agent runtime boundary (bring your agent) | ✅ | N/A | ⚠️ | N/A |
-| Enterprise adapters (Postgres, Neo4j, R2…) | ✅ | ✅ | ⚠️ | ⚠️ |
+| Capability | Ratary | Vector DB | Memory API | RAG | Agent framework |
+|------------|:------:|:---------:|:----------:|:---:|:---------------:|
+| Persistent structured memory | ✅ | ❌ | ⚠️ | ❌ | ⚠️ |
+| MCP-native | ✅ | ❌ | ⚠️ | ❌ | ⚠️ |
+| Hybrid SQL + vector + graph | ✅ | ⚠️ | ⚠️ | ⚠️ | ⚠️ |
+| Token-efficient context assembly | ✅ | ❌ | ⚠️ | ❌ | ⚠️ |
+| Knowledge graph & relations | ✅ | ❌ | ⚠️ | ❌ | ⚠️ |
+| Self-host sovereignty | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ |
+| Agent boundary (bring your agent) | ✅ | N/A | ⚠️ | N/A | ❌ |
+| Enterprise storage adapters | ✅ | ✅ | ⚠️ | ⚠️ | ⚠️ |
 
 ---
 
-## Architecture
+## Quick start
 
-Ratary follows a **ports-and-adapters** architecture. REST and MCP share the same application services — no duplicated business logic.
+**Prerequisites:** Node.js 24 · [Cloudflare](https://dash.cloudflare.com) account (D1)
 
-```
-src/
-  routes/           HTTP routing
-  controllers/      Request/response mapping
-  services/         MemoryService, retrieval, context assembly
-  repositories/     Scoped data access (MemoryRepository facade + reader/writer SQL modules)
-  ports/            Vendor-neutral contracts (ISqlDatabase, IVectorStore, …)
-  infrastructure/   D1, Postgres, pgvector, R2, Redis, Neo4j adapters
-  transport/mcp/    MCP server (28 tools)
-  search/precision/ Precision search orchestrator (Phase 6.6, gated)
-  composition/      Wiring at server startup
-
-packages/
-  sdk/              @ratary/sdk — TypeScript client
-  cli/              @ratary/cli — operator commands
-  mcp-server/       @ratary/mcp-server — standalone MCP package
+```bash
+git clone https://github.com/ontorata/ratary.git
+cd ratary && npm install
+cp .env.example .env   # fill D1 + AUTH_SECRET
+npm run db:migrate
+npm run setup          # wire MCP for Cursor, Claude Code, …
+npm run dev
 ```
 
-**Key boundaries:**
+→ API `http://localhost:3000` · Swagger `/docs`
 
-| Pipeline | Purpose |
-|----------|---------|
-| **Search** | Paginated browse for humans and APIs (`SearchService`; `IPrecisionSearchService` when flag ON) |
-| **Retrieval** | Bounded, ranked candidates for LLM context |
-| **Embedding** | Async enrichment — never blocks CRUD |
+```bash
+# Save your first memory
+curl -X POST http://localhost:3000/api/v1/memory \
+  -H "Authorization: Bearer aic_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Hello brain","project":"demo","content":"Ratary remembers this."}'
+```
 
-Deep dive: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+Full guide: **[docs/PANDUAN.md](docs/PANDUAN.md)** · SDK & MCP examples in [docs/examples/](docs/examples/)
 
 ---
 
 ## Documentation
 
-| Document | Description |
-|----------|-------------|
+| | |
+|---|---|
 | [docs/PANDUAN.md](docs/PANDUAN.md) | Setup, daily usage, MCP configuration |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System structure and boundaries |
-| [docs/README.md](docs/README.md) | Documentation index |
-| [docs/examples/](docs/examples/) | MCP configs, IDE templates, integration patterns |
-| [docs/policies/](docs/policies/) | OPA / Rego authorization policy examples |
-| [docs/adr/](docs/adr/) | Architecture decision records |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and boundaries |
+| [docs/examples/](docs/examples/) | MCP configs, IDE templates, SDK patterns |
+| [MCP/README.md](MCP/README.md) | MCP server listing & ChatGPT remote setup |
 | [.env.example](.env.example) | Full environment reference |
-| `GET /docs` | Live OpenAPI (when server is running) |
 
 ---
 
 ## Roadmap
 
-Themes we're building toward — not a sprint backlog.
+Organized by direction — not sprints.
 
-| Theme | Direction |
-|-------|-----------|
-| **Universal memory** | One brain across every AI client and protocol |
-| **Intelligent retrieval** | Smarter ranking, compression, and context packing |
-| **Enterprise scale** | Postgres cutover, federation, SSO, quotas |
-| **Knowledge fabric** | Connectors to external systems of record |
-| **Global intelligence** | Telemetry, analytics, and cross-node sync |
-| **Developer platform** | SDKs, CLI, remote MCP, plugin marketplace |
-| **Production ops** | Observability, SLOs, and cost visibility |
+| | Themes |
+|---|--------|
+| **Today** | MCP + REST brain, hybrid retrieval, self-host on D1/Postgres, remote MCP for ChatGPT |
+| **Next** | Ratary Studio, deeper connectors, expanded SDK surface, container images |
+| **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace |
 
-Ratary ships stable runtime on [github.com/ontorata/ratary](https://github.com/ontorata/ratary). Enterprise modules are **opt-in via environment flags** — defaults stay lean.
-
----
-
-## Contributing
-
-We welcome contributions from AI engineers, platform builders, and open source developers.
-
-1. Fork the repository
-2. Create a feature branch
-3. Run `npm run lint` and `npm run build`
-4. Open a pull request with a clear description
-
-For local development with the full test suite and governance docs, clone the [development mirror](https://github.com/lutfi04/ai-brain) which includes additional tooling not shipped in the production repo.
-
-Questions: [hello@ontorata.com](mailto:hello@ontorata.com)
+Enterprise modules ship **opt-in via environment flags** — defaults stay lean.
 
 ---
 
 ## Vision
 
-Today every application has a database.  
+Today every application has a database.
+
 Tomorrow every AI will have a brain.
 
-**Ratary is building that layer.**
+**Ratary is building that layer** — open, portable, self-hostable, and protocol-native. Not another chat wrapper. Not another vector dump. Infrastructure for persistent intelligence.
 
-Open, portable, self-hostable, and protocol-native — so knowledge **accumulates**, boundaries are **respected**, and agents stay **coherent across time**.
+Knowledge should **accumulate**. Boundaries should be **respected**. Agents should stay **coherent across time**.
 
-**Bring your model. Bring your agent. Ratary brings the brain.**
+If you're building AI that lasts longer than a single prompt — **build on Ratary**.
+
+<p align="center"><br/>
+<strong>Bring your model. Bring your agent. Ratary brings the brain.</strong><br/><br/>
+<sub>Ratary · where AI remembers · <a href="https://ontorata.com">Ontorata</a> · MIT License</sub>
+</p>
 
 ---
 
-<p align="center">
-  <sub>
-    <strong>Ratary</strong> · where AI remembers · by <a href="https://ontorata.com">Ontorata</a> ·
-    <a href="https://www.linkedin.com/in/lutfiramadhan/">Lutfi Ramadhan</a> ·
-    MIT License
-  </sub>
-</p>
+## Contributing
+
+Contributions welcome. Fork → branch → `npm run lint && npm run build` → PR.
+
+Full test suite and governance docs: [development mirror](https://github.com/lutfi04/ai-brain).
+
+Questions: [hello@ontorata.com](mailto:hello@ontorata.com)
