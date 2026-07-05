@@ -2,7 +2,8 @@
   "mcpServers": {
     "ratary": {
       "command": "npx",
-      "args": ["-y", "tsx", "D:/Apps/ratary/src/mcp/stdio.ts"],
+      "args": ["-y", "tsx", "REPO_PATH/src/mcp/stdio.ts"],
+      "cwd": "REPO_PATH",
       "env": {
         "CLOUDFLARE_ACCOUNT_ID": "your_cloudflare_account_id",
         "D1_DATABASE_ID": "your_d1_database_id",

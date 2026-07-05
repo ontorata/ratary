@@ -31,7 +31,8 @@
 | [.ai/adr/POLICY.md](../.ai/adr/POLICY.md) | When and how to write ADRs |
 | [.ai/archive/](../.ai/archive/) | Historical phase designs — **read-only**, not implementation authority |
 | [../SDK/](../SDK/) | Minimal `@ratary/sdk` usage example |
-| [examples/](examples/) | Sample MCP and config templates (`docs/examples/`, `MCP/examples/`) |
+| [examples/](examples/) | MCP configs, IDE templates, and integration patterns |
+| [policies/](policies/) | OPA / Rego authorization policy examples |
 
 ---
 

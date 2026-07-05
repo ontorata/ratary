@@ -43,7 +43,7 @@ Writes `.cursor/mcp.json` and `.mcp.json` automatically.
 
 ### 3. Manual config (any IDE)
 
-See [examples/cursor.mcp.json.example](examples/cursor.mcp.json.example) — replace `REPO_PATH` with your clone path.
+See [docs/examples/mcp/cursor.mcp.json.example](../docs/examples/mcp/cursor.mcp.json.example) — replace `REPO_PATH` with your clone path.
 
 ```json
 {
@@ -72,7 +72,7 @@ export RATARY_API_KEY=aic_...
 ratary-mcp
 ```
 
-Config example: [examples/remote-api.mcp.json.example](examples/remote-api.mcp.json.example)
+Config example: [docs/examples/mcp/remote-api.mcp.json.example](../docs/examples/mcp/remote-api.mcp.json.example)
 
 ---
 
@@ -125,7 +125,7 @@ Details: [Phase 13.1](../.ai/phases/13.1-remote-mcp-clients/README.md) · [ADR-0
 |-----|---------|
 | [docs/PANDUAN.md](../docs/PANDUAN.md) | Setup & usage (Indonesian) |
 | [docs/README.md](../docs/README.md) | Human docs index |
-| [.ai/adr/048-remote-mcp-transport.md](../.ai/adr/048-remote-mcp-transport.md) | Remote MCP ADR |
+| [docs/examples/](../docs/examples/) | MCP configs, IDE templates, SDK patterns |
 
 ## License
 

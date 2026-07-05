@@ -310,6 +310,8 @@ Point your vector DB at documents. Point your agent at tools. Point Ratary at **
 | [docs/PANDUAN.md](docs/PANDUAN.md) | Setup, daily usage, MCP configuration |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System structure and boundaries |
 | [docs/README.md](docs/README.md) | Documentation index |
+| [docs/examples/](docs/examples/) | MCP configs, IDE templates, integration patterns |
+| [docs/policies/](docs/policies/) | OPA / Rego authorization policy examples |
 | [docs/adr/](docs/adr/) | Architecture decision records |
 | [.env.example](.env.example) | Full environment reference |
 | `GET /docs` | Live OpenAPI (when server is running) |

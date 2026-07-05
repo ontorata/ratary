@@ -2,7 +2,7 @@ package ratary.authz
 
 default allow = false
 
-# Deny plugin enable when id is in blocked list (Phase 17 / 20 integration).
+# Deny plugin enable when id is in blocked list (enterprise security integration).
 allow {
   input.action == "plugin.enable"
   not blocked_plugin(input.resource.id)
