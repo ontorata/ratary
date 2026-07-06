@@ -7,6 +7,12 @@
 
 > **Pick your SQL metadata store** — D1, Postgres, Supabase, MariaDB/MySQL, TiDB, and CockroachDB are **peer choices** via `SQL_PROVIDER`, not a ladder with D1 as the reference deployment. Tier 0 covers auth and MCP scope; SQL connection vars depend on the provider you select. Optional adapters (vectors, object storage, search) are documented in Tier 2+.
 
+> **First install:** configure **`.env.example` sections 1–2** (Tier 0 + Tier 1) only, then run `npm run setup`. Do not enable section 3+ until you need them.
+
+> **Tier map:** `.env.example` section numbers differ from headings below. See mapping in [`.env.example`](../.env.example) header.
+
+> **Phase labels** (e.g. Phase 29) are internal release tags in this document — ignore unless you are enabling that specific module.
+
 ---
 
 ## How to use this document
@@ -14,16 +20,18 @@
 | You want to… | Read |
 |--------------|------|
 | First install | [GUIDE — Setup](GUIDE.md#1-setup) — pick SQL stack + **Tier 0** vars below |
-| Turn on Postgres / MariaDB / Redis / enterprise flags | **Tier 2+** here + [GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure) for backfill commands |
+| Turn on Postgres / MariaDB / Redis / enterprise flags | **Tier 2+** here + [GUIDE — Platform infrastructure](GUIDE.md#9-platform-infrastructure) for backfill commands |
 | Copy MCP or IDE config | [examples/](examples/) — not env vars |
 | Write authorization rules (Rego) | [policies/](policies/) — separate from env |
 | Grafana / Prometheus | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
 
 **Convention in `.env.example`:**
 
+- Tiered layout mirrors this document: **Tier 0–1** = first install; **Tier 2+** = opt-in adapters and features.
 - Uncomment and set a variable to **opt in** to that feature.
 - Commented lines show **template defaults** in `.env.example` — override `SQL_PROVIDER` and credentials for your chosen database.
 - `true`/`false` flags use string values in `.env` (e.g. `HYBRID_RETRIEVAL=true`).
+- Comment-only edits must **preserve every variable name** — do not add or remove keys without a code change.
 
 **Reading each feature block:**
 
@@ -44,13 +52,13 @@
 
 Ratary persists memory metadata through **`ISqlDatabase`** — same application code, different adapter per `SQL_PROVIDER`.
 
-| Stack | `SQL_PROVIDER` | Required env | Setup guide |
-|-------|----------------|--------------|-------------|
-| **PostgreSQL** *(template default)* | `postgres` | `DATABASE_URL` | [Postgres (Tier 2)](#postgres-metadata-sql_providerpostgres) · [DOCKER postgres profile](DOCKER.md#quick-start-postgres-profile) |
-| **Supabase** | `supabase` | `DATABASE_URL` (from Supabase dashboard) | [Supabase (Tier 2)](#supabase-metadata-sql_providersupabase) |
-| **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | [D1 below](#cloudflare-d1-sql_providerd1) · `npm run db:migrate` |
-| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [MariaDB (Tier 2)](#mariadb--mysql-metadata-sql_providermariadbmysql) · [DOCKER enterprise profile](DOCKER.md#profiles) |
-| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | [TiDB/Cockroach (Tier 2)](#tidb--cockroachdb-metadata-sql_providertidcockroachdb) |
+| Stack | `SQL_PROVIDER` | Required env | `.env.example` block |
+|-------|----------------|--------------|----------------------|
+| **PostgreSQL** *(template default)* | `postgres` | `DATABASE_URL` | Tier 1 — PostgreSQL |
+| **Supabase** | `supabase` | `DATABASE_URL` (from Supabase dashboard) | Tier 1 — Supabase |
+| **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | Tier 1 — Cloudflare D1 |
+| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | Tier 1 — MariaDB / MySQL |
+| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | Tier 1 — TiDB / CockroachDB |
 
 Pick **one** row. All paths support the same MCP tools and REST API.
 
@@ -132,7 +140,7 @@ Safe defaults. Enable only when you need the capability.
 **Before enabling:** Tune `RETRIEVAL_RELATION_NEIGHBOR_CAP` in staging (try 3 on dense graphs); sparse graphs may return little graph context until relations exist.  
 **Effects:** Retrieval pipeline adds graph BFS after seeds. Graph tools (`traverse_relations`, etc.) work **without** this flag for explicit exploration.
 
-Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
+Commands: [GUIDE — Optional commands](GUIDE.md#8-optional-commands).
 
 ---
 
@@ -169,7 +177,7 @@ Commands: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
 | `DATABASE_URL` | Yes |
 
 **Benefits:** Standard RDBMS ops, backups, replicas; pairs with pgvector and Docker compose.  
-**Before enabling:** Apply schema and run data import if migrating from another SQL provider ([GUIDE — Platform infrastructure](GUIDE.md#8-platform-infrastructure)).  
+**Before enabling:** Apply schema and run data import if migrating from another SQL provider ([GUIDE — Platform infrastructure](GUIDE.md#9-platform-infrastructure)).  
 **Effects:** All SQL-backed repositories use the Postgres adapter.
 
 ---
@@ -554,7 +562,7 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **Benefits:** Lower time-to-first-token for large context builds.  
 **Before enabling:** Long-lived connections; not serverless-friendly.  
-**Effects:** `GET /api/v1/context/stream` available. Endpoint: [GUIDE — Optional commands](GUIDE.md#7-optional-commands).
+**Effects:** `GET /api/v1/context/stream` available. Endpoint: [GUIDE — Optional commands](GUIDE.md#8-optional-commands).
 
 ---
 
@@ -579,7 +587,7 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 **Benefits:** ChatGPT New App, web MCP hosts connect without local install.  
 **Before enabling:** Deploy on a **persistent host** (Railway/VPS/Fly single instance). In production set `REMOTE_MCP_PERSISTENT_HOST_ACKNOWLEDGED=true` after confirming host layout — server refuses to start otherwise.  
 **Built-in mitigation:** In-memory session store; capabilities manifest exposes `requiresPersistentHost: true`.  
-**Effects:** MCP protocol served over HTTP; OAuth discovery when OAuth enabled. See [GUIDE — ChatGPT](GUIDE.md#61-chatgpt).
+**Effects:** MCP protocol served over HTTP; OAuth discovery when OAuth enabled. See [GUIDE — ChatGPT](GUIDE.md#6-chatgpt).
 
 ---
 
@@ -652,7 +660,7 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 **Benefits:** Production visibility; SLO dashboards in `observability/`.  
 **Before enabling:** External Prometheus/Grafana/Loki stack.  
-**Effects:** `/metrics` exposed; dashboards importable. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#10-observability).
+**Effects:** `/metrics` exposed; dashboards importable. See [observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) and [GUIDE — Observability](GUIDE.md#11-observability).
 
 ---
 
@@ -729,7 +737,7 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 **Before enabling:** Restrict integration token scope; plan ingest volume; set webhook secret if exposing public URL.  
 **Effects:** Connector jobs write or update memories; Postgres/Supabase workspace scoping uses `workspaceScopeSql()` (not SQLite `IS ?` syntax).
 
-Setup walkthrough: [GUIDE.md — Knowledge fabric](GUIDE.md#11-knowledge-fabric-live-connectors).
+Setup walkthrough: [GUIDE.md — Knowledge fabric](GUIDE.md#12-knowledge-fabric-live-connectors).
 
 ---
 

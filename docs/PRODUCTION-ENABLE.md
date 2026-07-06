@@ -1,14 +1,20 @@
-# Vercel Production — Ratary Server env setup
+# Vercel Production — Knowledge fabric env setup
 
-Sets **Production** environment variables on the Ratary Vercel project for knowledge fabric (Phase 29).
+**Scope:** Enabling **knowledge fabric** (Notion sync, connector jobs) on a hosted Ratary Server deployment.  
+**Not covered here:** baseline production (AUTH_SECRET, SQL, MCP scope) — see [GUIDE — Security](GUIDE.md#3-security) and [CONFIGURATION — Tier 0](CONFIGURATION.md#tier-0--core-required-sql--auth--mcp).
+
+**Canonical hosted API:** `https://ratary.ontorata.com`
 
 ## Prerequisites
+
+- Tier 0–1 working locally (`AUTH_SECRET`, `SQL_PROVIDER`, `DATABASE_URL` or D1 creds)
+- Vercel CLI linked to the Ratary project
 
 ```powershell
 npm i -g vercel
 vercel login
-cd d:\Apps\ai-brain
-vercel link   # select Ontorata team + ratary project
+cd /path/to/ratary    # repo root
+vercel link           # select Ontorata team + ratary project
 ```
 
 Optional: `$env:VERCEL_TOKEN` from [Vercel account tokens](https://vercel.com/account/tokens) for non-interactive use.
