@@ -1,0 +1,29 @@
+# Deploy Ratary Keycloak IdP on Render (HTTPS for ChatGPT OAuth)
+# 1. Create Web Service from this repo, root: infra/keycloak
+# 2. Or: Render Dashboard → New → Blueprint → connect repo, path infra/keycloak/render.yaml
+# 3. Set custom domain auth.ontorata.com → CNAME to Render host
+# 4. OIDC_ISSUER_URL=https://auth.ontorata.com/realms/ratary
+
+services:
+  - type: web
+    name: ratary-keycloak
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health/ready
+    envVars:
+      - key: KC_BOOTSTRAP_ADMIN_USERNAME
+        value: admin
+      - key: KC_BOOTSTRAP_ADMIN_PASSWORD
+        generateValue: true
+      - key: KC_HOSTNAME
+        value: auth.ontorata.com
+      - key: KC_PROXY_HEADERS
+        value: xforwarded
+      - key: KC_HTTP_ENABLED
+        value: true
+      - key: KC_HOSTNAME_STRICT
+        value: false
+      - key: KC_HEALTH_ENABLED
+        value: true

@@ -1,0 +1,38 @@
+{
+  "realm": "ratary",
+  "enabled": true,
+  "displayName": "Ratary MCP",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "users": [
+    {
+      "username": "mcp-demo",
+      "email": "mcp-demo@ontorata.com",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "MCP",
+      "lastName": "Demo",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "***REDACTED***",
+          "temporary": false
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "ratary-mcp-resource",
+      "name": "Ratary MCP Resource Server",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "protocol": "openid-connect",
+      "redirectUris": ["*"],
+      "webOrigins": ["*"]
+    }
+  ]
+}

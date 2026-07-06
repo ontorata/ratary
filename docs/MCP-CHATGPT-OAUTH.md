@@ -41,12 +41,26 @@ OIDC_MCP_OWNER_ID=<ratary-owner-uuid>
 
 ## Keycloak quick setup (example)
 
-1. Create realm `ratary`.
-2. Enable **Client registration** (Realm settings → Client policies / dynamic registration).
-3. Create confidential client `ratary-mcp` for the Ratary server (client credentials or JWT for token introspection if needed).
-4. Set `OIDC_ISSUER_URL=https://<keycloak-host>/realms/ratary`.
-5. Map ChatGPT DCR-registered client to allowed scopes: `openid`, `profile`, `email`, `mcp:tools`.
-6. Ensure access tokens include `sub` mappable to `OIDC_MCP_OWNER_ID` or configure claim mapping.
+**Repo assets:** `infra/keycloak/` · `scripts/keycloak-up.ps1` · `scripts/keycloak-enable-dcr.ps1`
+
+**Local + tunnel (dev / ChatGPT test):**
+
+```powershell
+.\scripts\keycloak-up.ps1
+npx localtunnel --port 8080   # note HTTPS URL
+$env:KC_HOSTNAME='<subdomain>.loca.lt'
+docker compose -f infra/keycloak/docker-compose.yml up -d --force-recreate
+.\scripts\vercel-mcp-oauth-env.ps1 -IssuerUrl https://<subdomain>.loca.lt/realms/ratary
+vercel --prod
+```
+
+**Production (stable):** deploy `infra/keycloak` to Render/Fly/VPS · custom domain `auth.ontorata.com` · `render.yaml` included.
+
+1. Create realm `ratary` (imported by `realm-ratary.json`).
+2. Enable **Client registration** — `scripts/keycloak-enable-dcr.ps1` or Admin Console.
+3. Set `OIDC_ISSUER_URL=https://<keycloak-host>/realms/ratary`.
+4. Map ChatGPT DCR-registered client to allowed scopes: `openid`, `profile`, `email`, `mcp:tools`.
+5. Ensure access tokens include `sub` mappable to `OIDC_MCP_OWNER_ID` or configure claim mapping.
 
 ---
 

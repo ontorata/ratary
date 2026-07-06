@@ -1,0 +1,29 @@
+# Ratary MCP OAuth IdP (Keycloak) — local / Render / VPS
+# Usage: docker compose -f infra/keycloak/docker-compose.yml up -d
+# Issuer: http://localhost:8080/realms/ratary (use HTTPS tunnel or KC_HOSTNAME in prod)
+
+name: ratary-keycloak
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    command: start-dev --import-realm --http-enabled=true --hostname-strict=false
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_ADMIN_USER:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD:-***REDACTED***}
+      KC_HEALTH_ENABLED: true
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_PROXY_HEADERS: xforwarded
+      KC_HOSTNAME: ${KC_HOSTNAME:-localhost}
+    ports:
+      - "${KC_HTTP_PORT:-8080}:8080"
+    volumes:
+      - ./realm-ratary.json:/opt/keycloak/data/import/realm-ratary.json:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'exec 3<>/dev/tcp/127.0.0.1/8080']
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
