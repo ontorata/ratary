@@ -660,8 +660,34 @@ CREATE TABLE IF NOT EXISTS knowledge_fabric_external_refs (
 CREATE INDEX IF NOT EXISTS idx_knowledge_fabric_external_refs_memory ON knowledge_fabric_external_refs(memory_id);
 `;
 
+/** Universal memory fabric provenance index (Phase 32). */
+const UNIVERSAL_MEMORY_FABRIC_SQL = `
+CREATE TABLE IF NOT EXISTS knowledge_fabric_provenance (
+  id TEXT PRIMARY KEY,
+  source_kind TEXT NOT NULL,
+  source_id TEXT NOT NULL,
+  external_id TEXT NOT NULL,
+  memory_id TEXT NOT NULL,
+  owner_id TEXT NOT NULL,
+  workspace_id TEXT,
+  external_updated_at TEXT NOT NULL,
+  metadata_json TEXT,
+  updated_at TEXT NOT NULL,
+  UNIQUE(source_kind, source_id, external_id, owner_id, workspace_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_knowledge_fabric_provenance_memory ON knowledge_fabric_provenance(memory_id);
+CREATE INDEX IF NOT EXISTS idx_knowledge_fabric_provenance_owner ON knowledge_fabric_provenance(owner_id, updated_at DESC);
+`;
+
 export async function migrateKnowledgeFabricPlatformPhase1(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(KNOWLEDGE_FABRIC_PLATFORM_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+export async function migrateUniversalMemoryFabricPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(UNIVERSAL_MEMORY_FABRIC_SQL)) {
     await client.execute(sql);
   }
 }
@@ -1093,6 +1119,7 @@ export async function runSchemaMigrations(
   await migrateSearchGraphPlatformPhase1(client);
   await migrateContentScalePlatformPhase1(client);
   await migrateKnowledgeFabricPlatformPhase1(client);
+  await migrateUniversalMemoryFabricPhase1(client);
   await migrateAiBrainPlatformPhase1(client);
   await migrateGlobalIntelligencePhase1(client);
   await migrateExtensionTracksPhase1(client, dialect);

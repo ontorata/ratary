@@ -32,6 +32,9 @@ export class DefaultFabricNormalizer implements IFabricNormalizer {
         `fabric:${ctx.connectorId}`,
         `fabric-ref:${item.externalId}`,
         ...(Array.isArray(item.metadata.tags) ? (item.metadata.tags as string[]) : []),
+        ...(item.metadata.universal === true || item.metadata.sourceKind === 'federation_peer'
+          ? ['fabric:universal']
+          : []),
       ],
       notes: JSON.stringify({ fabricProvenance: provenance }),
     };
