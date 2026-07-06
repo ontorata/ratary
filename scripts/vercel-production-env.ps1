@@ -18,7 +18,7 @@ if (-not (Get-Command vercel -ErrorAction SilentlyContinue)) {
   exit 1
 }
 
-function Read-DotEnv([string]$path): [hashtable] {
+function Read-DotEnv([string]$path) {
   $map = @{}
   if (-not (Test-Path $path)) { return $map }
   Get-Content $path | ForEach-Object {

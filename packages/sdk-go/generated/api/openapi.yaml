@@ -1,0 +1,479 @@
+openapi: 3.0.3
+info:
+  description: Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec
+    at GET /docs/json.
+  title: Ratary API — SDK v1 surface
+  version: 1.1.0
+servers:
+- url: http://localhost:3000/api/v1
+security:
+- BearerAuth: []
+- ApiKeyAuth: []
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      responses:
+        "200":
+          description: OK
+      security: []
+      tags:
+      - Health
+  /capabilities:
+    get:
+      operationId: getCapabilities
+      responses:
+        "200":
+          description: Capability manifest
+      security: []
+      tags:
+      - Capabilities
+  /capabilities/negotiate:
+    post:
+      operationId: negotiateCapabilities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientCapabilityRequest"
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CapabilityNegotiationResult"
+          description: Negotiation result matrix
+      security: []
+      tags:
+      - Capabilities
+  /ecosystem/clients:
+    get:
+      operationId: listEcosystemClients
+      responses:
+        "200":
+          description: Client catalog
+      security: []
+      tags:
+      - Ecosystem
+  /ecosystem/clients/{type}:
+    get:
+      operationId: getEcosystemClient
+      parameters:
+      - explode: false
+        in: path
+        name: type
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Client profile
+      security: []
+      tags:
+      - Ecosystem
+  /memory:
+    get:
+      operationId: listMemories
+      parameters:
+      - explode: true
+        in: query
+        name: project
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: Memory list
+      tags:
+      - Memory
+    post:
+      operationId: createMemory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMemoryRequest"
+        required: true
+      responses:
+        "201":
+          description: Created memory
+      tags:
+      - Memory
+  /memory/{id}:
+    delete:
+      operationId: deleteMemory
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Deleted
+      tags:
+      - Memory
+    get:
+      operationId: getMemory
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Memory
+      tags:
+      - Memory
+    put:
+      operationId: updateMemory
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMemoryRequest"
+      responses:
+        "200":
+          description: Updated memory
+      tags:
+      - Memory
+  /search:
+    get:
+      operationId: searchMemories
+      parameters:
+      - explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: Search results
+      tags:
+      - Search
+  /context:
+    post:
+      operationId: buildContext
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BuildContextRequest"
+        required: true
+      responses:
+        "200":
+          description: Context bundle
+      tags:
+      - Context
+  /federation/peers:
+    get:
+      operationId: listFederationPeers
+      responses:
+        "200":
+          description: Peer list
+      tags:
+      - Federation
+components:
+  schemas:
+    Memory:
+      properties:
+        id:
+          format: uuid
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        summary:
+          type: string
+        project:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        favorite:
+          type: boolean
+        archived:
+          type: boolean
+        lifecycleState:
+          description: Optional stewardship lifecycle hint when set
+          enum:
+          - active
+          - stale
+          - candidate_compress
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    CreateMemoryRequest:
+      example:
+        title: title
+        content: content
+        summary: summary
+        project: project
+        tags:
+        - tags
+        - tags
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        summary:
+          type: string
+        project:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+      required:
+      - content
+      - title
+      type: object
+    UpdateMemoryRequest:
+      example:
+        title: title
+        content: content
+        summary: summary
+        tags:
+        - tags
+        - tags
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        summary:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    BuildContextRequest:
+      example:
+        task: task
+        maxTokens: 0
+        project: project
+      properties:
+        task:
+          type: string
+        maxTokens:
+          type: integer
+        project:
+          type: string
+      required:
+      - task
+      type: object
+    BuildContextResponse:
+      properties:
+        context:
+          type: string
+        prompt:
+          type: string
+        memoryCount:
+          type: integer
+      type: object
+    ClientCapabilityRequest:
+      example:
+        protocolVersion: protocolVersion
+        clientInfo:
+          name: name
+          version: version
+        requiredCapabilities:
+        - requiredCapabilities
+        - requiredCapabilities
+        preferredCapabilities:
+        - preferredCapabilities
+        - preferredCapabilities
+        transports:
+        - transports
+        - transports
+      properties:
+        protocolVersion:
+          type: string
+        clientInfo:
+          $ref: "#/components/schemas/ClientCapabilityRequest_clientInfo"
+        requiredCapabilities:
+          items:
+            type: string
+          type: array
+        preferredCapabilities:
+          items:
+            type: string
+          type: array
+        transports:
+          items:
+            type: string
+          type: array
+      type: object
+    CapabilityMatchGroups:
+      example:
+        required:
+        - required
+        - required
+        preferred:
+        - preferred
+        - preferred
+        transports:
+        - transports
+        - transports
+      properties:
+        required:
+          items:
+            type: string
+          type: array
+        preferred:
+          items:
+            type: string
+          type: array
+        transports:
+          items:
+            type: string
+          type: array
+      required:
+      - preferred
+      - required
+      - transports
+      type: object
+    CapabilityNegotiationResult:
+      example:
+        compatible: true
+        negotiatedProtocolVersion: negotiatedProtocolVersion
+        serverProtocolVersion: serverProtocolVersion
+        supportedProtocolVersions:
+        - supportedProtocolVersions
+        - supportedProtocolVersions
+        matched:
+          required:
+          - required
+          - required
+          preferred:
+          - preferred
+          - preferred
+          transports:
+          - transports
+          - transports
+        missing:
+          required:
+          - required
+          - required
+          preferred:
+          - preferred
+          - preferred
+          transports:
+          - transports
+          - transports
+        serverEnabledCapabilities:
+        - serverEnabledCapabilities
+        - serverEnabledCapabilities
+        capabilitiesUrl: capabilitiesUrl
+        negotiateUrl: negotiateUrl
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        compatible:
+          type: boolean
+        negotiatedProtocolVersion:
+          type: string
+        serverProtocolVersion:
+          type: string
+        supportedProtocolVersions:
+          items:
+            type: string
+          type: array
+        matched:
+          $ref: "#/components/schemas/CapabilityMatchGroups"
+        missing:
+          $ref: "#/components/schemas/CapabilityMatchGroups"
+        serverEnabledCapabilities:
+          items:
+            type: string
+          type: array
+        capabilitiesUrl:
+          type: string
+        negotiateUrl:
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+      required:
+      - capabilitiesUrl
+      - compatible
+      - matched
+      - missing
+      - negotiateUrl
+      - negotiatedProtocolVersion
+      - serverEnabledCapabilities
+      - serverProtocolVersion
+      - supportedProtocolVersions
+      - timestamp
+      type: object
+    ClientCapabilityRequest_clientInfo:
+      example:
+        name: name
+        version: version
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+      required:
+      - name
+      - version
+      type: object
+  securitySchemes:
+    BearerAuth:
+      scheme: bearer
+      type: http
+    ApiKeyAuth:
+      in: header
+      name: X-API-Key
+      type: apiKey

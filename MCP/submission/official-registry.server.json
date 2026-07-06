@@ -3,7 +3,7 @@
   "name": "io.github.ontorata/ratary",
   "title": "Ratary Memory MCP",
   "description": "Persistent coding memory for AI assistants. MCP stdio, hybrid search, graph, context.",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "websiteUrl": "https://github.com/ontorata/ratary/tree/main/MCP",
   "repository": {
     "url": "https://github.com/ontorata/ratary",
@@ -13,10 +13,26 @@
     {
       "registryType": "npm",
       "identifier": "@ratary/mcp-server",
-      "version": "1.0.0",
+      "version": "1.1.1",
       "transport": {
         "type": "stdio"
-      }
+      },
+      "environmentVariables": [
+        {
+          "name": "RATARY_API_KEY",
+          "description": "Ratary API key (aic_...)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "RATARY_BASE_URL",
+          "description": "Ratary REST base URL (default https://ratary.ontorata.com)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        }
+      ]
     }
   ]
 }
