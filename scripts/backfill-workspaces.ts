@@ -14,7 +14,9 @@ async function backfillWorkspaces(): Promise<void> {
   console.log(`Memories updated: ${result.memoriesUpdated}`);
 
   if (result.remainingNull > 0) {
-    console.error(`Verification failed: ${result.remainingNull} memories still have NULL workspace_id.`);
+    console.error(
+      `Verification failed: ${result.remainingNull} memories still have NULL workspace_id.`,
+    );
     process.exit(1);
   }
 

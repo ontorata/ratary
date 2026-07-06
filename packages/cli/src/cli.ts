@@ -83,11 +83,7 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
       if (!query) throw new Error('memory search requires query');
       const limit = parseFlag(rest, '--limit');
       const mode = parseFlag(rest, '--mode') as
-        | 'hybrid'
-        | 'semantic'
-        | 'fulltext'
-        | 'title'
-        | undefined;
+        'hybrid' | 'semantic' | 'fulltext' | 'title' | undefined;
       const extended = rest.includes('--extended');
       const rerank = rest.includes('--rerank');
       const snippetLength = parseFlag(rest, '--snippet-length');
@@ -180,9 +176,7 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
         const limit = parseFlag(tail, '--limit');
         console.log(
           JSON.stringify(
-            await client.admin.knowledgeFabric.listIngestRuns(
-              limit ? Number(limit) : undefined,
-            ),
+            await client.admin.knowledgeFabric.listIngestRuns(limit ? Number(limit) : undefined),
             null,
             2,
           ),
@@ -208,7 +202,8 @@ export async function runCli(client: AiBrainClient, args: string[]): Promise<voi
     if (sub === 'sync') {
       const connectorId = rest.find((a) => !a.startsWith('--'));
       if (!connectorId) throw new Error('connectors sync requires connectorId');
-      const mode = (parseFlag(rest, '--mode') as 'full' | 'incremental' | undefined) ?? 'incremental';
+      const mode =
+        (parseFlag(rest, '--mode') as 'full' | 'incremental' | undefined) ?? 'incremental';
       const body = {
         mode,
         dryRun: hasFlag(rest, '--dry-run'),

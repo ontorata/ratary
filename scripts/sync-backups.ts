@@ -68,8 +68,7 @@ async function findExistingMemoryIds(service: MemoryService, relPath: string): P
   return memories
     .filter(
       (m) =>
-        m.content.includes(`\`${relPath}\``) ||
-        m.content.includes(relPath.replace(/\//g, '\\')),
+        m.content.includes(`\`${relPath}\``) || m.content.includes(relPath.replace(/\//g, '\\')),
     )
     .map((m) => m.id);
 }
