@@ -12,7 +12,10 @@
 |----------|----------|
 | How do I use `@ratary/sdk`, CLI, or npm MCP without cloning the server? | **[packages/README.md](../packages/README.md)** |
 | How do I sync Notion or Confluence into Ratary? | **[GUIDE.md — Knowledge fabric](GUIDE.md#12-knowledge-fabric-live-connectors)** |
+| Phases 32–34 (universal fabric, Neptune, SharePoint/Teams)? | **[PHASES-32-34.md](PHASES-32-34.md)** |
 | How do I enable knowledge fabric on production? | **[PRODUCTION-ENABLE.md](PRODUCTION-ENABLE.md)** |
+| ChatGPT MCP OAuth (DCR IdP)? | **[MCP-CHATGPT-OAUTH.md](MCP-CHATGPT-OAUTH.md)** |
+| OpenAPI SDK codegen CI? | **[SDK-CODEGEN-CI.md](SDK-CODEGEN-CI.md)** |
 | Which enterprise modules exist and how do I turn them on? | **[ENTERPRISE-MODULES.md](ENTERPRISE-MODULES.md)** |
 | What cross-phase debt is closed vs open? | **[CROSS-PHASE-DEBT.md](CROSS-PHASE-DEBT.md)** *(maintainer register)* |
 | What admin / operator APIs does the SDK expose? | **[packages/README.md](../packages/README.md)** · `@ratary/*@1.1.0` on [npm](https://www.npmjs.com/org/ratary) |

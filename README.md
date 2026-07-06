@@ -437,9 +437,8 @@ Organized by direction — not sprints. Phases **1–31** are implemented in cod
 
 | | Themes | Primary repository |
 |---|--------|-------------------|
-| **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote Ratary MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (default OFF):** knowledge fabric Phase 23 + **Notion live** Phase 29, **Confluence live** (post-29), plugin marketplace Phase 20, federation Phase 14, global intelligence Phase 25 | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
-| **Next** | Enable optional modules in prod (Confluence/Drive/SharePoint creds, universal fabric) — [PHASES-OPEN.md](docs/PHASES-OPEN.md) | `ontorata/ratary` |
-| **Future** | MCP directory listings (Phase 31L ops), ChatGPT OAuth via DCR IdP — [MCP-CHATGPT-OAUTH.md](docs/MCP-CHATGPT-OAUTH.md) | `ontorata/ratary` (platform) |
+| **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL, Docker, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (opt-in):** knowledge fabric (Notion/Confluence/Drive/SharePoint/Teams live), universal memory fabric (Phase 32), Neptune traversal (Phase 33), federation, global intelligence | `ontorata/ratary` |
+| **Ops (now)** | Prod connector creds, universal fabric + migration, MCP directories, ChatGPT OAuth IdP — [PHASES-32-34.md](docs/PHASES-32-34.md) · [directory-status.md](MCP/submission/directory-status.md) | `ontorata/ratary` |
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean. See [ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) and [CONFIGURATION.md](docs/CONFIGURATION.md).
 

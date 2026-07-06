@@ -705,7 +705,7 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 ### Knowledge fabric (connectors)
 
-**What it does:** Ingest from external systems (Notion, Confluence, Google Drive live; GitHub catalog). Phase 29 adds **live connector sync**, webhook ingress, and job tracking on top of Phase 23 MVP.
+**What it does:** Ingest from external systems (Notion, Confluence, Google Drive, SharePoint, Teams live; GitHub catalog). Universal fabric (Phase 32) adds cross-org provenance when `UNIVERSAL_MEMORY_FABRIC_ENABLED=true`.
 
 | Key variables | See table below |
 

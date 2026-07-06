@@ -480,7 +480,10 @@ OBS_COST_METRICS_ENABLED=true
 
 ## 12. Knowledge fabric (live connectors)
 
-**Opt-in.** Ingest pages and records from external systems into Ratary memory with provenance. Phase 29 ships **Notion live sync**; other connectors remain catalog/MVP until flagged on.
+**Opt-in.** Ingest from external systems into Ratary memory with provenance.
+
+**Live connectors (Phase 29+):** Notion, Confluence, Google Drive, SharePoint, Teams.  
+**Universal fabric (Phase 32):** `UNIVERSAL_MEMORY_FABRIC_ENABLED` unifies fabric + federation provenance.
 
 ### Enable on the server
 
@@ -545,8 +548,9 @@ ratary connectors sync notion --mode incremental
 From repository root with `.env` configured:
 
 ```bash
-npx tsx scripts/test-notion-sync.ts --url http://localhost:9876 --dry-run
-npx tsx scripts/test-notion-sync.ts --url http://localhost:9876 --live
+npx tsx scripts/test-connector-sync.ts --connector notion --url http://localhost:9876 --dry-run
+npx tsx scripts/test-connector-sync.ts --connector notion --url http://localhost:9876 --live
+# Also: confluence | drive | sharepoint | teams
 ```
 
 Memories appear under project `knowledge-fabric` with tags like `fabric:notion`. Search via MCP or `client.memory.search({ query: '...' })`.
@@ -558,7 +562,7 @@ Memories appear under project `knowledge-fabric` with tags like `fabric:notion`.
 3. Confirm `/health` reports `supportsKnowledgeFabric: true`.
 4. Run sync with `--dry-run` first, then live ingest.
 
-Hosted Ratary (`https://ratary.ontorata.com`) reports `supportsKnowledgeFabric: true` only after deploy with fabric env vars set.
+Hosted Ratary (`https://ratary.ontorata.com`): `supportsKnowledgeFabric: true` with Notion configured (2026-07-06). See [PRODUCTION-ENABLE.md](PRODUCTION-ENABLE.md).
 
 ---
 

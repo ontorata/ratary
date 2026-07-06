@@ -73,7 +73,9 @@ ratary admin cloud status
 ratary connectors sync notion --mode incremental
 ```
 
-**Live connector sync (Phase 29):** requires server `KNOWLEDGE_FABRIC_ENABLED=true` and `CONNECTOR_SYNC_ENABLED=true` plus vendor token (e.g. `NOTION_API_TOKEN`).
+**Live connector sync (Phase 29+):** Notion, Confluence, Drive, SharePoint, Teams — requires server `KNOWLEDGE_FABRIC_ENABLED=true`, `CONNECTOR_SYNC_ENABLED=true`, and vendor credentials.
+
+**OpenAPI language SDKs:** regenerate with `npm run generate:sdks` (Java 11+). CI setup: [docs/SDK-CODEGEN-CI.md](../docs/SDK-CODEGEN-CI.md).
 
 ---
 
