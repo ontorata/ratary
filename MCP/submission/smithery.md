@@ -63,7 +63,11 @@ smithery mcp publish "https://ratary.ontorata.com/mcp" -n ontorata/ratary \
   --config-schema '{"type":"object","properties":{"apiKey":{"type":"string","description":"Ratary API key (aic_...)"}},"required":["apiKey"]}'
 ```
 
-**Note:** Never put API keys in the MCP URL query string. Rotate any key exposed in URLs.
+**Note:** Never put API keys in the MCP URL query string. Rotate any key exposed in URLs. Smithery may pass `apiKey` as query — Ratary promotes it to `Authorization: Bearer` automatically.
+
+If publish still fails OAuth discovery, confirm production returns **200** on:
+- `/.well-known/mcp/server-card.json`
+- `/.well-known/oauth-protected-resource/mcp` (bearer-only, empty `authorization_servers`)
 
 ---
 
