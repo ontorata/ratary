@@ -28,6 +28,16 @@ Optional: `$env:VERCEL_TOKEN` from [Vercel account tokens](https://vercel.com/ac
 | `NOTION_API_TOKEN` | `ntn_...` (from Notion integration) |
 | `NOTION_API_VERSION` | `2022-06-28` |
 
+Optional (live connectors — set when credentials exist):
+
+| Variable | Example |
+|----------|---------|
+| `CONFLUENCE_BASE_URL` | `https://your-domain.atlassian.net` |
+| `CONFLUENCE_EMAIL` | `you@company.com` |
+| `CONFLUENCE_API_TOKEN` | Atlassian API token |
+| `GOOGLE_DRIVE_CREDENTIALS_JSON` | Service account JSON (single line in Vercel) |
+| `GOOGLE_DRIVE_FOLDER_ID` | Optional folder scope |
+
 Ensure existing production vars remain set: `AUTH_SECRET`, `SQL_PROVIDER`, `DATABASE_URL`, etc.
 
 ## Run
@@ -44,7 +54,9 @@ vercel --prod   # redeploy production after env change
 ```powershell
 Invoke-RestMethod https://ratary.ontorata.com/health
 # After deploy: capabilities.supportsKnowledgeFabric = true
-npx tsx scripts/test-notion-sync.ts --url https://ratary.ontorata.com --dry-run
+npx tsx scripts/test-connector-sync.ts --connector notion --url https://ratary.ontorata.com --dry-run
+npx tsx scripts/test-connector-sync.ts --connector confluence --url https://ratary.ontorata.com --dry-run
+npx tsx scripts/test-connector-sync.ts --connector drive --url https://ratary.ontorata.com --dry-run
 ```
 
 ---
