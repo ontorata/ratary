@@ -52,49 +52,12 @@ export function buildMcpUnauthorizedHeaders(ctx: McpOAuthMetadataContext): Recor
   };
 }
 
-/** API-key-only remote MCP (Smithery / gateways) — no OAuth authorization_servers. */
-export function buildBearerOnlyProtectedResourceMetadata(
-  env: Env,
-  requestOrigin?: string,
-): Record<string, unknown> | null {
-  if (env.REMOTE_MCP_OAUTH_ENABLED) return null;
-
-  const baseUrl = resolvePublicBaseUrl(env, requestOrigin);
-  if (!baseUrl) return null;
-
-  const resourcePath = env.REMOTE_MCP_PATH.startsWith('/')
-    ? env.REMOTE_MCP_PATH
-    : `/${env.REMOTE_MCP_PATH}`;
-
+export function buildBearerOnlyUnauthorizedHeaders(): Record<string, string> {
+  // Do not advertise resource_metadata — strict OAuth clients (Glama, ChatGPT) would
+  // fetch PRM and fail when authorization_servers is absent. API-key auth is in server-card.
   return {
-    resource: `${baseUrl}${resourcePath}`,
-    bearer_methods_supported: ['header', 'query'],
-    resource_documentation: `${baseUrl}/.well-known/mcp/server-card.json`,
-    authorization_servers: [],
-  };
-}
-
-export function buildBearerOnlyMetadataUrl(env: Env, requestOrigin?: string): string | null {
-  const baseUrl = resolvePublicBaseUrl(env, requestOrigin);
-  if (!baseUrl) return null;
-  const resourcePath = env.REMOTE_MCP_PATH.startsWith('/')
-    ? env.REMOTE_MCP_PATH
-    : `/${env.REMOTE_MCP_PATH}`;
-  const suffix = resourcePath.replace(/^\//, '');
-  if (suffix.length > 0) {
-    return `${baseUrl}/.well-known/oauth-protected-resource/${suffix}`;
-  }
-  return `${baseUrl}/.well-known/oauth-protected-resource`;
-}
-
-export function buildBearerOnlyUnauthorizedHeaders(
-  env: Env,
-  requestOrigin?: string,
-): Record<string, string> | null {
-  const metadataUrl = buildBearerOnlyMetadataUrl(env, requestOrigin);
-  if (!metadataUrl) return null;
-  return {
-    'WWW-Authenticate': `Bearer error="invalid_token", error_description="API key required", resource_metadata="${metadataUrl}"`,
+    'WWW-Authenticate':
+      'Bearer realm="ratary", error="invalid_token", error_description="API key required — see /.well-known/mcp/server-card.json"',
   };
 }
 
