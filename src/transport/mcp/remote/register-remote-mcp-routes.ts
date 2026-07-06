@@ -15,6 +15,7 @@ import type { ISqlDatabase } from '../../../ports/sql/isql-database.port.js';
 import { createMcpServer } from '../mcp-server.js';
 import { createRemoteMcpBinding } from '../mcp-context-binding.js';
 import { isInitializeRequest, runWithMcpRemoteSession } from './mcp-remote-context.js';
+import { registerRemoteMcpServerCardRoutes } from './register-remote-mcp-server-card-routes.js';
 
 interface McpRemoteSessionEntry {
   transport: StreamableHTTPServerTransport;
@@ -58,6 +59,8 @@ export async function registerRemoteMcpRoutes(
 ): Promise<void> {
   const corsOrigins = parseCorsOrigins(deps.corsOrigins);
   const bindingFactory = () => createRemoteMcpBinding(deps.scopeResolver);
+
+  await registerRemoteMcpServerCardRoutes(fastify);
 
   const handleMcp = async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
     applyCors(reply, corsOrigins, request.headers.origin);
