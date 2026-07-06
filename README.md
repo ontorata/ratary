@@ -438,8 +438,8 @@ Organized by direction — not sprints. Phases **1–31** are implemented in cod
 | | Themes | Primary repository |
 |---|--------|-------------------|
 | **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote Ratary MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (default OFF):** knowledge fabric Phase 23 + **Notion live** Phase 29, **Confluence live** (post-29), plugin marketplace Phase 20, federation Phase 14, global intelligence Phase 25 | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
-| **Next** | **Ops:** production knowledge fabric on hosted Ratary (`supportsKnowledgeFabric: true` on `ratary.ontorata.com`) — [PRODUCTION-ENABLE.md](docs/PRODUCTION-ENABLE.md). **Connectors:** Google Drive live; Confluence/Drive hardening + smoke in prod | `ontorata/ratary` |
-| **Future** | Universal memory fabric (cross-source, cross-org vision beyond current fabric), Neptune full traversal, additional enterprise connectors (SharePoint, Teams, …), MCP directory listings, multi-language SDK codegen (Java 11+) | `ontorata/ratary` (platform) |
+| **Next** | **Phase 32–34** (design): [PHASES-OPEN.md](docs/PHASES-OPEN.md). **Ops:** Confluence/Drive creds in prod | `ontorata/ratary` |
+| **Future** | MCP directory listings (Phase 31L ops), ChatGPT OAuth via DCR IdP — [MCP-CHATGPT-OAUTH.md](docs/MCP-CHATGPT-OAUTH.md) | `ontorata/ratary` (platform) |
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean. See [ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) and [CONFIGURATION.md](docs/CONFIGURATION.md).
 

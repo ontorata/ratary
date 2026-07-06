@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .php-cs-fixer.dist.php
 .travis.yml
 README.md
@@ -44,19 +43,3 @@ lib/Model/ModelInterface.php
 lib/Model/UpdateMemoryRequest.php
 lib/ObjectSerializer.php
 phpunit.xml.dist
-test/Api/CapabilitiesApiTest.php
-test/Api/ContextApiTest.php
-test/Api/EcosystemApiTest.php
-test/Api/FederationApiTest.php
-test/Api/HealthApiTest.php
-test/Api/MemoryApiTest.php
-test/Api/SearchApiTest.php
-test/Model/BuildContextRequestTest.php
-test/Model/BuildContextResponseTest.php
-test/Model/CapabilityMatchGroupsTest.php
-test/Model/CapabilityNegotiationResultTest.php
-test/Model/ClientCapabilityRequestClientInfoTest.php
-test/Model/ClientCapabilityRequestTest.php
-test/Model/CreateMemoryRequestTest.php
-test/Model/MemoryTest.php
-test/Model/UpdateMemoryRequestTest.php
