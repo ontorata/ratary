@@ -9,26 +9,39 @@ import type {
   GraphTraversalOptions,
   IGraphProvider,
 } from '../../../graph/igraph-provider.interface.js';
+import { traverseBidirectional, type RelationEdge } from '../../../graph/traversal.js';
+import {
+  HttpNeptuneGremlinClient,
+  NEPTUNE_OWNER_EDGES_GREMLIN,
+  parseNeptuneEdgeResults,
+  type NeptuneGremlinClient,
+} from './neptune-gremlin-client.js';
 
 /**
- * AWS Neptune graph provider stub (D8-03).
- * Enable with GRAPH_PROVIDER=neptune when NEPTUNE_ENDPOINT is configured.
- * Full Gremlin/HTTP implementation is a future phase — port boundary is ready.
+ * AWS Neptune graph provider (Phase 33) — Gremlin edge load + in-process BFS.
  */
 export class NeptuneGraphProvider implements IGraphProvider {
-  constructor(private readonly env: Env) {}
+  private readonly edgeCache = new Map<string, RelationEdge[]>();
+  private readonly client: NeptuneGremlinClient;
 
-  async traverseNeighbors(
-    _seedMemoryId: string,
-    _ownerId: string,
-    _options: GraphTraversalOptions,
-  ): Promise<GraphNeighbor[]> {
-    if (!this.env.NEPTUNE_ENDPOINT?.trim()) {
+  constructor(
+    env: Env,
+    client?: NeptuneGremlinClient,
+  ) {
+    const endpoint = env.NEPTUNE_ENDPOINT?.trim();
+    if (!endpoint) {
       throw new Error('NEPTUNE_ENDPOINT is required when GRAPH_PROVIDER=neptune');
     }
-    throw new Error(
-      'Neptune graph traversal is not implemented yet — use GRAPH_PROVIDER=neo4j or d1',
-    );
+    this.client = client ?? new HttpNeptuneGremlinClient(endpoint);
+  }
+
+  async traverseNeighbors(
+    seedMemoryId: string,
+    ownerId: string,
+    options: GraphTraversalOptions,
+  ): Promise<GraphNeighbor[]> {
+    const edges = await this.loadOwnerEdges(ownerId);
+    return traverseBidirectional(edges, seedMemoryId, options);
   }
 
   getCapabilities(): GraphCapabilities {
@@ -39,5 +52,15 @@ export class NeptuneGraphProvider implements IGraphProvider {
       maxTraversalDepth: DEFAULT_GRAPH_MAX_DEPTH,
       maxNeighborsPerRequest: DEFAULT_GRAPH_MAX_NEIGHBORS,
     };
+  }
+
+  private async loadOwnerEdges(ownerId: string): Promise<RelationEdge[]> {
+    const cached = this.edgeCache.get(ownerId);
+    if (cached) return cached;
+
+    const data = await this.client.submit(NEPTUNE_OWNER_EDGES_GREMLIN, { ownerId });
+    const edges = parseNeptuneEdgeResults(data);
+    this.edgeCache.set(ownerId, edges);
+    return edges;
   }
 }

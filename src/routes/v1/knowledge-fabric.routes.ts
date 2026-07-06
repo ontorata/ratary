@@ -103,4 +103,26 @@ export async function knowledgeFabricRoutes(
     },
     controller.receiveWebhook.bind(controller),
   );
+
+  fastify.post(
+    '/knowledge-fabric/sync/peer/:peerId',
+    {
+      schema: {
+        tags: ['Enterprise Knowledge Fabric'],
+        summary: 'Pull knowledge from federation peer (Phase 32 universal fabric)',
+      },
+    },
+    controller.pullFromPeer.bind(controller),
+  );
+
+  fastify.get(
+    '/knowledge-fabric/provenance',
+    {
+      schema: {
+        tags: ['Enterprise Knowledge Fabric'],
+        summary: 'List unified fabric provenance records (Phase 32)',
+      },
+    },
+    controller.listProvenance.bind(controller),
+  );
 }

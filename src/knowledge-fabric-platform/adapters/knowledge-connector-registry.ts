@@ -9,6 +9,8 @@ import {
 import { NotionLiveConnector } from './notion-live-connector.js';
 import { ConfluenceLiveConnector } from './confluence-live-connector.js';
 import { DriveLiveConnector } from './drive-live-connector.js';
+import { SharePointLiveConnector } from './sharepoint-live-connector.js';
+import { TeamsLiveConnector } from './teams-live-connector.js';
 
 /** Accepts push payloads for webhook ingest (Phase 29B). */
 export class WebhookPushConnector implements IKnowledgeConnector {
@@ -66,6 +68,10 @@ export function createKnowledgeConnectors(env: Env): Map<ConnectorId, IKnowledge
       connectors.set(id, new ConfluenceLiveConnector(env, base));
     } else if (id === 'drive') {
       connectors.set(id, new DriveLiveConnector(env, base));
+    } else if (id === 'sharepoint') {
+      connectors.set(id, new SharePointLiveConnector(env, base));
+    } else if (id === 'teams') {
+      connectors.set(id, new TeamsLiveConnector(env, base));
     } else {
       connectors.set(id, base);
     }

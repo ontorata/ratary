@@ -723,6 +723,13 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 | `CONFLUENCE_API_TOKEN` | — | Confluence API token |
 | `GOOGLE_DRIVE_CREDENTIALS_JSON` | — | Google service account JSON (Drive API readonly) |
 | `GOOGLE_DRIVE_FOLDER_ID` | — | Optional Drive folder scope |
+| `SHAREPOINT_TENANT_ID` | — | Azure AD tenant (SharePoint / Graph) |
+| `SHAREPOINT_CLIENT_ID` | — | App registration client id |
+| `SHAREPOINT_CLIENT_SECRET` | — | App client secret |
+| `SHAREPOINT_SITE_ID` | — | SharePoint site id (required for live pull) |
+| `TEAMS_TEAM_ID` | — | Teams team id (Graph live connector) |
+| `TEAMS_CHANNEL_ID` | — | Teams channel id |
+| `UNIVERSAL_MEMORY_FABRIC_ENABLED` | `false` | Unify fabric + federation provenance (Phase 32) |
 | `GITHUB_TOKEN` | — | GitHub connector (catalog / future live) |
 
 **REST (when enabled):**
