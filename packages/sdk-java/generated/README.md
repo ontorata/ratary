@@ -2,7 +2,7 @@
 
 Ratary API — SDK v1 surface
 - API version: 1.1.0
-  - Build date: 2026-07-06T15:16:11.682960+07:00[Asia/Jakarta]
+  - Build date: 2026-07-06T18:02:05.609025+07:00[Asia/Jakarta]
   - Generator version: 7.23.0
 
 Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.

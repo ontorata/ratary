@@ -1,6 +1,5 @@
 .github/workflows/maven.yml
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -65,19 +64,3 @@ src/main/java/org/openapitools/client/model/ClientCapabilityRequestClientInfo.ja
 src/main/java/org/openapitools/client/model/CreateMemoryRequest.java
 src/main/java/org/openapitools/client/model/Memory.java
 src/main/java/org/openapitools/client/model/UpdateMemoryRequest.java
-src/test/java/org/openapitools/client/api/CapabilitiesApiTest.java
-src/test/java/org/openapitools/client/api/ContextApiTest.java
-src/test/java/org/openapitools/client/api/EcosystemApiTest.java
-src/test/java/org/openapitools/client/api/FederationApiTest.java
-src/test/java/org/openapitools/client/api/HealthApiTest.java
-src/test/java/org/openapitools/client/api/MemoryApiTest.java
-src/test/java/org/openapitools/client/api/SearchApiTest.java
-src/test/java/org/openapitools/client/model/BuildContextRequestTest.java
-src/test/java/org/openapitools/client/model/BuildContextResponseTest.java
-src/test/java/org/openapitools/client/model/CapabilityMatchGroupsTest.java
-src/test/java/org/openapitools/client/model/CapabilityNegotiationResultTest.java
-src/test/java/org/openapitools/client/model/ClientCapabilityRequestClientInfoTest.java
-src/test/java/org/openapitools/client/model/ClientCapabilityRequestTest.java
-src/test/java/org/openapitools/client/model/CreateMemoryRequestTest.java
-src/test/java/org/openapitools/client/model/MemoryTest.java
-src/test/java/org/openapitools/client/model/UpdateMemoryRequestTest.java
