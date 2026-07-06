@@ -3,6 +3,8 @@
 **Purpose:** Operator guide for Phase **10.5–25** platform adapters and extension tracks.  
 **Default:** all flags **OFF** — core memory path (Phases 1–11) unchanged.
 
+> **Skip this doc** on first install. Use only when enabling section 7 (Enterprise platform) in [`.env.example`](../.env.example). OSS/local MCP needs Tier 0–1 only.
+
 See also: [CONFIGURATION.md](CONFIGURATION.md) · [CROSS-PHASE-DEBT.md](CROSS-PHASE-DEBT.md) · [DOCKER.md](DOCKER.md)
 
 ---
