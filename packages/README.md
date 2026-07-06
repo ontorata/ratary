@@ -2,7 +2,7 @@
 
 TypeScript client libraries for [Ratary Server](https://github.com/ontorata/ratary). Published on npm under the **`@ratary`** scope ([npm org](https://www.npmjs.com/org/ratary)), maintained by [Ontorata](https://ontorata.com).
 
-**Current release:** `@ratary/sdk`, `@ratary/cli`, and `@ratary/mcp-server` **v1.1.0** (Phase 28 admin surfaces + Phase 29 connector CLI).
+**Current release:** `@ratary/sdk`, `@ratary/cli`, and `@ratary/mcp-server` **v1.1.0** (admin surfaces + connector CLI). Compatible with Ratary Server **1.0.x** — see [CHANGELOG.md](../CHANGELOG.md).
 
 The scope matches the **product name** (Ratary), not the company name. GitHub and npm publisher identity remain **Ontorata** (`ontorata/ratary`).
 

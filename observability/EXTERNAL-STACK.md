@@ -121,4 +121,4 @@ When `OBSERVABILITY_PLATFORM=true`:
 
 Phase 12 **business event bus** (webhooks, analytics consumers) is separate from Phase 19 **operational telemetry**. Observability hooks live at the HTTP middleware boundary — no OTLP handler on memory domain events.
 
-See also: [GUIDE — Observability](../docs/GUIDE.md#10-observability)
+See also: [GUIDE — Observability](../docs/GUIDE.md#11-observability)

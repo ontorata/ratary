@@ -4,7 +4,7 @@
       "command": "npx",
       "args": ["-y", "@ratary/mcp-server"],
       "env": {
-        "RATARY_BASE_URL": "https://ontorata.com",
+        "RATARY_BASE_URL": "https://ratary.ontorata.com",
         "RATARY_API_KEY": "aic_your_api_key_here",
         "RATARY_WORKSPACE_ID": ""
       }

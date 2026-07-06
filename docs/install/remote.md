@@ -70,7 +70,7 @@ Prefer **Railway, Fly.io, VPS, or Docker** for persistent SSE sessions.
 
 Do **not** paste REST URLs (`/api/v1/...`) into the MCP Server URL field.
 
-Details: [GUIDE — ChatGPT](../GUIDE.md#61-chatgpt).
+Details: [GUIDE — ChatGPT](../GUIDE.md#6-chatgpt).
 
 ---
 
@@ -78,7 +78,7 @@ Details: [GUIDE — ChatGPT](../GUIDE.md#61-chatgpt).
 
 ChatGPT without MCP: import OpenAPI from `https://your-host/docs/json`, authenticate with `Bearer aic_...`.
 
-See [GUIDE — ChatGPT](../GUIDE.md#61-chatgpt).
+See [GUIDE — ChatGPT](../GUIDE.md#6-chatgpt).
 
 ---
 

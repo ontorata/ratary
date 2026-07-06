@@ -12,7 +12,7 @@ Quick path: `npm run setup` in this repo. Per-harness install: **[install/README
 
 **Prerequisites:** Node.js 24 · a **SQL metadata store** (see table below) · `AUTH_SECRET` for REST
 
-> **First install stops at Tier 1** in [`.env.example`](../.env.example) — set auth + SQL only, then `npm run setup`. Tiers 2+ are optional (vectors, enterprise, fabric).
+> **First install stops at `.env.example` sections 1–2** — set auth + SQL only, then `npm run setup`. Section 3+ is optional.
 
 ```bash
 git clone https://github.com/ontorata/ratary.git
@@ -32,14 +32,14 @@ Skip sections 2+ in `.env.example` on first install.
 
 ### Choose your SQL stack
 
-| Path | `SQL_PROVIDER` | What to configure | Template block in `.env.example` |
-|------|----------------|-------------------|----------------------------------|
-| **Cloudflare D1** | `d1` | `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, `D1_API_TOKEN` | Tier 1 — Cloudflare D1 |
-| **PostgreSQL** | `postgres` | `DATABASE_URL` | Tier 1 — PostgreSQL (default) |
-| **Supabase** | `supabase` | `DATABASE_URL` (Supabase dashboard URI) | Tier 1 — Supabase |
-| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | Tier 1 — MariaDB / MySQL |
-| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | Tier 1 — TiDB / CockroachDB |
-| **Hosted API only** | (remote server) | `RATARY_API_KEY` | Section 8 — client SDK (not server `.env`) |
+| Path | `SQL_PROVIDER` | What to configure | `.env.example` | Details |
+|------|----------------|-------------------|----------------|---------|
+| **PostgreSQL** | `postgres` | `DATABASE_URL` | Tier 1 — PostgreSQL | [DOCKER postgres](DOCKER.md#quick-start-postgres-profile) · [CONFIGURATION](CONFIGURATION.md#postgres-metadata-sql_providerpostgres) |
+| **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | Tier 1 — D1 | [CONFIGURATION — D1](CONFIGURATION.md#cloudflare-d1-sql_providerd1) |
+| **Supabase** | `supabase` | `DATABASE_URL` | Tier 1 — Supabase | [CONFIGURATION — Supabase](CONFIGURATION.md#supabase-metadata-sql_providersupabase) |
+| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | Tier 1 — MariaDB / MySQL | [DOCKER enterprise](DOCKER.md#profiles) |
+| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` | Tier 1 — TiDB / CockroachDB | [CONFIGURATION Tier 2](CONFIGURATION.md#tier-2--platform-adapters) |
+| **Hosted API only** | (remote) | `RATARY_API_KEY` | Section 8 (client, not server) | [install/remote.md](install/remote.md) |
 
 Set `AUTH_SECRET` (min 32 characters) for REST auth on every self-hosted path.
 
@@ -168,16 +168,21 @@ Never commit or share `.env`.
 | Symptom | Fix |
 |---------|-----|
 | MCP red | `npm run setup` → reload IDE |
-| Connection closed (Windows) | Use `command: "cmd"` — see [section 6](#6-mcp--other-clients) |
+| Connection closed (Windows) | Use `command: "cmd"` — see [section 7](#7-mcp--other-clients) |
 | AI ignores memory | Mention project + topic explicitly |
 | Empty memory | Normal on fresh DB — save first |
 | MCP error in production | Set `MCP_OWNER_ID`, or `NODE_ENV=development` for local stdio (loads `.env`). Reload MCP. |
+| `AUTH_SECRET` / 401 on REST | Generate secret (`openssl rand -hex 32`); bootstrap once for `aic_...` key |
+| `DATABASE_URL` / SQL errors | Match `SQL_PROVIDER`; Postgres: `npm run db:apply-postgres-schema` |
+| Rate limit / flaky on Vercel | Set `RATE_LIMIT_REDIS_URL` (Upstash Redis) for multi-instance |
+| `supportsKnowledgeFabric: false` | Set fabric env + redeploy — [PRODUCTION-ENABLE.md](PRODUCTION-ENABLE.md) |
+| Bootstrap already used | Create key via `POST /auth/identities` or `npm run key:create` |
 | Claude pending approval | Run `claude` in repo → approve |
-| ChatGPT | No local stdio — see [ChatGPT setup](#61-chatgpt) (Actions, Remote MCP, OAuth) |
+| ChatGPT | No local stdio — see [ChatGPT setup](#6-chatgpt) (Actions, Remote MCP, OAuth) |
 
 ---
 
-## 6.1 ChatGPT
+## 6. ChatGPT
 
 ChatGPT does **not** run local MCP stdio like Cursor. Two paths:
 
@@ -215,7 +220,7 @@ Do **not** paste REST URLs (`/api/v1`) into the MCP Server URL field — differe
 
 ---
 
-## 6. MCP — other clients
+## 7. MCP — other clients
 
 **Recommended:** `npm run setup` (Cursor + Claude Code) — credentials from `.env`; do not duplicate secrets in `mcp.json`.
 
@@ -310,7 +315,7 @@ Check active transports: `GET /api/v1/capabilities` → `transport` section.
 
 ---
 
-## 7. Optional commands
+## 8. Optional commands
 
 Feature reference (what to prepare before optional flags): **[CONFIGURATION.md](CONFIGURATION.md)**.
 
@@ -375,7 +380,7 @@ CLI: `npm run compress:memories` (dry-run) · `compress:memories:execute`
 
 ---
 
-## 8. Platform infrastructure
+## 9. Platform infrastructure
 
 External adapters are **opt-in via env**. Set **`SQL_PROVIDER`** to your metadata database first; other adapters are independent.
 
@@ -437,19 +442,19 @@ All backfill scripts are **dry-run by default**; add `--execute` to write.
 
 ---
 
-## 9. New development machine
+## 10. New development machine
 
 Moving Ratary to a new workstation:
 
 1. Clone repo (or copy workspace)
 2. Copy `.env` securely (especially `AUTH_SECRET`, SQL connection vars, `MCP_OWNER_ID` if set)
-3. `npm install && npm run db:migrate`
+3. **D1:** `npm run db:migrate` · **Postgres:** `npm run db:apply-postgres-schema`
 4. `npm run setup` and reload MCP
 5. Optional: `npm run test:integration`
 
 ---
 
-## 10. Observability
+## 11. Observability
 
 See [CONFIGURATION → Observability platform](CONFIGURATION.md#observability-platform).
 
@@ -473,7 +478,7 @@ OBS_COST_METRICS_ENABLED=true
 
 ---
 
-## 11. Knowledge fabric (live connectors)
+## 12. Knowledge fabric (live connectors)
 
 **Opt-in.** Ingest pages and records from external systems into Ratary memory with provenance. Phase 29 ships **Notion live sync**; other connectors remain catalog/MVP until flagged on.
 
@@ -553,11 +558,11 @@ Memories appear under project `knowledge-fabric` with tags like `fabric:notion`.
 3. Confirm `/health` reports `supportsKnowledgeFabric: true`.
 4. Run sync with `--dry-run` first, then live ingest.
 
-Hosted Ratary (`https://ratary.ontorata.com`) enables fabric only after deploy + env — not on legacy `main` until promoted from `staging`.
+Hosted Ratary (`https://ratary.ontorata.com`) reports `supportsKnowledgeFabric: true` only after deploy with fabric env vars set.
 
 ---
 
-## 12. Agent ecosystem
+## 13. Agent ecosystem
 
 See [CONFIGURATION → Federation](CONFIGURATION.md#federation) and workspace vars in [Tier 0 → MCP memory scope](CONFIGURATION.md#mcp-memory-scope).
 

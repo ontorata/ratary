@@ -37,7 +37,7 @@ Copy [mcp/remote-api.mcp.json.example](../mcp/remote-api.mcp.json.example) or:
       "command": "npx",
       "args": ["-y", "@ratary/mcp-server"],
       "env": {
-        "RATARY_BASE_URL": "https://ontorata.com",
+        "RATARY_BASE_URL": "https://ratary.ontorata.com",
         "RATARY_API_KEY": "aic_..."
       }
     }

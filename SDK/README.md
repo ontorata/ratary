@@ -56,4 +56,4 @@ await client.admin.knowledgeFabric.ingest('notion', { mode: 'incremental', dryRu
 
 Legacy env aliases `AI_BRAIN_*` are still accepted.
 
-See also: [docs/GUIDE.md — Knowledge fabric](../docs/GUIDE.md#11-knowledge-fabric-live-connectors).
+See also: [docs/GUIDE.md — Knowledge fabric](../docs/GUIDE.md#12-knowledge-fabric-live-connectors).

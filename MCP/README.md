@@ -73,7 +73,7 @@ For teams using a deployed Ratary REST endpoint:
 
 ```bash
 npm install -g @ratary/mcp-server
-export RATARY_BASE_URL=https://ontorata.com
+export RATARY_BASE_URL=https://ratary.ontorata.com
 export RATARY_API_KEY=aic_...
 ratary-mcp
 ```
@@ -92,7 +92,7 @@ REMOTE_MCP_ENABLED=true
 
 Endpoint: `https://your-host/mcp` (Bearer `aic_...` or OAuth when enabled).  
 CI smoke: `tests/transport/remote-mcp-chatgpt-smoke.test.ts` (ChatGPT-style initialize payload).  
-Details: [GUIDE — ChatGPT](../docs/GUIDE.md#61-chatgpt) · [CONFIGURATION — Tier 4](../docs/CONFIGURATION.md#tier-4--transport--protocols)
+Details: [GUIDE — ChatGPT](../docs/GUIDE.md#6-chatgpt) · [CONFIGURATION — Tier 4](../docs/CONFIGURATION.md#tier-4--transport--protocols)
 
 ---
 
