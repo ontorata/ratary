@@ -8,6 +8,7 @@ import {
 } from './env-configured-connector.js';
 import { NotionLiveConnector } from './notion-live-connector.js';
 import { ConfluenceLiveConnector } from './confluence-live-connector.js';
+import { DriveLiveConnector } from './drive-live-connector.js';
 
 /** Accepts push payloads for webhook ingest (Phase 29B). */
 export class WebhookPushConnector implements IKnowledgeConnector {
@@ -63,6 +64,8 @@ export function createKnowledgeConnectors(env: Env): Map<ConnectorId, IKnowledge
       connectors.set(id, new NotionLiveConnector(env, base));
     } else if (id === 'confluence') {
       connectors.set(id, new ConfluenceLiveConnector(env, base));
+    } else if (id === 'drive') {
+      connectors.set(id, new DriveLiveConnector(env, base));
     } else {
       connectors.set(id, base);
     }
