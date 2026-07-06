@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/ontorata.svg" alt="Ontorata" width="240" />
+  <img src="docs/assets/ontorata.webp" alt="Ontorata" width="240" />
 </p>
 
 <h1 align="center">Ratary</h1>
