@@ -25,9 +25,7 @@ async function main(): Promise<void> {
 
     for (const row of result.tables) {
       const status = row.match ? 'OK' : 'MISMATCH';
-      console.log(
-        `${row.table}: source=${row.sourceCount} target=${row.targetCount} ${status}`,
-      );
+      console.log(`${row.table}: source=${row.sourceCount} target=${row.targetCount} ${status}`);
     }
 
     if (!result.ok) {

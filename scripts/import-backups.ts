@@ -97,11 +97,7 @@ async function importFromDirectory(root: string): Promise<void> {
 
   await ensureBackupRoot(root);
 
-  let candidates = await collectCandidates(
-    root,
-    root,
-    INCLUDE_JSONL || TRANSCRIPTS_ONLY,
-  );
+  let candidates = await collectCandidates(root, root, INCLUDE_JSONL || TRANSCRIPTS_ONLY);
 
   if (!ALL_FILES) {
     candidates = dedupeCandidates(candidates);

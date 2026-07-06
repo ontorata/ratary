@@ -43,7 +43,9 @@ async function parseResponse<T>(response: Response): Promise<T> {
   const parsed = text ? (JSON.parse(text) as ApiSuccess<T> | ApiError) : undefined;
 
   if (!response.ok || !parsed || !('success' in parsed) || parsed.success !== true) {
-    const message = parsed ? extractErrorMessage(parsed as ApiError, response.status) : `HTTP ${response.status}`;
+    const message = parsed
+      ? extractErrorMessage(parsed as ApiError, response.status)
+      : `HTTP ${response.status}`;
     const code = (parsed as ApiError)?.error?.code;
     throw Object.assign(new Error(message), { code, status: response.status });
   }
@@ -51,11 +53,7 @@ async function parseResponse<T>(response: Response): Promise<T> {
   return parsed.data;
 }
 
-async function fetchRatary(
-  baseUrl: string,
-  path: string,
-  init: RequestInit,
-): Promise<Response> {
+async function fetchRatary(baseUrl: string, path: string, init: RequestInit): Promise<Response> {
   const url = `${baseUrl}/api/v1${path}`;
   try {
     return await fetch(url, init);
@@ -86,7 +84,10 @@ export function resolveBaseUrl(override?: string): string {
   return raw.replace(/\/$/, '').replace(/\/api\/v1$/, '');
 }
 
-export function parseKeyCliArgs(argv: string[], command: 'create' | 'rotate' | 'list'): KeyCliOptions {
+export function parseKeyCliArgs(
+  argv: string[],
+  command: 'create' | 'rotate' | 'list',
+): KeyCliOptions {
   let baseUrl = resolveBaseUrl();
   let name: string | undefined;
   let id: string | undefined;
@@ -250,9 +251,7 @@ export function pickRotatableIdentity(
   if (candidates.length === 1) return candidates[0];
 
   const lines = candidates.map((row) => `  ${row.id}  ${row.name}`).join('\n');
-  throw new Error(
-    `Ada ${candidates.length} identity. Pilih dengan --name atau --id:\n${lines}`,
-  );
+  throw new Error(`Ada ${candidates.length} identity. Pilih dengan --name atau --id:\n${lines}`);
 }
 
 export async function writeKeyToEnv(baseUrl: string, apiKey: string): Promise<void> {

@@ -41,10 +41,7 @@ export async function saveSyncState(state: SyncStateFile): Promise<void> {
   await writeFile(STATE_PATH, `${JSON.stringify(state, null, 2)}\n`, 'utf-8');
 }
 
-export function getSyncedState(
-  state: SyncStateFile,
-  relPath: string,
-): SyncedFileState | undefined {
+export function getSyncedState(state: SyncStateFile, relPath: string): SyncedFileState | undefined {
   return state.files[relPath];
 }
 

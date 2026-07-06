@@ -31,7 +31,12 @@ function extractNotionTitle(page: NotionPage): string {
   for (const prop of Object.values(page.properties)) {
     const titleBits = prop.title ?? prop.rich_text;
     if (titleBits?.length) {
-      return titleBits.map((t) => t.plain_text ?? '').join('').trim() || `Notion ${page.id}`;
+      return (
+        titleBits
+          .map((t) => t.plain_text ?? '')
+          .join('')
+          .trim() || `Notion ${page.id}`
+      );
     }
   }
   return `Notion ${page.id}`;
