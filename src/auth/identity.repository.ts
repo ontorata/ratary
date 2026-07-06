@@ -65,6 +65,14 @@ export class IdentityRepository {
     return rows[0] ? rowToIdentity(rows[0]) : null;
   }
 
+  async findByName(name: string): Promise<Identity | null> {
+    const rows = await this.db.query<IdentityRow>(
+      'SELECT * FROM identities WHERE name = ? AND active = 1',
+      [name],
+    );
+    return rows[0] ? rowToIdentity(rows[0]) : null;
+  }
+
   async countAll(): Promise<number> {
     const rows = await this.db.query<{ count: number | string }>(
       'SELECT COUNT(*) as count FROM identities',

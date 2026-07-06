@@ -76,6 +76,9 @@ export interface TransportManifest {
     version: 'v1';
     baseUrl: string;
     streaming?: boolean;
+    studioOidc?: {
+      enabled: boolean;
+    };
   };
   mcp: {
     enabled: boolean;

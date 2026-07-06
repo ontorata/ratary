@@ -309,6 +309,11 @@ const envSchema = z
       .default('false'),
     /** Maps validated OIDC access tokens to an existing owner scope for remote MCP OAuth. */
     OIDC_MCP_OWNER_ID: z.string().uuid().optional(),
+    /** Studio SPA — per-user OIDC JWT auth (Zitadel); auto-provisions owner scope. */
+    STUDIO_OIDC_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
 
     // Federation layer (Phase 14) — ADR-029; cross-node knowledge exchange, default off
     FEDERATION_ENABLED: z
@@ -785,6 +790,14 @@ const envSchema = z
           message: 'OIDC_MCP_OWNER_ID is required when REMOTE_MCP_OAUTH_ENABLED=true',
         });
       }
+    }
+
+    if (env.STUDIO_OIDC_ENABLED && !env.OIDC_ISSUER_URL) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['OIDC_ISSUER_URL'],
+        message: 'OIDC_ISSUER_URL is required when STUDIO_OIDC_ENABLED=true',
+      });
     }
 
     if (

@@ -13,6 +13,7 @@ import {
   JwtProvider,
   OAuthProvider,
   OidcAccessTokenProvider,
+  StudioOidcAccessTokenProvider,
 } from './providers/index.js';
 import { createAuthenticateMiddleware } from './auth.middleware.js';
 import { createPermissionMiddleware } from './permission.middleware.js';
@@ -49,6 +50,9 @@ export function createAuthLayer(db: ISqlDatabase): AuthLayer {
   const providers = [
     new ApiKeyProvider(identityRepository),
     new OAuthProvider(identityRepository),
+    ...(env.STUDIO_OIDC_ENABLED
+      ? [new StudioOidcAccessTokenProvider({ env, identityRepository })]
+      : []),
     ...(env.REMOTE_MCP_OAUTH_ENABLED ? [new OidcAccessTokenProvider({ env })] : []),
     new JwtProvider(jwtService, identityRepository),
   ];

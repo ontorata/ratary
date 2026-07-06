@@ -1,19 +1,17 @@
 import type { Env } from '../../config/env.js';
 import type { AuthContext, ResolvedIdentity } from '../auth.types.js';
-import { isApiKeyFormat, isOAuthTokenFormat } from '../crypto.js';
 import { UnauthorizedError } from '../../types/errors.js';
-import { extractBearerToken, isJwtFormat } from '../token-utils.js';
 import type { IdentityProvider } from './identity-provider.js';
+import {
+  extractOidcAccessToken,
+  fetchOidcUserInfo,
+  issuerMatches,
+  type OidcUserInfo,
+} from './oidc-token-utils.js';
 
 export interface OidcAccessTokenProviderOptions {
   env: Env;
   fetchImpl?: typeof fetch;
-}
-
-interface OidcUserInfo {
-  sub?: string;
-  email?: string;
-  name?: string;
 }
 
 /** Validates OIDC access tokens for remote MCP OAuth (Phase 13.1D / Phase 17 bridge). */
@@ -27,19 +25,15 @@ export class OidcAccessTokenProvider implements IdentityProvider {
 
   async authenticate(ctx: AuthContext): Promise<ResolvedIdentity | null> {
     const env = this.options.env;
-    if (!env.REMOTE_MCP_OAUTH_ENABLED || !env.OIDC_ISSUER_URL) {
+    if (!env.REMOTE_MCP_OAUTH_ENABLED || !env.OIDC_ISSUER_URL || env.STUDIO_OIDC_ENABLED) {
       return null;
     }
 
-    const token = extractBearerToken(ctx);
-    if (!token || isApiKeyFormat(token) || isOAuthTokenFormat(token) || !isJwtFormat(token)) {
-      return null;
-    }
+    const token = extractOidcAccessToken(ctx);
+    if (!token) return null;
 
     const issuer = env.OIDC_ISSUER_URL.replace(/\/$/, '');
-    const payload = decodeJwtPayload(token);
-    const tokenIssuer = typeof payload.iss === 'string' ? payload.iss.replace(/\/$/, '') : '';
-    if (tokenIssuer && tokenIssuer !== issuer) {
+    if (!issuerMatches(token, issuer)) {
       return null;
     }
 
@@ -49,7 +43,7 @@ export class OidcAccessTokenProvider implements IdentityProvider {
       throw new UnauthorizedError('OIDC_MCP_OWNER_ID is required for MCP OAuth token mapping');
     }
 
-    const subject = userInfo.sub ?? tokenIssuer;
+    const subject = userInfo.sub;
     if (!subject) {
       throw new UnauthorizedError('OIDC token missing subject');
     }
@@ -69,28 +63,10 @@ export class OidcAccessTokenProvider implements IdentityProvider {
   }
 
   private async fetchUserInfo(issuer: string, accessToken: string): Promise<OidcUserInfo> {
-    const userInfoUrl = `${issuer}/userinfo`;
-    const response = await this.fetchImpl(userInfoUrl, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-    if (!response.ok) {
-      throw new UnauthorizedError(`OIDC userinfo failed: HTTP ${response.status}`);
+    try {
+      return await fetchOidcUserInfo(issuer, accessToken, this.fetchImpl);
+    } catch {
+      throw new UnauthorizedError('OIDC userinfo failed');
     }
-
-    return (await response.json()) as OidcUserInfo;
-  }
-}
-
-function decodeJwtPayload(token: string): Record<string, unknown> {
-  const parts = token.split('.');
-  if (parts.length < 2) return {};
-  try {
-    return JSON.parse(Buffer.from(parts[1]!, 'base64url').toString('utf8')) as Record<
-      string,
-      unknown
-    >;
-  } catch {
-    return {};
   }
 }

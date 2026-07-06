@@ -126,6 +126,9 @@ export class CapabilityManifestBuilder {
           version: 'v1',
           baseUrl: '/api/v1',
           streaming: this.env.SSE_ENABLED,
+          studioOidc: {
+            enabled: this.env.STUDIO_OIDC_ENABLED && Boolean(this.env.OIDC_ISSUER_URL),
+          },
         },
         mcp: {
           enabled: true,
