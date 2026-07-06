@@ -15,6 +15,25 @@ Glama indexes MCP servers from GitHub, scores tools (TDQS), and **requires a Gla
 
 Org repo `ontorata/ratary` — claim via `glama.json` (GitHub sign-in alone is not enough).
 
+## Glama remote URL error (`auth_required`)
+
+If Glama shows:
+
+```json
+{"error":"auth_required","message":"Server requires authentication but did not advertise OAuth..."}
+```
+
+**Cause:** Glama probed `/mcp` without API key, followed OAuth PRM, and found no `authorization_servers` (Ratary is **API-key only**, not OAuth).
+
+**Fix (pick one):**
+
+| Submit as | Config |
+|-----------|--------|
+| **GitHub server (recommended)** | Repo `ontorata/ratary` — Glama builds **stdio** via `npx @ratary/mcp-server` + env `RATARY_API_KEY` |
+| **HTTPS connector** | URL `https://ratary.ontorata.com/mcp` + **private test credentials** → API key `aic_...` (Bearer) |
+
+Do **not** expect OAuth on production today (`REMOTE_MCP_OAUTH_ENABLED=false`). ChatGPT OAuth needs a DCR-capable IdP (not Supabase).
+
 ## Operator checklist
 
 - [x] Merge `glama.json` to `main` (PR #24)
