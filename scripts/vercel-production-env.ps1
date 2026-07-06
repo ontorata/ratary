@@ -1,5 +1,6 @@
-# Set Ratary Vercel Production env for knowledge fabric (Phase 29)
-# Prereq: vercel CLI linked to ratary project (vercel link)
+# Prereq: Tier 0–1 working locally (AUTH_SECRET, SQL_PROVIDER, DATABASE_URL) before fabric flags.
+#         vercel CLI linked to ratary project (vercel link)
+# Canonical host: https://ratary.ontorata.com
 # Usage: .\scripts\vercel-production-env.ps1 [-EnvFile .env]
 
 param(

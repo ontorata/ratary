@@ -104,30 +104,37 @@ The runnable deployment is **[Ratary Server](#quick-start)** — this repository
 
 **Ratary** is the product. **Ratary Server** is the open-source deployment you run — [ontorata/ratary](https://github.com/ontorata/ratary) (this repository). [`@ratary/sdk`](#ecosystem), [`@ratary/cli`](#ecosystem), and [**Ratary MCP**](#ecosystem) connect to it; sibling [Ontorata products](#ecosystem) use the same source of truth.
 
-**Prerequisites:** Node.js 24 · **SQL metadata store** (D1, Postgres, MariaDB, … — [pick one](docs/CONFIGURATION.md#sql-metadata-store-choose-one))
+**Prerequisites:** Node.js 24 · **SQL metadata store** ([pick one](docs/CONFIGURATION.md#sql-metadata-store-choose-one) — **Postgres is the template default**)
 
-### Path A — Cloudflare D1
+### Path A — PostgreSQL (npm + local or Docker)
 
 ```bash
 git clone https://github.com/ontorata/ratary.git
 cd ratary && npm install
-cp .env.example .env   # set SQL_PROVIDER=d1, fill D1_* + AUTH_SECRET
-npm run db:migrate
+cp .env.example .env   # Set AUTH_SECRET + DATABASE_URL — see .env.example QUICK START
+npm run db:apply-postgres-schema
 npm run setup          # wire Ratary MCP for Cursor, Claude Code, …
 npm run dev
 ```
 
-### Path B — PostgreSQL (Docker)
+Or use Docker: `docker compose --profile postgres up --build` — see [docs/DOCKER.md](docs/DOCKER.md).
+
+### Path B — Cloudflare D1
 
 ```bash
-git clone https://github.com/ontorata/ratary.git && cd ratary
-export AUTH_SECRET="$(openssl rand -hex 32)"
-docker compose --profile postgres up --build
+git clone https://github.com/ontorata/ratary.git
+cd ratary && npm install
+cp .env.example .env   # Set AUTH_SECRET + SQL_PROVIDER=d1 + CLOUDFLARE_* / D1_*
+npm run db:migrate
+npm run setup
+npm run dev
 ```
 
-Details: **[docs/DOCKER.md](docs/DOCKER.md)** · **[docs/GUIDE.md](docs/GUIDE.md#choose-your-sql-stack)**
+Details: **[docs/GUIDE.md](docs/GUIDE.md#1-setup)** · **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)**
 
 → API `http://localhost:3000` · Swagger `/docs`
+
+**First REST call:** bootstrap once to get an API key (`aic_...`) — see [GUIDE — First REST API key](docs/GUIDE.md#first-rest-api-key-optional).
 
 ```bash
 # Save your first memory
@@ -351,7 +358,7 @@ OpenTelemetry, Prometheus metrics, SLO dashboards, and cost visibility for produ
 OpenAPI, npm **`@ratary/*@1.1.0`** — [`sdk`](https://www.npmjs.com/package/@ratary/sdk) (memory + **admin**), [`cli`](https://www.npmjs.com/package/@ratary/cli), [`mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) — and one-command IDE setup (`npm run setup`).
 
 ### Knowledge fabric (opt-in)
-Ingest from external systems of record — **Notion live connector** (Phase 29), webhook HMAC, incremental sync jobs, provenance on memories. Enable with `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guide: [docs/GUIDE.md — Knowledge fabric](docs/GUIDE.md#11-knowledge-fabric-live-connectors).
+Ingest from external systems of record — **Notion live connector** (Phase 29), webhook HMAC, incremental sync jobs, provenance on memories. Enable with `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guide: [docs/GUIDE.md — Knowledge fabric](docs/GUIDE.md#12-knowledge-fabric-live-connectors).
 
 ---
 
@@ -406,7 +413,12 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 | [MCP/README.md](MCP/README.md) | Ratary MCP — stdio and `@ratary/mcp-server` |
 | [packages/README.md](packages/README.md) | npm packages — install, env, publish |
 | [.env.example](.env.example) | Env template — meanings in [docs/CONFIGURATION.md](docs/CONFIGURATION.md) |
-| [docs/policies/](docs/policies/) | Authorization policy samples (OPA/Rego, enterprise) |
+| [docs/PRODUCTION-ENABLE.md](docs/PRODUCTION-ENABLE.md) | Hosted deploy — knowledge fabric on Vercel |
+| [docs/ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) | Enterprise flags (opt-in) |
+| [CHANGELOG.md](CHANGELOG.md) | Release notes and version map |
+| [SECURITY.md](SECURITY.md) | Vulnerability reporting |
+
+**Canonical hosted API:** `https://ratary.ontorata.com` (self-host uses your own base URL).
 
 **Ontorata ecosystem** (separate repositories — not in this tree):
 
@@ -458,9 +470,9 @@ If you're building AI that lasts longer than a single prompt — **build on Rata
 
 *How do I contribute?*
 
-**Ratary Server** (this repo): fork [ontorata/ratary](https://github.com/ontorata/ratary) → branch → `npm run lint && npm run build` → PR to `ontorata/ratary`.
+**Ratary Server** (this repo): fork [ontorata/ratary](https://github.com/ontorata/ratary) → branch → `npm run lint && npm run build && npm test` → PR to `ontorata/ratary`.
 
-**Full test suite and governance** (`.ai/` phases, ADRs, Vitest): use the [development mirror](https://github.com/lutfi04/ai-brain) — same codebase boundary, separate remote for internal docs and QA.
+Extended governance (`.ai/` phases, ADRs) lives in the [development mirror](https://github.com/lutfi04/ai-brain) — optional for contributors; **docs-only and standard PRs to `ontorata/ratary` are welcome** without the mirror.
 
 **Ontorata MCP** and **Ontorata Studio** accept contributions in their own repositories — not via this repo.
 

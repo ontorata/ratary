@@ -11,10 +11,10 @@
 | Question | Document |
 |----------|----------|
 | How do I use `@ratary/sdk`, CLI, or npm MCP without cloning the server? | **[packages/README.md](../packages/README.md)** |
-| How do I sync Notion or Confluence into Ratary? | **[GUIDE.md — Knowledge fabric](GUIDE.md#11-knowledge-fabric-live-connectors)** |
+| How do I sync Notion or Confluence into Ratary? | **[GUIDE.md — Knowledge fabric](GUIDE.md#12-knowledge-fabric-live-connectors)** |
 | How do I enable knowledge fabric on production? | **[PRODUCTION-ENABLE.md](PRODUCTION-ENABLE.md)** |
 | Which enterprise modules exist and how do I turn them on? | **[ENTERPRISE-MODULES.md](ENTERPRISE-MODULES.md)** |
-| What cross-phase debt is closed vs open? | **[CROSS-PHASE-DEBT.md](CROSS-PHASE-DEBT.md)** |
+| What cross-phase debt is closed vs open? | **[CROSS-PHASE-DEBT.md](CROSS-PHASE-DEBT.md)** *(maintainer register)* |
 | What admin / operator APIs does the SDK expose? | **[packages/README.md](../packages/README.md)** · `@ratary/*@1.1.0` on [npm](https://www.npmjs.com/org/ratary) |
 | How do I install Ratary in my IDE / harness? | **[install/README.md](install/README.md)** |
 | How do I run Ratary in Docker? | **[DOCKER.md](DOCKER.md)** |
@@ -31,7 +31,7 @@
 
 | File | Role |
 |------|------|
-| [../.env.example](../.env.example) | Variable **names & defaults** (machine-readable template) |
+| [../.env.example](../.env.example) | Tiered variable template — **stop at Tier 1** on first install |
 | [CONFIGURATION.md](CONFIGURATION.md) | Variable **meaning & when to enable** (human reference) |
 
 ---
@@ -65,11 +65,11 @@
 
 1. [../README.md](../README.md) — what Ratary is and quick start  
 2. [GUIDE — Setup](GUIDE.md#1-setup) — install and wire MCP  
-3. [CONFIGURATION.md](CONFIGURATION.md) Tier 0 — required env vars  
+3. [`.env.example`](../.env.example) sections 1–2 + [CONFIGURATION — SQL table](CONFIGURATION.md#sql-metadata-store-choose-one)  
 4. [GUIDE — Daily usage](GUIDE.md#2-daily-usage-just-chat) — daily usage  
 5. [ARCHITECTURE.md](ARCHITECTURE.md) — when you need structural context  
 
-Contributing: [../README.md#contributing](../README.md#contributing)
+**Community:** GitHub Issues = bugs · Discussions = questions · [SECURITY.md](../SECURITY.md) = vulnerabilities · [hello@ontorata.com](mailto:hello@ontorata.com) = commercial
 
 ---
 

@@ -1,7 +1,8 @@
 {
   "name": "ratary",
   "version": "1.0.0",
-  "description": "Ratary - Second brain for AI coding assistants powered by Cloudflare D1",
+  "description": "Ratary — AI memory server with peer SQL backends, MCP, and REST",
+  "license": "MIT",
   "type": "module",
   "workspaces": [
     "packages/sdk",
