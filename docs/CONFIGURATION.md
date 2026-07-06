@@ -24,6 +24,18 @@
 | Copy MCP or IDE config | [examples/](examples/) — not env vars |
 | Write authorization rules (Rego) | [policies/](policies/) — separate from env |
 | Grafana / Prometheus | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
+| Local dev URLs | **Local development ports** below |
+
+### Local development ports
+
+Default ports when running from source (override via env / Vite config):
+
+| Service | Default | Override |
+|---------|---------|----------|
+| **Ratary Server** (REST, Swagger, `/mcp` local) | `http://localhost:9876` | `PORT` in `.env` |
+| **Ontorata Studio** (Vite dev) | `http://localhost:8765` | `server.port` in Studio `vite.config.ts` |
+
+Studio points at Ratary via `VITE_RATARY_BASE_URL` (default `http://localhost:9876`). Production hosts (`ratary.ontorata.com`, `studio.ontorata.com`) are unchanged.
 
 **Convention in `.env.example`:**
 

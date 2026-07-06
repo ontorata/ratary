@@ -6,6 +6,8 @@ One guide for **setup, daily use, and Ratary MCP** (Cursor, Claude Code, Roo, Cl
 
 Quick path: `npm run setup` in this repo. Per-harness install: **[install/README.md](install/README.md)**.
 
+**Local defaults:** Ratary REST `http://localhost:9876` (`PORT`) · Ontorata Studio `http://localhost:8765` — see [CONFIGURATION — Local development ports](CONFIGURATION.md#local-development-ports).
+
 ---
 
 ## 1. Setup

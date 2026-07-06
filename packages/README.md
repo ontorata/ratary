@@ -25,7 +25,7 @@ npm install @ratary/sdk
 npm install -g @ratary/cli @ratary/mcp-server   # optional global CLIs
 ```
 
-No server clone required — point clients at your Ratary URL and API key (`aic_...`).
+No server clone required — point clients at your Ratary URL and API key (`aic_...`). Local clone default: `http://localhost:9876`.
 
 ### SDK quick start
 

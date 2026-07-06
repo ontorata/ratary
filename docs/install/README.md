@@ -20,6 +20,7 @@ For daily usage after install, see **[GUIDE.md](../GUIDE.md)**. For environment 
 | Ontorata Studio (web console) | [GUIDE — Studio](../GUIDE.md#ontorata-studio-web-console) |
 | Hosted brain (REST API key) | [Remote / hosted](remote.md) → `@ratary/mcp-server` |
 | Remote MCP URL (ChatGPT, web) | [Remote / hosted](remote.md) → deploy `/mcp` |
+| Local dev ports | Ratary `:9876` · Studio `:8765` — [CONFIGURATION](../CONFIGURATION.md#local-development-ports) |
 
 ---
 

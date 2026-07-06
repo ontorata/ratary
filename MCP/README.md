@@ -39,6 +39,8 @@ cp .env.example .env
 npm run db:migrate   # D1 only — use db:apply-postgres-schema for Postgres / Supabase
 ```
 
+**REST dev server:** `npm run dev` → `http://localhost:9876` (Swagger `/docs`). Override with `PORT` in `.env`.
+
 ### 2. Generate MCP config
 
 ```bash

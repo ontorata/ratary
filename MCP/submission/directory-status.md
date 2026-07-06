@@ -29,4 +29,4 @@ Track operator submissions for **Ratary Memory MCP** (`ratary`). Update this fil
 
 ---
 
-*Last pack update: 2026-07-06 (Glama listed · https://glama.ai/mcp/servers/ontorata/ratary).*
+*Last pack update: 2026-07-06 (local dev ports: Ratary `9876`, Studio `8765` — [CONFIGURATION.md](../../docs/CONFIGURATION.md#local-development-ports)).*
