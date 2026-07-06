@@ -2,7 +2,8 @@
   "name": "@ratary/mcp-server",
   "version": "1.1.1",
   "mcpName": "io.github.ontorata/ratary",
-  "description": "MCP server proxying Ratary REST via @ratary/sdk",
+  "description": "MCP server proxying Ratary REST — persistent coding memory for AI assistants",
+  "keywords": ["mcp", "memory", "ratary", "coding-assistant", "ai-brain", "knowledge-graph"],
   "type": "module",
   "bin": {
     "ratary-mcp": "./dist/server.js"

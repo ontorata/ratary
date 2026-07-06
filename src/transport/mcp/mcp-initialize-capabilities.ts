@@ -14,6 +14,7 @@ import {
   buildCondensedCapabilityManifest,
   type CondensedMcpCapabilitySnapshot,
 } from '../../capabilities/condensed-capability-manifest.js';
+import { MCP_SERVER_INSTRUCTIONS } from '../mcp/remote/mcp-server-card-catalog.js';
 import {
   negotiateCapabilities,
   parseClientCapabilityRequest,
@@ -44,9 +45,11 @@ export function buildMcpInitializeInstructions(
   negotiation?: CapabilityNegotiationResult,
 ): string {
   const parts = [
-    'Ratary memory cloud. Use search_memory with project name; save handoffs with save_memory.',
-    `Full deployment manifest: call get_capabilities or GET ${condensed.capabilitiesUrl}.`,
-    `Condensed snapshot: protocolVersion=${condensed.protocolVersion}, toolCount=${condensed.mcp.toolCount}.`,
+    MCP_SERVER_INSTRUCTIONS,
+    `Deployment: protocolVersion=${condensed.protocolVersion}, toolCount=${condensed.mcp.toolCount}.`,
+    `Capability manifest: get_capabilities or GET ${condensed.capabilitiesUrl}.`,
+    'Prefer search_memory (hybrid) and get_context before answering from training data.',
+    'Save session handoffs with save_memory and tags ["handoff"].',
   ];
 
   if (negotiation) {
