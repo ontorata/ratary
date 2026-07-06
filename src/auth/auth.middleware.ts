@@ -3,6 +3,7 @@ import type { AuthService } from './auth.service.js';
 import type { AuthUser } from './auth.types.js';
 import { getEnv } from '../config/index.js';
 import { extractBearerToken } from './token-utils.js';
+import { MCP_SERVER_CARD_PATH } from '../transport/mcp/remote/mcp-server-card.js';
 
 const PUBLIC_PATHS = new Set(['/health', '/docs', '/docs/json', '/docs/yaml', '/docs/static']);
 
@@ -18,6 +19,7 @@ function isPublicPath(url: string): boolean {
   if (path === '/metrics' || path.startsWith('/metrics?')) return true;
   if (path === '/api/v1/health' || path === '/health') return true;
   if (path.startsWith('/.well-known/oauth-protected-resource')) return true;
+  if (path === MCP_SERVER_CARD_PATH) return true;
   if (path === '/') return true;
   return false;
 }
