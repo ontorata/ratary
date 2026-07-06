@@ -1,0 +1,13 @@
+{
+  "name": "ratary",
+  "version": "1.1.1",
+  "description": "Ratary Memory MCP — persistent coding memory with hybrid search, knowledge graph, and token-efficient context. MCP server id: ratary.",
+  "author": {
+    "name": "Ontorata",
+    "email": "hello@ontorata.com"
+  },
+  "homepage": "https://github.com/ontorata/ratary/blob/main/docs/install/cursor.md",
+  "repository": "https://github.com/ontorata/ratary",
+  "license": "MIT",
+  "keywords": ["mcp", "memory", "ratary", "coding-assistant", "cursor"]
+}

@@ -24,6 +24,8 @@ Copy-paste materials for listing **Ratary Memory MCP** (`ratary`) on public MCP 
 | [cursor-marketplace.md](cursor-marketplace.md) | Cursor plugin / directory listing |
 | [claude-marketplace.md](claude-marketplace.md) | Claude Code plugin marketplace |
 | [pulsemcp.md](pulsemcp.md) | PulseMCP — auto-sync from Official Registry (+ optional manual form) |
+| [mcp-so.md](mcp-so.md) | mcp.so / mcpso GitHub issue submission |
+| [smithery.md](smithery.md) | Smithery publish (remote `/mcp` URL) |
 | [directory-status.md](directory-status.md) | Operator tracking table |
 
 ---
@@ -34,7 +36,8 @@ Copy-paste materials for listing **Ratary Memory MCP** (`ratary`) on public MCP 
 2. **Official MCP Registry** — enables GitHub MCP Registry sync
 3. **awesome-mcp-servers** (punkpeye or appcypher) — GitHub PR
 4. **PulseMCP** — auto-sync after Official Registry ([pulsemcp.md](pulsemcp.md)); **mcp.so** optional manual form
-5. **Cursor / Claude marketplaces** — when vendor forms open; manifests in [`harness/marketplace/`](../../harness/marketplace/)
+5. **Cursor / Claude marketplaces** — Claude: `ontorata/ratary-marketplace` published; Cursor: submit at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish)
+6. **mcp.so** — [mcpso#1](https://github.com/chatmcp/mcpso/issues/1) · **Smithery** — [smithery.md](smithery.md) (`smithery auth login`)
 
 ---
 
