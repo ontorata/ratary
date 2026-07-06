@@ -37,7 +37,7 @@ startCommand:
         examples:
           - aic_example_replace_with_your_key
         x-from:
-          header: authorization
+          query: apiKey
         x-to:
           header: Authorization
   exampleConfig:

@@ -32,7 +32,7 @@ If Glama shows:
 | **GitHub server (recommended)** | Repo `ontorata/ratary` — Glama builds **stdio** via `npx @ratary/mcp-server` + env `RATARY_API_KEY` |
 | **HTTPS connector** | URL `https://ratary.ontorata.com/mcp` + **private test credentials** → API key `aic_...` (Bearer) |
 
-Do **not** expect OAuth on production today (`REMOTE_MCP_OAUTH_ENABLED=false`). ChatGPT OAuth needs a DCR-capable IdP (not Supabase).
+Glama must not receive `resource_metadata` on **401** (OAuth discovery trap). PRM at `oauth-protected-resource` is for Smithery setup only (no `authorization_servers`).
 
 ## Operator checklist
 
