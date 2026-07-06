@@ -5,6 +5,41 @@ import { getEnv } from '../config/index.js';
 import { extractBearerToken } from './token-utils.js';
 import { MCP_SERVER_CARD_PATH } from '../transport/mcp/remote/mcp-server-card.js';
 
+function mcpPathFromEnv(): string | null {
+  const env = getEnv();
+  if (!env.REMOTE_MCP_ENABLED) return null;
+  return env.REMOTE_MCP_PATH.startsWith('/')
+    ? env.REMOTE_MCP_PATH
+    : `/${env.REMOTE_MCP_PATH}`;
+}
+
+function pathOnly(url: string): string {
+  return url.split('?')[0] ?? url;
+}
+
+/** Smithery gateway may pass apiKey as query — promote to Bearer for auth providers. */
+function injectMcpQueryApiKey(request: FastifyRequest): void {
+  const mcpPath = mcpPathFromEnv();
+  if (!mcpPath || pathOnly(request.url) !== mcpPath) return;
+  if (extractBearerToken({ headers: request.headers })) return;
+
+  try {
+    const parsed = new URL(request.url, 'http://localhost');
+    const apiKey = parsed.searchParams.get('apiKey') ?? parsed.searchParams.get('api_key');
+    if (apiKey) {
+      request.headers.authorization = `Bearer ${apiKey}`;
+    }
+  } catch {
+    // ignore malformed URL
+  }
+}
+
+function isRemoteMcpPath(url: string): boolean {
+  const mcpPath = mcpPathFromEnv();
+  if (!mcpPath) return false;
+  return pathOnly(url) === mcpPath;
+}
+
 const PUBLIC_PATHS = new Set(['/health', '/docs', '/docs/json', '/docs/yaml', '/docs/static']);
 
 function isPublicPath(url: string): boolean {
@@ -24,21 +59,13 @@ function isPublicPath(url: string): boolean {
   return false;
 }
 
-function shouldDeferMcpOAuthAuth(url: string): boolean {
-  const env = getEnv();
-  if (!env.REMOTE_MCP_OAUTH_ENABLED || !env.REMOTE_MCP_ENABLED) return false;
-  const path = url.split('?')[0] ?? url;
-  const mcpPath = env.REMOTE_MCP_PATH.startsWith('/')
-    ? env.REMOTE_MCP_PATH
-    : `/${env.REMOTE_MCP_PATH}`;
-  return path === mcpPath;
-}
-
 export function createAuthenticateMiddleware(authService: AuthService) {
   return async function authenticate(request: FastifyRequest, _reply: FastifyReply): Promise<void> {
     if (isPublicPath(request.url)) return;
 
-    if (shouldDeferMcpOAuthAuth(request.url)) {
+    injectMcpQueryApiKey(request);
+
+    if (isRemoteMcpPath(request.url)) {
       const token = extractBearerToken({ headers: request.headers });
       if (!token) return;
     }

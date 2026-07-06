@@ -4,7 +4,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { Env } from '../../../config/env.js';
 import type { TransportHandlers } from '../../shared/handlers/create-transport-handlers.js';
-import { buildMcpOAuthMetadataContext, buildMcpUnauthorizedHeaders } from './mcp-oauth-metadata.js';
+import { buildMcpOAuthMetadataContext, buildMcpUnauthorizedHeaders, buildBearerOnlyUnauthorizedHeaders } from './mcp-oauth-metadata.js';
 import {
   buildTransportContextFromRestRequest,
   resolveMemoryScopeFromTransportContext,
@@ -60,7 +60,7 @@ export async function registerRemoteMcpRoutes(
   const corsOrigins = parseCorsOrigins(deps.corsOrigins);
   const bindingFactory = () => createRemoteMcpBinding(deps.scopeResolver);
 
-  await registerRemoteMcpServerCardRoutes(fastify);
+  await registerRemoteMcpServerCardRoutes(fastify, deps.env);
 
   const handleMcp = async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
     applyCors(reply, corsOrigins, request.headers.origin);
@@ -71,6 +71,14 @@ export async function registerRemoteMcpRoutes(
         reply.code(401).headers(buildMcpUnauthorizedHeaders(oauthCtx)).send({
           error: 'Unauthorized',
           message: 'OAuth authentication required — see WWW-Authenticate resource_metadata',
+        });
+        return;
+      }
+      const bearerHeaders = buildBearerOnlyUnauthorizedHeaders(deps.env, request.headers.origin);
+      if (bearerHeaders) {
+        reply.code(401).headers(bearerHeaders).send({
+          error: 'Unauthorized',
+          message: 'Bearer aic_... or X-API-Key required',
         });
         return;
       }
