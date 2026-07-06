@@ -31,3 +31,15 @@ Ratary is an open-source AI Brain Platform. The Memory MCP server (`ratary`) giv
 ## After submit
 
 Log date and confirmation in [directory-status.md](directory-status.md).
+
+---
+
+## Updating an existing listing
+
+mcpservers.org has **no self-service edit form**. [Ratary is listed](https://mcpservers.org/id/servers/github-com-ontorata-ratary-tree-main-mcp).
+
+| What to change | How |
+|----------------|-----|
+| **Long docs** (install, tools, transports) | Update [`MCP/README.md`](../README.md) on **`main`** — the site ingests GitHub README content. Allow time for re-crawl. |
+| **Card fields** (short description, category, link) | Email the mcpservers.org team (use the same address as your original submission thread, or resubmit inquiry via [submit](https://mcpservers.org/submit) noting **update request** + listing URL). Do **not** file a duplicate new listing. |
+| **Premium badge / dofollow** | Optional paid tier on [submit page](https://mcpservers.org/submit) — contact operator if upgrading an existing listing. |
