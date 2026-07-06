@@ -69,7 +69,7 @@ The `enterprise` profile runs `ratary-enterprise` with `SQL_PROVIDER=mariadb` an
 
 ## Pull from GHCR (releases)
 
-When published:
+Pre-built images are published on [GitHub Releases](https://github.com/ontorata/ratary/releases) when tagged. Until a release tag exists, use `docker compose --profile postgres up --build` above.
 
 ```bash
 docker pull ghcr.io/ontorata/ratary:latest

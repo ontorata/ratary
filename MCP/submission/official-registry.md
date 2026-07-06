@@ -35,7 +35,7 @@ mcp publish MCP/submission/official-registry.server.json
 
 ## Remote endpoint (optional second listing)
 
-When a production `/mcp` URL is stable (e.g. `https://ontorata.com/mcp`):
+When a production `/mcp` URL is stable (e.g. `https://ratary.ontorata.com/mcp`):
 
 ```json
 "remotes": [

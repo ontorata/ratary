@@ -9,11 +9,11 @@ export async function swaggerPlugin(fastify: FastifyInstance): Promise<void> {
         title: 'Ratary API',
         description:
           'Second brain for AI coding assistants. Store, search, and access coding knowledge across devices.',
-        version: '1.0.0',
+        version: '1.1.0',
       },
       servers: [
         { url: 'http://localhost:3000', description: 'Local development' },
-        { url: 'https://ontorata.com', description: 'Production' },
+        { url: 'https://ratary.ontorata.com', description: 'Production' },
       ],
       tags: [
         { name: 'Health', description: 'Health check endpoints' },

@@ -47,6 +47,8 @@ For daily usage after install, see **[GUIDE.md](../GUIDE.md)**. For environment 
 2. Ask the assistant: *"Search memory about ratary"* — or call `get_capabilities` if exposed.
 3. Save a test handoff and search for it on the next session.
 
+**Remote-only** (no server clone): skip `npm run setup` — configure `@ratary/mcp-server` per [remote.md](remote.md).
+
 Troubleshooting: [GUIDE — Troubleshooting](../GUIDE.md#5-troubleshooting).
 
 ---
