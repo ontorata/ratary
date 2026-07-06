@@ -705,7 +705,7 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 
 ### Knowledge fabric (connectors)
 
-**What it does:** Ingest from external systems (Notion live, GitHub, catalog JSON). Phase 29 adds **live Notion sync**, webhook ingress, and job tracking on top of Phase 23 MVP.
+**What it does:** Ingest from external systems (Notion, Confluence, Google Drive live; GitHub catalog). Phase 29 adds **live connector sync**, webhook ingress, and job tracking on top of Phase 23 MVP.
 
 | Key variables | See table below |
 
@@ -721,6 +721,8 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 | `CONFLUENCE_BASE_URL` | — | Confluence Cloud site (`https://your-domain.atlassian.net`) |
 | `CONFLUENCE_EMAIL` | — | Atlassian account email (Basic auth with API token) |
 | `CONFLUENCE_API_TOKEN` | — | Confluence API token |
+| `GOOGLE_DRIVE_CREDENTIALS_JSON` | — | Google service account JSON (Drive API readonly) |
+| `GOOGLE_DRIVE_FOLDER_ID` | — | Optional Drive folder scope |
 | `GITHUB_TOKEN` | — | GitHub connector (catalog / future live) |
 
 **REST (when enabled):**
@@ -731,7 +733,7 @@ Catalog: [../infrastructure/marketplace/catalog.json](../infrastructure/marketpl
 | `GET` | `/knowledge-fabric/sync/jobs/:jobId` | Poll job status |
 | `POST` | `/knowledge-fabric/webhooks/:connectorId` | Signed webhook trigger |
 
-**Client surfaces:** `@ratary/sdk` `client.admin.knowledgeFabric.*` · `@ratary/cli` `ratary connectors sync notion` · smoke script `scripts/test-notion-sync.ts`.
+**Client surfaces:** `@ratary/sdk` `client.admin.knowledgeFabric.*` · `@ratary/cli` `ratary connectors sync notion` · smoke script `scripts/test-connector-sync.ts` (`--connector notion|confluence|drive`).
 
 **Benefits:** Unified brain from existing tools of record; provenance tags (`fabric:notion`, `live: true`).  
 **Before enabling:** Restrict integration token scope; plan ingest volume; set webhook secret if exposing public URL.  
