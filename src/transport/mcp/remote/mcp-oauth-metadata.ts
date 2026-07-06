@@ -52,6 +52,29 @@ export function buildMcpUnauthorizedHeaders(ctx: McpOAuthMetadataContext): Recor
   };
 }
 
+export function buildBearerOnlyProtectedResourceMetadata(
+  env: Env,
+  requestOrigin?: string,
+): Record<string, unknown> | null {
+  if (env.REMOTE_MCP_OAUTH_ENABLED) return null;
+
+  const baseUrl = resolvePublicBaseUrl(env, requestOrigin);
+  if (!baseUrl) return null;
+
+  const resourcePath = env.REMOTE_MCP_PATH.startsWith('/')
+    ? env.REMOTE_MCP_PATH
+    : `/${env.REMOTE_MCP_PATH}`;
+
+  // RFC 9728 PRM for API-key servers: no authorization_servers (not OAuth).
+  // Smithery setup probes this endpoint (must be HTTP 200). Glama must not follow
+  // OAuth discovery — 401 responses omit resource_metadata (see buildBearerOnlyUnauthorizedHeaders).
+  return {
+    resource: `${baseUrl}${resourcePath}`,
+    bearer_methods_supported: ['header', 'query'],
+    resource_documentation: `${baseUrl}/.well-known/mcp/server-card.json`,
+  };
+}
+
 export function buildBearerOnlyUnauthorizedHeaders(): Record<string, string> {
   // Do not advertise resource_metadata — strict OAuth clients (Glama, ChatGPT) would
   // fetch PRM and fail when authorization_servers is absent. API-key auth is in server-card.

@@ -32,16 +32,23 @@ If Glama shows:
 | **GitHub server (recommended)** | Repo `ontorata/ratary` — Glama builds **stdio** via `npx @ratary/mcp-server` + env `RATARY_API_KEY` |
 | **HTTPS connector** | URL `https://ratary.ontorata.com/mcp` + **private test credentials** → API key `aic_...` (Bearer) |
 
-Do **not** expect OAuth on production today (`REMOTE_MCP_OAUTH_ENABLED=false`). ChatGPT OAuth needs a DCR-capable IdP (not Supabase).
+Glama must not receive `resource_metadata` on **401** (OAuth discovery trap). PRM at `oauth-protected-resource` is for Smithery setup only (no `authorization_servers`).
 
 ## Operator checklist
 
 - [x] Merge `glama.json` to `main` (PR #24)
 - [x] Submit at https://glama.ai/mcp/servers (`ontorata/ratary`) — operator 2026-07-06
-- [ ] Wait for indexing — verify https://glama.ai/mcp/servers/ontorata/ratary
-- [ ] **Claim ownership** on Glama
-- [ ] Confirm **quality score** badge on server page
+- [x] Listing live — https://glama.ai/mcp/servers/ontorata/ratary
+- [x] `glama.json` detected on repo
+- [ ] **Claim ownership** (if not done — re-run after `glama.json` updates)
+- [x] Quality badge URL active for awesome-mcp PR #9454
 - [x] awesome-mcp PR #9454 — README fixed (Ratary badge `ontorata/ratary`)
+
+## Glama listing
+
+- **URL:** https://glama.ai/mcp/servers/ontorata/ratary
+- **Badge:** `https://glama.ai/mcp/servers/ontorata/ratary/badges/score.svg`
+- **API:** `GET https://glama.ai/api/mcp/v1/servers/ontorata/ratary`
 
 ## awesome-mcp-servers line (with Glama badge)
 
