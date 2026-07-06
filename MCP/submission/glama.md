@@ -17,14 +17,12 @@ Org repo `ontorata/ratary` — claim via `glama.json` (GitHub sign-in alone is n
 
 ## Operator checklist
 
-1. Merge `glama.json` to `main`
-2. https://glama.ai/mcp/servers → **Add MCP Server**
-   - Repo: `https://github.com/ontorata/ratary`
-   - Display name: **Ratary Memory MCP**
-3. Wait for indexing (~minutes) — verify https://glama.ai/mcp/servers/ontorata/ratary
-4. **Claim ownership** on Glama (re-run after `glama.json` lands)
-5. Confirm **quality score** badge loads on server page
-6. awesome-mcp PR #9454 — push fixed README (Ratary badge = `ontorata/ratary`, not mindmap)
+- [x] Merge `glama.json` to `main` (PR #24)
+- [x] Submit at https://glama.ai/mcp/servers (`ontorata/ratary`) — operator 2026-07-06
+- [ ] Wait for indexing — verify https://glama.ai/mcp/servers/ontorata/ratary
+- [ ] **Claim ownership** on Glama
+- [ ] Confirm **quality score** badge on server page
+- [x] awesome-mcp PR #9454 — README fixed (Ratary badge `ontorata/ratary`)
 
 ## awesome-mcp-servers line (with Glama badge)
 
