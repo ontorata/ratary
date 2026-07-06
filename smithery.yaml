@@ -1,0 +1,44 @@
+# Smithery marketplace — Ratary Memory MCP (remote Streamable HTTP)
+# Docs: https://smithery.ai/docs/build/publish
+
+name: ratary
+displayName: Ratary Memory MCP
+description: >
+  Persistent coding memory for AI assistants — save, search, hybrid retrieval,
+  knowledge graph traversal, and token-efficient context. 28 MCP tools. MIT.
+homepage: https://github.com/ontorata/ratary/tree/main/MCP
+repository: https://github.com/ontorata/ratary
+license: MIT
+categories:
+  - memory
+  - developer-tools
+tags:
+  - mcp
+  - memory
+  - coding-assistant
+  - ai-brain
+  - knowledge-graph
+  - cursor
+  - claude
+
+startCommand:
+  type: http
+  url: https://ratary.ontorata.com/mcp
+  configSchema:
+    type: object
+    required:
+      - apiKey
+    properties:
+      apiKey:
+        type: string
+        title: Ratary API Key
+        description: Create at https://studio.ontorata.com — format aic_ followed by hex
+        pattern: ^aic_[a-f0-9]+$
+        examples:
+          - aic_example_replace_with_your_key
+        x-from:
+          header: authorization
+        x-to:
+          header: Authorization
+  exampleConfig:
+    apiKey: aic_example_replace_with_your_key

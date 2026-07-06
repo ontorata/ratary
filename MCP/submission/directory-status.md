@@ -12,7 +12,7 @@ Track operator submissions for **Ratary Memory MCP** (`ratary`). Update this fil
 | mcp.so | https://mcp.so/submit | GitHub issue | **Submitted** | [mcpso#1 comment](https://github.com/chatmcp/mcpso/issues/1#issuecomment-4890737288) · 2026-07-06 · [mcp-so.md](mcp-so.md) |
 | Cursor marketplace | https://cursor.com/marketplace/publish | Manual | **Ready** | Plugin at `harness/cursor/` + `.cursor-plugin/marketplace.json` · [cursor-marketplace.md](cursor-marketplace.md) |
 | Claude Code marketplace | Anthropic plugin program | `publish-marketplace.ps1` | **Published** | https://github.com/ontorata/ratary-marketplace · `/plugin marketplace add ontorata/ratary-marketplace` |
-| Smithery | https://smithery.ai/new | CLI / web | **Ready** | `smithery auth login` then publish `/mcp` URL · [smithery.md](smithery.md) |
+| Smithery | https://smithery.ai/new | URL + server-card | **Listed** | Gateway `ratary--hello-y4u6.run.tools` · server-card 28 tools · scan SUCCESS 2026-07-06 · [smithery.md](smithery.md) |
 | Glama.ai | Auto-index | Passive | **N/A** | Indexes from GitHub when public |
 
 ---

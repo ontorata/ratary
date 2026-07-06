@@ -104,8 +104,15 @@ curl https://ratary.ontorata.com/.well-known/mcp/server-card.json
 
 ## Operator checklist
 
-- [ ] Production env: OAuth off, remote MCP on, server-card returns 200
-- [ ] `smithery auth login`
-- [ ] Publish at smithery.ai/new with `apiKey` parameter
-- [ ] Confirm `ontorata/ratary` (or namespace/ratary) in search
-- [ ] Log URL in [directory-status.md](directory-status.md)
+- [x] Production env: OAuth off, remote MCP on, server-card returns 200
+- [x] Rich server-card (28 tools, annotations, prompts, resources, instructions)
+- [x] `smithery.yaml` at repo root
+- [ ] Re-scan / re-publish on Smithery after deploy (target 90–100)
+- [ ] Upload icon + fill homepage in Smithery UI
+- [ ] Log final URL in [directory-status.md](directory-status.md)
+
+## Score optimization (47 → 90+)
+
+1. Deploy enriched server-card + `smithery.yaml` to `main`
+2. Smithery dashboard → **Re-scan** or new release
+3. Upload **icon**, verify **Performance** shows 28 tools with full schemas
