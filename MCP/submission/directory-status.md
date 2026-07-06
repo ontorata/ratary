@@ -13,7 +13,7 @@ Track operator submissions for **Ratary Memory MCP** (`ratary`). Update this fil
 | Cursor marketplace | https://cursor.com/marketplace/publish | Manual | **Ready** | Plugin at `harness/cursor/` + `.cursor-plugin/marketplace.json` · [cursor-marketplace.md](cursor-marketplace.md) |
 | Claude Code marketplace | Anthropic plugin program | `publish-marketplace.ps1` | **Published** | https://github.com/ontorata/ratary-marketplace · `/plugin marketplace add ontorata/ratary-marketplace` |
 | Smithery | https://smithery.ai/new | URL + server-card | **Listed** | Gateway `ratary--hello-y4u6.run.tools` · server-card 28 tools · scan SUCCESS 2026-07-06 · [smithery.md](smithery.md) |
-| Glama.ai | https://glama.ai/mcp/servers | Add server + claim | **Pending** | Submit `ontorata/ratary` after `glama.json` on main · [glama.md](glama.md) · PR #9454 needs Ratary badge |
+| Glama.ai | https://glama.ai/mcp/servers | Add server + claim | **Submitted** | Operator submitted 2026-07-06 · `glama.json` on main · [listing](https://glama.ai/mcp/servers/ontorata/ratary) · [glama.md](glama.md) · PR #9454 badge fixed |
 
 ---
 
@@ -29,4 +29,4 @@ Track operator submissions for **Ratary Memory MCP** (`ratary`). Update this fil
 
 ---
 
-*Last pack update: 2026-07-06 (Phase 31L · npm @ratary/mcp-server 1.1.1 · registry listed).*
+*Last pack update: 2026-07-06 (Glama submitted · glama.json on main · PR #9454 badge fix).*
