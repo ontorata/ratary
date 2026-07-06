@@ -38,10 +38,17 @@ Do **not** expect OAuth on production today (`REMOTE_MCP_OAUTH_ENABLED=false`). 
 
 - [x] Merge `glama.json` to `main` (PR #24)
 - [x] Submit at https://glama.ai/mcp/servers (`ontorata/ratary`) — operator 2026-07-06
-- [ ] Wait for indexing — verify https://glama.ai/mcp/servers/ontorata/ratary
-- [ ] **Claim ownership** on Glama
-- [ ] Confirm **quality score** badge on server page
+- [x] Listing live — https://glama.ai/mcp/servers/ontorata/ratary
+- [x] `glama.json` detected on repo
+- [ ] **Claim ownership** (if not done — re-run after `glama.json` updates)
+- [x] Quality badge URL active for awesome-mcp PR #9454
 - [x] awesome-mcp PR #9454 — README fixed (Ratary badge `ontorata/ratary`)
+
+## Glama listing
+
+- **URL:** https://glama.ai/mcp/servers/ontorata/ratary
+- **Badge:** `https://glama.ai/mcp/servers/ontorata/ratary/badges/score.svg`
+- **API:** `GET https://glama.ai/api/mcp/v1/servers/ontorata/ratary`
 
 ## awesome-mcp-servers line (with Glama badge)
 
