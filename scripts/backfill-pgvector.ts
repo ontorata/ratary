@@ -19,7 +19,11 @@ async function backfillPgvectorScript(): Promise<void> {
   const source = await createBackfillSourceSql();
   const target = createPostgresSqlDatabase(pgUrl);
   const embeddingStore = new D1EmbeddingStore(source);
-  const vectorStore = createVectorStore({ ...env, VECTOR_PROVIDER: 'pgvector' }, target, embeddingStore);
+  const vectorStore = createVectorStore(
+    { ...env, VECTOR_PROVIDER: 'pgvector' },
+    target,
+    embeddingStore,
+  );
 
   const result = await backfillPgvector({
     source,

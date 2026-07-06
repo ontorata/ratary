@@ -1,7 +1,4 @@
-import {
-  applyPostgresSchema,
-  resolvePostgresConnectionString,
-} from './lib/postgres-schema.js';
+import { applyPostgresSchema, resolvePostgresConnectionString } from './lib/postgres-schema.js';
 
 function parseDatabaseUrlArg(argv: string[]): string | undefined {
   const flag = argv.find((arg) => arg.startsWith('--database-url='));

@@ -30,7 +30,9 @@ async function reflectSignals(): Promise<void> {
   }
 
   if (!env.SIGNAL_INGEST_ENABLED || env.SIGNAL_STORE_PROVIDER !== 'sql') {
-    console.log('Signal SQL store required — set SIGNAL_INGEST_ENABLED=true and SIGNAL_STORE_PROVIDER=sql.');
+    console.log(
+      'Signal SQL store required — set SIGNAL_INGEST_ENABLED=true and SIGNAL_STORE_PROVIDER=sql.',
+    );
     return;
   }
 

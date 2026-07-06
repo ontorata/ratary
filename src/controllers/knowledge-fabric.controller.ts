@@ -46,9 +46,7 @@ export function createKnowledgeFabricController(
   function assertSyncEnabled(): void {
     assertEnabled();
     if (!ports.connectorSyncEnabled) {
-      throw new ForbiddenError(
-        'Live connector sync is disabled (CONNECTOR_SYNC_ENABLED=false)',
-      );
+      throw new ForbiddenError('Live connector sync is disabled (CONNECTOR_SYNC_ENABLED=false)');
     }
   }
 

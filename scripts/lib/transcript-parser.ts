@@ -76,7 +76,10 @@ export function parseTranscriptJsonl(raw: string): DialogueTurn[] {
 
     turns.push({
       user: truncate(cleanUserText(currentUser), MAX_USER_CHARS_PER_TURN),
-      assistant: truncate(cleanAssistantText(currentAssistant.join('\n\n')), MAX_ASSISTANT_CHARS_PER_TURN),
+      assistant: truncate(
+        cleanAssistantText(currentAssistant.join('\n\n')),
+        MAX_ASSISTANT_CHARS_PER_TURN,
+      ),
     });
 
     currentUser = '';
@@ -143,7 +146,8 @@ function detectProject(text: string): string {
   const lower = text.toLowerCase();
   if (lower.includes('ai-brain') || lower.includes('ai memory cloud')) return 'ai-brain';
   if (lower.includes('geo-fastify')) return 'geo-fastify';
-  if (lower.includes('mangroveapps') || lower.includes('mangrove') || lower.includes('sipem')) return 'MangroveApps';
+  if (lower.includes('mangroveapps') || lower.includes('mangrove') || lower.includes('sipem'))
+    return 'MangroveApps';
   if (lower.includes('sippem')) return 'sippem';
   if (lower.includes('geoportal')) return 'geoportal';
   return 'general';
@@ -169,7 +173,10 @@ function chunkTurns(turns: DialogueTurn[], header: string): string[] {
 
   for (let i = 0; i < turns.length; i++) {
     const block = formatTurn(turns[i]!, i);
-    const next = partTurns.length === 0 ? `${current}\n\n${block}` : `${current}\n\n${partTurns.join('\n\n---\n\n')}\n\n---\n\n${block}`;
+    const next =
+      partTurns.length === 0
+        ? `${current}\n\n${block}`
+        : `${current}\n\n${partTurns.join('\n\n---\n\n')}\n\n---\n\n${block}`;
 
     if (next.length > MAX_CONTENT_CHARS && partTurns.length > 0) {
       chunks.push(`${current}\n\n${partTurns.join('\n\n---\n\n')}`);
@@ -191,10 +198,7 @@ function chunkTurns(turns: DialogueTurn[], header: string): string[] {
   return chunks.length > 0 ? chunks : [header];
 }
 
-export function transcriptToMemories(
-  filePath: string,
-  turns: DialogueTurn[],
-): TranscriptMemory[] {
+export function transcriptToMemories(filePath: string, turns: DialogueTurn[]): TranscriptMemory[] {
   const fileName = basename(filePath, '.jsonl');
   const transcriptId = fileName;
   const relPath = filePath.replace(/\\/g, '/');

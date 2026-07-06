@@ -41,9 +41,13 @@ async function evolutionHistory(): Promise<void> {
   }
 
   const result = await service.listVersions({ ownerId }, memoryId);
-  console.log(`Head: version ${result.head?.currentVersion ?? 0} (${result.head?.branchName ?? 'main'})`);
+  console.log(
+    `Head: version ${result.head?.currentVersion ?? 0} (${result.head?.branchName ?? 'main'})`,
+  );
   for (const version of result.versions) {
-    console.log(`  v${version.versionNumber} — ${version.createdAt} (confidence ${version.confidence})`);
+    console.log(
+      `  v${version.versionNumber} — ${version.createdAt} (confidence ${version.confidence})`,
+    );
   }
 }
 

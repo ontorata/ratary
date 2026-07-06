@@ -72,9 +72,7 @@ function makeMemory(index: number): ScoredMemory {
 }
 
 function naiveFullDump(memories: ScoredMemory[]): string {
-  return memories
-    .map((m) => `# ${m.title} [${m.codename}]\n${m.content}`)
-    .join('\n\n---\n\n');
+  return memories.map((m) => `# ${m.title} [${m.codename}]\n${m.content}`).join('\n\n---\n\n');
 }
 
 function codenameIndex(memories: ScoredMemory[]): string {
@@ -101,7 +99,8 @@ function runBenchmark(): void {
     },
     {
       name: '3. Summary-only (12k budget)',
-      build: (m) => builder.build(m, { includeSummaryOnly: true, maxChars: DEFAULT_CONTEXT_MAX_CHARS }),
+      build: (m) =>
+        builder.build(m, { includeSummaryOnly: true, maxChars: DEFAULT_CONTEXT_MAX_CHARS }),
     },
     {
       name: '4. Summary-only (top 5 memories)',
@@ -138,9 +137,13 @@ function runBenchmark(): void {
   });
 
   console.log('\n=== Ratary Context Token Benchmark ===\n');
-  console.log(`Fixture: ${MEMORY_COUNT} memories × ~${CONTENT_CHARS} chars body + auto summary (≤300 chars)`);
+  console.log(
+    `Fixture: ${MEMORY_COUNT} memories × ~${CONTENT_CHARS} chars body + auto summary (≤300 chars)`,
+  );
   console.log(`Baseline (naive dump): ~${baseline.toLocaleString()} tokens\n`);
-  console.log('Strategy'.padEnd(52) + 'Chars'.padStart(8) + 'Tokens'.padStart(8) + 'Saved'.padStart(8));
+  console.log(
+    'Strategy'.padEnd(52) + 'Chars'.padStart(8) + 'Tokens'.padStart(8) + 'Saved'.padStart(8),
+  );
   console.log('-'.repeat(76));
   for (const row of rows) {
     console.log(
@@ -156,9 +159,13 @@ function runBenchmark(): void {
   console.log('\n--- Summary ---');
   console.log(`Best reduction: ${best.vsBaseline}% (${best.strategy})`);
   if (hits90.length > 0) {
-    console.log(`Strategies ≥90% savings: ${hits90.map((r) => r.strategy.split('.')[0].trim()).join(', ')}`);
+    console.log(
+      `Strategies ≥90% savings: ${hits90.map((r) => r.strategy.split('.')[0].trim()).join(', ')}`,
+    );
   } else {
-    console.log('No built-in strategy reached 90% alone; combine summary-only + lower limit + codename index.');
+    console.log(
+      'No built-in strategy reached 90% alone; combine summary-only + lower limit + codename index.',
+    );
   }
   console.log('\nNote: estimates use heuristic (chars/words); real tokenizer may differ ±10%.\n');
 }
