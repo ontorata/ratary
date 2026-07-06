@@ -65,11 +65,6 @@ export function buildBearerOnlyProtectedResourceMetadata(
   const resourcePath = env.REMOTE_MCP_PATH.startsWith('/')
     ? env.REMOTE_MCP_PATH
     : `/${env.REMOTE_MCP_PATH}`;
-  const suffix = resourcePath.replace(/^\//, '');
-  const metadataPath =
-    suffix.length > 0
-      ? `/.well-known/oauth-protected-resource/${suffix}`
-      : '/.well-known/oauth-protected-resource';
 
   return {
     resource: `${baseUrl}${resourcePath}`,
