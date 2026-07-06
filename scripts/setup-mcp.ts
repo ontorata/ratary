@@ -13,7 +13,7 @@ const REQUIRED_ENV = ['CLOUDFLARE_ACCOUNT_ID', 'D1_DATABASE_ID', 'D1_API_TOKEN']
 function buildMcpConfig(): string {
   const config = {
     mcpServers: {
-      'ratary': {
+      ratary: {
         command: 'npx',
         args: ['-y', 'tsx', `${repoPath}/src/mcp/stdio.ts`],
         cwd: repoPath,

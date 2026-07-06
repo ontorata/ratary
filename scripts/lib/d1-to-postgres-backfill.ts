@@ -25,16 +25,7 @@ export const METADATA_BACKFILL_TABLES: readonly BackfillTableSpec[] = [
   {
     table: 'clients',
     primaryKey: 'id',
-    columns: [
-      'id',
-      'name',
-      'type',
-      'description',
-      'metadata',
-      'owner_id',
-      'created_at',
-      'active',
-    ],
+    columns: ['id', 'name', 'type', 'description', 'metadata', 'owner_id', 'created_at', 'active'],
     ownerWhereClause: 'owner_id = ?',
   },
   {
@@ -146,16 +137,8 @@ export const METADATA_BACKFILL_TABLES: readonly BackfillTableSpec[] = [
   {
     table: 'workspace_memberships',
     primaryKey: 'id',
-    columns: [
-      'id',
-      'organization_id',
-      'workspace_id',
-      'identity_id',
-      'role',
-      'created_at',
-    ],
-    ownerWhereClause:
-      'organization_id IN (SELECT id FROM organizations WHERE owner_id = ?)',
+    columns: ['id', 'organization_id', 'workspace_id', 'identity_id', 'role', 'created_at'],
+    ownerWhereClause: 'organization_id IN (SELECT id FROM organizations WHERE owner_id = ?)',
   },
   {
     table: 'audit_logs',
@@ -303,7 +286,10 @@ function remapMemoryForeignKeys(
   return row;
 }
 
-function buildSelectSql(spec: BackfillTableSpec, ownerId?: string): { sql: string; params: unknown[] } {
+function buildSelectSql(
+  spec: BackfillTableSpec,
+  ownerId?: string,
+): { sql: string; params: unknown[] } {
   const columnList = spec.columns.join(', ');
   let sql = `SELECT ${columnList} FROM ${spec.table}`;
   const params: unknown[] = [];
@@ -339,7 +325,13 @@ async function backfillMemoriesTable(
   let offset = 0;
 
   while (true) {
-    const rows = await fetchBatch(source, MEMORIES_SPEC, options.ownerId, options.batchSize, offset);
+    const rows = await fetchBatch(
+      source,
+      MEMORIES_SPEC,
+      options.ownerId,
+      options.batchSize,
+      offset,
+    );
     if (rows.length === 0) {
       break;
     }
@@ -418,9 +410,7 @@ export async function backfillD1ToPostgres(
       continue;
     }
 
-    tables.push(
-      await backfillTable(options.source, options.target, spec, options, memoryIdMap),
-    );
+    tables.push(await backfillTable(options.source, options.target, spec, options, memoryIdMap));
   }
 
   return {

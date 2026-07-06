@@ -26,7 +26,10 @@ function assertIdentifier(name: string): void {
   }
 }
 
-function buildCountSql(spec: BackfillTableSpec, ownerId?: string): { sql: string; params: unknown[] } {
+function buildCountSql(
+  spec: BackfillTableSpec,
+  ownerId?: string,
+): { sql: string; params: unknown[] } {
   assertIdentifier(spec.table);
   let sql = `SELECT COUNT(*) AS count FROM ${spec.table}`;
   const params: unknown[] = [];

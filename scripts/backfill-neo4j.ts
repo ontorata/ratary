@@ -19,7 +19,9 @@ function createNeo4jWriter(uri: string, username: string, password: string): Neo
       if (dryRun) {
         return;
       }
-      for (const statement of NEO4J_GRAPH_DDL.split(';').map((s) => s.trim()).filter(Boolean)) {
+      for (const statement of NEO4J_GRAPH_DDL.split(';')
+        .map((s) => s.trim())
+        .filter(Boolean)) {
         await session.run(statement);
       }
     },
@@ -40,7 +42,9 @@ async function backfillNeo4jScript(): Promise<void> {
   console.log(`Neo4j backfill (${cli.dryRun ? 'dry-run' : 'execute'})...`);
 
   if (!env.NEO4J_URI || !env.NEO4J_USERNAME || !env.NEO4J_PASSWORD) {
-    throw new Error('NEO4J_URI, NEO4J_USERNAME, and NEO4J_PASSWORD are required for Neo4j backfill');
+    throw new Error(
+      'NEO4J_URI, NEO4J_USERNAME, and NEO4J_PASSWORD are required for Neo4j backfill',
+    );
   }
 
   const source = await createBackfillSourceSql();

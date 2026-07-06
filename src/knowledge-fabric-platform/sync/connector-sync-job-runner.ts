@@ -30,11 +30,7 @@ export class ConnectorSyncJobRunner {
     return this.jobs.get(jobId);
   }
 
-  private async runJob(
-    jobId: string,
-    input: FabricIngestInput,
-    scope: MemoryScope,
-  ): Promise<void> {
+  private async runJob(jobId: string, input: FabricIngestInput, scope: MemoryScope): Promise<void> {
     this.jobs.set(jobId, { id: jobId, status: 'running' });
     try {
       const run = await this.orchestrator.ingest(input, scope);

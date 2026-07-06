@@ -126,9 +126,7 @@ export function candidateFromPath(filePath: string, backupRoot: string): BackupC
 
     return {
       filePath,
-      folderName: isMainTranscript(filePath)
-        ? name.replace(/\.jsonl$/i, '')
-        : folderName,
+      folderName: isMainTranscript(filePath) ? name.replace(/\.jsonl$/i, '') : folderName,
       priority: 5,
       kind: 'transcript',
     };
@@ -225,10 +223,7 @@ ${content}`;
   };
 }
 
-export async function fileToMemories(
-  filePath: string,
-  backupRoot: string,
-): Promise<MemoryDraft[]> {
+export async function fileToMemories(filePath: string, backupRoot: string): Promise<MemoryDraft[]> {
   const candidate = candidateFromPath(filePath, backupRoot);
   if (!candidate) return [];
 

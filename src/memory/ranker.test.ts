@@ -38,11 +38,7 @@ function memory(id: string, importance: number): Memory {
 describe('Ranker', () => {
   it('orders higher importance memories first when base relevance matches (D85-04)', () => {
     const ranker = new Ranker();
-    const ranked = ranker.rank(
-      [memory('low', 1), memory('high', 90)],
-      { q: 'test' },
-      10,
-    );
+    const ranked = ranker.rank([memory('low', 1), memory('high', 90)], { q: 'test' }, 10);
 
     expect(ranked[0]?.id).toBe('high');
     expect(ranked[1]?.id).toBe('low');
