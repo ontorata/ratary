@@ -74,15 +74,11 @@ export async function registerRemoteMcpRoutes(
         });
         return;
       }
-      const bearerHeaders = buildBearerOnlyUnauthorizedHeaders(deps.env, request.headers.origin);
-      if (bearerHeaders) {
-        reply.code(401).headers(bearerHeaders).send({
-          error: 'Unauthorized',
-          message: 'Bearer aic_... or X-API-Key required',
-        });
-        return;
-      }
-      reply.code(401).send({ error: 'Unauthorized — Bearer aic_... or X-API-Key required' });
+      const bearerHeaders = buildBearerOnlyUnauthorizedHeaders();
+      reply.code(401).headers(bearerHeaders).send({
+        error: 'Unauthorized',
+        message: 'Bearer aic_... or X-API-Key required',
+      });
       return;
     }
 

@@ -17,11 +17,13 @@ Ratary supports **two independent remote MCP distribution paths**:
 
 ### Static server card (Smithery URL — required)
 
-Serve manual metadata so Smithery skips OAuth discovery scan:
+Serve manual metadata so Smithery / Glama skip OAuth discovery for API-key servers:
 
 ```
 GET https://ratary.ontorata.com/.well-known/mcp/server-card.json
 ```
+
+**Do not** expose `/.well-known/oauth-protected-resource` when `REMOTE_MCP_OAUTH_ENABLED=false` — empty `authorization_servers` makes strict OAuth clients (Glama) fail with `auth_required`.
 
 Implemented in `src/transport/mcp/remote/mcp-server-card.ts` when `REMOTE_MCP_ENABLED=true`.
 
