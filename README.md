@@ -433,15 +433,15 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 
 *What is shipping when?*
 
-Organized by direction — not sprints. **Repository scope** noted where work leaves `ontorata/ratary`.
+Organized by direction — not sprints. Phases **1–31** are implemented in code (gates PASS); platform modules stay **opt-in via env** unless noted. **Repository scope** where work leaves `ontorata/ratary`.
 
 | | Themes | Primary repository |
 |---|--------|-------------------|
-| **Today** | Ratary MCP + REST, hybrid retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary) (SDK admin + CLI + MCP), **Notion live sync** (opt-in), [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), remote Ratary MCP | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
-| **Next** | Production deploy of knowledge fabric on hosted Ratary, additional live connectors (Confluence, Drive) | `ontorata/ratary` |
-| **Future** | Universal memory fabric, cross-node intelligence, plugin marketplace | `ontorata/ratary` (platform) |
+| **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL (Postgres/Supabase/D1/MariaDB), Docker OCI + compose, enterprise storage adapters, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote Ratary MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (default OFF):** knowledge fabric Phase 23 + **Notion live** Phase 29, **Confluence live** (post-29), plugin marketplace Phase 20, federation Phase 14, global intelligence Phase 25 | `ontorata/ratary` · [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) |
+| **Next** | **Ops:** production knowledge fabric on hosted Ratary (`supportsKnowledgeFabric: true` on `ratary.ontorata.com`) — [PRODUCTION-ENABLE.md](docs/PRODUCTION-ENABLE.md). **Connectors:** Google Drive live; Confluence/Drive hardening + smoke in prod | `ontorata/ratary` |
+| **Future** | Universal memory fabric (cross-source, cross-org vision beyond current fabric), Neptune full traversal, additional enterprise connectors (SharePoint, Teams, …), MCP directory listings, multi-language SDK codegen (Java 11+) | `ontorata/ratary` (platform) |
 
-Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean.
+Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean. See [ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) and [CONFIGURATION.md](docs/CONFIGURATION.md).
 
 ---
 
