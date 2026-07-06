@@ -10,6 +10,18 @@ import type { FabricIngestMode } from '../knowledge-fabric-platform/types/ingest
 import type { ExternalKnowledgeItem } from '../knowledge-fabric-platform/types/connector.types.js';
 import type { IMetricsExporter } from '../observability/ports/imetrics-exporter.port.js';
 import { verifyWebhookSignature } from '../knowledge-fabric-platform/sync/webhook-signature.js';
+import type { IUniversalFabricOrchestrator } from '../knowledge-fabric-platform/ports/iuniversal-fabric-orchestrator.port.js';
+
+function getUniversalOrchestrator(
+  ports: KnowledgeFabricPorts,
+): IUniversalFabricOrchestrator | null {
+  if (!ports.universalEnabled) return null;
+  const orch = ports.orchestrator;
+  if (typeof (orch as IUniversalFabricOrchestrator).pullFromPeer === 'function') {
+    return orch as IUniversalFabricOrchestrator;
+  }
+  return null;
+}
 
 function parseConnectorId(value: string): ConnectorId {
   if (!(CONNECTOR_IDS as readonly string[]).includes(value)) {
@@ -55,6 +67,7 @@ export function createKnowledgeFabricController(
       reply.send({
         enabled: ports.enabled,
         connectorSyncEnabled: ports.connectorSyncEnabled,
+        universalEnabled: ports.universalEnabled,
         catalogConfigured: Boolean(env.KNOWLEDGE_FABRIC_CATALOG_JSON.trim()),
       });
     },
@@ -228,6 +241,54 @@ export function createKnowledgeFabricController(
         ports.recordIngestLifecycle(metricsExporter, connectorId, 'failed');
         throw error;
       }
+    },
+
+    async pullFromPeer(
+      request: FastifyRequest<{
+        Params: { peerId: string };
+        Body: { dryRun?: boolean; limit?: number; cursor?: string | null };
+      }>,
+      reply: FastifyReply,
+    ): Promise<void> {
+      assertEnabled();
+      const universal = getUniversalOrchestrator(ports);
+      if (!universal) {
+        throw new ForbiddenError(
+          'Universal memory fabric is disabled (UNIVERSAL_MEMORY_FABRIC_ENABLED=false or FEDERATION_ENABLED=false)',
+        );
+      }
+
+      const scope = await resolveMemoryScopeFromRequest(request, scopeResolver);
+      const body = request.body ?? {};
+      const result = await universal.pullFromPeer(
+        {
+          peerId: request.params.peerId,
+          dryRun: body.dryRun,
+          limit: body.limit,
+          cursor: body.cursor,
+        },
+        scope,
+      );
+      reply.send(result);
+    },
+
+    async listProvenance(
+      request: FastifyRequest<{ Querystring: { limit?: string } }>,
+      reply: FastifyReply,
+    ): Promise<void> {
+      assertEnabled();
+      const universal = getUniversalOrchestrator(ports);
+      if (!universal) {
+        throw new ForbiddenError('Universal memory fabric is disabled');
+      }
+
+      const scope = await resolveMemoryScopeFromRequest(request, scopeResolver);
+      const limit = request.query.limit ? Number(request.query.limit) : 50;
+      const records = await universal.listProvenance(
+        scope,
+        Number.isFinite(limit) ? limit : 50,
+      );
+      reply.send({ records, count: records.length });
     },
   };
 }

@@ -251,7 +251,15 @@ export async function buildApp(options?: {
     vectorStore: platform.vectorStore,
     embeddingJobRunner,
   });
-  const knowledgeFabricPorts = createKnowledgeFabricPorts(platform.sql, env, memoryService);
+  const federationPorts = createFederationPorts(platform.sql, env);
+  const federationService = federationPorts.createService(memoryService);
+  if (globalIntelligencePorts.enabled) {
+    globalIntelligencePorts.bindExchange(memoryService, () => federationService);
+  }
+  const knowledgeFabricPorts = createKnowledgeFabricPorts(platform.sql, env, memoryService, {
+    federationExchange: federationPorts.enabled ? federationService : null,
+    federationNodeId: federationPorts.nodeId,
+  });
   const memoryAccessAuditor = eventPipeline.wrapMemoryAccessAuditor(
     createMemoryAccessAuditor(env, platform.sql),
   );
@@ -302,11 +310,6 @@ export async function buildApp(options?: {
     ? createClientSyncController(scopeResolver, clientSyncService)
     : undefined;
 
-  const federationPorts = createFederationPorts(platform.sql, env);
-  const federationService = federationPorts.createService(memoryService);
-  if (globalIntelligencePorts.enabled) {
-    globalIntelligencePorts.bindExchange(memoryService, () => federationService);
-  }
   const federationController = federationPorts.enabled
     ? createFederationController(scopeResolver, federationService)
     : undefined;

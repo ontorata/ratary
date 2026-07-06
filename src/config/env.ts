@@ -423,8 +423,18 @@ const envSchema = z
       .default('false'),
     CONNECTOR_WEBHOOK_SECRET: z.string().optional(),
     CONNECTOR_SYNC_INTERVAL_MS: z.coerce.number().int().min(0).default(0),
-
-    // Ratary platform umbrella (Phase 24) — ADR-044; edition + webhooks, default off
+    UNIVERSAL_MEMORY_FABRIC_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    SHAREPOINT_TENANT_ID: z.string().optional(),
+    SHAREPOINT_CLIENT_ID: z.string().optional(),
+    SHAREPOINT_SITE_ID: z.string().optional(),
+    MICROSOFT_GRAPH_TENANT_ID: z.string().optional(),
+    MICROSOFT_GRAPH_CLIENT_ID: z.string().optional(),
+    MICROSOFT_GRAPH_CLIENT_SECRET: z.string().optional(),
+    TEAMS_TEAM_ID: z.string().optional(),
+    TEAMS_CHANNEL_ID: z.string().optional(),
     RATARY_PLATFORM_ENABLED: z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')

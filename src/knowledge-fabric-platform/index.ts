@@ -28,6 +28,14 @@ export type {
 } from './ports/ifabric-external-ref-store.port.js';
 export type { IKnowledgeFabricIngestStore } from './ports/iknowledge-fabric-ingest-store.port.js';
 export type { IKnowledgeFabricOrchestrator } from './ports/iknowledge-fabric-orchestrator.port.js';
+export type { IUniversalFabricOrchestrator } from './ports/iuniversal-fabric-orchestrator.port.js';
+export type { IFabricProvenanceStore } from './ports/ifabric-provenance-store.port.js';
+export type {
+  FabricSourceKind,
+  FabricProvenanceRecord,
+  FabricPeerPullInput,
+  FabricPeerPullResult,
+} from './types/fabric-provenance.types.js';
 
 export {
   createKnowledgeConnectors,
@@ -39,6 +47,14 @@ export {
 export { NotionLiveConnector } from './adapters/notion-live-connector.js';
 export { ConfluenceLiveConnector } from './adapters/confluence-live-connector.js';
 export { DriveLiveConnector } from './adapters/drive-live-connector.js';
+export { SharePointLiveConnector } from './adapters/sharepoint-live-connector.js';
+export { TeamsLiveConnector } from './adapters/teams-live-connector.js';
+export { UniversalFabricPolicy } from './adapters/universal-fabric-policy.js';
+export {
+  parseMicrosoftGraphCredentials,
+  canUseMicrosoftGraph,
+  fetchMicrosoftGraphAccessToken,
+} from './adapters/microsoft-graph-token.js';
 export { ConnectorSyncJobRunner } from './sync/connector-sync-job-runner.js';
 export { verifyWebhookSignature, signWebhookPayload } from './sync/webhook-signature.js';
 export { DefaultFabricNormalizer } from './adapters/default-fabric-normalizer.js';
@@ -47,4 +63,5 @@ export {
   KnowledgeFabricOrchestrator,
   NoOpKnowledgeFabricOrchestrator,
 } from './services/knowledge-fabric-orchestrator.js';
+export { UniversalMemoryFabricOrchestrator } from './services/universal-memory-fabric-orchestrator.js';
 export { KnowledgeFabricManifestBuilder } from './builders/knowledge-fabric-manifest-builder.js';

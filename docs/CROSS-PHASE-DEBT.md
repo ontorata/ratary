@@ -19,8 +19,10 @@ Last updated: 2026-07-06
 | **T-07** | `GET /memory/:id` not audited | **Closed** — `auditMemoryRead()` on getById / codename / slug when `MEMORY_ACCESS_AUDIT=true` |
 | **D85-04** | Rank order E2E gap | **Closed** — `src/memory/ranker.test.ts` |
 | **D8-02** | Vector seeds for graph retrieval | **Closed** — `GRAPH_VECTOR_SEEDS_ENABLED=true` uses vector leg as graph seeds |
-| **D8-03** | Neptune / Dgraph adapters | **Mitigated** — `GRAPH_PROVIDER=neptune` + `NeptuneGraphProvider` stub; production use `neo4j` or `d1` |
+| **D8-03** | Neptune / Dgraph adapters | **Closed** — Phase 33 HTTP Gremlin traversal in `NeptuneGraphProvider` |
 | **Fabric** | Google Drive live connector | **Closed** — `DriveLiveConnector` + service-account JWT auth |
+| **Fabric** | Universal memory fabric (Phase 32) | **Closed** — `UniversalMemoryFabricOrchestrator` + provenance store |
+| **Fabric** | SharePoint / Teams live (Phase 34) | **Closed** — Microsoft Graph connectors |
 
 ---
 
@@ -28,8 +30,7 @@ Last updated: 2026-07-06
 
 | Item | Target |
 |------|--------|
-| Neptune Gremlin traversal implementation | Phase **33** — [.ai/phases/33-neptune-graph-traversal/](../.ai/phases/33-neptune-graph-traversal/README.md) |
-| Full OpenAPI codegen for 7 SDK languages | Requires Java 11+ on maintainer machine |
+| Full OpenAPI codegen CI on GitHub | Add workflow via [SDK-CODEGEN-CI.md](SDK-CODEGEN-CI.md) (`workflow` scope) |
 
 ---
 
