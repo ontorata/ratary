@@ -37,7 +37,15 @@ git add .
 git commit -m "chore: sync marketplace manifest from ontorata/ratary" | Out-Null
 
 $repo = 'ontorata/ratary-marketplace'
-if (gh repo view $repo 2>$null) {
+$repoExists = $false
+try {
+  gh repo view $repo --json name -q .name 2>$null | Out-Null
+  if ($LASTEXITCODE -eq 0) { $repoExists = $true }
+} catch {
+  $repoExists = $false
+}
+
+if ($repoExists) {
   git remote add origin "https://github.com/$repo.git"
   git push -u origin main --force
   Write-Host "Updated https://github.com/$repo" -ForegroundColor Green

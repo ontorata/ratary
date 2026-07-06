@@ -1,0 +1,24 @@
+{
+  "name": "ratary",
+  "owner": {
+    "name": "Ontorata",
+    "email": "hello@ontorata.com"
+  },
+  "metadata": {
+    "description": "Ratary Memory MCP for Cursor",
+    "version": "1.1.1"
+  },
+  "plugins": [
+    {
+      "name": "ratary",
+      "source": "harness/cursor",
+      "description": "Persistent coding memory — save, search, hybrid retrieval, knowledge graph. npm @ratary/mcp-server or full stdio clone.",
+      "version": "1.1.1",
+      "license": "MIT",
+      "repository": "https://github.com/ontorata/ratary",
+      "homepage": "https://github.com/ontorata/ratary/blob/main/docs/install/cursor.md",
+      "keywords": ["memory", "mcp", "development"],
+      "category": "memory"
+    }
+  ]
+}

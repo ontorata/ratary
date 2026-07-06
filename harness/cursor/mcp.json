@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "ratary": {
+      "command": "npx",
+      "args": ["-y", "@ratary/mcp-server"],
+      "env": {
+        "RATARY_BASE_URL": "https://ratary.ontorata.com",
+        "RATARY_API_KEY": "${RATARY_API_KEY}"
+      }
+    }
+  }
+}

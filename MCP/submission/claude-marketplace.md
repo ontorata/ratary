@@ -5,14 +5,14 @@ Marketplace manifest: [harness/marketplace/ratary-marketplace.json](../../harnes
 
 ---
 
-## Marketplace commands (when published)
+## Marketplace commands (published)
 
 ```text
 /plugin marketplace add ontorata/ratary-marketplace
 /plugin install ratary@ratary-marketplace
 ```
 
-**Note:** `ontorata/ratary-marketplace` may be a **separate GitHub repo** mirroring `harness/marketplace/` — or a subdirectory release tag. Publish manifest before advertising these commands publicly.
+**Marketplace repo:** https://github.com/ontorata/ratary-marketplace (sync via `scripts/publish-marketplace.ps1`)
 
 ---
 

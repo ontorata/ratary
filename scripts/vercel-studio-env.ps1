@@ -32,9 +32,10 @@ $baseUrl = if ($map['VITE_RATARY_BASE_URL']) { $map['VITE_RATARY_BASE_URL'] } el
 Push-Location $StudioRoot
 try {
   Write-Host "`n=== Ontorata Studio Vercel env (production) ===" -ForegroundColor Cyan
-  Write-Host "Studio uses login page for API keys — only VITE_RATARY_BASE_URL is required." -ForegroundColor DarkGray
+  Write-Host 'Studio uses login page for API keys; only VITE_RATARY_BASE_URL is required.' -ForegroundColor DarkGray
   $baseUrl | vercel env add VITE_RATARY_BASE_URL production --force
-  Write-Host "`nDone. Redeploy Studio: vercel --prod" -ForegroundColor Green
+  Write-Host ''
+  Write-Host 'Done. Redeploy Studio: vercel --prod' -ForegroundColor Green
 } finally {
   Pop-Location
 }
