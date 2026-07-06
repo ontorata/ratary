@@ -27,3 +27,4 @@ tsconfig.check.json
 
 # Integration / staging test workflow (requires tests/ + Postgres)
 .github/workflows/postgres-staging.yml
+.env*
