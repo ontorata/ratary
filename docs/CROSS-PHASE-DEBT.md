@@ -28,7 +28,7 @@ Last updated: 2026-07-06
 
 | Item | Target |
 |------|--------|
-| Neptune Gremlin traversal implementation | Future graph phase |
+| Neptune Gremlin traversal implementation | Phase **33** — [.ai/phases/33-neptune-graph-traversal/](../.ai/phases/33-neptune-graph-traversal/README.md) |
 | Full OpenAPI codegen for 7 SDK languages | Requires Java 11+ on maintainer machine |
 
 ---

@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 VisualStudioVersion = 12.0.0.0
 MinimumVisualStudioVersion = 10.0.0.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ratary_sdk", "src\ratary_sdk\ratary_sdk.csproj", "{9A336B13-82F4-4DA3-84A6-1A59C0CF04FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ratary_sdk", "src\ratary_sdk\ratary_sdk.csproj", "{C40293E8-76D5-4D22-937D-5ED05E2F5DCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ratary_sdk.Test", "src\ratary_sdk.Test\ratary_sdk.Test.csproj", "{19F1DEBC-DE5E-4517-8062-F000CD499087}"
 EndProject
@@ -12,10 +12,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A336B13-82F4-4DA3-84A6-1A59C0CF04FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A336B13-82F4-4DA3-84A6-1A59C0CF04FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A336B13-82F4-4DA3-84A6-1A59C0CF04FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A336B13-82F4-4DA3-84A6-1A59C0CF04FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C40293E8-76D5-4D22-937D-5ED05E2F5DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C40293E8-76D5-4D22-937D-5ED05E2F5DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C40293E8-76D5-4D22-937D-5ED05E2F5DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C40293E8-76D5-4D22-937D-5ED05E2F5DCC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19F1DEBC-DE5E-4517-8062-F000CD499087}.Release|Any CPU.ActiveCfg = Release|Any CPU
