@@ -9,10 +9,10 @@ Track operator submissions for **Ratary Memory MCP** (`ratary`). Update this fil
 | awesome-mcp-servers (punkpeye) | https://github.com/punkpeye/awesome-mcp-servers | GitHub PR | **Submitted** | [PR #9454](https://github.com/punkpeye/awesome-mcp-servers/pull/9454) · 2026-07-06 |
 | awesome-mcp-servers (appcypher) | https://github.com/appcypher/awesome-mcp-servers | GitHub PR | **Ready** | Branch `add-ratary-appcypher` on `ontorata/awesome-mcp-servers-1` · [open PR via compare](https://github.com/appcypher/awesome-mcp-servers/compare/main...ontorata:add-ratary-appcypher?expand=1) (`gh pr create` blocked by upstream GraphQL) |
 | PulseMCP | https://pulsemcp.com/submit | Auto-sync from Official Registry | **Pending sync** | Registry `io.github.ontorata/ratary` active 2026-07-06 · see [pulsemcp.md](pulsemcp.md) · expedite: hello@pulsemcp.com |
-| mcp.so | https://github.com/chatmcp/mcp.so | GitHub issue | **Optional** | Link MCP README |
-| Cursor marketplace | Cursor publisher program | Manual | **Ready** | [cursor-marketplace.md](cursor-marketplace.md) |
-| Claude Code marketplace | Anthropic plugin program | Manual | **Submitted-ready** | Run `scripts/publish-marketplace.ps1` → `ontorata/ratary-marketplace` |
-| Smithery | https://smithery.ai/ | CLI | **Optional** | npm `@ratary/mcp-server` |
+| mcp.so | https://mcp.so/submit | GitHub issue | **Submitted** | [mcpso#1 comment](https://github.com/chatmcp/mcpso/issues/1#issuecomment-4890737288) · 2026-07-06 · [mcp-so.md](mcp-so.md) |
+| Cursor marketplace | https://cursor.com/marketplace/publish | Manual | **Ready** | Plugin at `harness/cursor/` + `.cursor-plugin/marketplace.json` · [cursor-marketplace.md](cursor-marketplace.md) |
+| Claude Code marketplace | Anthropic plugin program | `publish-marketplace.ps1` | **Published** | https://github.com/ontorata/ratary-marketplace · `/plugin marketplace add ontorata/ratary-marketplace` |
+| Smithery | https://smithery.ai/new | CLI / web | **Ready** | `smithery auth login` then publish `/mcp` URL · [smithery.md](smithery.md) |
 | Glama.ai | Auto-index | Passive | **N/A** | Indexes from GitHub when public |
 
 ---
