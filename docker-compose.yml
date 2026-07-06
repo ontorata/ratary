@@ -9,10 +9,10 @@ services:
     build: .
     profiles: [postgres]
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-9876}:9876"
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: 9876
       AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET — openssl rand -hex 32}
       SQL_PROVIDER: postgres
       DATABASE_URL: postgresql://ratary:${POSTGRES_PASSWORD:-ratary}@postgres:5432/ratary
@@ -25,7 +25,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+          "fetch('http://127.0.0.1:9876/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
         ]
       interval: 10s
       timeout: 5s
@@ -36,10 +36,10 @@ services:
     build: .
     profiles: [enterprise]
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-9876}:9876"
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: 9876
       AUTH_SECRET: ${AUTH_SECRET:?Set AUTH_SECRET — openssl rand -hex 32}
       SQL_PROVIDER: mariadb
       MARIADB_CONNECTION_STRING: mysql://ratary:${MARIADB_PASSWORD:-ratary}@mariadb:3306/ratary
@@ -64,7 +64,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+          "fetch('http://127.0.0.1:9876/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
         ]
       interval: 10s
       timeout: 5s

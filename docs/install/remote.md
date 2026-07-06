@@ -89,7 +89,7 @@ export AUTH_SECRET="$(openssl rand -hex 32)"
 docker compose --profile postgres up --build
 ```
 
-Then bootstrap locally: `http://localhost:3000/api/v1/auth/bootstrap`
+Then bootstrap locally: `http://localhost:9876/api/v1/auth/bootstrap`
 
 Full runbook: [DOCKER.md](../DOCKER.md).
 

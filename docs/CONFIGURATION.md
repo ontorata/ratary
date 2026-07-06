@@ -75,7 +75,7 @@ Pick **one** row. All paths support the same MCP tools and REST API.
 | `D1_API_TOKEN` | Yes | API token with D1 read/write |
 | `AUTH_SECRET` | Yes (REST) | HMAC secret for API keys — `openssl rand -hex 32` |
 | `NODE_ENV` | Recommended | `development` local · `production` deployed |
-| `PORT` | Optional | REST port (default `3000`) |
+| `PORT` | Optional | REST port (default `9876`) |
 | `LOG_LEVEL` | Optional | `info` typical |
 
 **Benefits:** Serverless metadata on Cloudflare; no local RDBMS install.  

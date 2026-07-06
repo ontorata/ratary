@@ -12,7 +12,7 @@ export async function swaggerPlugin(fastify: FastifyInstance): Promise<void> {
         version: '1.1.0',
       },
       servers: [
-        { url: 'http://localhost:3000', description: 'Local development' },
+        { url: 'http://localhost:9876', description: 'Local development' },
         { url: 'https://ratary.ontorata.com', description: 'Production' },
       ],
       tags: [

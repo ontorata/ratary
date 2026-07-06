@@ -1,6 +1,6 @@
 # EcosystemApi
 
-All URIs are relative to *http://localhost:3000/api/v1*
+All URIs are relative to *http://localhost:9876/api/v1*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -26,7 +26,7 @@ import org.openapitools.client.api.EcosystemApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:3000/api/v1");
+    defaultClient.setBasePath("http://localhost:9876/api/v1");
 
     EcosystemApi apiInstance = new EcosystemApi(defaultClient);
     String type = "type_example"; // String | 
@@ -85,7 +85,7 @@ import org.openapitools.client.api.EcosystemApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:3000/api/v1");
+    defaultClient.setBasePath("http://localhost:9876/api/v1");
 
     EcosystemApi apiInstance = new EcosystemApi(defaultClient);
     try {

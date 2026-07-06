@@ -80,7 +80,7 @@ export function resolveBaseUrl(override?: string): string {
     override?.trim() ||
     process.env.RATARY_BASE_URL?.trim() ||
     process.env.VITE_RATARY_BASE_URL?.trim() ||
-    `http://localhost:${process.env.PORT?.trim() || '3000'}`;
+    `http://localhost:${process.env.PORT?.trim() || '9876'}`;
   return raw.replace(/\/$/, '').replace(/\/api\/v1$/, '');
 }
 

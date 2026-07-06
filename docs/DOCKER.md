@@ -23,8 +23,8 @@ docker compose --profile postgres up --build
 Wait until health checks pass, then:
 
 ```bash
-curl http://localhost:3000/health
-curl -X POST http://localhost:3000/api/v1/auth/bootstrap \
+curl http://localhost:9876/health
+curl -X POST http://localhost:9876/api/v1/auth/bootstrap \
   -H "Content-Type: application/json" \
   -d '{"name":"docker-local"}'
 ```
@@ -41,7 +41,7 @@ Save the returned `apiKey` (`aic_...`) for REST and `@ratary/mcp-server`.
 |----------|----------|-------|
 | `AUTH_SECRET` | Yes | Session signing — never bake into the image |
 | `POSTGRES_PASSWORD` | No | Default `ratary` — change in production |
-| `PORT` | No | Host port mapping (default `3000`) |
+| `PORT` | No | Host port mapping (default `9876`) |
 
 Compose sets `SQL_PROVIDER=postgres` and `DATABASE_URL` automatically for the `postgres` profile.
 
@@ -73,7 +73,7 @@ Pre-built images are published on [GitHub Releases](https://github.com/ontorata/
 
 ```bash
 docker pull ghcr.io/ontorata/ratary:latest
-docker run --rm -p 3000:3000 \
+docker run --rm -p 9876:9876 \
   -e AUTH_SECRET="your-secret-min-32-chars" \
   -e CLOUDFLARE_ACCOUNT_ID=... \
   -e D1_DATABASE_ID=... \

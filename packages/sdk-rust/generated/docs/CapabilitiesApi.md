@@ -1,6 +1,6 @@
 # \CapabilitiesApi
 
-All URIs are relative to *http://localhost:3000/api/v1*
+All URIs are relative to *http://localhost:9876/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

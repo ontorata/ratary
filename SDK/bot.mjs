@@ -7,7 +7,7 @@
 import { RataryClient } from '@ratary/sdk';
 
 const apiKey = process.env.RATARY_API_KEY ?? process.env.AI_BRAIN_API_KEY;
-const baseUrl = process.env.RATARY_BASE_URL ?? process.env.AI_BRAIN_BASE_URL ?? 'http://localhost:3000';
+const baseUrl = process.env.RATARY_BASE_URL ?? process.env.AI_BRAIN_BASE_URL ?? 'http://localhost:9876';
 const workspaceId = process.env.RATARY_WORKSPACE_ID ?? process.env.AI_BRAIN_WORKSPACE_ID;
 
 if (!apiKey) {

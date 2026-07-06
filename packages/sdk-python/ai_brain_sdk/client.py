@@ -16,7 +16,7 @@ class AiBrainClient:
         api_key: str | None = None,
         workspace_id: str | None = None,
     ) -> None:
-        self.base_url = (base_url or os.environ.get("AI_BRAIN_BASE_URL", "http://localhost:3000")).rstrip("/")
+        self.base_url = (base_url or os.environ.get("AI_BRAIN_BASE_URL", "http://localhost:9876")).rstrip("/")
         self.api_key = api_key or os.environ.get("AI_BRAIN_API_KEY")
         self.workspace_id = workspace_id or os.environ.get("AI_BRAIN_WORKSPACE_ID")
 

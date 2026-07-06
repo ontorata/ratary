@@ -361,7 +361,7 @@ namespace ratary_sdk.Client
         /// <summary>
         /// The base path of the API
         /// </summary>
-        public const string BASE_ADDRESS = "http://localhost:3000/api/v1";
+        public const string BASE_ADDRESS = "http://localhost:9876/api/v1";
 
         /// <summary>
         /// The scheme of the API

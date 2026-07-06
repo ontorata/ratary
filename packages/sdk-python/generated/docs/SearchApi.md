@@ -1,6 +1,6 @@
 # ratary_sdk.SearchApi
 
-All URIs are relative to *http://localhost:3000/api/v1*
+All URIs are relative to *http://localhost:9876/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -20,10 +20,10 @@ import ratary_sdk
 from ratary_sdk.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost:3000/api/v1
+# Defining the host is optional and defaults to http://localhost:9876/api/v1
 # See configuration.py for a list of all supported configuration parameters.
 configuration = ratary_sdk.Configuration(
-    host = "http://localhost:3000/api/v1"
+    host = "http://localhost:9876/api/v1"
 )
 
 # The client must configure the authentication and authorization parameters

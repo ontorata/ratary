@@ -90,7 +90,7 @@ import org.openapitools.client.api.CapabilitiesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:3000/api/v1");
+    defaultClient.setBasePath("http://localhost:9876/api/v1");
 
     CapabilitiesApi apiInstance = new CapabilitiesApi(defaultClient);
     try {
@@ -109,7 +109,7 @@ public class Example {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost:3000/api/v1*
+All URIs are relative to *http://localhost:9876/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

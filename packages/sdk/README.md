@@ -16,7 +16,7 @@ npm install @ratary/sdk@1.1.0
 import { RataryClient } from '@ratary/sdk';
 
 const client = new RataryClient({
-  baseUrl: process.env.RATARY_BASE_URL ?? 'http://localhost:3000',
+  baseUrl: process.env.RATARY_BASE_URL ?? 'http://localhost:9876',
   apiKey: process.env.RATARY_API_KEY!,
   workspaceId: process.env.RATARY_WORKSPACE_ID,
 });

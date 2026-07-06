@@ -9,7 +9,7 @@ function env(primary: string, legacy?: string): string | undefined {
   return undefined;
 }
 
-const baseUrl = env('RATARY_BASE_URL', 'AI_BRAIN_BASE_URL') ?? 'http://localhost:3000';
+const baseUrl = env('RATARY_BASE_URL', 'AI_BRAIN_BASE_URL') ?? 'http://localhost:9876';
 const apiKey = env('RATARY_API_KEY', 'AI_BRAIN_API_KEY') ?? process.env.API_KEY?.trim();
 const workspaceId = env('RATARY_WORKSPACE_ID', 'AI_BRAIN_WORKSPACE_ID');
 const federationEnabled =

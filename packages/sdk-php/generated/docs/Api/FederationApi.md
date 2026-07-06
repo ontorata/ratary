@@ -2,7 +2,7 @@
 
 
 
-All URIs are relative to http://localhost:3000/api/v1, except if the operation defines another base path.
+All URIs are relative to http://localhost:9876/api/v1, except if the operation defines another base path.
 
 | Method | HTTP request | Description |
 | ------------- | ------------- | ------------- |

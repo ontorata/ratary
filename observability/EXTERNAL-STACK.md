@@ -15,7 +15,7 @@ OBSERVABILITY_PLATFORM=true
 2. Scrape metrics from Ratary (default path `/metrics`):
 
 ```bash
-curl -s http://localhost:3000/metrics
+curl -s http://localhost:9876/metrics
 ```
 
 3. Import Grafana dashboards from `observability/dashboards/`:
@@ -90,7 +90,7 @@ Import `observability/dashboards/cost.json` into Grafana after the gauges appear
 scrape_configs:
   - job_name: ratary
     static_configs:
-      - targets: ['localhost:3000']
+      - targets: ['localhost:9876']
     metrics_path: /metrics
     scrape_interval: 15s
 ```

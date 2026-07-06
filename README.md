@@ -132,13 +132,13 @@ npm run dev
 
 Details: **[docs/GUIDE.md](docs/GUIDE.md#1-setup)** · **[docs/CONFIGURATION.md](docs/CONFIGURATION.md)**
 
-→ API `http://localhost:3000` · Swagger `/docs`
+→ API `http://localhost:9876` · Swagger `/docs`
 
 **First REST call:** bootstrap once to get an API key (`aic_...`) — see [GUIDE — First REST API key](docs/GUIDE.md#first-rest-api-key-optional).
 
 ```bash
 # Save your first memory
-curl -X POST http://localhost:3000/api/v1/memory \
+curl -X POST http://localhost:9876/api/v1/memory \
   -H "Authorization: Bearer aic_YOUR_KEY" \
   -H "Content-Type: application/json" \
   -d '{"title":"Hello brain","project":"demo","content":"Ratary remembers this."}'

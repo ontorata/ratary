@@ -67,7 +67,7 @@ npm run setup               # writes .cursor/mcp.json and .mcp.json
 For curl, ChatGPT Actions, or `@ratary/mcp-server`:
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/auth/bootstrap \
+curl -X POST http://localhost:9876/api/v1/auth/bootstrap \
   -H "Content-Type: application/json" \
   -d '{"name":"local-dev"}'
 ```
@@ -88,7 +88,7 @@ npm install -g @ratary/cli@1.1.0
 
 | Variable | Purpose |
 |----------|---------|
-| `RATARY_BASE_URL` | Server URL (`http://localhost:3000` or production host) |
+| `RATARY_BASE_URL` | Server URL (`http://localhost:9876` or production host) |
 | `RATARY_API_KEY` | `aic_...` from bootstrap or `npm run key:create` |
 | `RATARY_WORKSPACE_ID` | Optional workspace scope |
 
@@ -103,12 +103,12 @@ git clone https://github.com/ontorata/Ontorata-Studio.git
 cd Ontorata-Studio
 npm install
 cp .env.example .env
-# VITE_RATARY_BASE_URL=http://localhost:3000
+# VITE_RATARY_BASE_URL=http://localhost:9876
 # Sign in at /login with aic_... API key (no VITE_RATARY_API_KEY in production)
 npm run dev
 ```
 
-Open `http://localhost:5173`. Memory MCP in your IDE remains server id **`ratary`**.
+Open `http://localhost:8765`. Memory MCP in your IDE remains server id **`ratary`**.
 
 ---
 
