@@ -111,7 +111,7 @@ The runnable deployment is **[Ratary Server](#quick-start)** — this repository
 ```bash
 git clone https://github.com/ontorata/ratary.git
 cd ratary && npm install
-cp .env.example .env   # set SQL_PROVIDER=d1, fill D1_* + AUTH_SECRET
+cp .env.example .env   # Quick start: AUTH_SECRET + DATABASE_URL only — see .env.example header
 npm run db:migrate
 npm run setup          # wire Ratary MCP for Cursor, Claude Code, …
 npm run dev

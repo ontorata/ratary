@@ -12,6 +12,8 @@ Quick path: `npm run setup` in this repo. Per-harness install: **[install/README
 
 **Prerequisites:** Node.js 24 · a **SQL metadata store** (see table below) · `AUTH_SECRET` for REST
 
+> **First install stops at Tier 1** in [`.env.example`](../.env.example) — set auth + SQL only, then `npm run setup`. Tiers 2+ are optional (vectors, enterprise, fabric).
+
 ```bash
 git clone https://github.com/ontorata/ratary.git
 cd ratary
@@ -19,15 +21,25 @@ npm install
 cp .env.example .env
 ```
 
+### Quick start (matches `.env.example` header)
+
+1. `cp .env.example .env`
+2. Set `AUTH_SECRET` (`openssl rand -hex 32`) and `DATABASE_URL` (or D1 credentials)
+3. **Postgres:** `npm run db:apply-postgres-schema` · **D1:** `npm run db:migrate`
+4. `npm run setup` — wires Ratary MCP for your IDE
+
+Skip sections 2+ in `.env.example` on first install.
+
 ### Choose your SQL stack
 
-| Path | `SQL_PROVIDER` | What to configure | Guide |
-|------|----------------|-------------------|-------|
-| **Cloudflare D1** | `d1` | `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, `D1_API_TOKEN` | [CONFIGURATION — D1](CONFIGURATION.md#cloudflare-d1-sql_providerd1) |
-| **PostgreSQL** | `postgres` | `DATABASE_URL` | [DOCKER — postgres profile](DOCKER.md#quick-start-postgres-profile) or local Postgres |
-| **Supabase** | `supabase` | `DATABASE_URL` (Supabase dashboard URI) | [CONFIGURATION — Supabase](CONFIGURATION.md#supabase-metadata-sql_providersupabase) |
-| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [DOCKER — enterprise profile](DOCKER.md#profiles) |
-| **Hosted API only** | (remote server) | `RATARY_API_KEY` | [install/remote.md](install/remote.md) — no local SQL |
+| Path | `SQL_PROVIDER` | What to configure | Template block in `.env.example` |
+|------|----------------|-------------------|----------------------------------|
+| **Cloudflare D1** | `d1` | `CLOUDFLARE_ACCOUNT_ID`, `D1_DATABASE_ID`, `D1_API_TOKEN` | Tier 1 — Cloudflare D1 |
+| **PostgreSQL** | `postgres` | `DATABASE_URL` | Tier 1 — PostgreSQL (default) |
+| **Supabase** | `supabase` | `DATABASE_URL` (Supabase dashboard URI) | Tier 1 — Supabase |
+| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | Tier 1 — MariaDB / MySQL |
+| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | Tier 1 — TiDB / CockroachDB |
+| **Hosted API only** | (remote server) | `RATARY_API_KEY` | Section 8 — client SDK (not server `.env`) |
 
 Set `AUTH_SECRET` (min 32 characters) for REST auth on every self-hosted path.
 
@@ -66,6 +78,8 @@ Save the returned `apiKey` (`aic_...`). Bootstrap works once when no identities 
 
 Use these when you **do not** need to clone Ratary Server — e.g. custom agents, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio), or hosted MCP.
 
+> **Server `.env` vs client env:** Ratary Server uses `AUTH_SECRET`, `SQL_PROVIDER`, `DATABASE_URL`, etc. (Tiers 0–1 in [`.env.example`](../.env.example)). Client tools use `RATARY_BASE_URL` and `RATARY_API_KEY` on your **workstation** (section 8 of `.env.example` — not copied into server deploy).
+
 ```bash
 npm install @ratary/sdk@1.1.0
 npx @ratary/mcp-server@1.1.0    # IDE → remote REST (see install/remote.md)
@@ -90,7 +104,7 @@ cd Ontorata-Studio
 npm install
 cp .env.example .env
 # VITE_RATARY_BASE_URL=http://localhost:3000
-# VITE_RATARY_API_KEY=aic_...
+# Sign in at /login with aic_... API key (no VITE_RATARY_API_KEY in production)
 npm run dev
 ```
 

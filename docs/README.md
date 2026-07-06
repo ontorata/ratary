@@ -31,7 +31,7 @@
 
 | File | Role |
 |------|------|
-| [../.env.example](../.env.example) | Variable **names & defaults** (machine-readable template) |
+| [../.env.example](../.env.example) | Tiered variable template — **stop at Tier 1** on first install |
 | [CONFIGURATION.md](CONFIGURATION.md) | Variable **meaning & when to enable** (human reference) |
 
 ---

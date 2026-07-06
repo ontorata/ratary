@@ -7,6 +7,8 @@
 
 > **Pick your SQL metadata store** — D1, Postgres, Supabase, MariaDB/MySQL, TiDB, and CockroachDB are **peer choices** via `SQL_PROVIDER`, not a ladder with D1 as the reference deployment. Tier 0 covers auth and MCP scope; SQL connection vars depend on the provider you select. Optional adapters (vectors, object storage, search) are documented in Tier 2+.
 
+> **First install:** configure **Tier 0 + Tier 1** in [`.env.example`](../.env.example) only, then run `npm run setup`. Do not enable Tier 2+ or enterprise flags until you need them.
+
 ---
 
 ## How to use this document
@@ -21,9 +23,11 @@
 
 **Convention in `.env.example`:**
 
+- Tiered layout mirrors this document: **Tier 0–1** = first install; **Tier 2+** = opt-in adapters and features.
 - Uncomment and set a variable to **opt in** to that feature.
 - Commented lines show **template defaults** in `.env.example` — override `SQL_PROVIDER` and credentials for your chosen database.
 - `true`/`false` flags use string values in `.env` (e.g. `HYBRID_RETRIEVAL=true`).
+- Comment-only edits must **preserve every variable name** — do not add or remove keys without a code change.
 
 **Reading each feature block:**
 
@@ -44,13 +48,13 @@
 
 Ratary persists memory metadata through **`ISqlDatabase`** — same application code, different adapter per `SQL_PROVIDER`.
 
-| Stack | `SQL_PROVIDER` | Required env | Setup guide |
-|-------|----------------|--------------|-------------|
-| **PostgreSQL** *(template default)* | `postgres` | `DATABASE_URL` | [Postgres (Tier 2)](#postgres-metadata-sql_providerpostgres) · [DOCKER postgres profile](DOCKER.md#quick-start-postgres-profile) |
-| **Supabase** | `supabase` | `DATABASE_URL` (from Supabase dashboard) | [Supabase (Tier 2)](#supabase-metadata-sql_providersupabase) |
-| **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | [D1 below](#cloudflare-d1-sql_providerd1) · `npm run db:migrate` |
-| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | [MariaDB (Tier 2)](#mariadb--mysql-metadata-sql_providermariadbmysql) · [DOCKER enterprise profile](DOCKER.md#profiles) |
-| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | [TiDB/Cockroach (Tier 2)](#tidb--cockroachdb-metadata-sql_providertidcockroachdb) |
+| Stack | `SQL_PROVIDER` | Required env | `.env.example` block |
+|-------|----------------|--------------|----------------------|
+| **PostgreSQL** *(template default)* | `postgres` | `DATABASE_URL` | Tier 1 — PostgreSQL |
+| **Supabase** | `supabase` | `DATABASE_URL` (from Supabase dashboard) | Tier 1 — Supabase |
+| **Cloudflare D1** | `d1` | `CLOUDFLARE_*`, `D1_*` | Tier 1 — Cloudflare D1 |
+| **MariaDB / MySQL** | `mariadb` / `mysql` | `MARIADB_CONNECTION_STRING` | Tier 1 — MariaDB / MySQL |
+| **TiDB / CockroachDB** | `tidb` / `cockroachdb` | `DATABASE_URL` (Postgres wire) | Tier 1 — TiDB / CockroachDB |
 
 Pick **one** row. All paths support the same MCP tools and REST API.
 
