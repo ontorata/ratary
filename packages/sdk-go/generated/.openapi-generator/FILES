@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -41,11 +40,4 @@ model_create_memory_request.go
 model_memory.go
 model_update_memory_request.go
 response.go
-test/api_capabilities_test.go
-test/api_context_test.go
-test/api_ecosystem_test.go
-test/api_federation_test.go
-test/api_health_test.go
-test/api_memory_test.go
-test/api_search_test.go
 utils.go

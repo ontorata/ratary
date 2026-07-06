@@ -212,7 +212,7 @@ REMOTE_MCP_CORS_ORIGINS=*
 | Method | Extra env | Notes |
 |--------|-----------|-------|
 | API key | — | `Authorization: Bearer aic_...` or `X-API-Key` |
-| OAuth (ChatGPT) | `REMOTE_MCP_OAUTH_ENABLED=true`, `OIDC_ISSUER_URL`, `OIDC_MCP_OWNER_ID` | OIDC discovery at `/.well-known/oauth-protected-resource/mcp` |
+| OAuth (ChatGPT) | `REMOTE_MCP_OAUTH_ENABLED=true`, `OIDC_ISSUER_URL`, `OIDC_MCP_OWNER_ID` | DCR-capable IdP required — [MCP-CHATGPT-OAUTH.md](MCP-CHATGPT-OAUTH.md) |
 
 Details: [MCP/README.md](../MCP/README.md) · Remote MCP smoke in repo tests.
 
