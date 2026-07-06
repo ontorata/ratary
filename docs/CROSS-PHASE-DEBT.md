@@ -20,6 +20,7 @@ Last updated: 2026-07-06
 | **D85-04** | Rank order E2E gap | **Closed** — `src/memory/ranker.test.ts` |
 | **D8-02** | Vector seeds for graph retrieval | **Closed** — `GRAPH_VECTOR_SEEDS_ENABLED=true` uses vector leg as graph seeds |
 | **D8-03** | Neptune / Dgraph adapters | **Mitigated** — `GRAPH_PROVIDER=neptune` + `NeptuneGraphProvider` stub; production use `neo4j` or `d1` |
+| **Fabric** | Google Drive live connector | **Closed** — `DriveLiveConnector` + service-account JWT auth |
 
 ---
 
@@ -27,7 +28,6 @@ Last updated: 2026-07-06
 
 | Item | Target |
 |------|--------|
-| Google Drive live connector | Post–fabric roadmap |
 | Neptune Gremlin traversal implementation | Future graph phase |
 | Full OpenAPI codegen for 7 SDK languages | Requires Java 11+ on maintainer machine |
 
