@@ -47,6 +47,11 @@ import {
 } from '../../infrastructure/observability/opentelemetry/index.js';
 import { getEnv } from '../../config/index.js';
 import { createAuthLayer } from '../../auth/index.js';
+import { IdentityRepository } from '../../auth/identity.repository.js';
+import { AccountRepository } from '../../auth/account.repository.js';
+import { AccountService } from '../../auth/account.service.js';
+import { LoginGuard } from '../../auth/login-guard.js';
+import { registerSecurityHeaders } from '../../plugins/security-headers.js';
 import { createMultiAiPorts } from '../../composition/create-multi-ai-ports.js';
 import type { MultiAiPorts } from '../../composition/create-multi-ai-ports.js';
 import { createWorkspaceMembershipMiddleware } from '../../auth/workspace-membership.middleware.js';
@@ -113,6 +118,7 @@ export async function buildApp(options?: {
     genReqId: () => crypto.randomUUID(),
     requestIdHeader: 'x-request-id',
     requestIdLogLabel: 'reqId',
+    trustProxy: true,
   });
 
   await fastify.register(cors, {
@@ -130,6 +136,7 @@ export async function buildApp(options?: {
   });
 
   await fastify.register(errorHandlerPlugin);
+  await registerSecurityHeaders(fastify);
 
   const observabilityPorts = createObservabilityPorts(env);
   if (observabilityPorts.enabled) {
@@ -233,7 +240,20 @@ export async function buildApp(options?: {
   const healthController = createHealthController(healthService);
   const memoryController = createMemoryController(memoryService, scopeResolver);
   const backupController = createBackupController(memoryService, scopeResolver);
-  const authController = createAuthController(authLayer.identityService, authLayer.clientService);
+  const accountService = env.NATIVE_AUTH_ENABLED
+    ? new AccountService(
+        platform.sql,
+        new AccountRepository(platform.sql),
+        new IdentityRepository(platform.sql),
+        authLayer.jwtService,
+        new LoginGuard(platform.sql),
+      )
+    : null;
+  const authController = createAuthController(
+    authLayer.identityService,
+    authLayer.clientService,
+    accountService,
+  );
   const knowledgeController = createKnowledgeController(memoryService, scopeResolver);
   const relationController = createMemoryRelationController(relationService, scopeResolver);
   const embeddingProvider = createEmbeddingProvider({

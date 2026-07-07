@@ -46,6 +46,12 @@ export class ForbiddenError extends AppError {
   }
 }
 
+export class ConflictError extends AppError {
+  constructor(message = 'Conflict') {
+    super(message, 409, 'CONFLICT');
+  }
+}
+
 export class SyncConflictError extends AppError {
   constructor(
     message = 'Memory write rejected due to sync conflict',

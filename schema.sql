@@ -234,6 +234,33 @@ CREATE TABLE IF NOT EXISTS settings (
   value TEXT NOT NULL
 );
 
+-- auth_accounts: native email/password — one owner_id per registrant (tenant isolation)
+CREATE TABLE IF NOT EXISTS auth_accounts (
+  id TEXT PRIMARY KEY,
+  email TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  display_name TEXT NOT NULL DEFAULT '',
+  owner_id TEXT NOT NULL,
+  identity_id TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  last_login_at TEXT,
+  active INTEGER NOT NULL DEFAULT 1,
+  FOREIGN KEY (identity_id) REFERENCES identities(id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_accounts_email ON auth_accounts(email);
+
+CREATE INDEX IF NOT EXISTS idx_auth_accounts_owner_id ON auth_accounts(owner_id);
+
+-- auth_login_attempts: per-email login lockout (credential stuffing guard)
+CREATE TABLE IF NOT EXISTS auth_login_attempts (
+  email TEXT PRIMARY KEY,
+  failed_count INTEGER NOT NULL DEFAULT 0,
+  locked_until TEXT,
+  last_attempt_at TEXT NOT NULL,
+  last_ip TEXT
+);
+
 -- Extension tracks 5.5 / 8.5 (ADR-023, ADR-026)
 CREATE TABLE IF NOT EXISTS memory_signals (
   id TEXT PRIMARY KEY,

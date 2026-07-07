@@ -90,6 +90,31 @@ CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS auth_accounts (
+  id TEXT PRIMARY KEY,
+  email TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  display_name TEXT NOT NULL DEFAULT '',
+  owner_id TEXT NOT NULL,
+  identity_id TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  last_login_at TEXT,
+  active INTEGER NOT NULL DEFAULT 1,
+  FOREIGN KEY (identity_id) REFERENCES identities(id)
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_accounts_email ON auth_accounts(email);
+
+CREATE INDEX IF NOT EXISTS idx_auth_accounts_owner_id ON auth_accounts(owner_id);
+
+CREATE TABLE IF NOT EXISTS auth_login_attempts (
+  email TEXT PRIMARY KEY,
+  failed_count INTEGER NOT NULL DEFAULT 0,
+  locked_until TEXT,
+  last_attempt_at TEXT NOT NULL,
+  last_ip TEXT
+);
 `;
 
 const KNOWLEDGE_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
@@ -1147,6 +1172,15 @@ export async function executeTransaction(
   statements: D1Statement[],
 ): Promise<void> {
   if (statements.length === 0) return;
+
+  const useSqlTransaction = process.env.SQL_PROVIDER !== 'd1';
+
+  if (!useSqlTransaction) {
+    for (const { sql, params } of statements) {
+      await client.execute(sql, params ?? []);
+    }
+    return;
+  }
 
   await client.execute('BEGIN');
   try {

@@ -314,6 +314,16 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .default('false'),
+    /** Built-in email/password accounts — each user gets isolated owner_id (no Studio coupling). */
+    NATIVE_AUTH_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    /** @deprecated Use NATIVE_AUTH_ENABLED */
+    STUDIO_NATIVE_AUTH_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .optional(),
 
     // Federation layer (Phase 14) — ADR-029; cross-node knowledge exchange, default off
     FEDERATION_ENABLED: z
@@ -840,6 +850,9 @@ export function getEnv(): Env {
   }
 
   cachedEnv = result.data;
+  if (!cachedEnv.NATIVE_AUTH_ENABLED && cachedEnv.STUDIO_NATIVE_AUTH_ENABLED) {
+    cachedEnv = { ...cachedEnv, NATIVE_AUTH_ENABLED: true };
+  }
   return cachedEnv;
 }
 
