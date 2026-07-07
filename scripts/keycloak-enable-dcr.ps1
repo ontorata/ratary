@@ -1,12 +1,16 @@
 # Enable Keycloak dynamic client registration for realm ratary (ChatGPT DCR)
 param(
   [string]$BaseUrl = 'http://localhost:8080',
-  [string]$AdminUser = 'admin',
-  [string]$AdminPassword = '***REDACTED***',
+  [string]$AdminUser = $env:KC_ADMIN_USER,
+  [string]$AdminPassword = $env:KC_ADMIN_PASSWORD,
   [string]$Realm = 'ratary'
 )
 
 $ErrorActionPreference = 'Stop'
+if (-not $AdminUser) { $AdminUser = 'admin' }
+if (-not $AdminPassword) {
+  Write-Error 'KC_ADMIN_PASSWORD is required. Copy infra/keycloak/.env.example to .env and set a strong password.'
+}
 $token = Invoke-RestMethod -Method Post -Uri "$BaseUrl/realms/master/protocol/openid-connect/token" `
   -ContentType 'application/x-www-form-urlencoded' `
   -Body @{
