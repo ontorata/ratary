@@ -9,6 +9,12 @@ export const AUTH_RATE_LIMITS = {
   rotate: { max: 10, timeWindow: '1 minute' },
 } as const;
 
+/** Stricter limits for native register/login (DDoS / credential stuffing). */
+export const NATIVE_AUTH_RATE_LIMITS = {
+  register: { max: 3, timeWindow: '1 hour' },
+  login: { max: 10, timeWindow: '1 minute' },
+} as const;
+
 export async function registerAuthRateLimit(fastify: FastifyInstance): Promise<void> {
   await registerPerIpRateLimit(fastify);
 }

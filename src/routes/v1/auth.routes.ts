@@ -8,11 +8,28 @@ import {
   updateClientBodySchema,
 } from '../../auth/auth.types.js';
 import type { AuthController } from '../../controllers/auth.controller.js';
-import { AUTH_RATE_LIMITS, registerAuthRateLimit } from '../../plugins/rate-limit.js';
+import { AUTH_RATE_LIMITS, NATIVE_AUTH_RATE_LIMITS, registerAuthRateLimit } from '../../plugins/rate-limit.js';
+import { requireHttpsForCredentialAuth } from '../../plugins/credential-auth-security.js';
 import { ValidationError } from '../../types/errors.js';
 
 const idParamSchema = z.object({
   id: z.string().uuid(),
+});
+
+const registerBodySchema = z.object({
+  email: z.string().email().max(254),
+  password: z
+    .string()
+    .min(8)
+    .max(200)
+    .regex(/[A-Za-z]/, 'Password must include a letter')
+    .regex(/[0-9]/, 'Password must include a number'),
+  display_name: z.string().min(1).max(120).optional(),
+});
+
+const loginBodySchema = z.object({
+  email: z.string().email().max(254),
+  password: z.string().min(1).max(200),
 });
 
 function validateBody<T extends z.ZodType>(schema: T) {
@@ -139,4 +156,31 @@ export async function authRoutes(
     },
     controller.updateClient.bind(controller),
   );
+
+  if (controller.nativeAuthEnabled) {
+    fastify.addHook('onRequest', requireHttpsForCredentialAuth);
+
+    fastify.post(
+      '/auth/register',
+      {
+        config: { rateLimit: NATIVE_AUTH_RATE_LIMITS.register },
+        preValidation: [validateBody(registerBodySchema)],
+        schema: {
+          tags: ['Auth'],
+          summary: 'Register native account (email/password) — dedicated owner scope',
+        },
+      },
+      controller.register.bind(controller),
+    );
+
+    fastify.post(
+      '/auth/login',
+      {
+        config: { rateLimit: NATIVE_AUTH_RATE_LIMITS.login },
+        preValidation: [validateBody(loginBodySchema)],
+        schema: { tags: ['Auth'], summary: 'Login native account' },
+      },
+      controller.login.bind(controller),
+    );
+  }
 }

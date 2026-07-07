@@ -50,6 +50,27 @@ export const METADATA_BACKFILL_TABLES: readonly BackfillTableSpec[] = [
     ownerWhereClause: 'owner_id = ?',
   },
   {
+    table: 'auth_accounts',
+    primaryKey: 'id',
+    columns: [
+      'id',
+      'email',
+      'password_hash',
+      'display_name',
+      'owner_id',
+      'identity_id',
+      'created_at',
+      'last_login_at',
+      'active',
+    ],
+    ownerWhereClause: 'owner_id = ?',
+  },
+  {
+    table: 'auth_login_attempts',
+    primaryKey: 'email',
+    columns: ['email', 'failed_count', 'locked_until', 'last_attempt_at', 'last_ip'],
+  },
+  {
     table: 'agents',
     primaryKey: 'id',
     columns: [

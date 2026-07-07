@@ -10,6 +10,9 @@ export interface JwtClaims {
   type: 'jwt';
   iat: number;
   exp: number;
+  jti?: string;
+  aud?: string;
+  iss?: string;
   organization_id?: string;
   workspace_roles?: Array<{ workspace_id: string; role: string }>;
 }
@@ -20,6 +23,9 @@ export interface SignJwtInput {
   clientId: string | null;
   permissions: string[];
   expiresInSec?: number;
+  jti?: string;
+  audience?: string;
+  issuer?: string;
   organizationId?: string;
   workspaceRoles?: Array<{ workspaceId: string; role: string }>;
 }
@@ -53,6 +59,9 @@ export class JwtService {
       iat: now,
       exp: now + expiresInSec,
     };
+    if (input.jti) payload.jti = input.jti;
+    if (input.audience) payload.aud = input.audience;
+    if (input.issuer) payload.iss = input.issuer;
     if (input.organizationId) {
       payload.organization_id = input.organizationId;
     }
@@ -91,6 +100,14 @@ export class JwtService {
 
     if (payload.type !== 'jwt' || !payload.sub || !payload.owner_id) {
       throw new UnauthorizedError('Invalid JWT claims');
+    }
+
+    if (payload.aud && payload.aud !== 'studio') {
+      throw new UnauthorizedError('Invalid JWT audience');
+    }
+
+    if (payload.iss && payload.iss !== 'ratary') {
+      throw new UnauthorizedError('Invalid JWT issuer');
     }
 
     if (payload.exp < Math.floor(Date.now() / 1000)) {

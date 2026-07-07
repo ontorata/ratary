@@ -1,6 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { IdentityService } from '../auth/identity.service.js';
 import type { ClientService } from '../auth/client.service.js';
+import type { AccountService } from '../auth/account.service.js';
 import type {
   BootstrapBody,
   CreateClientBody,
@@ -45,7 +46,12 @@ export class AuthController {
   constructor(
     private readonly identityService: IdentityService,
     private readonly clientService: ClientService,
+    private readonly accountService: AccountService | null = null,
   ) {}
+
+  get nativeAuthEnabled(): boolean {
+    return this.accountService !== null;
+  }
 
   async bootstrap(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
@@ -195,6 +201,52 @@ export class AuthController {
     }
   }
 
+  async register(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      if (!this.accountService) {
+        reply.status(404).send({
+          success: false,
+          error: { code: 'NOT_FOUND', message: 'Native auth is not enabled' },
+        });
+        return;
+      }
+      const body = request.body as {
+        email?: string;
+        password?: string;
+        display_name?: string;
+      };
+      const result = await this.accountService.register({
+        email: body.email ?? '',
+        password: body.password ?? '',
+        displayName: body.display_name,
+      });
+      sendSuccess(reply, result, 201);
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
+  async login(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      if (!this.accountService) {
+        reply.status(404).send({
+          success: false,
+          error: { code: 'NOT_FOUND', message: 'Native auth is not enabled' },
+        });
+        return;
+      }
+      const body = request.body as { email?: string; password?: string };
+      const result = await this.accountService.login({
+        email: body.email ?? '',
+        password: body.password ?? '',
+        clientIp: request.ip,
+      });
+      sendSuccess(reply, result);
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
   private handleError(error: unknown, reply: FastifyReply): void {
     if (error instanceof AppError) {
       reply.status(error.statusCode).send({
@@ -213,6 +265,7 @@ export class AuthController {
 export function createAuthController(
   identityService: IdentityService,
   clientService: ClientService,
+  accountService?: AccountService | null,
 ): AuthController {
-  return new AuthController(identityService, clientService);
+  return new AuthController(identityService, clientService, accountService ?? null);
 }

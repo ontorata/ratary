@@ -3,7 +3,8 @@ import type { AuthContext, ResolvedIdentity } from '../auth.types.js';
 import type { JwtService } from '../jwt.service.js';
 import { isApiKeyFormat, isOAuthTokenFormat } from '../crypto.js';
 import { ForbiddenError, UnauthorizedError } from '../../types/errors.js';
-import { extractBearerToken, isJwtFormat } from '../token-utils.js';
+import { extractBearerToken } from '../token-utils.js';
+import { resolveBearerJwt } from '../token-crypto.js';
 import type { IdentityProvider } from './identity-provider.js';
 
 export class JwtProvider implements IdentityProvider {
@@ -15,12 +16,21 @@ export class JwtProvider implements IdentityProvider {
   ) {}
 
   async authenticate(ctx: AuthContext): Promise<ResolvedIdentity | null> {
-    const token = extractBearerToken(ctx);
-    if (!token || isApiKeyFormat(token) || isOAuthTokenFormat(token) || !isJwtFormat(token)) {
+    const raw = extractBearerToken(ctx);
+    if (!raw || isApiKeyFormat(raw) || isOAuthTokenFormat(raw)) {
       return null;
     }
 
-    const claims = this.jwtService.verify(token);
+    let jwtToken: string;
+    try {
+      const resolved = resolveBearerJwt(raw);
+      if (!resolved) return null;
+      jwtToken = resolved;
+    } catch {
+      throw new UnauthorizedError('Invalid bearer token');
+    }
+
+    const claims = this.jwtService.verify(jwtToken);
     const identity = await this.identityRepository.findById(claims.sub);
     if (!identity) {
       throw new UnauthorizedError('Invalid JWT');
