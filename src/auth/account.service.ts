@@ -10,6 +10,7 @@ import { emitAuthEvent } from './events.js';
 import { executeTransaction } from '../db/migrations.js';
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { metadataToJson } from './identity.mapper.js';
+import { ensureDefaultWorkspace } from '../scope/workspace-store.js';
 
 const ACCESS_TOKEN_TTL_SEC = 28_800; // 8h
 
@@ -33,6 +34,7 @@ export interface AccountAuthResult {
   identityId: string;
   email: string;
   displayName: string;
+  workspaceId: string;
 }
 
 /**
@@ -111,7 +113,14 @@ export class AccountService {
       clientId: null,
     });
 
-    return this.issueSession({ identityId, ownerId, email, displayName });
+    const { workspace } = await ensureDefaultWorkspace(this.db, ownerId);
+    return this.issueSession({
+      identityId,
+      ownerId,
+      email,
+      displayName,
+      workspaceId: workspace.id,
+    });
   }
 
   async login(input: LoginAccountInput): Promise<AccountAuthResult> {
@@ -135,11 +144,13 @@ export class AccountService {
     await this.guard.recordSuccess(email);
     await this.accounts.touchLogin(account!.id, nowISO());
 
+    const { workspace } = await ensureDefaultWorkspace(this.db, account!.ownerId);
     return this.issueSession({
       identityId: account!.identityId,
       ownerId: account!.ownerId,
       email: account!.email,
       displayName: account!.displayName,
+      workspaceId: workspace.id,
     });
   }
 
@@ -148,6 +159,7 @@ export class AccountService {
     ownerId: string;
     email: string;
     displayName: string;
+    workspaceId: string;
   }): AccountAuthResult {
     const signed = this.jwtService.sign({
       identityId: input.identityId,
@@ -169,6 +181,7 @@ export class AccountService {
       identityId: input.identityId,
       email: input.email,
       displayName: input.displayName,
+      workspaceId: input.workspaceId,
     };
   }
 }
