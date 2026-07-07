@@ -1,7 +1,7 @@
 ---
 name: forge-recall
 description: >-
-  Session start: load memory context via MCP and governance before any work.
+  Session start: Ratary context recovery + governance before any work.
   Use at the beginning of every chat or when resuming a task.
 ---
 # Forge Recall
@@ -10,17 +10,22 @@ description: >-
 
 ## Steps
 
-1. Call MCP `search_memory` with project name (`ratary`) or task topic
-2. When Phase **8.8** ledger is enabled: also search tag `inspection-pattern` or `GET /api/v1/inspection-patterns?path=<diff-prefix>` for scoped recall
-3. If user said "lanjut" / handoff: search `handoff` or use `get_memory_by_codename`
-4. Read [.ai/TASK_PROMPT.md](../../.ai/TASK_PROMPT.md) and [.ai/core/constitution/INDEX.md](../../.ai/core/constitution/INDEX.md)
-5. Restate task, constraints, and which Forge stages apply
-6. Ask blocking questions only — do not implement yet
+1. **Ratary Context Recovery** — `search_memory` / handoff (when MCP available); **validate against repository**
+2. Read [.ai/sessions/CURRENT.md](../../.ai/sessions/CURRENT.md) — audit trail fallback only
+3. Read [.ai/sync/README.md](../../.ai/sync/README.md) if structural / memory questions
+4. **New machine?** [.ai/bootstrap/MACHINE-SETUP.md](../../.ai/bootstrap/MACHINE-SETUP.md) — repo first, Ratary after env
+5. When Phase **8.8** ledger enabled: search `inspection-pattern` or scoped API recall
+6. If user said "lanjut" / handoff: `handoff` tag or `get_memory_by_codename`
+7. Read [SESSION-BOOTSTRAP.md](../../.ai/core/governance/SESSION-BOOTSTRAP.md)
+8. Read [IMPLEMENTATION-COMPLETION-PROTOCOL.md](../../.ai/core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md) when implementing
+9. Read [GOVERNANCE-STATUS.md](../../.ai/core/governance/GOVERNANCE-STATUS.md) when structural
+10. Restate task, constraints, Forge stages
+11. Ask blocking questions only — do not implement yet
 
 ## Output
 
-Short **Recall brief**: what memory says, current branch/commit if known, planned stage chain.
+Short **Recall brief**: Ratary memory · repo validation · branch/commit · planned stages.
 
 ## Skip when
 
-Read-only one-line questions with no repo impact — still read TASK_PROMPT if structural.
+Read-only one-line questions with no repo impact.

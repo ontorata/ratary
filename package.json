@@ -24,6 +24,7 @@
     "lint": "eslint src api packages",
     "lint:dev": "eslint src api scripts packages tests",
     "lint:fix": "eslint src api scripts packages --fix",
+    "ci:docs-impact": "node scripts/ci/docs-impact-check.mjs",
     "format": "prettier --write \"src/**/*.ts\" \"api/**/*.ts\" \"scripts/**/*.ts\" \"packages/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"api/**/*.ts\" \"packages/**/*.ts\"",
     "format:dev": "prettier --write \"src/**/*.ts\" \"api/**/*.ts\" \"scripts/**/*.ts\" \"packages/**/*.ts\" \"tests/**/*.ts\"",
