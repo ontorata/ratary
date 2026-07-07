@@ -24,6 +24,7 @@
 | How do I install and use Ratary daily? | **[GUIDE.md](GUIDE.md)** |
 | What does each `.env` variable do? | **[CONFIGURATION.md](CONFIGURATION.md)** |
 | What is Ratary architecturally? | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Engineering governance & ADRs? | **[architecture/governance/README.md](architecture/governance/README.md)** |
 | Copy MCP / IDE config | [examples/](examples/) |
 | Enterprise authorization (OPA/Rego) | [policies/](policies/) |
 | Ratary MCP tools & transport | [../MCP/README.md](../MCP/README.md) |
