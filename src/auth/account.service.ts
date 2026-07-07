@@ -156,7 +156,7 @@ export class AccountService {
       permissions: ['memory.read', 'memory.write'],
       expiresInSec: ACCESS_TOKEN_TTL_SEC,
       jti: generateId(),
-      audience: 'ratary',
+      audience: 'studio',
       issuer: 'ratary',
     });
     const accessToken = encryptStudioToken(signed);
