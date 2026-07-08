@@ -1,9 +1,11 @@
 # P2-A Ontory Runtime Kernel — Forge Intent
-**Status:** Draft — pending ADR-0007 acceptance
+**Status:** Approved — ready for isolate/blueprint (ADR-0007 Accepted)
 **Slug:** ontory-runtime-p2-a-intent
 **Baseline:** `org-memory-p1-d-complete`
+**Branch (proposed):** `forge/ontory-runtime-p2-a` (in `ontory` repo) + Studio adapter branch
 **Phase:** 04-proof-of-platform → Ontory product track
 **Category:** Must Enable
+**ADR:** [ADR-0007](../../core/architecture/ADR-0007-ontory-runtime-kernel-boundary.md) **Accepted**
 
 ---
 
@@ -13,62 +15,86 @@ P1-D locked Studio’s runtime-neutral `AIExecutionRequest` and `WorkspaceAiRunt
 
 Core question:
 
-> Can Ontory execute `AIExecutionRequest` as a minimal dispatcher + provider adapter, returning a response envelope, without owning memory or requiring Studio to know Ontory internals?
+> Can Ontory execute `AIExecutionRequest` as a minimal dispatcher + stub provider + REST adapter, returning a frozen response envelope, without owning memory or requiring Studio to know Ontory internals?
+
+---
+
+## Locked decisions (from ADR-0007)
+
+| ID | Decision |
+|----|----------|
+| D1 | Separate **`ontory`** repository (Runtime Platform ownership) |
+| D2 | **REST first**; transport is **not** part of the runtime contract |
+| D3 | **Stub injectable** before any vendor SDK adapter |
+| D4 | Runtime is **stateless** (request/execution/streaming scope only) |
 
 ---
 
 ## Constraints
 
 1. Start from `org-memory-p1-d-complete` — do not mutate P1-C/P1-D frozen contracts without ADR.
-2. ADR-0007 must be **Accepted** before isolate/code.
-3. Obey [FROZEN-BOUNDARY-BYPASS-POLICY.md](../../core/constitution/FROZEN-BOUNDARY-BYPASS-POLICY.md).
-4. Ontory must not import Ratary recall internals or query Ratary DB directly.
-5. Studio must gain only a RuntimePort **adapter**, not Ontory domain types in UI.
+2. Obey [FROZEN-BOUNDARY-BYPASS-POLICY.md](../../core/constitution/FROZEN-BOUNDARY-BYPASS-POLICY.md).
+3. Ontory must not import Ratary recall internals or query Ratary DB.
+4. Ontory must not depend on Studio.
+5. Studio must gain only a RuntimePort **adapter** (REST client), not Ontory domain types in UI.
+6. Provider SDKs may exist only behind Ontory provider adapters — never leak into Studio.
 
 ---
 
 ## In scope (Ontory P0 / P2-A)
 
-- Runtime dispatcher for `AIExecutionRequest`
-- At least one provider adapter (stub → real provider may be gated)
-- `AIExecutionResponse` envelope (text + metadata; streaming optional later wave)
-- Studio adapter implementing `WorkspaceAiRuntimePort` → Ontory HTTP/RPC
+- Immutable `AIExecutionRequest` at boundary
+- Runtime dispatcher
+- Provider abstraction + **StubRuntimeProvider**
+- Frozen `AIExecutionResponse` envelope
+- REST transport adapter
+- Studio `WorkspaceAiRuntimePort` → Ontory REST adapter
 - Boundary tests + evidence package
+- Stateless execution lifecycle (dispose after response)
 
 ---
 
 ## Out of scope
 
 - Autonomous agents / planning loops
-- Tool marketplace / multi-agent
-- Ontory memory store
+- Tool execution / marketplace / multi-agent
+- Ontory memory store / recall / knowledge store
+- OpenAI (or other) adapter until stub contract is green
 - Ratary advanced intelligence
 - Studio productization UX expansion
+- gRPC / queue transports (later adapters under same port)
 
 ---
 
 ## Decision
 
-Execute P2-A as **Ontory Runtime Kernel**, not Studio feature work and not Ratary deepening.
+Execute P2-A as **Ontory Runtime Kernel** in repo `ontory`:
 
 ```text
-Studio → WorkspaceAiRuntimePort → Ontory Dispatcher → Provider Adapter → Response
+Studio → WorkspaceAiRuntimePort → REST → Ontory Dispatcher → StubProvider → AIExecutionResponse
 ```
+
+Then (post DoD): vendor adapters behind the same provider interface.
 
 ---
 
-## Open questions (resolve at ADR acceptance)
+## Definition of Done
 
-1. Ontory host language/repo layout (empty `ontory` repo vs new service under monorepo)?
-2. Transport: REST-only vs gRPC for RuntimePort?
-3. First real provider vs keep provider as injectable stub for P2-A contract lock?
+See ADR-0007 DoD checklist. Smoke path must prove:
+
+```text
+AIExecutionRequest → Dispatcher → StubProvider → AIExecutionResponse
+```
+
+with no Ratary/Studio/provider-SDK leakage.
 
 ---
 
 ## Owner approval
 
-- [ ] ADR-0007 Accepted
-- [ ] This intent approved
-- [ ] Open questions resolved or deferred with defaults
+- [x] ADR-0007 Accepted
+- [x] Problem and D1–D4 locked
+- [x] Open questions resolved
+- [x] This intent approved
 
-**Next after approval:** forge-isolate → blueprint → implement kernel only.
+**Next:** forge-isolate (`ontory` bootstrap + Studio adapter branch) → blueprint → implement kernel only.

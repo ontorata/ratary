@@ -156,15 +156,16 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | W6 closeout | ✅ release + acceptance |
 | Baseline lock | ✅ `org-memory-p1-d-complete` |
 | Release record | ✅ [P1-D-AI-WORKSPACE.md](../governance/releases/P1-D-AI-WORKSPACE.md) |
-| Next | **P2-A Ontory Runtime Kernel** — ADR-0007 Proposed · intent draft pending acceptance |
+| Next | **P2-A Ontory Runtime Kernel** — ADR-0007 **Accepted** · intent approved · ready for isolate |
 
 ### Post-baseline governance
 
 | Artefact | Status |
 |----------|--------|
 | Frozen Boundary Bypass Policy | ✅ [FROZEN-BOUNDARY-BYPASS-POLICY.md](../core/constitution/FROZEN-BOUNDARY-BYPASS-POLICY.md) |
-| ADR-0007 Ontory Runtime Kernel | 🟡 Proposed — await owner acceptance before code |
-| P2-A intent draft | 🟡 [ontory-runtime-p2-a-intent.md](../designs/drafts/ontory-runtime-p2-a-intent.md) |
+| ADR-0007 Ontory Runtime Kernel | ✅ **Accepted** (D1 separate repo · D2 REST adapter · D3 stub-first · D4 stateless) |
+| P2-A intent | ✅ [ontory-runtime-p2-a-intent.md](../designs/drafts/ontory-runtime-p2-a-intent.md) approved |
+| Next gate | forge-isolate — bootstrap `ontory` + Studio RuntimePort REST adapter branch |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

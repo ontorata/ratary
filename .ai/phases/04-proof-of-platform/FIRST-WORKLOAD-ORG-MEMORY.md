@@ -150,7 +150,7 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-D W5 extended corpus **deferred** (not architectural gate)
 - ✅ P1-D closed · baseline `org-memory-p1-d-complete`
 - ✅ Frozen Boundary Bypass Policy activated
-- 🟡 ADR-0007 Ontory Runtime Kernel **Proposed** (no code until Accepted)
-- 🟡 P2-A intent draft: [ontory-runtime-p2-a-intent.md](../../designs/drafts/ontory-runtime-p2-a-intent.md)
-- ⏳ Next: accept ADR-0007 → unlock forge-intent P2-A (Ontory P0 kernel only)
+- ✅ ADR-0007 Ontory Runtime Kernel **Accepted** (separate `ontory` repo · REST · stub-first · stateless)
+- ✅ P2-A intent approved: [ontory-runtime-p2-a-intent.md](../../designs/drafts/ontory-runtime-p2-a-intent.md)
+- ⏳ Next: forge-isolate P2-A — bootstrap Ontory kernel (no agents)
 

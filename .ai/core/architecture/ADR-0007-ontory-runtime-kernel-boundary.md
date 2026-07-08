@@ -2,11 +2,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed — awaiting owner acceptance before any Ontory code |
+| **Status** | **Accepted** — locked before any Ontory implementation |
 | **Date** | 2026-07-08 |
+| **Accepted** | 2026-07-08 |
 | **Baseline** | `org-memory-p1-d-complete` (Studio `85cd066` · ratary tag `103bf7c`) |
-| **Related** | ADR-0006 · P1-D AI Workspace · Future Runtime Compatibility |
-| **Deciders** | Engineering · Product |
+| **Related** | ADR-0006 · P1-D AI Workspace · Future Runtime Compatibility · FROZEN-BOUNDARY-BYPASS-POLICY |
+| **Deciders** | Engineering · Product (owner) |
+| **Host repo** | `ontory` (separate) |
+| **First transport** | REST (adapter only — not part of runtime contract) |
+| **First provider** | Stub injectable → then real vendor adapters |
 
 ---
 
@@ -33,13 +37,15 @@ Without an explicit Ontory kernel ADR:
 
 Introduce **Ontory Runtime Kernel (P2-A)** as a separate product/runtime owning AI execution, above Ratary context and below Studio workspace.
 
+Ontory is treated as a **platform**, not an LLM integration shim.
+
 ### Layer responsibilities (locked)
 
 | Layer | Owns | Must not own |
 |-------|------|--------------|
 | **Ratary** | Memory · recall · `ContextPackage` assembly | Model calls · agent loops · Studio UX |
 | **Studio** | Workspace UX · `AIExecutionRequest` emission · `WorkspaceAiRuntimePort` client | Provider SDKs · Ontory internals · ranking/recall |
-| **Ontory** | Runtime dispatcher · provider adapters · streaming · (later) tools/agents | Ratary DB · Studio UI · recall ranking |
+| **Ontory** | Runtime dispatcher · provider adapters · response envelope · (later) tools/agents | Ratary DB · Studio UI · recall ranking · permanent memory |
 
 ### Required call path
 
@@ -48,38 +54,85 @@ Studio
   → WorkspaceAiRuntimePort
   → Ontory Runtime Kernel
   → Provider Adapter
-  → Response Envelope
+  → AIExecutionResponse
 ```
 
-Context input to Ontory (when needed) is **`ContextPackage` / assembled prompt content already present in `AIExecutionRequest`** — Ontory must not re-fetch or re-rank memory via Ratary internals.
+Context for AI tasks enters only via **`AIExecutionRequest`** (prompt assembled from Ratary `ContextPackage`). Ontory must not re-fetch or re-rank memory via Ratary internals.
 
 ### P2-A minimal kernel (in scope)
 
 ```text
-AIExecutionRequest
+AIExecutionRequest (immutable)
         │
         ▼
 Runtime Dispatcher
         │
         ▼
-Provider Adapter
+Provider Adapter (stub first)
         │
         ▼
-AIExecutionResponse (envelope)
+AIExecutionResponse (frozen envelope)
 ```
 
-### Explicit non-goals for P2-A (Ontory P0)
+**In scope:** dispatcher · provider abstraction · response envelope · runtime lifecycle · REST transport **adapter** · Studio RuntimePort client adapter  
 
-- Autonomous agents / planning loops
-- Tool marketplace
-- Multi-agent orchestration
-- Ontory-owned memory store
-- Direct Ratary database/query access
-- Advanced Ratary recall deepening (semantic decay, contradiction, etc.)
+**Out of scope:** agent loop · planning · tool execution · marketplace · multi-agent · memory management · recall · knowledge store
+
+### Locked implementation decisions (owner — immutable for P2-A)
+
+#### D1 — Separate `ontory` repository
+
+Ownership separation:
+
+```text
+Ratary  = Memory Platform
+Ontory  = Runtime Platform
+Studio  = Product
+```
+
+Dependency direction:
+
+```text
+Studio → Ontory → Provider SDK
+Ratary → (no Ontory/Studio dependency)
+```
+
+Forbidden layout: stuffing `runtime/`, `providers/`, `agents/` under Studio.
+
+#### D2 — Transport is NOT part of the runtime contract
+
+P2-A ships **REST first** (contract validation priority, not throughput).
+
+`WorkspaceAiRuntimePort` is the contract. Transport adapters may later include REST, gRPC, in-process, or queue — all under the same port. Changing transport must not change Studio domain types.
+
+#### D3 — Stub provider before vendor SDK
+
+Order:
+
+```text
+StubRuntimeProvider → contract validation → OpenAI (or other) Adapter
+```
+
+P2-A locks the **Ontory API**, not a vendor SDK shape. Real providers must conform to Ontory’s provider abstraction — never the reverse.
+
+#### D4 — Runtime must be stateless
+
+Ontory Runtime **MUST NOT** persist:
+
+- conversation memory
+- project memory
+- workspace state
+- permanent recall cache
+
+Allowed ephemeral scopes only:
+
+- request scope
+- execution scope
+- streaming scope
+
+When the response completes: **execution is disposed**. Permanent state stays outside Ontory (Ratary / Studio session store as already designed).
 
 ### Port contract (Studio-facing)
-
-Studio continues to depend only on a port shaped like:
 
 ```ts
 interface WorkspaceAiRuntimePort {
@@ -87,9 +140,9 @@ interface WorkspaceAiRuntimePort {
 }
 ```
 
-Naming may evolve (`complete` / `execute`) via compatible adapter — **Studio MUST NOT** gain `executeWithOntory()` or provider-specific methods.
+Naming may evolve (`complete` / `execute`) via compatible adapter — **Studio MUST NOT** gain `executeWithOntory()`, `callAgent()`, or provider-specific methods.
 
-### Frozen-boundary rule (constitutional for this stack)
+### Frozen-boundary rule
 
 > **No component may bypass a frozen boundary for convenience.**
 
@@ -102,6 +155,24 @@ Rejected patterns:
 
 ---
 
+## Definition of Done (P2-A)
+
+P2-A is **COMPLETE** when all are true:
+
+- [x] Decision locked in this ADR (acceptance)
+- [ ] `AIExecutionRequest` remains immutable at Ontory boundary
+- [ ] Dispatcher implemented
+- [ ] `WorkspaceAiRuntimePort` stable (Studio ↔ Ontory)
+- [ ] Stub provider works end-to-end
+- [ ] `AIExecutionResponse` envelope frozen
+- [ ] REST adapter available
+- [ ] No provider SDK leaks into Studio UI/domain
+- [ ] No Ratary dependency from Ontory (except public context already in the request)
+- [ ] No Studio dependency from Ontory
+- [ ] All execution enters via RuntimePort
+
+---
+
 ## Consequences
 
 ### Positive
@@ -110,11 +181,12 @@ Rejected patterns:
 - Preserves `AIExecutionRequest` neutrality from P1-D
 - Defers agent complexity until a real workload exists
 - Keeps Ratary frozen while execution evolves
+- Stub-first prevents vendor-shaped contracts
 
 ### Negative / tradeoffs
 
-- Studio chat remains echo/stub until Ontory adapter lands
-- Cross-repo coordination (Studio adapter ↔ Ontory service)
+- Studio chat remains echo/stub until Ontory REST adapter lands
+- Cross-repo ownership (Studio · Ontory · Ratary)
 - Early Ontory must resist agent-framework temptation
 
 ### Non-goals
@@ -130,13 +202,16 @@ Rejected patterns:
 Couples UX to vendors; recreates the anti-pattern P1-D eliminated.
 
 ### B — Ontory Runtime Kernel first (chosen)
-Minimal dispatcher + provider adapter; Studio stays port-only.
+Minimal dispatcher + stub provider + REST adapter; Studio stays port-only.
 
 ### C — Deepen Ratary recall before execution (deferred)
-Risks over-smart context without workload feedback; schedule as **P3** after real Ontory usage.
+Risks over-smart context without workload feedback; schedule as **P3**.
 
 ### D — Studio productization next (deferred to P2-C)
-UX without a real runtime locks workflows to stubs/providers prematurely.
+UX without a real runtime locks workflows to stubs prematurely.
+
+### E — gRPC or vendor adapter first (rejected for P2-A)
+Throughput and vendor SDKs are adapter concerns; contracts lock first.
 
 ---
 
@@ -153,18 +228,19 @@ UX without a real runtime locks workflows to stubs/providers prematurely.
 
 ## Evidence / gates before implementation
 
-1. This ADR **Accepted** by owner
+1. ~~This ADR Accepted by owner~~ ✅
 2. Forge intent `ontory-runtime-p2-a-intent` approved
-3. Isolate from `org-memory-p1-d-complete`
+3. Isolate from `org-memory-p1-d-complete` (Studio) + empty/bootstrapped `ontory` repo
 4. Contract tests: Studio adapter ↔ Ontory response envelope
-5. Boundary CI: no provider SDKs in Studio presentation; no Ratary `src/memory/recall` imports in Ontory
+5. Boundary CI: no provider SDKs in Studio presentation; no Ratary recall imports in Ontory; Ontory remains request-scoped/stateless
 
 ---
 
 ## Acceptance
 
-- [ ] Owner accepts ADR-0007
-- [ ] Indexed in architecture README + ADR-INDEX
-- [ ] P2-A forge intent unlocked
+- [x] Owner accepts ADR-0007
+- [x] D1–D4 implementation decisions locked
+- [x] Indexed in architecture README + ADR-INDEX
+- [x] P2-A forge intent unlocked for isolate/blueprint
 
-**Next after acceptance:** draft forge-intent for Ontory P0 kernel — still **no implementation code**.
+**Next:** approve forge-intent → forge-isolate → blueprint → implement **kernel only** (stub + REST), no agents.

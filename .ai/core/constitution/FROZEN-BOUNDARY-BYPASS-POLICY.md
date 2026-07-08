@@ -5,7 +5,7 @@
 | **Status** | Active — architecture baseline v1.0 |
 | **Authority** | Subordinate to ENGINEERING-CONSTITUTION · complements SECURITY-BOUNDARY |
 | **Baseline tags** | `org-memory-p1-c-complete` · `org-memory-p1-d-complete` |
-| **Related** | ADR-0006 · ADR-0007 (proposed) · P1-D Future Runtime Compatibility |
+| **Related** | ADR-0006 · ADR-0007 (Accepted) · P1-D Future Runtime Compatibility |
 | **Updated** | 2026-07-08 |
 
 ---
