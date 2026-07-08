@@ -123,7 +123,8 @@ Pending:    push forge branch when ready
 | Wave 3 checkpoint | `.ai/governance/waves/WAVE-3-AUTHORIZATION.md` | ✅ LOCKED (`ed3b65a` / `e96330b`) |
 | Wave 4 checkpoint | `.ai/governance/waves/WAVE-4-TRANSPORT-PARITY.md` | ✅ LOCKED (`b190da5` / `459f925`) |
 | Wave 5 checkpoint | `.ai/governance/waves/WAVE-5-STUDIO-E2E.md` | ✅ LOCKED — **P0-A COMPLETE** |
-| forge-land | Identity Foundation merge | ⏳ Next |
+| forge-land | Identity Foundation merge | ✅ `main` + tag `identity-foundation-p0-a-complete` |
+| Next | P0-B Engineering Governance | ⏳ OPEN |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
