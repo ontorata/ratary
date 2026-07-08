@@ -40,7 +40,7 @@ export function normalizeWhitespace(input: string): string {
   for (const line of lines) {
     if (line.length === 0) {
       blankRun += 1;
-      if (blankRun > 2) continue;
+      if (blankRun > 1) continue;
       output.push('');
       continue;
     }
