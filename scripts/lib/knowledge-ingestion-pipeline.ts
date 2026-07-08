@@ -1,5 +1,10 @@
 import { createHash } from 'node:crypto';
-import { KnowledgeDocumentSchema, type KnowledgeDocument } from './knowledge-ingestion-contracts.js';
+import {
+  KnowledgeChunkSchema,
+  KnowledgeDocumentSchema,
+  type KnowledgeChunk,
+  type KnowledgeDocument,
+} from './knowledge-ingestion-contracts.js';
 
 export type RawSourceFile = {
   sourcePath: string;
@@ -62,4 +67,58 @@ export function normalizeSourceFile(
       ...source.metadata,
     },
   });
+}
+
+export type ChunkBuildOptions = {
+  maxChunkSize: number;
+  overlap: number;
+};
+
+export const DEFAULT_CHUNK_OPTIONS: ChunkBuildOptions = {
+  maxChunkSize: 1200,
+  overlap: 120,
+};
+
+export function buildChunks(
+  document: KnowledgeDocument,
+  options: ChunkBuildOptions = DEFAULT_CHUNK_OPTIONS,
+): KnowledgeChunk[] {
+  if (options.maxChunkSize <= 0) throw new Error('maxChunkSize must be positive');
+  if (options.overlap < 0) throw new Error('overlap must be non-negative');
+  if (options.overlap >= options.maxChunkSize) throw new Error('overlap must be smaller than maxChunkSize');
+
+  const content = document.content;
+  if (content.length === 0) return [];
+
+  const step = options.maxChunkSize - options.overlap;
+  const output: KnowledgeChunk[] = [];
+
+  let start = 0;
+  let sequence = 0;
+  while (start < content.length) {
+    const end = Math.min(start + options.maxChunkSize, content.length);
+    const text = content.slice(start, end).trim();
+    if (text.length > 0) {
+      const textDigest = shortHash(text);
+      const chunkId = `chunk-${shortHash(`${document.documentId}:${document.version}:${sequence}:${textDigest}`)}`;
+      output.push(
+        KnowledgeChunkSchema.parse({
+          chunkId,
+          documentId: document.documentId,
+          organizationId: document.organizationId,
+          version: document.version,
+          sequence,
+          text,
+          textDigest,
+          section: `char-${start}-${end}`,
+        }),
+      );
+      sequence += 1;
+    }
+
+    if (end >= content.length) break;
+    start += step;
+  }
+
+  return output;
 }
