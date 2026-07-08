@@ -4,7 +4,7 @@
 |-------|-------|
 | **Role** | **Audit trail** — not primary memory when Ratary is available |
 | **Active memory** | Ratary MCP `search_memory` · `save_memory` · [../sync/README.md](../sync/README.md) |
-| **Updated** | 2026-07-08 |
+| **Updated** | 2026-07-08 · chat backup `D:\Apps\_backups\chat-ai-brain-p0b-engineering-governance_2026-07-08_0943\` |
 | **Phase** | 4 — Proof of Platform |
 
 > **Primary recall:** Ratary organizational memory (when MCP connected).  
@@ -116,8 +116,8 @@ Pending:    P0-B forge-blueprint approval
 | forge-intent | `.ai/designs/drafts/engineering-governance-intent.md` | ✅ Approved |
 | forge-isolate | `.ai/designs/drafts/engineering-governance-isolate.md` | ✅ Active · 88/88 baseline |
 | forge-blueprint | `.ai/designs/blueprints/engineering-governance-plan.md` | ✅ Approved |
-| forge-execute Wave 4 | Release Management | ✅ LOCKED |
-| forge-execute Wave 5 | Migration Governance | ⏳ Next |
+| forge-execute Wave 5 | Migration Governance | ✅ LOCKED |
+| forge-execute Wave 6 | Engineering Constitution | ⏳ Next |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

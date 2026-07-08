@@ -38,7 +38,7 @@ updated: 2026-07-08
 | P0-B intent approved | ✅ 2026-07-08 |
 | Baseline tests green | ✅ 88/88 |
 
-**Implementation waves:** Wave 1–4 ✅ LOCKED · Wave 5 ⏳ next
+**Implementation waves:** Wave 1–5 ✅ LOCKED · Wave 6 ⏳ next
 
 ---
 
@@ -50,7 +50,7 @@ updated: 2026-07-08
 | 2 | CI Governance Gate | ✅ LOCKED |
 | 3 | AI Engineering Workflow Governance | ✅ LOCKED |
 | 4 | Release Management | ✅ LOCKED |
-| 5 | Migration Governance | ⏳ |
+| 5 | Migration Governance | ✅ LOCKED |
 | 6 | Engineering Constitution | ⏳ |
 
 Pattern per wave: Implementation → Tests → Evidence → Governance checkpoint → Lock tag
@@ -65,7 +65,7 @@ Pattern per wave: Implementation → Tests → Evidence → Governance checkpoin
 | CI governance | ⏳ |
 | AI workflow governance | ⏳ |
 | Release process | ✅ |
-| Migration policy | ⏳ |
+| Migration policy | ✅ |
 | Repository constitution | ⏳ |
 | Evidence artifact | ⏳ |
 
