@@ -130,5 +130,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Wave 3 embedding layer complete (job lifecycle + retry/resume + tests)
 - ✅ Wave 4 knowledge store + index update complete (versioned persistence + boundary adapter + recovery tests)
 - ✅ Wave 5 end-to-end proof complete (`WAVE-5-END-TO-END-PROOF.md`)
-- 🟢 Next: P1-B acceptance and closeout evidence refresh
+- ✅ P1-B acceptance report drafted (`P1-B-ACCEPTANCE-REPORT.md`)
+- ⏳ Next: lock tag `org-memory-p1-b-complete` and verify distribution on origin
 

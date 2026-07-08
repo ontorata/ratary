@@ -143,7 +143,8 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Execute gate | ✅ approved |
 | Wave progress | ✅ Wave 5 complete — end-to-end proof layer validated |
 | Evidence | ✅ `WAVE-5-END-TO-END-PROOF.md` + `sync:org-memory` + `trace:org-memory-handoff` (P1B-W5) |
-| Next gate | P1-B acceptance + quality + release closeout |
+| Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
+| Next gate | lock tag `org-memory-p1-b-complete` + origin verification |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
