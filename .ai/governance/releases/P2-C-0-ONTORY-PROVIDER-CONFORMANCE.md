@@ -8,6 +8,7 @@ workload: Ontory Provider Conformance Harness
 baseline_tag: org-memory-p2-b-complete
 forge_branch_ontory: forge/ontory-provider-conformance-p2-c0
 ontory_head: 8e307ce
+governance_head: c310fea
 closeout_tag: org-memory-p2-c0-complete
 adr: ADR-0009
 evidence: .ai/governance/provider-conformance/results/p2-c0-acceptance-record.md
