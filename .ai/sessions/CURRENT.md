@@ -169,17 +169,24 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-D Streaming** — separate wave |
 
+### P2-D.1 Runtime Stream Contract — Blueprint Draft
+
+| Stage | Status |
+|-------|--------|
+| Gate | ✅ ADR-0012 Accepted · pushed to origin |
+| Blueprint | 📝 [ontory-streaming-p2-d1-blueprint.md](../designs/drafts/ontory-streaming-p2-d1-blueprint.md) — **pending approval** |
+| Scope | Runtime contract layer only — `AIExecutionEvent`, lifecycle FSM, stub stream, no vendor implementation |
+| Branch (proposed) | `forge/ontory-streaming-p2-d1` from `org-memory-p2-c2-complete` |
+| Coding gate | ❌ **Blocked** until blueprint approval |
+| Next | Owner approves blueprint → forge-isolate → execute tasks |
+
 ### P2-D Streaming & Execution Lifecycle — ADR Accepted 🔒
 
 | Stage | Status |
 |-------|--------|
-| Gate | ✅ P2-C series closed · `org-memory-p2-c2-complete` on origin |
-| Forge intent | ✅ [ontory-streaming-p2-d-intent.md](../designs/drafts/ontory-streaming-p2-d-intent.md) |
 | ADR-0012 | ✅ **Accepted** — [ADR-0012-ontory-streaming-execution-lifecycle.md](../core/architecture/ADR-0012-ontory-streaming-execution-lifecycle.md) |
-| Coding gate | ❌ **Blocked** until P2-D.1 blueprint + forge-isolate |
-| Model | Runtime semantic · lifecycle FSM · monotonic sequence · SSE transport outside core |
-| C-CAN | Promote DEFER → MUST in P2-D.6 |
-| Next | Governance push → **forge-isolate P2-D.1** |
+| Intent | ✅ [ontory-streaming-p2-d-intent.md](../designs/drafts/ontory-streaming-p2-d-intent.md) |
+| Baseline | `org-memory-p2-c2-complete` @ `7241319` on origin |
 
 ### P2-C.2 Gemini Provider — CLOSED 🔒
 
