@@ -168,8 +168,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B isolate | ✅ `ontory` · `forge/ontory-provider-p2-b` @ `c18cacc` |
 | P2-B Task 1 | ✅ `ProviderError` · `ac5aa19` |
 | P2-B Task 2 | ✅ RequestMapper · `e55d858` |
-| P2-B Task 3 | ✅ ResponseMapper + ErrorMapper (pure) |
-| Next gate | Task 4 — OpenAIProviderAdapter (official SDK · adapter only) |
+| P2-B Task 3 | ✅ ResponseMapper + ErrorMapper · `7db112e` |
+| P2-B Task 4 | ✅ OpenAIProviderAdapter (thin · official SDK) |
+| Next gate | Task 5 — Configuration only (`gpt-4o-mini` default) |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

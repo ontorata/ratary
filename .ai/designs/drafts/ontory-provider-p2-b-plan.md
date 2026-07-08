@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Execute — Task 1–3 ✅ · Task 4 next (OpenAIProviderAdapter) |
+| **Status** | Execute — Task 1–4 ✅ · Task 5 next (Configuration) |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -34,7 +34,7 @@ No OpenAI adapter yet.
 - [x] Task 1 — Provider contract & `ProviderError` (**no OpenAI**) · Ontory `ac5aa19`
 - [x] Task 2 — RequestMapper · Ontory `e55d858`
 - [x] Task 3 — ResponseMapper / ErrorMapper · Ontory `7db112e`
-- [ ] Task 4 — `OpenAIProviderAdapter` (official SDK · adapter folder only)
+- [x] Task 4 — `OpenAIProviderAdapter` · official SDK · Ontory (thin)
 - [ ] Task 5 — Configuration (`stub` \| `openai`, model default `gpt-4o-mini`)
 - [ ] Task 6 — REST composition (default remains stub)
 - [ ] Task 7 — Evidence & A1/A2 verification
@@ -67,10 +67,12 @@ No OpenAI adapter yet.
 - **Verify:** 22 tests PASS · boundary OK
 - **Done when:** ✅ pure translation only · no OpenAI client
 
-### Task 4 — OpenAIProviderAdapter
+## Task 4 — OpenAIProviderAdapter ✅
 
-- **Files:** adapter + boundary allowlist for `src/adapters/openai/**` only · add `openai` dep
-- **Do:** `implements ProviderRuntime`; official SDK confined to folder
+- **Files:** `openai-provider-adapter.ts` · `openai-client.ts` · `index.ts` · `check-runtime-boundary.mjs` (openai allowlist under `adapters/openai/**`) · `package.json` (`openai` dep) · tests
+- **Do:** Thin compose: RequestMapper → injected client → ResponseMapper; errors → ErrorMapper; factory `createOpenAISdkClient({ apiKey })` does not read env
+- **Verify:** 26 tests PASS · boundary OK · typecheck OK
+- **Done when:** ✅ no env/retry/Dispatcher knowledge · SDK import only in openai adapter folder · REST default unchanged (stub)
 
 ### Task 5 — Configuration
 
