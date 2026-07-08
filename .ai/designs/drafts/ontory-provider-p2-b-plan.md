@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Execute — Task 1–4 ✅ · Task 5 next (Configuration) |
+| **Status** | Execute — Task 1–5 ✅ · Task 6 next (REST composition · default stub) |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -35,7 +35,7 @@ No OpenAI adapter yet.
 - [x] Task 2 — RequestMapper · Ontory `e55d858`
 - [x] Task 3 — ResponseMapper / ErrorMapper · Ontory `7db112e`
 - [x] Task 4 — `OpenAIProviderAdapter` · official SDK · Ontory (thin)
-- [ ] Task 5 — Configuration (`stub` \| `openai`, model default `gpt-4o-mini`)
+- [x] Task 5 — Configuration · Ontory `src/config/provider-config.ts`
 - [ ] Task 6 — REST composition (default remains stub)
 - [ ] Task 7 — Evidence & A1/A2 verification
 - [ ] Task 8 — Closeout tag
@@ -74,10 +74,13 @@ No OpenAI adapter yet.
 - **Verify:** 26 tests PASS · boundary OK · typecheck OK
 - **Done when:** ✅ no env/retry/Dispatcher knowledge · SDK import only in openai adapter folder · REST default unchanged (stub)
 
-### Task 5 — Configuration
+## Task 5 — Configuration ✅
 
-- **Files:** `src/adapters/openai/config.ts`
-- **Do:** Ontory-only env; default model `gpt-4o-mini`
+- **Files:** `src/config/provider-config.ts` · `tests/config/provider-config.test.ts` · `asOpenAIChatClient` bridge in `openai-client.ts`
+- **Do:** `resolveOntoryProviderConfig` + `createProviderFromConfig`; default provider `stub`; default model `gpt-4o-mini`; openai requires `OPENAI_API_KEY`
+- **Must not:** change mapper/adapter contracts · wire REST (Task 6)
+- **Verify:** 33 tests PASS · boundary OK · typecheck OK
+- **Done when:** ✅ config sets defaults; adapter still receives resolved model/client only
 
 ### Task 6 — REST composition
 

@@ -169,8 +169,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B Task 1 | ✅ `ProviderError` · `ac5aa19` |
 | P2-B Task 2 | ✅ RequestMapper · `e55d858` |
 | P2-B Task 3 | ✅ ResponseMapper + ErrorMapper · `7db112e` |
-| P2-B Task 4 | ✅ OpenAIProviderAdapter (thin · official SDK) |
-| Next gate | Task 5 — Configuration only (`gpt-4o-mini` default) |
+| P2-B Task 4 | ✅ OpenAIProviderAdapter · `6e9393c` |
+| P2-B Task 5 | ✅ Config defaults (`gpt-4o-mini`) · provider wiring |
+| Next gate | Task 6 — REST composition (default stub) |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
