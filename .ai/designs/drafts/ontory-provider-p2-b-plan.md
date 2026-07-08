@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Execute — Task 1–2 ✅ · Task 3 next (ResponseMapper / ErrorMapper) |
+| **Status** | Execute — Task 1–3 ✅ · Task 4 next (OpenAIProviderAdapter) |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -32,8 +32,8 @@ No OpenAI adapter yet.
 ## Execution progress
 
 - [x] Task 1 — Provider contract & `ProviderError` (**no OpenAI**) · Ontory `ac5aa19`
-- [x] Task 2 — RequestMapper · Ontory (pure · no SDK)
-- [ ] Task 3 — ResponseMapper / ErrorMapper (vendor → `ProviderError`)
+- [x] Task 2 — RequestMapper · Ontory `e55d858`
+- [x] Task 3 — ResponseMapper / ErrorMapper · Ontory `7db112e`
 - [ ] Task 4 — `OpenAIProviderAdapter` (official SDK · adapter folder only)
 - [ ] Task 5 — Configuration (`stub` \| `openai`, model default `gpt-4o-mini`)
 - [ ] Task 6 — REST composition (default remains stub)
@@ -51,16 +51,21 @@ No OpenAI adapter yet.
 
 ## Task 2 — RequestMapper ✅
 
+- **Commit:** Ontory `e55d858`
 - **Files:** `src/adapters/openai/request-mapper.ts` · `tests/adapters/openai-request-mapper.test.ts`
 - **Do:** Pure `mapAIExecutionRequestToOpenAIChatParams(request, { model })` → frozen `{ model, messages }`
 - **Notes:** `temperature` / `max_tokens` **not** on `AIExecutionRequest` — omitted; `tools` ignored (P2-B no tool calling); model is an explicit arg (no env)
 - **Verify:** 14 tests PASS · boundary OK · no `openai` package
 - **Done when:** ✅ pure · no network · no env · no Dispatcher · no ProviderRuntime change · no OpenAI client
 
-### Task 3 — ResponseMapper / ErrorMapper
+## Task 3 — ResponseMapper / ErrorMapper ✅
 
-- **Files:** `response-mapper.ts` · `error-mapper.ts` · tests
-- **Do:** Completion → `AIExecutionResponse`; vendor errors → `ProviderError`
+- **Commit:** Ontory `7db112e`
+- **Files:** `response-mapper.ts` · `error-mapper.ts` · `tests/adapters/openai-response-error-mapper.test.ts`
+- **Do:** Pure completion → `AIExecutionResponse`; failure facts → `ProviderError` (401/403→unauthorized, 429→rate_limited, timeout/abort→timeout, 400/422→bad_request, else provider_error)
+- **Must not:** logging · retry · metrics · HTTP · SDK import
+- **Verify:** 22 tests PASS · boundary OK
+- **Done when:** ✅ pure translation only · no OpenAI client
 
 ### Task 4 — OpenAIProviderAdapter
 

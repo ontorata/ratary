@@ -167,8 +167,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | ADR-0008 Provider Integration | ✅ **Accepted** (OpenAI · official SDK · gpt-4o-mini · streaming deferred · A1/A2) |
 | P2-B isolate | ✅ `ontory` · `forge/ontory-provider-p2-b` @ `c18cacc` |
 | P2-B Task 1 | ✅ `ProviderError` · `ac5aa19` |
-| P2-B Task 2 | ✅ RequestMapper pure · no SDK |
-| Next gate | Task 3 — ResponseMapper / ErrorMapper only |
+| P2-B Task 2 | ✅ RequestMapper · `e55d858` |
+| P2-B Task 3 | ✅ ResponseMapper + ErrorMapper (pure) |
+| Next gate | Task 4 — OpenAIProviderAdapter (official SDK · adapter only) |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
