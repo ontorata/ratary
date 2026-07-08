@@ -159,4 +159,5 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ ADR-0008 **Accepted** · P2-B intent/isolate/blueprint OpenAI-only
 - ✅ P2-B Tasks 1–6 — OpenAI provider foundation (contract → mappers → thin adapter → config → REST)
 - ✅ P2-B Task 7 — Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) · Ontory `e63bb93`
-- ⏳ Next: Task 8 closeout tag · Anthropic/Gemini deferred to later waves
+- ✅ P2-B Task 8 — CLOSED · tag `org-memory-p2-b-complete` · release [P2-B-ONTORY-PROVIDER-OPENAI.md](../../governance/releases/P2-B-ONTORY-PROVIDER-OPENAI.md)
+- ⏳ Optional next: Anthropic / Gemini / streaming — separate wave (not in P2-B wave 1)

@@ -7,8 +7,8 @@
 | **Ontory** | `forge/ontory-provider-p2-b` @ `e63bb93` |
 | **Baseline** | `org-memory-p2-a-complete` |
 | **ADR** | ADR-0008 Accepted |
-| **Status** | ✅ **ACCEPTED** — engineering Tasks 1–6 + evidence Task 7 |
-| **Closeout tag** | Pending Task 8 (`org-memory-p2-b-complete`) |
+| **Status** | ✅ **ACCEPTED** · CLOSED |
+| **Closeout tag** | `org-memory-p2-b-complete` |
 
 ---
 
@@ -60,4 +60,4 @@ ADR acceptance A1/A2 (Studio-agnostic · no SDK types across port): ✅ covered 
 
 ## Next
 
-Task 8 — administrative closeout tag + release record. Follow-on providers (Anthropic / Gemini) are separate waves — not part of this acceptance.
+**CLOSED.** Tag `org-memory-p2-b-complete`. Follow-on providers (Anthropic / Gemini) are separate waves.

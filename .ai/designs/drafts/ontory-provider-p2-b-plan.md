@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Execute — Task 1–7 ✅ · Task 8 next (Closeout tag) |
+| **Status** | ✅ CLOSED — Tasks 1–8 complete · tag `org-memory-p2-b-complete` |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -38,7 +38,7 @@ No OpenAI adapter yet.
 - [x] Task 5 — Configuration · Ontory `src/config/provider-config.ts`
 - [x] Task 6 — REST composition · default stub via config
 - [x] Task 7 — Evidence & A1/A2 verification (governance)
-- [ ] Task 8 — Closeout tag
+- [x] Task 8 — Closeout tag `org-memory-p2-b-complete`
 
 ---
 
@@ -100,9 +100,11 @@ No OpenAI adapter yet.
 - **Verify:** Ontory 34 PASS · boundary OK · Studio has no openai package
 - **Done when:** ✅ DoD mapped · acceptance ACCEPTED · no runtime code in Task 7
 
-### Task 8 — Closeout
+### Task 8 — Closeout ✅ (administrative only)
 
-- Tag when DoD met; no Anthropic in same wave unless complete
+- **Do:** release record · summary card · tag `org-memory-p2-b-complete` on Ontory `e63bb93` + ai-brain evidence `fe70ede`
+- **Must not:** functional runtime / adapter / Studio code changes
+- **Done when:** ✅ tags pushed · ADR-0008 Closed · acceptance CLOSED
 
 ---
 
@@ -110,4 +112,4 @@ No OpenAI adapter yet.
 
 Abort if Task 1 pulls in SDK, HTTP, mappers, or Dispatcher changes.
 
-**Owner approval:** ✅ Tasks 1–7 complete · Task 8 = tag-only closeout.
+**Owner approval:** ✅ P2-B CLOSED · OpenAI wave 1 complete.

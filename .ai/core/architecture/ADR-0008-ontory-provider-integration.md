@@ -2,9 +2,11 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Accepted** — owner 2026-07-08 |
+| **Status** | **Accepted** — **Closed** (P2-B wave 1 complete · 2026-07-08) |
 | **Date** | 2026-07-08 |
 | **Accepted** | 2026-07-08 |
+| **Closed** | 2026-07-08 |
+| **Closeout tag** | `org-memory-p2-b-complete` |
 | **Baseline** | `org-memory-p2-a-complete` (Ontory `c18cacc` · Studio `043666e` · ai-brain `35ff553`) |
 | **Related** | ADR-0007 · FROZEN-BOUNDARY-BYPASS-POLICY · P2-A Runtime Kernel |
 | **Deciders** | Engineering · Product (owner) |
