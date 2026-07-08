@@ -99,7 +99,8 @@
     "build:cli": "npm run build -w @ratary/cli",
     "build:mcp-server": "npm run build -w @ratary/mcp-server",
     "build:packages": "npm run build:sdk && npm run build:cli && npm run build:mcp-server",
-    "test:packages": "vitest run packages/sdk/tests tests/packages"
+    "test:packages": "vitest run packages/sdk/tests tests/packages",
+    "test:conformance": "node scripts/ci/provider-conformance-check.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1079.0",

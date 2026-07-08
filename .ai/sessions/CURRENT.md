@@ -158,6 +158,17 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P1-D-AI-WORKSPACE.md](../governance/releases/P1-D-AI-WORKSPACE.md) |
 | Next | **P2-A Ontory Runtime Kernel** — ADR-0007 **Accepted** · intent approved · ready for isolate |
 
+### P2-C.0 Provider Conformance — CLOSED 🔒
+
+| Stage | Status |
+|-------|--------|
+| ADR-0009 | ✅ **Accepted · Closed** |
+| Harness | ✅ `tests/conformance/*` @ Ontory `8e307ce` |
+| Verification | ✅ 12 passed · 2 skipped (C-CAN) · boundary PASS |
+| Baseline lock | ✅ `org-memory-p2-c0-complete` |
+| Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
+| Next | **P2-C.1 Anthropic** — harness gate unlocked |
+
 ### Post-baseline governance
 
 | Artefact | Status |
@@ -174,8 +185,8 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B Task 6 | ✅ REST composition · `e63bb93` · default stub |
 | P2-B Task 7 | ✅ Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) |
 | P2-B closeout | ✅ tag `org-memory-p2-b-complete` @ Ontory `e63bb93` · ai-brain `fe70ede` · Studio unchanged `043666e` |
-| P2-C.0 | ⏳ ADR-0009 **Proposed** · conformance harness (no new vendors) |
-| Next gate | Accept ADR-0009 → isolate/harness · Anthropic blocked until harness PASS |
+| P2-C.0 | ✅ **CLOSED** · tag `org-memory-p2-c0-complete` @ Ontory `8e307ce` |
+| Next gate | **P2-C.1 Anthropic** — harness gate unlocked |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
@@ -210,9 +221,9 @@ Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 | Ontory branch | `forge/ontory-provider-p2-b` @ `e63bb93` |
 | P2-A tag | `org-memory-p2-a-complete` |
 | P2-B tag | `org-memory-p2-b-complete` |
-| Status | P2-B **CLOSED** · P2-C.0 ADR-0009 **Proposed** |
+| Status | P2-B **CLOSED** · P2-C.0 ADR-0009 **Accepted · Closed** · TASK-0020 sealed |
 
-**First action:** Owner Accept ADR-0009 (jawab C-CAN / `test:conformance` / stub subset) → isolate `forge/ontory-provider-conformance-p2-c0` from `org-memory-p2-b-complete` → harness OpenAI+stub only.
+**First action:** Owner accepted ADR-0009 decisions: C-CAN deferred, command `npm run test:conformance`, stub subset C-RES / C-META / C-CFG. Harness/evidence stays OpenAI+stub only.
 
 **Do not:** Anthropic/Gemini/streaming · mutate ProviderRuntime · commit dirty `scripts/*.ts`.
 
@@ -232,7 +243,7 @@ Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 | Ontory branch | `forge/ontory-provider-p2-b` @ `e63bb93` |
 | P2-A tag | `org-memory-p2-a-complete` |
 | P2-B tag | `org-memory-p2-b-complete` |
-| Status | P2-B **CLOSED** · P2-C.0 ADR-0009 **Proposed** · **retargeted to Codex** |
+| Status | P2-B **CLOSED** · P2-C.0 ADR-0009 **Accepted by Codex TASK-0020** · **retargeted to Codex** |
 
 **First action:** Owner Accept ADR-0009 (jawab C-CAN / `test:conformance` / stub subset) → isolate `forge/ontory-provider-conformance-p2-c0` from `org-memory-p2-b-complete` → harness OpenAI+stub only.
 
