@@ -19,6 +19,7 @@ import {
   applyIndexUpdateBoundary,
   createEmptySnapshot,
   persistKnowledgeArtifacts,
+  recoverPendingVersions,
   type KnowledgeStoreSnapshot,
   type PersistResult,
 } from './knowledge-store-boundary.js';
@@ -414,6 +415,7 @@ export function orchestratePipeline(
     storeOptions?: {
       previousSnapshot?: KnowledgeStoreSnapshot;
       failBeforeMarkAvailable?: boolean;
+      autoRecoverOnPartial?: boolean;
     };
   },
 ): PipelineRunOutput {
@@ -562,10 +564,23 @@ export function orchestratePipeline(
     }
 
     if (stage === 'knowledge_store') {
-      const persist = persistKnowledgeArtifacts(documents, embeddingRecords, {
+      let persist = persistKnowledgeArtifacts(documents, embeddingRecords, {
         previous: knowledgeStoreSnapshot,
         failBeforeMarkAvailable: options?.storeOptions?.failBeforeMarkAvailable,
       });
+      if (persist.partialFailure && options?.storeOptions?.autoRecoverOnPartial) {
+        const recoveredSnapshot = recoverPendingVersions(persist.snapshot);
+        persist = {
+          ...persist,
+          snapshot: recoveredSnapshot,
+          partialFailure: false,
+          pendingVersionIds: [],
+          availableVersionIds: recoveredSnapshot.records
+            .filter((record) => record.status === 'available')
+            .map((record) => record.versionId),
+          recoveryToken: undefined,
+        };
+      }
       const endedAt = new Date();
       knowledgeStoreSnapshot = persist.snapshot;
       storePersistResult = persist;
