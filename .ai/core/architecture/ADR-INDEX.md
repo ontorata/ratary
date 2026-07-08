@@ -11,7 +11,7 @@
 | ADR-0003 | [ADR-0003-authorization-model.md](./ADR-0003-authorization-model.md) | Accepted | Permission contract · tenant-before-permission · authorization-boundary |
 | ADR-0006 | [ADR-0006-recall-intelligence-boundary.md](./ADR-0006-recall-intelligence-boundary.md) | Accepted | Recall intelligence ownership · candidate/policy/assembly separation |
 | ADR-0007 | [ADR-0007-ontory-runtime-kernel-boundary.md](./ADR-0007-ontory-runtime-kernel-boundary.md) | **Accepted** | Ontory runtime kernel · separate repo · REST adapter · stub-first · stateless |
-| ADR-0008 | [ADR-0008-ontory-provider-integration.md](./ADR-0008-ontory-provider-integration.md) | **Proposed** | P2-B provider integration · OpenAI first · Studio vendor-agnostic · streaming deferred |
+| ADR-0008 | [ADR-0008-ontory-provider-integration.md](./ADR-0008-ontory-provider-integration.md) | **Accepted** | P2-B · OpenAI first · official SDK in adapter only · gpt-4o-mini config · no SDK types across port · streaming deferred |
 
 **Template:** [ADR-TEMPLATE.md](./ADR-TEMPLATE.md)
 

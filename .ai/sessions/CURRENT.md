@@ -163,12 +163,11 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Artefact | Status |
 |----------|--------|
 | Frozen Boundary Bypass Policy | ✅ [FROZEN-BOUNDARY-BYPASS-POLICY.md](../core/constitution/FROZEN-BOUNDARY-BYPASS-POLICY.md) |
-| ADR-0007 Ontory Runtime Kernel | ✅ **Accepted** (D1 separate repo · D2 REST adapter · D3 stub-first · D4 stateless) |
-| P2-A isolate | ✅ **ACCEPTED** · `ontory` · `forge/ontory-runtime-p2-a` · Tasks 1–6 |
-| P2-A Task 7 | ✅ Studio REST RuntimePort · `043666e` · Echo = env fallback only |
-| P2-A Task 8 | ✅ Evidence pack · ADR DoD · [P2-A-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md) |
-| P2-A closeout | ✅ tag `org-memory-p2-a-complete` @ Ontory `c18cacc` · Studio `043666e` · ai-brain `35ff553` |
-| Next gate | **P2-B** · ADR-0008 **Proposed** · intent draft · OpenAI first · awaiting owner Accept |
+| ADR-0007 Ontory Runtime Kernel | ✅ **Accepted** · baseline `org-memory-p2-a-complete` |
+| ADR-0008 Provider Integration | ✅ **Accepted** (OpenAI · official SDK · gpt-4o-mini · streaming deferred · A1/A2) |
+| P2-B isolate | ✅ `ontory` · `forge/ontory-provider-p2-b` @ `c18cacc` |
+| P2-B blueprint | ✅ OpenAI-only plan · execute unlocked |
+| Next gate | forge-execute Task 1+ (OpenAI adapter) — no Anthropic yet |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

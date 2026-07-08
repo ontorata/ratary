@@ -2,13 +2,17 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Proposed** — awaiting owner acceptance before isolate |
+| **Status** | **Accepted** — owner 2026-07-08 |
 | **Date** | 2026-07-08 |
+| **Accepted** | 2026-07-08 |
 | **Baseline** | `org-memory-p2-a-complete` (Ontory `c18cacc` · Studio `043666e` · ai-brain `35ff553`) |
 | **Related** | ADR-0007 · FROZEN-BOUNDARY-BYPASS-POLICY · P2-A Runtime Kernel |
 | **Deciders** | Engineering · Product (owner) |
 | **Host repo** | `ontory` (adapters only) |
 | **First concrete provider** | OpenAI Chat Completions |
+| **Client** | Official `openai` SDK — **adapter folder only** |
+| **Default model** | `gpt-4o-mini` via Ontory config / adapter fallback (never Studio / Dispatcher) |
+| **Streaming** | Deferred |
 | **Studio impact** | **None required** for success (contracts unchanged) |
 
 ---
@@ -61,9 +65,9 @@ Dispatcher continues to inject `ProviderRuntime`; it must not gain OpenAI payloa
 
 OpenAI first: broadest API reference; many peers mirror chat/completions; first adapter shapes mapping/error boundaries for the rest.
 
-### Acceptance rule (non-negotiable)
+### Acceptance rules (non-negotiable)
 
-> **Studio must not know which provider is used.**
+#### A1 — Studio must not know which provider is used
 
 Forbidden in Studio:
 
@@ -75,7 +79,19 @@ Vendor knowledge **stops in Ontory**. Swapping OpenAI → Anthropic → Gemini �
 
 *(Response field `provider: string` remains a **telemetry / envelope label** filled by Ontory after execution — Studio may display it later but must not use it to select vendors.)*
 
-### Locked implementation decisions (P2-B)
+#### A2 — Provider-specific types SHALL NOT cross the ProviderPort boundary
+
+OpenAI SDK types (`ChatCompletion`, message objects, SDK `Response` / error classes, etc.) **must not appear** outside `src/adapters/openai/`.
+
+Across `ProviderRuntime` the only types are:
+
+- `AIExecutionRequest`
+- `AIExecutionResponse` (runtime result envelope)
+- Ontory-normalized `ProviderError` (or equivalent thrown/mapped Ontory error — never raw SDK errors)
+
+Boundary CI must enforce: `openai` package import allowed **only** under `src/adapters/openai/`.
+
+### Locked implementation decisions (P2-B) — owner accepted
 
 #### D1 — Keep `ProviderRuntime` unchanged as the port
 
@@ -90,23 +106,23 @@ interface ProviderRuntime {
 
 Do not invent a second “ProviderPort” type that duplicates this.
 
-#### D2 — OpenAI via thin mappers + HTTP (or official SDK confined to adapter package)
+#### D2 — Official OpenAI SDK inside adapter only
 
 Vendor coupling lives under `ontory/src/adapters/openai/` only.  
-Official SDK is allowed **inside that folder** if it improves correctness; alternatively raw HTTPS Chat Completions. Prefer the smaller surface that still maps cleanly to envelopes.
+**Accepted:** official `openai` npm package. Dispatcher, runtime contracts, REST adapter (except composition root injection), and Studio must not depend on it.
 
 #### D3 — Configuration is Ontory-only
 
-Examples: `ONTORY_PROVIDER=openai|stub`, `OPENAI_API_KEY`, `OPENAI_MODEL`, base URL, timeout.  
-Studio continues to send `AIExecutionRequest` only; it does not pass API keys or vendor model IDs as routing control (optional future: capability hints in metadata **without** vendor names — deferred).
+Examples: `ONTORY_PROVIDER=openai|stub`, `OPENAI_API_KEY`, `OPENAI_MODEL` (default **`gpt-4o-mini`** when unset — **adapter fallback only**), base URL, timeout.  
+Studio never learns model names. Dispatcher never hard-codes model ids.
 
 #### D4 — Streaming deferred
 
-P2-B first wave is **non-streaming** `complete()` only. Streaming is a later ADR/wave; do not enlarge Dispatcher for streams now.
+P2-B first wave is **non-streaming** `complete()` only. Streaming (SSE, partial delta, backpressure, incremental UI) is a separate milestone.
 
 #### D5 — Error normalization into Ontory error envelope
 
-Map vendor HTTP/SDK failures to stable Ontory errors (e.g. `bad_request`, `unauthorized`, `rate_limited`, `provider_error`, `timeout`) without leaking raw OpenAI error JSON to Studio as the contract.
+Map vendor HTTP/SDK failures to stable Ontory `ProviderError` / REST error codes (e.g. `bad_request`, `unauthorized`, `rate_limited`, `provider_error`, `timeout`) without leaking raw OpenAI error JSON as the Studio contract.
 
 #### D6 — Timeout & cancellation
 
@@ -167,15 +183,25 @@ Second concern; defer.
 
 ---
 
+## Acceptance record
+
+- [x] Wave-1 provider: **OpenAI**
+- [x] Streaming: **deferred**
+- [x] Client: **official `openai` SDK** (adapter only)
+- [x] Default model: **`gpt-4o-mini`** via Ontory adapter/config (not Studio/Dispatcher hard-code)
+- [x] A1 Studio vendor-agnostic
+- [x] A2 No vendor SDK types across `ProviderRuntime`
+- [x] Indexed in ADR-INDEX
+
 ## Definition of Done (P2-B wave 1)
 
-- [ ] ADR-0008 Accepted
+- [x] ADR-0008 Accepted
 - [ ] `OpenAIProviderAdapter` behind `ProviderRuntime`
 - [ ] Dispatcher can inject OpenAI **or** stub via Ontory config (not Studio)
 - [ ] Request/response/error mapping covered by tests
 - [ ] Studio unchanged for path (still RuntimePort → REST); no vendor SDK in Studio
-- [ ] Acceptance rule verified: Studio has no hardcoded vendor routing
-- [ ] Boundary CI still PASS (vendor SDK only under openai adapter path)
+- [ ] A1 verified: Studio has no hardcoded vendor routing
+- [ ] A2 verified: no OpenAI SDK types outside adapter; boundary CI allowlists adapter path only
 - [ ] Evidence pack + acceptance for P2-B
 
 ---
@@ -201,11 +227,11 @@ Second concern; defer.
 
 ---
 
-## Recommended next Forge steps (after acceptance)
+## Recommended next Forge steps
 
-1. Approve this ADR + [ontory-provider-p2-b-intent.md](../../designs/drafts/ontory-provider-p2-b-intent.md)  
+1. ~~Accept ADR + intent~~ ✅  
 2. forge-isolate from `org-memory-p2-a-complete` on `ontory`  
 3. Narrow blueprint: OpenAI adapter + config wire + tests + evidence  
-4. Do **not** open Anthropic until OpenAI DoD is green  
+4. forge-execute OpenAI-only — do **not** open Anthropic until OpenAI DoD is green  
 
-**Next:** owner **Accept** ADR-0008 → unlock isolate/blueprint (OpenAI adapter only).
+**Unlocked:** isolate / blueprint / execute (OpenAI adapter only).

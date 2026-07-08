@@ -1,11 +1,11 @@
 # P2-B Ontory Provider Integration — Forge Intent
-**Status:** Draft — pending ADR-0008 + owner approval  
+**Status:** Approved — ready for isolate/blueprint (ADR-0008 Accepted)  
 **Slug:** ontory-provider-p2-b-intent  
 **Baseline:** `org-memory-p2-a-complete`  
-**Branch (proposed):** `forge/ontory-provider-p2-b` (in `ontory`)  
+**Branch:** `forge/ontory-provider-p2-b` (in `ontory`)  
 **Phase:** 04-proof-of-platform → Ontory provider track  
 **Category:** Must Enable  
-**ADR:** [ADR-0008](../../core/architecture/ADR-0008-ontory-provider-integration.md) **Proposed**
+**ADR:** [ADR-0008](../../core/architecture/ADR-0008-ontory-provider-integration.md) **Accepted**
 
 ---
 
@@ -19,18 +19,20 @@ Core question:
 
 ---
 
-## Locked decisions (proposed from ADR-0008)
+## Locked decisions (ADR-0008 Accepted)
 
 | ID | Decision |
 |----|----------|
 | D1 | Keep existing **`ProviderRuntime`** as the only adapter port |
-| D2 | **OpenAI first**; thin mappers + HTTP/SDK confined to adapter folder |
-| D3 | **Config is Ontory-only** (`stub` \| `openai`, keys, model, timeout) |
+| D2 | **OpenAI first** · official **`openai` SDK** · mappers confined to adapter folder |
+| D3 | **Config is Ontory-only** (`stub` \| `openai`, keys, model default `gpt-4o-mini`, timeout) |
 | D4 | **Streaming deferred** — non-streaming `complete()` only |
-| D5 | **Error normalization** into Ontory envelopes |
+| D5 | **Error normalization** → Ontory `ProviderError` / envelopes |
 | D6 | Request-scoped **timeout/cancel**; no retry orchestrator |
 
-**Acceptance:** Studio must not know / select / import the provider.
+**Acceptance:**  
+A1 Studio must not know / select / import the provider.  
+A2 Provider-specific SDK types SHALL NOT cross `ProviderRuntime`.
 
 ---
 
@@ -83,24 +85,18 @@ Wire selection in Ontory bootstrap / REST server composition root only.
 
 ---
 
-## Open questions (blocking for acceptance)
+## Open questions
 
-1. Confirm **OpenAI** as wave-1 provider (vs Anthropic).  
-2. Confirm **streaming deferred**.  
-3. Prefer **official `openai` SDK** inside adapter vs raw `fetch` to Chat Completions? (Either acceptable if confined.)  
-4. Default model id for local/dev (e.g. `gpt-4o-mini`)?  
-
-Non-blocking: Azure OpenAI / OpenRouter as later OpenAI-compatible variants.
+Resolved by owner Accept (2026-07-08). Non-blocking later: Azure OpenAI / OpenRouter as OpenAI-compatible variants.
 
 ---
 
 ## Stop conditions
 
-- Owner rejects ADR-0008 section → revise before isolate  
-- Scope creep (tools, agents, Studio vendor branching) → halt  
+- Scope creep (tools, agents, Studio vendor branching, SDK types outside adapter) → halt  
 
 ---
 
-## Next after approval
+## Next
 
-forge-isolate (`ontory` from `org-memory-p2-a-complete`) → blueprint (OpenAI adapter tasks only) → prove with mocked HTTP → evidence.
+forge-isolate → blueprint → execute OpenAI-only → evidence.

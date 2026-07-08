@@ -156,5 +156,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P2-A Task 7 — Studio `WorkspaceAiRuntimePort` → Ontory REST client (no in-process Ontory)
 - ✅ P2-A Task 8 — governance evidence pack · ADR-0007 DoD complete · [P2-A-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md)
 - ✅ P2-A Task 9 — CLOSED · tag `org-memory-p2-a-complete` · release [P2-A-ONTORY-RUNTIME-KERNEL.md](../../governance/releases/P2-A-ONTORY-RUNTIME-KERNEL.md)
-- ⏳ Next: **P2-B** Provider Integration (stub → real adapters; no tools/MCP/memory/recall/agents)
+- ✅ ADR-0008 **Accepted** · P2-B intent/isolate/blueprint OpenAI-only
+- ⏳ Next: forge-execute OpenAI adapter (`forge/ontory-provider-p2-b`) — no tools/MCP/streaming/Anthropic in wave 1
 
