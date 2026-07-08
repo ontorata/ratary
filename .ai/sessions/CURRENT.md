@@ -167,7 +167,18 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Verification | ✅ 12 passed · 2 skipped (C-CAN) · boundary PASS |
 | Baseline lock | ✅ `org-memory-p2-c0-complete` |
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
-| Next | **P2-C.1 Anthropic** — harness gate unlocked |
+| Next | **P2-C.2 Gemini** — intent draft ready |
+
+### P2-C.2 Gemini Provider — Intent Draft
+
+| Stage | Status |
+|-------|--------|
+| Gate | ✅ P2-C.1 `org-memory-p2-c1-complete` on origin |
+| Forge intent | 📝 [ontory-provider-gemini-p2-c2-intent.md](../designs/drafts/ontory-provider-gemini-p2-c2-intent.md) — **pending approval** |
+| Blueprint | 📝 [ontory-provider-gemini-p2-c2-plan.md](../designs/drafts/ontory-provider-gemini-p2-c2-plan.md) |
+| ADR-0011 | **Proposed** |
+| Branch (proposed) | `forge/ontory-provider-gemini-p2-c2` from `org-memory-p2-c1-complete` |
+| Note | Capability metadata → future ADR, not P2-C.2 |
 
 ### P2-C.1 Anthropic Provider — CLOSED 🔒
 
@@ -207,8 +218,8 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B Task 6 | ✅ REST composition · `e63bb93` · default stub |
 | P2-B Task 7 | ✅ Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) |
 | P2-B closeout | ✅ tag `org-memory-p2-b-complete` @ Ontory `e63bb93` · ai-brain `fe70ede` · Studio unchanged `043666e` |
-| P2-C.0 | ✅ **CLOSED** · tag `org-memory-p2-c0-complete` @ Ontory `8e307ce` |
-| Next gate | **P2-C.2 Gemini** — separate adapter wave |
+| P2-C.1 closeout | ✅ tag `org-memory-p2-c1-complete` @ Ontory `4b3e094` · pushed origin |
+| Next gate | **P2-C.2 Gemini** — intent draft pending approval |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
