@@ -89,7 +89,7 @@
 
 ```
 Repository: ai-brain (ratary)
-Branch:     forge/org-memory-dogfood @ active
+Branch:     forge/retrieval-recall-intelligence @ active
 P0-A:       RELEASED · FROZEN ✅
 P0-B:       RELEASED · FROZEN ✅
 P1-A:       CLOSED · baseline locked ✅
@@ -129,7 +129,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Task progress | ✅ Task 1–8 complete (acceptance PASS) |
 | Baseline lock | ✅ `org-memory-p1-a-complete` |
 
-### P1-B Knowledge Ingestion — Intent approved ✅
+### P1-B Knowledge Ingestion — Closed ✅
 
 | Stage | Status |
 |-------|--------|
@@ -144,7 +144,16 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Wave progress | ✅ Wave 5 complete — end-to-end proof layer validated |
 | Evidence | ✅ `WAVE-5-END-TO-END-PROOF.md` + `sync:org-memory` + `trace:org-memory-handoff` (P1B-W5) |
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
-| Next gate | lock tag `org-memory-p1-b-complete` + origin verification |
+| Baseline lock | ✅ `org-memory-p1-b-complete` |
+
+### P1-C Retrieval / Recall Intelligence — Intent drafted 🟡
+
+| Stage | Status |
+|-------|--------|
+| Forge intent | 🟡 [retrieval-recall-p1-c-intent.md](../designs/drafts/retrieval-recall-p1-c-intent.md) drafted |
+| Baseline | ✅ starts from `org-memory-p1-b-complete` |
+| Scope lock | ✅ allowed/forbidden changes defined in intent |
+| Next gate | owner approval -> forge-isolate (`forge/retrieval-recall-intelligence`) |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

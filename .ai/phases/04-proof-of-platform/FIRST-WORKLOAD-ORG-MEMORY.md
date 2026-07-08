@@ -131,5 +131,7 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Wave 4 knowledge store + index update complete (versioned persistence + boundary adapter + recovery tests)
 - ✅ Wave 5 end-to-end proof complete (`WAVE-5-END-TO-END-PROOF.md`)
 - ✅ P1-B acceptance report drafted (`P1-B-ACCEPTANCE-REPORT.md`)
-- ⏳ Next: lock tag `org-memory-p1-b-complete` and verify distribution on origin
+- ✅ P1-B baseline locked (`org-memory-p1-b-complete`)
+- ✅ P1-C intent drafted: [retrieval-recall-p1-c-intent.md](../../designs/drafts/retrieval-recall-p1-c-intent.md)
+- ⏳ Next: owner approval for P1-C intent, then forge-isolate
 
