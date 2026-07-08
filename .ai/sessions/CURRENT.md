@@ -164,8 +164,8 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 |----------|--------|
 | Frozen Boundary Bypass Policy | ✅ [FROZEN-BOUNDARY-BYPASS-POLICY.md](../core/constitution/FROZEN-BOUNDARY-BYPASS-POLICY.md) |
 | ADR-0007 Ontory Runtime Kernel | ✅ **Accepted** (D1 separate repo · D2 REST adapter · D3 stub-first · D4 stateless) |
-| P2-A intent | ✅ [ontory-runtime-p2-a-intent.md](../designs/drafts/ontory-runtime-p2-a-intent.md) approved |
-| Next gate | forge-isolate — bootstrap `ontory` + Studio RuntimePort REST adapter branch |
+| P2-A isolate | ✅ `ontory` · `forge/ontory-runtime-p2-a` · kernel Tasks 1–6 green |
+| Next gate | Task 7 — Studio RuntimePort → Ontory REST client · then evidence |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

@@ -152,5 +152,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Frozen Boundary Bypass Policy activated
 - ✅ ADR-0007 Ontory Runtime Kernel **Accepted** (separate `ontory` repo · REST · stub-first · stateless)
 - ✅ P2-A intent approved: [ontory-runtime-p2-a-intent.md](../../designs/drafts/ontory-runtime-p2-a-intent.md)
-- ⏳ Next: forge-isolate P2-A — bootstrap Ontory kernel (no agents)
+- ✅ P2-A isolate active (`ontory` bootstrap · dispatcher · stub · REST · 4 tests PASS)
+- ⏳ Next: Studio Ontory REST adapter (Task 7) · then evidence
 
