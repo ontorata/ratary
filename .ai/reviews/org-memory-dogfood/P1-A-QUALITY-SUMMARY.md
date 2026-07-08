@@ -19,6 +19,7 @@
 | Task 4 — Recall harness (G2/G3/G4) | `6540f2e` | ✅ | `recall-log.md`, `evidence-trace.md`, fixture dataset | medium (pass_rate < 100%) | Task 5 |
 | Task 5 — Handoff + MCP trace chain | `8cbc031` | ✅ | `mcp-interaction-log.md`, workflow standard | none | Task 6 |
 | Task 6 — Internal usage metrics | current | ✅ | `internal-usage-metrics.md`, `metrics:org-memory` | low (single-org sample) | Task 7 |
+| Task 7 — Acceptance gate pack | current | ✅ | `P1-A-ACCEPTANCE.md`, `acceptance-test.md`, `decision.md`, release record | medium (G4 blocked) | Task 8 + G4 remediation |
 
 ---
 
@@ -49,7 +50,7 @@ Interpretation:
 ## Closeout checklist (rolling)
 
 - [x] Task 6 metrics pipeline complete
-- [ ] Task 7 acceptance pack complete (G1–G6)
+- [x] Task 7 acceptance pack complete (G1–G6)
 - [ ] Task 8 CI and non-regression guard complete
 - [ ] Final evidence collection reviewed
 - [ ] Baseline lock + tag decision ready

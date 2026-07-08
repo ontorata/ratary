@@ -16,7 +16,7 @@
 - [x] Task 4 — Recall evaluation harness (G2/G3/G4)
 - [x] Task 5 — Session handoff + audit trace automation
 - [x] Task 6 — Internal usage metrics pipeline (G1/G5)
-- [ ] Task 7 — Acceptance gate pack (G1–G6)
+- [x] Task 7 — Acceptance gate pack (G1–G6)
 - [ ] Task 8 — CI and non-regression guard
 
 ## Task 1 — Activate P1-A governance metadata
