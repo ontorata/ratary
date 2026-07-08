@@ -146,19 +146,18 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-C Retrieval / Recall Intelligence — Wave 4 complete 🟢
+### P1-C Retrieval / Recall Intelligence — CLOSED 🔒
 
 | Stage | Status |
 |-------|--------|
 | Forge intent | ✅ approved |
 | Forge isolate | ✅ active @ `22633fe` |
-| Forge blueprint | ✅ approved |
-| Wave 1 | ✅ contracts + ADR-0006 + service skeleton |
-| Wave 2 | ✅ SQL + Knowledge providers (raw candidates only) |
-| Wave 3 | ✅ `RecallPolicy` + auditable `RecallDecision` |
-| Wave 4 | ✅ `ContextAssembler` + token budget ContextPackage |
-| Evidence | ✅ [context-assembly-boundary-proof.md](../reviews/org-memory-dogfood/context-assembly-boundary-proof.md) |
-| Next gate | Wave 5 — Recall Evaluation Proof |
+| Forge blueprint | ✅ closed |
+| Wave 1–5 | ✅ complete |
+| Acceptance | ✅ G1–G7 PASS |
+| Baseline lock | ✅ `org-memory-p1-c-complete` @ `86cd575` |
+| Release record | ✅ [P1-C-RECALL-INTELLIGENCE.md](../governance/releases/P1-C-RECALL-INTELLIGENCE.md) |
+| Next gate | P1-D AI Workspace |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
@@ -188,11 +187,11 @@ Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 | Field | Value |
 |-------|-------|
 | Branch | `forge/retrieval-recall-intelligence` |
-| HEAD | `2964396` (pushed) |
-| Baseline | `org-memory-p1-b-complete` |
-| Status | Wave 1–2 ✅ · Wave 3 ⏳ |
+| HEAD | `86cd575` + closeout (pushed) |
+| Baseline | `org-memory-p1-c-complete` |
+| Status | P1-C CLOSED 🔒 |
 
-**First action:** Implement Wave 3 `RecallPolicy` — ranking + `RecallDecision`, wire to `RecallService`, do not touch providers.
+**First action:** P1-D kickoff from `org-memory-p1-c-complete` baseline — do not mutate P1-C recall contracts without ADR.
 
 **Key paths:** `src/memory/recall/*` · blueprint `.ai/designs/drafts/retrieval-recall-p1-c-plan.md` · ADR-0006
 

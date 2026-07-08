@@ -93,6 +93,6 @@ Wave 5 adds **no new intelligence**. It proves Wave 3 ranking decisions are meas
 
 ---
 
-## Next gate
+## Milestone status
 
-Milestone closeout (release record + tag `org-memory-p1-c-complete`) — blueprint Task 12.
+P1-C closed — baseline tag `org-memory-p1-c-complete`. Next: P1-D AI Workspace.

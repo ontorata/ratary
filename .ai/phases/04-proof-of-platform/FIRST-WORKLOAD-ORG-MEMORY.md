@@ -94,7 +94,7 @@ Org Memory Dogfood
 |-----------|-------|------------|
 | **P1-A** Org Memory Dogfood | Daily use proof | P0 ✅ · CLOSED |
 | **P1-B** Knowledge Ingestion | Pipeline hardening | P1-A ✅ locked |
-| P1-C Retrieval + Context | Quality + ranking | P1-B |
+| **P1-C** Recall Intelligence | Contracts · ranking · context · evaluation | P1-B ✅ locked |
 | P1-D AI Workspace | User-facing surface | P1-C |
 
 Previous workload (complete): [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](./FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md)
@@ -134,10 +134,13 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-B baseline locked (`org-memory-p1-b-complete`)
 - ✅ P1-C intent approved: [retrieval-recall-p1-c-intent.md](../../designs/drafts/retrieval-recall-p1-c-intent.md)
 - ✅ P1-C isolate active: [retrieval-recall-p1-c-isolate.md](../../designs/drafts/retrieval-recall-p1-c-isolate.md)
-- 🟡 P1-C blueprint drafted: [retrieval-recall-p1-c-plan.md](../../designs/drafts/retrieval-recall-p1-c-plan.md)
-- ✅ P1-C blueprint approved + Wave 1 complete (contracts, ADR-0006, service skeleton)
+- ✅ P1-C blueprint approved: [retrieval-recall-p1-c-plan.md](../../designs/drafts/retrieval-recall-p1-c-plan.md)
+- ✅ P1-C Wave 1 complete (contracts, ADR-0006, service skeleton)
 - ✅ P1-C Wave 2 complete (SQL + Knowledge candidate providers)
 - ✅ P1-C Wave 3 complete (`RecallPolicy` + auditable `RecallDecision`)
 - ✅ P1-C Wave 4 complete (ContextPackage assembler + token budget)
-- ⏳ Next: Wave 5 Recall Evaluation Proof
+- ✅ P1-C Wave 5 complete (evaluation harness + G1–G7 acceptance)
+- ✅ P1-C acceptance manifest (`P1-C-ACCEPTANCE.md`)
+- ✅ P1-C baseline locked (`org-memory-p1-c-complete`)
+- ⏳ Next: P1-D AI Workspace
 
