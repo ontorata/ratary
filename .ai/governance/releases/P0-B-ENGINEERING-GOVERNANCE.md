@@ -38,7 +38,7 @@ updated: 2026-07-08
 | P0-B intent approved | ✅ 2026-07-08 |
 | Baseline tests green | ✅ 88/88 |
 
-**Implementation waves:** ⏳ pending `forge-blueprint` approval — do not execute before plan approved.
+**Implementation waves:** 🔒 locked until blueprint approved — [engineering-governance-plan.md](../../designs/blueprints/engineering-governance-plan.md)
 
 ---
 
