@@ -146,18 +146,19 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-C Retrieval / Recall Intelligence — CLOSED 🔒
+### P1-D AI Workspace — W1 complete 🟢
 
 | Stage | Status |
 |-------|--------|
-| Forge intent | ✅ approved |
-| Forge isolate | ✅ active @ `22633fe` |
-| Forge blueprint | ✅ closed |
-| Wave 1–5 | ✅ complete |
-| Acceptance | ✅ G1–G7 PASS |
-| Baseline lock | ✅ `org-memory-p1-c-complete` @ `86cd575` |
-| Release record | ✅ [P1-C-RECALL-INTELLIGENCE.md](../governance/releases/P1-C-RECALL-INTELLIGENCE.md) |
-| Next gate | P1-D AI Workspace |
+| Forge intent | ✅ approved (D1–D4 locked) |
+| Forge isolate | ✅ active — Studio `forge/ai-workspace-p1-d` @ `af266a7` |
+| Forge blueprint | ✅ W1 approved |
+| W1 | ✅ WorkspaceRecallPort + SDK adapter + boundary guards |
+| Ratary baseline | 🔒 `org-memory-p1-c-complete` (no P1-C code changes) |
+| Implementation repo | `Ontorata-Studio` |
+| Evidence | ✅ [workspace-recall-consumer-boundary-proof.md](../reviews/org-memory-dogfood/workspace-recall-consumer-boundary-proof.md) |
+| Next gate | W2 — Session/workspace orchestration |
+
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

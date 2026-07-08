@@ -142,5 +142,8 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-C Wave 5 complete (evaluation harness + G1–G7 acceptance)
 - ✅ P1-C acceptance manifest (`P1-C-ACCEPTANCE.md`)
 - ✅ P1-C baseline locked (`org-memory-p1-c-complete`)
-- ⏳ Next: P1-D AI Workspace
+- ✅ P1-D intent approved: [ai-workspace-p1-d-intent.md](../../designs/drafts/ai-workspace-p1-d-intent.md)
+- ✅ P1-D isolate active (Studio `forge/ai-workspace-p1-d`)
+- ✅ P1-D W1 complete (WorkspaceRecallPort + SDK consumer boundary)
+- ⏳ Next: P1-D W2 — Session/workspace orchestration
 
