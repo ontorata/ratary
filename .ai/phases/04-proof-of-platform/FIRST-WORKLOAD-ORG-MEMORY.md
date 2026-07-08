@@ -108,3 +108,11 @@ Isolate → [org-memory-dogfood-isolate.md](../../designs/drafts/org-memory-dogf
 Blueprint → [org-memory-dogfood-plan.md](../../designs/drafts/org-memory-dogfood-plan.md) 🟡 pending approval  
 Evidence → `.ai/reviews/org-memory-dogfood/`
 
+---
+
+## Execution progress (P1-A)
+
+- ✅ Task 1: metadata activation (`intent` approved + `isolate` active)
+- ✅ Task 2: ingestion scope contract + evidence baseline (`ingestion-proof.md`)
+- ⏳ Next: Task 3 ingest runner + deterministic ingestion log schema
+

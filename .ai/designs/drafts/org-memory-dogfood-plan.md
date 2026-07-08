@@ -8,6 +8,17 @@
 | **Isolate** | [org-memory-dogfood-isolate.md](./org-memory-dogfood-isolate.md) |
 | **Evidence package** | `.ai/reviews/org-memory-dogfood/` |
 
+## Execution progress
+
+- [x] Task 1 — Activate P1-A governance metadata
+- [x] Task 2 — Define ingestion scope contract
+- [ ] Task 3 — Implement dogfood ingest runner + log schema
+- [ ] Task 4 — Recall evaluation harness (G2/G3/G4)
+- [ ] Task 5 — Session handoff + audit trace automation
+- [ ] Task 6 — Internal usage metrics pipeline (G1/G5)
+- [ ] Task 7 — Acceptance gate pack (G1–G6)
+- [ ] Task 8 — CI and non-regression guard
+
 ## Task 1 — Activate P1-A governance metadata
 - **Files:** `.ai/designs/drafts/org-memory-dogfood-intent.md`, `.ai/phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md`, `.ai/sessions/CURRENT.md`
 - **Do:** mark intent approved + isolate active; sync forge chain and CURRENT status.
