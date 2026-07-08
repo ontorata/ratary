@@ -223,10 +223,16 @@ function runEmbeddingStage(
   options?: {
     maxRetries?: number;
     providerCall?: (chunk: KnowledgeChunk, model: string) => string;
+    existingRecords?: EmbeddingRecord[];
+    cancelledJobIds?: string[];
   },
 ): { jobs: EmbeddingJob[]; records: EmbeddingRecord[]; executions: EmbeddingJobExecution[]; failed: number } {
   const providerCall = options?.providerCall ?? defaultProviderCall;
   const maxRetries = options?.maxRetries ?? 2;
+  const existingByEmbeddingId = new Map(
+    (options?.existingRecords ?? []).map((record) => [record.embeddingId, record] as const),
+  );
+  const cancelledJobIds = new Set(options?.cancelledJobIds ?? []);
   const jobs: EmbeddingJob[] = [];
   const records: EmbeddingRecord[] = [];
   const executions: EmbeddingJobExecution[] = [];
@@ -235,6 +241,43 @@ function runEmbeddingStage(
   for (const chunk of chunks) {
     const job = createEmbeddingJob(chunk);
     jobs.push(job);
+    const expectedEmbeddingId = `emb-${shortHash(`${job.jobId}:${chunk.chunkId}:${job.model}`)}`;
+
+    if (existingByEmbeddingId.has(expectedEmbeddingId)) {
+      records.push(existingByEmbeddingId.get(expectedEmbeddingId)!);
+      executions.push(
+        EmbeddingJobExecutionSchema.parse({
+          jobId: job.jobId,
+          chunkId: chunk.chunkId,
+          state: 'COMPLETED',
+          stateHistory: ['PENDING', 'COMPLETED'],
+          attemptCount: 0,
+          retryable: false,
+          resumable: true,
+          completedAt: new Date().toISOString(),
+        }),
+      );
+      continue;
+    }
+
+    if (cancelledJobIds.has(job.jobId)) {
+      failed += 1;
+      executions.push(
+        EmbeddingJobExecutionSchema.parse({
+          jobId: job.jobId,
+          chunkId: chunk.chunkId,
+          state: 'CANCELLED',
+          stateHistory: ['PENDING', 'RUNNING', 'CANCELLED'],
+          attemptCount: 1,
+          retryable: false,
+          resumable: true,
+          errorCategory: 'cancelled_job',
+          errorMessage: 'embedding job cancelled before completion',
+        }),
+      );
+      continue;
+    }
+
     if (chunk.text.length === 0) {
       failed += 1;
       executions.push(
@@ -355,6 +398,8 @@ export function orchestratePipeline(
     embeddingOptions?: {
       maxRetries?: number;
       providerCall?: (chunk: KnowledgeChunk, model: string) => string;
+      existingRecords?: EmbeddingRecord[];
+      cancelledJobIds?: string[];
     };
   },
 ): PipelineRunOutput {
