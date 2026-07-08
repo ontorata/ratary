@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Execute — Task 1–5 ✅ · Task 6 next (REST composition · default stub) |
+| **Status** | Execute — Task 1–6 ✅ · Task 7 next (Evidence) |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -36,7 +36,7 @@ No OpenAI adapter yet.
 - [x] Task 3 — ResponseMapper / ErrorMapper · Ontory `7db112e`
 - [x] Task 4 — `OpenAIProviderAdapter` · official SDK · Ontory (thin)
 - [x] Task 5 — Configuration · Ontory `src/config/provider-config.ts`
-- [ ] Task 6 — REST composition (default remains stub)
+- [x] Task 6 — REST composition · default stub via config
 - [ ] Task 7 — Evidence & A1/A2 verification
 - [ ] Task 8 — Closeout tag
 
@@ -82,10 +82,13 @@ No OpenAI adapter yet.
 - **Verify:** 33 tests PASS · boundary OK · typecheck OK
 - **Done when:** ✅ config sets defaults; adapter still receives resolved model/client only
 
-### Task 6 — REST composition
+## Task 6 — REST composition ✅
 
-- **Files:** `src/adapters/rest/server.ts` (injection only)
-- **Do:** select stub vs openai; **default stub**
+- **Files:** `src/adapters/rest/server.ts` · `tests/adapters/rest-adapter.test.ts`
+- **Do:** `defaultRuntime()` = `createProviderFromConfig(resolveOntoryProviderConfig())` → `RuntimeDispatcher`; explicit runtime injection unchanged; default still stub
+- **Must not:** business logic in endpoints · move config policy into handlers · change contracts/mappers/adapters
+- **Verify:** 34 tests PASS · boundary OK · typecheck OK
+- **Done when:** ✅ REST composes config only · stub default preserved
 
 ### Task 7 — Evidence
 
