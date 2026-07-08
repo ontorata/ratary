@@ -4,7 +4,7 @@
 |-------|-------|
 | **Role** | **Audit trail** — not primary memory when Ratary is available |
 | **Active memory** | Ratary MCP `search_memory` · `save_memory` · [../sync/README.md](../sync/README.md) |
-| **Updated** | 2026-07-08 · chat backup `D:\Apps\_backups\chat-ai-brain-p0b-engineering-governance_2026-07-08_0943\` |
+| **Updated** | 2026-07-08 · P1-C Wave 2 handoff to Claude |
 | **Phase** | 4 — Proof of Platform |
 
 > **Primary recall:** Ratary organizational memory (when MCP connected).  
@@ -170,9 +170,28 @@ Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
 ## Session end checklist
 
-- [ ] `save_memory` handoff to Ratary (primary)
-- [ ] Update this audit trail file (secondary · offline fallback)
+- [x] `save_memory` handoff to Ratary (primary)
+- [x] Update this audit trail file (secondary · offline fallback)
 - [ ] Update evidence package if Phase 4 work progressed
-- [ ] Commit + push code changes
+- [x] Commit + push code changes (Wave 2 pushed @ `2964396`)
 - [ ] Public `docs/` sync if behavior changed
 - [ ] Trigger ingest when pipeline live (see `.ai/sync/ratary-sync-config.yaml`)
+
+---
+
+## Handoff — Claude (2026-07-08)
+
+**Recover via Ratary:** `search_memory` tags `handoff`, `p1-c`, `retrieval-recall`
+
+| Field | Value |
+|-------|-------|
+| Branch | `forge/retrieval-recall-intelligence` |
+| HEAD | `2964396` (pushed) |
+| Baseline | `org-memory-p1-b-complete` |
+| Status | Wave 1–2 ✅ · Wave 3 ⏳ |
+
+**First action:** Implement Wave 3 `RecallPolicy` — ranking + `RecallDecision`, wire to `RecallService`, do not touch providers.
+
+**Key paths:** `src/memory/recall/*` · blueprint `.ai/designs/drafts/retrieval-recall-p1-c-plan.md` · ADR-0006
+
+**Out of scope:** dirty `scripts/*.ts` pre-existing changes · P1-B foundation mutations
