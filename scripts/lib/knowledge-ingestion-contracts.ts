@@ -179,6 +179,33 @@ export const KnowledgeVersionSchema = z.object({
 
 export type KnowledgeVersion = z.infer<typeof KnowledgeVersionSchema>;
 
+export const KnowledgeStoreRecordSchema = z.object({
+  versionId: z.string().min(1),
+  documentId: z.string().min(1),
+  organizationId: z.string().min(1),
+  version: z.string().min(1),
+  status: z.enum(['pending', 'available', 'failed']),
+  embeddingCount: z.number().int().nonnegative(),
+  recoveryToken: z.string().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+export type KnowledgeStoreRecord = z.infer<typeof KnowledgeStoreRecordSchema>;
+
+export const IndexUpdateEventSchema = z.object({
+  eventId: z.string().min(1),
+  versionId: z.string().min(1),
+  documentId: z.string().min(1),
+  organizationId: z.string().min(1),
+  status: z.enum(['pending', 'completed', 'failed']),
+  createdAt: z.string().datetime(),
+  completedAt: z.string().datetime().optional(),
+  error: z.string().optional(),
+});
+
+export type IndexUpdateEvent = z.infer<typeof IndexUpdateEventSchema>;
+
 export function assertIngestionRun(candidate: unknown): IngestionRun {
   return IngestionRunSchema.parse(candidate);
 }
