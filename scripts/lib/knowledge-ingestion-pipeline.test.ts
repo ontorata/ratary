@@ -186,4 +186,19 @@ describe('knowledge ingestion pipeline core', () => {
     expect(execution?.resumable).toBe(true);
     expect(execution?.errorCategory).toBe('cancelled_job');
   });
+
+  it('recovers knowledge store stage when partial failure auto-recovery is enabled', () => {
+    const output = orchestratePipeline([sampleRaw('store recovery content')], {
+      sourcePath: '.ai/core/',
+      storeOptions: {
+        failBeforeMarkAvailable: true,
+        autoRecoverOnPartial: true,
+      },
+    });
+
+    const stageByName = new Map(output.stageResults.map((stage) => [stage.stage, stage]));
+    expect(stageByName.get('knowledge_store')?.status).toBe('completed');
+    expect(output.storePersistResult?.partialFailure).toBe(false);
+    expect(output.knowledgeStoreSnapshot.records.some((record) => record.status === 'available')).toBe(true);
+  });
 });
