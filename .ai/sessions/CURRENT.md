@@ -146,7 +146,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-C Retrieval / Recall Intelligence — Blueprint drafted 🟡
+### P1-C Retrieval / Recall Intelligence — Wave 1 complete 🟢
 
 | Stage | Status |
 |-------|--------|
@@ -154,9 +154,10 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Baseline | ✅ starts from `org-memory-p1-b-complete` |
 | Scope lock | ✅ allowed/forbidden changes defined in intent |
 | Forge isolate | ✅ [retrieval-recall-p1-c-isolate.md](../designs/drafts/retrieval-recall-p1-c-isolate.md) active @ `22633fe` |
-| Forge blueprint | 🟡 [retrieval-recall-p1-c-plan.md](../designs/drafts/retrieval-recall-p1-c-plan.md) drafted |
-| Baseline verification | ✅ `npm test`, `ci:org-memory-acceptance`, `ci:governance` |
-| Next gate | owner approval -> Wave 1 (Recall Contract Boundary) |
+| Forge blueprint | ✅ [retrieval-recall-p1-c-plan.md](../designs/drafts/retrieval-recall-p1-c-plan.md) approved |
+| Wave 1 | ✅ recall contracts + ADR-0006 + service skeleton |
+| Evidence | ✅ [recall-contract-proof.md](../reviews/org-memory-dogfood/recall-contract-proof.md) |
+| Next gate | Wave 2 — Candidate Retrieval Boundary |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

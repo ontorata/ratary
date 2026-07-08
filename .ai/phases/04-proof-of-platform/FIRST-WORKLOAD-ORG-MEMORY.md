@@ -135,5 +135,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-C intent approved: [retrieval-recall-p1-c-intent.md](../../designs/drafts/retrieval-recall-p1-c-intent.md)
 - ✅ P1-C isolate active: [retrieval-recall-p1-c-isolate.md](../../designs/drafts/retrieval-recall-p1-c-isolate.md)
 - 🟡 P1-C blueprint drafted: [retrieval-recall-p1-c-plan.md](../../designs/drafts/retrieval-recall-p1-c-plan.md)
-- ⏳ Next: owner approval for blueprint, then Wave 1 Recall Contract Boundary implementation
+- ✅ P1-C blueprint approved + Wave 1 complete (contracts, ADR-0006, service skeleton)
+- ⏳ Next: Wave 2 Candidate Retrieval Boundary
 

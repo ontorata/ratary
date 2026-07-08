@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Draft — pending owner approval |
+| **Status** | Approved — execute unlocked (Wave 1) |
 | **Branch** | `forge/retrieval-recall-intelligence` |
 | **Intent** | [retrieval-recall-p1-c-intent.md](./retrieval-recall-p1-c-intent.md) |
 | **Isolate** | [retrieval-recall-p1-c-isolate.md](./retrieval-recall-p1-c-isolate.md) |
@@ -14,6 +14,9 @@
 ## Execution progress
 
 - [ ] Wave 1 — Recall Contract Boundary
+  - [x] Task 1 — recall contract package
+  - [x] Task 2 — recall architecture ADR
+  - [x] Task 3 — recall contract proof + service skeleton ports
 - [ ] Wave 2 — Candidate Retrieval Boundary
 - [ ] Wave 3 — Ranking Intelligence
 - [ ] Wave 4 — Context Assembly Intelligence
@@ -159,6 +162,13 @@ Core question:
   - ranked output is explainable from `RecallTrace.decisionPath`.
   - `status` in `completed | partial | failed`.
 
+### `RecallDecision` (planned — explainability layer)
+
+- **Required:** `requestId`, `policyVersion`, `selectedCandidates`, `rejectedCandidates`, `decisionReason`, `confidenceSummary`
+- **Optional:** `traceId`, `rankingVersion`
+- **Role:** `RecallTrace` records what happened; `RecallDecision` records why the final outcome was chosen.
+- **Wave plan:** contract defined in Wave 1; populated by `RecallPolicy` in Wave 3+.
+
 ### `ContextPackage` (P1-C recall-facing)
 - **Required:** `requestId`, `traceId`, `organizationId`, `items`, `sourceAttribution`
 - **Optional:** `tokenBudget`, `truncated`, `freshnessMetadata`
@@ -198,6 +208,9 @@ Core question:
 | Isolation | `isolation_failures` (must be 0) | G2 |
 | Performance | `avg_latency_ms`, `candidate_count` | advisory SLO (recorded, not hard-block v1) |
 | Regression | delta vs previous run in quality summary | G5/G6 |
+| Backward compatibility | existing `ContextService`, MCP tools, search API remain contract-compatible | G7 |
+
+`candidate_set_hash` is a **mandatory** regression artifact for every harness run (detects behavior/determinism drift separately from quality score).
 
 ### Acceptance gates (P1-C)
 
@@ -209,6 +222,7 @@ Core question:
 | G4 | Recall correctness | fixture pass rate meets baseline threshold (no regression vs P1-A baseline) |
 | G5 | Metrics reproducibility | official eval command regenerates identical schema |
 | G6 | Regression & governance | `npm test`, `ci:org-memory-acceptance`, `ci:governance` green |
+| G7 | Backward compatibility | existing `ContextService`, MCP consumers, and search API paths remain compatible unless ADR declares breaking change |
 
 ---
 
@@ -371,3 +385,5 @@ Core question:
 - [x] ADR task included for architecture traceability.
 
 Owner approval required before `forge-execute` Wave 1.
+
+**Owner approval:** ✅ granted — Wave 1 execute unlocked.
