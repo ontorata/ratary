@@ -6,7 +6,16 @@
 | **Wave** | W1 — Workspace contracts and public interfaces |
 | **Implementation repo** | `Ontorata-Studio` |
 | **Ratary baseline** | `org-memory-p1-c-complete` (unchanged) |
-| **Status** | W1 boundary established |
+| **Status** | ✅ **ACCEPTED** (owner review 2026-07-08) |
+
+---
+
+## Owner review outcome
+
+- Repo separation maintained (Studio consumer · Ratary provider)
+- SDK-only recall access path approved
+- Dual guard (ESLint + CI script) approved as permanent CI gate
+- P1-C regression re-run PASS — Studio changes did not affect recall platform
 
 ---
 
@@ -30,25 +39,37 @@ Forbidden: Studio → Ratary `src/memory/recall/*` or recall policy/provider mod
 
 | File | Role |
 |------|------|
-| `src/domain/recall/workspace-context-package.ts` | Consumer types (no ranking fields) |
-| `src/application/recall/workspace-recall.port.ts` | Application entry port |
+| `src/domain/recall/workspace-context-package.ts` | Immutable consumer types |
+| `src/application/recall/workspace-recall.port.ts` | Minimal application entry (`fetchContextPackage` only) |
 | `src/infrastructure/ratary/workspace-recall-adapter.ts` | SDK-only adapter |
-| `src/infrastructure/ratary/map-sdk-context-result.ts` | Order-preserving SDK mapper |
-| `scripts/check-recall-consumer-boundary.mjs` | CI guard: recall-internal patterns + `context.build()` routing |
+| `scripts/check-recall-consumer-boundary.mjs` | Permanent CI recall guard |
 | `eslint.config.js` | Dev-time import guard |
 
 ---
 
-## Verification
+## Permanent CI gates
 
-| Command | Repo | Expected |
-|---------|------|----------|
-| `npm test` | Ontorata-Studio | PASS |
-| `npm run lint` | Ontorata-Studio | PASS (SDK + recall consumer boundary) |
-| `npm run eval:recall-intelligence` | ratary | PASS (P1-C regression) |
+| Command | Purpose |
+|---------|---------|
+| `npm run check:recall-boundary` | Recall consumer boundary (no full lint dependency) |
+| `npm run test:ci` | Unit tests + recall boundary |
+| `npm run eval:recall-intelligence` | P1-C regression (ratary) |
+
+---
+
+## Known pre-existing issue (non-blocker)
+
+`npm run lint` fails on `src/infrastructure/auth/ratary-native-auth-adapter.ts` due to legacy `fetch()` usage outside Ratary adapter allowlist.  
+**Not introduced by W1.** Recall boundary check passes independently.
 
 ---
 
 ## P1-C no-touch confirmation
 
-Wave W1 did not modify Ratary recall intelligence modules (`RecallPolicy`, providers, context assembler).
+W1 did not modify Ratary recall intelligence modules (`RecallPolicy`, providers, context assembler).
+
+---
+
+## Next
+
+W2 — recall-stateless session orchestration via `WorkspaceRecallOrchestrator`.

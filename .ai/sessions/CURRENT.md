@@ -146,18 +146,18 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-D AI Workspace — W1 complete 🟢
+### P1-D AI Workspace — W2 complete 🟢
 
 | Stage | Status |
 |-------|--------|
-| Forge intent | ✅ approved (D1–D4 locked) |
-| Forge isolate | ✅ active — Studio `forge/ai-workspace-p1-d` @ `af266a7` |
-| Forge blueprint | ✅ W1 approved |
-| W1 | ✅ WorkspaceRecallPort + SDK adapter + boundary guards |
-| Ratary baseline | 🔒 `org-memory-p1-c-complete` (no P1-C code changes) |
-| Implementation repo | `Ontorata-Studio` |
-| Evidence | ✅ [workspace-recall-consumer-boundary-proof.md](../reviews/org-memory-dogfood/workspace-recall-consumer-boundary-proof.md) |
-| Next gate | W2 — Session/workspace orchestration |
+| W1 | ✅ **ACCEPTED** — immutable contracts + dual guard |
+| W2 | ✅ Session orchestration (recall-stateless) |
+| Implementation | `Ontorata-Studio` · `forge/ai-workspace-p1-d` |
+| Ratary baseline | 🔒 `org-memory-p1-c-complete` (unchanged) |
+| Evidence W1 | ✅ [workspace-recall-consumer-boundary-proof.md](../reviews/org-memory-dogfood/workspace-recall-consumer-boundary-proof.md) |
+| Evidence W2 | ✅ [workspace-session-orchestration-proof.md](../reviews/org-memory-dogfood/workspace-session-orchestration-proof.md) |
+| CI gate | `npm run test:ci` + `npm run check:recall-boundary` (permanent) |
+| Next gate | W3 — ContextPackage consumption alignment |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
