@@ -13,7 +13,7 @@ import { ensureDefaultWorkspace, findWorkspaceById } from './workspace-store.js'
 /**
  * Resolves effective MemoryScope from REST auth or MCP env (ADR-007).
  * REST: requires explicit tenant context on AuthUser — no silent default workspace.
- * MCP stdio: bootstrap default workspace (Wave 4 will align remote MCP).
+ * MCP remote: same tenant + permission boundary as REST (Wave 4 transport parity).
  */
 export class DefaultScopeResolver implements IScopeResolver {
   constructor(private readonly db: ISqlDatabase) {}

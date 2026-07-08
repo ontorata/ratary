@@ -33,7 +33,7 @@ export function extractScopeHintsFromRequest(request: FastifyRequest): ScopeReso
   const workspaceId = headerValue(request.headers, 'x-workspace-id');
   const organizationId = headerValue(request.headers, 'x-organization-id');
   const agentId = headerValue(request.headers, 'x-agent-id');
-  const query = request.query as { projectId?: string; project_id?: string };
+  const query = (request.query ?? {}) as { projectId?: string; project_id?: string };
   const projectId = query.projectId ?? query.project_id;
 
   return {
@@ -51,9 +51,9 @@ export function buildTransportContextFromRestRequest(request: FastifyRequest): T
   return {
     requestId: String(request.id),
     ownerId: user?.ownerId ?? '',
-    workspaceId: hints.workspaceId,
+    workspaceId: hints.workspaceId ?? user?.workspaceId,
     agentId: hints.agentId,
-    organizationId: headerValue(request.headers, 'x-organization-id'),
+    organizationId: hints.organizationId ?? user?.organizationId,
     projectId: hints.projectId,
     auth: user ?? null,
     source: 'rest',

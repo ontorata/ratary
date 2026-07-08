@@ -2,10 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import { getEnv } from '../config/index.js';
 import { MCP_SERVER_CARD_PATH } from '../transport/mcp/remote/mcp-server-card.js';
-import {
-  attachTenantContextToAuthUser,
-  resolveTenantContext,
-} from './tenant-context.js';
+import { resolveAuthorizedTenantContext } from './authorization-boundary.js';
 
 function pathOnly(url: string): string {
   return url.split('?')[0] ?? url;
@@ -69,7 +66,7 @@ export function createTenantContextMiddleware(db: ISqlDatabase) {
     const user = request.user;
     if (!user?.ownerId) return;
 
-    const tenant = await resolveTenantContext(db, user, request.headers);
-    request.user = attachTenantContextToAuthUser(user, tenant);
+    const tenant = await resolveAuthorizedTenantContext(db, user, request.headers, 'REST');
+    request.user = tenant;
   };
 }

@@ -6,6 +6,7 @@ import type {
 } from '../../../memory/context.service.js';
 import type { BuildContextBody } from '../../../types/context.js';
 import type { IScopeResolver } from '../../../scope/iscope-resolver.interface.js';
+import { PERMISSIONS } from '../../../auth/permission-context.js';
 import type { TransportContext } from '../transport-context.types.js';
 import type { IApplicationHandler } from '../iapplication-handler.interface.js';
 import type { ContextChunk } from '../streaming/context-chunk.types.js';
@@ -32,7 +33,8 @@ export interface ContextHandlers {
 }
 
 export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers {
-  const scope = (ctx: TransportContext) => resolveHandlerScope(ctx, deps.scopeResolver);
+  const scope = (ctx: TransportContext) =>
+    resolveHandlerScope(ctx, deps.scopeResolver, PERMISSIONS.MEMORY_READ);
   const streamSource = deps.streamSource ?? new DefaultContextStreamSource(deps.contextService);
 
   return {
