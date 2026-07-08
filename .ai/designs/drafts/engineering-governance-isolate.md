@@ -92,7 +92,9 @@ Product features · Marketplace · Billing · Cloud scale · Identity boundary c
 | **How to prove correct?** | P0-B acceptance gate in intent doc — all ✅ before final tag |
 | **Baseline green?** | ✅ 88/88 on `forge/engineering-governance` |
 
-**Ready for forge-blueprint:** ✅ Yes — proceed to `engineering-governance-plan.md` (owner approval before execute).
+**Ready for forge-blueprint:** ✅ Complete — [engineering-governance-plan.md](../blueprints/engineering-governance-plan.md) proposed.
+
+**Ready for forge-execute:** 🔒 Locked — owner blueprint approval required.
 
 ---
 

@@ -115,8 +115,8 @@ Pending:    P0-B forge-blueprint approval
 |-------|----------|--------|
 | forge-intent | `.ai/designs/drafts/engineering-governance-intent.md` | ✅ Approved |
 | forge-isolate | `.ai/designs/drafts/engineering-governance-isolate.md` | ✅ Active · 88/88 baseline |
-| forge-blueprint | `.ai/designs/drafts/engineering-governance-plan.md` | ⏳ Next |
-| Branch | `forge/engineering-governance` | Active |
+| forge-blueprint | `.ai/designs/blueprints/engineering-governance-plan.md` | ⏳ Proposed — waiting approval |
+| forge-execute | Wave 1 ADR Enforcement | 🔒 Locked |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

@@ -9,6 +9,7 @@ baseline_commit: 2a57647
 forge_branch: forge/engineering-governance
 intent: engineering-governance-intent.md
 isolate: engineering-governance-isolate.md
+blueprint: engineering-governance-plan.md
 updated: 2026-07-08
 ---
 
@@ -23,6 +24,7 @@ updated: 2026-07-08
 | **Forge branch** | `forge/engineering-governance` |
 | **Intent** | [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md) — **Approved** |
 | **Isolate** | [engineering-governance-isolate.md](../../designs/drafts/engineering-governance-isolate.md) |
+| **Blueprint** | [engineering-governance-plan.md](../../designs/blueprints/engineering-governance-plan.md) — **Proposed** |
 
 ---
 
