@@ -29,6 +29,7 @@ Public mirror: [docs/architecture/governance/adr-index.md](../../../docs/archite
 | [ADR-0003](./ADR-0003-authorization-model.md) | Authorization Model | `identity-wave-3-locked` |
 | [ADR-0004](./ADR-0004-transport-parity.md) | Transport Parity | `identity-wave-4-locked` |
 | [ADR-0005](./ADR-0005-knowledge-ingestion-pipeline.md) | Knowledge Ingestion Pipeline | P1-B design baseline `org-memory-p1-a-complete` |
+| [ADR-0006](./ADR-0006-recall-intelligence-boundary.md) | Recall Intelligence Boundary | P1-C design baseline `org-memory-p1-b-complete` |
 
 ---
 
