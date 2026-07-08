@@ -70,6 +70,39 @@ Copy into Ratary `save_memory`, PR comment, or agent prompt:
 
 ---
 
+## P1-A handoff trace standard (Org Memory Dogfood)
+
+For P1-A sessions, handoff must also record an MCP interaction chain:
+
+```
+session_id
+   -> handoff_id
+      -> ingestion_run_id
+         -> recall_run_id
+            -> evidence_run_id
+               -> ratary_codename
+```
+
+### Recommended command
+
+```bash
+npm run trace:org-memory-handoff -- --ratary-codename TASK-XXXX
+```
+
+Defaults:
+
+- `ingestion_run_id` = latest from `.ai/reviews/org-memory-dogfood/ingestion-log.md`
+- `recall_run_id` = latest from `.ai/reviews/org-memory-dogfood/recall-log.md`
+- `evidence_run_id` = `recall_run_id` unless overridden
+
+Trace output path:
+
+- `.ai/reviews/org-memory-dogfood/mcp-interaction-log.md`
+
+This keeps session evidence searchable without manual stitching across logs.
+
+---
+
 ## Recommended multi-agent pipeline
 
 ```

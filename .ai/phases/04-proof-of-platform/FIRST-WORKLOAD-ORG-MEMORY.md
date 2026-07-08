@@ -105,7 +105,7 @@ Previous workload (complete): [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](./FIRST
 
 Intent → [org-memory-dogfood-intent.md](../../designs/drafts/org-memory-dogfood-intent.md)  
 Isolate → [org-memory-dogfood-isolate.md](../../designs/drafts/org-memory-dogfood-isolate.md) ✅  
-Blueprint → [org-memory-dogfood-plan.md](../../designs/drafts/org-memory-dogfood-plan.md) 🟡 pending approval  
+Blueprint → [org-memory-dogfood-plan.md](../../designs/drafts/org-memory-dogfood-plan.md) ✅ approved  
 Evidence → `.ai/reviews/org-memory-dogfood/`
 
 ---
@@ -116,5 +116,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Task 2: ingestion scope contract + evidence baseline (`ingestion-proof.md`)
 - ✅ Task 3: ingest runner + deterministic ingestion log schema (`sync:org-memory`)
 - ✅ Task 4: recall evaluation harness with comparable metrics (`eval:org-memory-recall`)
-- ⏳ Next: Task 5 session handoff + MCP interaction trace automation
+- ✅ Task 5: session handoff + MCP interaction trace automation (`trace:org-memory-handoff`)
+- ⏳ Next: Task 6 internal usage metrics pipeline (G1/G5)
 

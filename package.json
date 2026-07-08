@@ -70,6 +70,7 @@
     "sync:status": "tsx scripts/sync-status.ts",
     "sync:org-memory": "tsx scripts/sync-org-memory.ts",
     "eval:org-memory-recall": "tsx scripts/eval-org-memory-recall.ts",
+    "trace:org-memory-handoff": "tsx scripts/forge/remember-org-memory.ts",
     "steward:memories": "tsx scripts/steward-memories.ts",
     "steward:memories:execute": "tsx scripts/steward-memories.ts --execute",
     "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",
