@@ -1,6 +1,6 @@
 # P2-C.2 Gemini Provider — Forge Intent
 
-**Status:** Draft — pending owner approval  
+**Status:** Accepted — owner approval 2026-07-08  
 **Slug:** ontory-provider-gemini-p2-c2-intent  
 **Baseline:** `org-memory-p2-c1-complete` (Ontory `4b3e094` · ai-brain `0640737`)  
 **Branch (proposed):** `forge/ontory-provider-gemini-p2-c2` (ontory only)  
@@ -35,9 +35,13 @@ Core question:
 | D9 | **Capability metadata / negotiation** — **out of scope** (future ADR after ≥3 vendors if needed) |
 | D10 | **C-CAN / streaming / routing / runtime refactor** — out of scope |
 
-### Contract boundary (owner pattern)
+| D11 | **Envelope rule** — Gemini MUST NOT introduce vendor-specific fields into shared `AIExecutionResponse` / `ProviderError` envelopes |
+
+### Contract boundary (owner-locked)
 
 > **Gemini adapter MUST conform to existing Ontory provider contracts.** Any contract change requires a separate ADR and **MUST NOT** be introduced through provider integration work.
+
+> **Gemini implementation MUST consume the existing Ontory provider contract without introducing Gemini-specific fields into shared envelopes.**
 
 ---
 

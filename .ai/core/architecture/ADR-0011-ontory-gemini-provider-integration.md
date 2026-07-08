@@ -2,7 +2,8 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Proposed** |
+| **Status** | **Accepted** |
+| **Accepted** | 2026-07-08 |
 | **Date** | 2026-07-08 |
 | **Baseline** | `org-memory-p2-c1-complete` (Ontory `4b3e094`) |
 | **Related** | ADR-0007 · ADR-0008 · ADR-0010 · ADR-0009 · FROZEN-BOUNDARY-BYPASS-POLICY |
@@ -31,6 +32,8 @@ Implement **GeminiProviderAdapter** as a thin adapter behind frozen `ProviderRun
 ### Contract boundary (owner-locked)
 
 > **Gemini adapter MUST conform to existing Ontory provider contracts.** Any contract change requires a separate ADR and **MUST NOT** be introduced through provider integration work.
+
+> **Gemini implementation MUST consume the existing Ontory provider contract without introducing Gemini-specific fields into shared envelopes.**
 
 ### Configuration
 
