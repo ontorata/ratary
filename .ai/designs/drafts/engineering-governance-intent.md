@@ -2,7 +2,7 @@
 id: ENGINEERING-GOVERNANCE
 phase: 04-proof-of-platform
 stage: forge-intent
-status: Draft — pending owner approval
+status: Approved
 owner: Ontorata
 workload: Engineering Governance
 evidence_package: engineering-governance
@@ -24,7 +24,7 @@ updated: 2026-07-08
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Draft** — formally opens after P0-A remote sync succeeds |
+| **Status** | **Approved** — owner direction locked 2026-07-08 (after P0-A RELEASED on origin) |
 | **Slug** | `engineering-governance` |
 | **Phase** | 4 — Proof of Platform |
 | **Category** | Must Prove (operational foundation) |
@@ -34,7 +34,7 @@ updated: 2026-07-08
 
 Parent: [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](../../phases/04-proof-of-platform/FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md) · [EXECUTION-CONTRACT.md](../../phases/04-proof-of-platform/EXECUTION-CONTRACT.md)
 
-**Gate before Isolate:** P0-A distribution status = **RELEASED** (remote `main` + tags verified).
+**Gate before Isolate:** P0-A distribution status = **RELEASED** ✅ verified 2026-07-08.
 
 ---
 

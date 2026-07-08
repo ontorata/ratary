@@ -1,13 +1,14 @@
 ---
 id: P0-B-ENGINEERING-GOVERNANCE
 phase: 04-proof-of-platform
-status: Intent Draft — not started
+status: Forge-Isolate Active
 owner: Ontorata
 workload: Engineering Governance
 baseline_tag: identity-foundation-p0-a-complete
 baseline_commit: 2a57647
 forge_branch: forge/engineering-governance
 intent: engineering-governance-intent.md
+isolate: engineering-governance-isolate.md
 updated: 2026-07-08
 ---
 
@@ -16,39 +17,41 @@ updated: 2026-07-08
 | Field | Value |
 |-------|-------|
 | **Milestone** | Engineering Governance (P0-B) |
-| **Status** | ⏳ **READY TO OPEN** — blocked on P0-A remote sync |
+| **Status** | 🟢 **OPEN** — Intent Approved · Forge-Isolate Active |
 | **Category** | Operational foundation (not feature development) |
-| **Baseline** | `main` @ `2a57647` · tag `identity-foundation-p0-a-complete` |
+| **Baseline** | P0-A RELEASED · `main` @ `2a57647` · tag `identity-foundation-p0-a-complete` |
 | **Forge branch** | `forge/engineering-governance` |
-| **Intent** | [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md) |
+| **Intent** | [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md) — **Approved** |
+| **Isolate** | [engineering-governance-isolate.md](../../designs/drafts/engineering-governance-isolate.md) |
 
 ---
 
 ## Prerequisite gate
 
-P0-A must reach **RELEASED** (not Local Release Candidate):
+| Gate | Status |
+|------|--------|
+| P0-A RELEASED on origin | ✅ 2026-07-08 |
+| Remote tag `identity-foundation-p0-a-complete` → `2a57647` | ✅ |
+| Wave lock tags on origin | ✅ |
+| P0-B intent approved | ✅ 2026-07-08 |
+| Baseline tests green | ✅ 88/88 |
 
-```bash
-git push origin main --tags   # requires OAuth workflow scope
-git ls-remote origin refs/tags/identity-foundation-p0-a-complete
-```
-
-Until verified on `origin`, P0-B waves do **not** start.
+**Implementation waves:** ⏳ pending `forge-blueprint` approval — do not execute before plan approved.
 
 ---
 
-## Scope summary
+## Wave plan
 
-| # | Area | Deliverable |
-|---|------|-------------|
-| 1 | ADR enforcement | ADR-0001–0004 + PR linkage rule |
-| 2 | CI governance gate | test · test:identity · test:e2e · arch · migration · permission · docs |
-| 3 | AI workflow governance | Implementation → evidence → review → commit |
-| 4 | Release process | RELEASE-PROCESS · VERSIONING · CHANGELOG-POLICY |
-| 5 | Migration governance | ownership · compat · rollback · verification |
-| 6 | Repository constitution | ENGINEERING-PRINCIPLES · SECURITY-BOUNDARY · CHANGE-MANAGEMENT |
+| Wave | Focus | Status |
+|------|-------|--------|
+| 1 | ADR Enforcement | ⏳ |
+| 2 | CI Governance Gate | ⏳ |
+| 3 | AI Engineering Workflow Governance | ⏳ |
+| 4 | Release Management | ⏳ |
+| 5 | Migration Governance | ⏳ |
+| 6 | Engineering Constitution | ⏳ |
 
-Detail: [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md)
+Pattern per wave: Implementation → Tests → Evidence → Governance checkpoint → Lock tag
 
 ---
 
@@ -72,4 +75,4 @@ Detail: [engineering-governance-intent.md](../../designs/drafts/engineering-gove
 
 - [P0-A-IDENTITY-FOUNDATION.md](./P0-A-IDENTITY-FOUNDATION.md)
 - [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](../../phases/04-proof-of-platform/FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md)
-- Evidence (create on execute): `.ai/reviews/engineering-governance/`
+- Evidence: `.ai/reviews/engineering-governance/`

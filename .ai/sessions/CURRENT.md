@@ -42,12 +42,10 @@
 ### Runtime / product (in progress)
 
 - **Constitution amended:** Internal Proof Before Public Capability (2026-07-08)
-- **P0-A Identity Foundation:** ✅ COMPLETE · 🔒 LOCKED · 🚀 **LOCAL RELEASE CANDIDATE**
-- **P0-B Engineering Governance:** ⏳ intent draft on `forge/engineering-governance` — opens after remote sync
-- **First workload:** Engineering Governance (P0-B operational foundation)
-- Auth: Studio → auth gateway → Ratary (native auth path)
-- Ratary dev server running locally
-- **Not yet:** P0-A remote push · P0-B waves · first trusted production workload at scale
+- **P0-A Identity Foundation:** ✅ **RELEASED** on origin (verified 2026-07-08)
+- **P0-B Engineering Governance:** 🟢 Intent Approved · Forge-Isolate Active
+- **First workload:** Engineering Governance — blueprint pending
+- **Not yet:** P0-B wave execution · production-scale dogfood ingest
 
 ---
 
@@ -55,9 +53,8 @@
 
 | Priority | Item | Bucket |
 |----------|------|--------|
-| **P0** | P0-A remote sync (`git push origin main --tags`) | Must Enable — **blocker** (OAuth `workflow` scope) |
-| **P0** | P0-B forge-intent approval + isolate | Must Prove — after P0-A RELEASED |
-| **P0** | Engineering Governance workload waves | Must Prove — P0-B |
+| **P0** | P0-B forge-blueprint (6 waves) | Must Prove — **active** |
+| **P0** | P0-B wave execution | Must Prove — after blueprint approved |
 | **P0** | First external organization onboarded | Must Prove |
 | **P1** | ADR-012 tenant isolation integration tests | Must Prove |
 | **P1** | ADR-010 OTel Phase 1 | Must Enable |
@@ -69,11 +66,10 @@
 
 ## What should happen next?
 
-1. **P0-A remote sync** — `git push origin main --tags` with token that has `workflow` scope; verify tags on `origin`; flip [P0-A release](../../governance/releases/P0-A-IDENTITY-FOUNDATION.md) to **RELEASED**
-2. **P0-B forge-intent** — review [engineering-governance-intent.md](../designs/drafts/engineering-governance-intent.md); owner approval → forge-isolate on `forge/engineering-governance`
-3. **P0-B waves** — ADR · CI · AI workflow · release · migration · constitution (see intent)
-4. **Ratary dogfood loop** — production-scale ingest after P0-B evidence passes
-5. **Do not start** Marketplace scale · Cloud scale · feature sprawl before P0-B lock
+1. **P0-B forge-blueprint** — `engineering-governance-plan.md` (waves 1–6) · owner approval
+2. **P0-B forge-execute** — one wave at a time · evidence per wave · lock tags
+3. **Ratary dogfood loop** — production-scale ingest after P0-B acceptance gate passes
+4. **Do not start** feature sprawl · identity boundary changes without ADR
 
 ---
 
@@ -94,33 +90,33 @@
 
 ```
 Repository: ai-brain (ratary)
-Branch:     main (local) · forge/engineering-governance (P0-B prep)
-Commit:     239f9d2 — P0-A merge hash doc; 2a57647 merge
-Remote:     origin — push BLOCKED (workflow scope)
-Pending:    git push origin main --tags
+Branch:     forge/engineering-governance (P0-B active)
+Main:       239f9d2 on origin ✅
+Remote:     origin synced — P0-A RELEASED verified
+Pending:    P0-B forge-blueprint approval
 ```
 
 ---
 
 ## Forge status
 
-### P0-A Identity Foundation — LOCAL RELEASE CANDIDATE
+### P0-A Identity Foundation — RELEASED ✅
 
 | Stage | Status |
 |-------|--------|
 | Waves 1–5 | ✅ LOCKED |
-| forge-land merge | ✅ `2a57647` |
-| Tag | ✅ `identity-foundation-p0-a-complete` (local) |
-| Remote sync | ⏳ pending |
+| Merge | ✅ `2a57647` on origin |
+| Tag | ✅ `identity-foundation-p0-a-complete` |
+| Remote sync | ✅ verified 2026-07-08 |
 
-### P0-B Engineering Governance — READY TO OPEN
+### P0-B Engineering Governance — OPEN 🟢
 
 | Stage | Document | Status |
 |-------|----------|--------|
-| forge-intent | `.ai/designs/drafts/engineering-governance-intent.md` | ⏳ Draft — pending approval + remote sync |
-| Release record | `.ai/governance/releases/P0-B-ENGINEERING-GOVERNANCE.md` | ⏳ placeholder |
-| Branch | `forge/engineering-governance` | Created from `main` |
-| forge-isolate | — | Blocked until P0-A RELEASED on origin |
+| forge-intent | `.ai/designs/drafts/engineering-governance-intent.md` | ✅ Approved |
+| forge-isolate | `.ai/designs/drafts/engineering-governance-isolate.md` | ✅ Active · 88/88 baseline |
+| forge-blueprint | `.ai/designs/drafts/engineering-governance-plan.md` | ⏳ Next |
+| Branch | `forge/engineering-governance` | Active |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

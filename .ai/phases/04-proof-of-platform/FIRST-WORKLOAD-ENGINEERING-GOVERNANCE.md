@@ -5,7 +5,7 @@
 | **Authority** | Governance & Execution |
 | **Horizon** | Phase 4 |
 | **Owner** | Engineering + Product |
-| **Status** | **Selected** — P0-B intent draft ready; blocked on P0-A remote sync |
+| **Status** | **Active** — P0-B Forge-Isolate; blueprint pending |
 | **Category** | Must Prove |
 | **Evidence package** | `.ai/reviews/engineering-governance/` (create when P0-A passes) |
 
@@ -60,13 +60,14 @@ Each capability is a **sub-capability** of the same workload — shared ingest, 
 | Prerequisite | Status |
 |--------------|--------|
 | Identity Foundation E2E | ✅ P0-A engineering complete — [P0-A release](../../governance/releases/P0-A-IDENTITY-FOUNDATION.md) |
-| P0-A remote sync (`main` + tags) | ⏳ Local RC — OAuth `workflow` scope required |
+| P0-A remote sync (`main` + tags) | ✅ RELEASED — verified 2026-07-08 |
+| P0-B forge-intent approved | ✅ [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md) |
+| P0-B forge-isolate | ✅ [engineering-governance-isolate.md](../../designs/drafts/engineering-governance-isolate.md) |
 | Organization Ontorata exists | ✅ (internal bootstrap) |
 | Workspace bound to org | ✅ P0-A waves 1–2 |
 | MCP + REST same tenant context | ✅ P0-A wave 4 |
-| P0-B forge-intent approved | ⏳ [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md) |
 
-**Do not start ingest at production scale until P0-A distribution = RELEASED and P0-B acceptance gate passes.**
+**Do not start ingest at production scale until P0-B acceptance gate passes.**
 
 ---
 
