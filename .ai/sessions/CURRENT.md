@@ -169,15 +169,26 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-C.1 Anthropic** — harness gate unlocked |
 
-### P2-C.1 Anthropic Provider — Intent Draft
+### P2-C.1 Anthropic Provider — CLOSED 🔒
+
+| Stage | Status |
+|-------|--------|
+| ADR-0010 | ✅ **Accepted · Closed** |
+| Adapter | ✅ `src/adapters/anthropic/*` @ Ontory `4b3e094` |
+| Conformance | ✅ anthropic + stub + openai regression PASS |
+| Baseline lock | ✅ `org-memory-p2-c1-complete` |
+| Release | ✅ [P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md](../governance/releases/P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md) |
+| Next | **P2-C.2 Gemini** — separate wave |
+
+### P2-C.1 Anthropic Provider — Intent (superseded by closeout above)
 
 | Stage | Status |
 |-------|--------|
 | Gate | ✅ P2-C.0 `org-memory-p2-c0-complete` closed |
-| Forge intent | ✅ [ontory-provider-anthropic-p2-c1-intent.md](../designs/drafts/ontory-provider-anthropic-p2-c1-intent.md) **Accepted** |
-| Blueprint | ✅ [ontory-provider-anthropic-p2-c1-plan.md](../designs/drafts/ontory-provider-anthropic-p2-c1-plan.md) approved |
-| ADR-0010 | ✅ **Accepted** |
-| Branch | `forge/ontory-provider-anthropic-p2-c1` — **isolate in progress** |
+| Forge intent | ✅ Closed @ `4b3e094` |
+| Blueprint | ✅ Executed |
+| ADR-0010 | ✅ **Accepted · Closed** |
+| Branch | `forge/ontory-provider-anthropic-p2-c1` @ `4b3e094` |
 | Harness rule | Add Anthropic subject only — **do not modify** P2-C.0 contract |
 
 ### Post-baseline governance
@@ -197,7 +208,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B Task 7 | ✅ Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) |
 | P2-B closeout | ✅ tag `org-memory-p2-b-complete` @ Ontory `e63bb93` · ai-brain `fe70ede` · Studio unchanged `043666e` |
 | P2-C.0 | ✅ **CLOSED** · tag `org-memory-p2-c0-complete` @ Ontory `8e307ce` |
-| Next gate | **P2-C.1 Anthropic** — harness gate unlocked |
+| Next gate | **P2-C.2 Gemini** — separate adapter wave |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

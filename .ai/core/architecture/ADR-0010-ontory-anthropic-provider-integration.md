@@ -72,14 +72,14 @@ AIExecutionRequest → RequestMapper → SDK client → ResponseMapper → AIExe
 
 ## Definition of Done (P2-C.1)
 
-- [ ] ADR-0010 Accepted
-- [ ] `AnthropicProviderAdapter` behind `ProviderRuntime`
-- [ ] Config selects anthropic via env
-- [ ] All Anthropic MUST conformance scenarios PASS
-- [ ] OpenAI + stub conformance regression PASS
-- [ ] `check:boundary` PASS with anthropic SDK allowlist
-- [ ] Evidence pack + `org-memory-p2-c1-complete` tag
-- [ ] ADR-0009 extension note (not P2-C.0 revision)
+- [x] ADR-0010 Accepted
+- [x] `AnthropicProviderAdapter` behind `ProviderRuntime`
+- [x] Config selects anthropic via env
+- [x] All Anthropic MUST conformance scenarios PASS
+- [x] OpenAI + stub conformance regression PASS
+- [x] `check:boundary` PASS with anthropic SDK allowlist
+- [x] Evidence pack + `org-memory-p2-c1-complete` tag
+- [x] ADR-0009 extension note (not P2-C.0 revision)
 
 ---
 

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | ✅ Approved — ready for isolate |
+| **Status** | ✅ CLOSED — Tasks 0–11 complete · tag `org-memory-p2-c1-complete` |
 | **Intent** | [ontory-provider-anthropic-p2-c1-intent.md](./ontory-provider-anthropic-p2-c1-intent.md) |
 | **ADR** | ADR-0010 (proposed) · ADR-0009 contract frozen |
 | **Repo** | `ontory` · branch `forge/ontory-provider-anthropic-p2-c1` |

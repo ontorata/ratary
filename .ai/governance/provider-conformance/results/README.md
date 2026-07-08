@@ -14,6 +14,8 @@
 - [openai-pass.md](./openai-pass.md)
 - [stub-pass.md](./stub-pass.md)
 
+- [anthropic-pass.md](./anthropic-pass.md)
+
 ## Verification
 
 **Ontory** (executable harness):

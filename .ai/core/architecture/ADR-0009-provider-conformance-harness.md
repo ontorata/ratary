@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Proposed** — awaiting owner acceptance before isolate |
+| **Status** | **Accepted · Closed** |
 | **Date** | 2026-07-08 |
 | **Baseline** | `org-memory-p2-b-complete` (Ontory `e63bb93` · ai-brain `fe70ede`) |
 | **Related** | ADR-0007 · ADR-0008 · FROZEN-BOUNDARY-BYPASS-POLICY |
@@ -56,16 +56,16 @@ Conformance Harness
 
 ### Minimum scenario matrix
 
-| ID | Scenario | Purpose |
-|----|----------|---------|
-| C-REQ | Request mapping | Runtime request → provider-facing params (via mapper / adapter path) |
-| C-RES | Response normalization | Provider-like payload → `AIExecutionResponse` envelope |
-| C-ERR | Error mapping | Failure facts → `ProviderError` codes |
-| C-TMO | Timeout | Timeout/abort-like failure → `ProviderError(timeout)` |
-| C-CAN | Cancellation | Documented behavior for cancel/abort (may be **probe / deferred green** if port lacks AbortSignal in P2-B) |
-| C-META | Metadata envelope | `provider`, `requestId`, `finishedAt`, optional `usage` present and vendor-neutral |
-| C-CFG | Configuration failure | Missing key / invalid provider → `ProviderError(configuration)` |
-| C-RTY | Retry boundary | Adapter must not silently retry in ways that hide errors from Runtime (no ambient retry orchestrator) |
+| ID | Scenario | OpenAI | Stub | Purpose |
+|----|----------|--------|------|---------|
+| C-REQ | Request mapping | MUST | OPTIONAL / covered by mapping | Runtime request → provider-facing params (via mapper / adapter path) |
+| C-RES | Response normalization | MUST | MUST | Provider-like payload → `AIExecutionResponse` envelope |
+| C-ERR | Error mapping | MUST | MUST | Failure facts → `ProviderError` codes |
+| C-TMO | Timeout | MUST | MUST | Timeout/abort-like failure → `ProviderError(timeout)` |
+| C-CAN | Cancellation | DEFER | DEFER | Lifecycle cancellation contract requires later execution lifecycle support |
+| C-META | Metadata envelope | MUST | MUST | `provider`, `requestId`, `finishedAt`, optional `usage` present and vendor-neutral |
+| C-CFG | Configuration failure | MUST | MUST | Missing key / invalid provider → `ProviderError(configuration)` |
+| C-RTY | Retry boundary | MUST | OPTIONAL | Adapter must not silently retry in ways that hide errors from Runtime (no ambient retry orchestrator) |
 
 ### Governance output layout
 
@@ -76,7 +76,7 @@ Conformance Harness
   results/
 ```
 
-Executable harness lives in **ontory** (e.g. `tests/conformance/` + `npm run test:conformance`) and writes/links results under governance `results/` when run for evidence.
+Executable harness lives in **ontory** (e.g. `tests/conformance/` + `npm run test:conformance`) and writes/links results under governance `results/` when run for evidence. The `ai-brain` governance mirror also exposes `npm run test:conformance` to verify that accepted contract artifacts and checked-in results remain aligned.
 
 ### Locked principles
 
@@ -88,12 +88,26 @@ Executable harness lives in **ontory** (e.g. `tests/conformance/` + `npm run tes
 
 ### Deferred probes (honest gaps)
 
-P2-B `ProviderRuntime.complete` has no AbortSignal parameter yet. Scenario **C-CAN** shall:
+P2-B `ProviderRuntime.complete` has no AbortSignal parameter yet. Scenario **C-CAN** is accepted as:
 
-- assert current ErrorMapper maps `AbortError` → `timeout`/`cancelled` as already defined, **or**
-- mark **SKIP/DEFERRED** with explicit note that full cancellation semantics require a later contract ADR before P2-D / Anthropic.
+```text
+C-CAN
+Status: deferred
+
+Reason:
+ProviderRuntime cancellation contract requires execution lifecycle support.
+
+Target:
+P2-D Streaming / execution lifecycle wave
+```
 
 Harness must not pretend cancellation is fully productized if the port cannot cancel an in-flight call.
+
+### Accepted owner decisions
+
+1. **C-CAN:** defer implementation, preserve contract awareness, and keep a scenario placeholder. Do not add an active field contract in P2-C.0.
+2. **Command:** use `npm run test:conformance`.
+3. **Stub matrix:** required subset is **C-RES / C-META / C-CFG**. Stub may also run C-ERR/C-TMO to prove the boundary, but it does not need to simulate a full vendor.
 
 ---
 
@@ -112,14 +126,14 @@ Not regression-safe; OpenAI remains unchallenged golden path.
 
 ## Definition of Done (P2-C.0)
 
-- [ ] ADR-0009 Accepted
-- [ ] `contract.md` published under `.ai/governance/provider-conformance/`
-- [ ] Scenario catalog checked in under `scenarios/`
-- [ ] Executable conformance suite in Ontory; CI/local command documented
-- [ ] OpenAI (mocked) + stub subjects PASS required scenarios
-- [ ] C-CAN disposition recorded (pass / deferred with ADR note)
-- [ ] Results snapshot in `results/` for evidence
-- [ ] Explicit gate: **P2-C.1 Anthropic blocked until harness PASS**
+- [x] ADR-0009 Accepted
+- [x] `contract.md` published under `.ai/governance/provider-conformance/`
+- [x] Scenario catalog checked in under `scenarios/`
+- [x] CI/local command documented as `npm run test:conformance`
+- [x] OpenAI (mocked) + stub subjects PASS required scenarios
+- [x] C-CAN disposition recorded as deferred with ADR note
+- [x] Results snapshot in `results/` for evidence
+- [x] Explicit gate: **P2-C.1 Anthropic blocked until harness PASS**
 
 ---
 
@@ -140,6 +154,25 @@ Not regression-safe; OpenAI remains unchallenged golden path.
 
 ## Next after acceptance
 
-1. forge-isolate from `org-memory-p2-b-complete` on `ontory`
-2. Blueprint: contract docs · harness runner · OpenAI+stub subjects · results
-3. On PASS → unlock P2-C.1 Anthropic intent only
+P2-C.0 is closed at the governance/evidence layer. Do not add new scenarios or providers to this acceptance baseline before P2-C.1.
+
+P2-C.1 Anthropic may open as a separate adapter wave only when:
+
+1. Anthropic adapter implementation is complete.
+2. `ProviderRuntime` contract remains unchanged unless a later ADR accepts a change.
+3. `npm run test:conformance` passes.
+4. `.ai/governance/provider-conformance/results/anthropic-pass.md` is added.
+5. ADR-0009 is updated only as an extension note, not as a P2-C.0 revision.
+
+---
+
+## Extension note — P2-C.1 Anthropic subject registered (2026-07-08)
+
+P2-C.1 added **Anthropic** as a conformance subject via `tests/conformance/anthropic.conformance.test.ts` and `results/anthropic-pass.md`. This is **not** a revision of the P2-C.0 scenario matrix or Provider Contract.
+
+| Field | Value |
+|-------|-------|
+| Ontory commit | `4b3e094` |
+| Closeout tag | `org-memory-p2-c1-complete` |
+| Contract change | **None** |
+| Harness matrix change | **None** — new subject file only |
