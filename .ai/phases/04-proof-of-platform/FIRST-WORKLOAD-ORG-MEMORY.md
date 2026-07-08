@@ -136,5 +136,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-C isolate active: [retrieval-recall-p1-c-isolate.md](../../designs/drafts/retrieval-recall-p1-c-isolate.md)
 - 🟡 P1-C blueprint drafted: [retrieval-recall-p1-c-plan.md](../../designs/drafts/retrieval-recall-p1-c-plan.md)
 - ✅ P1-C blueprint approved + Wave 1 complete (contracts, ADR-0006, service skeleton)
-- ⏳ Next: Wave 2 Candidate Retrieval Boundary
+- ✅ P1-C Wave 2 complete (SQL + Knowledge candidate providers)
+- ⏳ Next: Wave 3 Ranking Intelligence
 

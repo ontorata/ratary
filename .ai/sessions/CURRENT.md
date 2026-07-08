@@ -146,18 +146,17 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-C Retrieval / Recall Intelligence — Wave 1 complete 🟢
+### P1-C Retrieval / Recall Intelligence — Wave 2 complete 🟢
 
 | Stage | Status |
 |-------|--------|
-| Forge intent | ✅ [retrieval-recall-p1-c-intent.md](../designs/drafts/retrieval-recall-p1-c-intent.md) approved |
-| Baseline | ✅ starts from `org-memory-p1-b-complete` |
-| Scope lock | ✅ allowed/forbidden changes defined in intent |
-| Forge isolate | ✅ [retrieval-recall-p1-c-isolate.md](../designs/drafts/retrieval-recall-p1-c-isolate.md) active @ `22633fe` |
-| Forge blueprint | ✅ [retrieval-recall-p1-c-plan.md](../designs/drafts/retrieval-recall-p1-c-plan.md) approved |
-| Wave 1 | ✅ recall contracts + ADR-0006 + service skeleton |
-| Evidence | ✅ [recall-contract-proof.md](../reviews/org-memory-dogfood/recall-contract-proof.md) |
-| Next gate | Wave 2 — Candidate Retrieval Boundary |
+| Forge intent | ✅ approved |
+| Forge isolate | ✅ active @ `22633fe` |
+| Forge blueprint | ✅ approved |
+| Wave 1 | ✅ contracts + ADR-0006 + service skeleton |
+| Wave 2 | ✅ SQL + Knowledge providers (raw candidates only) |
+| Evidence | ✅ [recall-candidate-boundary-proof.md](../reviews/org-memory-dogfood/recall-candidate-boundary-proof.md) |
+| Next gate | Wave 3 — Ranking Intelligence (`RecallPolicy`) |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

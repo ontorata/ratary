@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — execute unlocked (Wave 1) |
+| **Status** | Approved — Wave 2 complete |
 | **Branch** | `forge/retrieval-recall-intelligence` |
 | **Intent** | [retrieval-recall-p1-c-intent.md](./retrieval-recall-p1-c-intent.md) |
 | **Isolate** | [retrieval-recall-p1-c-isolate.md](./retrieval-recall-p1-c-isolate.md) |
@@ -13,11 +13,14 @@
 
 ## Execution progress
 
-- [ ] Wave 1 — Recall Contract Boundary
+- [x] Wave 1 — Recall Contract Boundary
   - [x] Task 1 — recall contract package
   - [x] Task 2 — recall architecture ADR
   - [x] Task 3 — recall contract proof + service skeleton ports
-- [ ] Wave 2 — Candidate Retrieval Boundary
+- [x] Wave 2 — Candidate Retrieval Boundary
+  - [x] Task 4 — SQL candidate provider adapter
+  - [x] Task 5 — knowledge candidate provider adapter
+  - [x] Task 6 — provider trace enrichment (orchestration remains ranking-free)
 - [ ] Wave 3 — Ranking Intelligence
 - [ ] Wave 4 — Context Assembly Intelligence
 - [ ] Wave 5 — Recall Evaluation Proof
@@ -235,8 +238,9 @@ Core question:
 
 ### Wave 2 — Candidate Retrieval Boundary
 - Implement `CandidateProvider` adapters over existing candidate sources.
-- Implement `RecallService` skeleton (request → candidate set → trace shell).
-- No advanced ranking optimization.
+- Providers return **raw candidates only** (fetch + tenant scoping; no ranking/scoring).
+- All providers emit uniform `RecallCandidate.metadata` and `RecallTrace.providerTrace` (`provider`, `queryTimeMs`, `returned`, `filtered`, `candidateSetHash`).
+- Providers must not invoke `RecallPolicy`; decision remains in orchestration.
 
 ### Wave 3 — Ranking Intelligence
 - Implement `RecallPolicy` with relevance signals + confidence metadata.
