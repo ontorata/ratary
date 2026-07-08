@@ -36,6 +36,17 @@ export type PipelineRunOutput = {
   stageResults: PipelineStageResult[];
 };
 
+export type EmbeddingFailure = {
+  category:
+    | 'temporary_provider_failure'
+    | 'timeout'
+    | 'invalid_payload'
+    | 'corrupted_chunk'
+    | 'cancelled_job'
+    | 'unknown';
+  message: string;
+};
+
 function shortHash(value: string): string {
   return createHash('sha256').update(value).digest('hex').slice(0, 16);
 }
@@ -182,9 +193,40 @@ function createEmbeddingRecord(job: EmbeddingJob, chunk: KnowledgeChunk): Embedd
   });
 }
 
+export function classifyEmbeddingFailure(error: unknown): EmbeddingFailure {
+  if (error instanceof Error) {
+    const message = error.message.toLowerCase();
+    if (message.includes('timeout')) return { category: 'timeout', message: error.message };
+    if (message.includes('temporary') || message.includes('provider unavailable')) {
+      return { category: 'temporary_provider_failure', message: error.message };
+    }
+    if (message.includes('invalid payload') || message.includes('invalid model')) {
+      return { category: 'invalid_payload', message: error.message };
+    }
+    if (message.includes('corrupted')) return { category: 'corrupted_chunk', message: error.message };
+    if (message.includes('cancelled')) return { category: 'cancelled_job', message: error.message };
+    return { category: 'unknown', message: error.message };
+  }
+  return { category: 'unknown', message: 'unknown embedding error' };
+}
+
+export function shouldRetryEmbeddingFailure(category: EmbeddingFailure['category']): boolean {
+  return category === 'temporary_provider_failure' || category === 'timeout';
+}
+
+function defaultProviderCall(chunk: KnowledgeChunk, model: string): string {
+  return shortHash(`${chunk.textDigest}:${model}`);
+}
+
 function runEmbeddingStage(
   chunks: KnowledgeChunk[],
+  options?: {
+    maxRetries?: number;
+    providerCall?: (chunk: KnowledgeChunk, model: string) => string;
+  },
 ): { jobs: EmbeddingJob[]; records: EmbeddingRecord[]; executions: EmbeddingJobExecution[]; failed: number } {
+  const providerCall = options?.providerCall ?? defaultProviderCall;
+  const maxRetries = options?.maxRetries ?? 2;
   const jobs: EmbeddingJob[] = [];
   const records: EmbeddingRecord[] = [];
   const executions: EmbeddingJobExecution[] = [];
@@ -211,17 +253,59 @@ function runEmbeddingStage(
       continue;
     }
 
-    records.push(createEmbeddingRecord(job, chunk));
+    let attempt = 0;
+    let stateHistory: EmbeddingJobExecution['stateHistory'] = ['PENDING'];
+    let lastFailure: EmbeddingFailure | null = null;
+    let completed = false;
+
+    while (attempt <= maxRetries) {
+      attempt += 1;
+      stateHistory = [...stateHistory, ...(attempt === 1 ? ['RUNNING'] : ['RETRYING', 'RUNNING'])];
+      try {
+        const vectorDigest = providerCall(chunk, job.model);
+        records.push(
+          EmbeddingRecordSchema.parse({
+            ...createEmbeddingRecord(job, chunk),
+            vectorDigest,
+          }),
+        );
+        completed = true;
+        break;
+      } catch (error) {
+        lastFailure = classifyEmbeddingFailure(error);
+        if (!shouldRetryEmbeddingFailure(lastFailure.category) || attempt > maxRetries) break;
+      }
+    }
+
+    if (completed) {
+      executions.push(
+        EmbeddingJobExecutionSchema.parse({
+          jobId: job.jobId,
+          chunkId: chunk.chunkId,
+          state: 'COMPLETED',
+          stateHistory: [...stateHistory, 'COMPLETED'],
+          attemptCount: attempt,
+          retryable: false,
+          resumable: true,
+          completedAt: new Date().toISOString(),
+        }),
+      );
+      continue;
+    }
+
+    failed += 1;
+    const failureCategory = lastFailure?.category ?? 'unknown';
     executions.push(
       EmbeddingJobExecutionSchema.parse({
         jobId: job.jobId,
         chunkId: chunk.chunkId,
-        state: 'COMPLETED',
-        stateHistory: ['PENDING', 'RUNNING', 'COMPLETED'],
-        attemptCount: 1,
-        retryable: false,
-        resumable: true,
-        completedAt: new Date().toISOString(),
+        state: 'FAILED',
+        stateHistory: [...stateHistory, 'FAILED'],
+        attemptCount: attempt,
+        retryable: shouldRetryEmbeddingFailure(failureCategory),
+        resumable: failureCategory === 'cancelled_job' || shouldRetryEmbeddingFailure(failureCategory),
+        errorCategory: failureCategory,
+        errorMessage: lastFailure?.message ?? 'embedding failed',
       }),
     );
   }
@@ -268,6 +352,10 @@ export function orchestratePipeline(
     organizationId?: string;
     sourcePath?: string;
     chunkOptions?: ChunkBuildOptions;
+    embeddingOptions?: {
+      maxRetries?: number;
+      providerCall?: (chunk: KnowledgeChunk, model: string) => string;
+    };
   },
 ): PipelineRunOutput {
   const sourceFailed = options?.sourceFailed ?? 0;
@@ -388,7 +476,7 @@ export function orchestratePipeline(
     }
 
     if (stage === 'embedding_generator') {
-      const embedding = runEmbeddingStage(chunks);
+      const embedding = runEmbeddingStage(chunks, options?.embeddingOptions);
       const endedAt = new Date();
       embeddingJobs = embedding.jobs;
       embeddingRecords = embedding.records;
