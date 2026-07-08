@@ -169,6 +169,18 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-D Streaming** — separate wave |
 
+### P2-D Streaming & Execution Lifecycle — ADR Accepted 🔒
+
+| Stage | Status |
+|-------|--------|
+| Gate | ✅ P2-C series closed · `org-memory-p2-c2-complete` on origin |
+| Forge intent | ✅ [ontory-streaming-p2-d-intent.md](../designs/drafts/ontory-streaming-p2-d-intent.md) |
+| ADR-0012 | ✅ **Accepted** — [ADR-0012-ontory-streaming-execution-lifecycle.md](../core/architecture/ADR-0012-ontory-streaming-execution-lifecycle.md) |
+| Coding gate | ❌ **Blocked** until P2-D.1 blueprint + forge-isolate |
+| Model | Runtime semantic · lifecycle FSM · monotonic sequence · SSE transport outside core |
+| C-CAN | Promote DEFER → MUST in P2-D.6 |
+| Next | Governance push → **forge-isolate P2-D.1** |
+
 ### P2-C.2 Gemini Provider — CLOSED 🔒
 
 | Stage | Status |
@@ -231,7 +243,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B closeout | ✅ tag `org-memory-p2-b-complete` @ Ontory `e63bb93` · ai-brain `fe70ede` · Studio unchanged `043666e` |
 | P2-C.1 closeout | ✅ tag `org-memory-p2-c1-complete` @ Ontory `4b3e094` · pushed origin |
 | P2-C.2 closeout | ✅ tag `org-memory-p2-c2-complete` @ Ontory `7241319` |
-| Next gate | **P2-D Streaming** |
+| Next gate | **P2-D.1 blueprint** + forge-isolate (ADR-0012 Accepted) |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

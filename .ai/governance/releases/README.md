@@ -14,7 +14,9 @@ Phase-level release markers with auditable wave chains, tags, and test evidence.
 | P2-C.1 Anthropic Provider | ✅ adapter + conformance PASS | ✅ **CLOSED** | `org-memory-p2-c1-complete` @ `4b3e094` | `forge/ontory-provider-anthropic-p2-c1` |
 | P2-C.2 Gemini Provider | ✅ adapter + conformance PASS | ✅ **CLOSED** | `org-memory-p2-c2-complete` @ `7241319` | `forge/ontory-provider-gemini-p2-c2` |
 
-**P2-C provider expansion series:** CLOSED — stub · openai · anthropic · gemini behind frozen ADR-0009 contract. Next: **P2-D Streaming** (requires new ADR).
+**P2-C provider expansion series:** CLOSED — stub · openai · anthropic · gemini behind frozen ADR-0009 contract.
+
+**P2-D streaming:** ADR-0012 **Accepted** — implementation gated at P2-D.1 blueprint + forge-isolate.
 
 **RC vs RELEASED:** Engineering complete + tags on forge branch ≠ RELEASED. Distribution completes only after merge to `main` and remote verification.
 

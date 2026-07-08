@@ -15,6 +15,7 @@
 | ADR-0009 | [ADR-0009-provider-conformance-harness.md](./ADR-0009-provider-conformance-harness.md) | **Accepted · Closed** | P2-C.0 · conformance harness · freeze P2-B contract · block Anthropic until PASS · no new vendors |
 | ADR-0010 | [ADR-0010-ontory-anthropic-provider-integration.md](./ADR-0010-ontory-anthropic-provider-integration.md) | **Accepted** | P2-C.1 · Anthropic thin adapter · plug into ADR-0009 contract · conformance gate · no Kernel changes |
 | ADR-0011 | [ADR-0011-ontory-gemini-provider-integration.md](./ADR-0011-ontory-gemini-provider-integration.md) | **Accepted · Closed** | P2-C.2 · Gemini thin adapter · third conformance subject · `org-memory-p2-c2-complete` @ `7241319` |
+| ADR-0012 | [ADR-0012-ontory-streaming-execution-lifecycle.md](./ADR-0012-ontory-streaming-execution-lifecycle.md) | **Accepted** | P2-D · streaming semantics · `AIExecutionEvent` · lifecycle FSM · cancellation · capability · SSE transport boundary |
 
 **Template:** [ADR-TEMPLATE.md](./ADR-TEMPLATE.md)
 
