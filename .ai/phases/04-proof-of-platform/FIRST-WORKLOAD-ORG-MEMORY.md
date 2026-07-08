@@ -132,6 +132,7 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Wave 5 end-to-end proof complete (`WAVE-5-END-TO-END-PROOF.md`)
 - ✅ P1-B acceptance report drafted (`P1-B-ACCEPTANCE-REPORT.md`)
 - ✅ P1-B baseline locked (`org-memory-p1-b-complete`)
-- ✅ P1-C intent drafted: [retrieval-recall-p1-c-intent.md](../../designs/drafts/retrieval-recall-p1-c-intent.md)
-- ⏳ Next: owner approval for P1-C intent, then forge-isolate
+- ✅ P1-C intent approved: [retrieval-recall-p1-c-intent.md](../../designs/drafts/retrieval-recall-p1-c-intent.md)
+- ✅ P1-C isolate active: [retrieval-recall-p1-c-isolate.md](../../designs/drafts/retrieval-recall-p1-c-isolate.md)
+- ⏳ Next: forge-blueprint P1-C, then Wave 1 Recall Contract Boundary implementation
 

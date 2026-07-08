@@ -1,5 +1,5 @@
 # P1-C Retrieval / Recall Intelligence — Forge Intent
-**Status:** Draft — pending owner approval
+**Status:** Approved — ready for isolate/blueprint
 **Slug:** retrieval-recall-p1-c-intent
 **Baseline:** `org-memory-p1-b-complete`
 **Branch:** `forge/retrieval-recall-intelligence`
@@ -39,11 +39,13 @@ Core question:
 
 1. Introduce recall contracts:
    - `RecallRequest`
+   - `RecallCandidate`
    - `CandidateSet`
    - `RecallResult`
    - `ContextPackage`
+   - `RecallTrace`
 2. Add retrieval pipeline abstraction inside Ratary:
-   - Search provider boundary -> Recall engine -> Context assembly
+   - `CandidateProvider` -> `RecallService` -> `RecallPolicy` -> Context assembly
 3. Add ranking/relevance policy layer (P1-C waves 3+).
 4. Add deterministic recall evaluation harness:
    - benchmark query set
@@ -67,7 +69,7 @@ DO NOT CHANGE:
 
 DO NOT INTRODUCE:
 - retrieval logic inside Studio/Ontory clients
-- vector DB tuning as first-class P1-C requirement
+- vector infrastructure tuning or replacement as first-class P1-C requirement
 - cross-tenant recall shortcuts
 
 ---
@@ -146,6 +148,18 @@ Validation expectations:
 ---
 
 ## Acceptance philosophy
+
+### Recall determinism principle
+
+For the same:
+- tenant context
+- knowledge state
+- recall request
+
+Ratary should produce:
+- traceable recall decision
+- explainable result
+- reproducible evaluation
 
 P1-C is successful when, for fixed tenant/query/knowledge state, Ratary produces:
 - deterministic candidate set,
