@@ -169,6 +169,17 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-C.1 Anthropic** — harness gate unlocked |
 
+### P2-C.1 Anthropic Provider — Intent Draft
+
+| Stage | Status |
+|-------|--------|
+| Gate | ✅ P2-C.0 `org-memory-p2-c0-complete` closed |
+| Forge intent | ✅ [ontory-provider-anthropic-p2-c1-intent.md](../designs/drafts/ontory-provider-anthropic-p2-c1-intent.md) **Accepted** |
+| Blueprint | ✅ [ontory-provider-anthropic-p2-c1-plan.md](../designs/drafts/ontory-provider-anthropic-p2-c1-plan.md) approved |
+| ADR-0010 | ✅ **Accepted** |
+| Branch | `forge/ontory-provider-anthropic-p2-c1` — **isolate in progress** |
+| Harness rule | Add Anthropic subject only — **do not modify** P2-C.0 contract |
+
 ### Post-baseline governance
 
 | Artefact | Status |
