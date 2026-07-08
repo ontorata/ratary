@@ -31,15 +31,11 @@ export class DefaultScopeResolver implements IScopeResolver {
         throw new NotFoundError('Workspace', workspaceIdHint);
       }
       scope.workspaceId = workspace.id;
-      if (workspace.organizationId) {
-        scope.organizationId = workspace.organizationId;
-      }
+      scope.organizationId = workspace.organizationId;
     } else {
       const { workspace } = await ensureDefaultWorkspace(this.db, auth.ownerId);
       scope.workspaceId = workspace.id;
-      if (workspace.organizationId) {
-        scope.organizationId = workspace.organizationId;
-      }
+      scope.organizationId = workspace.organizationId;
     }
 
     const agentId = hints?.agentId?.trim();
@@ -60,15 +56,11 @@ export class DefaultScopeResolver implements IScopeResolver {
         throw new NotFoundError('Workspace', workspaceIdHint);
       }
       scope.workspaceId = workspace.id;
-      if (workspace.organizationId) {
-        scope.organizationId = workspace.organizationId;
-      }
+      scope.organizationId = workspace.organizationId;
     } else {
       const { workspace } = await ensureDefaultWorkspace(this.db, env.ownerId);
       scope.workspaceId = workspace.id;
-      if (workspace.organizationId) {
-        scope.organizationId = workspace.organizationId;
-      }
+      scope.organizationId = workspace.organizationId;
     }
 
     const agentId = env.agentId?.trim();

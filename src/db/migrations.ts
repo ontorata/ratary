@@ -1,5 +1,6 @@
 import { getD1Client, type D1Client } from './d1-client.js';
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
+import { ensureDefaultOrganization } from '../scope/organization-store.js';
 
 /**
  * Canonical migration SQL — kept in sync with schema.sql at repo root.
@@ -425,6 +426,29 @@ export async function migrateEnterprisePhase1(
       await client.execute(column.ddl);
     }
   }
+}
+
+/** Identity Foundation P0-A — bind orphan workspaces to organizations; index tenant column. */
+export async function migrateIdentityFoundationPhase1(
+  client: ISqlDatabase,
+  _dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
+  const owners = await client.query<{ owner_id: string }>(
+    `SELECT DISTINCT owner_id FROM workspaces WHERE organization_id IS NULL OR organization_id = ''`,
+  );
+
+  for (const { owner_id: ownerId } of owners) {
+    const { organization } = await ensureDefaultOrganization(client, ownerId);
+    await client.execute(
+      `UPDATE workspaces SET organization_id = ?
+       WHERE owner_id = ? AND (organization_id IS NULL OR organization_id = '')`,
+      [organization.id, ownerId],
+    );
+  }
+
+  await client.execute(
+    `CREATE INDEX IF NOT EXISTS idx_workspaces_organization ON workspaces(organization_id)`,
+  );
 }
 
 /** Phase 17 — enterprise security hierarchy + policy bindings (ADR-032). */
@@ -1138,6 +1162,7 @@ export async function runSchemaMigrations(
   await migrateEmbeddingPhase1(client);
   await migrateMultiAiPhase1(client, dialect);
   await migrateEnterprisePhase1(client, dialect);
+  await migrateIdentityFoundationPhase1(client, dialect);
   await migrateEnterprisePhase2(client);
   await migrateCloudPlatformPhase1(client);
   await migrateInfrastructurePlatformPhase1(client);

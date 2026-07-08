@@ -72,3 +72,9 @@ export class PolicyDeniedError extends AppError {
     super(message, 403, 'POLICY_DENIED');
   }
 }
+
+export class TenantContextRequiredError extends AppError {
+  constructor(message = 'Organization context is required') {
+    super(message, 400, 'TENANT_CONTEXT_REQUIRED');
+  }
+}

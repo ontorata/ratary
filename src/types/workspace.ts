@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { AGENT_TYPES } from '../agent/agent.types.js';
 
 export const createWorkspaceBodySchema = z.object({
+  organizationId: z.string().uuid(),
   name: z.string().min(1).max(200),
   slug: z
     .string()
