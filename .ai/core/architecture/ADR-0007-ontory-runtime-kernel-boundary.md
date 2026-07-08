@@ -160,16 +160,18 @@ Rejected patterns:
 P2-A is **COMPLETE** when all are true:
 
 - [x] Decision locked in this ADR (acceptance)
-- [ ] `AIExecutionRequest` remains immutable at Ontory boundary
-- [ ] Dispatcher implemented
-- [ ] `WorkspaceAiRuntimePort` stable (Studio ↔ Ontory)
-- [ ] Stub provider works end-to-end
-- [ ] `AIExecutionResponse` envelope frozen
-- [ ] REST adapter available
-- [ ] No provider SDK leaks into Studio UI/domain
-- [ ] No Ratary dependency from Ontory (except public context already in the request)
-- [ ] No Studio dependency from Ontory
-- [ ] All execution enters via RuntimePort
+- [x] `AIExecutionRequest` remains immutable at Ontory boundary
+- [x] Dispatcher implemented
+- [x] `WorkspaceAiRuntimePort` stable (Studio ↔ Ontory)
+- [x] Stub provider works end-to-end
+- [x] `AIExecutionResponse` envelope frozen
+- [x] REST adapter available
+- [x] No provider SDK leaks into Studio UI/domain
+- [x] No Ratary dependency from Ontory (except public context already in the request)
+- [x] No Studio dependency from Ontory
+- [x] All execution enters via RuntimePort
+
+**Evidence (Task 8 · governance only):** [ontory-runtime-kernel-proof.md](../../reviews/org-memory-dogfood/ontory-runtime-kernel-proof.md) · [P2-A-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md) · pinned commits Ontory `c18cacc` · Studio `043666e`.
 
 ---
 
@@ -185,9 +187,9 @@ P2-A is **COMPLETE** when all are true:
 
 ### Negative / tradeoffs
 
-- Studio chat remains echo/stub until Ontory REST adapter lands
+- Studio production path is Ontory REST (stub provider); real models wait for **P2-B**
 - Cross-repo ownership (Studio · Ontory · Ratary)
-- Early Ontory must resist agent-framework temptation
+- Early Ontory must resist agent-framework / vendor-adapter temptation until contracts stay locked
 
 ### Non-goals
 
@@ -243,4 +245,4 @@ Throughput and vendor SDKs are adapter concerns; contracts lock first.
 - [x] Indexed in architecture README + ADR-INDEX
 - [x] P2-A forge intent unlocked for isolate/blueprint
 
-**Next:** approve forge-intent → forge-isolate → blueprint → implement **kernel only** (stub + REST), no agents.
+**P2-A engineering DoD:** ✅ met (Tasks 1–8). **Closeout tag:** Task 9. **Next phase:** P2-B provider integration (one concern · no tools/memory/agents).

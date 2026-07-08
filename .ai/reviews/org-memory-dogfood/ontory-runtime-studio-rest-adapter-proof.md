@@ -7,7 +7,7 @@
 | **Studio branch** | `forge/ai-workspace-p1-d` |
 | **Ontory branch** | `forge/ontory-runtime-p2-a` |
 | **ADR** | ADR-0007 Accepted (D1–D4) |
-| **Status** | ✅ Task 7 complete — ready for Task 8 gate pack |
+| **Status** | ✅ Task 7 complete · superseded in pack index by Task 8 kernel proof |
 
 ---
 
@@ -64,4 +64,4 @@ Ontory Runtime (/v1/execute · /health)
 
 ## Next
 
-Task 8 — evidence package + ADR-0007 DoD checklist update · then Task 9 closeout when DoD met.
+See [ontory-runtime-kernel-proof.md](./ontory-runtime-kernel-proof.md) · [P2-A-ACCEPTANCE.md](./P2-A-ACCEPTANCE.md). Task 9 = closeout tag only.

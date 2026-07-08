@@ -154,5 +154,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P2-A intent approved: [ontory-runtime-p2-a-intent.md](../../designs/drafts/ontory-runtime-p2-a-intent.md)
 - ✅ P2-A forge-isolate **ACCEPTED** (`ontory` · dispatcher · stub · REST · 4 tests PASS)
 - ✅ P2-A Task 7 — Studio `WorkspaceAiRuntimePort` → Ontory REST client (no in-process Ontory)
-- ⏳ Next: Task 8 evidence pack · Task 9 closeout when ADR-0007 DoD met
+- ✅ P2-A Task 8 — governance evidence pack · ADR-0007 DoD complete · [P2-A-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md)
+- ⏳ Next: Task 9 closeout tag · then P2-B provider integration (stub → real adapters; no tools/memory/agents)
 

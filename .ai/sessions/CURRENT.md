@@ -165,8 +165,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Frozen Boundary Bypass Policy | ✅ [FROZEN-BOUNDARY-BYPASS-POLICY.md](../core/constitution/FROZEN-BOUNDARY-BYPASS-POLICY.md) |
 | ADR-0007 Ontory Runtime Kernel | ✅ **Accepted** (D1 separate repo · D2 REST adapter · D3 stub-first · D4 stateless) |
 | P2-A isolate | ✅ **ACCEPTED** · `ontory` · `forge/ontory-runtime-p2-a` · Tasks 1–6 |
-| P2-A Task 7 | ✅ Studio `OntoryRestWorkspaceAiRuntime` · HTTP only · Echo optional |
-| Next gate | Task 8 — evidence package + ADR-0007 DoD checklist · then closeout |
+| P2-A Task 7 | ✅ Studio REST RuntimePort · `043666e` · Echo = env fallback only |
+| P2-A Task 8 | ✅ Evidence pack · ADR DoD · [P2-A-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md) |
+| Next gate | Task 9 closeout tag · then **P2-B** provider integration (no tools/memory/agents) |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
