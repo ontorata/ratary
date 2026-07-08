@@ -199,6 +199,26 @@ Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
 ---
 
+## Handoff — Claude (2026-07-08 · evening)
+
+**Recover via Ratary:** `get_memory_by_codename` → **`TASK-0019`** · atau `search_memory` tags `handoff`, `p2-c`, `ontory`
+
+| Field | Value |
+|-------|-------|
+| ai-brain branch | `forge/ai-workspace-p1-d` @ `7813cd8` |
+| Ontory branch | `forge/ontory-provider-p2-b` @ `e63bb93` |
+| P2-A tag | `org-memory-p2-a-complete` |
+| P2-B tag | `org-memory-p2-b-complete` |
+| Status | P2-B **CLOSED** · P2-C.0 ADR-0009 **Proposed** |
+
+**First action:** Owner Accept ADR-0009 (jawab C-CAN / `test:conformance` / stub subset) → isolate `forge/ontory-provider-conformance-p2-c0` from `org-memory-p2-b-complete` → harness OpenAI+stub only.
+
+**Do not:** Anthropic/Gemini/streaming · mutate ProviderRuntime · commit dirty `scripts/*.ts`.
+
+**Key paths:** `.ai/core/architecture/ADR-0009-*.md` · `.ai/governance/provider-conformance/` · Ontory `src/adapters/openai/`
+
+---
+
 ## Handoff — Claude (2026-07-08)
 
 **Recover via Ratary:** `get_memory_by_codename` → **`TASK-0011`** · atau `search_memory` tags `handoff`, `p1-c`, `retrieval-recall`
