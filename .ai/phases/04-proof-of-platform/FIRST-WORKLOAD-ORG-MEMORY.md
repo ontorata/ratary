@@ -125,5 +125,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-B isolate active: [knowledge-ingestion-p1-b-isolate.md](../../designs/drafts/knowledge-ingestion-p1-b-isolate.md)
 - ✅ P1-B blueprint drafted: [knowledge-ingestion-p1-b-plan.md](../../designs/drafts/knowledge-ingestion-p1-b-plan.md)
 - ✅ ADR accepted: [ADR-0005-knowledge-ingestion-pipeline.md](../../core/architecture/ADR-0005-knowledge-ingestion-pipeline.md)
-- 🟢 Next: forge-execute Wave 1 (foundation) on `forge/knowledge-ingestion`
+- ✅ Wave 1 foundation complete (contracts + ADR + schema)
+- 🟢 Wave 2 pipeline core active on `forge/knowledge-ingestion`
 

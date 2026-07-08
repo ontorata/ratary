@@ -40,3 +40,14 @@
 - evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
 - branch=forge/org-memory-dogfood
 - notes=task-8 sequential chain
+
+## session_id=234439be-b323-4046-ab4d-7452595860f6
+
+- timestamp=2026-07-08T06:46:16.091Z
+- handoff_id=1d5859ee-6b3b-47e1-b840-7a10c6cd25b7
+- ratary_codename=P1B-T3
+- ingestion_run_id=dca907d1-b157-4bd5-845b-043ca8fd630f
+- recall_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- branch=forge/knowledge-ingestion
+- notes=wave2 pipeline core

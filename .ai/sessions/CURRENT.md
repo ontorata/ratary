@@ -140,8 +140,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Baseline | ✅ starts from `org-memory-p1-a-complete` |
 | Scope | Core + Governance + Release + Session handoff (Wave 1) |
 | Baseline verification | ✅ `npm test`, `ci:org-memory-acceptance`, `ci:governance` |
-| Execute gate | ✅ approved (Wave 1 foundation active) |
-| Next gate | complete Wave 1 gates (`build`, `lint`, `unit`) |
+| Execute gate | ✅ approved |
+| Wave progress | 🟢 Wave 2 active — normalizer/chunk/orchestrator + invariants implemented |
+| Next gate | continue Task 4 (idempotency/retry) with evidence refresh |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
