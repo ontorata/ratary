@@ -17,6 +17,8 @@ import {
 } from './knowledge-ingestion-contracts.js';
 import {
   applyIndexUpdateBoundary,
+  applyIndexUpdateBoundaryWithOptions,
+  buildIndexRecoveryQueue,
   createEmptySnapshot,
   persistKnowledgeArtifacts,
   recoverPendingVersions,
@@ -417,6 +419,9 @@ export function orchestratePipeline(
       failBeforeMarkAvailable?: boolean;
       autoRecoverOnPartial?: boolean;
     };
+    indexOptions?: {
+      failVersionIds?: string[];
+    };
   },
 ): PipelineRunOutput {
   const sourceFailed = options?.sourceFailed ?? 0;
@@ -604,19 +609,27 @@ export function orchestratePipeline(
 
     if (stage === 'index_update') {
       const endedAt = new Date();
-      knowledgeStoreSnapshot = applyIndexUpdateBoundary(knowledgeStoreSnapshot);
+      knowledgeStoreSnapshot =
+        options?.indexOptions?.failVersionIds && options.indexOptions.failVersionIds.length > 0
+          ? applyIndexUpdateBoundaryWithOptions(knowledgeStoreSnapshot, {
+              failVersionIds: options.indexOptions.failVersionIds,
+            })
+          : applyIndexUpdateBoundary(knowledgeStoreSnapshot);
       const completedEvents = knowledgeStoreSnapshot.indexEvents.filter((event) => event.status === 'completed');
-      stageStatuses.set(stage, 'completed');
+      const failedQueue = buildIndexRecoveryQueue(knowledgeStoreSnapshot);
+      const failedCount = knowledgeStoreSnapshot.indexEvents.filter((event) => event.status === 'failed').length;
+      stageStatuses.set(stage, failedCount > 0 ? 'failed' : 'completed');
       stageResults.push(
         buildStageResult(
           stage,
-          'completed',
+          failedCount > 0 ? 'failed' : 'completed',
           completedEvents.length,
-          0,
+          failedCount,
           startedAt,
           endedAt,
           { resumable: true, replayable: true, idempotent: true },
           sourcePath,
+          failedQueue.length > 0 ? `recovery_queue=${failedQueue.join(',')}` : undefined,
         ),
       );
       continue;

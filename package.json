@@ -73,6 +73,7 @@
     "eval:org-memory-recall": "tsx scripts/eval-org-memory-recall.ts",
     "trace:org-memory-handoff": "tsx scripts/forge/remember-org-memory.ts",
     "metrics:org-memory": "tsx scripts/metrics/org-memory-usage.ts",
+    "proof:org-memory-wave5": "tsx scripts/proof/wave5-end-to-end-proof.ts",
     "steward:memories": "tsx scripts/steward-memories.ts",
     "steward:memories:execute": "tsx scripts/steward-memories.ts --execute",
     "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",

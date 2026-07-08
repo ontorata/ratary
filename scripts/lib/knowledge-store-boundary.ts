@@ -180,14 +180,31 @@ export function recoverPendingVersions(snapshot: KnowledgeStoreSnapshot): Knowle
 }
 
 export function applyIndexUpdateBoundary(snapshot: KnowledgeStoreSnapshot): KnowledgeStoreSnapshot {
+  return applyIndexUpdateBoundaryWithOptions(snapshot);
+}
+
+export type IndexUpdateOptions = {
+  failVersionIds?: string[];
+};
+
+export function applyIndexUpdateBoundaryWithOptions(
+  snapshot: KnowledgeStoreSnapshot,
+  options?: IndexUpdateOptions,
+): KnowledgeStoreSnapshot {
+  const failVersionIds = new Set(options?.failVersionIds ?? []);
   const indexEvents = snapshot.indexEvents.map((event) =>
     event.status === 'pending'
       ? IndexUpdateEventSchema.parse({
           ...event,
-          status: 'completed',
-          completedAt: now(),
+          status: failVersionIds.has(event.versionId) ? 'failed' : 'completed',
+          completedAt: failVersionIds.has(event.versionId) ? undefined : now(),
+          error: failVersionIds.has(event.versionId) ? 'index update failed, recovery required' : undefined,
         })
       : event,
   );
   return { records: snapshot.records, embeddings: snapshot.embeddings, indexEvents };
+}
+
+export function buildIndexRecoveryQueue(snapshot: KnowledgeStoreSnapshot): string[] {
+  return snapshot.indexEvents.filter((event) => event.status === 'failed').map((event) => event.versionId);
 }
