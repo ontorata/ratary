@@ -146,16 +146,17 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-C Retrieval / Recall Intelligence — Isolate active 🟢
+### P1-C Retrieval / Recall Intelligence — Blueprint drafted 🟡
 
 | Stage | Status |
 |-------|--------|
 | Forge intent | ✅ [retrieval-recall-p1-c-intent.md](../designs/drafts/retrieval-recall-p1-c-intent.md) approved |
 | Baseline | ✅ starts from `org-memory-p1-b-complete` |
 | Scope lock | ✅ allowed/forbidden changes defined in intent |
-| Forge isolate | ✅ [retrieval-recall-p1-c-isolate.md](../designs/drafts/retrieval-recall-p1-c-isolate.md) active |
+| Forge isolate | ✅ [retrieval-recall-p1-c-isolate.md](../designs/drafts/retrieval-recall-p1-c-isolate.md) active @ `22633fe` |
+| Forge blueprint | 🟡 [retrieval-recall-p1-c-plan.md](../designs/drafts/retrieval-recall-p1-c-plan.md) drafted |
 | Baseline verification | ✅ `npm test`, `ci:org-memory-acceptance`, `ci:governance` |
-| Next gate | forge-blueprint -> Wave 1 (Recall Contract Boundary) |
+| Next gate | owner approval -> Wave 1 (Recall Contract Boundary) |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
