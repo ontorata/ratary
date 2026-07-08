@@ -5,7 +5,7 @@
 | **Authority** | Governance & Execution |
 | **Horizon** | Phase 4 → P1 |
 | **Owner** | Engineering + Product |
-| **Status** | **Proposed** — forge-intent pending approval |
+| **Status** | **Active** — forge-isolate running on `forge/org-memory-dogfood` |
 | **Category** | Must Prove |
 | **Evidence package** | `.ai/reviews/org-memory-dogfood/` (create on isolate) |
 
@@ -52,7 +52,7 @@ Not: "Can we demo memory once?"
 | P0 Baseline Change Policy | ✅ [P0-BASELINE-CHANGE-POLICY.md](../../core/constitution/P0-BASELINE-CHANGE-POLICY.md) |
 | MCP connected (Cursor) | ✅ when available |
 | Sync config | ✅ [.ai/sync/ratary-sync-config.yaml](../../sync/ratary-sync-config.yaml) |
-| Forge intent approved | ⏳ [org-memory-dogfood-intent.md](../../designs/drafts/org-memory-dogfood-intent.md) |
+| Forge intent approved | ✅ [org-memory-dogfood-intent.md](../../designs/drafts/org-memory-dogfood-intent.md) |
 
 ---
 
@@ -104,6 +104,7 @@ Previous workload (complete): [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](./FIRST
 ## Forge chain
 
 Intent → [org-memory-dogfood-intent.md](../../designs/drafts/org-memory-dogfood-intent.md)  
-Isolate → `forge/org-memory-dogfood` (after approval)  
-Blueprint → TBD  
+Isolate → [org-memory-dogfood-isolate.md](../../designs/drafts/org-memory-dogfood-isolate.md) ✅  
+Blueprint → [org-memory-dogfood-plan.md](../../designs/drafts/org-memory-dogfood-plan.md) 🟡 pending approval  
 Evidence → `.ai/reviews/org-memory-dogfood/`
+

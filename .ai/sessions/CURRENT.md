@@ -44,7 +44,7 @@
 - **Constitution amended:** Internal Proof Before Public Capability (2026-07-08)
 - **P0-A Identity Foundation:** ✅ **RELEASED** on origin (verified 2026-07-08)
 - **P0-B Engineering Governance:** ✅ **RELEASED** on origin · **FROZEN** (forge-land 2026-07-08)
-- **P1-A Org Memory Dogfood:** 🟡 Forge intent proposed — owner approval before isolate
+- **P1-A Org Memory Dogfood:** 🟢 Forge-isolate active · blueprint drafted
 - **First workload (active):** Org Memory Dogfood — [FIRST-WORKLOAD-ORG-MEMORY.md](../phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md)
 
 ---
@@ -64,9 +64,9 @@
 
 ## What should happen next?
 
-1. **Owner approve** [org-memory-dogfood-intent.md](../designs/drafts/org-memory-dogfood-intent.md)
-2. **forge-isolate** → `forge/org-memory-dogfood`
-3. **forge-blueprint** — ingest · recall · evidence · metrics waves
+1. **Review & approve blueprint** [org-memory-dogfood-plan.md](../designs/drafts/org-memory-dogfood-plan.md)
+2. **forge-execute** — implement task breakdown per blueprint
+3. **forge-prove** — evidence-first validation for G1–G6
 4. **Do not mutate P0** — [P0-BASELINE-CHANGE-POLICY.md](../core/constitution/P0-BASELINE-CHANGE-POLICY.md)
 
 ---
@@ -89,10 +89,10 @@
 
 ```
 Repository: ai-brain (ratary)
-Branch:     main @ a67c101
+Branch:     forge/org-memory-dogfood @ 2cb59f2
 P0-A:       RELEASED · FROZEN ✅
 P0-B:       RELEASED · FROZEN ✅
-P1-A:       Intent proposed — org-memory-dogfood
+P1-A:       Isolate active · blueprint drafted
 Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 ```
 
@@ -118,13 +118,14 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Tag | ✅ `engineering-governance-p0-b-complete` @ `dc2fa5e` |
 | Remote sync | ✅ verified 2026-07-08 |
 
-### P1-A Org Memory Dogfood — Intent proposed 🟡
+### P1-A Org Memory Dogfood — Isolate active 🟢
 
 | Stage | Status |
 |-------|--------|
 | P0 Baseline Change Policy | ✅ [P0-BASELINE-CHANGE-POLICY.md](../core/constitution/P0-BASELINE-CHANGE-POLICY.md) |
-| Forge intent | 🟡 [org-memory-dogfood-intent.md](../designs/drafts/org-memory-dogfood-intent.md) |
-| Forge-isolate | ⏳ after owner approval |
+| Forge intent | ✅ [org-memory-dogfood-intent.md](../designs/drafts/org-memory-dogfood-intent.md) |
+| Forge-isolate | ✅ [org-memory-dogfood-isolate.md](../designs/drafts/org-memory-dogfood-isolate.md) |
+| Blueprint | 🟡 [org-memory-dogfood-plan.md](../designs/drafts/org-memory-dogfood-plan.md) |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
