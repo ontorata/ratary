@@ -18,7 +18,17 @@ class StubCandidateProvider implements ICandidateProvider {
           organizationId: request.organizationId,
           sourceType: 'fixture',
           sourceReference: 'fixture://adr-0005',
-          signals: { lexical: 1 },
+          signals: {},
+          metadata: {
+            source: 'fixture',
+            sourceId: 'cand-1',
+            contentType: 'fixture',
+            organizationId: request.organizationId,
+            createdAt: '2026-07-08T08:00:00.000Z',
+            updatedAt: '2026-07-08T08:00:00.000Z',
+            permissions: [],
+            provenance: 'stub-provider',
+          },
         },
       ],
     };

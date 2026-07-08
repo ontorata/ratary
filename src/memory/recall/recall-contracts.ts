@@ -46,6 +46,21 @@ export type RecallRequest = z.infer<typeof RecallRequestSchema>;
 export const RecallSignalsSchema = z.record(z.number());
 export type RecallSignals = z.infer<typeof RecallSignalsSchema>;
 
+export const RecallCandidateMetadataSchema = z.object({
+  source: z.string().min(1),
+  sourceId: z.string().min(1),
+  contentType: z.string().min(1),
+  organizationId: z.string().min(1),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  permissions: z.array(z.string()).default([]),
+  embeddingVersion: z.string().min(1).optional(),
+  tokenCount: z.number().int().nonnegative().optional(),
+  provenance: z.string().min(1),
+});
+
+export type RecallCandidateMetadata = z.infer<typeof RecallCandidateMetadataSchema>;
+
 export const RecallCandidateSchema = z.object({
   candidateId: z.string().min(1),
   organizationId: z.string().min(1),
@@ -56,7 +71,7 @@ export const RecallCandidateSchema = z.object({
   versionId: z.string().min(1).optional(),
   chunkId: z.string().min(1).optional(),
   memoryId: z.string().min(1).optional(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: RecallCandidateMetadataSchema,
   confidence: z.number().min(0).max(1).optional(),
 });
 
@@ -74,6 +89,16 @@ export const CandidateSetSchema = z.object({
 
 export type CandidateSet = z.infer<typeof CandidateSetSchema>;
 
+export const RecallProviderTraceSchema = z.object({
+  provider: z.string().min(1),
+  queryTimeMs: z.number().int().nonnegative(),
+  returned: z.number().int().nonnegative(),
+  filtered: z.number().int().nonnegative(),
+  candidateSetHash: z.string().min(1),
+});
+
+export type RecallProviderTrace = z.infer<typeof RecallProviderTraceSchema>;
+
 export const RecallTraceSchema = z.object({
   traceId: z.string().min(1),
   requestId: z.string().min(1),
@@ -85,6 +110,7 @@ export const RecallTraceSchema = z.object({
   policyVersion: z.string().min(1).optional(),
   rankingVersion: z.string().min(1).optional(),
   warnings: z.array(z.string()).optional(),
+  providerTrace: RecallProviderTraceSchema.optional(),
 });
 
 export type RecallTrace = z.infer<typeof RecallTraceSchema>;

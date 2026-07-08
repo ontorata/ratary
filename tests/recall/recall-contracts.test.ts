@@ -17,12 +17,24 @@ const baseRequest = {
   traceContext: { sessionId: 'sess-1' },
 };
 
+const baseMetadata = {
+  source: 'adr',
+  sourceId: 'cand-1',
+  contentType: 'adr',
+  organizationId: 'org-ontorata',
+  createdAt: '2026-07-08T06:00:00.000Z',
+  updatedAt: '2026-07-08T06:00:01.000Z',
+  permissions: [],
+  provenance: 'fixture',
+};
+
 const baseCandidate = {
   candidateId: 'cand-1',
   organizationId: 'org-ontorata',
   sourceType: 'adr',
   sourceReference: '.ai/core/architecture/ADR-0005-knowledge-ingestion-pipeline.md',
-  signals: { lexical: 0.8 },
+  signals: {},
+  metadata: baseMetadata,
 };
 
 describe('recall contracts', () => {
@@ -57,6 +69,26 @@ describe('recall contracts', () => {
     expect(parsed.selectedCandidates).toHaveLength(1);
   });
 
+  it('validates RecallTrace provider stats', () => {
+    const parsed = assertRecallTrace({
+      traceId: 'trace-1',
+      requestId: 'req-1',
+      organizationId: 'org-ontorata',
+      candidateCount: 1,
+      decisionPath: ['candidate_fetch'],
+      startedAt: '2026-07-08T08:00:00.000Z',
+      completedAt: '2026-07-08T08:00:00.010Z',
+      providerTrace: {
+        provider: 'sql',
+        queryTimeMs: 18,
+        returned: 42,
+        filtered: 42,
+        candidateSetHash: 'csh-1-cand-1',
+      },
+    });
+    expect(parsed.providerTrace?.provider).toBe('sql');
+  });
+
   it('validates RecallTrace decision path stages', () => {
     const parsed = assertRecallTrace({
       traceId: 'trace-1',
@@ -88,7 +120,7 @@ describe('recall contracts', () => {
       organizationId: 'org-ontorata',
       candidates: [
         baseCandidate,
-        { ...baseCandidate, candidateId: 'cand-2', sourceReference: 'ref-2' },
+        { ...baseCandidate, candidateId: 'cand-2', sourceReference: 'ref-2', metadata: { ...baseMetadata, sourceId: 'cand-2' } },
       ],
       generatedAt: '2026-07-08T08:00:00.000Z',
     });
