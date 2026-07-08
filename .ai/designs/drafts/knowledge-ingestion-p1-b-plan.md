@@ -16,7 +16,7 @@
 - [x] Task 1 — Formalize P1-B contract and gate package
 - [x] Task 2 — Add ADR for ingestion pipeline decision
 - [x] Task 3 — Implement lifecycle and contract scaffolding
-- [ ] Task 4 — Implement idempotency, deduplication, and retry controls
+- [x] Task 4 — Implement idempotency, deduplication, and retry controls
 - [ ] Task 5 — Expand ingestion metrics for P1-B quality
 - [ ] Task 6 — Refresh acceptance artifacts and non-regression guard
 - [ ] Task 7 — Prepare P1-B release-ready governance trail

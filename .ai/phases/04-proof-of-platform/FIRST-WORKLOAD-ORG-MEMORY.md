@@ -126,5 +126,7 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-B blueprint drafted: [knowledge-ingestion-p1-b-plan.md](../../designs/drafts/knowledge-ingestion-p1-b-plan.md)
 - ✅ ADR accepted: [ADR-0005-knowledge-ingestion-pipeline.md](../../core/architecture/ADR-0005-knowledge-ingestion-pipeline.md)
 - ✅ Wave 1 foundation complete (contracts + ADR + schema)
-- 🟢 Wave 2 pipeline core active on `forge/knowledge-ingestion`
+- ✅ Wave 2 pipeline core complete (normalizer + chunk + orchestrator)
+- ✅ Wave 3 embedding layer complete (job lifecycle + retry/resume + tests)
+- 🟢 Next: Wave 4 knowledge store + index update on `forge/knowledge-ingestion`
 

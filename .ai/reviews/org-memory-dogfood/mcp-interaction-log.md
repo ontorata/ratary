@@ -51,3 +51,25 @@
 - evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
 - branch=forge/knowledge-ingestion
 - notes=wave2 pipeline core
+
+## session_id=5f41f025-edff-4d18-bbc8-0bd88d150c30
+
+- timestamp=2026-07-08T06:54:31.951Z
+- handoff_id=79dcafd8-c2ed-491e-9d55-28f6940bb671
+- ratary_codename=P1B-W3
+- ingestion_run_id=dca907d1-b157-4bd5-845b-043ca8fd630f
+- recall_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- branch=forge/knowledge-ingestion
+- notes=wave3 embedding layer
+
+## session_id=6caf3844-cbf3-4139-9fc5-f484b9451fc3
+
+- timestamp=2026-07-08T06:54:49.374Z
+- handoff_id=047114da-0989-46e7-8bcc-f1be6db950f7
+- ratary_codename=P1B-W3
+- ingestion_run_id=5c10f962-973f-41eb-ba84-989cf408ff75
+- recall_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- branch=forge/knowledge-ingestion
+- notes=wave3 embedding layer sequential trace
