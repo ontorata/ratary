@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ICandidateProvider } from '../../src/memory/recall/candidate-provider.port.js';
+import type { IRecallPolicy } from '../../src/memory/recall/recall-policy.port.js';
 import type { CandidateSet, RecallRequest } from '../../src/memory/recall/recall-contracts.js';
 import { RecallService } from '../../src/memory/recall/recall-service.js';
 
@@ -35,9 +36,30 @@ class StubCandidateProvider implements ICandidateProvider {
   }
 }
 
-describe('RecallService (wave 1 skeleton)', () => {
-  it('returns traceable recall result without ranking', async () => {
-    const service = new RecallService(new StubCandidateProvider());
+class StubRecallPolicy implements IRecallPolicy {
+  readonly policyVersion = '0.0.1';
+
+  async applyPolicy(
+    request: RecallRequest,
+    candidateSet: CandidateSet,
+  ): Promise<{ rankedCandidates: import('../../src/memory/recall/recall-contracts.js').RecallCandidate[]; decision: import('../../src/memory/recall/recall-contracts.js').RecallDecision }> {
+    return {
+      rankedCandidates: candidateSet.candidates,
+      decision: {
+        requestId: request.requestId,
+        policyVersion: this.policyVersion,
+        selectedCandidates: [candidateSet.candidates[0].candidateId],
+        rejectedCandidates: [],
+        decisionReason: 'stub policy — no ranking applied',
+        confidenceSummary: '1 candidate selected.',
+      },
+    };
+  }
+}
+
+describe('RecallService (wave 3 — policy integration)', () => {
+  it('returns traceable recall result with policy decision', async () => {
+    const service = new RecallService(new StubCandidateProvider(), new StubRecallPolicy());
     const result = await service.recall({
       requestId: 'req-1',
       organizationId: 'org-ontorata',
@@ -48,6 +70,9 @@ describe('RecallService (wave 1 skeleton)', () => {
     expect(result.status).toBe('completed');
     expect(result.traceId.length).toBeGreaterThan(0);
     expect(result.candidates).toHaveLength(1);
-    expect(result.rankedCandidates).toEqual(result.candidates);
+    expect(result.rankedCandidates).toHaveLength(1);
+    expect(result.decision).toBeDefined();
+    expect(result.decision!.policyVersion).toBe('0.0.1');
+    expect(result.decision!.selectedCandidates).toContain('cand-1');
   });
 });

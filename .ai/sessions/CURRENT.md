@@ -181,7 +181,7 @@ Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
 ## Handoff — Claude (2026-07-08)
 
-**Recover via Ratary:** `search_memory` tags `handoff`, `p1-c`, `retrieval-recall`
+**Recover via Ratary:** `get_memory_by_codename` → **`TASK-0011`** · atau `search_memory` tags `handoff`, `p1-c`, `retrieval-recall`
 
 | Field | Value |
 |-------|-------|

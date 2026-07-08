@@ -19,6 +19,7 @@ export function createRecallTrace(
     warnings?: string[];
     providerTrace?: RecallProviderTrace;
     returnedCount?: number;
+    policyVersion?: string;
   },
 ): RecallTrace {
   const startedAt = options?.startedAt ?? new Date().toISOString();
@@ -43,6 +44,7 @@ export function createRecallTrace(
     decisionPath: options?.decisionPath ?? ['candidate_fetch'],
     startedAt,
     completedAt,
+    policyVersion: options?.policyVersion,
     warnings: options?.warnings,
     providerTrace,
   });
