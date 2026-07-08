@@ -75,7 +75,8 @@
 | Release management | [releases/RELEASE-PROCESS.md](./governance/releases/RELEASE-PROCESS.md) · [VERSIONING.md](./governance/releases/VERSIONING.md) · [CHANGELOG-POLICY.md](./governance/releases/CHANGELOG-POLICY.md) · [RELEASE-CHECKLIST.md](./governance/releases/RELEASE-CHECKLIST.md) |
 | Migration governance | [MIGRATION-POLICY.md](./governance/migrations/MIGRATION-POLICY.md) · [ROLLBACK-PROCEDURE.md](./governance/migrations/ROLLBACK-PROCEDURE.md) · [DEPLOYMENT-CHECKLIST.md](./governance/migrations/DEPLOYMENT-CHECKLIST.md) · [MIGRATION-EVIDENCE-TEMPLATE.md](./migrations/MIGRATION-EVIDENCE-TEMPLATE.md) |
 | Phase 4 evidence | [reviews/README.md](./reviews/README.md) |
-| Engineering Constitution | [core/constitution/ENGINEERING-PRINCIPLES.md](./core/constitution/ENGINEERING-PRINCIPLES.md) · [SECURITY-BOUNDARY.md](./core/constitution/SECURITY-BOUNDARY.md) · [CHANGE-MANAGEMENT.md](./core/constitution/CHANGE-MANAGEMENT.md) |
+| Engineering Constitution | [core/constitution/ENGINEERING-PRINCIPLES.md](./core/constitution/ENGINEERING-PRINCIPLES.md) · [SECURITY-BOUNDARY.md](./core/constitution/SECURITY-BOUNDARY.md) · [CHANGE-MANAGEMENT.md](./core/constitution/CHANGE-MANAGEMENT.md) · [P0-BASELINE-CHANGE-POLICY.md](./core/constitution/P0-BASELINE-CHANGE-POLICY.md) |
+| P1-A Org Memory Dogfood | [FIRST-WORKLOAD-ORG-MEMORY.md](./phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md) · [org-memory-dogfood-intent.md](./designs/drafts/org-memory-dogfood-intent.md) |
 
 ---
 

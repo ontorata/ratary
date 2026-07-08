@@ -43,9 +43,9 @@
 
 - **Constitution amended:** Internal Proof Before Public Capability (2026-07-08)
 - **P0-A Identity Foundation:** ✅ **RELEASED** on origin (verified 2026-07-08)
-- **P0-B Engineering Governance:** ✅ **RELEASED** on origin (forge-land 2026-07-08 · PR #36)
-- **First workload:** Engineering Governance — **COMPLETE** · baseline frozen
-- **Not yet:** production-scale dogfood ingest
+- **P0-B Engineering Governance:** ✅ **RELEASED** on origin · **FROZEN** (forge-land 2026-07-08)
+- **P1-A Org Memory Dogfood:** 🟡 Forge intent proposed — owner approval before isolate
+- **First workload (active):** Org Memory Dogfood — [FIRST-WORKLOAD-ORG-MEMORY.md](../phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md)
 
 ---
 
@@ -64,10 +64,10 @@
 
 ## What should happen next?
 
-1. **Ratary dogfood loop** — production-scale ingest on frozen P0-B baseline
-2. **First external organization onboarded** — Phase 4 proof gate
-3. **New milestones/waves** for governance evolution — do not mutate P0-B foundation
-4. **Do not start** feature sprawl · identity boundary changes without ADR
+1. **Owner approve** [org-memory-dogfood-intent.md](../designs/drafts/org-memory-dogfood-intent.md)
+2. **forge-isolate** → `forge/org-memory-dogfood`
+3. **forge-blueprint** — ingest · recall · evidence · metrics waves
+4. **Do not mutate P0** — [P0-BASELINE-CHANGE-POLICY.md](../core/constitution/P0-BASELINE-CHANGE-POLICY.md)
 
 ---
 
@@ -89,10 +89,11 @@
 
 ```
 Repository: ai-brain (ratary)
-Branch:     main @ 9b5666a (post-merge)
-P0-A:       RELEASED on origin ✅
-P0-B:       RELEASED on origin ✅ · FROZEN baseline
-PR:         #36 merged (no-ff)
+Branch:     main @ a67c101
+P0-A:       RELEASED · FROZEN ✅
+P0-B:       RELEASED · FROZEN ✅
+P1-A:       Intent proposed — org-memory-dogfood
+Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 ```
 
 ---
@@ -116,6 +117,14 @@ PR:         #36 merged (no-ff)
 | Merge | ✅ `9b5666a` on origin (PR #36) |
 | Tag | ✅ `engineering-governance-p0-b-complete` @ `dc2fa5e` |
 | Remote sync | ✅ verified 2026-07-08 |
+
+### P1-A Org Memory Dogfood — Intent proposed 🟡
+
+| Stage | Status |
+|-------|--------|
+| P0 Baseline Change Policy | ✅ [P0-BASELINE-CHANGE-POLICY.md](../core/constitution/P0-BASELINE-CHANGE-POLICY.md) |
+| Forge intent | 🟡 [org-memory-dogfood-intent.md](../designs/drafts/org-memory-dogfood-intent.md) |
+| Forge-isolate | ⏳ after owner approval |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

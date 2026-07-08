@@ -13,6 +13,7 @@
 | [ENGINEERING-PRINCIPLES.md](./ENGINEERING-PRINCIPLES.md) | **Canonical** | P1–P5 non-negotiable engineering principles |
 | [SECURITY-BOUNDARY.md](./SECURITY-BOUNDARY.md) | **Canonical** | Tenant isolation, auth boundary, permission contract |
 | [CHANGE-MANAGEMENT.md](./CHANGE-MANAGEMENT.md) | **Canonical** | ADR triggers, release process, migration governance |
+| [P0-BASELINE-CHANGE-POLICY.md](./P0-BASELINE-CHANGE-POLICY.md) | **Canonical** | P0-A/P0-B frozen baseline · permitted change classes |
 
 **Organization:** ontorata · hello@ontorata.com
 
@@ -34,6 +35,7 @@ START-HERE.md (when present)
         → ENGINEERING-PRINCIPLES.md  (P1–P5)
         → SECURITY-BOUNDARY.md      (P1 + P4 specifics)
         → CHANGE-MANAGEMENT.md      (P5 specifics)
+            → P0-BASELINE-CHANGE-POLICY.md  (P0 frozen baseline)
             → ADR-NNN-*.md (.ai/core/adr/)
             → RFC-NNN-*.md (.ai/core/rfc/) — proposals only
             → policies/*.md · blueprints/*.md · standards/*.md
@@ -79,6 +81,17 @@ See [../adr/INDEX.md](../adr/INDEX.md).
 | 5 | Migration Governance | ✅ LOCKED |
 | 6 | Engineering Constitution | ✅ LOCKED |
 
-**Final tag:** `engineering-governance-p0-b-complete`
+**Final tag:** `engineering-governance-p0-b-complete` · **RELEASED** · **FROZEN**
 
 **Release record:** [.ai/governance/releases/P0-B-ENGINEERING-GOVERNANCE.md](../governance/releases/P0-B-ENGINEERING-GOVERNANCE.md)
+
+## P1 — Use the platform (active)
+
+| Milestone | Workload | Status |
+|-----------|----------|--------|
+| P1-A | Org Memory Dogfood | 🟡 Intent proposed — [org-memory-dogfood-intent.md](../designs/drafts/org-memory-dogfood-intent.md) |
+| P1-B | Knowledge Ingestion | Planned |
+| P1-C | Retrieval + Context | Planned |
+| P1-D | AI Workspace | Planned |
+
+**First workload doc:** [FIRST-WORKLOAD-ORG-MEMORY.md](../phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md)

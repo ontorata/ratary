@@ -1,7 +1,7 @@
 # Ontorata Engineering — Constitution Summary
 
 **Canonical:** `.ai/core/constitution/ENGINEERING-CONSTITUTION.md`  
-**Extensions:** `.ai/core/constitution/ENGINEERING-PRINCIPLES.md` · `SECURITY-BOUNDARY.md` · `CHANGE-MANAGEMENT.md`  
+**Extensions:** `.ai/core/constitution/ENGINEERING-PRINCIPLES.md` · `SECURITY-BOUNDARY.md` · `CHANGE-MANAGEMENT.md` · `P0-BASELINE-CHANGE-POLICY.md`  
 **Structure:** Frozen 2026-07-08 — **structure frozen, evolution allowed**  
 **Phase:** 4 — Proof of Platform (Phases 0–3 complete)
 
@@ -24,6 +24,10 @@ Five non-negotiable principles established by P0-B Engineering Governance:
 **Security boundary (non-negotiable):** Auth at boundary · transport ≠ authorization · `organizationId` + `workspaceId` mandatory before data-plane access.
 
 **Change lifecycle:** Proposal → Impact Analysis → ADR (if needed) → Implementation → CI Gate → Evidence → Release
+
+**P0 baseline (frozen):** P0-A + P0-B RELEASED — changes only via critical/security/compatibility fix or new governance milestone. Feature work on P1+.
+
+**Phase shift (2026-07-08):** P0 = build platform ✅ · **P1 = use platform** (P1-A Org Memory Dogfood proposed)
 
 **CI governance gate (enforced):** `npm test` · `test:identity` · `test:e2e` · `ci:adr-impact` · `ci:docs-impact` · `ci:permission-contract`
 

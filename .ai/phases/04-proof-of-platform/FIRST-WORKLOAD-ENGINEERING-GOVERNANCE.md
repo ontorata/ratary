@@ -5,7 +5,7 @@
 | **Authority** | Governance & Execution |
 | **Horizon** | Phase 4 |
 | **Owner** | Engineering + Product |
-| **Status** | **Active** — P0-B Forge-Isolate; blueprint pending |
+| **Status** | **Complete** — P0-B RELEASED 2026-07-08 · superseded by P1-A for active execution |
 | **Category** | Must Prove |
 | **Evidence package** | `.ai/reviews/engineering-governance/` (create when P0-A passes) |
 
@@ -67,7 +67,7 @@ Each capability is a **sub-capability** of the same workload — shared ingest, 
 | Workspace bound to org | ✅ P0-A waves 1–2 |
 | MCP + REST same tenant context | ✅ P0-A wave 4 |
 
-**Do not start ingest at production scale until P0-B acceptance gate passes.**
+**Do not start ingest at production scale until P0-B acceptance gate passes.** ✅ P0-B RELEASED — proceed to [P1-A Org Memory Dogfood](./FIRST-WORKLOAD-ORG-MEMORY.md).
 
 ---
 
