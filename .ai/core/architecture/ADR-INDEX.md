@@ -12,6 +12,7 @@
 | ADR-0006 | [ADR-0006-recall-intelligence-boundary.md](./ADR-0006-recall-intelligence-boundary.md) | Accepted | Recall intelligence ownership · candidate/policy/assembly separation |
 | ADR-0007 | [ADR-0007-ontory-runtime-kernel-boundary.md](./ADR-0007-ontory-runtime-kernel-boundary.md) | **Accepted** | Ontory runtime kernel · separate repo · REST adapter · stub-first · stateless |
 | ADR-0008 | [ADR-0008-ontory-provider-integration.md](./ADR-0008-ontory-provider-integration.md) | **Accepted · Closed** | P2-B · OpenAI first · official SDK in adapter only · gpt-4o-mini config · no SDK types across port · streaming deferred · tag `org-memory-p2-b-complete` |
+| ADR-0009 | [ADR-0009-provider-conformance-harness.md](./ADR-0009-provider-conformance-harness.md) | **Proposed** | P2-C.0 · conformance harness · freeze P2-B contract · block Anthropic until PASS · no new vendors |
 
 **Template:** [ADR-TEMPLATE.md](./ADR-TEMPLATE.md)
 

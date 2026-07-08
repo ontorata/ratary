@@ -174,7 +174,8 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B Task 6 | ✅ REST composition · `e63bb93` · default stub |
 | P2-B Task 7 | ✅ Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) |
 | P2-B closeout | ✅ tag `org-memory-p2-b-complete` @ Ontory `e63bb93` · ai-brain `fe70ede` · Studio unchanged `043666e` |
-| Next gate | Optional later: Anthropic/Gemini adapters or streaming (new wave / ADR) |
+| P2-C.0 | ⏳ ADR-0009 **Proposed** · conformance harness (no new vendors) |
+| Next gate | Accept ADR-0009 → isolate/harness · Anthropic blocked until harness PASS |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
