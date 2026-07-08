@@ -60,12 +60,16 @@ export class DriveLiveConnector implements IKnowledgeConnector {
     );
 
     const pageSize = Math.min(input.limit ?? 25, 100);
-    const qParts = ["trashed=false", "mimeType!='application/vnd.google-apps.folder'"];
+    const qParts = ['trashed=false', "mimeType!='application/vnd.google-apps.folder'"];
     const folderId = this.env.GOOGLE_DRIVE_FOLDER_ID?.trim();
     if (folderId) {
       qParts.push(`'${folderId}' in parents`);
     }
-    if (input.mode === 'incremental' && input.sinceCursor && /^\d{4}-\d{2}-\d{2}/.test(input.sinceCursor)) {
+    if (
+      input.mode === 'incremental' &&
+      input.sinceCursor &&
+      /^\d{4}-\d{2}-\d{2}/.test(input.sinceCursor)
+    ) {
       qParts.push(`modifiedTime > '${input.sinceCursor}'`);
     }
 

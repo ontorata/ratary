@@ -57,7 +57,8 @@ function isMemoryWritePath(path: string, method: string): boolean {
   if (path.startsWith('/api/v1/knowledge-fabric/ingest/') && method === 'POST') return true;
   if (path.startsWith('/api/v1/signals') && method === 'POST') return true;
   if (!path.startsWith('/api/v1/memory') && !path.startsWith('/api/v1/backup')) return false;
-  if (method === 'POST' || method === 'PUT' || method === 'PATCH' || method === 'DELETE') return true;
+  if (method === 'POST' || method === 'PUT' || method === 'PATCH' || method === 'DELETE')
+    return true;
   return false;
 }
 
@@ -121,9 +122,7 @@ export interface PermissionContext {
  */
 export function resolvePermissionContext(auth: AuthUser): PermissionContext {
   if (!auth.organizationId || !auth.workspaceId) {
-    throw new TenantContextRequiredError(
-      'Tenant context is required before permission evaluation',
-    );
+    throw new TenantContextRequiredError('Tenant context is required before permission evaluation');
   }
 
   return {

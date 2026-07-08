@@ -24,7 +24,8 @@ const METADATA_SCHEMA = {
     },
     memoryType: {
       type: 'string',
-      description: 'Memory type: note, prompt, code, architecture, task, meeting, research, documentation, api, config',
+      description:
+        'Memory type: note, prompt, code, architecture, task, meeting, research, documentation, api, config',
     },
     keywords: {
       type: 'array',
@@ -94,7 +95,10 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
       properties: {
         title: { type: 'string', description: 'Short title for the memory entry' },
         content: { type: 'string', description: 'Full markdown body stored in the knowledge base' },
-        project: { type: 'string', description: 'Project slug grouping memories (e.g. ratary, ontorata)' },
+        project: {
+          type: 'string',
+          description: 'Project slug grouping memories (e.g. ratary, ontorata)',
+        },
         summary: { type: 'string', description: 'One-line summary for token-efficient context' },
         tags: {
           type: 'array',
@@ -144,17 +148,13 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
     },
     { destructiveHint: true },
   ),
-  readOnly(
-    'get_memory',
-    'Fetch a single memory by UUID including full content and metadata.',
-    {
-      type: 'object',
-      properties: {
-        id: { type: 'string', format: 'uuid', description: 'Memory UUID' },
-      },
-      required: ['id'],
+  readOnly('get_memory', 'Fetch a single memory by UUID including full content and metadata.', {
+    type: 'object',
+    properties: {
+      id: { type: 'string', format: 'uuid', description: 'Memory UUID' },
     },
-  ),
+    required: ['id'],
+  }),
   readOnly(
     'get_memory_by_codename',
     'Fetch a memory by stable codename (e.g. AUTH-0001) when UUID is unknown.',
@@ -188,7 +188,12 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
         project: { type: 'string', description: 'Filter by project slug' },
         favorite: { type: 'boolean', description: 'Only favorites when true' },
         archived: { type: 'boolean', description: 'Include archived memories when true' },
-        limit: { type: 'integer', minimum: 1, maximum: 100, description: 'Max results (default 50)' },
+        limit: {
+          type: 'integer',
+          minimum: 1,
+          maximum: 100,
+          description: 'Max results (default 50)',
+        },
         offset: { type: 'integer', minimum: 0, description: 'Pagination offset' },
       },
     },
@@ -212,10 +217,14 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
       required: ['path'],
     },
   ),
-  readOnly('list_projects', 'List all project slugs that have at least one memory for this owner.', {
-    type: 'object',
-    properties: {},
-  }),
+  readOnly(
+    'list_projects',
+    'List all project slugs that have at least one memory for this owner.',
+    {
+      type: 'object',
+      properties: {},
+    },
+  ),
   readOnly('list_tags', 'List distinct tags used across all memories for this owner.', {
     type: 'object',
     properties: {},
@@ -238,17 +247,13 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
     },
     { idempotentHint: true },
   ),
-  readOnly(
-    'list_relations',
-    'List graph relations attached to a memory (incoming and outgoing).',
-    {
-      type: 'object',
-      properties: {
-        id: { type: 'string', format: 'uuid', description: 'Memory UUID' },
-      },
-      required: ['id'],
+  readOnly('list_relations', 'List graph relations attached to a memory (incoming and outgoing).', {
+    type: 'object',
+    properties: {
+      id: { type: 'string', format: 'uuid', description: 'Memory UUID' },
     },
-  ),
+    required: ['id'],
+  }),
   writeTool(
     'toggle_favorite',
     'Toggle the favorite flag on a memory for quick access and ranking.',
@@ -283,8 +288,16 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
         projectId: { type: 'string', description: 'Limit context to one project' },
         tags: { type: 'array', items: { type: 'string' }, description: 'Tag filters' },
         limit: { type: 'integer', minimum: 1, maximum: 20, description: 'Max memories in context' },
-        max_chars: { type: 'integer', minimum: 500, maximum: 24000, description: 'Character budget' },
-        summary_only: { type: 'boolean', description: 'Omit bodies; title+summary only (default true)' },
+        max_chars: {
+          type: 'integer',
+          minimum: 500,
+          maximum: 24000,
+          description: 'Character budget',
+        },
+        summary_only: {
+          type: 'boolean',
+          description: 'Omit bodies; title+summary only (default true)',
+        },
         format: { type: 'string', enum: ['markdown', 'xml'], description: 'Output format' },
       },
     },
@@ -300,7 +313,12 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
         projectId: { type: 'string', description: 'Project scope' },
         system_role: { type: 'string', description: 'Custom system role preamble' },
         limit: { type: 'integer', minimum: 1, maximum: 20, description: 'Max memories' },
-        max_chars: { type: 'integer', minimum: 500, maximum: 24000, description: 'Context char budget' },
+        max_chars: {
+          type: 'integer',
+          minimum: 500,
+          maximum: 24000,
+          description: 'Context char budget',
+        },
       },
       required: ['task'],
     },
@@ -448,7 +466,10 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
       type: 'object',
       properties: {
         platform_id: { type: 'string', description: 'Client platform id' },
-        cursor: { type: 'string', description: 'Expected server cursor for optimistic concurrency' },
+        cursor: {
+          type: 'string',
+          description: 'Expected server cursor for optimistic concurrency',
+        },
         changes: {
           type: 'array',
           maxItems: 100,
@@ -459,17 +480,13 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
       required: ['platform_id', 'changes'],
     },
   ),
-  readOnly(
-    'sync_status',
-    'Get multi-client sync status and last cursor for a platform.',
-    {
-      type: 'object',
-      properties: {
-        platform_id: { type: 'string', description: 'Client platform id' },
-      },
-      required: ['platform_id'],
+  readOnly('sync_status', 'Get multi-client sync status and last cursor for a platform.', {
+    type: 'object',
+    properties: {
+      platform_id: { type: 'string', description: 'Client platform id' },
     },
-  ),
+    required: ['platform_id'],
+  }),
 ];
 
 export const MCP_SERVER_CARD_PROMPTS = [

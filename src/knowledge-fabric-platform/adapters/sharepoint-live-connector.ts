@@ -64,11 +64,15 @@ export class SharePointLiveConnector implements IKnowledgeConnector {
     const token = await fetchMicrosoftGraphAccessToken(creds);
     const siteId = this.env.SHAREPOINT_SITE_ID?.trim();
     if (!siteId) {
-      throw new Error('SHAREPOINT_SITE_ID is required for SharePoint live connector (app-only auth)');
+      throw new Error(
+        'SHAREPOINT_SITE_ID is required for SharePoint live connector (app-only auth)',
+      );
     }
 
     const pageSize = Math.min(input.limit ?? 25, 100);
-    const graphUrl = new URL(`https://graph.microsoft.com/v1.0/sites/${siteId}/drive/root/children`);
+    const graphUrl = new URL(
+      `https://graph.microsoft.com/v1.0/sites/${siteId}/drive/root/children`,
+    );
     graphUrl.searchParams.set('$top', String(pageSize));
     graphUrl.searchParams.set('$orderby', 'lastModifiedDateTime desc');
 
@@ -82,9 +86,7 @@ export class SharePointLiveConnector implements IKnowledgeConnector {
     }
 
     const data = (await response.json()) as GraphListResponse;
-    let items = (data.value ?? [])
-      .filter((item) => !item.folder)
-      .map(mapSharePointItem);
+    let items = (data.value ?? []).filter((item) => !item.folder).map(mapSharePointItem);
 
     if (input.mode === 'incremental' && input.sinceCursor) {
       items = items.filter((item) => item.updatedAt > input.sinceCursor!);

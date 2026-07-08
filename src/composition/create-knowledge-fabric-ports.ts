@@ -32,7 +32,8 @@ export interface KnowledgeFabricPorts {
   enabled: boolean;
   universalEnabled: boolean;
   connectorSyncEnabled: boolean;
-  orchestrator: KnowledgeFabricOrchestrator | NoOpKnowledgeFabricOrchestrator | IUniversalFabricOrchestrator;
+  orchestrator:
+    KnowledgeFabricOrchestrator | NoOpKnowledgeFabricOrchestrator | IUniversalFabricOrchestrator;
   syncJobRunner: ConnectorSyncJobRunner | null;
   webhookConnectors: Map<ConnectorId, WebhookPushConnector>;
   manifestBuilder: KnowledgeFabricManifestBuilder;

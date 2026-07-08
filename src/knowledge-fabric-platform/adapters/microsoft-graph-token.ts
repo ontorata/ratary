@@ -26,7 +26,9 @@ export function canUseMicrosoftGraph(env: Env): boolean {
 }
 
 /** OAuth2 client credentials for Microsoft Graph API. */
-export async function fetchMicrosoftGraphAccessToken(creds: MicrosoftGraphCredentials): Promise<string> {
+export async function fetchMicrosoftGraphAccessToken(
+  creds: MicrosoftGraphCredentials,
+): Promise<string> {
   const url = `${GRAPH_TOKEN_URL}/${creds.tenantId}/oauth2/v2.0/token`;
   const body = new URLSearchParams({
     client_id: creds.clientId,

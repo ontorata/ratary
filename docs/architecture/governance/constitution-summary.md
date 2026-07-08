@@ -1,10 +1,35 @@
 # Ontorata Engineering — Constitution Summary
 
 **Canonical:** `.ai/core/constitution/ENGINEERING-CONSTITUTION.md`  
+**Extensions:** `.ai/core/constitution/ENGINEERING-PRINCIPLES.md` · `SECURITY-BOUNDARY.md` · `CHANGE-MANAGEMENT.md`  
 **Structure:** Frozen 2026-07-08 — **structure frozen, evolution allowed**  
 **Phase:** 4 — Proof of Platform (Phases 0–3 complete)
 
 **Mode:** Problem → Workload → Evidence → Trust → Scale
+
+---
+
+## P0-B Engineering Principles (Wave 6)
+
+Five non-negotiable principles established by P0-B Engineering Governance:
+
+| P# | Principle | Rule | Enforcement |
+|----|-----------|------|------------|
+| P1 | Security over convenience | No feature justifies security trade-off | ADR-0003 · `ci:permission-contract` |
+| P2 | Documentation is engineering output | Code without docs is incomplete | `ci:docs-impact` (fail) |
+| P3 | Evidence before completion | Merge ≠ Done; completion requires evidence package | `.ai/reviews/` · Ratary sync |
+| P4 | Tenant isolation is mandatory | `owner_id` is not optional | `test:identity` · ADR-0002 |
+| P5 | Architecture before implementation | Significant changes require ADR | `ci:adr-impact` · `ARCHITECTURE-CHANGE-MAP` |
+
+**Security boundary (non-negotiable):** Auth at boundary · transport ≠ authorization · `organizationId` + `workspaceId` mandatory before data-plane access.
+
+**Change lifecycle:** Proposal → Impact Analysis → ADR (if needed) → Implementation → CI Gate → Evidence → Release
+
+**CI governance gate (enforced):** `npm test` · `test:identity` · `test:e2e` · `ci:adr-impact` · `ci:docs-impact` · `ci:permission-contract`
+
+---
+
+## Existing content below preserved
 
 **Contract:** `phases/04-proof-of-platform/EXECUTION-CONTRACT.md` (locked)
 

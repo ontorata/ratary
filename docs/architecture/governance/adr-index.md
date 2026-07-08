@@ -16,6 +16,23 @@ RFC = proposal only. Accepted RFC → new ADR (e.g. RFC-001 → ADR-015).
 
 ---
 
+**Last updated:** 2026-07-08 (P0-B Wave 1 — identity foundation ADRs)
+
+---
+
+## Identity Foundation ADRs (P0-A — canonical in `.ai/core/architecture/`)
+
+| ADR | Title | Status | Summary |
+|-----|-------|--------|---------|
+| ADR-0001 | [Identity Boundary](.ai/core/architecture/ADR-0001-identity-boundary.md) | Accepted | Auth · owner · org/workspace · bootstrap vs data-plane |
+| ADR-0002 | [Tenant Isolation](.ai/core/architecture/ADR-0002-tenant-isolation.md) | Accepted | Organization tenant boundary · Org A ≠ Org B |
+| ADR-0003 | [Authorization Model](.ai/core/architecture/ADR-0003-authorization-model.md) | Accepted | Permission contract · authorization-boundary |
+| ADR-0004 | [Transport Parity](.ai/core/architecture/ADR-0004-transport-parity.md) | Accepted | REST ↔ MCP remote · transport ≠ permission |
+
+**Enforcement:** `npm run ci:adr-impact` · [ARCHITECTURE-CHANGE-MAP.md](.ai/core/governance/ARCHITECTURE-CHANGE-MAP.md)
+
+---
+
 ## Cross-product ADRs
 
 | ADR | Title | Status | Summary |

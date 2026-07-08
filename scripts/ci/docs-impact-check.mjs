@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
- * Documentation impact CI check (warning phase).
- * Warns when code paths change without docs/README/CHANGELOG updates.
+ * Documentation / governance impact CI check.
  *
- * Usage: node scripts/ci/docs-impact-check.mjs [baseRef]
- * Default baseRef: origin/main or GITHUB_BASE_REF
+ * Fails when code paths change without documentation or .ai governance updates.
+ *
+ * Usage: node scripts/ci/docs-impact-check.mjs [baseRef] [--warn]
+ * Default: fail mode (exit 1). Pass --warn for warning-only (legacy).
  */
 
 import { execSync } from 'node:child_process';
@@ -16,8 +17,10 @@ const CODE_PATTERNS = [
   /^scripts\/(?!ci\/)/,
 ];
 
-const DOC_PATTERNS = [
+/** Documentation + governance evidence paths */
+const GOVERNANCE_DOC_PATTERNS = [
   /^docs\//,
+  /^\.ai\//,
   /^README\.md$/i,
   /^CHANGELOG\.md$/i,
   /^\.github\/pull_request_template\.md$/,
@@ -46,8 +49,9 @@ function matches(patterns, file) {
   return patterns.some((p) => p.test(file));
 }
 
+const warnOnly = process.argv.includes('--warn');
 const baseRef =
-  process.argv[2] ||
+  process.argv.find((a) => !a.startsWith('-') && a !== process.argv[1]) ||
   process.env.GITHUB_BASE_REF ||
   'origin/main';
 
@@ -59,30 +63,41 @@ if (files.length === 0) {
 }
 
 const codeChanged = files.some((f) => matches(CODE_PATTERNS, f));
-const docsChanged = files.some((f) => matches(DOC_PATTERNS, f));
+const governanceDocsChanged = files.some((f) => matches(GOVERNANCE_DOC_PATTERNS, f));
 
 if (!codeChanged) {
   console.log('docs-impact-check: no code paths changed — OK');
   process.exit(0);
 }
 
-if (docsChanged) {
-  console.log('docs-impact-check: code and documentation both changed — OK');
+if (governanceDocsChanged) {
+  console.log('docs-impact-check: code and governance/documentation evidence both changed — OK');
   process.exit(0);
 }
 
-console.warn('');
-console.warn('⚠️  DOCUMENTATION IMPACT WARNING');
-console.warn('');
-console.warn('Code changed under src/, api/, or packages/ but no docs/ README CHANGELOG update detected.');
-console.warn('');
-console.warn('Before merge, complete Documentation Impact Check per:');
-console.warn('  .ai/core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md');
-console.warn('');
-console.warn('Changed code files (sample):');
-files.filter((f) => matches(CODE_PATTERNS, f)).slice(0, 15).forEach((f) => console.warn(`  - ${f}`));
-console.warn('');
-console.warn('This check is warning-only. Enforcement will be enabled later.');
-console.warn('');
+const message = `
+❌ DOCUMENTATION / GOVERNANCE IMPACT CHECK FAILED
 
-process.exit(0);
+Code changed under src/, api/, packages/, or scripts/ but no docs/ or .ai/ governance update detected.
+
+Before merge:
+  1. Complete Documentation Impact Check per IMPLEMENTATION-COMPLETION-PROTOCOL.md
+  2. Update docs/ and/or .ai/ (ADR · evidence · acceptance · governance)
+  3. Link ADR when architecture paths changed
+
+Changed code files (sample):
+${files
+  .filter((f) => matches(CODE_PATTERNS, f))
+  .slice(0, 15)
+  .map((f) => `  - ${f}`)
+  .join('\n')}
+`;
+
+if (warnOnly) {
+  console.warn(message);
+  console.warn('docs-impact-check: warning-only mode — not failing');
+  process.exit(0);
+}
+
+console.error(message);
+process.exit(1);

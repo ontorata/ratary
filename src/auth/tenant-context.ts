@@ -57,10 +57,7 @@ export async function resolveTenantContext(
   return { organizationId, workspaceId };
 }
 
-export function attachTenantContextToAuthUser(
-  auth: AuthUser,
-  tenant: TenantContext,
-): AuthUser {
+export function attachTenantContextToAuthUser(auth: AuthUser, tenant: TenantContext): AuthUser {
   return {
     ...auth,
     organizationId: tenant.organizationId,
@@ -72,7 +69,11 @@ export function assertScopeHintsMatchAuthTenant(
   auth: AuthUser,
   hints?: { organizationId?: string; workspaceId?: string },
 ): void {
-  if (hints?.organizationId && auth.organizationId && hints.organizationId !== auth.organizationId) {
+  if (
+    hints?.organizationId &&
+    auth.organizationId &&
+    hints.organizationId !== auth.organizationId
+  ) {
     throw new ForbiddenError('Organization hint does not match authenticated tenant context');
   }
   if (hints?.workspaceId && auth.workspaceId && hints.workspaceId !== auth.workspaceId) {

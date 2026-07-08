@@ -107,7 +107,8 @@ export function createMemoryHandlers(deps: MemoryHandlerDeps): MemoryHandlers {
       handle: async (ctx, query) => deps.memoryService.searchMemory(await readScope(ctx), query),
     },
     findSimilar: {
-      handle: async (ctx, query) => deps.memoryService.findSimilarMemories(await readScope(ctx), query),
+      handle: async (ctx, query) =>
+        deps.memoryService.findSimilarMemories(await readScope(ctx), query),
     },
     getByPath: {
       handle: async (ctx, query) => deps.memoryService.getMemoryByPath(await readScope(ctx), query),
@@ -122,16 +123,19 @@ export function createMemoryHandlers(deps: MemoryHandlerDeps): MemoryHandlers {
       handle: async (ctx, { id }) => deps.memoryService.toggleFavorite(await writeScope(ctx), id),
     },
     archive: {
-      handle: async (ctx, { id }) => deps.memoryService.archiveMemory(await writeScope(ctx), id, true),
+      handle: async (ctx, { id }) =>
+        deps.memoryService.archiveMemory(await writeScope(ctx), id, true),
     },
     exportBackup: {
       handle: async (ctx) => deps.memoryService.exportBackup(await readScope(ctx)),
     },
     importBackup: {
-      handle: async (ctx, { input }) => deps.memoryService.importBackup(await writeScope(ctx), input),
+      handle: async (ctx, { input }) =>
+        deps.memoryService.importBackup(await writeScope(ctx), input),
     },
     replaceBackup: {
-      handle: async (ctx, { input }) => deps.memoryService.replaceBackup(await writeScope(ctx), input),
+      handle: async (ctx, { input }) =>
+        deps.memoryService.replaceBackup(await writeScope(ctx), input),
     },
   };
 }

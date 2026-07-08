@@ -284,10 +284,7 @@ export function createKnowledgeFabricController(
 
       const scope = await resolveMemoryScopeFromRequest(request, scopeResolver);
       const limit = request.query.limit ? Number(request.query.limit) : 50;
-      const records = await universal.listProvenance(
-        scope,
-        Number.isFinite(limit) ? limit : 50,
-      );
+      const records = await universal.listProvenance(scope, Number.isFinite(limit) ? limit : 50);
       reply.send({ records, count: records.length });
     },
   };

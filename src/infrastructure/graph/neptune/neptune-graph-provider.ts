@@ -24,10 +24,7 @@ export class NeptuneGraphProvider implements IGraphProvider {
   private readonly edgeCache = new Map<string, RelationEdge[]>();
   private readonly client: NeptuneGremlinClient;
 
-  constructor(
-    env: Env,
-    client?: NeptuneGremlinClient,
-  ) {
+  constructor(env: Env, client?: NeptuneGremlinClient) {
     const endpoint = env.NEPTUNE_ENDPOINT?.trim();
     if (!endpoint) {
       throw new Error('NEPTUNE_ENDPOINT is required when GRAPH_PROVIDER=neptune');

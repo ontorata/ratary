@@ -8,10 +8,7 @@ import {
   resolvePermissionContext,
   resolveRequiredPermission,
 } from './permission-context.js';
-import {
-  attachTenantContextToAuthUser,
-  resolveTenantContext,
-} from './tenant-context.js';
+import { attachTenantContextToAuthUser, resolveTenantContext } from './tenant-context.js';
 import { AppError, ForbiddenError } from '../types/errors.js';
 
 /** Transport label for authorization audit — not a permission namespace. */
@@ -44,10 +41,9 @@ function recordAuthorizationAudit(record: AuthorizationAuditRecord): void {
   authorizationAuditSink(record);
 }
 
-function auditFieldsFromAuth(auth: AuthUser): Pick<
-  AuthorizationAuditRecord,
-  'identityId' | 'organizationId' | 'workspaceId'
-> {
+function auditFieldsFromAuth(
+  auth: AuthUser,
+): Pick<AuthorizationAuditRecord, 'identityId' | 'organizationId' | 'workspaceId'> {
   return {
     identityId: auth.identityId,
     organizationId: auth.organizationId ?? '',
