@@ -146,16 +146,18 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-D AI Workspace — W4 complete 🟢
+### P1-D AI Workspace — W5 smoke complete 🟢
 
 | Stage | Status |
 |-------|--------|
-| W1–W3 | ✅ **ACCEPTED** |
-| W4 | ✅ **ACCEPTED** — PromptAssembler → AIExecutionRequest → RuntimePort (echo) |
+| W1–W4 | ✅ **ACCEPTED** |
+| W5 smoke | ✅ 5 scenarios · pipeline path only (no live LLM) |
+| Extended corpus | ⏳ deferred |
 | Implementation | `Ontorata-Studio` · `forge/ai-workspace-p1-d` |
 | Ratary baseline | 🔒 `org-memory-p1-c-complete` (unchanged) |
-| Evidence W4 | ✅ [workspace-ai-pipeline-proof.md](../reviews/org-memory-dogfood/workspace-ai-pipeline-proof.md) |
-| Next gate | W5 — Integration evaluation |
+| Evidence W4 | ✅ Future Runtime Compatibility locked |
+| Evidence W5 | ✅ [workspace-ai-integration-eval-proof.md](../reviews/org-memory-dogfood/workspace-ai-integration-eval-proof.md) |
+| Next gate | W6 — docs + release · or W5 extended corpus |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

@@ -78,6 +78,38 @@ W4 ensures Studio does **not** block a future Ontory runtime — it does not bui
 
 ---
 
+## Future Runtime Compatibility
+
+`AIExecutionRequest` is **runtime-neutral**.
+
+The workspace layer **MUST NOT** depend on:
+
+- a concrete model provider,
+- an agent framework,
+- Ontory implementation details.
+
+Forbidden Studio surface shapes (illustrative):
+
+- `executeWithOntory()`
+- `callAgent()`
+- provider-specific parameter bags on UI/pipeline ports
+
+Allowed evolution:
+
+```text
+AIExecutionRequest
+        │
+        ├── Ontory Runtime Adapter (future)
+        ├── OpenAI Adapter (future)
+        ├── Claude Adapter (future)
+        └── Local Model Adapter (future)
+```
+
+Studio says: *“here is an AI task with context and prompt.”*  
+Studio does **not** say: *“call model X with parameter Y.”*
+
+---
+
 ## Next
 
-W5 — integration evaluation (smoke 3–5 queries, then extended corpus).
+W5 — integration evaluation (smoke 3–5 scenarios, then extended corpus). Focus: pipeline path — not model quality.

@@ -146,5 +146,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-D isolate active (Studio `forge/ai-workspace-p1-d`)
 - ✅ P1-D W3 accepted (UI → orchestrator → ContextPackage)
 - ✅ P1-D W4 accepted (PromptAssembler → AIExecutionRequest → RuntimePort)
-- ⏳ Next: P1-D W5 — Integration evaluation
+- ✅ P1-D W5 smoke complete (5 pipeline scenarios · no live LLM)
+- ⏳ Next: P1-D W5 extended corpus (optional) atau W6 release closeout
 
