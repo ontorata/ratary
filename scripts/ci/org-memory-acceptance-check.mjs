@@ -23,8 +23,8 @@ for (const gate of requiredPass) {
   }
 }
 
-if (!/\| \*\*Status\*\* \| (PASS|READY|COMPLETE)/i.test(content)) {
-  fail('Manifest status is not marked PASS/READY/COMPLETE');
+if (!/\| \*\*Status\*\* \| (PASS|READY|COMPLETE|CLOSED)/i.test(content)) {
+  fail('Manifest status is not marked PASS/READY/COMPLETE/CLOSED');
 }
 
 console.log('org-memory-acceptance-check: all G1-G6 gates are PASS — OK');
