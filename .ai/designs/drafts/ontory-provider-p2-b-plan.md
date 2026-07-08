@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Execute — Task 1 ✅ · Task 2 next (RequestMapper) |
+| **Status** | Execute — Task 1–2 ✅ · Task 3 next (ResponseMapper / ErrorMapper) |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -31,8 +31,8 @@ No OpenAI adapter yet.
 
 ## Execution progress
 
-- [x] Task 1 — Provider contract & `ProviderError` (**no OpenAI**) · Ontory `feat` commit on `forge/ontory-provider-p2-b`
-- [ ] Task 2 — RequestMapper
+- [x] Task 1 — Provider contract & `ProviderError` (**no OpenAI**) · Ontory `ac5aa19`
+- [x] Task 2 — RequestMapper · Ontory (pure · no SDK)
 - [ ] Task 3 — ResponseMapper / ErrorMapper (vendor → `ProviderError`)
 - [ ] Task 4 — `OpenAIProviderAdapter` (official SDK · adapter folder only)
 - [ ] Task 5 — Configuration (`stub` \| `openai`, model default `gpt-4o-mini`)
@@ -44,16 +44,18 @@ No OpenAI adapter yet.
 
 ## Task 1 — Provider contract & ProviderError ✅
 
-- **Commit:** Ontory Task 1 on `forge/ontory-provider-p2-b`
+- **Commit:** Ontory `ac5aa19`
 - **Files:** `src/runtime/contracts/provider-error.ts` · tests · re-export · doc on `ProviderRuntime`
 - **Verify:** 10 tests PASS · boundary OK · typecheck OK
 - **Done when:** ✅ Runtime knows `ProviderError` · no OpenAI · no networking · no Dispatcher / REST changes
 
-### Task 2 — RequestMapper
+## Task 2 — RequestMapper ✅
 
-- **Files:** `src/adapters/openai/request-mapper.ts` · tests
-- **Do:** Map `AIExecutionRequest` → Chat Completions create params (plain objects; SDK types not exported)
-- **Verify:** mapper unit tests
+- **Files:** `src/adapters/openai/request-mapper.ts` · `tests/adapters/openai-request-mapper.test.ts`
+- **Do:** Pure `mapAIExecutionRequestToOpenAIChatParams(request, { model })` → frozen `{ model, messages }`
+- **Notes:** `temperature` / `max_tokens` **not** on `AIExecutionRequest` — omitted; `tools` ignored (P2-B no tool calling); model is an explicit arg (no env)
+- **Verify:** 14 tests PASS · boundary OK · no `openai` package
+- **Done when:** ✅ pure · no network · no env · no Dispatcher · no ProviderRuntime change · no OpenAI client
 
 ### Task 3 — ResponseMapper / ErrorMapper
 
