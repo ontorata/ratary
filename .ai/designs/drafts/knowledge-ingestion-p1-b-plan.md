@@ -21,6 +21,13 @@
 - [ ] Task 6 — Refresh acceptance artifacts and non-regression guard
 - [ ] Task 7 — Prepare P1-B release-ready governance trail
 
+Wave tracking:
+- ✅ Wave 1 — Foundation
+- ✅ Wave 2 — Pipeline Core
+- ✅ Wave 3 — Embedding Layer
+- ✅ Wave 4 — Knowledge Store & Index Update
+- ⏳ Wave 5 — End-to-End Proof
+
 ---
 
 ## Problem statement

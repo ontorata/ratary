@@ -128,5 +128,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Wave 1 foundation complete (contracts + ADR + schema)
 - ✅ Wave 2 pipeline core complete (normalizer + chunk + orchestrator)
 - ✅ Wave 3 embedding layer complete (job lifecycle + retry/resume + tests)
-- 🟢 Next: Wave 4 knowledge store + index update on `forge/knowledge-ingestion`
+- ✅ Wave 4 knowledge store + index update complete (versioned persistence + boundary adapter + recovery tests)
+- 🟢 Next: Wave 5 end-to-end proof on `forge/knowledge-ingestion`
 
