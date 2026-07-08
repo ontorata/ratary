@@ -39,16 +39,16 @@
 
 | Surface | Read | Write | Search | Pass |
 |---------|------|-------|--------|------|
-| REST | ⬜ Wave 4 | ⬜ Wave 4 | ⬜ Wave 4 | ⬜ |
-| MCP | ⬜ Wave 4 | ⬜ Wave 4 | ⬜ Wave 4 | ⬜ |
+| REST | ✅ Wave 4 | ✅ Wave 4 | ✅ Wave 4 | ✅ |
+| MCP | ✅ Wave 4 | ✅ Wave 4 | ✅ Wave 4 | ✅ |
 | Memory | ✅ Wave 3 | ✅ Wave 3 | — | ✅ |
 
 ## Tenant isolation
 
 | Vector | Org A cannot see Org B | Pass |
 |--------|------------------------|------|
-| REST | ⬜ | ⬜ |
-| MCP | ⬜ | ⬜ |
+| REST | ✅ Wave 4 | ✅ |
+| MCP | ✅ Wave 4 | ✅ |
 | Memory | ⬜ | ⬜ |
 | Search | ⬜ | ⬜ |
 | Metrics | ⬜ | ⬜ |
@@ -71,4 +71,5 @@ npm run test:identity
 **Wave 1 data boundary:** ✅ PASS (14 tests)  
 **Wave 2 identity context:** ✅ PASS (10 tests)  
 **Wave 3 authorization boundary:** ✅ PASS (11 tests) — checkpoint [WAVE-3-AUTHORIZATION.md](../../governance/waves/WAVE-3-AUTHORIZATION.md)  
-**Overall P0-A:** ⬜ IN PROGRESS (waves 4–5 pending)
+**Wave 4 transport parity:** ✅ PASS (14 tests) — checkpoint [WAVE-4-TRANSPORT-PARITY.md](../../governance/waves/WAVE-4-TRANSPORT-PARITY.md)  
+**Overall P0-A:** ⬜ IN PROGRESS (wave 5 pending)

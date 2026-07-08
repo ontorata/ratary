@@ -87,3 +87,20 @@ npm run test:identity                # 35/35 PASS
 **Wave 3 — Authorization boundary (2026-07-08):** ✅ LOCKED — see [.ai/governance/waves/WAVE-3-AUTHORIZATION.md](../../governance/waves/WAVE-3-AUTHORIZATION.md)
 
 **E2E proven (Wave 3):** ✅ Yes (authorization unit tests)
+
+## Wave 4 — Transport parity (2026-07-08)
+
+```bash
+npm test -- authorization-boundary rest-mcp-parity mcp-scope-recall tenant-isolation
+npm run test:identity                # 49/49 PASS
+```
+
+**Proven:**
+- Shared `authorization-boundary.ts` for REST + MCP remote
+- Identical PermissionContext and MemoryScope for same tenant headers
+- MCP remote requires tenant headers (no env-only bypass on authenticated path)
+- MCP forbidden → `{ code: FORBIDDEN, reason: permission_denied }`
+- Authorization audit records include `transport: REST | MCP`
+- SDK sends `X-Organization-Id` when `organizationId` configured
+
+**Wave 4 — Transport parity (2026-07-08):** ✅ LOCKED — see [.ai/governance/waves/WAVE-4-TRANSPORT-PARITY.md](../../governance/waves/WAVE-4-TRANSPORT-PARITY.md)

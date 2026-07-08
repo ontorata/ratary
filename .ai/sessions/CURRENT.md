@@ -120,8 +120,9 @@ Pending:    push forge branch when ready
 | Branch | `forge/identity-foundation` | Active |
 | Governance commit | `a2b3255` | ✅ public docs |
 | Blueprint commit | latest on forge branch | ✅ `.ai/` design only |
-| Wave 3 checkpoint | `.ai/governance/waves/WAVE-3-AUTHORIZATION.md` | ✅ LOCKED (`ed3b65a`) |
-| forge-execute Wave 4 | Transport parity REST ↔ MCP | ⏳ READY |
+| Wave 3 checkpoint | `.ai/governance/waves/WAVE-3-AUTHORIZATION.md` | ✅ LOCKED (`ed3b65a` / `e96330b`) |
+| Wave 4 checkpoint | `.ai/governance/waves/WAVE-4-TRANSPORT-PARITY.md` | ✅ LOCKED (`b190da5`) |
+| forge-execute Wave 5 | Studio E2E | ⏳ READY |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
