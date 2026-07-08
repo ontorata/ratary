@@ -4,9 +4,11 @@ import { resolve } from 'node:path';
 import {
   assertIngestionRun,
   type IngestionRun,
+  type PipelineStageResult,
   type SourceDefinition,
   type SourceResult,
 } from './knowledge-ingestion-contracts.js';
+import { orchestratePipeline, type RawSourceFile } from './knowledge-ingestion-pipeline.js';
 
 const REPO_ROOT = resolve(process.cwd());
 const INGEST_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/ingestion-log.md');
@@ -60,29 +62,50 @@ async function resolveSourceFiles(source: SourceDefinition): Promise<string[]> {
   return listFilesRecursive(source.sourcePath);
 }
 
-async function ingestSource(source: SourceDefinition): Promise<SourceResult> {
+async function ingestSource(
+  source: SourceDefinition,
+): Promise<{ sourceResult: SourceResult; stageResults: PipelineStageResult[] }> {
   const sourceStart = Date.now();
   const files = await resolveSourceFiles(source);
-  let ingested = 0;
-  let failed = 0;
+  const readableFiles: RawSourceFile[] = [];
+  let readFailures = 0;
+  let stageFailures = 0;
 
   for (const file of files) {
     try {
       const absolute = resolve(REPO_ROOT, file);
       const fileStat = await stat(absolute);
       if (!fileStat.isFile()) continue;
-      await readFile(absolute);
-      ingested += 1;
+      const content = await readFile(absolute, 'utf-8');
+      readableFiles.push({
+        sourcePath: source.sourcePath,
+        filePath: file,
+        content,
+        metadata: {
+          sizeBytes: fileStat.size,
+          encoding: 'utf-8',
+          modifiedAt: fileStat.mtime.toISOString(),
+        },
+      });
     } catch {
-      failed += 1;
+      readFailures += 1;
     }
   }
 
-  return {
+  const pipelineResult = orchestratePipeline(readableFiles, {
+    sourceFailed: readFailures,
     sourcePath: source.sourcePath,
-    ingested,
-    failed,
-    durationMs: Date.now() - sourceStart,
+  });
+  stageFailures = pipelineResult.stageResults.reduce((sum, stage) => sum + stage.failed, 0);
+
+  return {
+    sourceResult: {
+      sourcePath: source.sourcePath,
+      ingested: pipelineResult.documents.length,
+      failed: Math.max(readFailures, stageFailures),
+      durationMs: Date.now() - sourceStart,
+    },
+    stageResults: pipelineResult.stageResults,
   };
 }
 
@@ -98,6 +121,12 @@ function renderRunBlock(result: RunResult): string {
         `| source_path=\`${source.sourcePath}\` | ingested=${source.ingested} | failed=${source.failed} | duration_ms=${source.durationMs} |`,
     )
     .join('\n');
+  const stageRows = (result.stageResults ?? [])
+    .map(
+      (stage) =>
+        `| stage=${stage.stage} | status=${stage.status} | processed=${stage.processed} | failed=${stage.failed} | checkpoint_id=\`${stage.checkpointId}\` | source_path=\`${stage.sourcePath ?? 'n/a'}\` |`,
+    )
+    .join('\n');
 
   return [
     `## run_id=${result.runId}`,
@@ -111,6 +140,10 @@ function renderRunBlock(result: RunResult): string {
     '| source_path | ingested | failed | duration_ms |',
     '|-------------|----------|--------|-------------|',
     sourceRows,
+    '',
+    '| stage | status | processed | failed | checkpoint_id | source_path |',
+    '|-------|--------|-----------|--------|---------------|-------------|',
+    stageRows.length > 0 ? stageRows : '| stage=n/a | status=n/a | processed=0 | failed=0 | checkpoint_id=`n/a` | source_path=`n/a` |',
     '',
   ].join('\n');
 }
@@ -141,9 +174,11 @@ export async function runOrgMemorySync(): Promise<RunResult> {
   const startedAt = new Date().toISOString();
 
   const sources: SourceResult[] = [];
+  const stageResults: PipelineStageResult[] = [];
   for (const source of SOURCES) {
     const result = await ingestSource(source);
-    sources.push(result);
+    stageResults.push(...result.stageResults);
+    sources.push(result.sourceResult);
   }
 
   const endedAt = new Date().toISOString();
@@ -159,6 +194,7 @@ export async function runOrgMemorySync(): Promise<RunResult> {
     totalFailed,
     digest,
     sources,
+    stageResults,
   });
 
   await ensureLogFile();

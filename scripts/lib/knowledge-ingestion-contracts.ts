@@ -12,6 +12,8 @@ export const PIPELINE_STAGES = [
 export type PipelineStage = (typeof PIPELINE_STAGES)[number];
 
 export const PipelineStageSchema = z.enum(PIPELINE_STAGES);
+export const PipelineStageStatusSchema = z.enum(['completed', 'failed', 'skipped']);
+export type PipelineStageStatus = z.infer<typeof PipelineStageStatusSchema>;
 
 export const SourceModeSchema = z.enum(['directory', 'file', 'adr-glob']);
 
@@ -31,6 +33,23 @@ export const SourceResultSchema = z.object({
 
 export type SourceResult = z.infer<typeof SourceResultSchema>;
 
+export const PipelineStageResultSchema = z.object({
+  stage: PipelineStageSchema,
+  status: PipelineStageStatusSchema,
+  processed: z.number().int().nonnegative(),
+  failed: z.number().int().nonnegative(),
+  startedAt: z.string().datetime(),
+  endedAt: z.string().datetime(),
+  checkpointId: z.string().min(1),
+  resumable: z.boolean(),
+  replayable: z.boolean(),
+  idempotent: z.boolean(),
+  sourcePath: z.string().min(1).optional(),
+  error: z.string().optional(),
+});
+
+export type PipelineStageResult = z.infer<typeof PipelineStageResultSchema>;
+
 export const IngestionRunSchema = z.object({
   runId: z.string().uuid(),
   startedAt: z.string().datetime(),
@@ -39,6 +58,7 @@ export const IngestionRunSchema = z.object({
   totalFailed: z.number().int().nonnegative(),
   digest: z.string().min(8),
   sources: z.array(SourceResultSchema),
+  stageResults: z.array(PipelineStageResultSchema).optional(),
 });
 
 export type IngestionRun = z.infer<typeof IngestionRunSchema>;

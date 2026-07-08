@@ -1,9 +1,13 @@
 import { createHash } from 'node:crypto';
 import {
+  PIPELINE_STAGES,
+  type PipelineStage,
+  type PipelineStageResult,
   KnowledgeChunkSchema,
   KnowledgeDocumentSchema,
   type KnowledgeChunk,
   type KnowledgeDocument,
+  type PipelineStageStatus,
 } from './knowledge-ingestion-contracts.js';
 
 export type RawSourceFile = {
@@ -15,6 +19,12 @@ export type RawSourceFile = {
     encoding: 'utf-8';
     modifiedAt?: string;
   };
+};
+
+export type PipelineRunOutput = {
+  documents: KnowledgeDocument[];
+  chunks: KnowledgeChunk[];
+  stageResults: PipelineStageResult[];
 };
 
 function shortHash(value: string): string {
@@ -121,4 +131,179 @@ export function buildChunks(
   }
 
   return output;
+}
+
+function stageCheckpoint(stage: PipelineStage, processed: number, failed: number, sourcePath?: string): string {
+  const suffix = sourcePath ? `:${sourcePath}` : '';
+  return `cp-${shortHash(`${stage}:${processed}:${failed}${suffix}`)}`;
+}
+
+function buildStageResult(
+  stage: PipelineStage,
+  status: PipelineStageStatus,
+  processed: number,
+  failed: number,
+  startedAt: Date,
+  endedAt: Date,
+  flags: { resumable: boolean; replayable: boolean; idempotent: boolean },
+  sourcePath?: string,
+  error?: string,
+): PipelineStageResult {
+  return {
+    stage,
+    status,
+    processed,
+    failed,
+    startedAt: startedAt.toISOString(),
+    endedAt: endedAt.toISOString(),
+    checkpointId: stageCheckpoint(stage, processed, failed, sourcePath),
+    resumable: flags.resumable,
+    replayable: flags.replayable,
+    idempotent: flags.idempotent,
+    sourcePath,
+    error,
+  };
+}
+
+export function orchestratePipeline(
+  rawFiles: RawSourceFile[],
+  options?: {
+    sourceFailed?: number;
+    organizationId?: string;
+    sourcePath?: string;
+    chunkOptions?: ChunkBuildOptions;
+  },
+): PipelineRunOutput {
+  const sourceFailed = options?.sourceFailed ?? 0;
+  const organizationId = options?.organizationId ?? 'org-ontorata';
+  const sourcePath = options?.sourcePath;
+  const chunkOptions = options?.chunkOptions ?? DEFAULT_CHUNK_OPTIONS;
+
+  const stageResults: PipelineStageResult[] = [];
+  let documents: KnowledgeDocument[] = [];
+  let chunks: KnowledgeChunk[] = [];
+
+  const sourceStart = new Date();
+  const sourceEnd = new Date();
+  stageResults.push(
+    buildStageResult(
+      'source_intake',
+      'completed',
+      rawFiles.length,
+      sourceFailed,
+      sourceStart,
+      sourceEnd,
+      { resumable: true, replayable: true, idempotent: true },
+      sourcePath,
+    ),
+  );
+
+  const stageStatuses = new Map<PipelineStage, PipelineStageStatus>([['source_intake', 'completed']]);
+  const prerequisites: Record<PipelineStage, PipelineStage | null> = {
+    source_intake: null,
+    normalizer: 'source_intake',
+    chunk_builder: 'normalizer',
+    embedding_generator: 'chunk_builder',
+    knowledge_store: 'embedding_generator',
+    index_update: 'knowledge_store',
+  };
+
+  for (const stage of PIPELINE_STAGES.slice(1)) {
+    const prerequisite = prerequisites[stage];
+    if (prerequisite && stageStatuses.get(prerequisite) !== 'completed') {
+      const startedAt = new Date();
+      const endedAt = new Date();
+      stageStatuses.set(stage, 'skipped');
+      stageResults.push(
+        buildStageResult(
+          stage,
+          'skipped',
+          0,
+          0,
+          startedAt,
+          endedAt,
+          { resumable: true, replayable: true, idempotent: true },
+          sourcePath,
+          `prerequisite ${prerequisite} not completed`,
+        ),
+      );
+      continue;
+    }
+
+    const startedAt = new Date();
+    if (stage === 'normalizer') {
+      const parsedDocuments: KnowledgeDocument[] = [];
+      let failed = 0;
+      for (const rawFile of rawFiles) {
+        try {
+          parsedDocuments.push(normalizeSourceFile(rawFile, organizationId));
+        } catch {
+          failed += 1;
+        }
+      }
+      const endedAt = new Date();
+      documents = parsedDocuments;
+      stageStatuses.set(stage, 'completed');
+      stageResults.push(
+        buildStageResult(
+          stage,
+          'completed',
+          parsedDocuments.length,
+          failed,
+          startedAt,
+          endedAt,
+          { resumable: true, replayable: true, idempotent: true },
+          sourcePath,
+        ),
+      );
+      continue;
+    }
+
+    if (stage === 'chunk_builder') {
+      const allChunks: KnowledgeChunk[] = [];
+      let failed = 0;
+      for (const document of documents) {
+        const builtChunks = buildChunks(document, chunkOptions);
+        if (builtChunks.length === 0) {
+          failed += 1;
+          continue;
+        }
+        allChunks.push(...builtChunks);
+      }
+      const endedAt = new Date();
+      chunks = allChunks;
+      stageStatuses.set(stage, 'completed');
+      stageResults.push(
+        buildStageResult(
+          stage,
+          'completed',
+          allChunks.length,
+          failed,
+          startedAt,
+          endedAt,
+          { resumable: true, replayable: true, idempotent: true },
+          sourcePath,
+        ),
+      );
+      continue;
+    }
+
+    const endedAt = new Date();
+    stageStatuses.set(stage, 'skipped');
+    stageResults.push(
+      buildStageResult(
+        stage,
+        'skipped',
+        0,
+        0,
+        startedAt,
+        endedAt,
+        { resumable: true, replayable: true, idempotent: true },
+        sourcePath,
+        'deferred to Wave 3/4',
+      ),
+    );
+  }
+
+  return { documents, chunks, stageResults };
 }
