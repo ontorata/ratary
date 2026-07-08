@@ -18,7 +18,8 @@ Studio → WorkspaceAiRuntimePort → REST → Ontory → Dispatcher → Provide
 |------|--------|
 | ontory | `c18cacc` |
 | Ontorata-Studio | `043666e` |
-| ai-brain | `35ff553` |
+| ai-brain (evidence) | `35ff553` |
+| ai-brain (tag tip / closeout) | `dc888b1` |
 
 ## Guarantees
 

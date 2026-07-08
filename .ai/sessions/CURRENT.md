@@ -167,7 +167,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-A isolate | ✅ **ACCEPTED** · `ontory` · `forge/ontory-runtime-p2-a` · Tasks 1–6 |
 | P2-A Task 7 | ✅ Studio REST RuntimePort · `043666e` · Echo = env fallback only |
 | P2-A Task 8 | ✅ Evidence pack · ADR DoD · [P2-A-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md) |
-| P2-A closeout | ✅ tag `org-memory-p2-a-complete` · pins Ontory `c18cacc` · Studio `043666e` · ai-brain `35ff553` |
+| P2-A closeout | ✅ tag `org-memory-p2-a-complete` · Ontory `c18cacc` · Studio `043666e` · evidence `35ff553` · closeout tip `dc888b1` |
 | Next gate | **P2-B** Provider Integration — adapters behind Provider Port only (no tools/MCP/memory/agents) |
 
 

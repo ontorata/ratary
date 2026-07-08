@@ -11,7 +11,8 @@ forge_branch_studio: forge/ai-workspace-p1-d
 forge_branch_ontory: forge/ontory-runtime-p2-a
 ontory_head: c18cacc
 studio_head: 043666e
-governance_head: 35ff553
+governance_head: dc888b1
+evidence_pack_head: 35ff553
 closeout_tag: org-memory-p2-a-complete
 acceptance_manifest: .ai/reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md
 proof_artifact: .ai/reviews/org-memory-dogfood/ontory-runtime-kernel-proof.md
@@ -63,7 +64,8 @@ Provider Port (abstract · stub only)
 |------|--------|--------|
 | **ontory** | `forge/ontory-runtime-p2-a` | `c18cacc` |
 | **Ontorata-Studio** | `forge/ai-workspace-p1-d` | `043666e` |
-| **ai-brain (ratary)** | `forge/ai-workspace-p1-d` | `35ff553` |
+| **ai-brain (ratary)** — evidence pack | `forge/ai-workspace-p1-d` | `35ff553` |
+| **ai-brain (ratary)** — closeout records + tag tip | `forge/ai-workspace-p1-d` | `dc888b1` |
 
 Regressions after this tag that involve vendor SDKs or provider payloads belong to **P2-B+**, not the Runtime Kernel.
 
