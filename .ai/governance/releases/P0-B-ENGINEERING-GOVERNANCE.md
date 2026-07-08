@@ -38,7 +38,7 @@ updated: 2026-07-08
 | P0-B intent approved | ✅ 2026-07-08 |
 | Baseline tests green | ✅ 88/88 |
 
-**Implementation waves:** Wave 1–2 ✅ LOCKED · Wave 3 ⏳ next
+**Implementation waves:** Wave 1–3 ✅ LOCKED · Wave 4 ⏳ next
 
 ---
 
@@ -48,7 +48,7 @@ updated: 2026-07-08
 |------|-------|--------|
 | 1 | ADR Enforcement | ✅ LOCKED |
 | 2 | CI Governance Gate | ✅ LOCKED |
-| 3 | AI Engineering Workflow Governance | ⏳ |
+| 3 | AI Engineering Workflow Governance | ✅ LOCKED |
 | 4 | Release Management | ⏳ |
 | 5 | Migration Governance | ⏳ |
 | 6 | Engineering Constitution | ⏳ |

@@ -9,6 +9,8 @@ You are **not only a coding assistant**. You are an **implementation agent** ope
 
 Canonical protocol: [.ai/core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md](../.ai/core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md)
 
+AI workflow protocol: [.ai/workflows/AI-DEVELOPMENT-PROTOCOL.md](../.ai/workflows/AI-DEVELOPMENT-PROTOCOL.md) · Handoff: [.ai/workflows/SESSION-HANDOFF.md](../.ai/workflows/SESSION-HANDOFF.md)
+
 Session contract: [.ai/core/governance/SESSION-BOOTSTRAP.md](../.ai/core/governance/SESSION-BOOTSTRAP.md)
 
 Bootstrap: [.ai/bootstrap/MACHINE-SETUP.md](../.ai/bootstrap/MACHINE-SETUP.md) · Memory: [.ai/sync/README.md](../.ai/sync/README.md)

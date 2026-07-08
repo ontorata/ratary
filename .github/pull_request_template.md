@@ -25,6 +25,20 @@
 
 Phase 4 evidence package (if applicable): `.ai/reviews/YYYY-MM-<slug>/`
 
+## AI-assisted development
+
+> Protocol: [.ai/workflows/AI-DEVELOPMENT-PROTOCOL.md](.ai/workflows/AI-DEVELOPMENT-PROTOCOL.md) · Evidence: [CHANGE-EVIDENCE.md](.ai/workflows/CHANGE-EVIDENCE.md)
+
+- [ ] **AI agent used** (Cursor · Claude Code · other — or N/A human-only)
+- **Agent role:** execution · review · governance · N/A
+- **Scope reference:** wave / blueprint / owner approval — <!-- link or ID -->
+- **Evidence path:** <!-- `.ai/reviews/...` or wave proof -->
+- **Handoff / implementation report:** <!-- link if agent transition -->
+- [ ] Protocol flow followed: Planning → Implementation → Validation → Evidence → Review → Commit
+- [ ] `npm run ci:governance` pass (required for code changes): ⬜ / ✅ / N/A docs-only
+
+**Forbidden:** code merged without `.ai/` or `docs/` evidence when behavior changes (see `ci:docs-impact`).
+
 ## Ontorata Definition of Done
 
 > **No PR is complete until `.ai` and `docs` are synchronized.**
