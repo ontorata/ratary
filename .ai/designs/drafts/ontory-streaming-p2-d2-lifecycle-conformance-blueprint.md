@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — owner approval 2026-07-09 |
+| **Status** | Closed — P2-D.2 complete 2026-07-09 |
 | **Intent** | ADR-0012 Semantic Amendment (2026-07-09) |
 | **ADR** | ADR-0012 Accepted + Amended |
 | **Repo** | `ontory` (runtime validation only — no provider implementation) |
