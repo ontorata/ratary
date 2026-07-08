@@ -8,7 +8,11 @@ import {
   updateClientBodySchema,
 } from '../../auth/auth.types.js';
 import type { AuthController } from '../../controllers/auth.controller.js';
-import { AUTH_RATE_LIMITS, NATIVE_AUTH_RATE_LIMITS, registerAuthRateLimit } from '../../plugins/rate-limit.js';
+import {
+  AUTH_RATE_LIMITS,
+  NATIVE_AUTH_RATE_LIMITS,
+  registerAuthRateLimit,
+} from '../../plugins/rate-limit.js';
 import { requireHttpsForCredentialAuth } from '../../plugins/credential-auth-security.js';
 import { ValidationError } from '../../types/errors.js';
 

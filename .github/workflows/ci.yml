@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [main, staging]
 
+env:
+  NODE_ENV: test
+  SQL_PROVIDER: postgres
+  DATABASE_URL: postgresql://ci:ci@127.0.0.1:5432/ratary_ci
+  AUTH_SECRET: ci-governance-test-secret-min-32-chars!!
+
 jobs:
   quality:
     runs-on: ubuntu-latest

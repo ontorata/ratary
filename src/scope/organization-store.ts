@@ -123,7 +123,13 @@ export async function createOrganization(
   await client.execute(
     `INSERT INTO organizations (id, owner_id, name, slug, created_at)
      VALUES (?, ?, ?, ?, ?)`,
-    [organization.id, organization.ownerId, organization.name, organization.slug, organization.createdAt],
+    [
+      organization.id,
+      organization.ownerId,
+      organization.name,
+      organization.slug,
+      organization.createdAt,
+    ],
   );
 
   return organization;

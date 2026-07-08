@@ -24,7 +24,10 @@ interface GraphMessagesResponse {
 }
 
 export function mapTeamsMessage(msg: TeamsMessage, channelLabel: string): ExternalKnowledgeItem {
-  const preview = (msg.body?.content ?? '').replace(/<[^>]+>/g, '').trim().slice(0, 200);
+  const preview = (msg.body?.content ?? '')
+    .replace(/<[^>]+>/g, '')
+    .trim()
+    .slice(0, 200);
   const title = preview ? preview.slice(0, 80) : `Teams message ${msg.id}`;
   const url = msg.webUrl ?? `teams://message/${msg.id}`;
   return {

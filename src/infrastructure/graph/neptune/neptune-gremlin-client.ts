@@ -14,7 +14,10 @@ export class HttpNeptuneGremlinClient implements NeptuneGremlinClient {
   constructor(private readonly endpoint: string) {}
 
   async submit(gremlin: string, bindings: Record<string, unknown> = {}): Promise<unknown> {
-    const base = this.endpoint.replace(/\/+$/, '').replace(/^wss:/, 'https:').replace(/^ws:/, 'http:');
+    const base = this.endpoint
+      .replace(/\/+$/, '')
+      .replace(/^wss:/, 'https:')
+      .replace(/^ws:/, 'http:');
     const url = base.endsWith('/gremlin') ? base : `${base}/gremlin`;
 
     const response = await fetch(url, {

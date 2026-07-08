@@ -8,7 +8,11 @@ import {
   formatMcpAuthorizationError,
 } from '../../../auth/authorization-boundary.js';
 import type { TransportHandlers } from '../../shared/handlers/create-transport-handlers.js';
-import { buildMcpOAuthMetadataContext, buildMcpUnauthorizedHeaders, buildBearerOnlyUnauthorizedHeaders } from './mcp-oauth-metadata.js';
+import {
+  buildMcpOAuthMetadataContext,
+  buildMcpUnauthorizedHeaders,
+  buildBearerOnlyUnauthorizedHeaders,
+} from './mcp-oauth-metadata.js';
 import {
   buildTransportContextFromRestRequest,
   resolveMemoryScopeFromTransportContext,

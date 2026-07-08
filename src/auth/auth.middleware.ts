@@ -8,9 +8,7 @@ import { MCP_SERVER_CARD_PATH } from '../transport/mcp/remote/mcp-server-card.js
 function mcpPathFromEnv(): string | null {
   const env = getEnv();
   if (!env.REMOTE_MCP_ENABLED) return null;
-  return env.REMOTE_MCP_PATH.startsWith('/')
-    ? env.REMOTE_MCP_PATH
-    : `/${env.REMOTE_MCP_PATH}`;
+  return env.REMOTE_MCP_PATH.startsWith('/') ? env.REMOTE_MCP_PATH : `/${env.REMOTE_MCP_PATH}`;
 }
 
 function pathOnly(url: string): string {

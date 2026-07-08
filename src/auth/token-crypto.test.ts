@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { encryptStudioToken, decryptStudioToken, isEncryptedStudioToken, resolveBearerJwt } from './token-crypto.js';
+import {
+  encryptStudioToken,
+  decryptStudioToken,
+  isEncryptedStudioToken,
+  resolveBearerJwt,
+} from './token-crypto.js';
 import { JwtService } from './jwt.service.js';
 
 describe('token-crypto', () => {

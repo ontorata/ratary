@@ -206,11 +206,10 @@ export async function ensureDefaultWorkspace(
   const existing = await findDefaultWorkspace(client, ownerId);
   if (existing) {
     if (existing.organizationId !== organization.id) {
-      await client.execute(`UPDATE workspaces SET organization_id = ? WHERE id = ? AND owner_id = ?`, [
-        organization.id,
-        existing.id,
-        ownerId,
-      ]);
+      await client.execute(
+        `UPDATE workspaces SET organization_id = ? WHERE id = ? AND owner_id = ?`,
+        [organization.id, existing.id, ownerId],
+      );
       return {
         workspace: { ...existing, organizationId: organization.id },
         created: false,

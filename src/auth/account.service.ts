@@ -5,7 +5,12 @@ import { authFailureDelay, LoginGuard } from './login-guard.js';
 import { hashPassword, verifyPassword } from './password.js';
 import { encryptStudioToken } from './token-crypto.js';
 import { generateId, nowISO } from '../utils/memory-mapper.js';
-import { ConflictError, ForbiddenError, UnauthorizedError, ValidationError } from '../types/errors.js';
+import {
+  ConflictError,
+  ForbiddenError,
+  UnauthorizedError,
+  ValidationError,
+} from '../types/errors.js';
 import { emitAuthEvent } from './events.js';
 import { executeTransaction } from '../db/migrations.js';
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';

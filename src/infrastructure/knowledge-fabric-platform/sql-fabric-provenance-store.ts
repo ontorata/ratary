@@ -39,7 +39,9 @@ function mapRow(row: ProvenanceRow): FabricProvenanceRecord {
     ownerId: row.owner_id,
     workspaceId: row.workspace_id ?? undefined,
     externalUpdatedAt: row.external_updated_at,
-    metadata: row.metadata_json ? (JSON.parse(row.metadata_json) as Record<string, unknown>) : undefined,
+    metadata: row.metadata_json
+      ? (JSON.parse(row.metadata_json) as Record<string, unknown>)
+      : undefined,
     updatedAt: row.updated_at,
   };
 }
@@ -63,13 +65,7 @@ export class SqlFabricProvenanceStore implements IFabricProvenanceStore {
         `UPDATE knowledge_fabric_provenance
          SET memory_id = ?, external_updated_at = ?, metadata_json = ?, updated_at = ?
          WHERE id = ?`,
-        [
-          record.memoryId,
-          record.externalUpdatedAt,
-          metadataJson,
-          record.updatedAt,
-          existing[0].id,
-        ],
+        [record.memoryId, record.externalUpdatedAt, metadataJson, record.updatedAt, existing[0].id],
       );
       return;
     }
