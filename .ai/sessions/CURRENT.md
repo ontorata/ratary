@@ -44,8 +44,8 @@
 - **Constitution amended:** Internal Proof Before Public Capability (2026-07-08)
 - **P0-A Identity Foundation:** ✅ **RELEASED** on origin (verified 2026-07-08)
 - **P0-B Engineering Governance:** ✅ **RELEASED** on origin · **FROZEN** (forge-land 2026-07-08)
-- **P1-A Org Memory Dogfood:** 🟢 Forge-execute active · Task 1–8 complete (G1–G6 PASS)
-- **First workload (active):** Org Memory Dogfood — [FIRST-WORKLOAD-ORG-MEMORY.md](../phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md)
+- **P1-A Org Memory Dogfood:** ✅ **CLOSED** · baseline locked (`org-memory-p1-a-complete`)
+- **First workload (closed):** Org Memory Dogfood — [FIRST-WORKLOAD-ORG-MEMORY.md](../phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md)
 
 ---
 
@@ -64,9 +64,9 @@
 
 ## What should happen next?
 
-1. **Owner closeout review** for P1-A baseline lock/tag
-2. **forge-prove** — evidence-first validation recap for G1–G6
-3. **Prepare P1-B scope** from locked P1-A baseline
+1. **Start P1-B Knowledge Ingestion** from locked P1-A baseline
+2. **Carry forward CI guard** (`ci:org-memory-acceptance`) as non-regression gate
+3. **forge-prove** for P1-B scope with measurable evidence deltas
 4. **Do not mutate P0** — [P0-BASELINE-CHANGE-POLICY.md](../core/constitution/P0-BASELINE-CHANGE-POLICY.md)
 
 ---
@@ -92,7 +92,7 @@ Repository: ai-brain (ratary)
 Branch:     forge/org-memory-dogfood @ active
 P0-A:       RELEASED · FROZEN ✅
 P0-B:       RELEASED · FROZEN ✅
-P1-A:       Forge-execute active · Task 1-8 complete (G1-G6 PASS)
+P1-A:       CLOSED · baseline locked ✅
 Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 ```
 
@@ -118,7 +118,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Tag | ✅ `engineering-governance-p0-b-complete` @ `dc2fa5e` |
 | Remote sync | ✅ verified 2026-07-08 |
 
-### P1-A Org Memory Dogfood — Execute active 🟢
+### P1-A Org Memory Dogfood — Closed ✅
 
 | Stage | Status |
 |-------|--------|
@@ -127,6 +127,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Forge-isolate | ✅ [org-memory-dogfood-isolate.md](../designs/drafts/org-memory-dogfood-isolate.md) |
 | Blueprint | ✅ [org-memory-dogfood-plan.md](../designs/drafts/org-memory-dogfood-plan.md) approved |
 | Task progress | ✅ Task 1–8 complete (acceptance PASS) |
+| Baseline lock | ✅ `org-memory-p1-a-complete` |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

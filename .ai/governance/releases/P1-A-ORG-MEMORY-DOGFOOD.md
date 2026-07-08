@@ -1,8 +1,8 @@
 ---
 id: P1-A-ORG-MEMORY-DOGFOOD
 phase: 04-proof-of-platform
-status: acceptance-complete
-distribution: ready-for-lock-review
+status: closed
+distribution: baseline-locked
 owner: Ontorata
 workload: Org Memory Dogfood
 baseline_tags:
@@ -10,7 +10,8 @@ baseline_tags:
   - engineering-governance-p0-b-complete
 forge_branch: forge/org-memory-dogfood
 start_commit: f47b39b
-head_commit: 32ccce1
+head_commit: f331a32
+closeout_tag: org-memory-p1-a-complete
 acceptance_manifest: .ai/reviews/org-memory-dogfood/P1-A-ACCEPTANCE.md
 updated: 2026-07-08
 ---
@@ -20,11 +21,11 @@ updated: 2026-07-08
 | Field | Value |
 |-------|-------|
 | **Milestone** | P1-A Org Memory Dogfood |
-| **Engineering status** | ✅ Tasks 1–6 complete |
+| **Engineering status** | ✅ Tasks 1–8 complete · implementation frozen |
 | **Acceptance status** | ✅ **PASS** (G1–G6 complete) |
-| **Distribution status** | ⏳ ready for lock/tag review |
+| **Distribution status** | ✅ baseline locked via `org-memory-p1-a-complete` |
 | **Branch** | `forge/org-memory-dogfood` |
-| **Commit range** | `f47b39b` .. `6aa8af6` |
+| **Commit range** | `f47b39b` .. `f331a32` |
 
 ---
 
@@ -53,8 +54,12 @@ Reference: `.ai/reviews/org-memory-dogfood/acceptance-test.md`
 
 ---
 
+## Closeout outcome
+
+- Owner closeout approved.
+- Baseline lock tag: `org-memory-p1-a-complete`.
+- P1-A is closed as reproducible baseline for P1-B.
+
 ## Next
 
-- owner closeout approval
-- baseline lock + tag decision (`org-memory-p1-a-complete`)
-- prepare P1-B from locked P1-A baseline
+- Kick off P1-B Knowledge Ingestion from P1-A locked baseline.

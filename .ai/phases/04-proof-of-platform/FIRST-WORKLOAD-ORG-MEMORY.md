@@ -5,7 +5,7 @@
 | **Authority** | Governance & Execution |
 | **Horizon** | Phase 4 → P1 |
 | **Owner** | Engineering + Product |
-| **Status** | **Active** — forge-isolate running on `forge/org-memory-dogfood` |
+| **Status** | **Closed** — P1-A baseline locked on `forge/org-memory-dogfood` |
 | **Category** | Must Prove |
 | **Evidence package** | `.ai/reviews/org-memory-dogfood/` (create on isolate) |
 
@@ -92,8 +92,8 @@ Org Memory Dogfood
 
 | Milestone | Focus | Depends on |
 |-----------|-------|------------|
-| **P1-A** Org Memory Dogfood | Daily use proof | P0 ✅ |
-| P1-B Knowledge Ingestion | Pipeline hardening | P1-A |
+| **P1-A** Org Memory Dogfood | Daily use proof | P0 ✅ · CLOSED |
+| **P1-B** Knowledge Ingestion | Pipeline hardening | P1-A ✅ locked |
 | P1-C Retrieval + Context | Quality + ranking | P1-B |
 | P1-D AI Workspace | User-facing surface | P1-C |
 
@@ -120,5 +120,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Task 6: internal usage metrics pipeline (`metrics:org-memory`)
 - ✅ Task 7: acceptance gate pack + final evidence collection (`P1-A-ACCEPTANCE.md`)
 - ✅ Task 8: CI/non-regression guard + G4 remediation (`ci:org-memory-acceptance`)
-- ⏳ Next: owner closeout review, baseline lock, and completion tag decision
+- ✅ Closeout: baseline locked with `org-memory-p1-a-complete`
+- ⏳ Next: start P1-B Knowledge Ingestion from locked P1-A baseline
 

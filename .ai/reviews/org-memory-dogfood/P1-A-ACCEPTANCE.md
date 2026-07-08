@@ -5,8 +5,8 @@
 | **Milestone** | P1-A Org Memory Dogfood |
 | **Scope** | Ingest · Recall · Evidence linkage · Metrics · Handoff trace |
 | **Branch** | `forge/org-memory-dogfood` |
-| **Commit range** | `f47b39b` .. `6aa8af6` |
-| **Status** | PASS (acceptance complete) |
+| **Commit range** | `f47b39b` .. `f331a32` |
+| **Status** | CLOSED (acceptance complete) |
 | **Primary reference** | This file is the single acceptance source of truth |
 
 ---
@@ -63,7 +63,7 @@ Source: `metrics_run_id=7cc3fff9-d49c-43e5-814b-75c5a8403467`
 
 ## Exit criteria checklist (P1-A)
 
-- [x] Tasks 1–6 complete
+- [x] Tasks 1–8 complete
 - [x] G1–G6 all PASS
 - [x] `npm test` stable (88/88)
 - [x] Evidence collection traceable
@@ -78,4 +78,4 @@ Source: `metrics_run_id=7cc3fff9-d49c-43e5-814b-75c5a8403467`
 
 - [x] Engineering review
 - [x] Governance review
-- [ ] Founder/owner closeout approval
+- [x] Founder/owner closeout approval
