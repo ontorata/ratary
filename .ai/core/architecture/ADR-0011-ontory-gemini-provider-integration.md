@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Accepted** |
+| **Status** | **Accepted · Closed** |
 | **Accepted** | 2026-07-08 |
 | **Date** | 2026-07-08 |
 | **Baseline** | `org-memory-p2-c1-complete` (Ontory `4b3e094`) |
@@ -61,14 +61,14 @@ Implement **GeminiProviderAdapter** as a thin adapter behind frozen `ProviderRun
 
 ## Definition of Done (P2-C.2)
 
-- [ ] ADR-0011 Accepted
-- [ ] `GeminiProviderAdapter` behind `ProviderRuntime`
-- [ ] Config selects gemini via env
-- [ ] Gemini MUST conformance scenarios PASS
-- [ ] stub + openai + anthropic regression PASS
-- [ ] `check:boundary` PASS
-- [ ] `org-memory-p2-c2-complete` tag
-- [ ] ADR-0009 extension note (not P2-C.0 revision)
+- [x] ADR-0011 Accepted
+- [x] `GeminiProviderAdapter` behind `ProviderRuntime`
+- [x] Config selects gemini via env
+- [x] Gemini MUST conformance scenarios PASS
+- [x] stub + openai + anthropic regression PASS
+- [x] `check:boundary` PASS
+- [x] `org-memory-p2-c2-complete` tag
+- [x] ADR-0009 extension note (not P2-C.0 revision)
 
 ---
 

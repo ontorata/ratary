@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Draft — pending intent approval |
+| **Status** | Closed — `org-memory-p2-c2-complete` @ `7241319` |
 | **Intent** | [ontory-provider-gemini-p2-c2-intent.md](./ontory-provider-gemini-p2-c2-intent.md) |
 | **ADR** | ADR-0011 (proposed) · ADR-0009 contract frozen |
 | **Repo** | `ontory` · branch `forge/ontory-provider-gemini-p2-c2` |
@@ -20,18 +20,18 @@ Regression: **stub + openai + anthropic** MUST stay PASS throughout P2-C.2.
 
 ## Execution tasks
 
-- [ ] Task 0 — forge-isolate from `org-memory-p2-c1-complete`
-- [ ] Task 1 — ADR-0011 Accepted (governance)
-- [ ] Task 2 — RequestMapper (pure)
-- [ ] Task 3 — ResponseMapper + ErrorMapper (pure)
-- [ ] Task 4 — `GeminiProviderAdapter` + client factory
-- [ ] Task 5 — Config: `gemini` provider wire
-- [ ] Task 6 — REST composition unchanged pattern (config-only)
-- [ ] Task 7 — Unit tests (mocked SDK)
-- [ ] Task 8 — `gemini.conformance.test.ts` — all MUST scenarios PASS
-- [ ] Task 9 — Boundary CI: `@google/generative-ai` allowlist under `adapters/gemini/`
-- [ ] Task 10 — Evidence A1/A2 + `gemini-pass.md`
-- [ ] Task 11 — Closeout tag `org-memory-p2-c2-complete`
+- [x] Task 0 — forge-isolate from `org-memory-p2-c1-complete`
+- [x] Task 1 — ADR-0011 Accepted (governance)
+- [x] Task 2 — RequestMapper (pure)
+- [x] Task 3 — ResponseMapper + ErrorMapper (pure)
+- [x] Task 4 — `GeminiProviderAdapter` + client factory
+- [x] Task 5 — Config: `gemini` provider wire
+- [x] Task 6 — REST composition unchanged pattern (config-only)
+- [x] Task 7 — Unit tests (mocked SDK)
+- [x] Task 8 — `gemini.conformance.test.ts` — all MUST scenarios PASS
+- [x] Task 9 — Boundary CI: `@google/generative-ai` allowlist under `adapters/gemini/`
+- [x] Task 10 — Evidence A1/A2 + `gemini-pass.md`
+- [x] Task 11 — Closeout tag `org-memory-p2-c2-complete`
 
 ---
 

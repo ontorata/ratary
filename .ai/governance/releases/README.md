@@ -12,6 +12,7 @@ Phase-level release markers with auditable wave chains, tags, and test evidence.
 | P1-D AI Workspace | ✅ WAVES 1–5 smoke · 🔒 LOCKED | ✅ **CLOSED** (architecture v1.0) | `org-memory-p1-d-complete` | `forge/ai-workspace-p1-d` |
 | P2-C.0 Provider Conformance | ✅ harness PASS · 🔒 LOCKED | ✅ **CLOSED** | `org-memory-p2-c0-complete` @ `8e307ce` | `forge/ontory-provider-conformance-p2-c0` |
 | P2-C.1 Anthropic Provider | ✅ adapter + conformance PASS | ✅ **CLOSED** | `org-memory-p2-c1-complete` @ `4b3e094` | `forge/ontory-provider-anthropic-p2-c1` |
+| P2-C.2 Gemini Provider | ✅ adapter + conformance PASS | ✅ **CLOSED** | `org-memory-p2-c2-complete` @ `7241319` | `forge/ontory-provider-gemini-p2-c2` |
 
 **RC vs RELEASED:** Engineering complete + tags on forge branch ≠ RELEASED. Distribution completes only after merge to `main` and remote verification.
 
@@ -25,4 +26,4 @@ P0-B wave lock tags (immutable on origin):
 
 - `engineering-governance-wave-1-locked` … `engineering-governance-wave-6-locked`
 
-See [P0-A-IDENTITY-FOUNDATION.md](./P0-A-IDENTITY-FOUNDATION.md) · [P0-B-ENGINEERING-GOVERNANCE.md](./P0-B-ENGINEERING-GOVERNANCE.md) · [P1-A-ORG-MEMORY-DOGFOOD.md](./P1-A-ORG-MEMORY-DOGFOOD.md) · [P1-B-KNOWLEDGE-FOUNDATION.md](./P1-B-KNOWLEDGE-FOUNDATION.md) · [P1-C-RECALL-INTELLIGENCE.md](./P1-C-RECALL-INTELLIGENCE.md) · [P1-D-AI-WORKSPACE.md](./P1-D-AI-WORKSPACE.md) · [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](./P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) · [P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md](./P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md)
+See [P0-A-IDENTITY-FOUNDATION.md](./P0-A-IDENTITY-FOUNDATION.md) · [P0-B-ENGINEERING-GOVERNANCE.md](./P0-B-ENGINEERING-GOVERNANCE.md) · [P1-A-ORG-MEMORY-DOGFOOD.md](./P1-A-ORG-MEMORY-DOGFOOD.md) · [P1-B-KNOWLEDGE-FOUNDATION.md](./P1-B-KNOWLEDGE-FOUNDATION.md) · [P1-C-RECALL-INTELLIGENCE.md](./P1-C-RECALL-INTELLIGENCE.md) · [P1-D-AI-WORKSPACE.md](./P1-D-AI-WORKSPACE.md) · [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](./P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) · [P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md](./P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md) · [P2-C-2-ONTORY-PROVIDER-GEMINI.md](./P2-C-2-ONTORY-PROVIDER-GEMINI.md)

@@ -176,3 +176,17 @@ P2-C.1 added **Anthropic** as a conformance subject via `tests/conformance/anthr
 | Closeout tag | `org-memory-p2-c1-complete` |
 | Contract change | **None** |
 | Harness matrix change | **None** — new subject file only |
+
+---
+
+## Extension note — P2-C.2 Gemini subject registered (2026-07-09)
+
+P2-C.2 added **Gemini** as a conformance subject via `tests/conformance/gemini.conformance.test.ts` and `results/gemini-pass.md`. This is **not** a revision of the P2-C.0 scenario matrix or Provider Contract.
+
+| Field | Value |
+|-------|-------|
+| Ontory commit | `7241319` |
+| Closeout tag | `org-memory-p2-c2-complete` |
+| Contract change | **None** |
+| Harness matrix change | **None** — new subject file only |
+| Envelope rule | No Gemini-specific fields in shared envelopes |

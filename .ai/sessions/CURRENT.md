@@ -167,18 +167,29 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Verification | ✅ 12 passed · 2 skipped (C-CAN) · boundary PASS |
 | Baseline lock | ✅ `org-memory-p2-c0-complete` |
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
-| Next | **P2-C.2 Gemini** — intent draft ready |
+| Next | **P2-D Streaming** — separate wave |
 
-### P2-C.2 Gemini Provider — Intent Draft
+### P2-C.2 Gemini Provider — CLOSED 🔒
 
 | Stage | Status |
 |-------|--------|
-| Gate | ✅ P2-C.1 `org-memory-p2-c1-complete` on origin |
-| Forge intent | 📝 [ontory-provider-gemini-p2-c2-intent.md](../designs/drafts/ontory-provider-gemini-p2-c2-intent.md) — **pending approval** |
-| Blueprint | 📝 [ontory-provider-gemini-p2-c2-plan.md](../designs/drafts/ontory-provider-gemini-p2-c2-plan.md) |
-| ADR-0011 | **Proposed** |
-| Branch (proposed) | `forge/ontory-provider-gemini-p2-c2` from `org-memory-p2-c1-complete` |
-| Note | Capability metadata → future ADR, not P2-C.2 |
+| ADR-0011 | ✅ **Accepted · Closed** |
+| Adapter | ✅ `src/adapters/gemini/*` @ Ontory `7241319` |
+| Conformance | ✅ gemini + stub + openai + anthropic regression PASS |
+| Baseline lock | ✅ `org-memory-p2-c2-complete` |
+| Release | ✅ [P2-C-2-ONTORY-PROVIDER-GEMINI.md](../governance/releases/P2-C-2-ONTORY-PROVIDER-GEMINI.md) |
+| Next | **P2-D Streaming** — separate wave |
+
+### P2-C.2 Gemini Provider — Intent (superseded by closeout above)
+
+| Stage | Status |
+|-------|--------|
+| Gate | ✅ P2-C.1 `org-memory-p2-c1-complete` |
+| Forge intent | ✅ Closed @ `7241319` |
+| Blueprint | ✅ Executed |
+| ADR-0011 | ✅ **Accepted · Closed** |
+| Branch | `forge/ontory-provider-gemini-p2-c2` @ `7241319` |
+| Envelope rule | No Gemini-specific fields in shared envelopes |
 
 ### P2-C.1 Anthropic Provider — CLOSED 🔒
 
@@ -189,7 +200,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Conformance | ✅ anthropic + stub + openai regression PASS |
 | Baseline lock | ✅ `org-memory-p2-c1-complete` |
 | Release | ✅ [P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md](../governance/releases/P2-C-1-ONTORY-PROVIDER-ANTHROPIC.md) |
-| Next | **P2-C.2 Gemini** — separate wave |
+| Next | **P2-D Streaming** — separate wave |
 
 ### P2-C.1 Anthropic Provider — Intent (superseded by closeout above)
 
@@ -219,7 +230,8 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | P2-B Task 7 | ✅ Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) |
 | P2-B closeout | ✅ tag `org-memory-p2-b-complete` @ Ontory `e63bb93` · ai-brain `fe70ede` · Studio unchanged `043666e` |
 | P2-C.1 closeout | ✅ tag `org-memory-p2-c1-complete` @ Ontory `4b3e094` · pushed origin |
-| Next gate | **P2-C.2 Gemini** — intent draft pending approval |
+| P2-C.2 closeout | ✅ tag `org-memory-p2-c2-complete` @ Ontory `7241319` |
+| Next gate | **P2-D Streaming** |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`

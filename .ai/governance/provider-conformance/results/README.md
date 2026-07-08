@@ -15,6 +15,7 @@
 - [stub-pass.md](./stub-pass.md)
 
 - [anthropic-pass.md](./anthropic-pass.md)
+- [gemini-pass.md](./gemini-pass.md)
 
 ## Verification
 
@@ -36,4 +37,4 @@ npm run test:conformance   # governance artifact alignment check
 
 ## Next subject gate
 
-P2-C.1 Anthropic — add `anthropic-pass.md` when adapter passes the same harness.
+P2-C provider conformance track complete (stub · openai · anthropic · gemini). Next: **P2-D Streaming**.
