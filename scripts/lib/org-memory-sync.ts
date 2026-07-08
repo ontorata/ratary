@@ -1,31 +1,17 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import {
+  assertIngestionRun,
+  type IngestionRun,
+  type SourceDefinition,
+  type SourceResult,
+} from './knowledge-ingestion-contracts.js';
 
 const REPO_ROOT = resolve(process.cwd());
 const INGEST_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/ingestion-log.md');
 
-type SourceDefinition = {
-  sourcePath: string;
-  mode: 'directory' | 'file' | 'adr-glob';
-};
-
-type SourceResult = {
-  sourcePath: string;
-  ingested: number;
-  failed: number;
-  durationMs: number;
-};
-
-type RunResult = {
-  runId: string;
-  startedAt: string;
-  endedAt: string;
-  totalIngested: number;
-  totalFailed: number;
-  digest: string;
-  sources: SourceResult[];
-};
+type RunResult = IngestionRun;
 
 const SOURCES: SourceDefinition[] = [
   { sourcePath: '.ai/core/', mode: 'directory' },
@@ -165,7 +151,7 @@ export async function runOrgMemorySync(): Promise<RunResult> {
   const totalFailed = sources.reduce((sum, source) => sum + source.failed, 0);
   const digest = buildDigest(runId, sources);
 
-  const runResult: RunResult = {
+  const runResult = assertIngestionRun({
     runId,
     startedAt,
     endedAt,
@@ -173,7 +159,7 @@ export async function runOrgMemorySync(): Promise<RunResult> {
     totalFailed,
     digest,
     sources,
-  };
+  });
 
   await ensureLogFile();
   const runBlock = renderRunBlock(runResult);
