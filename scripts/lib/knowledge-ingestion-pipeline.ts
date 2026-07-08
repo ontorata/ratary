@@ -15,6 +15,12 @@ import {
   type KnowledgeDocument,
   type PipelineStageStatus,
 } from './knowledge-ingestion-contracts.js';
+import {
+  createEmptySnapshot,
+  persistKnowledgeArtifacts,
+  type KnowledgeStoreSnapshot,
+  type PersistResult,
+} from './knowledge-store-boundary.js';
 
 export type RawSourceFile = {
   sourcePath: string;
@@ -33,6 +39,8 @@ export type PipelineRunOutput = {
   embeddingJobs: EmbeddingJob[];
   embeddingRecords: EmbeddingRecord[];
   embeddingExecutions: EmbeddingJobExecution[];
+  knowledgeStoreSnapshot: KnowledgeStoreSnapshot;
+  storePersistResult?: PersistResult;
   stageResults: PipelineStageResult[];
 };
 
@@ -184,6 +192,7 @@ function createEmbeddingRecord(job: EmbeddingJob, chunk: KnowledgeChunk): Embedd
   return EmbeddingRecordSchema.parse({
     embeddingId: `emb-${shortHash(`${job.jobId}:${chunk.chunkId}:${job.model}`)}`,
     chunkId: chunk.chunkId,
+    documentId: chunk.documentId,
     organizationId: chunk.organizationId,
     version: chunk.version,
     model: job.model,
@@ -401,6 +410,10 @@ export function orchestratePipeline(
       existingRecords?: EmbeddingRecord[];
       cancelledJobIds?: string[];
     };
+    storeOptions?: {
+      previousSnapshot?: KnowledgeStoreSnapshot;
+      failBeforeMarkAvailable?: boolean;
+    };
   },
 ): PipelineRunOutput {
   const sourceFailed = options?.sourceFailed ?? 0;
@@ -414,6 +427,9 @@ export function orchestratePipeline(
   let embeddingJobs: EmbeddingJob[] = [];
   let embeddingRecords: EmbeddingRecord[] = [];
   let embeddingExecutions: EmbeddingJobExecution[] = [];
+  let knowledgeStoreSnapshot: KnowledgeStoreSnapshot =
+    options?.storeOptions?.previousSnapshot ?? createEmptySnapshot();
+  let storePersistResult: PersistResult | undefined;
 
   const sourceStart = new Date();
   const sourceEnd = new Date();
@@ -544,6 +560,32 @@ export function orchestratePipeline(
       continue;
     }
 
+    if (stage === 'knowledge_store') {
+      const persist = persistKnowledgeArtifacts(documents, embeddingRecords, {
+        previous: knowledgeStoreSnapshot,
+        failBeforeMarkAvailable: options?.storeOptions?.failBeforeMarkAvailable,
+      });
+      const endedAt = new Date();
+      knowledgeStoreSnapshot = persist.snapshot;
+      storePersistResult = persist;
+      const status: PipelineStageStatus = persist.partialFailure ? 'failed' : 'completed';
+      stageStatuses.set(stage, status);
+      stageResults.push(
+        buildStageResult(
+          stage,
+          status,
+          persist.persistedEmbeddingCount,
+          persist.partialFailure ? 1 : 0,
+          startedAt,
+          endedAt,
+          { resumable: true, replayable: true, idempotent: true },
+          sourcePath,
+          persist.partialFailure ? `pending_versions=${persist.pendingVersionIds.length}` : undefined,
+        ),
+      );
+      continue;
+    }
+
     const endedAt = new Date();
     stageStatuses.set(stage, 'skipped');
     stageResults.push(
@@ -561,5 +603,14 @@ export function orchestratePipeline(
     );
   }
 
-  return { documents, chunks, embeddingJobs, embeddingRecords, embeddingExecutions, stageResults };
+  return {
+    documents,
+    chunks,
+    embeddingJobs,
+    embeddingRecords,
+    embeddingExecutions,
+    knowledgeStoreSnapshot,
+    storePersistResult,
+    stageResults,
+  };
 }

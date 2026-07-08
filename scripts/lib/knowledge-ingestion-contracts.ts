@@ -153,6 +153,7 @@ export type EmbeddingJobExecution = z.infer<typeof EmbeddingJobExecutionSchema>;
 export const EmbeddingRecordSchema = z.object({
   embeddingId: z.string().min(1),
   chunkId: z.string().min(1),
+  documentId: z.string().min(1),
   organizationId: z.string().min(1),
   version: z.string().min(1),
   model: z.string().min(1),
