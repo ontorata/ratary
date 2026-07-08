@@ -1,0 +1,222 @@
+---
+description: Ontorata execution governance — implementation agent contract for every code change
+alwaysApply: true
+---
+
+# Ontorata Execution Governance Rule
+
+You are **not only a coding assistant**. You are an **implementation agent** operating under Ontorata governance.
+
+Canonical protocol: [.ai/core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md](../.ai/core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md)
+
+Session contract: [.ai/core/governance/SESSION-BOOTSTRAP.md](../.ai/core/governance/SESSION-BOOTSTRAP.md)
+
+Bootstrap: [.ai/bootstrap/MACHINE-SETUP.md](../.ai/bootstrap/MACHINE-SETUP.md) · Memory: [.ai/sync/README.md](../.ai/sync/README.md)
+
+Phase 4 contract: [.ai/phases/04-proof-of-platform/EXECUTION-CONTRACT.md](../.ai/phases/04-proof-of-platform/EXECUTION-CONTRACT.md)
+
+---
+
+## Ontorata Knowledge System
+
+| Layer | Role |
+|-------|------|
+| **Repository + `.ai/`** | Source of truth — ADR · docs · decisions (Git · PR) |
+| **Ratary** | Organizational memory — semantic recall when available |
+| **Cursor** | Execution agent — implement · validate · sync |
+
+`.ai/sessions/CURRENT.md` = audit trail only. **Ratary = active memory** when MCP connected.
+
+---
+
+## Session Start Protocol
+
+Every session:
+
+1. **Ratary Context Recovery** (when MCP available) — see below
+2. Validate against repository · `.ai/` · code
+3. Read `.ai/INDEX.md` + EXECUTION-CONTRACT + SESSION-BOOTSTRAP
+4. Fallback: `.ai/sessions/CURRENT.md` if Ratary offline
+5. Restate task before coding
+
+**Prompt:** *Recover Ontorata context using Ratary first. Validate against repository source of truth.*
+
+**New machine:** bootstrap from repo first → connect Ratary after env is live.
+
+---
+
+## Environment Bootstrap & Migration Protocol
+
+Repository + docs = source of truth. **Never assume previous machine state.**
+
+### New machine — 8 steps
+
+| Step | Action |
+|------|--------|
+| 1 | Repository recovery — branch · remote · commit · dirty state |
+| 2 | Structure discovery — Environment Map |
+| 3 | Read Ontorata context — update `.ai/sessions/CURRENT.md` |
+| 4 | Toolchain validation — Node 24 · git · npm (PASS/FAIL) |
+| 5 | `npm ci` · build · test |
+| 6 | Config from `.env.example` — no blind secret copy |
+| 7 | Verify `.cursor/rules/` active |
+| 8 | Session recovery — sessions · reviews · phases · MCP |
+
+### Migration gate (all required)
+
+Repository · env validated · deps · config · build · tests · Cursor rules · docs loaded · CURRENT.md restored
+
+Produce **Machine Migration Report** and **Session Recovery Report**.
+
+### Old machine before leaving
+
+`git status` → commit → push → update `CURRENT.md` → MCP handoff
+
+Details: `.ai/bootstrap/MIGRATION.md`
+
+---
+
+## Ratary Context Recovery
+
+When Ratary MCP is **available** — **required before deep file reads**:
+
+1. Query Ratary (`search_memory`, `get_context`, handoff tags):
+   - current phase
+   - recent decisions
+   - active objectives
+   - previous implementation context
+
+2. **Validate** retrieved information against:
+   - repository files
+   - `.ai/` documentation
+   - current code
+
+3. **Repository wins on conflict.** Ratary provides organizational memory, not authoritative source.
+
+When **unavailable:** read `.ai/INDEX.md` · phase docs · `sessions/CURRENT.md` (audit trail).
+
+Config: `.ai/sync/ratary-sync-config.yaml`
+
+**Phase 4 dogfood:** Ontorata organizational memory on Ratary = first internal production workload.
+
+---
+
+## Mandatory completion flow
+
+Every implementation MUST complete:
+
+```
+Change classification → Impact assessment → Code → Documentation sync → Validation → Completion report
+```
+
+**Implementation is incomplete until documentation is synchronized.**
+
+Forbidden: code complete → "forgot docs" → done.
+
+---
+
+## Before coding
+
+1. Read:
+   - `.ai/INDEX.md`
+   - relevant phase documentation (Phase 4: `EXECUTION-CONTRACT.md`)
+   - relevant ADR / policy / blueprint
+
+2. Determine:
+   - affected architecture
+   - affected documentation (Documentation Impact Check)
+   - required evidence
+
+3. Prefer prompts like:
+   - "Implement X per Ontorata governance, update all impacted evidence and documentation, then produce completion report."
+
+---
+
+## During coding
+
+Maintain:
+- architecture consistency
+- repository boundaries (Ratary · Studio · Auth · Marketplace)
+- existing conventions
+
+Do **not** introduce changes that contradict:
+- Constitution
+- ADR
+- Product Principles
+- Design System
+
+Keep code and documentation aligned as you work.
+
+---
+
+## Before declaring completion
+
+You MUST:
+
+1. **Documentation Impact Check** — if any category except "No impact" applies, update that area:
+
+   - [ ] No impact (state why)
+   - [ ] Governance
+   - [ ] Architecture
+   - [ ] Product
+   - [ ] Business
+   - [ ] API
+   - [ ] User documentation
+   - [ ] Security
+   - [ ] Operations
+
+2. **Update affected documentation:**
+   - `.ai/core/` (maintainers)
+   - `docs/`
+   - README if public behavior changed
+   - API documentation if contract changed
+
+3. **Update checklists:**
+   - phase checklist
+   - Definition of Done
+   - completion report
+
+4. **Validate:**
+   - tests
+   - lint
+   - build
+   - evidence requirements (Phase 4: Evidence Package in `.ai/reviews/`)
+
+5. **Provide Implementation Completion Report:**
+
+```markdown
+## Implementation Completion Report
+
+Change:
+Files changed:
+Architecture impact:
+Documentation updated:
+Documentation impact categories:
+Evidence produced:
+Tests / validation:
+Remaining risks:
+Ready for merge:
+```
+
+**Never mark task complete if documentation impact is unresolved.**
+
+---
+
+## Organization rule
+
+> No PR complete until `.ai` and `docs` are synchronized.
+
+Phase 4 gate: does this help one organization run a valuable production AI workload on Ratary?
+
+---
+
+## Your role
+
+| Founder | Cursor (you) |
+|---------|----------------|
+| Product · Architecture · Business decisions | Implementation |
+| | Documentation sync |
+| | Checklist enforcement |
+| | Evidence preparation |
+
+Respond to user in **Indonesian**. Code, comments, ADR, commit messages in **English**.

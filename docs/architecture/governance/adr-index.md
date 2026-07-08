@@ -1,60 +1,66 @@
 # Architecture Decision Records — Public Index
 
-**Canonical ADRs:** `.ai/core/adr/` (local maintainer clone — not in git)  
-**Governance checkpoint:** `.ai/core/governance/GOVERNANCE-STATUS.md`  
+**Canonical:** `.ai/core/adr/` · **RFC:** `.ai/core/rfc/` · **Standards:** `.ai/core/standards/`  
+**Change gating:** `.ai/core/governance/CHANGE-GATING.md`  
 **Last updated:** 2026-07-07
 
 ---
 
-## Cross-product ADRs (Ratary governance workspace)
+## Governance chain
+
+```
+Constitution → ADR → RFC → Blueprint → Standards → Implementation
+```
+
+RFC = proposal only. Accepted RFC → new ADR (e.g. RFC-001 → ADR-015).
+
+---
+
+## Cross-product ADRs
 
 | ADR | Title | Status | Summary |
 |-----|-------|--------|---------|
-| **ADR-006** | Native Auth Gateway | Accepted | Studio → Auth Gateway → Ratary; native default; OIDC federation for enterprise |
-| **ADR-007** | Ratary / Ontory AI boundary | Accepted | Ratary = brain; Ontory = persona/UX; providers = tokens only |
-| **ADR-008** | AI data governance | Accepted | Tenant/memory/training classification; opt-in training; deletion cascade |
-| **ADR-009** | Model lifecycle | Accepted | Dataset → prod pipeline with eval gates, versioning, rollback |
-
-Full text: request from maintainer or read `.ai/core/adr/ADR-NNN-*.md` locally.
+| ADR-006 | Native Auth Gateway | Accepted | Auth gateway → Ratary; OIDC federation |
+| ADR-007 | Ratary / Ontory boundary | Accepted | Brain vs persona; auth identity ≠ AI identity |
+| ADR-008 | AI data governance | Accepted | Tenant data; opt-in training; deletion |
+| ADR-009 | Model lifecycle | Accepted | Dataset → RC → prod → monitoring |
+| ADR-010 | Observability | Accepted | OTel → Collector → any backend |
+| ADR-011 | AI evaluation | Accepted | Scoring, human review, training gates |
+| ADR-012 | Tenant isolation | Accepted | Mandatory `owner_id` on all data paths |
+| ADR-013 | Security compliance | Proposed | SOC 2 framework |
+| **ADR-014** | **Provider independence** | **Accepted** | Business → Interface → Adapter → SDK; no provider `if` in domain |
 
 ---
 
-## Studio product ADRs (in git)
+## RFCs (proposals)
 
-Repository: [Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio)
-
-| ADR | Title | Status |
+| RFC | Title | Status |
 |-----|-------|--------|
-| ADR-001 | Ecosystem repo boundaries | Accepted |
-| ADR-002 | Studio layered modules | Accepted |
-| ADR-003 | External OIDC (Zitadel) | Accepted — superseded as **default** by ADR-006 |
-| ADR-004 | Connection wizard gate | Accepted |
-| ADR-005 | Legacy API key bridge | Accepted |
-
-Path: `docs/architecture/adr/`
+| RFC-001 | Agent Runtime v2 | Draft |
 
 ---
 
-## Auth documentation (Studio)
+## Standards layer
 
-| Doc | Purpose |
-|-----|---------|
-| [Ontorata-Studio/docs/auth/](https://github.com/ontorata/Ontorata-Studio/tree/main/docs/auth) | Architecture, native auth, OIDC federation |
+Technical conventions (not policies): REST error format, logging, telemetry, testing, TypeScript boundaries — `.ai/core/standards/`.
 
 ---
 
-## Proposed next ADRs
+## AI governance
 
-| Candidate | Topic |
-|-----------|-------|
-| ADR-010 | Observability — auth audit → SIEM pipeline |
-| ADR-011 | AI evaluation governance — benchmark ownership |
+Lifecycle rules for prompts, memory, agents, models, tools, eval — `.ai/core/governance/AI-GOVERNANCE.md`.
 
 ---
 
-## How to propose an ADR
+## Studio ADRs (in git)
 
-1. Read [constitution-summary.md](./constitution-summary.md)
-2. Draft in `.ai/core/adr/` following ADR-006 structure
-3. Update `.ai/core/adr/INDEX.md` and this file
-4. Mirror user-facing sections to product `docs/` if needed
+`Ontorata-Studio/docs/architecture/adr/` — ADR-001 through ADR-005.
+
+---
+
+## How to propose change
+
+1. Significant / unclear? → RFC in `.ai/core/rfc/`
+2. Architecture review
+3. Accepted → ADR
+4. Follow [CHANGE-GATING.md](.ai/core/governance/CHANGE-GATING.md)

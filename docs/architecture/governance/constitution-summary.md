@@ -1,74 +1,104 @@
 # Ontorata Engineering — Constitution Summary
 
-**Status:** Public mirror (summary)  
-**Canonical source:** `.ai/core/constitution/ENGINEERING-CONSTITUTION.md` (local, gitignored)  
-**Last updated:** 2026-07-07
+**Canonical:** `.ai/core/constitution/ENGINEERING-CONSTITUTION.md`  
+**Structure:** Frozen 2026-07-08 — **structure frozen, evolution allowed**  
+**Phase:** 4 — Proof of Platform (Phases 0–3 complete)
 
-> Full constitution text is maintained in `.ai/` for AI agents and lead maintainers.  
-> This document is the **onboarding summary** for all engineers.
+**Mode:** Problem → Workload → Evidence → Trust → Scale
 
----
+**Contract:** `phases/04-proof-of-platform/EXECUTION-CONTRACT.md` (locked)
 
-## Authority
+**Chain:** Problem → Workload → Platform Capability → Evidence → Trust → Scale
 
-| Priority | Document |
-|----------|----------|
-| 1 | Engineering Constitution |
-| 2 | ADRs (`.ai/core/adr/`) |
-| 3 | Product docs (`docs/`, Studio `docs/`) |
-| 4 | Implementation (`src/`) |
+**Balance:** Governance + execution speed + evidence feedback (not more governance)
 
----
+**Implementation agent:** Cursor syncs code + docs + evidence per [IMPLEMENTATION-COMPLETION-PROTOCOL.md](.ai/core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md)
 
-## Products
+**Cursor rule:** `.cursor/rules/ontorata-execution-governance.mdc`
 
-| Product | Role |
-|---------|------|
-| **Ratary** | AI Brain — memory, knowledge, agents, RAG, eval, MCP, REST |
-| **Ontory** | Enterprise assistant — persona, conversation UX (not data SoR) |
-| **Studio** | Enterprise builder — configure and operate Ratary |
-| **Auth Gateway** | Credential boundary — not AI data plane |
+**Bootstrap:** `.ai/bootstrap/` · **Last known state:** `.ai/sessions/CURRENT.md`
+
+> The architecture earned the right to be tested. Now the market gets to decide its value.
 
 ---
 
-## Non-negotiable rules
+## DNA (do not lose)
 
-1. **API First** — cross-product integration via REST/MCP/OIDC only
-2. **Provider Agnostic** — LLM/IdP behind interfaces
-3. **Security First** — least privilege, audit at boundaries
-4. **ADR Required** — significant architecture changes documented
-5. **Enterprise Ready** — multi-tenant `owner_id`, SSO paths
-6. **Modular Architecture** — Studio ≠ Auth ≠ Ratary
+Open ecosystem · Enterprise ownership · AI operating layer · Governed execution
+
+**Positioning:** Not "make AI smarter" — **make organizations own, run, and grow their own AI.**
 
 ---
 
-## AI ownership (ADR-007)
+## Maturity snapshot
 
-| Owns | Product |
-|------|---------|
-| Memory, knowledge, retrieval, agents, tools, evaluation | **Ratary** |
-| Persona, conversation experience | **Ontory** |
-| Token generation only | **LLM provider** (via Ratary ports) |
-| Builder UI | **Studio** |
+| Area | Progress |
+|------|----------|
+| Foundation · Governance · Architecture | 100% |
+| **Validation (Phase 4)** | In progress |
 
----
-
-## Data & models (ADR-008, ADR-009)
-
-- All durable AI data → **Ratary**, scoped by `owner_id`
-- Training data → **opt-in** per tenant; anonymization required
-- Model lifecycle → dataset → validation → training → eval → RC → production → monitoring → retraining
+> **The next milestone is not a release. It is a proof.**
 
 ---
 
-## Getting full constitution
+## Principle (Phase 4)
 
-Maintainers with local clone: read `.ai/core/constitution/ENGINEERING-CONSTITUTION.md`
+> Architecture earns trust. Usage earns validation.
+
+**Permanent constitution principle:** **Internal Proof Before Public Capability** — no platform capability is production-ready until Ontorata operates it internally with evidence, metrics, audit trail, and evaluation. Feature ≠ capability · implementation ≠ completion · completion = evidence.
+
+**UX:** Internal complexity ≠ user complexity — simple outside, powerful inside.
+
+Gate: **Does this help one organization run a valuable production AI workload on Ratary?** If no → backlog.
+
+**Architecture predicts. Usage reveals.**
+
+**Evidence Loop:** Hypothesis → Build → Run → Measure → Learn → Improve
+
+**Next milestone:** first production workload by a real external organization.
+
+**First success (Phase 4):** one external org · one valuable production AI workload · **30+ days** · measured business value.
+
+**Guardrails:** ownership · Ontory direction · quality over demo count · evidence language.
+
+Private: `phases/04-proof-of-platform/EXECUTION-CONTRACT.md`
+
+> Before Phase 4, Ontorata was designed with discipline. After Phase 4, it must be trusted through evidence.
+
+Weekly rule: Evidence · Usage · or Learning must increase.
+
+---
+
+## Metrics
+
+| Metric | Role |
+|--------|------|
+| **Trusted Production Workloads Running** | North Star — trust, not volume |
+| `production_workloads` | Count of trusted workloads (subset of above) |
+| `production_organizations` | Proof — platform effect |
+| `production_users` · `production_documents` · `production_queries` · `production_memory` · `production_recall_accuracy` | Dogfood observability |
+| **TTFW** | Time to First Production Workload — target < 1h |
+| Adoption Quality | daily use · retention · measurable value · auditability |
+
+A workload counts as **trusted** when used daily, producing measurable value, documented, auditable, observable, and improving organizational quality over time.
+
+---
+
+## Three proofs
+
+1. **Technical** — Ratary as execution layer (isolation, OTel, eval)
+2. **Product** — non-builder ships a workload via Studio
+3. **Business** — external org · paid signal · partner
+
+---
+
+## Authority (technical)
+
+Constitution → ADR → Policies → Blueprint → Standards → Implementation
 
 ---
 
 ## Related
 
-- [adr-index.md](./adr-index.md)
-- [GOVERNANCE-STATUS mirror](./GOVERNANCE-STATUS.md)
-- [../../auth/](../../../Ontorata-Studio/docs/auth/) (Studio — separate repo)
+- [definition-of-done.md](./definition-of-done.md)
+- [GOVERNANCE-STATUS.md](./GOVERNANCE-STATUS.md)

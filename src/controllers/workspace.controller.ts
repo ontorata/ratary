@@ -20,6 +20,7 @@ function toWorkspaceResponse(workspace: WorkspaceRecord) {
   return {
     id: workspace.id,
     ownerId: workspace.ownerId,
+    organizationId: workspace.organizationId,
     name: workspace.name,
     slug: workspace.slug,
     createdAt: workspace.createdAt,
@@ -65,7 +66,11 @@ export class WorkspaceController {
     }
 
     const body = request.body as CreateWorkspaceBody;
-    const workspace = await createWorkspace(this.db, user.ownerId, body);
+    const workspace = await createWorkspace(this.db, user.ownerId, {
+      organizationId: body.organizationId,
+      name: body.name,
+      slug: body.slug,
+    });
     reply.status(201).send(toWorkspaceResponse(workspace));
   }
 

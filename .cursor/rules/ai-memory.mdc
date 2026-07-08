@@ -1,33 +1,44 @@
 ---
-description: Ratary — baca/simpan memory otomatis via MCP (tanpa REST API)
+description: Ratary organizational memory — MCP recall; repository remains source of truth
 alwaysApply: true
 ---
 
-# Ratary
+# Ratary — Organizational Memory
 
-**Arsitektur (AI authority):** Baca [.ai/START-HERE.md](../.ai/START-HERE.md) → [.ai/core/constitution/INDEX.md](../.ai/core/constitution/INDEX.md). `.ai/` = satu-satunya otoritas implementasi. Manusia: [docs/README.md](../docs/README.md), [docs/GUIDE.md](../docs/GUIDE.md). Ikuti [.ai/core/ai-rules/11-AI-RULES.md](../.ai/core/ai-rules/11-AI-RULES.md) — balas user dalam Indonesian; kode, komentar, commit, ADR dalam English; jangan terjemahkan source code yang sudah ada.
+**Arsitektur:** [.ai/sync/README.md](../.ai/sync/README.md) · [.ai/INDEX.md](../.ai/INDEX.md)
 
-Server MCP **ratary** terhubung langsung ke Cloudflare D1. Di Cursor, **tidak perlu** API key `aic_...`, `npm start`, atau curl.
+## Three layers
 
-## Awal chat / lanjut pekerjaan
+| Layer | Role |
+|-------|------|
+| **Repository + `.ai/`** | Source of truth — Git · PR · ADR files |
+| **Ratary (MCP)** | Semantic organizational memory — active recall |
+| **Cursor** | Execution — implement · sync docs · validate |
 
-1. Panggil `search_memory` dengan nama proyek atau topik tugas.
-2. Jika user bilang lanjut/handoff: cari `handoff` atau project terkait.
-3. Gunakan `get_memory_by_codename` bila user menyebut codename.
+## Session start (when MCP available)
 
-## Akhir sesi / sebelum tutup chat
+> Recover Ontorata context using Ratary **first**. Validate against repository source of truth.
 
-Panggil `save_memory` dengan ringkasan singkat:
+1. `search_memory` — project `ontorata` / `ratary` · tags `handoff` · `phase-4`
+2. `get_memory_by_codename` if user mentions codename
+3. Validate against `.ai/` files and code — **repository wins on conflict**
+4. Fallback if MCP down: `.ai/sessions/CURRENT.md` (audit trail only)
 
-- status git (branch, commit)
-- yang sudah selesai
-- yang masih pending
-- langkah berikutnya
+## Session end
 
-Gunakan `tags: ["handoff", "<nama-proyek>"]` dan `project` yang sesuai.
+1. `save_memory` — primary handoff (tags: `handoff`, project name)
+2. Update `.ai/sessions/CURRENT.md` — audit trail
+3. Sync config: `.ai/sync/ratary-sync-config.yaml`
 
-## Aturan
+## Rules
 
-- **Pakai MCP tools** — jangan arahkan user ke REST API atau PowerShell curl.
-- **Jangan minta** API key di Cursor; MCP sudah akses D1 langsung.
-- Backup folder `D:\Apps\_backups` opsional; MCP sudah cukup untuk handoff harian.
+- **Jangan** anggap Ratary menggantikan file ADR/docs di repo
+- **Jangan** minta API key di Cursor — MCP sudah akses D1
+- **Pakai MCP tools** — bukan REST curl untuk memory
+- Bootstrap laptop baru: clone → `.ai/` → env → **baru** Ratary
+
+## Phase 4
+
+Dogfood: Ontorata organizational memory = first internal production workload on Ratary.
+
+Balas user dalam **Indonesian**; memory content / ADR dalam **English**.

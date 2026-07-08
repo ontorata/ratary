@@ -3,6 +3,10 @@ import { randomUUID } from 'node:crypto';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { Env } from '../../../config/env.js';
+import {
+  authorizeMcpRemoteSession,
+  formatMcpAuthorizationError,
+} from '../../../auth/authorization-boundary.js';
 import type { TransportHandlers } from '../../shared/handlers/create-transport-handlers.js';
 import { buildMcpOAuthMetadataContext, buildMcpUnauthorizedHeaders, buildBearerOnlyUnauthorizedHeaders } from './mcp-oauth-metadata.js';
 import {
@@ -82,8 +86,22 @@ export async function registerRemoteMcpRoutes(
       return;
     }
 
+    try {
+      request.user = await authorizeMcpRemoteSession(deps.sql, request.user, request.headers);
+    } catch (error) {
+      const formatted = formatMcpAuthorizationError(error);
+      reply.code(formatted.status).send(formatted.body);
+      return;
+    }
+
     const ctx = buildTransportContextFromRestRequest(request);
-    const remoteCtx = { ...ctx, source: 'mcp-remote' as const };
+    const remoteCtx = {
+      ...ctx,
+      source: 'mcp-remote' as const,
+      auth: request.user,
+      organizationId: request.user.organizationId ?? ctx.organizationId,
+      workspaceId: request.user.workspaceId ?? ctx.workspaceId,
+    };
     const sessionId = headerValue(request.headers, 'mcp-session-id');
     const body = request.body;
 
@@ -135,7 +153,7 @@ export async function registerRemoteMcpRoutes(
       .header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
       .header(
         'Access-Control-Allow-Headers',
-        'Content-Type, Authorization, X-API-Key, mcp-session-id, MCP-Protocol-Version',
+        'Content-Type, Authorization, X-API-Key, X-Organization-Id, X-Workspace-Id, mcp-session-id, MCP-Protocol-Version',
       )
       .code(204)
       .send();

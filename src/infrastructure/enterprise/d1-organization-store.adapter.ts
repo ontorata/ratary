@@ -4,25 +4,21 @@ import type {
   IOrganizationStore,
   Organization,
 } from '../../ports/enterprise/iorganization-store.port.js';
-import { generateId } from '../../utils/memory-mapper.js';
-import { nowISO } from '../../utils/memory-mapper.js';
-import { ValidationError } from '../../types/errors.js';
+import {
+  createOrganization as createOrganizationRecord,
+  findOrganizationById,
+  findOrganizationBySlug,
+  listOrganizationsByOwner,
+  type OrganizationRecord,
+} from '../../scope/organization-store.js';
 
-interface OrganizationRow {
-  id: string;
-  owner_id: string;
-  name: string;
-  slug: string;
-  created_at: string;
-}
-
-function rowToOrganization(row: OrganizationRow): Organization {
+function toOrganization(record: OrganizationRecord): Organization {
   return {
-    id: row.id,
-    ownerId: row.owner_id,
-    name: row.name,
-    slug: row.slug,
-    createdAt: row.created_at,
+    id: record.id,
+    ownerId: record.ownerId,
+    name: record.name,
+    slug: record.slug,
+    createdAt: record.createdAt,
   };
 }
 
@@ -30,49 +26,25 @@ export class D1OrganizationStore implements IOrganizationStore {
   constructor(private readonly db: ISqlDatabase) {}
 
   async findById(id: string, ownerId: string): Promise<Organization | null> {
-    const rows = await this.db.query<OrganizationRow>(
-      'SELECT id, owner_id, name, slug, created_at FROM organizations WHERE id = ? AND owner_id = ?',
-      [id, ownerId],
-    );
-    return rows[0] ? rowToOrganization(rows[0]) : null;
+    const record = await findOrganizationById(this.db, ownerId, id);
+    return record ? toOrganization(record) : null;
   }
 
   async findByOwnerAndSlug(ownerId: string, slug: string): Promise<Organization | null> {
-    const rows = await this.db.query<OrganizationRow>(
-      'SELECT id, owner_id, name, slug, created_at FROM organizations WHERE owner_id = ? AND slug = ?',
-      [ownerId, slug],
-    );
-    return rows[0] ? rowToOrganization(rows[0]) : null;
+    const record = await findOrganizationBySlug(this.db, ownerId, slug);
+    return record ? toOrganization(record) : null;
   }
 
   async listByOwner(ownerId: string): Promise<Organization[]> {
-    const rows = await this.db.query<OrganizationRow>(
-      'SELECT id, owner_id, name, slug, created_at FROM organizations WHERE owner_id = ? ORDER BY created_at ASC',
-      [ownerId],
-    );
-    return rows.map(rowToOrganization);
+    const records = await listOrganizationsByOwner(this.db, ownerId);
+    return records.map(toOrganization);
   }
 
   async create(input: CreateOrganizationInput): Promise<Organization> {
-    const existing = await this.findByOwnerAndSlug(input.ownerId, input.slug);
-    if (existing) {
-      throw new ValidationError(`Organization slug already exists: ${input.slug}`);
-    }
-
-    const id = generateId();
-    const createdAt = nowISO();
-    await this.db.execute(
-      `INSERT INTO organizations (id, owner_id, name, slug, created_at)
-       VALUES (?, ?, ?, ?, ?)`,
-      [id, input.ownerId, input.name, input.slug, createdAt],
-    );
-
-    return {
-      id,
-      ownerId: input.ownerId,
+    const record = await createOrganizationRecord(this.db, input.ownerId, {
       name: input.name,
       slug: input.slug,
-      createdAt,
-    };
+    });
+    return toOrganization(record);
   }
 }

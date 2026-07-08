@@ -17,6 +17,7 @@ import {
 } from './providers/index.js';
 import { createAuthenticateMiddleware } from './auth.middleware.js';
 import { createPermissionMiddleware } from './permission.middleware.js';
+import { createTenantContextMiddleware } from './tenant-context.middleware.js';
 import { getEnv } from '../config/index.js';
 
 export interface AuthLayer {
@@ -26,6 +27,7 @@ export interface AuthLayer {
   auditService: AuditService;
   jwtService: JwtService;
   authenticate: ReturnType<typeof createAuthenticateMiddleware>;
+  resolveTenantContext: ReturnType<typeof createTenantContextMiddleware>;
   enforcePermissions: ReturnType<typeof createPermissionMiddleware>;
 }
 
@@ -59,6 +61,7 @@ export function createAuthLayer(db: ISqlDatabase): AuthLayer {
 
   const authService = new AuthService(providers, identityRepository);
   const authenticate = createAuthenticateMiddleware(authService);
+  const resolveTenantContext = createTenantContextMiddleware(db);
   const enforcePermissions = createPermissionMiddleware();
 
   return {
@@ -68,6 +71,7 @@ export function createAuthLayer(db: ISqlDatabase): AuthLayer {
     auditService,
     jwtService,
     authenticate,
+    resolveTenantContext,
     enforcePermissions,
   };
 }

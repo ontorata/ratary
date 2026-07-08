@@ -130,6 +130,7 @@ export async function buildApp(options?: {
       'X-API-Key',
       'X-Request-Id',
       'X-Client-Id',
+      'X-Organization-Id',
       'X-Workspace-Id',
       'X-Agent-Id',
     ],
@@ -161,6 +162,7 @@ export async function buildApp(options?: {
 
   if (!options?.skipAuth) {
     fastify.addHook('onRequest', authLayer.authenticate);
+    fastify.addHook('onRequest', authLayer.resolveTenantContext);
     fastify.addHook('onRequest', authLayer.enforcePermissions);
     if (env.ENTERPRISE_RBAC) {
       fastify.addHook(

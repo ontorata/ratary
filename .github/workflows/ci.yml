@@ -30,6 +30,23 @@ jobs:
       - name: Production build (typecheck)
         run: npm run build
 
+  docs-impact:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Documentation impact check (warning)
+        run: npm run ci:docs-impact
+        env:
+          GITHUB_BASE_REF: origin/${{ github.base_ref }}
+
   docker:
     runs-on: ubuntu-latest
     steps:

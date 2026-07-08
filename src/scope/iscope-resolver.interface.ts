@@ -10,6 +10,7 @@ export interface McpScopeEnv {
 
 /** Optional hints from transport layer (REST header, query, body). */
 export interface ScopeResolutionHints {
+  organizationId?: string;
   workspaceId?: string;
   agentId?: string;
   projectId?: string;

@@ -75,6 +75,7 @@ CREATE TABLE IF NOT EXISTS workspaces (
 );
 
 CREATE INDEX IF NOT EXISTS idx_workspaces_owner ON workspaces(owner_id);
+CREATE INDEX IF NOT EXISTS idx_workspaces_organization ON workspaces(organization_id);
 
 -- organizations: enterprise tenant boundary (Phase 10, ADR-002 / ADR-010)
 CREATE TABLE IF NOT EXISTS organizations (
