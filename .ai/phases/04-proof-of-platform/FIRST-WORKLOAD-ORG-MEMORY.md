@@ -117,5 +117,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Task 3: ingest runner + deterministic ingestion log schema (`sync:org-memory`)
 - ✅ Task 4: recall evaluation harness with comparable metrics (`eval:org-memory-recall`)
 - ✅ Task 5: session handoff + MCP interaction trace automation (`trace:org-memory-handoff`)
-- ⏳ Next: Task 6 internal usage metrics pipeline (G1/G5)
+- ✅ Task 6: internal usage metrics pipeline (`metrics:org-memory`)
+- ⏳ Next: Task 7 acceptance gate pack (G1–G6) + final evidence collection
 

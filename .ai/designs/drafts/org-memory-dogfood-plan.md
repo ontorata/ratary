@@ -15,7 +15,7 @@
 - [x] Task 3 — Implement dogfood ingest runner + log schema
 - [x] Task 4 — Recall evaluation harness (G2/G3/G4)
 - [x] Task 5 — Session handoff + audit trace automation
-- [ ] Task 6 — Internal usage metrics pipeline (G1/G5)
+- [x] Task 6 — Internal usage metrics pipeline (G1/G5)
 - [ ] Task 7 — Acceptance gate pack (G1–G6)
 - [ ] Task 8 — CI and non-regression guard
 
