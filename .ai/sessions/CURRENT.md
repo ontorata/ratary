@@ -90,10 +90,10 @@
 
 ```
 Repository: ai-brain (ratary)
-Branch:     forge/engineering-governance (P0-B active)
-Main:       239f9d2 on origin ✅
-Remote:     origin synced — P0-A RELEASED verified
-Pending:    P0-B forge-blueprint approval
+Branch:     forge/engineering-governance @ dc2fa5e
+P0-A:       RELEASED on origin ✅
+P0-B:       6/6 waves LOCKED · tag pending push
+Pending:    forge-land → main · remote tag verify
 ```
 
 ---
@@ -109,15 +109,14 @@ Pending:    P0-B forge-blueprint approval
 | Tag | ✅ `identity-foundation-p0-a-complete` |
 | Remote sync | ✅ verified 2026-07-08 |
 
-### P0-B Engineering Governance — OPEN 🟢
+### P0-B Engineering Governance — LOCAL RELEASE ✅
 
-| Stage | Document | Status |
-|-------|----------|--------|
-| forge-intent | `.ai/designs/drafts/engineering-governance-intent.md` | ✅ Approved |
-| forge-isolate | `.ai/designs/drafts/engineering-governance-isolate.md` | ✅ Active · 88/88 baseline |
-| forge-blueprint | `.ai/designs/blueprints/engineering-governance-plan.md` | ✅ Approved |
-| forge-execute Wave 5 | Migration Governance | ✅ LOCKED |
-| forge-execute Wave 6 | Engineering Constitution | ⏳ Next |
+| Stage | Status |
+|-------|--------|
+| Waves 1–6 | ✅ LOCKED (tags wave-1..6 + p0-b-complete) |
+| Release commit | `dc2fa5e` |
+| ci:governance | ✅ 88/88 |
+| forge-land | ⏳ push branch + tags → PR main |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

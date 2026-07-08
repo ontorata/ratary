@@ -1,7 +1,8 @@
 ---
 id: P0-B-ENGINEERING-GOVERNANCE
 phase: 04-proof-of-platform
-status: Forge-Isolate Active
+status: released
+distribution: local — pending forge-land to origin
 owner: Ontorata
 workload: Engineering Governance
 baseline_tag: identity-foundation-p0-a-complete
@@ -24,7 +25,9 @@ updated: 2026-07-08
 | **Forge branch** | `forge/engineering-governance` |
 | **Intent** | [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md) — **Approved** |
 | **Isolate** | [engineering-governance-isolate.md](../../designs/drafts/engineering-governance-isolate.md) |
-| **Blueprint** | [engineering-governance-plan.md](../../designs/blueprints/engineering-governance-plan.md) — **Proposed** |
+| **Blueprint** | [engineering-governance-plan.md](../../designs/blueprints/engineering-governance-plan.md) — **Approved** |
+| **Release commit** | `dc2fa5e` — Wave 6 constitution |
+| **Release tag** | `engineering-governance-p0-b-complete` |
 
 ---
 
@@ -61,9 +64,9 @@ Pattern per wave: Implementation → Tests → Evidence → Governance checkpoin
 
 | Gate | Status |
 |------|--------|
-| ADR system | ⏳ |
-| CI governance | ⏳ |
-| AI workflow governance | ⏳ |
+| ADR system | ✅ |
+| CI governance | ✅ |
+| AI workflow governance | ✅ |
 | Release process | ✅ |
 | Migration policy | ✅ |
 | Repository constitution | ✅ |
