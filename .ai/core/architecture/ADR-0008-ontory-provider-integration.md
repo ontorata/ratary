@@ -196,14 +196,15 @@ Second concern; defer.
 ## Definition of Done (P2-B wave 1)
 
 - [x] ADR-0008 Accepted
-- [ ] `OpenAIProviderAdapter` behind `ProviderRuntime`
-- [ ] Dispatcher can inject OpenAI **or** stub via Ontory config (not Studio)
-- [ ] Request/response/error mapping covered by tests
-- [ ] Studio unchanged for path (still RuntimePort → REST); no vendor SDK in Studio
-- [ ] A1 verified: Studio has no hardcoded vendor routing
-- [ ] A2 verified: no OpenAI SDK types outside adapter; boundary CI allowlists adapter path only
-- [ ] Evidence pack + acceptance for P2-B
+- [x] `OpenAIProviderAdapter` behind `ProviderRuntime`
+- [x] Dispatcher can inject OpenAI **or** stub via Ontory config (not Studio)
+- [x] Request/response/error mapping covered by tests
+- [x] Studio unchanged for path (still RuntimePort → REST); no vendor SDK in Studio
+- [x] A1 verified: Studio has no hardcoded vendor routing
+- [x] A2 verified: no OpenAI SDK types outside adapter; boundary CI allowlists adapter path only
+- [x] Evidence pack + acceptance for P2-B
 
+**Evidence (Task 7 · governance only):** [ontory-provider-openai-proof.md](../../reviews/org-memory-dogfood/ontory-provider-openai-proof.md) · [P2-B-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) · Ontory pin `e63bb93`.
 ---
 
 ## Consequences
@@ -234,4 +235,4 @@ Second concern; defer.
 3. Narrow blueprint: OpenAI adapter + config wire + tests + evidence  
 4. forge-execute OpenAI-only — do **not** open Anthropic until OpenAI DoD is green  
 
-**Unlocked:** isolate / blueprint / execute (OpenAI adapter only).
+**Unlocked:** Task 8 closeout tag after owner accepts Task 7 evidence.

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Execute — Task 1–6 ✅ · Task 7 next (Evidence) |
+| **Status** | Execute — Task 1–7 ✅ · Task 8 next (Closeout tag) |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -37,7 +37,7 @@ No OpenAI adapter yet.
 - [x] Task 4 — `OpenAIProviderAdapter` · official SDK · Ontory (thin)
 - [x] Task 5 — Configuration · Ontory `src/config/provider-config.ts`
 - [x] Task 6 — REST composition · default stub via config
-- [ ] Task 7 — Evidence & A1/A2 verification
+- [x] Task 7 — Evidence & A1/A2 verification (governance)
 - [ ] Task 8 — Closeout tag
 
 ---
@@ -90,9 +90,15 @@ No OpenAI adapter yet.
 - **Verify:** 34 tests PASS · boundary OK · typecheck OK
 - **Done when:** ✅ REST composes config only · stub default preserved
 
-### Task 7 — Evidence
+## Task 7 — Evidence & A1/A2 ✅ (governance only)
 
-- **Repo:** ai-brain reviews + ADR-0008 DoD
+- **Files:**
+  - [ontory-provider-openai-proof.md](../../reviews/org-memory-dogfood/ontory-provider-openai-proof.md)
+  - [P2-B-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md)
+  - ADR-0008 DoD checkboxes
+- **Do:** Document A1 (REST → dispatch → config-selected provider → envelope) and A2 (SDK isolation · stub default · Studio vendor-agnostic); pin Ontory `e63bb93`
+- **Verify:** Ontory 34 PASS · boundary OK · Studio has no openai package
+- **Done when:** ✅ DoD mapped · acceptance ACCEPTED · no runtime code in Task 7
 
 ### Task 8 — Closeout
 
@@ -104,4 +110,4 @@ No OpenAI adapter yet.
 
 Abort if Task 1 pulls in SDK, HTTP, mappers, or Dispatcher changes.
 
-**Owner approval:** ✅ Task 1 scope = contract only · execute unlocked.
+**Owner approval:** ✅ Tasks 1–7 complete · Task 8 = tag-only closeout.

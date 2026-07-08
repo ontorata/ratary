@@ -157,5 +157,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P2-A Task 8 — governance evidence pack · ADR-0007 DoD complete · [P2-A-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md)
 - ✅ P2-A Task 9 — CLOSED · tag `org-memory-p2-a-complete` · release [P2-A-ONTORY-RUNTIME-KERNEL.md](../../governance/releases/P2-A-ONTORY-RUNTIME-KERNEL.md)
 - ✅ ADR-0008 **Accepted** · P2-B intent/isolate/blueprint OpenAI-only
-- ⏳ Next: forge-execute OpenAI adapter (`forge/ontory-provider-p2-b`) — no tools/MCP/streaming/Anthropic in wave 1
-
+- ✅ P2-B Tasks 1–6 — OpenAI provider foundation (contract → mappers → thin adapter → config → REST)
+- ✅ P2-B Task 7 — Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) · Ontory `e63bb93`
+- ⏳ Next: Task 8 closeout tag · Anthropic/Gemini deferred to later waves
