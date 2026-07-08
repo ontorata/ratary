@@ -13,7 +13,7 @@
 - [x] Task 1 — Activate P1-A governance metadata
 - [x] Task 2 — Define ingestion scope contract
 - [x] Task 3 — Implement dogfood ingest runner + log schema
-- [ ] Task 4 — Recall evaluation harness (G2/G3/G4)
+- [x] Task 4 — Recall evaluation harness (G2/G3/G4)
 - [ ] Task 5 — Session handoff + audit trace automation
 - [ ] Task 6 — Internal usage metrics pipeline (G1/G5)
 - [ ] Task 7 — Acceptance gate pack (G1–G6)
