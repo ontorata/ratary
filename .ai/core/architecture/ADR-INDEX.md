@@ -9,7 +9,8 @@
 | ADR-0001 | [ADR-0001-identity-boundary.md](./ADR-0001-identity-boundary.md) | Accepted | Auth identity · owner · org/workspace context · bootstrap vs data-plane |
 | ADR-0002 | [ADR-0002-tenant-isolation.md](./ADR-0002-tenant-isolation.md) | Accepted | Organization tenant boundary · Org A ≠ Org B |
 | ADR-0003 | [ADR-0003-authorization-model.md](./ADR-0003-authorization-model.md) | Accepted | Permission contract · tenant-before-permission · authorization-boundary |
-| ADR-0004 | [ADR-0004-transport-parity.md](./ADR-0004-transport-parity.md) | Accepted | REST ↔ MCP remote parity · transport ≠ permission |
+| ADR-0006 | [ADR-0006-recall-intelligence-boundary.md](./ADR-0006-recall-intelligence-boundary.md) | Accepted | Recall intelligence ownership · candidate/policy/assembly separation |
+| ADR-0007 | [ADR-0007-ontory-runtime-kernel-boundary.md](./ADR-0007-ontory-runtime-kernel-boundary.md) | **Proposed** | Ontory runtime kernel · Studio port-only · no Ratary bypass |
 
 **Template:** [ADR-TEMPLATE.md](./ADR-TEMPLATE.md)
 

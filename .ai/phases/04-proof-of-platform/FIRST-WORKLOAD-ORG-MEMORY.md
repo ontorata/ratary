@@ -149,5 +149,8 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-D W5 smoke complete (5 pipeline scenarios · no live LLM)
 - ✅ P1-D W5 extended corpus **deferred** (not architectural gate)
 - ✅ P1-D closed · baseline `org-memory-p1-d-complete`
-- ⏳ Next phase options: Ontory Runtime · Ratary Intelligence · Studio productization
+- ✅ Frozen Boundary Bypass Policy activated
+- 🟡 ADR-0007 Ontory Runtime Kernel **Proposed** (no code until Accepted)
+- 🟡 P2-A intent draft: [ontory-runtime-p2-a-intent.md](../../designs/drafts/ontory-runtime-p2-a-intent.md)
+- ⏳ Next: accept ADR-0007 → unlock forge-intent P2-A (Ontory P0 kernel only)
 

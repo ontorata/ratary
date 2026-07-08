@@ -156,7 +156,15 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | W6 closeout | ✅ release + acceptance |
 | Baseline lock | ✅ `org-memory-p1-d-complete` |
 | Release record | ✅ [P1-D-AI-WORKSPACE.md](../governance/releases/P1-D-AI-WORKSPACE.md) |
-| Next | Choose Ontory Runtime · Ratary Intelligence · or Studio productization |
+| Next | **P2-A Ontory Runtime Kernel** — ADR-0007 Proposed · intent draft pending acceptance |
+
+### Post-baseline governance
+
+| Artefact | Status |
+|----------|--------|
+| Frozen Boundary Bypass Policy | ✅ [FROZEN-BOUNDARY-BYPASS-POLICY.md](../core/constitution/FROZEN-BOUNDARY-BYPASS-POLICY.md) |
+| ADR-0007 Ontory Runtime Kernel | 🟡 Proposed — await owner acceptance before code |
+| P2-A intent draft | 🟡 [ontory-runtime-p2-a-intent.md](../designs/drafts/ontory-runtime-p2-a-intent.md) |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
