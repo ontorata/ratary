@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — OpenAI-only execute unlocked |
+| **Status** | Execute — Task 1 ✅ · Task 2 next (RequestMapper) |
 | **Intent** | [ontory-provider-p2-b-intent.md](./ontory-provider-p2-b-intent.md) |
 | **Isolate** | [ontory-provider-p2-b-isolate.md](./ontory-provider-p2-b-isolate.md) |
 | **ADR** | ADR-0008 Accepted |
@@ -11,105 +11,82 @@
 
 ---
 
-## Locked flow
+## Locked flow (end state — not after Task 1)
 
 ```text
-AIExecutionRequest
-        │
-ProviderRuntime
-        │
-OpenAIProviderAdapter
-        ├── RequestMapper
-        ├── ResponseMapper
-        ├── ErrorMapper
-        └── openai SDK client
-        │
-OpenAI Chat Completions
-        │
-AIExecutionResponse
+AIExecutionRequest → ProviderRuntime → OpenAIProviderAdapter → AIExecutionResponse
 ```
 
-Studio path unchanged. Streaming deferred.
+After **Task 1 only**:
+
+```text
+ProviderRuntime (unchanged)
+        │
+ProviderError (new contract)
+```
+
+No OpenAI adapter yet.
 
 ---
 
 ## Execution progress
 
-- [ ] Task 1 — `ProviderError` + boundary script allowlist for `adapters/openai` only
-- [ ] Task 2 — RequestMapper / ResponseMapper / ErrorMapper (no SDK types exported)
-- [ ] Task 3 — `OpenAIProviderAdapter` implements `ProviderRuntime`
-- [ ] Task 4 — Ontory config + composition root: `ONTORY_PROVIDER=stub|openai`, model default `gpt-4o-mini`
-- [ ] Task 5 — Unit tests with mocked OpenAI client (CI, no live key)
-- [ ] Task 6 — Wire REST `defaultRuntime()` via config; keep stub default for CI
-- [ ] Task 7 — Evidence pack + A1/A2 verification · ADR DoD
-- [ ] Task 8 — Closeout tag when DoD met
+- [x] Task 1 — Provider contract & `ProviderError` (**no OpenAI**) · Ontory `feat` commit on `forge/ontory-provider-p2-b`
+- [ ] Task 2 — RequestMapper
+- [ ] Task 3 — ResponseMapper / ErrorMapper (vendor → `ProviderError`)
+- [ ] Task 4 — `OpenAIProviderAdapter` (official SDK · adapter folder only)
+- [ ] Task 5 — Configuration (`stub` \| `openai`, model default `gpt-4o-mini`)
+- [ ] Task 6 — REST composition (default remains stub)
+- [ ] Task 7 — Evidence & A1/A2 verification
+- [ ] Task 8 — Closeout tag
 
 ---
 
-## Task details
+## Task 1 — Provider contract & ProviderError ✅
 
-### Task 1 — ProviderError + boundary allowlist
+- **Commit:** Ontory Task 1 on `forge/ontory-provider-p2-b`
+- **Files:** `src/runtime/contracts/provider-error.ts` · tests · re-export · doc on `ProviderRuntime`
+- **Verify:** 10 tests PASS · boundary OK · typecheck OK
+- **Done when:** ✅ Runtime knows `ProviderError` · no OpenAI · no networking · no Dispatcher / REST changes
 
-- **Files:** `src/runtime/provider-error.ts` (or `contracts/provider-error.ts`) · `scripts/check-runtime-boundary.mjs`
-- **Do:** Stable Ontory error type/codes; allow `openai` package **only** under `src/adapters/openai/**`; forbid SDK imports elsewhere; keep forbidding OpenAI in dispatcher
-- **Verify:** `npm run check:boundary` (still PASS on stub-only tree; fail if openai imported in runtime/)
-- **Done when:** CI boundary encodes A2
+### Task 2 — RequestMapper
 
-### Task 2 — Mappers
+- **Files:** `src/adapters/openai/request-mapper.ts` · tests
+- **Do:** Map `AIExecutionRequest` → Chat Completions create params (plain objects; SDK types not exported)
+- **Verify:** mapper unit tests
 
-- **Files:** `src/adapters/openai/request-mapper.ts` · `response-mapper.ts` · `error-mapper.ts`
-- **Do:** Map `AIExecutionRequest` → Chat Completions create params; completion → `AIExecutionResponse`; SDK/HTTP errors → `ProviderError`. **Export only Ontory types** from public adapter entry
-- **Verify:** unit tests mapping pure functions
-- **Done when:** no `openai` types in mapper public signatures
+### Task 3 — ResponseMapper / ErrorMapper
 
-### Task 3 — OpenAIProviderAdapter
+- **Files:** `response-mapper.ts` · `error-mapper.ts` · tests
+- **Do:** Completion → `AIExecutionResponse`; vendor errors → `ProviderError`
 
-- **Files:** `src/adapters/openai/openai-provider-adapter.ts` · `index.ts`
-- **Do:** `implements ProviderRuntime`; `name = 'openai'`; uses official SDK; timeout; default model `gpt-4o-mini` if config omitted
-- **Verify:** unit test with injected mock client
-- **Done when:** `complete()` returns frozen envelope
+### Task 4 — OpenAIProviderAdapter
 
-### Task 4 — Config
+- **Files:** adapter + boundary allowlist for `src/adapters/openai/**` only · add `openai` dep
+- **Do:** `implements ProviderRuntime`; official SDK confined to folder
 
-- **Files:** `src/adapters/openai/config.ts` · README note
-- **Do:** read `ONTORY_PROVIDER`, `OPENAI_API_KEY`, `OPENAI_MODEL`, optional base URL / timeout — Ontory-only
-- **Verify:** config unit smoke
-- **Done when:** missing key → clear ProviderError when openai selected
+### Task 5 — Configuration
 
-### Task 5 — Tests
-
-- **Files:** `tests/adapters/openai-*.test.ts`
-- **Do:** mock SDK; cover happy path, unauthorized, timeout mapping; assert dispatcher + openai injection without vendor strings in dispatcher
-- **Verify:** `npm test`
-- **Done when:** green without live API key
+- **Files:** `src/adapters/openai/config.ts`
+- **Do:** Ontory-only env; default model `gpt-4o-mini`
 
 ### Task 6 — REST composition
 
-- **Files:** `src/adapters/rest/server.ts` (composition only)
-- **Do:** `defaultRuntime()` selects stub vs openai from env; **default remains stub** if unset (CI safety)
-- **Verify:** `npm test` · existing REST test still stub path
-- **Done when:** no Studio changes
+- **Files:** `src/adapters/rest/server.ts` (injection only)
+- **Do:** select stub vs openai; **default stub**
 
-### Task 7 — Evidence (governance)
+### Task 7 — Evidence
 
-- **Files:** ai-brain `.ai/reviews/.../ontory-provider-openai-proof.md` · ADR-0008 DoD checkboxes
-- **Verify:** Ontory gates + Studio still no openai package
-- **Done when:** A1/A2 documented
+- **Repo:** ai-brain reviews + ADR-0008 DoD
 
 ### Task 8 — Closeout
 
-- **Do:** tag `org-memory-p2-b-complete` (or agreed name) on pins when owner accepts
-- **Must not:** Anthropic/Gemini in same tag unless separately completed
+- Tag when DoD met; no Anthropic in same wave unless complete
 
 ---
 
 ## Rejection criteria
 
-Abort if:
+Abort if Task 1 pulls in SDK, HTTP, mappers, or Dispatcher changes.
 
-- SDK types cross `ProviderRuntime`
-- Studio gains vendor imports or model hard-codes
-- Tools / streaming / agents / MCP / memory land in this branch
-- Dispatcher gains `chat.completions` or OpenAI identifiers beyond injecting `ProviderRuntime`
-
-**Owner approval:** ✅ ADR Accepted · isolate green · OpenAI-only blueprint unlocked.
+**Owner approval:** ✅ Task 1 scope = contract only · execute unlocked.
