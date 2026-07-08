@@ -1,12 +1,15 @@
 ---
 id: P0-A-IDENTITY-FOUNDATION
 phase: 04-proof-of-platform
-status: Complete
+status: released
+distribution: verified on origin
 owner: Ontorata
 workload: Engineering Governance
+release_commit: 2a57647
 release_tag: identity-foundation-p0-a-complete
 forge_branch: forge/identity-foundation
 merged_to: main
+remote_main: 239f9d2
 updated: 2026-07-08
 ---
 
@@ -15,10 +18,36 @@ updated: 2026-07-08
 | Field | Value |
 |-------|-------|
 | **Milestone** | Identity Foundation (P0-A) |
-| **Status** | ✅ COMPLETE · 🔒 LOCKED |
-| **Release tag** | `identity-foundation-p0-a-complete` |
-| **Forge branch** | `forge/identity-foundation` |
-| **Consumer proof** | Ontorata-Studio `af266a7` (separate repo — not merged here) |
+| **Engineering status** | ✅ COMPLETE · 🔒 LOCKED · CLOSED internally |
+| **Distribution status** | ✅ **RELEASED** (verified on `origin`) |
+| **Release commit** | `2a57647` — merge: identity foundation P0-A waves 1-5 |
+| **Release tag** | `identity-foundation-p0-a-complete` → `2a57647` |
+| **Remote main** | `239f9d2` (post-merge governance doc) |
+| **Forge branch** | `forge/identity-foundation` (merged) |
+| **Consumer proof** | Ontorata-Studio `af266a7` (separate repo) |
+
+---
+
+## Remote verification (2026-07-08)
+
+Verified on `https://github.com/ontorata/ratary.git`:
+
+| Ref | Expected | Remote |
+|-----|----------|--------|
+| `refs/tags/identity-foundation-p0-a-complete^{}` | `2a57647` | ✅ `2a57647a243e64e9656c696d3c429573582e31bd` |
+| `refs/tags/identity-wave-3-locked` | immutable | ✅ `e96330b` |
+| `refs/tags/identity-wave-4-locked` | immutable | ✅ `459f925` |
+| `refs/tags/identity-wave-5-locked` | immutable | ✅ `e4a7c71` |
+| `refs/heads/main` | contains merge | ✅ `239f9d2` |
+
+Commands:
+
+```bash
+git ls-remote origin refs/tags/identity-foundation-p0-a-complete
+git ls-remote origin "refs/tags/identity-wave-*"
+```
+
+Wave lock tags are **immutable** — do not move or force-update.
 
 ---
 
@@ -48,8 +77,6 @@ Shared implementation: `src/auth/authorization-boundary.ts` (REST + MCP Remote)
 | 4 | Transport Parity | `b190da5` | `459f925` | `identity-wave-4-locked` |
 | 5 | Studio E2E | `24b5511` | `e4a7c71` | `identity-wave-5-locked` |
 
-**Merge commit:** `2a57647` — `merge: identity foundation P0-A waves 1-5` (forge-land on `main`)
-
 **Governance checkpoints:**
 
 - [WAVE-3-AUTHORIZATION.md](../waves/WAVE-3-AUTHORIZATION.md)
@@ -74,7 +101,7 @@ Shared implementation: `src/auth/authorization-boundary.ts` (REST + MCP Remote)
 
 | Item | Status |
 |------|--------|
-| MCP stdio bootstrap (env-based owner/workspace) | Deferred — not P0-A scope |
+| MCP stdio bootstrap (env-based owner/workspace) | Deferred |
 | Permission / role UI in Studio | Out of scope Wave 5 |
 | Per-tenant RBAC storage | Model-ready; storage future |
 
@@ -82,17 +109,16 @@ Shared implementation: `src/auth/authorization-boundary.ts` (REST + MCP Remote)
 
 ## Next phase
 
-**P0-B — Engineering Governance** (operational maturity)
+**P0-B — Engineering Governance** — opened after P0-A RELEASED ✅
 
-Blocked until: P0-A forge-land complete ✅
+| Gate | Status |
+|------|--------|
+| P0-A RELEASED on origin | ✅ |
+| P0-B forge-intent approved | ✅ 2026-07-08 |
+| P0-B forge-isolate | ✅ Active on `forge/engineering-governance` |
 
-Scope (indicative):
-
-- ADR enforcement
-- CI governance gate
-- Migration policy
-- Audit trail standard
-- Release process · environment promotion · contributor workflow
+Intent: [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md)  
+Release record: [P0-B-ENGINEERING-GOVERNANCE.md](./P0-B-ENGINEERING-GOVERNANCE.md)
 
 ---
 
