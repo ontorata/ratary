@@ -42,11 +42,12 @@
 ### Runtime / product (in progress)
 
 - **Constitution amended:** Internal Proof Before Public Capability (2026-07-08)
-- **Forge intent locked:** Identity Foundation P0-A
-- **First workload selected:** Engineering Governance (blocked on P0-A)
+- **P0-A Identity Foundation:** ✅ COMPLETE · 🔒 LOCKED · 🚀 **LOCAL RELEASE CANDIDATE**
+- **P0-B Engineering Governance:** ⏳ intent draft on `forge/engineering-governance` — opens after remote sync
+- **First workload:** Engineering Governance (P0-B operational foundation)
 - Auth: Studio → auth gateway → Ratary (native auth path)
 - Ratary dev server running locally
-- **Not yet:** Identity Foundation E2E proof · first trusted production workload · metrics instrumented
+- **Not yet:** P0-A remote push · P0-B waves · first trusted production workload at scale
 
 ---
 
@@ -54,8 +55,9 @@
 
 | Priority | Item | Bucket |
 |----------|------|--------|
-| **P0** | Identity Foundation E2E + evidence package | Must Enable — **active** |
-| **P0** | Engineering Governance workload (first trusted production workload) | Must Prove — blocked on P0-A |
+| **P0** | P0-A remote sync (`git push origin main --tags`) | Must Enable — **blocker** (OAuth `workflow` scope) |
+| **P0** | P0-B forge-intent approval + isolate | Must Prove — after P0-A RELEASED |
+| **P0** | Engineering Governance workload waves | Must Prove — P0-B |
 | **P0** | First external organization onboarded | Must Prove |
 | **P1** | ADR-012 tenant isolation integration tests | Must Prove |
 | **P1** | ADR-010 OTel Phase 1 | Must Enable |
@@ -67,11 +69,11 @@
 
 ## What should happen next?
 
-1. **Identity Foundation (P0-A)** — forge-isolate → blueprint → execute per [identity-foundation-intent.md](../designs/drafts/identity-foundation-intent.md); evidence `.ai/reviews/identity-foundation/`
-2. **Engineering Governance workload (P0-B)** — after P0-A passes; see [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](../phases/04-proof-of-platform/FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md)
-3. **Ratary dogfood loop** — full cycle: Engineer → Studio → Ratary → Memory → Recall → Implementation → Doc sync → Metrics → Evaluation → Improvement
-4. **Production metrics v1** — fill trusted workload metrics from Ontorata internal use
-5. **Do not start** Marketplace scale · Cloud scale · feature sprawl before first proof
+1. **P0-A remote sync** — `git push origin main --tags` with token that has `workflow` scope; verify tags on `origin`; flip [P0-A release](../../governance/releases/P0-A-IDENTITY-FOUNDATION.md) to **RELEASED**
+2. **P0-B forge-intent** — review [engineering-governance-intent.md](../designs/drafts/engineering-governance-intent.md); owner approval → forge-isolate on `forge/engineering-governance`
+3. **P0-B waves** — ADR · CI · AI workflow · release · migration · constitution (see intent)
+4. **Ratary dogfood loop** — production-scale ingest after P0-B evidence passes
+5. **Do not start** Marketplace scale · Cloud scale · feature sprawl before P0-B lock
 
 ---
 
@@ -92,39 +94,33 @@
 
 ```
 Repository: ai-brain (ratary)
-Branch:     forge/identity-foundation (from staging)
-Commit:     a2b3255 — governance locked; Identity Foundation isolate ready
-Remote:     origin
-Pending:    push forge branch when ready
+Branch:     main (local) · forge/engineering-governance (P0-B prep)
+Commit:     239f9d2 — P0-A merge hash doc; 2a57647 merge
+Remote:     origin — push BLOCKED (workflow scope)
+Pending:    git push origin main --tags
 ```
 
 ---
 
-## Workspace repos
+## Forge status
 
-| Repo | Path | Role |
-|------|------|------|
-| ratary | `D:\Apps\ai-brain` | Core platform |
-| auth | `D:\Apps\auth-ontorata` | Auth gateway |
-| Studio | `D:\Apps\Ontorata-Studio` | Builder |
+### P0-A Identity Foundation — LOCAL RELEASE CANDIDATE
 
----
+| Stage | Status |
+|-------|--------|
+| Waves 1–5 | ✅ LOCKED |
+| forge-land merge | ✅ `2a57647` |
+| Tag | ✅ `identity-foundation-p0-a-complete` (local) |
+| Remote sync | ⏳ pending |
 
-## Forge status (P0-A)
+### P0-B Engineering Governance — READY TO OPEN
 
 | Stage | Document | Status |
 |-------|----------|--------|
-| forge-intent | `.ai/designs/drafts/identity-foundation-intent.md` | ✅ Approved |
-| forge-blueprint | `.ai/designs/drafts/identity-foundation-plan.md` | ✅ Approved — committed |
-| forge-execute | waves 1–5 | ⏳ Next (no src yet) |
-| Branch | `forge/identity-foundation` | Active |
-| Governance commit | `a2b3255` | ✅ public docs |
-| Blueprint commit | latest on forge branch | ✅ `.ai/` design only |
-| Wave 3 checkpoint | `.ai/governance/waves/WAVE-3-AUTHORIZATION.md` | ✅ LOCKED (`ed3b65a` / `e96330b`) |
-| Wave 4 checkpoint | `.ai/governance/waves/WAVE-4-TRANSPORT-PARITY.md` | ✅ LOCKED (`b190da5` / `459f925`) |
-| Wave 5 checkpoint | `.ai/governance/waves/WAVE-5-STUDIO-E2E.md` | ✅ LOCKED — **P0-A COMPLETE** |
-| forge-land | Identity Foundation merge | ✅ `main` + tag `identity-foundation-p0-a-complete` |
-| Next | P0-B Engineering Governance | ⏳ OPEN |
+| forge-intent | `.ai/designs/drafts/engineering-governance-intent.md` | ⏳ Draft — pending approval + remote sync |
+| Release record | `.ai/governance/releases/P0-B-ENGINEERING-GOVERNANCE.md` | ⏳ placeholder |
+| Branch | `forge/engineering-governance` | Created from `main` |
+| forge-isolate | — | Blocked until P0-A RELEASED on origin |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

@@ -1,7 +1,8 @@
 ---
 id: P0-A-IDENTITY-FOUNDATION
 phase: 04-proof-of-platform
-status: Complete
+status: Local Release Candidate
+distribution: pending remote sync
 owner: Ontorata
 workload: Engineering Governance
 release_tag: identity-foundation-p0-a-complete
@@ -15,10 +16,39 @@ updated: 2026-07-08
 | Field | Value |
 |-------|-------|
 | **Milestone** | Identity Foundation (P0-A) |
-| **Status** | ✅ COMPLETE · 🔒 LOCKED |
-| **Release tag** | `identity-foundation-p0-a-complete` |
-| **Forge branch** | `forge/identity-foundation` |
+| **Engineering status** | ✅ COMPLETE · 🔒 LOCKED |
+| **Distribution status** | 🚀 **LOCAL RELEASE CANDIDATE** — remote sync ⏳ pending |
+| **Release tag (local)** | `identity-foundation-p0-a-complete` → `2a57647` |
+| **Forge branch** | `forge/identity-foundation` (merged) |
 | **Consumer proof** | Ontorata-Studio `af266a7` (separate repo — not merged here) |
+
+---
+
+## Distribution gate (P0-A → RELEASED)
+
+Engineering boundary is complete on local `main`. **Release distribution** completes only after:
+
+```bash
+git push origin main --tags
+```
+
+**Blocker (2026-07-08):** GitHub OAuth App lacks `workflow` scope — push rejected for `.github/workflows/ci.yml` changes in merge.
+
+**After successful push — update this record:**
+
+| Field | Value |
+|-------|-------|
+| **Distribution status** | ✅ **RELEASED** |
+| **Merge commit** | `2a57647` |
+| **Release tag** | `identity-foundation-p0-a-complete` |
+| **Wave lock tags** | `identity-wave-3-locked` · `identity-wave-4-locked` · `identity-wave-5-locked` |
+
+Verify:
+
+```bash
+git ls-remote origin refs/heads/main
+git ls-remote origin refs/tags/identity-foundation-p0-a-complete
+```
 
 ---
 
@@ -84,15 +114,14 @@ Shared implementation: `src/auth/authorization-boundary.ts` (REST + MCP Remote)
 
 **P0-B — Engineering Governance** (operational maturity)
 
-Blocked until: P0-A forge-land complete ✅
+| Gate | Status |
+|------|--------|
+| P0-A engineering complete | ✅ |
+| P0-A remote sync (`main` + tags) | ⏳ |
+| P0-B forge-intent approved | ⏳ Draft ready on `forge/engineering-governance` |
 
-Scope (indicative):
-
-- ADR enforcement
-- CI governance gate
-- Migration policy
-- Audit trail standard
-- Release process · environment promotion · contributor workflow
+Intent: [engineering-governance-intent.md](../../designs/drafts/engineering-governance-intent.md)  
+Release record: [P0-B-ENGINEERING-GOVERNANCE.md](./P0-B-ENGINEERING-GOVERNANCE.md)
 
 ---
 
