@@ -88,7 +88,7 @@ async function main(): Promise<void> {
   const sessionId = getArgValue('--session-id') ?? randomUUID();
   const handoffId = getArgValue('--handoff-id') ?? randomUUID();
   const rataryCodename = getArgValue('--ratary-codename') ?? 'pending-save_memory';
-  const branch = getArgValue('--branch') ?? 'forge/org-memory-dogfood';
+  const branch = getArgValue('--branch') ?? process.env.FORGE_BRANCH ?? 'forge/knowledge-ingestion';
   const notes = getArgValue('--notes') ?? 'session handoff trace';
 
   const { ingestionRunId, recallRunId } = await loadLatestRunIds();

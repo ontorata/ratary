@@ -7,6 +7,11 @@ function printSummary(result: Awaited<ReturnType<typeof runOrgMemorySync>>): voi
   console.log(`ingested=${result.totalIngested}`);
   console.log(`failed=${result.totalFailed}`);
   console.log(`digest=${result.digest}`);
+  const stageResults = result.stageResults ?? [];
+  const completed = stageResults.filter((stage) => stage.status === 'completed').length;
+  const skipped = stageResults.filter((stage) => stage.status === 'skipped').length;
+  console.log(`stages_completed=${completed}`);
+  console.log(`stages_skipped=${skipped}`);
 }
 
 async function main(): Promise<void> {
