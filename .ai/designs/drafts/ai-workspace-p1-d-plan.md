@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — W2 in progress (W1 accepted) |
+| **Status** | Approved — W3 complete (W1–W2 accepted) |
 | **Intent** | [ai-workspace-p1-d-intent.md](./ai-workspace-p1-d-intent.md) |
 | **Isolate** | [ai-workspace-p1-d-isolate.md](./ai-workspace-p1-d-isolate.md) |
 | **Implementation repo** | `Ontorata-Studio` |
@@ -19,13 +19,18 @@
   - [x] Task 3 — SDK adapter (via `StudioRataryClient` only)
   - [x] Task 4 — dual import boundary guards (ESLint + CI script)
   - [x] Task 5 — unit tests + W1 boundary proof
-- [x] Wave 2 — Session/workspace orchestration
+- [x] Wave 2 — Session/workspace orchestration (**ACCEPTED**)
   - [x] Task 6 — immutable `WorkspaceContextPackage` + snapshot refs
   - [x] Task 7 — `WorkspaceSessionPort` + in-memory adapter
   - [x] Task 8 — `WorkspaceRecallOrchestrator` (recall-stateless)
   - [x] Task 9 — orchestrator tests + extended boundary guards
   - [x] Task 10 — W2 evidence proof stub
-- [ ] Wave 3 — ContextPackage consumption alignment
+- [x] Wave 3 — ContextPackage consumption alignment
+  - [x] Task 11 — `useWorkspaceRecallOrchestrator` hook
+  - [x] Task 12 — read-only presentation helpers
+  - [x] Task 13 — migrate WorkspaceAiPanel + OntoryChatPage off direct SDK context
+  - [x] Task 14 — expand UI SDK/`buildContext` guards
+  - [x] Task 15 — W3 evidence proof
 - [ ] Wave 4 — AI interaction pipeline
 - [ ] Wave 5 — Integration evaluation (smoke then extended)
 - [ ] Wave 6 — Documentation and release closeout

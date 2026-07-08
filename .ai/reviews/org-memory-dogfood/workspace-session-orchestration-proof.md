@@ -5,7 +5,7 @@
 | **Milestone** | P1-D AI Workspace |
 | **Wave** | W2 — Session/workspace orchestration |
 | **Implementation repo** | `Ontorata-Studio` |
-| **Status** | W2 boundary established |
+| **Status** | ✅ **ACCEPTED** (owner review 2026-07-08) |
 
 ---
 

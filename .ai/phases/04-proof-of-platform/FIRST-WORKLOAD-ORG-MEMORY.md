@@ -144,7 +144,7 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-C baseline locked (`org-memory-p1-c-complete`)
 - ✅ P1-D intent approved: [ai-workspace-p1-d-intent.md](../../designs/drafts/ai-workspace-p1-d-intent.md)
 - ✅ P1-D isolate active (Studio `forge/ai-workspace-p1-d`)
-- ✅ P1-D W1 accepted (immutable consumer contracts)
-- ✅ P1-D W2 complete (recall-stateless session orchestration)
-- ⏳ Next: P1-D W3 — ContextPackage consumption alignment
+- ✅ P1-D W2 accepted (recall-stateless session orchestration)
+- ✅ P1-D W3 complete (UI → orchestrator → ContextPackage)
+- ⏳ Next: P1-D W4 — AI interaction pipeline (PromptAssembler)
 
