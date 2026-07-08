@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { EmbeddingRecord, KnowledgeDocument } from './knowledge-ingestion-contracts.js';
 import {
+  applyIndexUpdateBoundaryWithOptions,
+  buildIndexRecoveryQueue,
   applyIndexUpdateBoundary,
   createEmptySnapshot,
   persistKnowledgeArtifacts,
@@ -96,5 +98,18 @@ describe('knowledge store boundary', () => {
     const indexed = applyIndexUpdateBoundary(recovered);
     expect(indexed.indexEvents.length).toBeGreaterThan(0);
     expect(indexed.indexEvents.every((event) => event.status === 'completed')).toBe(true);
+  });
+
+  it('creates recovery queue when index update fails', () => {
+    const persisted = persistKnowledgeArtifacts([document('v1', 'digest-v1')], [embedding('v1', 'emb-v1')]);
+    const versionId = persisted.availableVersionIds[0];
+    const failedIndex = applyIndexUpdateBoundaryWithOptions(persisted.snapshot, {
+      failVersionIds: versionId ? [versionId] : [],
+    });
+    const queue = buildIndexRecoveryQueue(failedIndex);
+
+    expect(queue).toHaveLength(1);
+    expect(queue[0]).toBe(versionId);
+    expect(failedIndex.indexEvents[0]?.status).toBe('failed');
   });
 });
