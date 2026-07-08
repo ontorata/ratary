@@ -7,7 +7,7 @@
 | **Baseline** | `org-memory-p1-d-complete` |
 | **ADR** | ADR-0007 **Accepted** |
 | **Intent** | [ontory-runtime-p2-a-intent.md](./ontory-runtime-p2-a-intent.md) |
-| **Status** | ✅ Isolate active — ready for blueprint execute |
+| **Status** | ✅ **ACCEPTED** (owner 2026-07-08) — D1–D4 frozen · Tasks 1–6 green · Task 7 Studio REST complete |
 | **Verification** | 2026-07-08 — `npm test` 4 PASS · `check:boundary` OK · typecheck OK |
 
 ---
@@ -79,4 +79,5 @@ Forbidden: prompt vendor formatting · OpenAI/Anthropic/Gemini payloads · tool 
 
 Agents · planning · tools · marketplace · vendor providers · memory · recall · streaming optimization
 
-**Ready for forge-blueprint / execute kernel waves.** ✅
+**Isolate ACCEPTED.** Dispatcher remains provider-agnostic (validate · select runtime · coordinate · envelope).  
+Next disciplined scope: Studio REST client (Task 7) → evidence (Task 8). Vendor adapters still out of scope.

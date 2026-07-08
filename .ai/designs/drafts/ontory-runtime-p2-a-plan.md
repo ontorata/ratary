@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — kernel bootstrap unlocked (isolate active) |
+| **Status** | Execute — Tasks 1–7 complete · Task 8 evidence pack next |
 | **Intent** | [ontory-runtime-p2-a-intent.md](./ontory-runtime-p2-a-intent.md) |
 | **Isolate** | [ontory-runtime-p2-a-isolate.md](./ontory-runtime-p2-a-isolate.md) |
 | **ADR** | ADR-0007 Accepted |
@@ -38,7 +38,7 @@ Response Envelope
 - [x] Task 4 — StubRuntimeProvider
 - [x] Task 5 — REST adapter (`POST /v1/execute`, `GET /health`)
 - [x] Task 6 — unit + REST contract tests
-- [ ] Task 7 — Studio `WorkspaceAiRuntimePort` → Ontory REST client adapter (Studio repo)
+- [x] Task 7 — Studio `WorkspaceAiRuntimePort` → Ontory REST client adapter (Studio repo)
 - [ ] Task 8 — evidence package + P2-A quality gates
 - [ ] Task 9 — closeout (tag when DoD met)
 
@@ -46,13 +46,14 @@ Response Envelope
 
 ## Task details
 
-### Task 7 — Studio REST client adapter
+### Task 7 — Studio REST client adapter ✅
 
-- **Repo:** Ontorata-Studio
-- **Files:** `src/infrastructure/ai/ontory-rest-runtime.ts` (and wire behind `WorkspaceAiRuntimePort`)
-- **Do:** HTTP POST to Ontory `/v1/execute`; map domain `AIExecutionRequest` ↔ JSON; no provider SDK
-- **Verify:** Studio unit test with mock HTTP / local Ontory
-- **Done when:** UI pipeline can call Ontory stub without Echo in-process (or Echo remains fallback behind same port)
+- **Repo:** Ontorata-Studio · branch `forge/ai-workspace-p1-d`
+- **Files:** `src/infrastructure/ai/ontory-rest-workspace-ai-runtime.ts` · wired in `useWorkspaceAiPipeline` (default); Echo via `VITE_ONTORY_RUNTIME=echo`
+- **Do:** HTTP POST `/v1/execute` + `GET /health`; map `AIExecutionRequest` ↔ JSON; error envelope; timeout; no Ontory package import
+- **Verify:** `tests/unit/ontory-rest-workspace-ai-runtime.test.ts` · `npm test` 48 PASS · `check:boundaries` OK
+- **Evidence:** [ontory-runtime-studio-rest-adapter-proof.md](../../reviews/org-memory-dogfood/ontory-runtime-studio-rest-adapter-proof.md)
+- **Done when:** ✅ UI pipeline default path is REST RuntimePort (Echo optional fallback only)
 
 ### Task 8 — Evidence
 
@@ -72,4 +73,4 @@ Abort / refuse commits that introduce:
 - agent / tool / planning modules
 - provider-specific code inside `dispatcher.ts`
 
-**Owner approval:** ✅ isolate+kernel blueprint unlocked for Tasks 1–6 complete; Task 7+ sequential.
+**Owner approval:** ✅ forge-isolate ACCEPTED · Task 7 complete · Task 8+ sequential · vendor adapters still forbidden.

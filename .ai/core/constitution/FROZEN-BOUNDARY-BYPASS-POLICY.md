@@ -24,7 +24,7 @@ Frozen boundaries exist so layers remain independently evolvable. A “shortcut�
 |-------|----------------|----------|
 | **Ratary** | What should be remembered / recalled? | P1-C |
 | **Studio** | Where does the user work? | P1-D |
-| **Ontory** | How is AI executed? | P2-A (proposed · not yet implemented) |
+| **Ontory** | How is AI executed? | P2-A (kernel live · Studio REST RuntimePort · stub provider) |
 
 ---
 
