@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — W3 complete (W1–W2 accepted) |
+| **Status** | Approved — W4 ACCEPTED (W1–W3 accepted) |
 | **Intent** | [ai-workspace-p1-d-intent.md](./ai-workspace-p1-d-intent.md) |
 | **Isolate** | [ai-workspace-p1-d-isolate.md](./ai-workspace-p1-d-isolate.md) |
 | **Implementation repo** | `Ontorata-Studio` |
@@ -25,13 +25,19 @@
   - [x] Task 8 — `WorkspaceRecallOrchestrator` (recall-stateless)
   - [x] Task 9 — orchestrator tests + extended boundary guards
   - [x] Task 10 — W2 evidence proof stub
-- [x] Wave 3 — ContextPackage consumption alignment
+- [x] Wave 3 — ContextPackage consumption alignment (**ACCEPTED**)
   - [x] Task 11 — `useWorkspaceRecallOrchestrator` hook
   - [x] Task 12 — read-only presentation helpers
   - [x] Task 13 — migrate WorkspaceAiPanel + OntoryChatPage off direct SDK context
   - [x] Task 14 — expand UI SDK/`buildContext` guards
   - [x] Task 15 — W3 evidence proof
-- [ ] Wave 4 — AI interaction pipeline
+- [x] Wave 4 — AI interaction pipeline (**ACCEPTED**)
+  - [x] Task 16 — PromptAssembler (WorkspaceContextPackage only)
+  - [x] Task 17 — WorkspaceAiRuntimePort + Echo stub
+  - [x] Task 18 — WorkspaceAiInteractionPipeline
+  - [x] Task 19 — wire AI UI to pipeline + W4 guards
+  - [x] Task 20 — `AIExecutionRequest` + comment-safe boundary guard
+  - [x] Task 21 — W4 evidence proof
 - [ ] Wave 5 — Integration evaluation (smoke then extended)
 - [ ] Wave 6 — Documentation and release closeout
 

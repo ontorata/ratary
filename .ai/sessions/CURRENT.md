@@ -146,17 +146,16 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-D AI Workspace — W3 complete 🟢
+### P1-D AI Workspace — W4 complete 🟢
 
 | Stage | Status |
 |-------|--------|
-| W1 | ✅ **ACCEPTED** — immutable contracts + dual guard |
-| W2 | ✅ **ACCEPTED** — recall-stateless session orchestration |
-| W3 | ✅ UI consumes ContextPackage via orchestrator only |
+| W1–W3 | ✅ **ACCEPTED** |
+| W4 | ✅ **ACCEPTED** — PromptAssembler → AIExecutionRequest → RuntimePort (echo) |
 | Implementation | `Ontorata-Studio` · `forge/ai-workspace-p1-d` |
 | Ratary baseline | 🔒 `org-memory-p1-c-complete` (unchanged) |
-| Evidence W3 | ✅ [workspace-context-consumption-proof.md](../reviews/org-memory-dogfood/workspace-context-consumption-proof.md) |
-| Next gate | W4 — AI interaction pipeline (PromptAssembler after recall) |
+| Evidence W4 | ✅ [workspace-ai-pipeline-proof.md](../reviews/org-memory-dogfood/workspace-ai-pipeline-proof.md) |
+| Next gate | W5 — Integration evaluation |
 
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
