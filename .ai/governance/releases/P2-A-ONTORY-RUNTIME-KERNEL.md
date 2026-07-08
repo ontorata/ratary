@@ -11,8 +11,9 @@ forge_branch_studio: forge/ai-workspace-p1-d
 forge_branch_ontory: forge/ontory-runtime-p2-a
 ontory_head: c18cacc
 studio_head: 043666e
-governance_head: dc888b1
-evidence_pack_head: 35ff553
+governance_head: 35ff553
+closeout_narrative: dc888b1
+pin_clarification: 69fd719
 closeout_tag: org-memory-p2-a-complete
 acceptance_manifest: .ai/reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md
 proof_artifact: .ai/reviews/org-memory-dogfood/ontory-runtime-kernel-proof.md
@@ -60,12 +61,13 @@ Provider Port (abstract · stub only)
 
 ## Baseline pins (`org-memory-p2-a-complete`)
 
-| Repo | Branch | Commit |
-|------|--------|--------|
-| **ontory** | `forge/ontory-runtime-p2-a` | `c18cacc` |
-| **Ontorata-Studio** | `forge/ai-workspace-p1-d` | `043666e` |
-| **ai-brain (ratary)** — evidence pack | `forge/ai-workspace-p1-d` | `35ff553` |
-| **ai-brain (ratary)** — closeout records + tag tip | `forge/ai-workspace-p1-d` | `dc888b1` |
+| Repo | Branch | Commit | Tag target |
+|------|--------|--------|------------|
+| **ontory** | `forge/ontory-runtime-p2-a` | `c18cacc` | ✅ tag here |
+| **Ontorata-Studio** | `forge/ai-workspace-p1-d` | `043666e` | ✅ tag here |
+| **ai-brain (ratary)** | `forge/ai-workspace-p1-d` | `35ff553` | ✅ tag here (evidence pack / DoD) |
+
+Closeout narrative commits after the ai-brain tag tip (`dc888b1`, `69fd719`, …) document the release but are **not** the architectural baseline hash.
 
 Regressions after this tag that involve vendor SDKs or provider payloads belong to **P2-B+**, not the Runtime Kernel.
 
