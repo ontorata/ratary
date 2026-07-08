@@ -129,6 +129,20 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Task progress | ✅ Task 1–8 complete (acceptance PASS) |
 | Baseline lock | ✅ `org-memory-p1-a-complete` |
 
+### P1-B Knowledge Ingestion — Intent approved ✅
+
+| Stage | Status |
+|-------|--------|
+| Forge intent | ✅ [knowledge-ingestion-p1-b-intent.md](../designs/drafts/knowledge-ingestion-p1-b-intent.md) approved |
+| Forge-isolate | ✅ [knowledge-ingestion-p1-b-isolate.md](../designs/drafts/knowledge-ingestion-p1-b-isolate.md) active |
+| Forge-blueprint | ✅ [knowledge-ingestion-p1-b-plan.md](../designs/drafts/knowledge-ingestion-p1-b-plan.md) approved |
+| ADR | ✅ [ADR-0005-knowledge-ingestion-pipeline.md](../core/architecture/ADR-0005-knowledge-ingestion-pipeline.md) accepted |
+| Baseline | ✅ starts from `org-memory-p1-a-complete` |
+| Scope | Core + Governance + Release + Session handoff (Wave 1) |
+| Baseline verification | ✅ `npm test`, `ci:org-memory-acceptance`, `ci:governance` |
+| Execute gate | ✅ approved (Wave 1 foundation active) |
+| Next gate | complete Wave 1 gates (`build`, `lint`, `unit`) |
+
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 
 ---

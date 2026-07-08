@@ -121,5 +121,9 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Task 7: acceptance gate pack + final evidence collection (`P1-A-ACCEPTANCE.md`)
 - ✅ Task 8: CI/non-regression guard + G4 remediation (`ci:org-memory-acceptance`)
 - ✅ Closeout: baseline locked with `org-memory-p1-a-complete`
-- ⏳ Next: start P1-B Knowledge Ingestion from locked P1-A baseline
+- ✅ P1-B intent approved: [knowledge-ingestion-p1-b-intent.md](../../designs/drafts/knowledge-ingestion-p1-b-intent.md)
+- ✅ P1-B isolate active: [knowledge-ingestion-p1-b-isolate.md](../../designs/drafts/knowledge-ingestion-p1-b-isolate.md)
+- ✅ P1-B blueprint drafted: [knowledge-ingestion-p1-b-plan.md](../../designs/drafts/knowledge-ingestion-p1-b-plan.md)
+- ✅ ADR accepted: [ADR-0005-knowledge-ingestion-pipeline.md](../../core/architecture/ADR-0005-knowledge-ingestion-pipeline.md)
+- 🟢 Next: forge-execute Wave 1 (foundation) on `forge/knowledge-ingestion`
 

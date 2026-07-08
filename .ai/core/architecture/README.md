@@ -28,6 +28,7 @@ Public mirror: [docs/architecture/governance/adr-index.md](../../../docs/archite
 | [ADR-0002](./ADR-0002-tenant-isolation.md) | Tenant Isolation | Wave 1 data boundary |
 | [ADR-0003](./ADR-0003-authorization-model.md) | Authorization Model | `identity-wave-3-locked` |
 | [ADR-0004](./ADR-0004-transport-parity.md) | Transport Parity | `identity-wave-4-locked` |
+| [ADR-0005](./ADR-0005-knowledge-ingestion-pipeline.md) | Knowledge Ingestion Pipeline | P1-B design baseline `org-memory-p1-a-complete` |
 
 ---
 
@@ -38,7 +39,7 @@ Public mirror: [docs/architecture/governance/adr-index.md](../../../docs/archite
 3. Run `npm run ci:adr-impact` locally before PR.
 4. Link ADR in PR template **Architecture / ADR reference** section.
 
-**Numbering:** P0-B identity ADRs use `0001–0004` slug prefix under this directory. Cross-product ADRs continue ADR-006+ in `.ai/core/adr/`.
+**Numbering:** Core architecture ADRs use `0001+` slug prefix in this directory and remain auditable by milestone context.
 
 ---
 
