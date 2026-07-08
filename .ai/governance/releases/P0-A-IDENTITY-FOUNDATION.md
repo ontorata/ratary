@@ -48,7 +48,7 @@ Shared implementation: `src/auth/authorization-boundary.ts` (REST + MCP Remote)
 | 4 | Transport Parity | `b190da5` | `459f925` | `identity-wave-4-locked` |
 | 5 | Studio E2E | `24b5511` | `e4a7c71` | `identity-wave-5-locked` |
 
-**Merge commit:** `merge: identity foundation P0-A waves 1-5` (forge-land on `main`)
+**Merge commit:** `2a57647` — `merge: identity foundation P0-A waves 1-5` (forge-land on `main`)
 
 **Governance checkpoints:**
 
