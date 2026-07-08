@@ -64,6 +64,7 @@ function toAuthUser(resolved: ResolvedIdentity): AuthUser {
   return {
     ownerId: resolved.ownerId,
     identityId: resolved.identityId,
+    id: resolved.identityId,
     identityType: resolved.type,
     clientId: resolved.clientId,
     permissions: resolved.metadata.permissions ?? [],

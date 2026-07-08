@@ -85,11 +85,18 @@ export interface AuditLogRow {
 }
 
 export interface AuthUser {
+  /** Data-plane owner root — canonical tenant owner (not orgId / tenantId / userId). */
   ownerId: string;
+  /** Authenticated identity id. */
   identityId: string;
+  /** Canonical identity reference for downstream handlers (`identityId` alias). */
+  id: string;
   identityType: IdentityType;
   clientId: string | null;
   permissions: string[];
+  /** Tenant context — populated by tenant context middleware on data-plane routes. */
+  organizationId?: string;
+  workspaceId?: string;
 }
 
 export interface AuthContext {

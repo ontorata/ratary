@@ -31,11 +31,13 @@ function headerValue(
 /** Reads optional workspace/agent/project hints from REST transport (ADR-007). */
 export function extractScopeHintsFromRequest(request: FastifyRequest): ScopeResolutionHints {
   const workspaceId = headerValue(request.headers, 'x-workspace-id');
+  const organizationId = headerValue(request.headers, 'x-organization-id');
   const agentId = headerValue(request.headers, 'x-agent-id');
   const query = request.query as { projectId?: string; project_id?: string };
   const projectId = query.projectId ?? query.project_id;
 
   return {
+    organizationId,
     workspaceId,
     agentId,
     projectId: projectId?.trim() || undefined,
@@ -91,6 +93,7 @@ export function buildTransportContextFromGrpcMetadata(
 
 export function scopeHintsFromTransportContext(ctx: TransportContext): ScopeResolutionHints {
   return {
+    organizationId: ctx.organizationId,
     workspaceId: ctx.workspaceId,
     agentId: ctx.agentId,
     projectId: ctx.projectId,

@@ -32,6 +32,7 @@ export interface AccountAuthResult {
   tokenType: 'Bearer';
   ownerId: string;
   identityId: string;
+  organizationId: string;
   email: string;
   displayName: string;
   workspaceId: string;
@@ -119,6 +120,7 @@ export class AccountService {
       ownerId,
       email,
       displayName,
+      organizationId: workspace.organizationId,
       workspaceId: workspace.id,
     });
   }
@@ -150,6 +152,7 @@ export class AccountService {
       ownerId: account!.ownerId,
       email: account!.email,
       displayName: account!.displayName,
+      organizationId: workspace.organizationId,
       workspaceId: workspace.id,
     });
   }
@@ -159,6 +162,7 @@ export class AccountService {
     ownerId: string;
     email: string;
     displayName: string;
+    organizationId: string;
     workspaceId: string;
   }): AccountAuthResult {
     const signed = this.jwtService.sign({
@@ -179,6 +183,7 @@ export class AccountService {
       tokenType: 'Bearer',
       ownerId: input.ownerId,
       identityId: input.identityId,
+      organizationId: input.organizationId,
       email: input.email,
       displayName: input.displayName,
       workspaceId: input.workspaceId,
