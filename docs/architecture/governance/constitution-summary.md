@@ -45,6 +45,8 @@ Open ecosystem · Enterprise ownership · AI operating layer · Governed executi
 
 > Architecture earns trust. Usage earns validation.
 
+**Permanent constitution principle:** **Internal Proof Before Public Capability** — no platform capability is production-ready until Ontorata operates it internally with evidence, metrics, audit trail, and evaluation. Feature ≠ capability · implementation ≠ completion · completion = evidence.
+
 **UX:** Internal complexity ≠ user complexity — simple outside, powerful inside.
 
 Gate: **Does this help one organization run a valuable production AI workload on Ratary?** If no → backlog.
@@ -71,10 +73,14 @@ Weekly rule: Evidence · Usage · or Learning must increase.
 
 | Metric | Role |
 |--------|------|
-| `production_workloads` | North Star — volume |
+| **Trusted Production Workloads Running** | North Star — trust, not volume |
+| `production_workloads` | Count of trusted workloads (subset of above) |
 | `production_organizations` | Proof — platform effect |
+| `production_users` · `production_documents` · `production_queries` · `production_memory` · `production_recall_accuracy` | Dogfood observability |
 | **TTFW** | Time to First Production Workload — target < 1h |
-| Adoption Quality | activation · retention · success · duration |
+| Adoption Quality | daily use · retention · measurable value · auditability |
+
+A workload counts as **trusted** when used daily, producing measurable value, documented, auditable, observable, and improving organizational quality over time.
 
 ---
 

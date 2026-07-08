@@ -26,9 +26,12 @@
 
 | Metric | Role |
 |--------|------|
-| Production AI Workloads | North Star |
+| **Trusted Production Workloads Running** | North Star — trust over volume |
 | Production Organizations | Proof — anti-vanity |
-| Adoption Quality | Useful workload, not just created |
+| Production metrics suite | users · documents · queries · memory · recall accuracy |
+| Adoption Quality | daily use · measurable value · auditability |
+
+Constitution: **Internal Proof Before Public Capability** — completion requires evidence package in `.ai/reviews/<milestone>/`.
 
 ---
 
