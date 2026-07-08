@@ -26,6 +26,14 @@
 
 ---
 
+## Operational verification boundary
+
+> **P2-C.2 validates provider contract compatibility.** Live vendor credential validation is operational verification, not part of conformance harness acceptance.
+
+Mocked-client conformance (same pattern as P2-B/P2-C.1) is sufficient for wave closeout. Live Gemini API smoke with real credentials is optional ops verification and is **not** a gap against this acceptance record.
+
+---
+
 ## Gate output
 
 | Command | Result |

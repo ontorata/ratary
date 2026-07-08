@@ -25,3 +25,9 @@
 Harness: `tests/conformance/gemini.conformance.test.ts` · P2-C.0 contract unchanged.
 
 Regression: stub + openai + anthropic conformance subjects remain PASS.
+
+---
+
+## Operational verification boundary
+
+> P2-C.2 validates provider contract compatibility. Live vendor credential validation is operational verification, not part of conformance harness acceptance.

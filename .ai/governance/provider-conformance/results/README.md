@@ -35,6 +35,14 @@ npm run check:boundary     # PASS
 npm run test:conformance   # governance artifact alignment check
 ```
 
+## Verification philosophy
+
+Conformance harness subjects use **mocked vendor clients** (no live network). This validates contract compatibility — request mapping, response normalization, error taxonomy, configuration failure, and boundary isolation.
+
+> **Live vendor credential validation is operational verification, not part of conformance harness acceptance.**
+
+Applies to all P2-C waves (OpenAI · Anthropic · Gemini).
+
 ## Next subject gate
 
 P2-C provider conformance track complete (stub · openai · anthropic · gemini). Next: **P2-D Streaming**.
