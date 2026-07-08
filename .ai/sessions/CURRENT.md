@@ -109,14 +109,13 @@ Pending:    forge-land → main · remote tag verify
 | Tag | ✅ `identity-foundation-p0-a-complete` |
 | Remote sync | ✅ verified 2026-07-08 |
 
-### P0-B Engineering Governance — LOCAL RELEASE ✅
+### P0-B Engineering Governance — COMPLETE · forge-land pending
 
 | Stage | Status |
 |-------|--------|
-| Waves 1–6 | ✅ LOCKED (tags wave-1..6 + p0-b-complete) |
-| Release commit | `dc2fa5e` |
-| ci:governance | ✅ 88/88 |
-| forge-land | ⏳ push branch + tags → PR main |
+| Engineering (waves 1–6) | ✅ COMPLETE · LOCKED |
+| Tags on origin | ✅ `engineering-governance-p0-b-complete` @ `dc2fa5e` |
+| RELEASED on `main` | ⏳ pending forge-land |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

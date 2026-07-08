@@ -46,8 +46,9 @@
 | Governance evidence complete | `.ai/reviews/engineering-governance/` — 6 proof files | ✅ |
 | Public mirror updated | `docs/architecture/governance/constitution-summary.md` | ✅ |
 | Ratary memory synced | P0-B task memory updated | ✅ |
-| Final release record | `P0-B-ENGINEERING-GOVERNANCE.md` — status updated | ✅ |
-| Final tag | `engineering-governance-p0-b-complete` | ✅ |
+| Final release record | `P0-B-ENGINEERING-GOVERNANCE.md` — engineering complete | ✅ |
+| Final tag (forge branch) | `engineering-governance-p0-b-complete` @ `dc2fa5e` on origin | ✅ |
+| **RELEASED on `main`** | Forge-land merge + remote verify | ⏳ pending |
 
 ---
 
@@ -77,11 +78,11 @@
 
 ---
 
-## Final tag
+## Final tag (forge branch)
 
-**Tag:** `engineering-governance-p0-b-complete`
+**Tag:** `engineering-governance-p0-b-complete` @ `dc2fa5e` — on `forge/engineering-governance` and `origin`
 
-**Release record:** `.ai/governance/releases/P0-B-ENGINEERING-GOVERNANCE.md` → status updated to **RELEASED**
+**RELEASED:** ⏳ pending forge-land to `main` — see [P0-B-ENGINEERING-GOVERNANCE.md](../../governance/releases/P0-B-ENGINEERING-GOVERNANCE.md) forge-land gate
 
 ---
 
