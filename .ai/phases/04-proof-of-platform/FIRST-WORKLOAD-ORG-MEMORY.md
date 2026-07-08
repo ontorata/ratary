@@ -138,5 +138,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-C blueprint approved + Wave 1 complete (contracts, ADR-0006, service skeleton)
 - ✅ P1-C Wave 2 complete (SQL + Knowledge candidate providers)
 - ✅ P1-C Wave 3 complete (`RecallPolicy` + auditable `RecallDecision`)
-- ⏳ Next: Wave 4 Context Assembly Intelligence
+- ✅ P1-C Wave 4 complete (ContextPackage assembler + token budget)
+- ⏳ Next: Wave 5 Recall Evaluation Proof
 

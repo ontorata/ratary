@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — Wave 3 complete |
+| **Status** | Approved — Wave 4 complete |
 | **Branch** | `forge/retrieval-recall-intelligence` |
 | **Intent** | [retrieval-recall-p1-c-intent.md](./retrieval-recall-p1-c-intent.md) |
 | **Isolate** | [retrieval-recall-p1-c-isolate.md](./retrieval-recall-p1-c-isolate.md) |
@@ -23,7 +23,9 @@
   - [x] Task 6 — provider trace enrichment (orchestration remains ranking-free)
 - [x] Wave 3 — Ranking Intelligence
   - [x] Task 7 — RecallPolicy ranking layer + auditable RecallDecision
-- [ ] Wave 4 — Context Assembly Intelligence
+- [x] Wave 4 — Context Assembly Intelligence
+  - [x] Task 8 — context budget + ContextPackage assembler
+  - [x] Task 9 path deferred for MCP bridge (assembler wired in RecallService; MCP keep G7 compatible)
 - [ ] Wave 5 — Recall Evaluation Proof
 
 ---

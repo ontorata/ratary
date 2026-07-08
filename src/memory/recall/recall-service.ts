@@ -6,11 +6,12 @@ import {
   type RecallResult,
   RecallResultSchema,
 } from './recall-contracts.js';
+import { assembleContextPackage } from './context-package-assembler.js';
 import { createRecallTrace } from './recall-trace.js';
 
 /**
- * Wave 3: RecallService with policy integration.
- * Orchestrates request validation → candidate fetch → policy ranking → trace emission.
+ * Wave 4: RecallService with policy ranking + context assembly.
+ * Orchestrates: validate → fetch candidates → apply policy → assemble context → emit trace.
  */
 export class RecallService {
   constructor(
@@ -27,8 +28,14 @@ export class RecallService {
       candidateSet,
     );
     const trace = createRecallTrace(validated, candidateSet, {
-      decisionPath: ['candidate_fetch', 'policy_filter', 'rank'],
+      decisionPath: ['candidate_fetch', 'policy_filter', 'rank', 'assemble'],
       policyVersion: this.recallPolicy.policyVersion,
+    });
+    const contextPackage = assembleContextPackage({
+      request: validated,
+      traceId: trace.traceId,
+      decision,
+      rankedCandidates,
     });
 
     return RecallResultSchema.parse({
@@ -40,6 +47,7 @@ export class RecallService {
       status: 'completed',
       latencyMs: Date.now() - started,
       decision,
+      contextPackage,
     });
   }
 }

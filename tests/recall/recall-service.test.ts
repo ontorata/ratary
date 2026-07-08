@@ -57,8 +57,8 @@ class StubRecallPolicy implements IRecallPolicy {
   }
 }
 
-describe('RecallService (wave 3 — policy integration)', () => {
-  it('returns traceable recall result with policy decision', async () => {
+describe('RecallService (wave 4 — context assembly)', () => {
+  it('returns traceable recall result with policy decision and context package', async () => {
     const service = new RecallService(new StubCandidateProvider(), new StubRecallPolicy());
     const result = await service.recall({
       requestId: 'req-1',
@@ -74,5 +74,9 @@ describe('RecallService (wave 3 — policy integration)', () => {
     expect(result.decision).toBeDefined();
     expect(result.decision!.policyVersion).toBe('0.0.1');
     expect(result.decision!.selectedCandidates).toContain('cand-1');
+    expect(result.contextPackage).toBeDefined();
+    expect(result.contextPackage!.policyVersion).toBe('0.0.1');
+    expect(result.contextPackage!.items[0]?.candidateId).toBe('cand-1');
+    expect(result.contextPackage!.provenance.source).toBe('recall-intelligence');
   });
 });

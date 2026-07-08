@@ -153,21 +153,6 @@ export const RecallDecisionSchema = z.object({
 
 export type RecallDecision = z.infer<typeof RecallDecisionSchema>;
 
-export const RecallResultSchema = z.object({
-  requestId: z.string().min(1),
-  traceId: z.string().min(1),
-  organizationId: z.string().min(1),
-  candidates: z.array(RecallCandidateSchema),
-  rankedCandidates: z.array(RecallCandidateSchema),
-  status: RecallStatusSchema,
-  missingSources: z.array(z.string()).optional(),
-  degradedMode: z.boolean().optional(),
-  latencyMs: z.number().int().nonnegative().optional(),
-  decision: RecallDecisionSchema.optional(),
-});
-
-export type RecallResult = z.infer<typeof RecallResultSchema>;
-
 export const ContextAttributionSchema = z.object({
   candidateId: z.string().min(1),
   sourceReference: z.string().min(1),
@@ -181,23 +166,73 @@ export const ContextPackageItemSchema = z.object({
   candidateId: z.string().min(1),
   text: z.string().min(1),
   sourceReference: z.string().min(1),
+  tokenCount: z.number().int().nonnegative().optional(),
   metadata: z.record(z.unknown()).optional(),
 });
 
 export type ContextPackageItem = z.infer<typeof ContextPackageItemSchema>;
 
+export const ContextTokenUsageSchema = z.object({
+  budget: z.number().int().positive(),
+  used: z.number().int().nonnegative(),
+  remaining: z.number().int().nonnegative(),
+});
+
+export type ContextTokenUsage = z.infer<typeof ContextTokenUsageSchema>;
+
+export const ContextTruncationSchema = z.object({
+  truncated: z.boolean(),
+  omittedCandidateIds: z.array(z.string().min(1)),
+  omittedCount: z.number().int().nonnegative(),
+});
+
+export type ContextTruncation = z.infer<typeof ContextTruncationSchema>;
+
+export const ContextProvenanceSchema = z.object({
+  source: z.literal('recall-intelligence'),
+  policyVersion: z.string().min(1),
+  selectedCandidateCount: z.number().int().nonnegative(),
+  assembledCandidateCount: z.number().int().nonnegative(),
+  rankingOrderPreserved: z.literal(true),
+});
+
+export type ContextProvenance = z.infer<typeof ContextProvenanceSchema>;
+
 export const ContextPackageSchema = z.object({
+  packageId: z.string().min(1),
+  generatedAt: z.string().datetime(),
   requestId: z.string().min(1),
   traceId: z.string().min(1),
   organizationId: z.string().min(1),
+  sourceRecallDecisionId: z.string().min(1),
+  policyVersion: z.string().min(1),
   items: z.array(ContextPackageItemSchema),
   sourceAttribution: z.array(ContextAttributionSchema),
+  tokenUsage: ContextTokenUsageSchema,
+  truncation: ContextTruncationSchema,
+  provenance: ContextProvenanceSchema,
   tokenBudget: z.number().int().positive().optional(),
   truncated: z.boolean().optional(),
   freshnessMetadata: z.record(z.unknown()).optional(),
 });
 
 export type ContextPackage = z.infer<typeof ContextPackageSchema>;
+
+export const RecallResultSchema = z.object({
+  requestId: z.string().min(1),
+  traceId: z.string().min(1),
+  organizationId: z.string().min(1),
+  candidates: z.array(RecallCandidateSchema),
+  rankedCandidates: z.array(RecallCandidateSchema),
+  status: RecallStatusSchema,
+  missingSources: z.array(z.string()).optional(),
+  degradedMode: z.boolean().optional(),
+  latencyMs: z.number().int().nonnegative().optional(),
+  decision: RecallDecisionSchema.optional(),
+  contextPackage: ContextPackageSchema.optional(),
+});
+
+export type RecallResult = z.infer<typeof RecallResultSchema>;
 
 export function assertRecallRequest(value: unknown): RecallRequest {
   return RecallRequestSchema.parse(value);
