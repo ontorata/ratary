@@ -169,16 +169,18 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-D Streaming** — separate wave |
 
-### P2-D.1 Runtime Stream Contract — Blueprint Draft
+### P2-D.1 Runtime Stream Contract — Isolated & Ready
 
 | Stage | Status |
 |-------|--------|
-| Gate | ✅ ADR-0012 Accepted · pushed to origin |
-| Blueprint | 📝 [ontory-streaming-p2-d1-blueprint.md](../designs/drafts/ontory-streaming-p2-d1-blueprint.md) — **pending approval** |
-| Scope | Runtime contract layer only — `AIExecutionEvent`, lifecycle FSM, stub stream, no vendor implementation |
-| Branch (proposed) | `forge/ontory-streaming-p2-d1` from `org-memory-p2-c2-complete` |
-| Coding gate | ❌ **Blocked** until blueprint approval |
-| Next | Owner approves blueprint → forge-isolate → execute tasks |
+| Gate | ✅ ADR-0012 Accepted · governance pushed |
+| Blueprint | ✅ [ontory-streaming-p2-d1-blueprint.md](../designs/drafts/ontory-streaming-p2-d1-blueprint.md) — **Approved** |
+| Baseline | `org-memory-p2-c2-complete` @ `7241319` |
+| Branch | `forge/ontory-streaming-p2-d1` — **isolated, baseline green** |
+| Baseline gates | ✅ 92 tests passed · conformance 26 passed · typecheck · boundary |
+| Scope | Runtime contract layer — `AIExecutionEvent`, lifecycle FSM, stub stream, no vendor implementation |
+| Coding gate | ✅ **Open** — implementation may begin |
+| Next | Execute blueprint tasks P2-D.1.1–1.4 |
 
 ### P2-D Streaming & Execution Lifecycle — ADR Accepted 🔒
 
