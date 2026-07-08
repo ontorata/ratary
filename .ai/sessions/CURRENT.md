@@ -141,9 +141,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Scope | Core + Governance + Release + Session handoff (Wave 1) |
 | Baseline verification | ✅ `npm test`, `ci:org-memory-acceptance`, `ci:governance` |
 | Execute gate | ✅ approved |
-| Wave progress | ✅ Wave 4 complete — versioned store + index boundary + consistency tests |
-| Evidence | ✅ `sync:org-memory` + `trace:org-memory-handoff` recorded for P1B-W4 |
-| Next gate | Wave 5 — end-to-end proof |
+| Wave progress | ✅ Wave 5 complete — end-to-end proof layer validated |
+| Evidence | ✅ `WAVE-5-END-TO-END-PROOF.md` + `sync:org-memory` + `trace:org-memory-handoff` (P1B-W5) |
+| Next gate | P1-B acceptance + quality + release closeout |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

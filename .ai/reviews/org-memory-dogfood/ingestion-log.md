@@ -264,3 +264,59 @@
 | stage=embedding_generator | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-718be79f29c829d4` | source_path=`.ai/sessions/CURRENT.md` |
 | stage=knowledge_store | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-732cc259355c2ff2` | source_path=`.ai/sessions/CURRENT.md` |
 | stage=index_update | status=completed | processed=1 | failed=0 | checkpoint_id=`cp-27d917411ff3c34c` | source_path=`.ai/sessions/CURRENT.md` |
+
+## run_id=889787b8-5073-456b-99e3-311dba5fabc4
+
+- started_at: 2026-07-08T07:09:07.592Z
+- ended_at: 2026-07-08T07:09:07.700Z
+- ingested=156
+- failed=0
+- digest=c8f97f3ceda8cf7f
+
+| source_path | ingested | failed | duration_ms |
+|-------------|----------|--------|-------------|
+| source_path=`.ai/core/` | ingested=94 | failed=0 | duration_ms=71 |
+| source_path=`docs/architecture/` | ingested=5 | failed=0 | duration_ms=6 |
+| source_path=`.ai/core/architecture/ADR-*.md` | ingested=7 | failed=0 | duration_ms=3 |
+| source_path=`.ai/governance/releases/` | ingested=9 | failed=0 | duration_ms=5 |
+| source_path=`.ai/reviews/` | ingested=40 | failed=0 | duration_ms=21 |
+| source_path=`.ai/sessions/CURRENT.md` | ingested=1 | failed=0 | duration_ms=1 |
+
+| stage | status | processed | failed | checkpoint_id | source_path |
+|-------|--------|-----------|--------|---------------|-------------|
+| stage=source_intake | status=completed | processed=94 | failed=0 | checkpoint_id=`cp-29c5f6987e3e3e3c` | source_path=`.ai/core/` |
+| stage=normalizer | status=completed | processed=94 | failed=0 | checkpoint_id=`cp-0a7cfb52cfcc454e` | source_path=`.ai/core/` |
+| stage=chunk_builder | status=completed | processed=271 | failed=0 | checkpoint_id=`cp-cfc9925b624c02b7` | source_path=`.ai/core/` |
+| stage=embedding_generator | status=completed | processed=271 | failed=0 | checkpoint_id=`cp-b520da697b839d81` | source_path=`.ai/core/` |
+| stage=knowledge_store | status=completed | processed=271 | failed=0 | checkpoint_id=`cp-4817302792d8643f` | source_path=`.ai/core/` |
+| stage=index_update | status=completed | processed=94 | failed=0 | checkpoint_id=`cp-5f9b0ccfce07daf3` | source_path=`.ai/core/` |
+| stage=source_intake | status=completed | processed=5 | failed=0 | checkpoint_id=`cp-137632e5881d74f6` | source_path=`docs/architecture/` |
+| stage=normalizer | status=completed | processed=5 | failed=0 | checkpoint_id=`cp-144a63f6a2432e87` | source_path=`docs/architecture/` |
+| stage=chunk_builder | status=completed | processed=14 | failed=0 | checkpoint_id=`cp-082f37eb34815d6d` | source_path=`docs/architecture/` |
+| stage=embedding_generator | status=completed | processed=14 | failed=0 | checkpoint_id=`cp-7ba0bd4a6cd052a2` | source_path=`docs/architecture/` |
+| stage=knowledge_store | status=completed | processed=14 | failed=0 | checkpoint_id=`cp-aa2aa2c21885113c` | source_path=`docs/architecture/` |
+| stage=index_update | status=completed | processed=5 | failed=0 | checkpoint_id=`cp-510ff05ec76cbd6c` | source_path=`docs/architecture/` |
+| stage=source_intake | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-76019c429ac0da83` | source_path=`.ai/core/architecture/ADR-*.md` |
+| stage=normalizer | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-e7eabf1f99f98ca7` | source_path=`.ai/core/architecture/ADR-*.md` |
+| stage=chunk_builder | status=completed | processed=17 | failed=0 | checkpoint_id=`cp-5e04e465b1921d3c` | source_path=`.ai/core/architecture/ADR-*.md` |
+| stage=embedding_generator | status=completed | processed=17 | failed=0 | checkpoint_id=`cp-30c4700f9f04f43f` | source_path=`.ai/core/architecture/ADR-*.md` |
+| stage=knowledge_store | status=completed | processed=17 | failed=0 | checkpoint_id=`cp-c7697d76624f7a89` | source_path=`.ai/core/architecture/ADR-*.md` |
+| stage=index_update | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-6283bb2c3e9a4920` | source_path=`.ai/core/architecture/ADR-*.md` |
+| stage=source_intake | status=completed | processed=9 | failed=0 | checkpoint_id=`cp-f5fa49aff61a414e` | source_path=`.ai/governance/releases/` |
+| stage=normalizer | status=completed | processed=9 | failed=0 | checkpoint_id=`cp-1a3aeba3904f873b` | source_path=`.ai/governance/releases/` |
+| stage=chunk_builder | status=completed | processed=37 | failed=0 | checkpoint_id=`cp-59bcab5e475aec97` | source_path=`.ai/governance/releases/` |
+| stage=embedding_generator | status=completed | processed=37 | failed=0 | checkpoint_id=`cp-07c9dcf4dad5f7a2` | source_path=`.ai/governance/releases/` |
+| stage=knowledge_store | status=completed | processed=37 | failed=0 | checkpoint_id=`cp-413a646460bc9325` | source_path=`.ai/governance/releases/` |
+| stage=index_update | status=completed | processed=9 | failed=0 | checkpoint_id=`cp-6a2694b770b47e5c` | source_path=`.ai/governance/releases/` |
+| stage=source_intake | status=completed | processed=40 | failed=0 | checkpoint_id=`cp-670d2d0dc58b52cd` | source_path=`.ai/reviews/` |
+| stage=normalizer | status=completed | processed=40 | failed=0 | checkpoint_id=`cp-fb40df9856da403d` | source_path=`.ai/reviews/` |
+| stage=chunk_builder | status=completed | processed=106 | failed=0 | checkpoint_id=`cp-133b8ed30159a599` | source_path=`.ai/reviews/` |
+| stage=embedding_generator | status=completed | processed=106 | failed=0 | checkpoint_id=`cp-3ae9cbca3ea7fce7` | source_path=`.ai/reviews/` |
+| stage=knowledge_store | status=completed | processed=106 | failed=0 | checkpoint_id=`cp-60298b8b77749ce4` | source_path=`.ai/reviews/` |
+| stage=index_update | status=completed | processed=40 | failed=0 | checkpoint_id=`cp-abe6ca89d00122d1` | source_path=`.ai/reviews/` |
+| stage=source_intake | status=completed | processed=1 | failed=0 | checkpoint_id=`cp-2584abb162c28c6f` | source_path=`.ai/sessions/CURRENT.md` |
+| stage=normalizer | status=completed | processed=1 | failed=0 | checkpoint_id=`cp-5c6787b4b8f1cd4c` | source_path=`.ai/sessions/CURRENT.md` |
+| stage=chunk_builder | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-8c1388933bfde0d3` | source_path=`.ai/sessions/CURRENT.md` |
+| stage=embedding_generator | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-718be79f29c829d4` | source_path=`.ai/sessions/CURRENT.md` |
+| stage=knowledge_store | status=completed | processed=7 | failed=0 | checkpoint_id=`cp-732cc259355c2ff2` | source_path=`.ai/sessions/CURRENT.md` |
+| stage=index_update | status=completed | processed=1 | failed=0 | checkpoint_id=`cp-27d917411ff3c34c` | source_path=`.ai/sessions/CURRENT.md` |

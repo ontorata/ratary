@@ -26,7 +26,7 @@ Wave tracking:
 - ✅ Wave 2 — Pipeline Core
 - ✅ Wave 3 — Embedding Layer
 - ✅ Wave 4 — Knowledge Store & Index Update
-- ⏳ Wave 5 — End-to-End Proof
+- ✅ Wave 5 — End-to-End Proof (`WAVE-5-END-TO-END-PROOF.md`)
 
 ---
 

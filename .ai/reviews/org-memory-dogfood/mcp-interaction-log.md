@@ -95,3 +95,25 @@
 - evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
 - branch=forge/knowledge-ingestion
 - notes=wave4 store-index boundary sequential trace
+
+## session_id=3dfcfb8a-0f72-43f6-a9a2-6bf89f341382
+
+- timestamp=2026-07-08T07:09:07.580Z
+- handoff_id=34691d4e-e583-490f-86ae-b46b82ee086a
+- ratary_codename=P1B-W5
+- ingestion_run_id=0d2d6279-b2f7-47ff-9001-d3f38e8805cb
+- recall_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- branch=forge/knowledge-ingestion
+- notes=wave5 end-to-end proof
+
+## session_id=d9bced48-fcb8-4199-b7ff-8bbb186ad6a3
+
+- timestamp=2026-07-08T07:09:16.835Z
+- handoff_id=7f03cec9-a9c3-45a0-8068-29542c748709
+- ratary_codename=P1B-W5
+- ingestion_run_id=889787b8-5073-456b-99e3-311dba5fabc4
+- recall_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- evidence_run_id=1ed2b83d-fbcb-4153-ab99-0a67d274c29c
+- branch=forge/knowledge-ingestion
+- notes=wave5 end-to-end proof sequential trace
