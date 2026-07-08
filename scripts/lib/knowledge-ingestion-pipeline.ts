@@ -1,8 +1,14 @@
 import { createHash } from 'node:crypto';
 import {
   PIPELINE_STAGES,
+  EmbeddingJobExecutionSchema,
+  EmbeddingJobSchema,
+  EmbeddingRecordSchema,
   type PipelineStage,
   type PipelineStageResult,
+  type EmbeddingJob,
+  type EmbeddingJobExecution,
+  type EmbeddingRecord,
   KnowledgeChunkSchema,
   KnowledgeDocumentSchema,
   type KnowledgeChunk,
@@ -24,6 +30,9 @@ export type RawSourceFile = {
 export type PipelineRunOutput = {
   documents: KnowledgeDocument[];
   chunks: KnowledgeChunk[];
+  embeddingJobs: EmbeddingJob[];
+  embeddingRecords: EmbeddingRecord[];
+  embeddingExecutions: EmbeddingJobExecution[];
   stageResults: PipelineStageResult[];
 };
 
@@ -133,6 +142,93 @@ export function buildChunks(
   return output;
 }
 
+export function createEmbeddingJobIdentity(
+  chunk: KnowledgeChunk,
+  model: string,
+  paramsDigest = 'default',
+): string {
+  return `job-${shortHash(`${chunk.chunkId}:${chunk.version}:${model}:${paramsDigest}`)}`;
+}
+
+export function createEmbeddingJob(
+  chunk: KnowledgeChunk,
+  options?: { model?: string; paramsDigest?: string; requestedAt?: string; attempt?: number },
+): EmbeddingJob {
+  const model = options?.model ?? 'deterministic-local-v1';
+  const paramsDigest = options?.paramsDigest ?? 'default';
+  return EmbeddingJobSchema.parse({
+    jobId: createEmbeddingJobIdentity(chunk, model, paramsDigest),
+    organizationId: chunk.organizationId,
+    documentId: chunk.documentId,
+    chunkIds: [chunk.chunkId],
+    model,
+    requestedAt: options?.requestedAt ?? new Date().toISOString(),
+    attempt: options?.attempt ?? 0,
+    provider: 'deterministic-local',
+  });
+}
+
+function createEmbeddingRecord(job: EmbeddingJob, chunk: KnowledgeChunk): EmbeddingRecord {
+  const vectorDigest = shortHash(`${chunk.textDigest}:${job.model}`);
+  return EmbeddingRecordSchema.parse({
+    embeddingId: `emb-${shortHash(`${job.jobId}:${chunk.chunkId}:${job.model}`)}`,
+    chunkId: chunk.chunkId,
+    organizationId: chunk.organizationId,
+    version: chunk.version,
+    model: job.model,
+    vectorDigest,
+    createdAt: new Date().toISOString(),
+    dimensions: 64,
+  });
+}
+
+function runEmbeddingStage(
+  chunks: KnowledgeChunk[],
+): { jobs: EmbeddingJob[]; records: EmbeddingRecord[]; executions: EmbeddingJobExecution[]; failed: number } {
+  const jobs: EmbeddingJob[] = [];
+  const records: EmbeddingRecord[] = [];
+  const executions: EmbeddingJobExecution[] = [];
+  let failed = 0;
+
+  for (const chunk of chunks) {
+    const job = createEmbeddingJob(chunk);
+    jobs.push(job);
+    if (chunk.text.length === 0) {
+      failed += 1;
+      executions.push(
+        EmbeddingJobExecutionSchema.parse({
+          jobId: job.jobId,
+          chunkId: chunk.chunkId,
+          state: 'FAILED',
+          stateHistory: ['PENDING', 'RUNNING', 'FAILED'],
+          attemptCount: 1,
+          retryable: false,
+          resumable: false,
+          errorCategory: 'corrupted_chunk',
+          errorMessage: 'chunk text is empty',
+        }),
+      );
+      continue;
+    }
+
+    records.push(createEmbeddingRecord(job, chunk));
+    executions.push(
+      EmbeddingJobExecutionSchema.parse({
+        jobId: job.jobId,
+        chunkId: chunk.chunkId,
+        state: 'COMPLETED',
+        stateHistory: ['PENDING', 'RUNNING', 'COMPLETED'],
+        attemptCount: 1,
+        retryable: false,
+        resumable: true,
+        completedAt: new Date().toISOString(),
+      }),
+    );
+  }
+
+  return { jobs, records, executions, failed };
+}
+
 function stageCheckpoint(stage: PipelineStage, processed: number, failed: number, sourcePath?: string): string {
   const suffix = sourcePath ? `:${sourcePath}` : '';
   return `cp-${shortHash(`${stage}:${processed}:${failed}${suffix}`)}`;
@@ -182,6 +278,9 @@ export function orchestratePipeline(
   const stageResults: PipelineStageResult[] = [];
   let documents: KnowledgeDocument[] = [];
   let chunks: KnowledgeChunk[] = [];
+  let embeddingJobs: EmbeddingJob[] = [];
+  let embeddingRecords: EmbeddingRecord[] = [];
+  let embeddingExecutions: EmbeddingJobExecution[] = [];
 
   const sourceStart = new Date();
   const sourceEnd = new Date();
@@ -288,6 +387,30 @@ export function orchestratePipeline(
       continue;
     }
 
+    if (stage === 'embedding_generator') {
+      const embedding = runEmbeddingStage(chunks);
+      const endedAt = new Date();
+      embeddingJobs = embedding.jobs;
+      embeddingRecords = embedding.records;
+      embeddingExecutions = embedding.executions;
+      const status: PipelineStageStatus = embedding.failed > 0 ? 'failed' : 'completed';
+      stageStatuses.set(stage, status);
+      stageResults.push(
+        buildStageResult(
+          stage,
+          status,
+          embedding.records.length,
+          embedding.failed,
+          startedAt,
+          endedAt,
+          { resumable: true, replayable: true, idempotent: true },
+          sourcePath,
+          embedding.failed > 0 ? 'one or more embedding jobs failed' : undefined,
+        ),
+      );
+      continue;
+    }
+
     const endedAt = new Date();
     stageStatuses.set(stage, 'skipped');
     stageResults.push(
@@ -305,5 +428,5 @@ export function orchestratePipeline(
     );
   }
 
-  return { documents, chunks, stageResults };
+  return { documents, chunks, embeddingJobs, embeddingRecords, embeddingExecutions, stageResults };
 }

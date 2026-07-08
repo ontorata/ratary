@@ -71,7 +71,7 @@ describe('knowledge ingestion pipeline core', () => {
     expect(stageByName.get('source_intake')?.status).toBe('completed');
     expect(stageByName.get('normalizer')?.status).toBe('completed');
     expect(stageByName.get('chunk_builder')?.status).toBe('completed');
-    expect(stageByName.get('embedding_generator')?.status).toBe('skipped');
+    expect(stageByName.get('embedding_generator')?.status).toBe('completed');
     expect(stageByName.get('knowledge_store')?.status).toBe('skipped');
     expect(stageByName.get('index_update')?.status).toBe('skipped');
     expect(output.stageResults.every((stage) => stage.resumable)).toBe(true);
