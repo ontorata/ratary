@@ -17,7 +17,7 @@
 - [x] Task 5 — Session handoff + audit trace automation
 - [x] Task 6 — Internal usage metrics pipeline (G1/G5)
 - [x] Task 7 — Acceptance gate pack (G1–G6)
-- [ ] Task 8 — CI and non-regression guard
+- [x] Task 8 — CI and non-regression guard
 
 ## Task 1 — Activate P1-A governance metadata
 - **Files:** `.ai/designs/drafts/org-memory-dogfood-intent.md`, `.ai/phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md`, `.ai/sessions/CURRENT.md`

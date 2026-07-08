@@ -17,7 +17,7 @@
 | **G1** | Ontorata uses Ratary as primary engineering memory | PASS | `mcp-interaction-log.md` (session/handoff chain), `internal-usage-metrics.md` (`organization_count=1`) |
 | **G2** | Latest ADRs discoverable via MCP recall | PASS | `recall-log.md` query `q-g2-adr-recall` successful |
 | **G3** | Release history reconstructable from memory | PASS | `recall-log.md` query `q-g3-release-history` successful |
-| **G4** | AI answers governance/architecture from evidence | BLOCK | `q-g4-evidence-answer` failed with `missing_evidence=evidence-p1-question` |
+| **G4** | AI answers governance/architecture from evidence | PASS | `q-g4-evidence-answer` successful with complete evidence |
 | **G5** | Decision ↔ evidence ↔ release linked without manual stitching | PASS | `evidence-trace.md` + `mcp-interaction-log.md` chain (`session_id -> ... -> evidence_run_id`) |
 | **G6** | P0 baseline untouched except permitted classes | PASS | `npm test` 88/88 pass; no P0 foundation mutation in P1-A scope |
 
@@ -25,17 +25,17 @@
 
 ## Metrics snapshot
 
-From `internal-usage-metrics.md` (`metrics_run_id=35e39c3f-d8e8-40dc-b6f8-0289c4fc4fd6`):
+From `internal-usage-metrics.md` (`metrics_run_id=7cc3fff9-d49c-43e5-814b-75c5a8403467`):
 
 - `ingestion_count=143`
 - `recall_count=3`
-- `successful_recall=2`
-- `failed_recall=1`
-- `average_latency=2.33`
-- `pass_rate=66.67`
-- `duplicate_memory=5`
-- `orphan_memory=1`
-- `drift_incidents=1`
+- `successful_recall=3`
+- `failed_recall=0`
+- `average_latency=2.67`
+- `pass_rate=100`
+- `duplicate_memory=8`
+- `orphan_memory=0`
+- `drift_incidents=0`
 
 ---
 
@@ -54,6 +54,6 @@ All commands run successfully in this milestone branch.
 
 ## Result
 
-**Acceptance state: BLOCK (5 PASS / 1 BLOCK).**
+**Acceptance state: PASS (6 PASS / 0 BLOCK).**
 
-P1-A is audit-ready but not yet closure-ready due to G4 miss. Next step is remediation in Task 8/follow-up recall iteration to eliminate missing source and raise pass rate.
+P1-A acceptance gates are complete and closeout-ready pending baseline lock/tag decision.

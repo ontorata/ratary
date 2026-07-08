@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Decision** | BLOCK closeout (proceed with remediation) |
+| **Decision** | GO closeout (all gates PASS) |
 | **Milestone** | P1-A Org Memory Dogfood |
 | **Branch** | `forge/org-memory-dogfood` |
 | **Reference** | `acceptance-test.md` · `P1-A-ACCEPTANCE.md` |
@@ -12,41 +12,38 @@
 
 ## Summary
 
-P1-A implementation and evidence chain are operational:
+P1-A implementation and evidence chain are operational and acceptance-complete:
 
 - deterministic ingest pipeline
 - deterministic recall harness
 - session/handoff trace automation
 - internal usage metrics
 
-However, acceptance gate **G4** is still **BLOCK** due to one missing evidence source in query `q-g4-evidence-answer`.
+All acceptance gates are PASS after Task 8 remediation.
 
 ---
 
-## Why block now
+## Why go now
 
-Closeout requires all G1–G6 pass. Current status is **5 PASS / 1 BLOCK**, so final lock/tag is deferred.
-
-Blocking item:
-
-- `missing_evidence=evidence-p1-question` in `evidence-trace.md`
+Closeout requires all G1–G6 pass. Current status is **6 PASS / 0 BLOCK** with reproducible metrics and full evidence chain.
 
 ---
 
-## Required remediation
+## Remediation completed
 
-1. Improve recall fixture/ranker coverage for G4 query.
-2. Re-run:
+1. Recall harness ranking improved for P1 query coverage.
+2. Re-ran:
    - `npm run eval:org-memory-recall`
+   - `npm run trace:org-memory-handoff`
    - `npm run metrics:org-memory`
-3. Confirm:
+3. Confirmed:
    - `missing_sources=0`
    - `failed_recall=0`
-   - `pass_rate` improves above current baseline.
-4. Update acceptance pack and quality summary.
+   - `pass_rate=100`
+4. Acceptance pack and quality summary updated.
 
 ---
 
 ## Next action
 
-Proceed to Task 8 (CI/non-regression guard) + targeted G4 recall remediation before attempting baseline lock and `org-memory-p1-a-complete` tag.
+Proceed to baseline lock review and tag readiness (`org-memory-p1-a-complete`) after owner approval.

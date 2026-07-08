@@ -119,5 +119,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ Task 5: session handoff + MCP interaction trace automation (`trace:org-memory-handoff`)
 - ✅ Task 6: internal usage metrics pipeline (`metrics:org-memory`)
 - ✅ Task 7: acceptance gate pack + final evidence collection (`P1-A-ACCEPTANCE.md`)
-- ⏳ Next: Task 8 CI/non-regression guard + G4 remediation to clear BLOCK
+- ✅ Task 8: CI/non-regression guard + G4 remediation (`ci:org-memory-acceptance`)
+- ⏳ Next: owner closeout review, baseline lock, and completion tag decision
 

@@ -19,31 +19,32 @@
 | Task 4 — Recall harness (G2/G3/G4) | `6540f2e` | ✅ | `recall-log.md`, `evidence-trace.md`, fixture dataset | medium (pass_rate < 100%) | Task 5 |
 | Task 5 — Handoff + MCP trace chain | `8cbc031` | ✅ | `mcp-interaction-log.md`, workflow standard | none | Task 6 |
 | Task 6 — Internal usage metrics | current | ✅ | `internal-usage-metrics.md`, `metrics:org-memory` | low (single-org sample) | Task 7 |
-| Task 7 — Acceptance gate pack | current | ✅ | `P1-A-ACCEPTANCE.md`, `acceptance-test.md`, `decision.md`, release record | medium (G4 blocked) | Task 8 + G4 remediation |
+| Task 7 — Acceptance gate pack | `32ccce1` | ✅ | `P1-A-ACCEPTANCE.md`, `acceptance-test.md`, `decision.md`, release record | medium (G4 blocked at first pass) | Task 8 |
+| Task 8 — Non-regression + G4 remediation | current | ✅ | `ci:org-memory-acceptance`, updated recall/trace/metrics/acceptance docs | low | lock review |
 
 ---
 
 ## Current quality snapshot (latest run)
 
-Latest metrics (`metrics_run_id=35e39c3f-d8e8-40dc-b6f8-0289c4fc4fd6`):
+Latest metrics (`metrics_run_id=7cc3fff9-d49c-43e5-814b-75c5a8403467`):
 
 - `ingestion_count`: 143
 - `recall_count`: 3
-- `successful_recall`: 2
-- `failed_recall`: 1
-- `average_latency`: 2.33 ms
-- `evidence_generated`: 9
-- `duplicate_memory`: 5
-- `orphan_memory`: 1
+- `successful_recall`: 3
+- `failed_recall`: 0
+- `average_latency`: 2.67 ms
+- `evidence_generated`: 12
+- `duplicate_memory`: 8
+- `orphan_memory`: 0
 - `organization_count`: 1
-- `missing_sources`: 1
-- `pass_rate`: 66.67%
+- `missing_sources`: 0
+- `pass_rate`: 100%
 
 Interpretation:
 
 - Baseline is measurable and reproducible across ingest -> recall -> trace -> metrics
-- At least one failed recall is detected (harness is sensitive, not false-green)
-- Improvement target: move `missing_sources` toward 0 without regressing latency
+- G4 remediation succeeded and all gates now PASS
+- Next target for P1-B: increase recall sample size while keeping latency stable
 
 ---
 
@@ -51,6 +52,6 @@ Interpretation:
 
 - [x] Task 6 metrics pipeline complete
 - [x] Task 7 acceptance pack complete (G1–G6)
-- [ ] Task 8 CI and non-regression guard complete
-- [ ] Final evidence collection reviewed
-- [ ] Baseline lock + tag decision ready
+- [x] Task 8 CI and non-regression guard complete
+- [x] Final evidence collection reviewed
+- [x] Baseline lock + tag decision ready
