@@ -4,7 +4,7 @@
 |-------|-------|
 | **Status** | Active — architecture baseline v1.0 |
 | **Authority** | Subordinate to ENGINEERING-CONSTITUTION · complements SECURITY-BOUNDARY |
-| **Baseline tags** | `org-memory-p1-c-complete` · `org-memory-p1-d-complete` |
+| **Baseline tags** | `org-memory-p1-c-complete` · `org-memory-p1-d-complete` · `org-memory-p2-a-complete` |
 | **Related** | ADR-0006 · ADR-0007 (Accepted) · P1-D Future Runtime Compatibility |
 | **Updated** | 2026-07-08 |
 
@@ -24,7 +24,7 @@ Frozen boundaries exist so layers remain independently evolvable. A “shortcut�
 |-------|----------------|----------|
 | **Ratary** | What should be remembered / recalled? | P1-C |
 | **Studio** | Where does the user work? | P1-D |
-| **Ontory** | How is AI executed? | P2-A (kernel live · Studio REST RuntimePort · stub provider) |
+| **Ontory** | How is AI executed? | P2-A **complete** · baseline `org-memory-p2-a-complete` |
 
 ---
 

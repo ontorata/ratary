@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Tasks 1–8 complete · Task 9 closeout tag pending |
+| **Status** | ✅ CLOSED — Tasks 1–9 complete · tag `org-memory-p2-a-complete` |
 | **Intent** | [ontory-runtime-p2-a-intent.md](./ontory-runtime-p2-a-intent.md) |
 | **Isolate** | [ontory-runtime-p2-a-isolate.md](./ontory-runtime-p2-a-isolate.md) |
 | **ADR** | ADR-0007 Accepted |
@@ -40,7 +40,7 @@ Response Envelope
 - [x] Task 6 — unit + REST contract tests
 - [x] Task 7 — Studio `WorkspaceAiRuntimePort` → Ontory REST client adapter (Studio repo)
 - [x] Task 8 — evidence package + P2-A quality gates (governance only)
-- [ ] Task 9 — closeout (tag when DoD met)
+- [x] Task 9 — closeout (tag `org-memory-p2-a-complete`)
 
 ---
 
@@ -66,6 +66,13 @@ Response Envelope
 - **Verify:** Ontory `c18cacc` — 4 tests + boundary PASS · Studio `043666e` — 48 tests + boundaries PASS
 - **Done when:** ✅ DoD mapped · D1–D4 traced · architecture diagram matches repos · acceptance manifest ACCEPTED
 
+### Task 9 — Closeout ✅ (administrative only)
+
+- **Do:** release record · summary card · tag `org-memory-p2-a-complete` on pinned commits
+- **Pins:** Ontory `c18cacc` · Studio `043666e` · ai-brain evidence `35ff553`
+- **Must not:** change runtime code, API contracts, or provider adapters
+- **Done when:** ✅ tags pushed · acceptance CLOSED · next gate = P2-B
+
 ---
 
 ## Rejection criteria (scope creep)
@@ -77,4 +84,4 @@ Abort / refuse commits that introduce:
 - agent / tool / planning modules
 - provider-specific code inside `dispatcher.ts`
 
-**Owner approval:** ✅ forge-isolate ACCEPTED · Tasks 1–8 complete · vendor adapters deferred to **P2-B** · Task 9 = tag-only closeout.
+**Owner approval:** ✅ P2-A CLOSED · Runtime Kernel Complete · next = **P2-B** provider integration only.

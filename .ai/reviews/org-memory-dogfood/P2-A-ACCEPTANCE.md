@@ -9,8 +9,8 @@
 | **Governance** | `forge/ai-workspace-p1-d` (ratary / ai-brain) |
 | **Baseline** | `org-memory-p1-d-complete` |
 | **ADR** | ADR-0007 Accepted · D1–D4 locked |
-| **Status** | ✅ **ACCEPTED** — Runtime Kernel Complete (engineering + governance) |
-| **Closeout tag** | Pending Task 9 (`org-memory-p2-a-complete` when owner tags) |
+| **Status** | ✅ **ACCEPTED** · CLOSED |
+| **Closeout tag** | `org-memory-p2-a-complete` |
 
 ---
 
@@ -49,12 +49,14 @@
 | 1–6 Ontory kernel | ✅ |
 | 7 Studio REST RuntimePort | ✅ |
 | 8 Evidence / DoD / acceptance (this manifest) | ✅ |
-| 9 Closeout tag | ⏳ tag-only after owner push approval |
+| 9 Closeout tag | ✅ `org-memory-p2-a-complete` |
 
 ---
 
 ## Evidence
 
+- Release: [`.ai/governance/releases/P2-A-ONTORY-RUNTIME-KERNEL.md`](../../governance/releases/P2-A-ONTORY-RUNTIME-KERNEL.md)
+- Summary card: [`.ai/designs/releases/org-memory-p2-a-complete.md`](../../designs/releases/org-memory-p2-a-complete.md)
 - Pack: [ontory-runtime-kernel-proof.md](./ontory-runtime-kernel-proof.md)
 - Boundary: [ontory-runtime-boundary-verification.md](./ontory-runtime-boundary-verification.md)
 - Task 7: [ontory-runtime-studio-rest-adapter-proof.md](./ontory-runtime-studio-rest-adapter-proof.md)
