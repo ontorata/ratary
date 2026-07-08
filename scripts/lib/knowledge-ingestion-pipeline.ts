@@ -16,6 +16,7 @@ import {
   type PipelineStageStatus,
 } from './knowledge-ingestion-contracts.js';
 import {
+  applyIndexUpdateBoundary,
   createEmptySnapshot,
   persistKnowledgeArtifacts,
   type KnowledgeStoreSnapshot,
@@ -581,6 +582,26 @@ export function orchestratePipeline(
           { resumable: true, replayable: true, idempotent: true },
           sourcePath,
           persist.partialFailure ? `pending_versions=${persist.pendingVersionIds.length}` : undefined,
+        ),
+      );
+      continue;
+    }
+
+    if (stage === 'index_update') {
+      const endedAt = new Date();
+      knowledgeStoreSnapshot = applyIndexUpdateBoundary(knowledgeStoreSnapshot);
+      const completedEvents = knowledgeStoreSnapshot.indexEvents.filter((event) => event.status === 'completed');
+      stageStatuses.set(stage, 'completed');
+      stageResults.push(
+        buildStageResult(
+          stage,
+          'completed',
+          completedEvents.length,
+          0,
+          startedAt,
+          endedAt,
+          { resumable: true, replayable: true, idempotent: true },
+          sourcePath,
         ),
       );
       continue;

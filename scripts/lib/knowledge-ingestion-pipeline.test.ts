@@ -74,7 +74,7 @@ describe('knowledge ingestion pipeline core', () => {
     expect(stageByName.get('chunk_builder')?.status).toBe('completed');
     expect(stageByName.get('embedding_generator')?.status).toBe('completed');
     expect(stageByName.get('knowledge_store')?.status).toBe('completed');
-    expect(stageByName.get('index_update')?.status).toBe('skipped');
+    expect(stageByName.get('index_update')?.status).toBe('completed');
     expect(output.stageResults.every((stage) => stage.resumable)).toBe(true);
     expect(output.stageResults.every((stage) => stage.idempotent)).toBe(true);
   });
