@@ -18,7 +18,7 @@ updated: 2026-07-08
 | Field | Value |
 |-------|-------|
 | **Milestone** | Engineering Governance (P0-B) |
-| **Status** | 🟢 **OPEN** — Intent Approved · Forge-Isolate Active |
+| **Status** | 🟢 **RELEASED** — 6/6 waves complete |
 | **Category** | Operational foundation (not feature development) |
 | **Baseline** | P0-A RELEASED · `main` @ `2a57647` · tag `identity-foundation-p0-a-complete` |
 | **Forge branch** | `forge/engineering-governance` |
@@ -38,7 +38,7 @@ updated: 2026-07-08
 | P0-B intent approved | ✅ 2026-07-08 |
 | Baseline tests green | ✅ 88/88 |
 
-**Implementation waves:** Wave 1–5 ✅ LOCKED · Wave 6 ⏳ next
+**Implementation waves:** Wave 1–6 ✅ **LOCKED**
 
 ---
 
@@ -51,7 +51,7 @@ updated: 2026-07-08
 | 3 | AI Engineering Workflow Governance | ✅ LOCKED |
 | 4 | Release Management | ✅ LOCKED |
 | 5 | Migration Governance | ✅ LOCKED |
-| 6 | Engineering Constitution | ⏳ |
+| 6 | Engineering Constitution | ✅ LOCKED |
 
 Pattern per wave: Implementation → Tests → Evidence → Governance checkpoint → Lock tag
 
@@ -66,10 +66,10 @@ Pattern per wave: Implementation → Tests → Evidence → Governance checkpoin
 | AI workflow governance | ⏳ |
 | Release process | ✅ |
 | Migration policy | ✅ |
-| Repository constitution | ⏳ |
-| Evidence artifact | ⏳ |
+| Repository constitution | ✅ |
+| Evidence artifact | ✅ |
 
-**Target tag (on completion):** `engineering-governance-p0-b-complete`
+**Target tag (on completion):** `engineering-governance-p0-b-complete` ✅
 
 ---
 
