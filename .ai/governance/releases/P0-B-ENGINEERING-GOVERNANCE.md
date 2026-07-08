@@ -38,7 +38,7 @@ updated: 2026-07-08
 | P0-B intent approved | ✅ 2026-07-08 |
 | Baseline tests green | ✅ 88/88 |
 
-**Implementation waves:** 🔒 locked until blueprint approved — [engineering-governance-plan.md](../../designs/blueprints/engineering-governance-plan.md)
+**Implementation waves:** Wave 1 ✅ LOCKED · Wave 2 ⏳ next
 
 ---
 
@@ -46,7 +46,7 @@ updated: 2026-07-08
 
 | Wave | Focus | Status |
 |------|-------|--------|
-| 1 | ADR Enforcement | ⏳ |
+| 1 | ADR Enforcement | ✅ LOCKED |
 | 2 | CI Governance Gate | ⏳ |
 | 3 | AI Engineering Workflow Governance | ⏳ |
 | 4 | Release Management | ⏳ |

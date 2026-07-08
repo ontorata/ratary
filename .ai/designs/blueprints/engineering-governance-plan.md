@@ -2,7 +2,7 @@
 id: P0-B-ENGINEERING-GOVERNANCE
 phase: 04-proof-of-platform
 stage: blueprint
-status: proposed
+status: approved
 owner: Ontorata
 workload: Engineering Governance
 evidence_package: engineering-governance
@@ -23,7 +23,7 @@ updated: 2026-07-08
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Proposed** — waiting owner approval before `forge-execute` |
+| **Status** | **Approved** — Wave 1 complete · Wave 2 next |
 | **Branch** | `forge/engineering-governance` |
 | **Baseline** | P0-A RELEASED · tag `identity-foundation-p0-a-complete` @ `2a57647` · tests **88/88** |
 | **Intent** | [engineering-governance-intent.md](../drafts/engineering-governance-intent.md) — Approved |
