@@ -2,8 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Accepted** |
-| **Accepted** | 2026-07-09 |
+| **Status** | **Accepted** · **Amended** |
+| **Accepted** | 2026-07-09 (initial contract) |
+| **Amended** | 2026-07-09 (semantic locks) |
 | **Date** | 2026-07-09 |
 | **Baseline** | `org-memory-p2-c2-complete` (Ontory `7241319` · ai-brain `8fbecae`) |
 | **Related** | ADR-0007 · ADR-0008 · ADR-0009 · ADR-0010 · ADR-0011 · FROZEN-BOUNDARY-BYPASS-POLICY |
@@ -233,19 +234,169 @@ Each vendor adapter:
 
 ---
 
+---
+
+## Amendment: Semantic Locks (2026-07-09)
+
+After P2-D.1 implementation (`org-memory-p2-d1-complete`), governance gate review identified contract surface frozen but **semantics not locked**. Before provider streaming (P2-D.3–5), freeze event lifecycle ordering, sequence semantics, cancellation state machine, and consumer contract.
+
+### 1. Event Lifecycle Ordering
+
+**Constraint:**
+
+```
+STARTED (mandatory, first non-terminal event)
+   |
+   ├─ METADATA? (optional, flexible position after started)
+   |
+   ├─ DELTA* (zero or more)
+   |     |
+   |     └─ METADATA? (optional, after delta stream)
+   |
+   └─ TERMINAL (exactly one: completed | failed | cancelled)
+```
+
+**Rules:**
+- `started` MUST be first non-terminal event
+- `metadata` MAY appear after `started` (early: model config, routing, budget)
+- `metadata` MAY appear after `delta*` (late: usage, performance)
+- `metadata` MUST NOT appear after terminal
+- `terminal` MUST be last event (no events after)
+- `terminal` exactly once per stream instance
+
+**Rationale:** Flexible metadata position accommodates providers sending execution metadata early (OpenAI model/routing) vs late (usage).
+
+### 2. Sequence Semantics
+
+**Rules:**
+- Sequence starts at `1` (human-friendly, matches most vendor APIs)
+- Strictly increasing: `event[i].sequence === i + 1` for all events in stream
+- No gaps within stream instance
+- Sequence belongs to **stream instance**, not execution identity
+- Retry → new stream instance → sequence resets to `1`
+
+**Example (retry scenario):**
+
+```
+executionId: "exec-123"
+  └─ stream attempt #1: seq 1,2,3,CANCELLED
+  └─ stream attempt #2: seq 1,2,3,4,COMPLETED  ✅ valid
+```
+
+**Runtime constraint:** MUST NOT emit out-of-order events  
+**Consumer constraint:** MUST handle out-of-order defensively (buffer/terminate/request replay)
+
+**Rationale:** SSE reconnect and network partitions mean consumers cannot always reject invalid ordering.
+
+### 3. Cancellation State Machine
+
+**FSM:**
+
+```
+ACTIVE
+   |
+   └─ cancel() called
+        |
+        ├─ if not terminal yet:
+        |    emit cancelled event → CANCELLED (terminal) → stream ends
+        |
+        └─ if terminal already emitted:
+             cancel() is no-op (idempotent)
+```
+
+**Forbidden:**
+
+```
+cancel()
+   ↓
+delta          ❌ INVALID (no events after cancel request)
+   ↓
+completed
+```
+
+**Allowed:**
+
+```
+delta
+   ↓
+completed
+   ↓
+cancel()       ✅ NO-OP (already terminal)
+```
+
+**`CancellationSignal` invariant:**
+- Cancellation callback MUST execute **at most once**
+- Multiple `cancel()` calls → idempotent (callback fires only on first)
+
+**Terminal race:**
+- If provider emits `completed` and user calls `cancel()` concurrently
+- First terminal event wins (deterministic ordering by sequence)
+
+### 4. Consumer Contract
+
+**Interface:**
+
+```typescript
+stream(
+  request: AIExecutionRequest,
+  requestId: string,
+  signal?: CancellationSignal
+): AsyncIterable<AIExecutionEvent>
+```
+
+**Consumer mandatory handling:**
+1. **Terminal detection:** Stop iteration after terminal event
+2. **Cancellation propagation:** Pass `CancellationSignal` to runtime
+3. **Defensive ordering:** Handle out-of-order events (buffer/terminate/replay)
+
+**Pattern:**
+
+```typescript
+for await (const event of runtime.stream(request, id, signal)) {
+  if (event.type === 'completed' || event.type === 'failed' || event.type === 'cancelled') {
+    break; // terminal
+  }
+  // process delta/metadata
+}
+```
+
+**Rationale:** `AsyncIterable` provides native JS runtime, natural backpressure, easy SSE/WebSocket/Queue mapping, no framework dependency.
+
+### 5. Completed Event Payload Flexibility
+
+**Adjustment:** Do not lock `completed.payload` to only `AIExecutionResponse`.
+
+**Proposed:**
+
+```typescript
+interface CompletedEventPayload {
+  response?: AIExecutionResponse;  // text completion (most common)
+  usage?: UsageMetadata;            // always present when available
+  metadata?: Record<string, unknown>; // execution context
+}
+```
+
+**Rationale:** Future execution types (tool execution, agent planning, multimodal) may not produce text response. Contract must not assume text-only completion.
+
+---
+
 ## Implementation waves (post-acceptance only)
 
-| Wave | Scope |
-|------|-------|
-| **P2-D** | This ADR — contract freeze ✅ |
-| **P2-D.1** | Runtime stream contract + lifecycle + stub stream path |
-| **P2-D.2** | Stub streaming adapter + stream conformance subject |
-| **P2-D.3** | OpenAI streaming adapter |
-| **P2-D.4** | Anthropic streaming adapter |
-| **P2-D.5** | Gemini streaming adapter |
-| **P2-D.6** | Cancellation validation — C-CAN MUST |
+| Wave | Scope | Status |
+|------|-------|--------|
+| **P2-D** | This ADR — contract freeze | ✅ ACCEPTED |
+| **P2-D.1** | Runtime stream contract + lifecycle + stub stream path | ✅ CLOSED |
+| **Gate Review** | Semantic locks (amendment above) | ✅ ACCEPTED |
+| **P2-D.2** | **Stream Lifecycle & Cancellation Conformance** | ⏳ NEXT |
+| | Expanded scope: cancellation state machine, race conditions, consumer tests, terminal guarantees | |
+| | Edge cases: cancel before/during/after events, double cancel, cancel+failure race | |
+| | Deliverable: semantic validation harness (stub only, no provider yet) | |
+| **P2-D.3** | OpenAI streaming adapter | 🔒 BLOCKED (awaiting P2-D.2) |
+| **P2-D.4** | Anthropic streaming adapter | 🔒 BLOCKED (awaiting P2-D.2) |
+| **P2-D.5** | Gemini streaming adapter | 🔒 BLOCKED (awaiting P2-D.2) |
+| **P2-D.6** | Cross-provider cancellation validation | 🔒 BLOCKED (awaiting P2-D.2) |
 
-No adapter streaming work before ADR-0012 Accepted. **Coding gate opens at P2-D.1 blueprint after governance commit on remote.**
+**Gate:** No provider streaming (P2-D.3–5) until P2-D.2 semantic conformance closed.
 
 ---
 
@@ -276,12 +427,17 @@ No adapter streaming work before ADR-0012 Accepted. **Coding gate opens at P2-D.
 - C-CAN gains a proper lifecycle home
 - Capability metadata has a neutral model before routing/orchestration
 - P2-C investment preserved — complete path stays conformance-gated
+- **Semantic locks prevent contract drift during provider implementation**
+- **Flexible metadata ordering accommodates diverse provider patterns**
+- **Cancellation state machine prevents race condition ambiguity**
 
 ### Tradeoffs
 
 - New port surface and conformance scenarios (stream catalog extension)
 - Higher upfront design cost vs `stream=true` shortcut
 - Tool streaming and orchestration deferred to later phases
+- **Consumer must handle out-of-order defensively (cannot always reject)**
+- **Sequence restart on retry requires consumer awareness of stream instance scope**
 
 ### Non-goals (P2-D ADR)
 
