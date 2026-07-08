@@ -113,6 +113,43 @@ export const EmbeddingJobSchema = z.object({
 
 export type EmbeddingJob = z.infer<typeof EmbeddingJobSchema>;
 
+export const EmbeddingJobStateSchema = z.enum([
+  'PENDING',
+  'RUNNING',
+  'RETRYING',
+  'FAILED',
+  'COMPLETED',
+  'CANCELLED',
+]);
+
+export type EmbeddingJobState = z.infer<typeof EmbeddingJobStateSchema>;
+
+export const EmbeddingErrorCategorySchema = z.enum([
+  'temporary_provider_failure',
+  'timeout',
+  'invalid_payload',
+  'corrupted_chunk',
+  'cancelled_job',
+  'unknown',
+]);
+
+export type EmbeddingErrorCategory = z.infer<typeof EmbeddingErrorCategorySchema>;
+
+export const EmbeddingJobExecutionSchema = z.object({
+  jobId: z.string().min(1),
+  chunkId: z.string().min(1),
+  state: EmbeddingJobStateSchema,
+  stateHistory: z.array(EmbeddingJobStateSchema).min(1),
+  attemptCount: z.number().int().nonnegative(),
+  retryable: z.boolean(),
+  resumable: z.boolean(),
+  errorCategory: EmbeddingErrorCategorySchema.optional(),
+  errorMessage: z.string().optional(),
+  completedAt: z.string().datetime().optional(),
+});
+
+export type EmbeddingJobExecution = z.infer<typeof EmbeddingJobExecutionSchema>;
+
 export const EmbeddingRecordSchema = z.object({
   embeddingId: z.string().min(1),
   chunkId: z.string().min(1),
