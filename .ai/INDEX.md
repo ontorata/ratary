@@ -72,6 +72,7 @@
 | AI-assisted workflow | [workflows/README.md](./workflows/README.md) · [AI-DEVELOPMENT-PROTOCOL.md](./workflows/AI-DEVELOPMENT-PROTOCOL.md) |
 | Session contract (Cursor) | [SESSION-BOOTSTRAP.md](./core/governance/SESSION-BOOTSTRAP.md) |
 | Cursor rule | `.cursor/rules/ontorata-execution-governance.mdc` |
+| Release management | [releases/RELEASE-PROCESS.md](./governance/releases/RELEASE-PROCESS.md) · [VERSIONING.md](./governance/releases/VERSIONING.md) · [CHANGELOG-POLICY.md](./governance/releases/CHANGELOG-POLICY.md) · [RELEASE-CHECKLIST.md](./governance/releases/RELEASE-CHECKLIST.md) |
 | Phase 4 evidence | [reviews/README.md](./reviews/README.md) |
 
 ---
