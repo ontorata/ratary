@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — W5 smoke complete (W1–W4 accepted) |
+| **Status** | Closed — milestone locked (`org-memory-p1-d-complete`) |
 | **Intent** | [ai-workspace-p1-d-intent.md](./ai-workspace-p1-d-intent.md) |
 | **Isolate** | [ai-workspace-p1-d-isolate.md](./ai-workspace-p1-d-isolate.md) |
 | **Implementation repo** | `Ontorata-Studio` |
@@ -38,12 +38,14 @@
   - [x] Task 19 — wire AI UI to pipeline + W4 guards
   - [x] Task 20 — `AIExecutionRequest` + comment-safe boundary guard
   - [x] Task 21 — W4 evidence proof
-- [x] Wave 5 — Integration evaluation (smoke then extended)
+- [x] Wave 5 — Integration evaluation (smoke; extended deferred)
   - [x] Task 22 — Future Runtime Compatibility note on W4 evidence
   - [x] Task 23 — smoke fixture + integration harness (5 scenarios)
   - [x] Task 24 — W5 smoke evidence proof
-  - [ ] Task 25 — extended corpus (deferred after smoke acceptance)
-- [ ] Wave 6 — Documentation and release closeout
+  - [x] Task 25 — extended corpus **DEFERRED** (not P1-D architectural gate)
+- [x] Wave 6 — Documentation and release closeout
+  - [x] Task 26 — P1-D acceptance + quality + release record
+  - [x] Task 27 — tag `org-memory-p1-d-complete`
 
 ---
 

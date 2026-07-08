@@ -1,5 +1,5 @@
 # P1-D AI Workspace — Forge Intent
-**Status:** Approved — locked for isolate/blueprint
+**Status:** Approved — locked · milestone CLOSED (`org-memory-p1-d-complete`)
 **Slug:** ai-workspace-p1-d-intent
 **Baseline:** `org-memory-p1-c-complete` @ `d1ddc1e`
 **Implementation repo:** `Ontorata-Studio` · branch `forge/ai-workspace-p1-d`

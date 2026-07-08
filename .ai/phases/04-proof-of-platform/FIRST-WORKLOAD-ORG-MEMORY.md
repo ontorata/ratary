@@ -147,5 +147,7 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P1-D W3 accepted (UI → orchestrator → ContextPackage)
 - ✅ P1-D W4 accepted (PromptAssembler → AIExecutionRequest → RuntimePort)
 - ✅ P1-D W5 smoke complete (5 pipeline scenarios · no live LLM)
-- ⏳ Next: P1-D W5 extended corpus (optional) atau W6 release closeout
+- ✅ P1-D W5 extended corpus **deferred** (not architectural gate)
+- ✅ P1-D closed · baseline `org-memory-p1-d-complete`
+- ⏳ Next phase options: Ontory Runtime · Ratary Intelligence · Studio productization
 

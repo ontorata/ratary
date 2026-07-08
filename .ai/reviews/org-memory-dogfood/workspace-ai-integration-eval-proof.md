@@ -5,7 +5,7 @@
 | **Milestone** | P1-D AI Workspace |
 | **Wave** | W5 — Integration evaluation (smoke) |
 | **Implementation repo** | `Ontorata-Studio` |
-| **Status** | Smoke suite green · extended corpus deferred |
+| **Status** | ✅ **ACCEPTED** · smoke green · extended corpus deferred (P1-D closed) |
 
 ---
 
@@ -74,4 +74,4 @@ After smoke stays green:
 
 ## Next
 
-W6 — documentation + release closeout (`org-memory-p1-d-complete`).
+P1-D closed (`org-memory-p1-d-complete`). Extended corpus remains optional quality work outside this baseline.
