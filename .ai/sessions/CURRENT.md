@@ -44,7 +44,7 @@
 - **Constitution amended:** Internal Proof Before Public Capability (2026-07-08)
 - **P0-A Identity Foundation:** ✅ **RELEASED** on origin (verified 2026-07-08)
 - **P0-B Engineering Governance:** ✅ **RELEASED** on origin · **FROZEN** (forge-land 2026-07-08)
-- **P1-A Org Memory Dogfood:** 🟢 Forge-execute active · Task 1–2 complete
+- **P1-A Org Memory Dogfood:** 🟢 Forge-execute active · Task 1–3 complete
 - **First workload (active):** Org Memory Dogfood — [FIRST-WORKLOAD-ORG-MEMORY.md](../phases/04-proof-of-platform/FIRST-WORKLOAD-ORG-MEMORY.md)
 
 ---
@@ -64,8 +64,8 @@
 
 ## What should happen next?
 
-1. **Execute Task 3** ingest runner + deterministic ingestion log
-2. **Execute Task 4–6** recall/evidence/metrics pack
+1. **Execute Task 4** recall harness (G2/G3/G4)
+2. **Execute Task 5–6** handoff automation + metrics pack
 3. **forge-prove** — evidence-first validation for G1–G6
 4. **Do not mutate P0** — [P0-BASELINE-CHANGE-POLICY.md](../core/constitution/P0-BASELINE-CHANGE-POLICY.md)
 
@@ -92,7 +92,7 @@ Repository: ai-brain (ratary)
 Branch:     forge/org-memory-dogfood @ 2cb59f2
 P0-A:       RELEASED · FROZEN ✅
 P0-B:       RELEASED · FROZEN ✅
-P1-A:       Forge-execute active · Task 1-2 complete
+P1-A:       Forge-execute active · Task 1-3 complete
 Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 ```
 
@@ -126,7 +126,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Forge intent | ✅ [org-memory-dogfood-intent.md](../designs/drafts/org-memory-dogfood-intent.md) |
 | Forge-isolate | ✅ [org-memory-dogfood-isolate.md](../designs/drafts/org-memory-dogfood-isolate.md) |
 | Blueprint | ✅ [org-memory-dogfood-plan.md](../designs/drafts/org-memory-dogfood-plan.md) approved |
-| Task progress | ✅ Task 1–2 complete |
+| Task progress | ✅ Task 1–3 complete |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

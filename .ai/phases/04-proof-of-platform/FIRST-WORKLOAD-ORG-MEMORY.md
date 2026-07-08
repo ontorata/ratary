@@ -114,5 +114,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 
 - ✅ Task 1: metadata activation (`intent` approved + `isolate` active)
 - ✅ Task 2: ingestion scope contract + evidence baseline (`ingestion-proof.md`)
-- ⏳ Next: Task 3 ingest runner + deterministic ingestion log schema
+- ✅ Task 3: ingest runner + deterministic ingestion log schema (`sync:org-memory`)
+- ⏳ Next: Task 4 recall evaluation harness (G2/G3/G4)
 

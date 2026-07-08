@@ -68,6 +68,7 @@
     "inspection:mine:execute": "tsx scripts/run-inspection-miner.ts --execute",
     "evolution:history": "tsx scripts/evolution-history.ts",
     "sync:status": "tsx scripts/sync-status.ts",
+    "sync:org-memory": "tsx scripts/sync-org-memory.ts",
     "steward:memories": "tsx scripts/steward-memories.ts",
     "steward:memories:execute": "tsx scripts/steward-memories.ts --execute",
     "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",
