@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Draft — awaiting owner approval |
+| **Status** | Approved — owner approval 2026-07-09 |
 | **Intent** | ADR-0012 Semantic Amendment (2026-07-09) |
 | **ADR** | ADR-0012 Accepted + Amended |
 | **Repo** | `ontory` (runtime validation only — no provider implementation) |
@@ -43,6 +43,12 @@ AIExecutionEvent Contract
 - Payload expansion
 - AsyncIterable contract changes
 - Transport layer (SSE/WebSocket)
+
+**API Surface Invariant:**
+
+> P2-D.2 MUST NOT introduce new public runtime API surface.
+
+**Rationale:** P2-D.2 is validation/conformance phase, not API evolution. Contract defined in P2-D.1, proven in P2-D.2, implemented in P2-D.3–5.
 
 ---
 
