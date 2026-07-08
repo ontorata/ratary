@@ -43,9 +43,9 @@
 
 - **Constitution amended:** Internal Proof Before Public Capability (2026-07-08)
 - **P0-A Identity Foundation:** ✅ **RELEASED** on origin (verified 2026-07-08)
-- **P0-B Engineering Governance:** 🟢 Intent Approved · Forge-Isolate Active
-- **First workload:** Engineering Governance — blueprint pending
-- **Not yet:** P0-B wave execution · production-scale dogfood ingest
+- **P0-B Engineering Governance:** ✅ **RELEASED** on origin (forge-land 2026-07-08 · PR #36)
+- **First workload:** Engineering Governance — **COMPLETE** · baseline frozen
+- **Not yet:** production-scale dogfood ingest
 
 ---
 
@@ -53,22 +53,20 @@
 
 | Priority | Item | Bucket |
 |----------|------|--------|
-| **P0** | P0-B forge-blueprint (6 waves) | Must Prove — **active** |
-| **P0** | P0-B wave execution | Must Prove — after blueprint approved |
+| **P0** | Ratary org-memory dogfood (ingest + MCP recall) | Must Prove — **first internal workload** |
 | **P0** | First external organization onboarded | Must Prove |
 | **P1** | ADR-012 tenant isolation integration tests | Must Prove |
 | **P1** | ADR-010 OTel Phase 1 | Must Enable |
 | **P1** | `production_workloads` + `production_organizations` metrics | Must Prove |
 | **P2** | Studio TTFW path (< 1h to first prod workload) | Must Enable |
-| **P1** | Ratary org-memory dogfood (ingest + MCP recall) | Must Prove — **first internal workload** |
 
 ---
 
 ## What should happen next?
 
-1. **P0-B forge-blueprint** — `engineering-governance-plan.md` (waves 1–6) · owner approval
-2. **P0-B forge-execute** — one wave at a time · evidence per wave · lock tags
-3. **Ratary dogfood loop** — production-scale ingest after P0-B acceptance gate passes
+1. **Ratary dogfood loop** — production-scale ingest on frozen P0-B baseline
+2. **First external organization onboarded** — Phase 4 proof gate
+3. **New milestones/waves** for governance evolution — do not mutate P0-B foundation
 4. **Do not start** feature sprawl · identity boundary changes without ADR
 
 ---
@@ -77,6 +75,7 @@
 
 | Do not | Why |
 |--------|-----|
+| Alter P0-B frozen governance foundation directly | Traceability · auditability — use new milestones |
 | Restructure `.ai/core/` folders | Structure frozen |
 | Add governance document types | Phase 4 execution focus |
 | Marketplace / Cloud before proof | Execution Contract sequence |
@@ -90,10 +89,10 @@
 
 ```
 Repository: ai-brain (ratary)
-Branch:     forge/engineering-governance @ dc2fa5e
+Branch:     main @ 9b5666a (post-merge)
 P0-A:       RELEASED on origin ✅
-P0-B:       6/6 waves LOCKED · tag pending push
-Pending:    forge-land → main · remote tag verify
+P0-B:       RELEASED on origin ✅ · FROZEN baseline
+PR:         #36 merged (no-ff)
 ```
 
 ---
@@ -109,13 +108,14 @@ Pending:    forge-land → main · remote tag verify
 | Tag | ✅ `identity-foundation-p0-a-complete` |
 | Remote sync | ✅ verified 2026-07-08 |
 
-### P0-B Engineering Governance — COMPLETE · forge-land pending
+### P0-B Engineering Governance — RELEASED ✅ · FROZEN
 
 | Stage | Status |
 |-------|--------|
 | Engineering (waves 1–6) | ✅ COMPLETE · LOCKED |
-| Tags on origin | ✅ `engineering-governance-p0-b-complete` @ `dc2fa5e` |
-| RELEASED on `main` | ⏳ pending forge-land |
+| Merge | ✅ `9b5666a` on origin (PR #36) |
+| Tag | ✅ `engineering-governance-p0-b-complete` @ `dc2fa5e` |
+| Remote sync | ✅ verified 2026-07-08 |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

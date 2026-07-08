@@ -1,19 +1,22 @@
 ---
 id: P0-B-ENGINEERING-GOVERNANCE
 phase: 04-proof-of-platform
-status: complete-pending-forge-land
-distribution: tags on origin · merge to main pending
+status: released
+distribution: verified on origin
 owner: Ontorata
 workload: Engineering Governance
 baseline_tag: identity-foundation-p0-a-complete
 baseline_commit: 2a57647
 forge_branch: forge/engineering-governance
+merged_to: main
+merge_commit: 9b5666a
 release_commit: dc2fa5e
 release_tag: engineering-governance-p0-b-complete
 alignment_commit: b06797a
 intent: engineering-governance-intent.md
 isolate: engineering-governance-isolate.md
 blueprint: engineering-governance-plan.md
+pull_request: 36
 updated: 2026-07-08
 ---
 
@@ -22,15 +25,38 @@ updated: 2026-07-08
 | Field | Value |
 |-------|-------|
 | **Milestone** | Engineering Governance (P0-B) |
-| **Engineering status** | ✅ **COMPLETE** · 🔒 LOCKED (6/6 waves) |
-| **Distribution status** | ⏳ **PENDING FORGE-LAND** — not RELEASED until on `main` |
+| **Engineering status** | ✅ **COMPLETE** · 🔒 LOCKED (6/6 waves) · **FROZEN baseline** |
+| **Distribution status** | ✅ **RELEASED** (verified on `origin`) |
 | **Category** | Operational foundation (not feature development) |
 | **Baseline** | P0-A RELEASED · `identity-foundation-p0-a-complete` @ `2a57647` |
-| **Forge branch** | `forge/engineering-governance` @ `b06797a` |
+| **Merge commit** | `9b5666a` — Merge pull request #36: forge-land P0-B Engineering Governance |
 | **Release commit** | `dc2fa5e` — Wave 6 constitution |
-| **Release tag (local/origin)** | `engineering-governance-p0-b-complete` → `dc2fa5e` |
+| **Release tag** | `engineering-governance-p0-b-complete` → `dc2fa5e` |
+| **Forge branch** | `forge/engineering-governance` (merged) |
 
-> **Rule:** Tag on forge branch ≠ RELEASED. RELEASED requires merge to `main` + remote verification per [RELEASE-PROCESS.md](./RELEASE-PROCESS.md).
+> **Frozen baseline:** No direct changes to P0-B governance foundation. Evolve via new milestones/waves only.
+
+---
+
+## Remote verification (2026-07-08)
+
+Verified on `https://github.com/ontorata/ratary.git`:
+
+| Ref | Expected | Remote |
+|-----|----------|--------|
+| `refs/tags/engineering-governance-p0-b-complete^{}` | `dc2fa5e` | ✅ `dc2fa5e9cdf4912ca9ef043411c64babb424fdf7` |
+| `refs/tags/engineering-governance-wave-1-locked` | immutable | ✅ present on origin |
+| `refs/tags/engineering-governance-wave-6-locked` | immutable | ✅ present on origin |
+| `refs/heads/main` | contains merge | ✅ `9b5666a` |
+
+Commands:
+
+```bash
+git ls-remote origin refs/tags/engineering-governance-p0-b-complete
+git ls-remote origin refs/heads/main
+```
+
+Wave lock tags are **immutable** — do not move or force-update.
 
 ---
 
@@ -43,7 +69,7 @@ updated: 2026-07-08
 | Final tag created | ✅ `engineering-governance-p0-b-complete` @ `dc2fa5e` |
 | Acceptance package | ✅ `.ai/reviews/engineering-governance/` |
 | CI (`npm test`, `ci:governance`) | ✅ 88/88 pass |
-| Branch `forge/engineering-governance` | ✅ Complete |
+| Forge-land PR #36 | ✅ merged (no-ff) |
 
 ---
 
@@ -62,32 +88,17 @@ Release alignment: `b06797a`
 
 ---
 
-## Forge-land gate (⏳ — required for RELEASED)
+## Forge-land gate (✅)
 
 | Step | Status |
 |------|--------|
-| Branch up-to-date with `main` | ⏳ verify before PR |
-| Pull Request → `main` | ⏳ |
-| Review complete | ⏳ |
-| CI green on PR (`ci:governance`) | ⏳ |
-| Merge to `main` (no-ff per P0-A pattern) | ⏳ |
-| Tag `engineering-governance-p0-b-complete` on `main` merge | ⏳ verify on origin |
-| Release record → **RELEASED on origin** | ⏳ |
-
-**After forge-land — update this record:**
-
-| Field | Value |
-|-------|-------|
-| **Distribution status** | ✅ **RELEASED** |
-| **Branch** | `main` |
-| **Authority baseline** | `.ai/core/constitution/` · tag `engineering-governance-p0-b-complete` |
-
-Verify:
-
-```bash
-git ls-remote origin refs/heads/main
-git ls-remote origin refs/tags/engineering-governance-p0-b-complete
-```
+| Branch up-to-date with `main` | ✅ |
+| Pull Request → `main` | ✅ PR #36 |
+| Review complete | ✅ |
+| CI green on PR (`ci:governance`) | ✅ |
+| Merge to `main` (no-ff per P0-A pattern) | ✅ `9b5666a` |
+| Tag `engineering-governance-p0-b-complete` on origin | ✅ @ `dc2fa5e` |
+| Release record → **RELEASED on origin** | ✅ this commit |
 
 ---
 
@@ -105,12 +116,12 @@ git ls-remote origin refs/tags/engineering-governance-p0-b-complete
 
 ---
 
-## Post-P0-B baseline (after RELEASED)
+## Post-P0-B baseline
 
 ```
 P0
 ├── P0-A  RELEASED  (identity-foundation-p0-a-complete)
-└── P0-B  RELEASED  (engineering-governance-p0-b-complete)
+└── P0-B  RELEASED  (engineering-governance-p0-b-complete)  ← FROZEN
 ```
 
 All subsequent work bases on P0-B — governance expands via new waves/milestones, not by altering locked foundation.
