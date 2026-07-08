@@ -28,12 +28,12 @@
 
 | ID | Criterion | Test | Pass |
 |----|-----------|------|------|
-| I1 | Identity present | Protected path without auth → 401 | ⬜ |
-| I2 | Owner resolved | `AuthUser.ownerId` on authenticated paths | ⬜ |
-| I3 | Organization resolved | `MemoryScope.organizationId` set | ⬜ |
-| I4 | Workspace resolved | `MemoryScope.workspaceId` set | ⬜ |
+| I1 | Identity present | Protected path without auth → 401 | ✅ Wave 5 E2E |
+| I2 | Owner resolved | `AuthUser.ownerId` on authenticated paths | ✅ Wave 2/5 |
+| I3 | Organization resolved | `MemoryScope.organizationId` set | ✅ Wave 2/5 |
+| I4 | Workspace resolved | `MemoryScope.workspaceId` set | ✅ Wave 2/5 |
 | I5 | Permissions enforced | `permission-enforcement.test.ts` | ✅ Wave 3 |
-| I6 | Studio session path | Studio → Auth → Ratary documented + tested | ⬜ |
+| I6 | Studio session path | `studio-identity-e2e.test.ts` + [studio-e2e-proof.md](./studio-e2e-proof.md) | ✅ Wave 5 |
 
 ## Authorization — same context
 
@@ -49,8 +49,8 @@
 |--------|------------------------|------|
 | REST | ✅ Wave 4 | ✅ |
 | MCP | ✅ Wave 4 | ✅ |
-| Memory | ⬜ | ⬜ |
-| Search | ⬜ | ⬜ |
+| Memory | ✅ Wave 5 E2E | ✅ |
+| Search | ✅ Wave 5 E2E | ✅ |
 | Metrics | ⬜ | ⬜ |
 
 ## Test commands
@@ -59,6 +59,7 @@
 npm test -- organization-isolation
 npm test -- workspace-boundary
 npm run test:identity
+npm run test:e2e
 ```
 
 ## Wave 1 result (2026-07-08)
@@ -72,4 +73,5 @@ npm run test:identity
 **Wave 2 identity context:** ✅ PASS (10 tests)  
 **Wave 3 authorization boundary:** ✅ PASS (11 tests) — checkpoint [WAVE-3-AUTHORIZATION.md](../../governance/waves/WAVE-3-AUTHORIZATION.md)  
 **Wave 4 transport parity:** ✅ PASS (14 tests) — checkpoint [WAVE-4-TRANSPORT-PARITY.md](../../governance/waves/WAVE-4-TRANSPORT-PARITY.md)  
-**Overall P0-A:** ⬜ IN PROGRESS (wave 5 pending)
+**Wave 5 Studio E2E:** ✅ PASS (7 E2E + 4 Studio unit) — checkpoint [WAVE-5-STUDIO-E2E.md](../../governance/waves/WAVE-5-STUDIO-E2E.md)  
+**Overall P0-A:** ✅ **COMPLETE**
