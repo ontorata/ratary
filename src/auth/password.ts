@@ -8,7 +8,7 @@ const KEY_LEN = 64;
 const SALT_LEN = 16;
 
 /** Server-side pepper — stolen DB hashes cannot be cracked without AUTH_SECRET. */
-function applyPepper(plaintext: string): string {
+function applyPepper(plaintext: string): Buffer {
   return createHmac('sha256', getAuthSecret()).update(`studio-pw-v1:${plaintext}`).digest();
 }
 
