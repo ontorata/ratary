@@ -146,7 +146,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Acceptance | ✅ `P1-B-ACCEPTANCE-REPORT.md` drafted |
 | Baseline lock | ✅ `org-memory-p1-b-complete` |
 
-### P1-C Retrieval / Recall Intelligence — Wave 2 complete 🟢
+### P1-C Retrieval / Recall Intelligence — Wave 3 complete 🟢
 
 | Stage | Status |
 |-------|--------|
@@ -155,8 +155,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Forge blueprint | ✅ approved |
 | Wave 1 | ✅ contracts + ADR-0006 + service skeleton |
 | Wave 2 | ✅ SQL + Knowledge providers (raw candidates only) |
-| Evidence | ✅ [recall-candidate-boundary-proof.md](../reviews/org-memory-dogfood/recall-candidate-boundary-proof.md) |
-| Next gate | Wave 3 — Ranking Intelligence (`RecallPolicy`) |
+| Wave 3 | ✅ `RecallPolicy` + auditable `RecallDecision` |
+| Evidence | ✅ [recall-ranking-boundary-proof.md](../reviews/org-memory-dogfood/recall-ranking-boundary-proof.md) |
+| Next gate | Wave 4 — Context Assembly Intelligence |
 
 Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 

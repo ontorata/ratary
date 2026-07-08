@@ -115,6 +115,21 @@ export const RecallTraceSchema = z.object({
 
 export type RecallTrace = z.infer<typeof RecallTraceSchema>;
 
+export const RecallSignalReasonSchema = z.object({
+  reason: z.string().min(1),
+  weight: z.number(),
+  contribution: z.number(),
+});
+export type RecallSignalReason = z.infer<typeof RecallSignalReasonSchema>;
+
+export const RecallDecisionCandidateOutcomeSchema = z.object({
+  candidateId: z.string().min(1),
+  outcome: z.enum(['selected', 'rejected_filter', 'rejected_rank', 'rejected_limit']),
+  reasons: z.array(RecallSignalReasonSchema),
+  score: z.number(),
+});
+export type RecallDecisionCandidateOutcome = z.infer<typeof RecallDecisionCandidateOutcomeSchema>;
+
 export const RecallDecisionSchema = z.object({
   requestId: z.string().min(1),
   policyVersion: z.string().min(1),
@@ -124,6 +139,16 @@ export const RecallDecisionSchema = z.object({
   confidenceSummary: z.string().min(1),
   traceId: z.string().min(1).optional(),
   rankingVersion: z.string().min(1).optional(),
+  candidateOutcomes: z.array(RecallDecisionCandidateOutcomeSchema).optional(),
+  policyExecution: z
+    .object({
+      policyName: z.string().min(1),
+      executionTimeMs: z.number().int().nonnegative(),
+      candidatesScored: z.number().int().nonnegative(),
+      candidatesSelected: z.number().int().nonnegative(),
+      primaryReason: z.string().min(1),
+    })
+    .optional(),
 });
 
 export type RecallDecision = z.infer<typeof RecallDecisionSchema>;

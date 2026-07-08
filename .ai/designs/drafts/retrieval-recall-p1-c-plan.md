@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Approved — Wave 2 complete |
+| **Status** | Approved — Wave 3 complete |
 | **Branch** | `forge/retrieval-recall-intelligence` |
 | **Intent** | [retrieval-recall-p1-c-intent.md](./retrieval-recall-p1-c-intent.md) |
 | **Isolate** | [retrieval-recall-p1-c-isolate.md](./retrieval-recall-p1-c-isolate.md) |
@@ -21,7 +21,8 @@
   - [x] Task 4 — SQL candidate provider adapter
   - [x] Task 5 — knowledge candidate provider adapter
   - [x] Task 6 — provider trace enrichment (orchestration remains ranking-free)
-- [ ] Wave 3 — Ranking Intelligence
+- [x] Wave 3 — Ranking Intelligence
+  - [x] Task 7 — RecallPolicy ranking layer + auditable RecallDecision
 - [ ] Wave 4 — Context Assembly Intelligence
 - [ ] Wave 5 — Recall Evaluation Proof
 

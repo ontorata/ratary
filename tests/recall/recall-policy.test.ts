@@ -270,6 +270,26 @@ describe('RecallPolicy (wave 3)', () => {
 
       expect(result.decision.confidenceSummary).toMatch(/high|medium|low/);
     });
+
+    it('candidateOutcomes explain selection and rejection with per-signal scores', async () => {
+      const policy = new RecallPolicy();
+      const candidates = [
+        makeCandidate('c1', { confidence: 0.9, source: 'sql' }),
+        makeCandidate('c2', { confidence: 0.8, source: 'knowledge' }),
+      ];
+      const candidateSet = makeCandidateSet(candidates);
+      const request = makeRequest({ tags: ['sql'], limit: 1 });
+
+      const result = await policy.applyPolicy(request, candidateSet);
+      const outcomes = result.decision.candidateOutcomes ?? [];
+
+      expect(outcomes).toHaveLength(2);
+      expect(outcomes.find((o) => o.candidateId === 'c1')?.outcome).toBe('selected');
+      expect(outcomes.find((o) => o.candidateId === 'c2')?.outcome).toBe('rejected_filter');
+      expect(outcomes.find((o) => o.candidateId === 'c1')?.reasons.length).toBeGreaterThan(0);
+      expect(result.decision.policyExecution?.policyName).toBe('confidence-recency-embedding');
+      expect(result.decision.policyExecution?.candidatesSelected).toBe(1);
+    });
   });
 
   describe('boundary — no mutation', () => {

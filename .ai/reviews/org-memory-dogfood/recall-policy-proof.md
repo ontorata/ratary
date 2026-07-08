@@ -106,3 +106,5 @@ No P1-B store schema mutations. No ranking in providers. No MCP transport change
 
 - `ContextPackage` assembly with token budget and source attribution
 - Bridge to existing `ContextService` without breaking `get_context` behavior
+
+See also: [recall-ranking-boundary-proof.md](./recall-ranking-boundary-proof.md) for explainable decision outcomes.

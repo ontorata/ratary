@@ -137,5 +137,6 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - 🟡 P1-C blueprint drafted: [retrieval-recall-p1-c-plan.md](../../designs/drafts/retrieval-recall-p1-c-plan.md)
 - ✅ P1-C blueprint approved + Wave 1 complete (contracts, ADR-0006, service skeleton)
 - ✅ P1-C Wave 2 complete (SQL + Knowledge candidate providers)
-- ⏳ Next: Wave 3 Ranking Intelligence
+- ✅ P1-C Wave 3 complete (`RecallPolicy` + auditable `RecallDecision`)
+- ⏳ Next: Wave 4 Context Assembly Intelligence
 
