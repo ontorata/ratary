@@ -8,7 +8,7 @@ workload: AI Workspace Pipeline Boundary
 baseline_tag: org-memory-p1-c-complete
 forge_branch: forge/ai-workspace-p1-d
 studio_head: 85cd066
-governance_head: 32ffd37
+governance_head: 87a338a
 closeout_tag: org-memory-p1-d-complete
 acceptance_manifest: .ai/reviews/org-memory-dogfood/P1-D-ACCEPTANCE.md
 proof_artifact: .ai/reviews/org-memory-dogfood/workspace-ai-integration-eval-proof.md
