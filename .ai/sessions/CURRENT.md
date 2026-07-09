@@ -169,18 +169,38 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-D Streaming** — separate wave |
 
-### P2-D.1 Runtime Stream Contract — Isolated & Ready
+### P2-D.3 OpenAI Streaming — CLOSED 🔒
+
+| Stage | Status |
+|-------|--------|
+| Baseline | ✅ `org-memory-p2-d2-complete` @ `9b63290` |
+| Branch | ✅ `forge/ontory-streaming-p2-d3-openai` (ontory) |
+| Blueprint | ✅ [ontory-streaming-p2-d3-openai-blueprint.md](../designs/drafts/ontory-streaming-p2-d3-openai-blueprint.md) — **Closed** |
+| Implementation | ✅ mapper · client stream port · adapter.stream · OpenAI D subject |
+| Gates | ✅ 191 passed · 4 skipped · typecheck · boundary |
+| Evidence | ✅ [P2-D-3-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-D-3-ACCEPTANCE.md) · [proof](../reviews/org-memory-dogfood/ontory-streaming-p2-d3-openai-proof.md) |
+| Release | ✅ [P2-D-3-ONTORY-OPENAI-STREAMING.md](../governance/releases/P2-D-3-ONTORY-OPENAI-STREAMING.md) |
+| Tag | ✅ `org-memory-p2-d3-complete` |
+| Codename | `TASK-0028` |
+| Next | **P2-D.4 Anthropic Streaming** from this baseline |
+
+### P2-D.2 Stream Lifecycle Conformance — CLOSED 🔒
+
+| Stage | Status |
+|-------|--------|
+| Tag | ✅ `org-memory-p2-d2-complete` @ `9b63290` |
+| Release | ✅ [P2-D-2-STREAM-LIFECYCLE-CONFORMANCE.md](../governance/releases/P2-D-2-STREAM-LIFECYCLE-CONFORMANCE.md) |
+| Role | Immutable semantic anchor for P2-D.3–5 |
+
+### P2-D.1 Runtime Stream Contract — CLOSED 🔒
 
 | Stage | Status |
 |-------|--------|
 | Gate | ✅ ADR-0012 Accepted · governance pushed |
-| Blueprint | ✅ [ontory-streaming-p2-d1-blueprint.md](../designs/drafts/ontory-streaming-p2-d1-blueprint.md) — **Approved** |
+| Blueprint | ✅ [ontory-streaming-p2-d1-blueprint.md](../designs/drafts/ontory-streaming-p2-d1-blueprint.md) — **Closed** |
 | Baseline | `org-memory-p2-c2-complete` @ `7241319` |
-| Branch | `forge/ontory-streaming-p2-d1` — **isolated, baseline green** |
-| Baseline gates | ✅ 92 tests passed · conformance 26 passed · typecheck · boundary |
-| Scope | Runtime contract layer — `AIExecutionEvent`, lifecycle FSM, stub stream, no vendor implementation |
-| Coding gate | ✅ **Open** — implementation may begin |
-| Next | Execute blueprint tasks P2-D.1.1–1.4 |
+| Branch | `forge/ontory-streaming-p2-d1` |
+| Scope | Runtime contract layer — `AIExecutionEvent`, lifecycle FSM, stub stream |
 
 ### P2-D Streaming & Execution Lifecycle — ADR Accepted 🔒
 
