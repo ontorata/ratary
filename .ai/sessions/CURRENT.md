@@ -169,6 +169,21 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-D Streaming** — separate wave |
 
+### P2-D.5 Gemini Streaming — CLOSED 🔒
+
+| Stage | Status |
+|-------|--------|
+| Baseline | ✅ `org-memory-p2-d4-complete` @ `8ded5d4` |
+| Branch | ✅ `forge/ontory-streaming-p2-d5-gemini` (ontory) |
+| Blueprint | ✅ [ontory-streaming-p2-d5-gemini-blueprint.md](../designs/drafts/ontory-streaming-p2-d5-gemini-blueprint.md) — **Closed** |
+| Implementation | ✅ mapper · client stream port · adapter.stream · Gemini D subject |
+| Gates | ✅ 271 passed · 4 skipped · typecheck · boundary |
+| Evidence | ✅ [P2-D-5-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-D-5-ACCEPTANCE.md) · [proof](../reviews/org-memory-dogfood/ontory-streaming-p2-d5-gemini-proof.md) |
+| Release | ✅ [P2-D-5-ONTORY-GEMINI-STREAMING.md](../governance/releases/P2-D-5-ONTORY-GEMINI-STREAMING.md) |
+| Tag | ✅ `org-memory-p2-d5-complete` @ `5813da0` |
+| Codename | `TASK-0030` |
+| Role | Completes OpenAI · Anthropic · Gemini streaming matrix under ADR-0012 |
+
 ### P2-D.4 Anthropic Streaming — CLOSED 🔒
 
 | Stage | Status |
@@ -182,7 +197,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release | ✅ [P2-D-4-ONTORY-ANTHROPIC-STREAMING.md](../governance/releases/P2-D-4-ONTORY-ANTHROPIC-STREAMING.md) |
 | Tag | ✅ `org-memory-p2-d4-complete` |
 | Codename | `TASK-0029` |
-| Next | **P2-D.5 Gemini Streaming** from this baseline |
+| Next | ✅ Unlocked **P2-D.5** (now closed) |
 
 ### P2-D.3 OpenAI Streaming — CLOSED 🔒
 

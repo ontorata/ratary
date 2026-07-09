@@ -16,10 +16,11 @@ Phase-level release markers with auditable wave chains, tags, and test evidence.
 | P2-D.2 Stream Lifecycle | ✅ semantic locks proven | ✅ **CLOSED** | `org-memory-p2-d2-complete` @ `9b63290` | `forge/ontory-streaming-p2-d2-lifecycle` |
 | P2-D.3 OpenAI Streaming | ✅ adapter stream + 13 P2-D scenarios | ✅ **CLOSED** | `org-memory-p2-d3-complete` @ `1202c5c` | `forge/ontory-streaming-p2-d3-openai` |
 | P2-D.4 Anthropic Streaming | ✅ adapter stream + 13 P2-D scenarios | ✅ **CLOSED** | `org-memory-p2-d4-complete` | `forge/ontory-streaming-p2-d4-anthropic` |
+| P2-D.5 Gemini Streaming | ✅ adapter stream + 13 P2-D scenarios | ✅ **CLOSED** | `org-memory-p2-d5-complete` | `forge/ontory-streaming-p2-d5-gemini` |
 
 **P2-C provider expansion series:** CLOSED — stub · openai · anthropic · gemini behind frozen ADR-0009 contract.
 
-**P2-D streaming:** ADR-0012 **Accepted** · P2-D.1–D.4 **CLOSED** · next **P2-D.5 Gemini Streaming**.
+**P2-D streaming:** ADR-0012 **Accepted** · P2-D.1–D.5 **CLOSED** — OpenAI · Anthropic · Gemini share one stream contract.
 
 **RC vs RELEASED:** Engineering complete + tags on forge branch ≠ RELEASED. Distribution completes only after merge to `main` and remote verification.
 
