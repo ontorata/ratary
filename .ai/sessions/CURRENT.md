@@ -169,6 +169,21 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-D Streaming** — separate wave |
 
+### P2-D.4 Anthropic Streaming — CLOSED 🔒
+
+| Stage | Status |
+|-------|--------|
+| Baseline | ✅ `org-memory-p2-d3-complete` @ `1202c5c` |
+| Branch | ✅ `forge/ontory-streaming-p2-d4-anthropic` (ontory) |
+| Blueprint | ✅ [ontory-streaming-p2-d4-anthropic-blueprint.md](../designs/drafts/ontory-streaming-p2-d4-anthropic-blueprint.md) — **Closed** |
+| Implementation | ✅ mapper · client stream port · adapter.stream · Anthropic D subject |
+| Gates | ✅ 232 passed · 4 skipped · typecheck · boundary |
+| Evidence | ✅ [P2-D-4-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-D-4-ACCEPTANCE.md) · [proof](../reviews/org-memory-dogfood/ontory-streaming-p2-d4-anthropic-proof.md) |
+| Release | ✅ [P2-D-4-ONTORY-ANTHROPIC-STREAMING.md](../governance/releases/P2-D-4-ONTORY-ANTHROPIC-STREAMING.md) |
+| Tag | ✅ `org-memory-p2-d4-complete` |
+| Codename | `TASK-0029` |
+| Next | **P2-D.5 Gemini Streaming** from this baseline |
+
 ### P2-D.3 OpenAI Streaming — CLOSED 🔒
 
 | Stage | Status |
@@ -180,9 +195,9 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Gates | ✅ 191 passed · 4 skipped · typecheck · boundary |
 | Evidence | ✅ [P2-D-3-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-D-3-ACCEPTANCE.md) · [proof](../reviews/org-memory-dogfood/ontory-streaming-p2-d3-openai-proof.md) |
 | Release | ✅ [P2-D-3-ONTORY-OPENAI-STREAMING.md](../governance/releases/P2-D-3-ONTORY-OPENAI-STREAMING.md) |
-| Tag | ✅ `org-memory-p2-d3-complete` |
+| Tag | ✅ `org-memory-p2-d3-complete` @ `1202c5c` |
 | Codename | `TASK-0028` |
-| Next | **P2-D.4 Anthropic Streaming** from this baseline |
+| Role | Immutable provider-streaming anchor for P2-D.4 |
 
 ### P2-D.2 Stream Lifecycle Conformance — CLOSED 🔒
 
