@@ -68,9 +68,7 @@ export function deriveLikeSafeSearchTerms(query: string, maxTerms = 12): string[
   }
 
   // Prefer longer tokens when capping — short stop-like tokens are less selective.
-  return unique
-    .sort((a, b) => b.length - a.length || a.localeCompare(b))
-    .slice(0, maxTerms);
+  return unique.sort((a, b) => b.length - a.length || a.localeCompare(b)).slice(0, maxTerms);
 }
 
 /**
@@ -91,9 +89,7 @@ export function buildColumnsSubstringMatch(
     return { sql: '0', params: [] };
   }
 
-  const groups = terms.map(
-    () => `(${columns.map((column) => `${column} LIKE ?`).join(' OR ')})`,
-  );
+  const groups = terms.map(() => `(${columns.map((column) => `${column} LIKE ?`).join(' OR ')})`);
   const sql = groups.length === 1 ? groups[0]! : `(${groups.join(' OR ')})`;
   const params: unknown[] = [];
 

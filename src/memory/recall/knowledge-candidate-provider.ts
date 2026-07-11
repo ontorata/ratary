@@ -1,9 +1,5 @@
 import type { ICandidateProvider } from './candidate-provider.port.js';
-import {
-  CandidateSetSchema,
-  type CandidateSet,
-  type RecallRequest,
-} from './recall-contracts.js';
+import { CandidateSetSchema, type CandidateSet, type RecallRequest } from './recall-contracts.js';
 import {
   buildRecallCandidateMetadata,
   recallCandidateId,
@@ -31,16 +27,13 @@ export type KnowledgeRecallRecord = {
 export class KnowledgeCandidateProvider implements ICandidateProvider {
   readonly providerName = 'knowledge';
 
-  constructor(
-    private readonly listRecords: (organizationId: string) => KnowledgeRecallRecord[],
-  ) {}
+  constructor(private readonly listRecords: (organizationId: string) => KnowledgeRecallRecord[]) {}
 
   async provideCandidates(request: RecallRequest): Promise<CandidateSet> {
     const started = Date.now();
     const returned = this.listRecords(request.organizationId);
     const scoped = returned.filter(
-      (record) =>
-        record.organizationId === request.organizationId && record.status === 'available',
+      (record) => record.organizationId === request.organizationId && record.status === 'available',
     );
 
     const limit = request.limit ?? scoped.length;

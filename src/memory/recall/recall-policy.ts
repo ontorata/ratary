@@ -39,11 +39,11 @@ export class RecallPolicy implements IRecallPolicy {
   ): Promise<{ rankedCandidates: RecallCandidate[]; decision: RecallDecision }> {
     const started = this.nowMs();
     const evaluationNow = started;
-    const { selected, rejected: filterRejected, filterReasons } = this.filterCandidates(
-      request,
-      candidateSet.candidates,
-      evaluationNow,
-    );
+    const {
+      selected,
+      rejected: filterRejected,
+      filterReasons,
+    } = this.filterCandidates(request, candidateSet.candidates, evaluationNow);
     const { ranked, scores } = this.rankCandidates(selected, evaluationNow);
     const limited = ranked.slice(0, request.limit ?? ranked.length);
     const selectedIds = new Set(limited.map((c) => c.candidateId));
@@ -210,7 +210,10 @@ export class RecallPolicy implements IRecallPolicy {
       // Filter-rejected if filterReasons contains a filter_ reason
       const reasons = filterReasons.get(c.candidateId) ?? [];
       const isFilterRejected = reasons.some(
-        (r) => r.reason.startsWith('tag_filter') || r.reason.startsWith('level_filter') || r.reason.startsWith('freshness_filter'),
+        (r) =>
+          r.reason.startsWith('tag_filter') ||
+          r.reason.startsWith('level_filter') ||
+          r.reason.startsWith('freshness_filter'),
       );
       // Selected if it passed filters AND is in the ranked+limited result
       const isInRanked = selected.some((s) => s.candidateId === c.candidateId);
@@ -262,8 +265,7 @@ export class RecallPolicy implements IRecallPolicy {
         ? selected.reduce((sum, c) => sum + (c.confidence ?? 0.5), 0) / selected.length
         : 0;
 
-    const confidenceBand =
-      avgConfidence >= 0.75 ? 'high' : avgConfidence >= 0.4 ? 'medium' : 'low';
+    const confidenceBand = avgConfidence >= 0.75 ? 'high' : avgConfidence >= 0.4 ? 'medium' : 'low';
 
     const selectedIds = selected.map((c) => c.candidateId);
     const rejectedIds = rejected.map((c) => c.candidateId);

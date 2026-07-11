@@ -2,11 +2,7 @@ import type { Memory } from '../../types/memory.js';
 import type { MemoryLevel } from '../../types/memory-level.js';
 import type { IRetrievalCandidateSource } from '../retrieval-candidate-source.interface.js';
 import type { ICandidateProvider } from './candidate-provider.port.js';
-import {
-  CandidateSetSchema,
-  type CandidateSet,
-  type RecallRequest,
-} from './recall-contracts.js';
+import { CandidateSetSchema, type CandidateSet, type RecallRequest } from './recall-contracts.js';
 import {
   buildRecallCandidateMetadata,
   recallCandidateId,

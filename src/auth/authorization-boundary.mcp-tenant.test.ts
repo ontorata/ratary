@@ -55,7 +55,14 @@ describe('authorizeMcpRemoteSession', () => {
     );
     await db.execute(
       `INSERT INTO workspaces (id, owner_id, name, slug, created_at, organization_id) VALUES (?, ?, ?, ?, ?, ?)`,
-      ['ws-explicit', 'owner-1', 'Explicit', 'explicit', '2026-01-01T00:00:00.000Z', 'org-explicit'],
+      [
+        'ws-explicit',
+        'owner-1',
+        'Explicit',
+        'explicit',
+        '2026-01-01T00:00:00.000Z',
+        'org-explicit',
+      ],
     );
 
     const enriched = await authorizeMcpRemoteSession(db, auth, {

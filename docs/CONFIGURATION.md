@@ -603,6 +603,8 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 **Built-in mitigation:** In-memory session store; capabilities manifest exposes `requiresPersistentHost: true`.  
 **Effects:** MCP protocol served over HTTP; OAuth discovery when OAuth enabled. See [GUIDE — ChatGPT](GUIDE.md#6-chatgpt).
 
+**Tenant headers:** Send both `X-Organization-Id` and `X-Workspace-Id` for explicit tenant scope (same contract as REST). Partial headers (only one) are rejected. When neither header is sent, remote MCP falls back to the owner's default organization/workspace — for hosts like ChatGPT that send `Authorization` only.
+
 ---
 
 ### OpenTelemetry traces
