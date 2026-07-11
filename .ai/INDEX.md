@@ -66,6 +66,11 @@
 
 | Concept | Document |
 |---------|----------|
+| Architecture principles | [ARCHITECTURE-PRINCIPLES.md](./core/architecture/ARCHITECTURE-PRINCIPLES.md) (PR-001 to PR-008) |
+| Architecture compliance | [ARCHITECTURE-COMPLIANCE.md](./governance/ARCHITECTURE-COMPLIANCE.md) (objective verification) |
+| Platform reference architecture | [ADR-2000](./core/adr/ADR-2000-platform-reference-architecture.md) (Phase P2 frozen baseline) |
+| Architecture evaluation | [AES-001](./governance/AES-001-architecture-evaluation-standard.md) · [ADR Template](./assets/templates/ADR-TEMPLATE.md) |
+| Architectural invariants | [INVARIANT-REGISTRY.md](./governance/INVARIANT-REGISTRY.md) (7 active invariants) |
 | Decision Horizon | [DECISION-HORIZON.md](./core/governance/DECISION-HORIZON.md) |
 | Change cost / authority | [DECISION-HORIZON.md](./core/governance/DECISION-HORIZON.md) · [CHANGE-AUTHORITY-MATRIX.md](./core/governance/CHANGE-AUTHORITY-MATRIX.md) |
 | Implementation Completion | [IMPLEMENTATION-COMPLETION-PROTOCOL.md](./core/governance/IMPLEMENTATION-COMPLETION-PROTOCOL.md) |

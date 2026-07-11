@@ -17,6 +17,7 @@
 | CI-04 | ADR impact | `npm run ci:adr-impact` | Architecture paths change without ADR in diff |
 | CI-05 | Docs / governance impact | `npm run ci:docs-impact` | Code changes without `docs/` or `.ai/` update |
 | CI-06 | Permission contract | `npm run ci:permission-contract` | PERMISSIONS drift or auth permission files change without ADR |
+| CI-07 | P1-A ingestion contract evidence | `rg "acceptance_gates|ingest_sources|operational_constraints" .ai/sync/ratary-sync-config.yaml` | P1-A ingest contract missing from sync config |
 
 ---
 
@@ -61,6 +62,22 @@ Warning-only legacy: `node scripts/ci/docs-impact-check.mjs origin/main --warn`
 When trigger files change → ADR signal required + identity tests must pass (CI-02).
 
 See [PERMISSION-CONTRACT.md](../../core/governance/PERMISSION-CONTRACT.md).
+
+---
+
+## CI-07 — P1-A ingestion contract evidence
+
+P1-A dogfood requires an auditable ingest scope before implementation of runners/evaluators.
+
+**Contract location:** `.ai/sync/ratary-sync-config.yaml` under `p1a_org_memory_contract`.
+
+**Minimum fields:**
+
+- `acceptance_gates`
+- `ingest_sources`
+- `operational_constraints`
+
+**Evidence artifact:** `.ai/reviews/org-memory-dogfood/ingestion-proof.md`
 
 ---
 

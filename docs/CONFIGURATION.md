@@ -132,6 +132,8 @@ Safe defaults. Enable only when you need the capability.
 **Before enabling:** Set `EMBEDDING_PROVIDER` and run embedding backfill first; expect modest retrieval latency increase.  
 **Effects:** `get_context` and related retrieval paths run SQL + vector legs and merge ranks. No effect on plain CRUD.
 
+**D1 note:** Cloudflare D1 limits LIKE/GLOB patterns to **50 bytes**. Long `get_context` / search queries are automatically split into shorter token terms so retrieval does not fail with `LIKE or GLOB pattern too complex`.
+
 **Related tuning:** `RETRIEVAL_POLICY`, `RETRIEVAL_POLICY_VERSION` (extension tracks).
 
 ---

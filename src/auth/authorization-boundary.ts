@@ -1,5 +1,6 @@
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { AuthUser } from './auth.types.js';
+import { ensureDefaultWorkspace } from '../scope/workspace-store.js';
 import {
   type Permission,
   type PermissionContext,
@@ -9,7 +10,7 @@ import {
   resolveRequiredPermission,
 } from './permission-context.js';
 import { attachTenantContextToAuthUser, resolveTenantContext } from './tenant-context.js';
-import { AppError, ForbiddenError } from '../types/errors.js';
+import { AppError, ForbiddenError, TenantContextRequiredError } from '../types/errors.js';
 
 /** Transport label for authorization audit — not a permission namespace. */
 export type AuthorizationTransport = 'REST' | 'MCP';
@@ -84,13 +85,63 @@ export async function resolveAuthorizedTenantContext(
   }
 }
 
-/** MCP remote session entry — tenant required before tool dispatch. */
+function headerPresent(
+  headers: Record<string, string | string[] | undefined>,
+  name: string,
+): boolean {
+  const raw = headers[name];
+  if (typeof raw === 'string') return raw.trim().length > 0;
+  if (Array.isArray(raw) && raw[0]) return raw[0].trim().length > 0;
+  return false;
+}
+
+/**
+ * MCP remote session entry — tenant required before tool dispatch.
+ * ChatGPT and many remote MCP hosts send only Authorization; when tenant
+ * headers are absent, fall back to the owner's default organization/workspace.
+ * Explicit X-Organization-Id + X-Workspace-Id still take precedence.
+ */
 export async function authorizeMcpRemoteSession(
   db: ISqlDatabase,
   auth: AuthUser,
   headers: Record<string, string | string[] | undefined>,
 ): Promise<AuthUser> {
-  return resolveAuthorizedTenantContext(db, auth, headers, 'MCP');
+  const hasExplicitTenant =
+    headerPresent(headers, 'x-organization-id') && headerPresent(headers, 'x-workspace-id');
+
+  if (hasExplicitTenant) {
+    return resolveAuthorizedTenantContext(db, auth, headers, 'MCP');
+  }
+
+  try {
+    const { workspace } = await ensureDefaultWorkspace(db, auth.ownerId);
+    if (!workspace.organizationId) {
+      throw new TenantContextRequiredError(
+        'Default workspace is missing organization — set X-Organization-Id and X-Workspace-Id',
+      );
+    }
+    const enriched = attachTenantContextToAuthUser(auth, {
+      organizationId: workspace.organizationId,
+      workspaceId: workspace.id,
+    });
+    recordAuthorizationAudit({
+      transport: 'MCP',
+      ...auditFieldsFromAuth(enriched),
+      permission: null,
+      decision: 'allow',
+      reason: 'tenant_default_fallback',
+    });
+    return enriched;
+  } catch (error) {
+    recordAuthorizationAudit({
+      transport: 'MCP',
+      ...auditFieldsFromAuth(auth),
+      permission: null,
+      decision: 'deny',
+      reason: error instanceof AppError ? error.code : 'tenant_denied',
+    });
+    throw error;
+  }
 }
 
 /**

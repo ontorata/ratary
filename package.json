@@ -29,6 +29,7 @@
     "ci:docs-impact": "node scripts/ci/docs-impact-check.mjs",
     "ci:adr-impact": "node scripts/ci/adr-impact-check.mjs",
     "ci:permission-contract": "node scripts/ci/permission-contract-check.mjs",
+    "ci:org-memory-acceptance": "node scripts/ci/org-memory-acceptance-check.mjs",
     "ci:governance": "npm test && npm run test:identity && npm run test:e2e && npm run ci:adr-impact && npm run ci:docs-impact && npm run ci:permission-contract",
     "format": "prettier --write \"src/**/*.ts\" \"api/**/*.ts\" \"scripts/**/*.ts\" \"packages/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"api/**/*.ts\" \"packages/**/*.ts\"",
@@ -68,6 +69,13 @@
     "inspection:mine:execute": "tsx scripts/run-inspection-miner.ts --execute",
     "evolution:history": "tsx scripts/evolution-history.ts",
     "sync:status": "tsx scripts/sync-status.ts",
+    "sync:org-memory": "tsx scripts/sync-org-memory.ts",
+    "eval:org-memory-recall": "tsx scripts/eval-org-memory-recall.ts",
+    "eval:recall-intelligence": "tsx scripts/eval-recall-intelligence.ts",
+    "ci:recall-intelligence-acceptance": "node scripts/ci/recall-intelligence-acceptance-check.mjs",
+    "trace:org-memory-handoff": "tsx scripts/forge/remember-org-memory.ts",
+    "metrics:org-memory": "tsx scripts/metrics/org-memory-usage.ts",
+    "proof:org-memory-wave5": "tsx scripts/proof/wave5-end-to-end-proof.ts",
     "steward:memories": "tsx scripts/steward-memories.ts",
     "steward:memories:execute": "tsx scripts/steward-memories.ts --execute",
     "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",
@@ -91,7 +99,8 @@
     "build:cli": "npm run build -w @ratary/cli",
     "build:mcp-server": "npm run build -w @ratary/mcp-server",
     "build:packages": "npm run build:sdk && npm run build:cli && npm run build:mcp-server",
-    "test:packages": "vitest run packages/sdk/tests tests/packages"
+    "test:packages": "vitest run packages/sdk/tests tests/packages",
+    "test:conformance": "node scripts/ci/provider-conformance-check.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1079.0",

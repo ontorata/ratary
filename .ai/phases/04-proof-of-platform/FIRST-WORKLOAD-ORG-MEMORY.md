@@ -5,7 +5,7 @@
 | **Authority** | Governance & Execution |
 | **Horizon** | Phase 4 → P1 |
 | **Owner** | Engineering + Product |
-| **Status** | **Proposed** — forge-intent pending approval |
+| **Status** | **Closed** — P1-A baseline locked on `forge/org-memory-dogfood` |
 | **Category** | Must Prove |
 | **Evidence package** | `.ai/reviews/org-memory-dogfood/` (create on isolate) |
 
@@ -52,7 +52,7 @@ Not: "Can we demo memory once?"
 | P0 Baseline Change Policy | ✅ [P0-BASELINE-CHANGE-POLICY.md](../../core/constitution/P0-BASELINE-CHANGE-POLICY.md) |
 | MCP connected (Cursor) | ✅ when available |
 | Sync config | ✅ [.ai/sync/ratary-sync-config.yaml](../../sync/ratary-sync-config.yaml) |
-| Forge intent approved | ⏳ [org-memory-dogfood-intent.md](../../designs/drafts/org-memory-dogfood-intent.md) |
+| Forge intent approved | ✅ [org-memory-dogfood-intent.md](../../designs/drafts/org-memory-dogfood-intent.md) |
 
 ---
 
@@ -92,9 +92,9 @@ Org Memory Dogfood
 
 | Milestone | Focus | Depends on |
 |-----------|-------|------------|
-| **P1-A** Org Memory Dogfood | Daily use proof | P0 ✅ |
-| P1-B Knowledge Ingestion | Pipeline hardening | P1-A |
-| P1-C Retrieval + Context | Quality + ranking | P1-B |
+| **P1-A** Org Memory Dogfood | Daily use proof | P0 ✅ · CLOSED |
+| **P1-B** Knowledge Ingestion | Pipeline hardening | P1-A ✅ locked |
+| **P1-C** Recall Intelligence | Contracts · ranking · context · evaluation | P1-B ✅ locked |
 | P1-D AI Workspace | User-facing surface | P1-C |
 
 Previous workload (complete): [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](./FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md)
@@ -104,6 +104,61 @@ Previous workload (complete): [FIRST-WORKLOAD-ENGINEERING-GOVERNANCE.md](./FIRST
 ## Forge chain
 
 Intent → [org-memory-dogfood-intent.md](../../designs/drafts/org-memory-dogfood-intent.md)  
-Isolate → `forge/org-memory-dogfood` (after approval)  
-Blueprint → TBD  
+Isolate → [org-memory-dogfood-isolate.md](../../designs/drafts/org-memory-dogfood-isolate.md) ✅  
+Blueprint → [org-memory-dogfood-plan.md](../../designs/drafts/org-memory-dogfood-plan.md) ✅ approved  
 Evidence → `.ai/reviews/org-memory-dogfood/`
+
+---
+
+## Execution progress (P1-A)
+
+- ✅ Task 1: metadata activation (`intent` approved + `isolate` active)
+- ✅ Task 2: ingestion scope contract + evidence baseline (`ingestion-proof.md`)
+- ✅ Task 3: ingest runner + deterministic ingestion log schema (`sync:org-memory`)
+- ✅ Task 4: recall evaluation harness with comparable metrics (`eval:org-memory-recall`)
+- ✅ Task 5: session handoff + MCP interaction trace automation (`trace:org-memory-handoff`)
+- ✅ Task 6: internal usage metrics pipeline (`metrics:org-memory`)
+- ✅ Task 7: acceptance gate pack + final evidence collection (`P1-A-ACCEPTANCE.md`)
+- ✅ Task 8: CI/non-regression guard + G4 remediation (`ci:org-memory-acceptance`)
+- ✅ Closeout: baseline locked with `org-memory-p1-a-complete`
+- ✅ P1-B intent approved: [knowledge-ingestion-p1-b-intent.md](../../designs/drafts/knowledge-ingestion-p1-b-intent.md)
+- ✅ P1-B isolate active: [knowledge-ingestion-p1-b-isolate.md](../../designs/drafts/knowledge-ingestion-p1-b-isolate.md)
+- ✅ P1-B blueprint drafted: [knowledge-ingestion-p1-b-plan.md](../../designs/drafts/knowledge-ingestion-p1-b-plan.md)
+- ✅ ADR accepted: [ADR-0005-knowledge-ingestion-pipeline.md](../../core/architecture/ADR-0005-knowledge-ingestion-pipeline.md)
+- ✅ Wave 1 foundation complete (contracts + ADR + schema)
+- ✅ Wave 2 pipeline core complete (normalizer + chunk + orchestrator)
+- ✅ Wave 3 embedding layer complete (job lifecycle + retry/resume + tests)
+- ✅ Wave 4 knowledge store + index update complete (versioned persistence + boundary adapter + recovery tests)
+- ✅ Wave 5 end-to-end proof complete (`WAVE-5-END-TO-END-PROOF.md`)
+- ✅ P1-B acceptance report drafted (`P1-B-ACCEPTANCE-REPORT.md`)
+- ✅ P1-B baseline locked (`org-memory-p1-b-complete`)
+- ✅ P1-C intent approved: [retrieval-recall-p1-c-intent.md](../../designs/drafts/retrieval-recall-p1-c-intent.md)
+- ✅ P1-C isolate active: [retrieval-recall-p1-c-isolate.md](../../designs/drafts/retrieval-recall-p1-c-isolate.md)
+- ✅ P1-C blueprint approved: [retrieval-recall-p1-c-plan.md](../../designs/drafts/retrieval-recall-p1-c-plan.md)
+- ✅ P1-C Wave 1 complete (contracts, ADR-0006, service skeleton)
+- ✅ P1-C Wave 2 complete (SQL + Knowledge candidate providers)
+- ✅ P1-C Wave 3 complete (`RecallPolicy` + auditable `RecallDecision`)
+- ✅ P1-C Wave 4 complete (ContextPackage assembler + token budget)
+- ✅ P1-C Wave 5 complete (evaluation harness + G1–G7 acceptance)
+- ✅ P1-C acceptance manifest (`P1-C-ACCEPTANCE.md`)
+- ✅ P1-C baseline locked (`org-memory-p1-c-complete`)
+- ✅ P1-D intent approved: [ai-workspace-p1-d-intent.md](../../designs/drafts/ai-workspace-p1-d-intent.md)
+- ✅ P1-D isolate active (Studio `forge/ai-workspace-p1-d`)
+- ✅ P1-D W3 accepted (UI → orchestrator → ContextPackage)
+- ✅ P1-D W4 accepted (PromptAssembler → AIExecutionRequest → RuntimePort)
+- ✅ P1-D W5 smoke complete (5 pipeline scenarios · no live LLM)
+- ✅ P1-D W5 extended corpus **deferred** (not architectural gate)
+- ✅ P1-D closed · baseline `org-memory-p1-d-complete`
+- ✅ Frozen Boundary Bypass Policy activated
+- ✅ ADR-0007 Ontory Runtime Kernel **Accepted** (separate `ontory` repo · REST · stub-first · stateless)
+- ✅ P2-A intent approved: [ontory-runtime-p2-a-intent.md](../../designs/drafts/ontory-runtime-p2-a-intent.md)
+- ✅ P2-A forge-isolate **ACCEPTED** (`ontory` · dispatcher · stub · REST · 4 tests PASS)
+- ✅ P2-A Task 7 — Studio `WorkspaceAiRuntimePort` → Ontory REST client (no in-process Ontory)
+- ✅ P2-A Task 8 — governance evidence pack · ADR-0007 DoD complete · [P2-A-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-A-ACCEPTANCE.md)
+- ✅ P2-A Task 9 — CLOSED · tag `org-memory-p2-a-complete` · release [P2-A-ONTORY-RUNTIME-KERNEL.md](../../governance/releases/P2-A-ONTORY-RUNTIME-KERNEL.md)
+- ✅ ADR-0008 **Accepted** · P2-B intent/isolate/blueprint OpenAI-only
+- ✅ P2-B Tasks 1–6 — OpenAI provider foundation (contract → mappers → thin adapter → config → REST)
+- ✅ P2-B Task 7 — Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) · Ontory `e63bb93`
+- ✅ P2-B Task 8 — CLOSED · tag `org-memory-p2-b-complete` · release [P2-B-ONTORY-PROVIDER-OPENAI.md](../../governance/releases/P2-B-ONTORY-PROVIDER-OPENAI.md)
+- ✅ P2-C.0 — Provider Conformance Harness · ADR-0009 **Accepted · Closed** · OpenAI+stub PASS snapshots (Anthropic/Gemini blocked until PASS remains preserved)
+- ⏳ Later: P2-C.1 Anthropic · P2-C.2 Gemini · P2-D Streaming (separate)

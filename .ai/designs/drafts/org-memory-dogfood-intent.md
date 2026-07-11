@@ -1,8 +1,8 @@
 ---
 id: ORG-MEMORY-DOGFOOD
 phase: 04-proof-of-platform
-stage: forge-intent
-status: Proposed — pending owner approval
+stage: forge-isolate
+status: Approved — isolate active
 owner: Ontorata
 workload: Org Memory Dogfood
 evidence_package: org-memory-dogfood
@@ -26,7 +26,7 @@ updated: 2026-07-08
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Proposed** — pending owner approval before forge-isolate |
+| **Status** | **Approved** — forge-isolate active |
 | **Slug** | `org-memory-dogfood` |
 | **Milestone** | P1-A |
 | **Phase** | 4 — Proof of Platform |
@@ -217,7 +217,7 @@ P1-D  AI Workspace
 
 ## Owner approval checklist
 
-- [ ] Objective and phase shift accepted
-- [ ] Scope / non-goals accepted
-- [ ] Acceptance gate G1–G6 accepted
-- [ ] Approve forge-isolate on `forge/org-memory-dogfood`
+- [x] Objective and phase shift accepted
+- [x] Scope / non-goals accepted
+- [x] Acceptance gate G1–G6 accepted
+- [x] Approve forge-isolate on `forge/org-memory-dogfood`

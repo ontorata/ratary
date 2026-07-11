@@ -14,6 +14,7 @@
 | [SECURITY-BOUNDARY.md](./SECURITY-BOUNDARY.md) | **Canonical** | Tenant isolation, auth boundary, permission contract |
 | [CHANGE-MANAGEMENT.md](./CHANGE-MANAGEMENT.md) | **Canonical** | ADR triggers, release process, migration governance |
 | [P0-BASELINE-CHANGE-POLICY.md](./P0-BASELINE-CHANGE-POLICY.md) | **Canonical** | P0-A/P0-B frozen baseline · permitted change classes |
+| [FROZEN-BOUNDARY-BYPASS-POLICY.md](./FROZEN-BOUNDARY-BYPASS-POLICY.md) | **Canonical** | No bypass of frozen Ratary/Studio/Ontory boundaries for convenience |
 
 **Organization:** ontorata · hello@ontorata.com
 

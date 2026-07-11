@@ -11,6 +11,26 @@ import {
   parseSearchFilterGrammar,
 } from '../search/precision/index.js';
 import { MEMORY_SELECT, RETRIEVAL_MEMORY_SELECT } from './memory-sql.constants.js';
+import { buildColumnsSubstringMatch } from './sql-substring-match.js';
+
+const SEARCH_QUERY_COLUMNS = [
+  'title',
+  'content',
+  'summary',
+  'project',
+  'codename',
+  'keywords',
+  'aliases',
+] as const;
+
+const RETRIEVAL_QUERY_COLUMNS = [
+  'title',
+  'content',
+  'summary',
+  'project',
+  'codename',
+  'keywords',
+] as const;
 
 /** Internal read SQL for memories (Phase 11C — ADR-019). */
 export class MemoryReaderSql implements IMemoryReader {
@@ -175,21 +195,9 @@ export class MemoryReaderSql implements IMemoryReader {
       return this.searchByProject(filters.project, filters);
     }
     if (filters.query) {
-      const conditions: string[] = [
-        'owner_id = ?',
-        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ? OR aliases LIKE ?)',
-      ];
-      const likePattern = `%${filters.query}%`;
-      const params: unknown[] = [
-        filters.ownerId,
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-      ];
+      const match = buildColumnsSubstringMatch(SEARCH_QUERY_COLUMNS, filters.query);
+      const conditions: string[] = ['owner_id = ?', match.sql];
+      const params: unknown[] = [filters.ownerId, ...match.params];
       appendWorkspaceFilter(conditions, params, filters.workspaceId);
 
       this.applyExtendedFilters(conditions, params, filters);
@@ -328,11 +336,9 @@ export class MemoryReaderSql implements IMemoryReader {
     }
 
     if (filters.query) {
-      conditions.push(
-        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ?)',
-      );
-      const likePattern = `%${filters.query}%`;
-      params.push(likePattern, likePattern, likePattern, likePattern, likePattern, likePattern);
+      const match = buildColumnsSubstringMatch(RETRIEVAL_QUERY_COLUMNS, filters.query);
+      conditions.push(match.sql);
+      params.push(...match.params);
     }
 
     if (filters.tags && filters.tags.length > 0) {
@@ -456,19 +462,9 @@ export class MemoryReaderSql implements IMemoryReader {
     }
 
     if (filters.query?.trim()) {
-      const likePattern = `%${filters.query.trim()}%`;
-      conditions.push(
-        '(title LIKE ? OR content LIKE ? OR summary LIKE ? OR project LIKE ? OR codename LIKE ? OR keywords LIKE ? OR aliases LIKE ?)',
-      );
-      params.push(
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-        likePattern,
-      );
+      const match = buildColumnsSubstringMatch(SEARCH_QUERY_COLUMNS, filters.query);
+      conditions.push(match.sql);
+      params.push(...match.params);
     } else if (filters.tag) {
       conditions.push('(tags LIKE ? OR keywords LIKE ?)');
       params.push(`%"${filters.tag}"%`, `%"${filters.tag}"%`);
