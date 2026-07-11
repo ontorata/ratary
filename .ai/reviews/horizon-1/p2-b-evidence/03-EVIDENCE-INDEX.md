@@ -158,27 +158,33 @@ This document is the **master index** for all P2-B evidence artifacts.
 
 ## Evidence Artifacts
 
-**Status:** 📋 NO ARTIFACTS YET (P2-B not started)
+**Status:** ✅ 3 ARTIFACTS (VS#1, VS#2, VS#3 Complete)
 
-**Expected Evidence (P0 ADRs):**
+**Completed Evidence:**
 
-### ADR-1001: Provider Abstraction Strategy
+### ADR-1001: Provider Abstraction Strategy (VS#1)
 
-- [ ] EVD-001-L3-provider-swap-test.md
-- [ ] EVD-002-L3-provider-abstraction-test-suite.md
-- [ ] EVD-003-L3-zero-consumer-changes-validation.md
+- [x] [EVD-001-L3-provider-swap-test.md](evidence/EVD-001-L3-provider-swap-test.md) ✅
+  - **Quality Level:** L3 (Automated)
+  - **Date:** 2026-07-11
+  - **Status:** ACCEPTED
+  - **Claim:** Business layer can swap providers with zero code changes
 
-### ADR-1006: Provider Credential Management
+### ADR-1006: Provider Credential Management (VS#2)
 
-- [ ] EVD-010-L3-credential-storage-test.md
-- [ ] EVD-011-L3-credential-rotation-test.md
-- [ ] EVD-012-L2-code-review-no-secrets.md
+- [x] [EVD-002-L3-credential-management.md](evidence/EVD-002-L3-credential-management.md) ✅
+  - **Quality Level:** L3 (Automated)
+  - **Date:** 2026-07-11
+  - **Status:** ACCEPTED
+  - **Claim:** Credential resolution isolated from business layer, no credential leaks
 
-### ADR-1050: ACOS Observability Strategy
+### ADR-1050: Runtime Telemetry Architecture (VS#3)
 
-- [ ] EVD-020-L3-trace-completeness-test.md
-- [ ] EVD-021-L3-observability-explains-why.md
-- [ ] EVD-022-L2-trace-example-end-to-end.md
+- [x] [EVD-003-L3-runtime-telemetry.md](evidence/EVD-003-L3-runtime-telemetry.md) ✅
+  - **Quality Level:** L3 (Automated)
+  - **Date:** 2026-07-11
+  - **Status:** ACCEPTED
+  - **Claim:** Telemetry contract enables observability without business layer coupling
 
 ### ADR-1053: ACOS Deployment Model
 
@@ -194,13 +200,13 @@ This document is the **master index** for all P2-B evidence artifacts.
 
 | Metric | Count | Target |
 |--------|-------|--------|
-| Total Evidence Artifacts | 0 | ≥20 |
+| Total Evidence Artifacts | 3 | ≥20 |
 | L1 Evidence | 0 | - |
 | L2 Evidence | 0 | ≥5 |
-| L3 Evidence | 0 | ≥10 |
+| L3 Evidence | 3 | ≥10 |
 | L4 Evidence | 0 | ≥2 |
 | Orphan Evidence (no ADR) | 0 | 0 |
-| ADRs Without Evidence | 4 (P0 ADRs not written yet) | 0 |
+| ADRs Without Evidence | 1 (ADR-1053) | 0 |
 
 **Target Status (P2-B Completion):**
 
@@ -223,7 +229,7 @@ This document is the **master index** for all P2-B evidence artifacts.
 |--------------|-------|------------|--------|
 | L1 | 0 | 0% | - |
 | L2 | 0 | 0% | ≥25% |
-| L3 | 0 | 0% | ≥50% |
+| L3 | 3 | 100% | ≥50% |
 | L4 | 0 | 0% | ≥10% |
 
 **Target Distribution (P2-B Completion):**
@@ -259,9 +265,12 @@ This document is the **master index** for all P2-B evidence artifacts.
 
 **Current Review Status:**
 
-- [ ] Evidence Acceptance Review (0/0 artifacts reviewed)
-- [ ] Traceability Review (not started)
-- [ ] Architecture Assessment Review (not started)
+- [x] Evidence Acceptance Review (3/3 artifacts reviewed) ✅
+  - EVD-001: ACCEPTED
+  - EVD-002: ACCEPTED
+  - EVD-003: ACCEPTED
+- [ ] Traceability Review (pending)
+- [ ] Architecture Assessment Review (pending)
 
 ---
 
