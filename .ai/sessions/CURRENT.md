@@ -177,7 +177,22 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Governance | ✅ ai-brain `cc93de1` |
 | Providers | ✅ OpenAI · Anthropic · Gemini → ADR-0012 → Consumer |
 | Invariant | **Contract first · Provider second** |
-| Next | **P2-E** — `forge-isolate` FROM `org-memory-p2-d5-complete` · preserve all P2-D invariants · kickoff pending |
+| Next | ✅ **P2-E CLOSED** — `org-memory-p2-e-complete` @ Ontory `4f8e2f2` |
+
+### P2-E Streaming Intelligence Layer — CLOSED 🔒
+
+| Stage | Status |
+|-------|--------|
+| Baseline | ✅ `org-memory-p2-d5-complete` @ `5813da0` |
+| Branch | ✅ `forge/ontory-streaming-p2-e-intelligence` (ontory) |
+| Blueprint | ✅ Streaming Intelligence Layer — **observer-only observation** |
+| Implementation | ✅ StreamObservation contract · StreamIntelligenceLayer · 23 unit tests |
+| Gates | ✅ 294 passed · 4 skipped · typecheck · boundary (271 P2-D + 23 P2-E) |
+| Evidence | ✅ [P2-E-ACCEPTANCE.md](../reviews/org-memory-dogfood/P2-E-ACCEPTANCE.md) · [proof](../reviews/org-memory-dogfood/ontory-streaming-p2-e-intelligence-proof.md) |
+| Tag | ✅ `org-memory-p2-e-complete` @ `4f8e2f2` |
+| Codename | `TASK-P2E` |
+| Role | First observation capability · P2-D contract preserved · failure-isolated |
+| Date | 2026-07-11 |
 
 ### P2-D.5 Gemini Streaming — CLOSED 🔒
 
