@@ -4,8 +4,9 @@
 **Phase:** P2-E Streaming Intelligence · Observation Layer  
 **Branch:** `forge/ontory-streaming-p2-e-intelligence` (ontory)  
 **Baseline:** `org-memory-p2-d5-complete` @ `5813da0`  
-**Tag:** `org-memory-p2-e-complete` (pending)  
+**Tag:** `org-memory-p2-e-complete` @ `4f8e2f2`  
 **ADR:** ADR-0012 (frozen) — **preserved unchanged**  
+**Architectural Constraints:** ADR-0013 (P2 Intelligence Layer Invariants)  
 **Codename:** `TASK-P2E`
 
 ---
