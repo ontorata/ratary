@@ -2,12 +2,12 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | **Accepted** |
-| **Accepted** | 2026-07-11 |
+| **Status** | **Intended Architectural Foundation** |
+| **Proposed** | 2026-07-11 |
 | **Date** | 2026-07-11 |
 | **Baseline** | `org-memory-p2-e-complete` (Ontory `4f8e2f2` · ai-brain `dc26a3d`) |
 | **Related** | ADR-0012 (Streaming & Execution Lifecycle) |
-| **Deciders** | Engineering · Product (owner) |
+| **Deciders** | Engineering (documented architectural principles) |
 | **Host repo** | `ontory` (runtime + observability) · `ai-brain` (governance) |
 | **Scope** | P2-E through P2-I (Intelligence evolution series) |
 | **Supersedes** | None — establishes new constraints |
@@ -396,8 +396,38 @@ Every intelligence phase (P2-F onward) MUST pass these gates:
 
 ---
 
-**Status:** Accepted  
+## Supersession Policy
+
+This ADR is intended to serve as the architectural foundation for future P2 intelligence phases (P2-F through P2-I). Future phases should preserve these invariants unless explicitly superseded through the project's formal ADR and governance process.
+
+Any superseding ADR MUST explain:
+
+1. **Why the invariant is no longer sufficient**
+   - Technical limitations discovered
+   - Architectural evolution required
+   - Performance constraints identified
+
+2. **Impact on previous phases**
+   - Which phases affected (P2-E, P2-F, etc.)
+   - Breaking changes required
+   - Migration complexity
+
+3. **Migration strategy**
+   - Backward compatibility plan
+   - Deprecation timeline
+   - Transition support
+
+4. **Compatibility implications**
+   - Consumer impact assessment
+   - Runtime modification scope
+   - Test coverage requirements
+
+**Governance:** Supersession requires formal acceptance through the project's ADR governance process and comprehensive evidence package.
+
+---
+
+**Status:** Intended architectural foundation  
 **Date:** 2026-07-11  
-**Authority:** Ontorata governance (owner approval)  
-**Scope:** P2-E through P2-I (all intelligence phases)  
-**Immutability:** These invariants are NON-NEGOTIABLE for P2 series
+**Authority:** Documented architectural principles (P2-E implementation evidence)  
+**Scope:** P2-E through P2-I (intelligence evolution phases)  
+**Evolution:** Supersedable through formal ADR governance process
