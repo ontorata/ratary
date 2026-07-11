@@ -106,10 +106,15 @@ export async function authorizeMcpRemoteSession(
   auth: AuthUser,
   headers: Record<string, string | string[] | undefined>,
 ): Promise<AuthUser> {
-  const hasExplicitTenant =
-    headerPresent(headers, 'x-organization-id') && headerPresent(headers, 'x-workspace-id');
+  const hasOrg = headerPresent(headers, 'x-organization-id');
+  const hasWorkspace = headerPresent(headers, 'x-workspace-id');
 
-  if (hasExplicitTenant) {
+  if (hasOrg && hasWorkspace) {
+    return resolveAuthorizedTenantContext(db, auth, headers, 'MCP');
+  }
+
+  if (hasOrg || hasWorkspace) {
+    // Partial tenant headers — same strict contract as REST (parity).
     return resolveAuthorizedTenantContext(db, auth, headers, 'MCP');
   }
 

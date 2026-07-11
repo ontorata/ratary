@@ -120,18 +120,6 @@ export async function registerRemoteMcpRoutes(
         if (!entry && isInitializeRequest(body)) {
           // Session id is assigned inside handleRequest — register via onsessioninitialized
           // (SDK example pattern). Setting sessions before handleRequest always misses the id.
-          let pendingEntry: McpRemoteSessionEntry | undefined;
-          const transport = new StreamableHTTPServerTransport({
-            sessionIdGenerator: () => randomUUID(),
-            onsessioninitialized: (id) => {
-              if (pendingEntry) {
-                sessions.set(id, pendingEntry);
-              }
-            },
-            onsessionclosed: (id) => {
-              sessions.delete(id);
-            },
-          });
           const server = createMcpServer(
             deps.handlers,
             bindingFactory(),
@@ -139,9 +127,17 @@ export async function registerRemoteMcpRoutes(
             deps.sql,
             { mcpTransport: 'streamable-http' },
           );
+          const transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: () => randomUUID(),
+            onsessioninitialized: (id) => {
+              sessions.set(id, { transport, server });
+            },
+            onsessionclosed: (id) => {
+              sessions.delete(id);
+            },
+          });
           await server.connect(transport);
-          pendingEntry = { transport, server };
-          entry = pendingEntry;
+          entry = { transport, server };
           if (transport.sessionId) {
             sessions.set(transport.sessionId, entry);
           }

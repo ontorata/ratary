@@ -13,7 +13,7 @@ import {
 import { PERMISSIONS } from '../../src/auth/permission-context.js';
 import { createOrganization } from '../../src/scope/organization-store.js';
 import { createWorkspace } from '../../src/scope/workspace-store.js';
-import { ForbiddenError, TenantContextRequiredError } from '../../src/types/errors.js';
+import { ForbiddenError } from '../../src/types/errors.js';
 import { SqliteMemoryDatabase } from './helpers/sqlite-memory-db.js';
 import { setupIdentityTestDatabase } from './helpers/setup-identity-db.js';
 
@@ -85,25 +85,21 @@ describe('authorization boundary (identity foundation wave 4)', () => {
     );
   });
 
-  it('requires tenant headers for MCP remote session authorization', async () => {
+  it('falls back to default workspace when MCP tenant headers are absent', async () => {
     const ownerId = randomUUID();
-    const org = await createOrganization(db, ownerId, { name: 'Org', slug: 'org' });
-    await createWorkspace(db, ownerId, {
-      organizationId: org.id,
-      name: 'Main',
-      slug: 'main',
-    });
-
     const auth = makeAuthUser(ownerId, ['memory.read']);
 
-    await expect(authorizeMcpRemoteSession(db, auth, {})).rejects.toBeInstanceOf(
-      TenantContextRequiredError,
-    );
+    const enriched = await authorizeMcpRemoteSession(db, auth, {});
+
+    expect(enriched.organizationId).toBeTruthy();
+    expect(enriched.workspaceId).toBeTruthy();
+    expect(enriched.ownerId).toBe(ownerId);
 
     expect(auditRecords).toContainEqual(
       expect.objectContaining({
         transport: 'MCP',
-        decision: 'deny',
+        decision: 'allow',
+        reason: 'tenant_default_fallback',
       }),
     );
   });
