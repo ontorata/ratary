@@ -8,7 +8,7 @@ workload: Ontory Anthropic Provider Integration
 baseline_tag: org-memory-p2-c0-complete
 forge_branch_ontory: forge/ontory-provider-anthropic-p2-c1
 ontory_head: 4b3e094
-governance_head: pending
+governance_head: 0640737
 closeout_tag: org-memory-p2-c1-complete
 adr: ADR-0010
 acceptance_manifest: .ai/reviews/org-memory-dogfood/P2-C-1-ACCEPTANCE.md

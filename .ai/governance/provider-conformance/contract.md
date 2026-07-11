@@ -2,9 +2,9 @@
 
 | Field | Value |
 |-------|-------|
-| **Status** | Draft — frozen against P2-B upon ADR-0009 Accept |
+| **Status** | Accepted — frozen against P2-B |
 | **Baseline** | `org-memory-p2-b-complete` |
-| **Authority** | ADR-0007 · ADR-0008 · ADR-0009 (Proposed) |
+| **Authority** | ADR-0007 · ADR-0008 · ADR-0009 (Accepted) |
 
 ---
 
@@ -75,6 +75,9 @@ P2-B port has no AbortSignal on `complete`. Harness scenario **C-CAN**:
 
 - Maps abort-like failures when adapters throw them
 - Full cooperative cancellation is **deferred** until a contract extension ADR (before or with P2-D)
+- Status: **deferred**
+- Reason: `ProviderRuntime` cancellation contract requires execution lifecycle support
+- Target: P2-D Streaming / execution lifecycle wave
 
 ---
 

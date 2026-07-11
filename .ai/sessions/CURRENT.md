@@ -169,6 +169,16 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release record | ✅ [P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md](../governance/releases/P2-C-0-ONTORY-PROVIDER-CONFORMANCE.md) |
 | Next | **P2-D Streaming** — separate wave |
 
+### P2-D Streaming Series — CLOSED 🔒 · IMMUTABLE
+
+| Stage | Status |
+|-------|--------|
+| Chain | ✅ `p2-d1` → `d2` → `d3` → `d4` → **`org-memory-p2-d5-complete`** @ Ontory `5813da0` |
+| Governance | ✅ ai-brain `cc93de1` |
+| Providers | ✅ OpenAI · Anthropic · Gemini → ADR-0012 → Consumer |
+| Invariant | **Contract first · Provider second** |
+| Next | **P2-E** — `forge-isolate` FROM `org-memory-p2-d5-complete` · preserve all P2-D invariants · kickoff pending |
+
 ### P2-D.5 Gemini Streaming — CLOSED 🔒
 
 | Stage | Status |
@@ -182,7 +192,7 @@ Policy:     P0-BASELINE-CHANGE-POLICY.md (canonical)
 | Release | ✅ [P2-D-5-ONTORY-GEMINI-STREAMING.md](../governance/releases/P2-D-5-ONTORY-GEMINI-STREAMING.md) |
 | Tag | ✅ `org-memory-p2-d5-complete` @ `5813da0` |
 | Codename | `TASK-0030` |
-| Role | Completes OpenAI · Anthropic · Gemini streaming matrix under ADR-0012 |
+| Role | Final P2-D series anchor · parent for P2-E |
 
 ### P2-D.4 Anthropic Streaming — CLOSED 🔒
 

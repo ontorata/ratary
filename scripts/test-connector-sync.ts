@@ -29,16 +29,13 @@ const live = process.argv.includes('--live');
 const connectorArg = arg('--connector') ?? 'notion';
 
 const CONFIG_HINTS: Record<ConnectorName, string> = {
-  notion:
-    'Set NOTION_API_TOKEN + KNOWLEDGE_FABRIC_ENABLED=true + CONNECTOR_SYNC_ENABLED=true.',
-  confluence:
-    'Set CONFLUENCE_BASE_URL, CONFLUENCE_EMAIL, CONFLUENCE_API_TOKEN + fabric flags.',
+  notion: 'Set NOTION_API_TOKEN + KNOWLEDGE_FABRIC_ENABLED=true + CONNECTOR_SYNC_ENABLED=true.',
+  confluence: 'Set CONFLUENCE_BASE_URL, CONFLUENCE_EMAIL, CONFLUENCE_API_TOKEN + fabric flags.',
   drive:
     'Set GOOGLE_DRIVE_CREDENTIALS_JSON (service account JSON) + optional GOOGLE_DRIVE_FOLDER_ID + fabric flags.',
   sharepoint:
     'Set SHAREPOINT_TENANT_ID, SHAREPOINT_CLIENT_ID, SHAREPOINT_CLIENT_SECRET, SHAREPOINT_SITE_ID + fabric flags.',
-  teams:
-    'Set Microsoft Graph creds + TEAMS_TEAM_ID + TEAMS_CHANNEL_ID + fabric flags.',
+  teams: 'Set Microsoft Graph creds + TEAMS_TEAM_ID + TEAMS_CHANNEL_ID + fabric flags.',
 };
 
 async function main(): Promise<void> {

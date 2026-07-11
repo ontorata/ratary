@@ -160,5 +160,5 @@ Evidence → `.ai/reviews/org-memory-dogfood/`
 - ✅ P2-B Tasks 1–6 — OpenAI provider foundation (contract → mappers → thin adapter → config → REST)
 - ✅ P2-B Task 7 — Evidence A1/A2 · [P2-B-ACCEPTANCE.md](../../reviews/org-memory-dogfood/P2-B-ACCEPTANCE.md) · Ontory `e63bb93`
 - ✅ P2-B Task 8 — CLOSED · tag `org-memory-p2-b-complete` · release [P2-B-ONTORY-PROVIDER-OPENAI.md](../../governance/releases/P2-B-ONTORY-PROVIDER-OPENAI.md)
-- ⏳ P2-C.0 — Provider Conformance Harness · ADR-0009 **Proposed** (Anthropic/Gemini blocked until PASS)
+- ✅ P2-C.0 — Provider Conformance Harness · ADR-0009 **Accepted · Closed** · OpenAI+stub PASS snapshots (Anthropic/Gemini blocked until PASS remains preserved)
 - ⏳ Later: P2-C.1 Anthropic · P2-C.2 Gemini · P2-D Streaming (separate)

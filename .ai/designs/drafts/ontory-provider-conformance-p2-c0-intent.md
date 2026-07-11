@@ -1,11 +1,11 @@
 # P2-C.0 Provider Conformance Harness — Forge Intent
-**Status:** Draft — pending ADR-0009 + owner approval  
+**Status:** Accepted — TASK-0020 owner approval recorded  
 **Slug:** ontory-provider-conformance-p2-c0-intent  
 **Baseline:** `org-memory-p2-b-complete`  
 **Branch (proposed):** `forge/ontory-provider-conformance-p2-c0` (ontory)  
 **Phase:** 04-proof-of-platform → Ontory provider track  
 **Category:** Must Enable (pre-wave)  
-**ADR:** [ADR-0009](../../core/architecture/ADR-0009-provider-conformance-harness.md) **Proposed**
+**ADR:** [ADR-0009](../../core/architecture/ADR-0009-provider-conformance-harness.md) **Accepted**
 
 ---
 
@@ -19,7 +19,7 @@ Core question:
 
 ---
 
-## Locked decisions (proposed)
+## Locked decisions
 
 | ID | Decision |
 |----|----------|
@@ -29,6 +29,8 @@ Core question:
 | D4 | Anthropic blocked until harness PASS |
 | D5 | Capability model & streaming **out of scope** |
 | D6 | Cancellation may be **deferred/probe** if port lacks AbortSignal |
+| D7 | Harness command is `npm run test:conformance` |
+| D8 | Stub required subset is C-RES / C-META / C-CFG |
 
 ---
 
@@ -52,11 +54,11 @@ Core question:
 
 ---
 
-## Open questions (blocking)
+## Open questions (resolved)
 
-1. Confirm **C-CAN** disposition: **deferred with note** vs expand port now (owner prefers defer)?  
-2. Confirm harness command name: `npm run test:conformance`?  
-3. Should stub run full matrix or only C-RES / C-META / C-CFG subset?
+1. **C-CAN** disposition: deferred with note; do not expand the port in P2-C.0.
+2. Harness command name: `npm run test:conformance`.
+3. Stub matrix: required subset C-RES / C-META / C-CFG; boundary scenarios may be included without full vendor simulation.
 
 ---
 
