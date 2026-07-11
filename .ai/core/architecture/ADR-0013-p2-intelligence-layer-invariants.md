@@ -14,6 +14,21 @@
 
 ---
 
+## Scope of Applicability
+
+**This ADR governs the intelligence architecture introduced after P2-E.**
+
+It does not retroactively redefine historical implementation decisions made prior to P2-E unless explicitly stated by a subsequent ADR.
+
+**Scope boundaries:**
+- ✅ **Applies to:** P2-E (Observation) through P2-I (possible future Autonomous Execution)
+- ❌ **Does NOT apply to:** P2-A through P2-D (pre-intelligence phases)
+- ✅ **Foundation:** P2-E implementation (`org-memory-p2-e-complete` @ `4f8e2f2`)
+
+**Temporal constraint:** Architectural decisions made in P2-A through P2-D remain governed by their original context and ADRs (e.g., ADR-0012 for streaming). This ADR introduces new constraints for intelligence evolution only.
+
+---
+
 ## Context
 
 P2-D established the frozen streaming execution contract (ADR-0012). P2-E added the first intelligence capability: **StreamIntelligenceLayer** (observation).
