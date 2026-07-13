@@ -78,9 +78,10 @@ export function buildBearerOnlyProtectedResourceMetadata(
 export function buildBearerOnlyUnauthorizedHeaders(): Record<string, string> {
   // Do not advertise resource_metadata — strict OAuth clients (Glama, ChatGPT) would
   // fetch PRM and fail when authorization_servers is absent. API-key auth is in server-card.
+  // Header values must be Latin-1/ASCII — Unicode (e.g. em-dash) crashes Node with ERR_INVALID_CHAR.
   return {
     'WWW-Authenticate':
-      'Bearer realm="ratary", error="invalid_token", error_description="API key required — see /.well-known/mcp/server-card.json"',
+      'Bearer realm="ratary", error="invalid_token", error_description="API key required - see /.well-known/mcp/server-card.json"',
   };
 }
 

@@ -29,6 +29,12 @@ describe('buildBearerOnlyUnauthorizedHeaders', () => {
     expect(headers['WWW-Authenticate']).not.toContain('resource_metadata');
     expect(headers['WWW-Authenticate']).toContain('server-card.json');
   });
+
+  it('uses ASCII-only WWW-Authenticate (Node rejects Unicode in headers)', () => {
+    const value = buildBearerOnlyUnauthorizedHeaders()['WWW-Authenticate'];
+    expect(value).toMatch(/^[\x20-\x7E]+$/);
+    expect(value).not.toMatch(/[^\x00-\x7F]/);
+  });
 });
 
 describe('buildMcpOAuthMetadataContext', () => {
