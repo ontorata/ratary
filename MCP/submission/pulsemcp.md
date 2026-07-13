@@ -18,7 +18,7 @@ Per quickstart:
 
 | Prerequisite | Ratary status |
 |--------------|---------------|
-| npm `mcpName` in package | `@ratary/mcp-server@1.1.1` → `io.github.ontorata/ratary` |
+| npm `mcpName` in package | `@ratary/mcp-server@1.1.3` → `io.github.ontorata/ratary` |
 | npm publish | [npmjs.com/package/@ratary/mcp-server](https://www.npmjs.com/package/@ratary/mcp-server) |
 | `server.json` | [official-registry.server.json](official-registry.server.json) |
 | `mcp-publisher login github` | Operator (ontorata) |

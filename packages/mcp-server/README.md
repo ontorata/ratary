@@ -3,11 +3,11 @@
 Stdio MCP server that proxies a **hosted** Ratary REST API via `@ratary/sdk@1.1.0`. Exposes a subset of tools compared to full in-repo stdio ([MCP/README.md](../../MCP/README.md)).
 
 ```bash
-npx @ratary/mcp-server@1.1.0
-# or: npm install -g @ratary/mcp-server@1.1.0 && ratary-mcp
+npx @ratary/mcp-server@1.1.3
+# or: npm install -g @ratary/mcp-server@1.1.3 && ratary-mcp
 ```
 
-**npm:** [@ratary/mcp-server@1.1.0](https://www.npmjs.com/package/@ratary/mcp-server)
+**npm:** [@ratary/mcp-server@1.1.3](https://www.npmjs.com/package/@ratary/mcp-server)
 
 ---
 

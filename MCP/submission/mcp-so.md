@@ -13,7 +13,7 @@ Submit at: **https://mcp.so/submit** or comment on [chatmcp/mcpso#1](https://git
 | **GitHub** | `https://github.com/ontorata/ratary` |
 | **MCP docs** | `https://github.com/ontorata/ratary/tree/main/MCP` |
 | **Install hub** | `https://github.com/ontorata/ratary/tree/main/docs/install` |
-| **npm** | `@ratary/mcp-server@1.1.1` |
+| **npm** | `@ratary/mcp-server@1.1.3` |
 | **Registry** | `io.github.ontorata/ratary` |
 | **License** | MIT |
 | **Category / tags** | Memory, Development, AI coding assistant |

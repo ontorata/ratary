@@ -84,7 +84,7 @@ Use these when you **do not** need to clone Ratary Server — e.g. custom agents
 
 ```bash
 npm install @ratary/sdk@1.1.0
-npx @ratary/mcp-server@1.1.0    # IDE → remote REST (see install/remote.md)
+npx @ratary/mcp-server@1.1.3    # IDE → remote REST (see install/remote.md)
 npm install -g @ratary/cli@1.1.0
 ```
 

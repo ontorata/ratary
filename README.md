@@ -152,7 +152,7 @@ Client libraries ship on npm under the **`@ratary`** scope — product name, pub
 
 ```bash
 npm install @ratary/sdk@1.1.0
-npx @ratary/mcp-server@1.1.0          # remote REST → stdio MCP
+npx @ratary/mcp-server@1.1.3          # remote REST → stdio MCP
 npm install -g @ratary/cli@1.1.0      # operator CLI
 ```
 
@@ -160,7 +160,7 @@ npm install -g @ratary/cli@1.1.0      # operator CLI
 |---------|---------|---------|------|
 | [`@ratary/sdk`](https://www.npmjs.com/package/@ratary/sdk) | **1.1.0** | `npm install @ratary/sdk` | Typed REST client + `client.admin.*` |
 | [`@ratary/cli`](https://www.npmjs.com/package/@ratary/cli) | **1.1.0** | `npm install -g @ratary/cli` | Operator commands (`admin`, `connectors`) |
-| [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) | **1.1.0** | `npx @ratary/mcp-server` | IDE MCP → hosted API |
+| [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) | **1.1.3** | `npx @ratary/mcp-server` | IDE MCP → hosted API |
 
 Set `RATARY_BASE_URL` and `RATARY_API_KEY` (`aic_...`). Details: **[packages/README.md](packages/README.md)** · [remote MCP install](docs/install/remote.md).
 
