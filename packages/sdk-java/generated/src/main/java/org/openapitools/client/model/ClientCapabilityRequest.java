@@ -51,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * ClientCapabilityRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-07-06T18:02:05.609025+07:00[Asia/Jakarta]", comments = "Generator version: 7.23.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.23.0")
 public class ClientCapabilityRequest {
   public static final String SERIALIZED_NAME_PROTOCOL_VERSION = "protocolVersion";
   @SerializedName(SERIALIZED_NAME_PROTOCOL_VERSION)

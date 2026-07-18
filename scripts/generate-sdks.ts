@@ -13,7 +13,7 @@ const TARGETS: Array<{ generator: string; outDir: string; extra?: string }> = [
   { generator: 'python', outDir: 'packages/sdk-python/generated' },
   { generator: 'java', outDir: 'packages/sdk-java/generated' },
   { generator: 'rust', outDir: 'packages/sdk-rust/generated' },
-  { generator: 'csharp', outDir: 'packages/sdk-csharp/generated' },
+  { generator: 'csharp', outDir: 'packages/sdk-csharp/generated', extra: '--additional-properties=packageGuid={C40293E8-76D5-4D22-937D-5ED05E2F5DCC}' },
   { generator: 'php', outDir: 'packages/sdk-php/generated' },
 ];
 
