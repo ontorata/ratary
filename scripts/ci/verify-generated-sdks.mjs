@@ -41,8 +41,11 @@ try {
 }
 
 const meaningful = normalizeDiff(rawDiff).replace(/^[+\-]\s*$/gm, '').trim();
+const hasMeaningfulChanges = meaningful
+  .split('\n')
+  .some((line) => (line.startsWith('+') || line.startsWith('-')) && !line.startsWith('+++') && !line.startsWith('---'));
 
-if (meaningful.length > 0) {
+if (hasMeaningfulChanges) {
   console.error('Generated SDK drift detected (after ignoring timestamps):\n');
   console.error(meaningful.slice(0, 8000));
   process.exit(1);
