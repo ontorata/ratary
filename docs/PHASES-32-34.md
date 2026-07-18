@@ -51,11 +51,14 @@ npx tsx scripts/test-connector-sync.ts --connector teams --url https://ratary.on
 
 | Item | Status | Action |
 |------|--------|--------|
-| Confluence/Drive/SharePoint creds in Vercel prod | ⏳ | `.env` → `vercel-production-env.ps1` → `vercel --prod` |
-| Universal fabric in prod | ⏳ | Flags + `db:migrate` + federation peers configured |
-| SDK codegen CI on GitHub | ⏳ | Push workflow per [SDK-CODEGEN-CI.md](SDK-CODEGEN-CI.md) |
-| ChatGPT OAuth | ⏳ | Provision DCR IdP (Keycloak/Okta) — [MCP-CHATGPT-OAUTH.md](MCP-CHATGPT-OAUTH.md) |
-| MCP directory PRs | ⏳ | [MCP/submission/directory-status.md](../MCP/submission/directory-status.md) |
+| Notion on Vercel prod | ✅ | Verified `supportsKnowledgeFabric: true` |
+| Universal fabric flags on Vercel | ✅ | `UNIVERSAL_MEMORY_FABRIC_ENABLED`, `FEDERATION_*` set |
+| D1 provenance migration | ✅ | `npm run db:migrate` (2026-07-18) |
+| Confluence/Drive/SharePoint/Teams creds in Vercel prod | ⏳ | Owner secrets → `vercel-production-env.ps1` |
+| Universal fabric federation peers | ⏳ | Configure `FEDERATION_PEERS_JSON` when peer nodes exist |
+| SDK codegen CI on GitHub | ✅ | Workflow + `verify-generated-sdks.mjs` |
+| ChatGPT OAuth IdP | ⏳ | Deploy Keycloak — `auth.ontorata.com` currently Vercel (404) |
+| MCP directory PRs | ⏳ | See [directory-status.md](../MCP/submission/directory-status.md) |
 | Glama ownership claim | ⏳ | Login as `lutfi04` |
 | Smithery API key | ⏳ | Rotate leaked key |
 | Neptune production smoke | ⏳ | Requires AWS Neptune cluster |

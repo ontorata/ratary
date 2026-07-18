@@ -43,12 +43,12 @@ OIDC_MCP_OWNER_ID=<ratary-owner-uuid>
 
 **Repo assets:** `infra/keycloak/` · `scripts/keycloak-up.ps1` · `scripts/keycloak-enable-dcr.ps1`
 
-**Credentials:** copy `infra/keycloak/.env.example` → `infra/keycloak/.env` (gitignored). Never commit realm users with plaintext passwords. Optional demo user: `scripts/keycloak-create-demo-user.ps1` reads `KC_DEMO_*` from `.env`.
+**Credentials:** copy `infra/keycloak/env.example` → `infra/keycloak/.env` (gitignored). Never commit realm users with plaintext passwords. Optional demo user: `scripts/keycloak-create-demo-user.ps1` reads `KC_DEMO_*` from `.env`.
 
 **Local + tunnel (dev / ChatGPT test):**
 
 ```powershell
-Copy-Item infra/keycloak/.env.example infra/keycloak/.env   # set KC_ADMIN_PASSWORD first
+Copy-Item infra/keycloak/env.example infra/keycloak/.env   # set KC_ADMIN_PASSWORD first
 .\scripts\keycloak-up.ps1
 npx localtunnel --port 8080   # note HTTPS URL
 $env:KC_HOSTNAME='<subdomain>.loca.lt'

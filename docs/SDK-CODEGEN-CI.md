@@ -44,4 +44,6 @@ jobs:
             packages/sdk-php/generated
 ```
 
-Local file: `.github/workflows/sdk-codegen.yml` (untracked in dev until pushed).
+Local file: `.github/workflows/sdk-codegen.yml` (on `main`).
+
+Verification ignores volatile `@Generated` timestamps via `scripts/ci/verify-generated-sdks.mjs`.

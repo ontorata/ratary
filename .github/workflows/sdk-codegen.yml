@@ -39,10 +39,4 @@ jobs:
         run: npm run generate:sdks
 
       - name: Verify generated SDKs match committed output
-        run: |
-          git diff --exit-code packages/sdk-go/generated \
-            packages/sdk-python/generated \
-            packages/sdk-java/generated \
-            packages/sdk-rust/generated \
-            packages/sdk-csharp/generated \
-            packages/sdk-php/generated
+        run: node scripts/ci/verify-generated-sdks.mjs

@@ -24,7 +24,7 @@ if (Test-Path $envFile) {
   }
 }
 if (-not $env:KC_ADMIN_PASSWORD) {
-  Write-Host 'Missing KC_ADMIN_PASSWORD. Copy infra/keycloak/.env.example to infra/keycloak/.env' -ForegroundColor Red
+  Write-Host 'Missing KC_ADMIN_PASSWORD. Copy infra/keycloak/env.example to infra/keycloak/.env' -ForegroundColor Red
   exit 1
 }
 Push-Location (Split-Path $compose)

@@ -434,12 +434,14 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 
 *What is shipping when?*
 
-Organized by direction — not sprints. Phases **1–31** are implemented in code (gates PASS); platform modules stay **opt-in via env** unless noted. **Repository scope** where work leaves `ontorata/ratary`.
+Organized by direction — not sprints. Phases **1–31** are implemented in code (gates PASS); platform modules stay **opt-in via env** unless noted.
 
-| | Themes | Primary repository |
-|---|--------|-------------------|
-| **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL, Docker, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (opt-in):** knowledge fabric (Notion/Confluence/Drive/SharePoint/Teams live), universal memory fabric (Phase 32), Neptune traversal (Phase 33), federation, global intelligence | `ontorata/ratary` |
-| **Ops (now)** | Prod connector creds, universal fabric + migration, MCP directories, ChatGPT OAuth IdP — [PHASES-32-34.md](docs/PHASES-32-34.md) · [directory-status.md](MCP/submission/directory-status.md) | `ontorata/ratary` |
+| | Themes | Code | Ops (prod) | Primary repository |
+|---|--------|:----:|:----------:|-------------------|
+| **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL, Docker, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (opt-in):** knowledge fabric (Notion/Confluence/Drive/SharePoint/Teams live), universal memory fabric (Phase 32), Neptune traversal (Phase 33), federation, global intelligence | ✅ | Partial | `ontorata/ratary` |
+| **Ops (now)** | Prod connector creds · universal fabric migrate · MCP directories · ChatGPT OAuth IdP | ✅ | ⏳ | `ontorata/ratary` |
+
+**Ops status (2026-07-18):** Notion + fabric flags on Vercel ✅ · D1 `db:migrate` ✅ · SDK codegen CI fixed ✅ · Confluence/Drive/SharePoint/Teams creds ⏳ (owner secrets) · Keycloak IdP ⏳ (`auth.ontorata.com` DNS → deploy Render) · MCP listings mostly **Listed** (see [directory-status.md](MCP/submission/directory-status.md)). Verify: `.\scripts\ops-verify-production.ps1` · [OPS-PRODUCTION-VERIFY.md](docs/OPS-PRODUCTION-VERIFY.md)
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean. See [ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) and [CONFIGURATION.md](docs/CONFIGURATION.md).
 

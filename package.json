@@ -32,6 +32,7 @@
     "ci:org-memory-acceptance": "node scripts/ci/org-memory-acceptance-check.mjs",
     "ci:governance": "npm test && npm run test:identity && npm run test:e2e && npm run ci:adr-impact && npm run ci:docs-impact && npm run ci:permission-contract",
     "ci:ratary-validation": "npm run lint && npm run ci:governance && npm run ci:org-memory-acceptance && npm run ci:recall-intelligence-acceptance && npm run sync:org-memory && npm run eval:org-memory-recall && npm run eval:recall-intelligence && npm run metrics:org-memory && npm run proof:org-memory-wave5",
+    "ops:verify-production": "powershell -ExecutionPolicy Bypass -File scripts/ops-verify-production.ps1",
     "format": "prettier --write \"src/**/*.ts\" \"api/**/*.ts\" \"scripts/**/*.ts\" \"packages/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"api/**/*.ts\" \"packages/**/*.ts\"",
     "format:dev": "prettier --write \"src/**/*.ts\" \"api/**/*.ts\" \"scripts/**/*.ts\" \"packages/**/*.ts\" \"tests/**/*.ts\"",
