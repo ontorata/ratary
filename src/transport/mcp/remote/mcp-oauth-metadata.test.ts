@@ -32,8 +32,8 @@ describe('buildBearerOnlyUnauthorizedHeaders', () => {
 
   it('uses ASCII-only WWW-Authenticate (Node rejects Unicode in headers)', () => {
     const value = buildBearerOnlyUnauthorizedHeaders()['WWW-Authenticate'];
-    expect(value).toMatch(/^[\x20-\x7E]+$/);
-    expect(value).not.toMatch(/[^\x00-\x7F]/);
+    expect([...value].every((ch) => ch.charCodeAt(0) <= 0x7f)).toBe(true);
+    expect(value).not.toMatch(/[^\u0020-\u007E]/);
   });
 });
 

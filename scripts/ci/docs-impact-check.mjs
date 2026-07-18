@@ -51,7 +51,7 @@ function matches(patterns, file) {
 
 const warnOnly = process.argv.includes('--warn');
 const baseRef =
-  process.argv.find((a) => !a.startsWith('-') && a !== process.argv[1]) ||
+  process.argv.slice(2).find((a) => !a.startsWith('-')) ||
   process.env.GITHUB_BASE_REF ||
   'origin/main';
 

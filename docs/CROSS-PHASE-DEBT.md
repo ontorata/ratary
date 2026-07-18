@@ -3,7 +3,7 @@
 > **Maintainer / internal register** — not required reading for installing or running Ratary.  
 > OSS users: see [CHANGELOG.md](../CHANGELOG.md) for release scope.
 
-Last updated: 2026-07-06
+Last updated: 2026-07-18
 
 ---
 
@@ -23,6 +23,7 @@ Last updated: 2026-07-06
 
 | Item | Owner action |
 |------|----------------|
+| Phase 4 operational proof (30-day · external org) | Run [RATARY-VALIDATION-RUNBOOK.md](RATARY-VALIDATION-RUNBOOK.md) weekly · collect usage evidence |
 | SDK codegen CI on GitHub | Push `.github/workflows/sdk-codegen.yml` — [SDK-CODEGEN-CI.md](SDK-CODEGEN-CI.md) |
 | ChatGPT MCP OAuth | Provision DCR-capable IdP — [MCP-CHATGPT-OAUTH.md](MCP-CHATGPT-OAUTH.md) |
 | MCP directory PRs | [MCP/submission/directory-status.md](../MCP/submission/directory-status.md) |

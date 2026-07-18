@@ -1,0 +1,26 @@
+---
+description: .ai/ is confidential private engineering workspace — never publish without explicit owner instruction
+alwaysApply: true
+---
+
+# Private `.ai/` Workspace Governance
+
+`.ai/` is Ontorata's **private engineering workspace**. It is **not** part of the public repository surface.
+
+## Rules
+
+1. **Never** add, move, or commit `.ai/` contents to Git without **explicit owner instruction**.
+2. **Never** copy ADRs, rationale, prompts, research, handoffs, or internal notes from `.ai/` into README, `docs/`, Wiki, or any public documentation unless **explicitly requested**.
+3. Treat `.ai/` as **confidential architecture knowledge** owned by Ontorata.
+4. Public repositories contain only: **implementation**, **public contracts**, and **documentation intentionally released**.
+5. If a change risks exposing `.ai/` content, **stop and ask for confirmation** before proceeding.
+
+## Public vs private
+
+| Private (`.ai/`) | Public (repo) |
+|------------------|---------------|
+| ADR drafts, governance, handoffs | Code, public API schemas |
+| Architecture rationale, research | Released docs only |
+| Session notes, verification reports | README when owner approves |
+
+Repository implementation wins for **code**; `.ai/` wins for **internal governance** until owner authorizes publication.
