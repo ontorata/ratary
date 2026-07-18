@@ -416,6 +416,7 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 | [docs/PRODUCTION-ENABLE.md](docs/PRODUCTION-ENABLE.md) | Hosted deploy — knowledge fabric on Vercel |
 | [docs/ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) | Enterprise flags (opt-in) |
 | [CHANGELOG.md](CHANGELOG.md) | Release notes and version map |
+| [docs/RATARY-VALIDATION-RUNBOOK.md](docs/RATARY-VALIDATION-RUNBOOK.md) | Maintainer validation — `npm run ci:ratary-validation` |
 | [SECURITY.md](SECURITY.md) | Vulnerability reporting |
 
 **Canonical hosted API:** `https://ratary.ontorata.com` (self-host uses your own base URL).
@@ -470,6 +471,18 @@ If you're building AI that lasts longer than a single prompt — **build on Rata
 *How do I contribute?*
 
 **Ratary Server** (this repo): fork [ontorata/ratary](https://github.com/ontorata/ratary) → branch → `npm run lint && npm run build && npm test` → PR to `ontorata/ratary`.
+
+**Standard PR gate:**
+
+```bash
+npm run lint && npm run build && npm test
+```
+
+**Org-memory / recall changes** (maintainers with `.ai/` workspace): run the full gate before merge — see [docs/RATARY-VALIDATION-RUNBOOK.md](docs/RATARY-VALIDATION-RUNBOOK.md):
+
+```bash
+npm run ci:ratary-validation
+```
 
 Extended governance (`.ai/` phases, ADRs) lives in the [development mirror](https://github.com/lutfi04/ai-brain) — optional for contributors; **docs-only and standard PRs to `ontorata/ratary` are welcome** without the mirror.
 
