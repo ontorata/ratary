@@ -94,7 +94,7 @@ npm install -g @ratary/cli@1.1.0
 | `RATARY_API_KEY` | `aic_...` from bootstrap or `npm run key:create` |
 | `RATARY_WORKSPACE_ID` | Optional workspace scope |
 
-Packages live on npm under scope **`@ratary`** ([npm org](https://www.npmjs.com/org/ratary)), maintained by Ontorata. **Current:** `@ratary/sdk`, `@ratary/cli`, `@ratary/mcp-server` **v1.1.0**. Full reference: [packages/README.md](../packages/README.md).
+Packages live on npm under scope **`@ratary`** ([npm org](https://www.npmjs.com/org/ratary)), maintained by Ontorata. **Current:** `@ratary/sdk` · `@ratary/cli` **v1.1.0** · `@ratary/mcp-server` **v1.1.3**. Full reference: [packages/README.md](../packages/README.md).
 
 ### Ontorata Studio (web console)
 

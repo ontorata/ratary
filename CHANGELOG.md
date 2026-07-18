@@ -10,11 +10,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 |----------|---------|-------|
 | **Ratary Server** (`package.json`) | `1.0.0` | This repo — REST + stdio MCP |
 | **OpenAPI SSOT** (`packages/openapi/ratary-v1.openapi.json`) | `1.1.0` | SDK / Custom GPT Actions |
-| **npm clients** (`@ratary/sdk`, `@ratary/cli`, `@ratary/mcp-server`) | `1.1.0` | Compatible with Server 1.0.x |
+| **npm clients** | `@ratary/sdk` · `@ratary/cli` **1.1.0** · `@ratary/mcp-server` **1.1.3** | Compatible with Server 1.0.x |
 | **Live `/docs/json`** | matches OpenAPI SSOT | After deploy |
 | **MCP directory manifest** (`MCP/server.json`) | `1.0.0` | Directory metadata; tools via npm `@1.1.0` |
 
-**Upgrade:** Pin server `1.0.x` with `@ratary/*@1.1.0`. No separate migration script required for first GA.
+**Upgrade:** Pin `@ratary/sdk@1.1.0`, `@ratary/cli@1.1.0`, `@ratary/mcp-server@1.1.3` with Server `1.0.x`. No separate migration script required for first GA.
 
 **Canonical production API host:** `https://ratary.ontorata.com` (self-host uses your own URL).
 

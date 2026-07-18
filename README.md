@@ -355,7 +355,7 @@ Self-host, deploy to Vercel, or run a control plane with metering and federation
 OpenTelemetry, Prometheus metrics, SLO dashboards, and cost visibility for production brains.
 
 ### Developer experience
-OpenAPI, npm **`@ratary/*@1.1.0`** — [`sdk`](https://www.npmjs.com/package/@ratary/sdk) (memory + **admin**), [`cli`](https://www.npmjs.com/package/@ratary/cli), [`mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) — and one-command IDE setup (`npm run setup`).
+OpenAPI, npm **`@ratary/sdk@1.1.0`** · **`@ratary/cli@1.1.0`** · **`@ratary/mcp-server@1.1.3`** — and one-command IDE setup (`npm run setup`).
 
 ### Knowledge fabric (opt-in)
 Ingest from external systems of record — **Notion** (live on [hosted prod](https://ratary.ontorata.com)), **Confluence**, **Google Drive**, **SharePoint**, and **Teams** connectors (code complete · enable per connector via env). Webhook HMAC, incremental sync, provenance on memories. Flags: `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guides: [Knowledge fabric](docs/GUIDE.md#12-knowledge-fabric-live-connectors) · [Production enable](docs/PRODUCTION-ENABLE.md) · [Phases 32–34](docs/PHASES-32-34.md).
@@ -442,7 +442,7 @@ Organized by direction — not sprints. Phases **1–31** are implemented in cod
 
 | | Themes | Code | Ops (prod) | Primary repository |
 |---|--------|:----:|:----------:|-------------------|
-| **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL, Docker, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (opt-in):** knowledge fabric (Notion/Confluence/Drive/SharePoint/Teams live), universal memory fabric (Phase 32), Neptune traversal (Phase 33), federation, global intelligence | ✅ | Partial | `ontorata/ratary` |
+| **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL, Docker, npm [`@ratary/sdk@1.1.0`](https://www.npmjs.com/package/@ratary/sdk) · [`@ratary/mcp-server@1.1.3`](https://www.npmjs.com/package/@ratary/mcp-server), remote MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (opt-in):** knowledge fabric (Notion/Confluence/Drive/SharePoint/Teams live), universal memory fabric (Phase 32), Neptune traversal (Phase 33), federation, global intelligence | ✅ | Partial | `ontorata/ratary` |
 | **Ops (now)** | Prod connector creds · MCP directory follow-ups · ChatGPT OAuth IdP (Keycloak) | ✅ | ⏳ | `ontorata/ratary` |
 
 **Ops status (2026-07-19):** Notion + fabric/federation flags on Vercel ✅ · D1 `db:migrate` ✅ · SDK codegen CI ✅ ([workflow](https://github.com/ontorata/ratary/actions/workflows/sdk-codegen.yml)) · Confluence/Drive/SharePoint/Teams creds ⏳ (owner secrets) · Keycloak IdP ⏳ (`auth.ontorata.com` → deploy Render; prod uses Smithery API-key mode until OAuth enabled) · MCP listings mostly **Listed** ([directory-status.md](MCP/submission/directory-status.md)). Verify: `npm run ops:verify-production` · [OPS-PRODUCTION-VERIFY.md](docs/OPS-PRODUCTION-VERIFY.md)

@@ -6,7 +6,7 @@
 |---------|-----------|
 | `1.0.x` (Ratary Server) | Yes |
 
-Client packages (`@ratary/sdk`, `@ratary/cli`, `@ratary/mcp-server`) at **1.1.0** are supported against Ratary Server **1.0.x**. See [CHANGELOG.md](CHANGELOG.md).
+Client packages `@ratary/sdk` and `@ratary/cli` at **1.1.0**, `@ratary/mcp-server` at **1.1.3** — supported against Ratary Server **1.0.x**. See [CHANGELOG.md](CHANGELOG.md).
 
 ## Reporting a vulnerability
 
