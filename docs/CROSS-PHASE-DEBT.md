@@ -29,7 +29,7 @@ Last updated: 2026-07-18
 | Phase 4 operational proof (30-day · external org) | Run [RATARY-VALIDATION-RUNBOOK.md](RATARY-VALIDATION-RUNBOOK.md) weekly · collect usage evidence |
 | **Prod connector creds** (Confluence · Drive · SharePoint · Teams) | Add to `.env` → `.\scripts\vercel-production-env.ps1` → `vercel --prod` |
 | **ChatGPT OAuth IdP** | Deploy `infra/keycloak` on Render · point `auth.ontorata.com` DNS away from Vercel → Keycloak · then `vercel-mcp-oauth-env.ps1` (conflicts with Smithery API-key mode — see [OPS-PRODUCTION-VERIFY.md](OPS-PRODUCTION-VERIFY.md)) |
-| MCP directory follow-ups | [MCP/submission/directory-status.md](../MCP/submission/directory-status.md) — awesome-mcp PR #9454 open · appcypher PR needs fork permissions · Cursor marketplace manual submit |
+| MCP directory follow-ups | [MCP/submission/directory-status.md](../MCP/submission/directory-status.md) — PulseMCP ✅ · awesome-mcp PR #9454 open · appcypher PR · Cursor marketplace manual submit |
 | Neptune IAM SigV4 | Optional hardening when cluster requires signed requests |
 | Dgraph adapter | Future graph phase (not proposed) |
 

@@ -36,15 +36,17 @@ Do **not** use `GET /v0/servers/{name}` — use the **search** endpoint above.
 
 ---
 
-## Step 2 — PulseMCP (auto-sync)
+## Step 2 — PulseMCP ✅ Listed
 
-After Official Registry listing is **active**, PulseMCP typically picks up the server within ~1 week (registry crawl cadence).
+**Live:** [pulsemcp.com/servers/ratary](https://www.pulsemcp.com/servers/ratary) (verified 2026-07-19)
+
+Ingested from Official Registry `io.github.ontorata/ratary` after registry publish (2026-07-06). No separate `mcp-publisher` step for PulseMCP.
 
 | Action | When |
 |--------|------|
-| Wait for auto-sync | Default — no form needed |
-| Expedite | Email **hello@pulsemcp.com** with server name `io.github.ontorata/ratary` + registry URL |
-| Manual form | [pulsemcp.com/submit](https://www.pulsemcp.com/submit) — only if not listed after ~7 days |
+| ~~Wait for auto-sync~~ | ✅ Done |
+| Expedite | Only if listing disappears or metadata stale — hello@pulsemcp.com |
+| Manual form | [pulsemcp.com/submit](https://www.pulsemcp.com/submit) — not needed while listed |
 
 ---
 
@@ -76,4 +78,4 @@ Reuse [mcpservers-org.md](mcpservers-org.md) fields:
 
 ## After listed on PulseMCP
 
-Update [directory-status.md](directory-status.md) with listing URL (e.g. `https://www.pulsemcp.com/servers/...`).
+✅ [directory-status.md](directory-status.md) updated — [https://www.pulsemcp.com/servers/ratary](https://www.pulsemcp.com/servers/ratary)
