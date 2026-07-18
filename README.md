@@ -193,8 +193,8 @@ Throughout this README, **Ratary MCP** means the official memory MCP implementat
          ┌─────────────────────┴─────────────────────┐
          ▼                     ▼                     ▼
    Ontorata MCP         Ontorata Studio          Ontory
-   ontorata/ontorata-mcp ontorata/Ontorata-Studio  (future · separate)
-   ecosystem product     ecosystem product         ecosystem product
+   ontorata/ontorata-mcp ontorata/Ontorata-Studio  ontorata/ontory
+   ecosystem product     ecosystem product         runtime kernel (separate)
 ```
 
 **Infrastructure** (ships from `ontorata/ratary` — server plus client packages):
@@ -212,7 +212,7 @@ Throughout this README, **Ratary MCP** means the official memory MCP implementat
 |---------|------------|------|
 | **Ontorata MCP** | [ontorata/ontorata-mcp](https://github.com/ontorata/ontorata-mcp) | Ecosystem MCP gateway — Ratary MCP plus additional Ontorata tools. |
 | **Ontorata Studio** | [ontorata/Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) | Operator UI — uses `@ratary/sdk` only. |
-| **Ontory** | Separate repo (future) | End-user AI assistant built on Ratary. |
+| **Ontory** | [ontorata/ontory](https://github.com/ontorata/ontory) | AI runtime kernel — provider execution on Ratary memory substrate. |
 
 Ratary Server **does not depend** on ecosystem product repositories.
 
@@ -358,7 +358,7 @@ OpenTelemetry, Prometheus metrics, SLO dashboards, and cost visibility for produ
 OpenAPI, npm **`@ratary/*@1.1.0`** — [`sdk`](https://www.npmjs.com/package/@ratary/sdk) (memory + **admin**), [`cli`](https://www.npmjs.com/package/@ratary/cli), [`mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) — and one-command IDE setup (`npm run setup`).
 
 ### Knowledge fabric (opt-in)
-Ingest from external systems of record — **Notion live connector** (Phase 29), webhook HMAC, incremental sync jobs, provenance on memories. Enable with `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guide: [docs/GUIDE.md — Knowledge fabric](docs/GUIDE.md#12-knowledge-fabric-live-connectors).
+Ingest from external systems of record — **Notion** (live on [hosted prod](https://ratary.ontorata.com)), **Confluence**, **Google Drive**, **SharePoint**, and **Teams** connectors (code complete · enable per connector via env). Webhook HMAC, incremental sync, provenance on memories. Flags: `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guides: [Knowledge fabric](docs/GUIDE.md#12-knowledge-fabric-live-connectors) · [Production enable](docs/PRODUCTION-ENABLE.md) · [Phases 32–34](docs/PHASES-32-34.md).
 
 ---
 
@@ -414,6 +414,10 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 | [packages/README.md](packages/README.md) | npm packages — install, env, publish |
 | [.env.example](.env.example) | Env template — meanings in [docs/CONFIGURATION.md](docs/CONFIGURATION.md) |
 | [docs/PRODUCTION-ENABLE.md](docs/PRODUCTION-ENABLE.md) | Hosted deploy — knowledge fabric on Vercel |
+| [docs/OPS-PRODUCTION-VERIFY.md](docs/OPS-PRODUCTION-VERIFY.md) | Production ops checklist — `npm run ops:verify-production` |
+| [docs/MCP-CHATGPT-OAUTH.md](docs/MCP-CHATGPT-OAUTH.md) | ChatGPT MCP OAuth + Keycloak IdP runbook |
+| [docs/PHASES-32-34.md](docs/PHASES-32-34.md) | Universal fabric · Neptune · enterprise connectors |
+| [MCP/submission/directory-status.md](MCP/submission/directory-status.md) | MCP directory listing status |
 | [docs/ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) | Enterprise flags (opt-in) |
 | [CHANGELOG.md](CHANGELOG.md) | Release notes and version map |
 | [docs/RATARY-VALIDATION-RUNBOOK.md](docs/RATARY-VALIDATION-RUNBOOK.md) | Maintainer validation — `npm run ci:ratary-validation` |
@@ -439,9 +443,9 @@ Organized by direction — not sprints. Phases **1–31** are implemented in cod
 | | Themes | Code | Ops (prod) | Primary repository |
 |---|--------|:----:|:----------:|-------------------|
 | **Today (v1.0)** | Ratary MCP + REST, hybrid/graph retrieval, peer SQL, Docker, npm [`@ratary/*@1.1.0`](https://www.npmjs.com/org/ratary), remote MCP, [Ontorata Studio](https://github.com/ontorata/Ontorata-Studio). **Platform (opt-in):** knowledge fabric (Notion/Confluence/Drive/SharePoint/Teams live), universal memory fabric (Phase 32), Neptune traversal (Phase 33), federation, global intelligence | ✅ | Partial | `ontorata/ratary` |
-| **Ops (now)** | Prod connector creds · universal fabric migrate · MCP directories · ChatGPT OAuth IdP | ✅ | ⏳ | `ontorata/ratary` |
+| **Ops (now)** | Prod connector creds · MCP directory follow-ups · ChatGPT OAuth IdP (Keycloak) | ✅ | ⏳ | `ontorata/ratary` |
 
-**Ops status (2026-07-18):** Notion + fabric flags on Vercel ✅ · D1 `db:migrate` ✅ · SDK codegen CI fixed ✅ · Confluence/Drive/SharePoint/Teams creds ⏳ (owner secrets) · Keycloak IdP ⏳ (`auth.ontorata.com` DNS → deploy Render) · MCP listings mostly **Listed** (see [directory-status.md](MCP/submission/directory-status.md)). Verify: `.\scripts\ops-verify-production.ps1` · [OPS-PRODUCTION-VERIFY.md](docs/OPS-PRODUCTION-VERIFY.md)
+**Ops status (2026-07-19):** Notion + fabric/federation flags on Vercel ✅ · D1 `db:migrate` ✅ · SDK codegen CI ✅ ([workflow](https://github.com/ontorata/ratary/actions/workflows/sdk-codegen.yml)) · Confluence/Drive/SharePoint/Teams creds ⏳ (owner secrets) · Keycloak IdP ⏳ (`auth.ontorata.com` → deploy Render; prod uses Smithery API-key mode until OAuth enabled) · MCP listings mostly **Listed** ([directory-status.md](MCP/submission/directory-status.md)). Verify: `npm run ops:verify-production` · [OPS-PRODUCTION-VERIFY.md](docs/OPS-PRODUCTION-VERIFY.md)
 
 Enterprise modules ship **opt-in via environment flags** on Ratary Server — defaults stay lean. See [ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) and [CONFIGURATION.md](docs/CONFIGURATION.md).
 
@@ -484,6 +488,12 @@ npm run lint && npm run build && npm test
 
 ```bash
 npm run ci:ratary-validation
+```
+
+**Production ops changes** (Vercel env, connectors, OAuth): see [docs/OPS-PRODUCTION-VERIFY.md](docs/OPS-PRODUCTION-VERIFY.md):
+
+```bash
+npm run ops:verify-production
 ```
 
 Extended governance (`.ai/` phases, ADRs) lives in the [development mirror](https://github.com/lutfi04/ai-brain) — optional for contributors; **docs-only and standard PRs to `ontorata/ratary` are welcome** without the mirror.
