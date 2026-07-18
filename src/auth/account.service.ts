@@ -14,6 +14,7 @@ import {
 import { emitAuthEvent } from './events.js';
 import { executeTransaction } from '../db/migrations.js';
 import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
+import { STUDIO_ACCOUNT_PERMISSIONS } from './auth.types.js';
 import { metadataToJson } from './identity.mapper.js';
 import { ensureDefaultWorkspace } from '../scope/workspace-store.js';
 
@@ -78,7 +79,7 @@ export class AccountService {
     const displayName = input.displayName?.trim() || email.split('@')[0] || 'User';
     const passwordHash = hashPassword(password);
     const metadata = metadataToJson({
-      permissions: ['memory.read', 'memory.write'],
+      permissions: [...STUDIO_ACCOUNT_PERMISSIONS],
       email,
       displayName,
       authProvider: 'native',
@@ -148,6 +149,11 @@ export class AccountService {
       throw new ForbiddenError('Account is disabled');
     }
 
+    await this.identities.updateMetadata(identity.id, {
+      ...identity.metadata,
+      permissions: [...STUDIO_ACCOUNT_PERMISSIONS],
+    });
+
     await this.guard.recordSuccess(email);
     await this.accounts.touchLogin(account!.id, nowISO());
 
@@ -174,7 +180,7 @@ export class AccountService {
       identityId: input.identityId,
       ownerId: input.ownerId,
       clientId: null,
-      permissions: ['memory.read', 'memory.write'],
+      permissions: [...STUDIO_ACCOUNT_PERMISSIONS],
       expiresInSec: ACCESS_TOKEN_TTL_SEC,
       jti: generateId(),
       audience: 'studio',

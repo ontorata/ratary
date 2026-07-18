@@ -33,3 +33,6 @@ tsconfig.check.json
 mcp-*.txt
 stderr.txt
 stdout.txt
+
+# Local pilot launcher (PILOT-001 / CDSB-001 — multi-repo dev helper)
+scripts/start-pilot.ps1

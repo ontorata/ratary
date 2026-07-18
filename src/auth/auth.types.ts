@@ -6,6 +6,13 @@ export type IdentityType = (typeof IDENTITY_TYPES)[number];
 
 export const DEFAULT_PERMISSIONS = ['memory.read', 'memory.write'] as const;
 
+/** Native Studio accounts — includes workspace listing for Organization/Workspaces UI. */
+export const STUDIO_ACCOUNT_PERMISSIONS = [
+  'memory.read',
+  'memory.write',
+  'workspace.read',
+] as const;
+
 export const identityMetadataSchema = z
   .object({
     permissions: z.array(z.string()).default([...DEFAULT_PERMISSIONS]),

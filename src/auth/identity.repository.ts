@@ -114,4 +114,11 @@ export class IdentityRepository {
       [newHash, id],
     );
   }
+
+  async updateMetadata(id: string, metadata: IdentityMetadata): Promise<void> {
+    await this.db.execute('UPDATE identities SET metadata = ? WHERE id = ?', [
+      metadataToJson(metadata),
+      id,
+    ]);
+  }
 }
