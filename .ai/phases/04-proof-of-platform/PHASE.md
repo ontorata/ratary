@@ -50,7 +50,7 @@ Phase 4
 ├── G-1 Governance Baseline          ✅
 ├── G-2 Engineering Readiness        ✅
 │
-├── G-3 Acquire First Design Partner ⏳  ← current blocking gate
+├── G-3 Acquire First Design Partner ⏳ OPEN  ← business acquisition phase
 │      ├─ Organization identified
 │      ├─ Mutual interest confirmed
 │      ├─ Pilot scope agreed
@@ -75,22 +75,38 @@ Phase 4
 | **Name** | Acquire First Design Partner |
 | **Owner** | Product + Business |
 | **Inputs** | Governance baseline (G-1) · pilot charter |
-| **Status** | ⏳ **In progress** — business development |
-| **Exit criteria** | Candidate identified · mutual interest confirmed · pilot scope agreed · executive sponsor identified |
+| **Status** | ⏳ **OPEN** — business acquisition phase (not passed) |
+| **Exit criteria** | Organization identified · mutual interest confirmed · pilot scope agreed · executive sponsor identified |
+| **Exit criteria status** | See table below — **none met yet** |
 | **Evidence** | Meeting notes · email / LOI / MoM · agreed pilot scope |
 | **Output** | Named organization → populate [PILOT-001 §3](./PILOT-001-EXTERNAL-PILOT-CHARTER.md#3-target-organization) |
 
-§3 remains **LOCKED** until G-3 passes. Do not fill charter §3 with placeholder or hypothetical organization names.
+**G-3 exit criteria audit (2026-07-18):**
+
+| Exit criterion | Status |
+|----------------|--------|
+| Organization identified | ❌ No official design partner yet |
+| Mutual interest confirmed | ❌ Not yet |
+| Pilot scope agreed | ❌ Not yet |
+| Executive sponsor identified | ❌ Not yet |
+
+**Reason:** No official design partner has been identified. G-3 is **open**, not failed — exit criteria simply not yet satisfied. This is not an engineering blocker.
+
+**Next objective:** Identify and secure the first official design partner. G-3 remains open until a real organization is identified and evidence (communication, meeting notes, or equivalent) demonstrates mutual intent to conduct a pilot.
+
+§3 remains **LOCKED** and **empty** until G-3 passes. Do not fill charter §3 with placeholder or hypothetical organization names.
 
 **Program state (2026-07-18):**
 
 | Item | Status |
 |------|--------|
+| G-1 Governance Baseline | ✅ |
+| G-2 Engineering Readiness | ✅ |
+| **G-3 Design Partner** | ⏳ **OPEN** |
 | Governance | READY |
 | Engineering | READY |
-| Business development | IN PROGRESS |
-| Current blocking gate | **G-3** |
-| §3 Target Organization | LOCKED (waiting G-3) |
+| Business acquisition | **OPEN** (no partner identified) |
+| §3 Target Organization | 🔒 LOCKED · **empty** (waiting G-3 pass) |
 | Phase Execution Contract | NOT YET ELIGIBLE |
 | Cursor | IDLE-BY-DESIGN |
 

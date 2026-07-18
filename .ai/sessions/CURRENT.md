@@ -494,8 +494,8 @@ Metadata convention: `.ai/workflow/FORGE-METADATA.md`
 | **Pre-pilot hardening** | ✅ `1abb6ba` — REST HTTP integration test, telemetry config tests, `npm run validate`, benchmark isolation |
 | **Tests** | 937 passed · 4 skipped (default `npm test`) |
 | **PILOT-001** | Governance **frozen** in `.ai/phases/04-proof-of-platform/` — **not committed** |
-| **Blocker** | **Gate G-3** — Acquire First Design Partner (Product + Business) |
-| **§3 Target Organization** | 🔒 LOCKED until G-3 passed — no hypothetical org names |
+| **Blocker** | **Gate G-3 OPEN** — no official design partner identified (Product + Business acquisition) |
+| **§3 Target Organization** | 🔒 LOCKED · **empty** until G-3 passed |
 
 **First action next session:** Owner provides §3 org candidate(s) → PILOT-001 worksheet Screening. No Product Track implementation before Promotion (ARCH-0044).
 

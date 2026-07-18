@@ -3,7 +3,7 @@
 | Field | Value |
 |-------|-------|
 | **Document Type** | External Pilot Charter (**normative**) |
-| **Status** | ✅ Structure approved · **G-3 in progress** — §3 locked until design partner acquired (§4–§5 pending) |
+| **Status** | ✅ Structure approved · **G-3 OPEN** — no official design partner yet; §3 locked and empty (§4–§5 pending) |
 | **Date** | 2026-07-18 |
 | **Owner** | _TBD — Product + Engineering + Business_ |
 | **Category** | **Must Prove** |
@@ -45,7 +45,7 @@ Evaluation history stays in the worksheet; the charter stays readable. Promote w
 |------|--------|
 | G-1 Governance Baseline | ✅ |
 | G-2 Engineering Readiness | ✅ |
-| **G-3 Acquire First Design Partner** | ⏳ **Blocking** |
+| **G-3 Acquire First Design Partner** | ⏳ **OPEN** — no partner identified |
 | §3 Target Organization | 🔒 Locked until G-3 passed |
 | §3 Promotion Gate | Not eligible |
 | Phase Execution Contract | Not eligible (Prerequisite: **G-3 Passed**) |
@@ -460,6 +460,7 @@ _Additive record of pilot decisions. Do not rewrite §2–§12 narrative — log
 | 2026-07-18 | Adopt working-artifact policy for §3 worksheet | Worksheet mutable during evaluation; charter normative; Decision Log additive | _Owner_ |
 | 2026-07-18 | Implement ARCH-0044 dual-track execution | Operational model + evidence scaffold + track boards; kickoff at Promotion; ARCH-0046 traceability enforced on Product Track | _Owner_ |
 | 2026-07-18 | Promote partner acquisition to explicit **Gate G-3** | Business development incomplete; §3 locked until real design partner acquired; no hypothetical org names; READY ≠ AUTHORIZED for Cursor | _Owner_ |
+| 2026-07-18 | Clarify G-3 as **OPEN** business acquisition | No official design partner; all G-3 exit criteria unmet; §3 remains empty; focus = acquire first partner, not validate existing candidate | _Owner_ |
 | | | | |
 
 ---

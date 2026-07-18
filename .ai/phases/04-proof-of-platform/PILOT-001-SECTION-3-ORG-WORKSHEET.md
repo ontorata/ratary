@@ -5,7 +5,7 @@
 | **Document class** | **Working artifact** (temporary — not normative) |
 | **Parent** | [PILOT-001-EXTERNAL-PILOT-CHARTER.md](./PILOT-001-EXTERNAL-PILOT-CHARTER.md) §3 |
 | **Purpose** | Compare candidates — choose org most likely to produce **Phase 4 evidence** |
-| **Status** | Draft — **blocked on Gate G-3** (do not select until design partner acquired) |
+| **Status** | Draft — **G-3 OPEN** (no official partner; do not populate §3) |
 | **Date** | 2026-07-18 |
 
 ---
