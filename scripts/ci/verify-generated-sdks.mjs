@@ -20,9 +20,10 @@ function normalizeDiff(text) {
       if (!line.startsWith('+') && !line.startsWith('-')) return true;
       const body = line.slice(1);
       if (/date\s*=/.test(body)) return false;
+      if (/Build date:/i.test(body)) return false;
       if (/Generated on:/i.test(body)) return false;
       if (/User-Agent:/i.test(body)) return false;
-      if (/^\+{3}|^-{3}|^\\|^@/.test(line)) return true;
+      if (/inputSpec:/i.test(body)) return false;
       return true;
     })
     .join('\n')
