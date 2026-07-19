@@ -281,6 +281,11 @@ const envSchema = z
       .string()
       .default('relevance:1,recency:1,reactivation:1,connectivity:1,importance:1'),
 
+    // Idempotent write semantics (PI-C / ADR-067). TTL is a CLEANUP policy,
+    // not a correctness guarantee: idempotency is guaranteed while the intent
+    // record exists (C5). Expired intents are pruned by stewardship.
+    WRITE_INTENT_TTL_DAYS: z.coerce.number().positive().default(30),
+
     // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
     GRPC_ENABLED: z
       .enum(['true', 'false'])

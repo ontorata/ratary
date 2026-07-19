@@ -1003,6 +1003,41 @@ export async function migrateMemoryDecayPhase1(
   }
 }
 
+/**
+ * PI-C — idempotent write semantics (ADR-067).
+ *
+ * Ledger of client-supplied write intents. The composite PRIMARY KEY
+ * (owner_id, request_id) is the synchronization point for idempotent
+ * creates: the first INSERT claims the request, every later INSERT with
+ * the same key fails the constraint and is resolved as a replay.
+ *
+ * Invariant: `resource_id` is the canonical identifier allocated exactly
+ * once per (owner_id, request_id). All retries MUST reuse it and never
+ * allocate a new one. `status` (claimed → completed) is observability
+ * only — recovery never depends on it.
+ */
+const MEMORY_WRITE_INTENTS_SQL = `
+CREATE TABLE IF NOT EXISTS memory_write_intents (
+  owner_id TEXT NOT NULL,
+  request_id TEXT NOT NULL,
+  operation TEXT NOT NULL,
+  resource_type TEXT NOT NULL,
+  resource_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'claimed',
+  created_at TEXT NOT NULL,
+  PRIMARY KEY (owner_id, request_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_memory_write_intents_created
+  ON memory_write_intents(created_at);
+`;
+
+export async function migrateIdempotentWritesPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(MEMORY_WRITE_INTENTS_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Extension track 8.6 — learning events + policy snapshots (ADR-057). */
 export async function migrateExtensionTracksPhase2(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(LEARNING_TABLES_SQL)) {
@@ -1201,6 +1236,7 @@ export async function runSchemaMigrations(
   await migrateExtensionTracksPhase8(client);
   await migratePrecisionSearchPhase1(client, dialect);
   await migrateMemoryDecayPhase1(client, dialect);
+  await migrateIdempotentWritesPhase1(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
