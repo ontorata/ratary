@@ -39,9 +39,20 @@ export interface IWriteIntentStore {
   /** Mark the resource creation as finished. Observability only. */
   markCompleted(ownerId: string, requestId: string): Promise<void>;
 
-  /** TTL cleanup (C5) — deletes the owner's intents created before the cutoff; returns count. */
-  deleteExpired(ownerId: string, olderThanIso: string): Promise<number>;
+  /**
+   * TTL cleanup (C5) — deletes the owner's COMPLETED intents created before
+   * the cutoff; returns count. CLAIMED intents are never bulk-deleted: the
+   * cleanup task resolves each one individually (memory exists ⇒ resolvable
+   * ⇒ deleteByRequestId; memory missing ⇒ true orphan ⇒ kept and reported).
+   */
+  deleteExpiredCompleted(ownerId: string, olderThanIso: string): Promise<number>;
 
-  /** Dry-run counterpart of deleteExpired. */
-  countExpired(ownerId: string, olderThanIso: string): Promise<number>;
+  /** Dry-run counterpart of deleteExpiredCompleted. */
+  countExpiredCompleted(ownerId: string, olderThanIso: string): Promise<number>;
+
+  /** Expired intents still in `claimed` status, for individual resolution. */
+  listExpiredClaimed(ownerId: string, olderThanIso: string): Promise<WriteIntent[]>;
+
+  /** Targeted delete of a single resolved intent. */
+  deleteByRequestId(ownerId: string, requestId: string): Promise<void>;
 }

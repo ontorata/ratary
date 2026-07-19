@@ -62,7 +62,11 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
   const orchestrator = new MemoryStewardshipOrchestrator(
     [
       new MetadataAuditTask(repository),
-      new WriteIntentCleanupTask(new SqlWriteIntentStore(sql), env.WRITE_INTENT_TTL_DAYS),
+      new WriteIntentCleanupTask(
+        new SqlWriteIntentStore(sql),
+        repository,
+        env.WRITE_INTENT_TTL_DAYS,
+      ),
       new ConsolidationTask(consolidator),
       new GraphRepairTask(relationInference.orchestrator, relationInference.enabled),
       new EmbeddingAuditTask(repository),

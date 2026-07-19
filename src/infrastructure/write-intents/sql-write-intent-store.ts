@@ -74,20 +74,39 @@ export class SqlWriteIntentStore implements IWriteIntentStore {
     );
   }
 
-  async deleteExpired(ownerId: string, olderThanIso: string): Promise<number> {
+  async deleteExpiredCompleted(ownerId: string, olderThanIso: string): Promise<number> {
     const result = await this.db.execute(
-      `DELETE FROM memory_write_intents WHERE owner_id = ? AND created_at < ?`,
+      `DELETE FROM memory_write_intents
+       WHERE owner_id = ? AND status = 'completed' AND created_at < ?`,
       [ownerId, olderThanIso],
     );
     return result.meta?.changes ?? 0;
   }
 
-  async countExpired(ownerId: string, olderThanIso: string): Promise<number> {
+  async countExpiredCompleted(ownerId: string, olderThanIso: string): Promise<number> {
     const rows = await this.db.query<{ n: number }>(
-      `SELECT COUNT(*) as n FROM memory_write_intents WHERE owner_id = ? AND created_at < ?`,
+      `SELECT COUNT(*) as n FROM memory_write_intents
+       WHERE owner_id = ? AND status = 'completed' AND created_at < ?`,
       [ownerId, olderThanIso],
     );
     return rows[0]?.n ?? 0;
+  }
+
+  async listExpiredClaimed(ownerId: string, olderThanIso: string): Promise<WriteIntent[]> {
+    const rows = await this.db.query<WriteIntentRow>(
+      `SELECT owner_id, request_id, operation, resource_type, resource_id, status, created_at
+       FROM memory_write_intents
+       WHERE owner_id = ? AND status = 'claimed' AND created_at < ?`,
+      [ownerId, olderThanIso],
+    );
+    return rows.map(mapRow);
+  }
+
+  async deleteByRequestId(ownerId: string, requestId: string): Promise<void> {
+    await this.db.execute(
+      `DELETE FROM memory_write_intents WHERE owner_id = ? AND request_id = ?`,
+      [ownerId, requestId],
+    );
   }
 }
 

@@ -92,25 +92,42 @@ describe('SqlWriteIntentStore', () => {
     expect(stored?.resourceId).toBe('mem-abc');
   });
 
-  it('deleteExpired removes only rows older than the cutoff', async () => {
+  it('deleteExpiredCompleted removes only COMPLETED rows older than the cutoff', async () => {
     await store.claim({
       ownerId: OWNER,
-      requestId: 'req-fresh',
+      requestId: 'req-done',
       operation: 'create',
       resourceType: 'memory',
       resourceId: 'mem-1',
     });
-    // Cutoff in the past keeps the fresh row.
-    const past = new Date(Date.now() - 60_000).toISOString();
-    expect(await store.countExpired(OWNER, past)).toBe(0);
-    expect(await store.deleteExpired(OWNER, past)).toBe(0);
-    expect(await store.getByRequestId(OWNER, 'req-fresh')).not.toBeNull();
+    await store.markCompleted(OWNER, 'req-done');
+    await store.claim({
+      ownerId: OWNER,
+      requestId: 'req-still-claimed',
+      operation: 'create',
+      resourceType: 'memory',
+      resourceId: 'mem-2',
+    });
 
-    // Cutoff in the future removes it — but only for the scoped owner.
+    // Cutoff in the past keeps everything.
+    const past = new Date(Date.now() - 60_000).toISOString();
+    expect(await store.countExpiredCompleted(OWNER, past)).toBe(0);
+    expect(await store.deleteExpiredCompleted(OWNER, past)).toBe(0);
+
+    // Cutoff in the future: only the COMPLETED row is bulk-deleted; CLAIMED
+    // rows are never bulk-deleted (owner review requirement) and only appear
+    // via listExpiredClaimed for individual resolution.
     const future = new Date(Date.now() + 60_000).toISOString();
-    expect(await store.countExpired(OWNER, future)).toBe(1);
-    expect(await store.deleteExpired('other-owner', future)).toBe(0);
-    expect(await store.deleteExpired(OWNER, future)).toBe(1);
-    expect(await store.getByRequestId(OWNER, 'req-fresh')).toBeNull();
+    expect(await store.countExpiredCompleted(OWNER, future)).toBe(1);
+    expect(await store.deleteExpiredCompleted('other-owner', future)).toBe(0);
+    expect(await store.deleteExpiredCompleted(OWNER, future)).toBe(1);
+    expect(await store.getByRequestId(OWNER, 'req-done')).toBeNull();
+    expect(await store.getByRequestId(OWNER, 'req-still-claimed')).not.toBeNull();
+
+    const claimed = await store.listExpiredClaimed(OWNER, future);
+    expect(claimed.map((i) => i.requestId)).toEqual(['req-still-claimed']);
+
+    await store.deleteByRequestId(OWNER, 'req-still-claimed');
+    expect(await store.getByRequestId(OWNER, 'req-still-claimed')).toBeNull();
   });
 });
