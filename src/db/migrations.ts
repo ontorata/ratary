@@ -984,6 +984,25 @@ export async function migrateExtensionTracksPhase1(
   }
 }
 
+/** PI-A / P2-A — memory decay & lifecycle scoring columns (additive, nullable, no backfill). */
+const DECAY_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
+  { name: 'decay_score', ddl: 'ALTER TABLE memories ADD COLUMN decay_score REAL' },
+  { name: 'decay_signals', ddl: 'ALTER TABLE memories ADD COLUMN decay_signals TEXT' },
+  { name: 'decay_computed_at', ddl: 'ALTER TABLE memories ADD COLUMN decay_computed_at TEXT' },
+];
+
+export async function migrateMemoryDecayPhase1(
+  client: ISqlDatabase,
+  dialect: MigrationDialect = 'sqlite',
+): Promise<void> {
+  for (const column of DECAY_MEMORY_COLUMNS) {
+    const hasColumn = await tableHasColumn(client, 'memories', column.name, dialect);
+    if (!hasColumn) {
+      await client.execute(column.ddl);
+    }
+  }
+}
+
 /** Extension track 8.6 — learning events + policy snapshots (ADR-057). */
 export async function migrateExtensionTracksPhase2(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(LEARNING_TABLES_SQL)) {
@@ -1181,6 +1200,7 @@ export async function runSchemaMigrations(
   await migrateExtensionTracksPhase7(client);
   await migrateExtensionTracksPhase8(client);
   await migratePrecisionSearchPhase1(client, dialect);
+  await migrateMemoryDecayPhase1(client, dialect);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
