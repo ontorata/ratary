@@ -6,6 +6,7 @@ function printSummary(result: Awaited<ReturnType<typeof runOrgMemorySync>>): voi
   console.log(`run_id=${result.runId}`);
   console.log(`ingested=${result.totalIngested}`);
   console.log(`failed=${result.totalFailed}`);
+  console.log(`skipped=${result.totalSkipped ?? 0}`);
   console.log(`digest=${result.digest}`);
   const stageResults = result.stageResults ?? [];
   const completed = stageResults.filter((stage) => stage.status === 'completed').length;

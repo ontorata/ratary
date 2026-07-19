@@ -2,7 +2,7 @@
 
 > Public mirror of the org-memory dogfood validation procedure. Internal evidence lives in `.ai/reviews/org-memory-dogfood/` (maintainer workspace).
 
-Last updated: 2026-07-18
+Last updated: 2026-07-19
 
 ---
 
@@ -52,9 +52,24 @@ This runs, in order:
 | Tests | All vitest suites green |
 | Org-memory G1–G6 | Script exits 0 |
 | Recall intelligence G1–G7 | Script exits 0 |
-| Sync | `failed=4` acceptable if only pilot `.gitkeep` placeholders (see internal validation report) |
+| Sync | `failed=0` · placeholder `.gitkeep` files counted as `skipped` (P1-E) |
 | Eval scripts | `pass_rate=100` |
 | Wave 5 proof | Updates `WAVE-5-END-TO-END-PROOF.md` without error |
+
+---
+
+## Operational proof checkpoint (P1-E)
+
+Weekly operator loop after engineering validation passes:
+
+```bash
+npm run trace:dogfood-session -- --tools search_memory,save_memory --query "<session summary>"
+npm run metrics:operational-proof
+npm run checkpoint:operational-proof
+npm run ci:operational-proof-acceptance
+```
+
+Artifacts (maintainer `.ai/` workspace): `operational-usage-log.md`, `operational-metrics.json`, `operational-checkpoints.md`.
 
 ---
 
@@ -72,7 +87,8 @@ npm run build:packages
 | Symptom | Likely cause | Action |
 |---------|--------------|--------|
 | `ci:docs-impact` fails on clean `main` | Stale baseRef bug (fixed 2026-07-18) | Pull latest `scripts/ci/docs-impact-check.mjs` |
-| `sync:org-memory` failed=4 | Empty `.gitkeep` under `.ai/reviews/pilot-001/g3/evidence/` | Expected — not a regression |
+| `sync:org-memory` failed&gt;0 | Unexpected ingest failure | Check `ingestion-log.md` exclude audit; pull P1-E ingest hygiene |
+| `sync:org-memory` skipped=4 | Pilot `.gitkeep` placeholders | Expected — audited skip, not failure |
 | Eval pass_rate &lt; 100 | Fixture drift or ingest incomplete | Re-run sync; check `ingestion-log.md` |
 
 ---

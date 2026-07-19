@@ -28,6 +28,7 @@ export const SourceResultSchema = z.object({
   sourcePath: z.string().min(1),
   ingested: z.number().int().nonnegative(),
   failed: z.number().int().nonnegative(),
+  skipped: z.number().int().nonnegative().default(0),
   durationMs: z.number().int().nonnegative(),
 });
 
@@ -56,6 +57,7 @@ export const IngestionRunSchema = z.object({
   endedAt: z.string().datetime(),
   totalIngested: z.number().int().nonnegative(),
   totalFailed: z.number().int().nonnegative(),
+  totalSkipped: z.number().int().nonnegative().default(0),
   digest: z.string().min(8),
   sources: z.array(SourceResultSchema),
   stageResults: z.array(PipelineStageResultSchema).optional(),
