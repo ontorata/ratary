@@ -27,7 +27,14 @@ import { hasWorkspaceScope } from '../types/memory-scope.js';
 import type { ISyncManager, MemoryWriteEvent } from '../sync/isync-manager.interface.js';
 import type { IMemoryEvolutionCoordinator } from '../evolution/memory-evolution-coordinator.js';
 import type { IMemoryDomainEventCoordinator } from '../events/memory-domain-event-coordinator.js';
+import type { IWriteIntentStore } from '../ports/write-intents/iwrite-intent-store.port.js';
 import { generateId } from '../utils/memory-mapper.js';
+
+/** PI-C (ADR-067): `replayed` is true when the result was resolved from a prior claim. */
+export interface CreateMemoryOutcome {
+  memory: Memory;
+  replayed: boolean;
+}
 
 export class MemoryService {
   constructor(
@@ -40,6 +47,7 @@ export class MemoryService {
     private readonly evolution?: IMemoryEvolutionCoordinator,
     private readonly domainEvents?: IMemoryDomainEventCoordinator,
     private readonly precisionSearch?: IPrecisionSearchService,
+    private readonly writeIntents?: IWriteIntentStore,
   ) {}
 
   private async resolveAttributionAgentId(scope: MemoryScope): Promise<string | undefined> {
@@ -74,6 +82,96 @@ export class MemoryService {
   }
 
   async createMemory(scope: MemoryScope, input: CreateMemoryInput): Promise<Memory> {
+    return (await this.createMemoryIdempotent(scope, input)).memory;
+  }
+
+  /**
+   * PI-C (ADR-067) — idempotent create, constraint-first (owner decision C7).
+   *
+   * With a `request_id`: claim the (ownerId, requestId) key via PK insert
+   * carrying a pre-generated canonical memory id. On key conflict, the ledger
+   * mapping resolves the call — memory exists ⇒ replay; memory missing (prior
+   * attempt crashed mid-flight) ⇒ resume the create with the SAME canonical id,
+   * where the memories.id PRIMARY KEY is the second backstop.
+   *
+   * Without a `request_id`: identical to the pre-PI-C code path.
+   */
+  async createMemoryIdempotent(
+    scope: MemoryScope,
+    input: CreateMemoryInput,
+  ): Promise<CreateMemoryOutcome> {
+    const requestId = input.request_id?.trim();
+    if (!requestId || !this.writeIntents) {
+      return { memory: await this.performCreate(scope, input, generateId()), replayed: false };
+    }
+
+    const canonicalId = generateId();
+    const claim = await this.writeIntents.claim({
+      ownerId: scope.ownerId,
+      requestId,
+      operation: 'create',
+      resourceType: 'memory',
+      resourceId: canonicalId,
+    });
+
+    if (claim.claimed) {
+      return {
+        memory: await this.completeClaimedCreate(scope, input, canonicalId, requestId),
+        replayed: false,
+      };
+    }
+
+    // Invariant: existing.resourceId is the canonical id allocated exactly
+    // once for this (ownerId, requestId) — retries never allocate a new one.
+    const existingId = claim.existing.resourceId;
+    const found = await this.repository.findById(
+      existingId,
+      scope.ownerId,
+      workspaceIdFromScope(scope),
+    );
+    if (found) {
+      return { memory: found, replayed: true };
+    }
+
+    // Crash recovery: the claim exists but the memory was never created.
+    return {
+      memory: await this.completeClaimedCreate(scope, input, existingId, requestId),
+      replayed: true,
+    };
+  }
+
+  private async completeClaimedCreate(
+    scope: MemoryScope,
+    input: CreateMemoryInput,
+    id: string,
+    requestId: string,
+  ): Promise<Memory> {
+    let memory: Memory;
+    try {
+      memory = await this.performCreate(scope, input, id);
+    } catch (error) {
+      // memories.id PK backstop: a concurrent resumer of the same request
+      // already created the row — return it as the canonical result.
+      const winner = await this.repository.findById(id, scope.ownerId, workspaceIdFromScope(scope));
+      if (winner) {
+        return winner;
+      }
+      throw error;
+    }
+
+    try {
+      await this.writeIntents!.markCompleted(scope.ownerId, requestId);
+    } catch {
+      // Status is observability only — never fail a successful create over it.
+    }
+    return memory;
+  }
+
+  private async performCreate(
+    scope: MemoryScope,
+    input: CreateMemoryInput,
+    id: string,
+  ): Promise<Memory> {
     const enriched = await this.knowledge.enrichForCreate(scope.ownerId, {
       title: input.title,
       project: input.project,
@@ -88,7 +186,6 @@ export class MemoryService {
       notes: input.notes,
     });
 
-    const id = generateId();
     const agentId = await this.resolveAttributionAgentId(scope);
     await this.reconcileMemoryWrite(scope, id, 'create');
 

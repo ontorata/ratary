@@ -22,8 +22,14 @@ export interface MemoryHandlerDeps {
   memoryAccessAuditor?: IMemoryAccessAuditor;
 }
 
+/**
+ * PI-C (ADR-067): replay flags are present ONLY when a request_id resolved to
+ * a previously claimed create — plain creates return the memory untouched.
+ */
+export type CreateMemoryResponse = Memory & { duplicate?: true; replayed?: true };
+
 export interface MemoryHandlers {
-  create: IApplicationHandler<CreateMemoryInput, Memory>;
+  create: IApplicationHandler<CreateMemoryInput, CreateMemoryResponse>;
   getById: IApplicationHandler<{ id: string }, Memory>;
   getByCodename: IApplicationHandler<{ codename: string }, Memory>;
   getBySlug: IApplicationHandler<{ slug: string }, Memory>;
@@ -65,7 +71,17 @@ export function createMemoryHandlers(deps: MemoryHandlerDeps): MemoryHandlers {
 
   return {
     create: {
-      handle: async (ctx, input) => deps.memoryService.createMemory(await writeScope(ctx), input),
+      handle: async (ctx, input) => {
+        const outcome = await deps.memoryService.createMemoryIdempotent(
+          await writeScope(ctx),
+          input,
+        );
+        // `duplicate` + `replayed` together (owner decision C3): this is a
+        // request replay, not duplicate data.
+        return outcome.replayed
+          ? { ...outcome.memory, duplicate: true, replayed: true }
+          : outcome.memory;
+      },
     },
     getById: {
       handle: async (ctx, { id }) => {

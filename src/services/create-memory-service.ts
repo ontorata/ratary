@@ -9,6 +9,7 @@ import { SearchService } from '../search/search.service.js';
 import { createPrecisionSearchService } from '../composition/create-precision-search-ports.js';
 import { MemoryService } from './memory.service.js';
 import { MemoryRelationService } from './memory-relation.service.js';
+import { SqlWriteIntentStore } from '../infrastructure/write-intents/sql-write-intent-store.js';
 import type { IMemoryEvolutionCoordinator } from '../evolution/memory-evolution-coordinator.js';
 import type { IMemoryDomainEventCoordinator } from '../events/memory-domain-event-coordinator.js';
 
@@ -38,6 +39,7 @@ export function createMemoryService(
     evolution,
     domainEvents,
     precisionSearch,
+    new SqlWriteIntentStore(db),
   );
 }
 

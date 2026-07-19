@@ -92,7 +92,7 @@ export interface Memory {
 
 const SUMMARY_MAX = 300;
 
-export const createMemorySchema = z
+const createMemoryBaseSchema = z
   .object({
     title: z.string().min(1, 'Title is required').max(500),
     project: z.string().max(200).default(''),
@@ -104,7 +104,14 @@ export const createMemorySchema = z
   })
   .merge(knowledgeMetadataSchema);
 
-export const updateMemorySchema = createMemorySchema.partial().extend({
+export const createMemorySchema = createMemoryBaseSchema.extend({
+  // PI-C (ADR-067): optional client idempotency key — same shape as signal_id.
+  // Retrying a create with the same request_id replays the original result
+  // instead of creating a duplicate. Create-only (C4); update does not accept it.
+  request_id: z.string().uuid().optional(),
+});
+
+export const updateMemorySchema = createMemoryBaseSchema.partial().extend({
   expectedUpdatedAt: z.string().optional(),
 });
 
