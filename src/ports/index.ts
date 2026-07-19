@@ -68,3 +68,20 @@ export type {
   Organization,
   CreateOrganizationInput,
 } from './enterprise/iorganization-store.port.js';
+
+export type {
+  IEntityRegistry,
+  CreateEntityInput,
+  UpdateEntityMetadataInput,
+} from './entities/ientity-registry.port.js';
+
+export type {
+  IEntityResolver,
+  SymbolInput,
+  SymbolResolution,
+} from './entities/ientity-resolver.port.js';
+
+export type {
+  IEntityMentionStore,
+  UpsertEntityMentionInput,
+} from './entities/ientity-mention-store.port.js';
