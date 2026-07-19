@@ -9,11 +9,14 @@ import {
   type SourceResult,
 } from './knowledge-ingestion-contracts.js';
 import { orchestratePipeline, type RawSourceFile } from './knowledge-ingestion-pipeline.js';
+import { shouldExcludeIngestFile } from './org-memory-sync-excludes.js';
 
 const REPO_ROOT = resolve(process.cwd());
 const INGEST_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/ingestion-log.md');
 
-type RunResult = IngestionRun;
+type RunResult = IngestionRun & {
+  excludedPaths: string[];
+};
 
 const SOURCES: SourceDefinition[] = [
   { sourcePath: '.ai/core/', mode: 'directory' },
@@ -64,14 +67,23 @@ async function resolveSourceFiles(source: SourceDefinition): Promise<string[]> {
 
 async function ingestSource(
   source: SourceDefinition,
+  excludedPaths: string[],
 ): Promise<{ sourceResult: SourceResult; stageResults: PipelineStageResult[] }> {
   const sourceStart = Date.now();
   const files = await resolveSourceFiles(source);
   const readableFiles: RawSourceFile[] = [];
   let readFailures = 0;
   let stageFailures = 0;
+  let skipped = 0;
 
   for (const file of files) {
+    const exclude = shouldExcludeIngestFile(file);
+    if (exclude.excluded) {
+      skipped += 1;
+      excludedPaths.push(`${file} (${exclude.reason ?? 'excluded'})`);
+      continue;
+    }
+
     try {
       const absolute = resolve(REPO_ROOT, file);
       const fileStat = await stat(absolute);
@@ -103,6 +115,7 @@ async function ingestSource(
       sourcePath: source.sourcePath,
       ingested: pipelineResult.documents.length,
       failed: Math.max(readFailures, stageFailures),
+      skipped,
       durationMs: Date.now() - sourceStart,
     },
     stageResults: pipelineResult.stageResults,
@@ -118,7 +131,7 @@ function renderRunBlock(result: RunResult): string {
   const sourceRows = result.sources
     .map(
       (source) =>
-        `| source_path=\`${source.sourcePath}\` | ingested=${source.ingested} | failed=${source.failed} | duration_ms=${source.durationMs} |`,
+        `| source_path=\`${source.sourcePath}\` | ingested=${source.ingested} | failed=${source.failed} | skipped=${source.skipped ?? 0} | duration_ms=${source.durationMs} |`,
     )
     .join('\n');
   const stageRows = (result.stageResults ?? [])
@@ -127,6 +140,10 @@ function renderRunBlock(result: RunResult): string {
         `| stage=${stage.stage} | status=${stage.status} | processed=${stage.processed} | failed=${stage.failed} | checkpoint_id=\`${stage.checkpointId}\` | source_path=\`${stage.sourcePath ?? 'n/a'}\` |`,
     )
     .join('\n');
+  const excludeRows =
+    result.excludedPaths.length > 0
+      ? result.excludedPaths.map((path) => `- excluded_path=\`${path}\``).join('\n')
+      : '- excluded_path=`none`';
 
   return [
     `## run_id=${result.runId}`,
@@ -135,15 +152,20 @@ function renderRunBlock(result: RunResult): string {
     `- ended_at: ${result.endedAt}`,
     `- ingested=${result.totalIngested}`,
     `- failed=${result.totalFailed}`,
+    `- skipped=${result.totalSkipped ?? 0}`,
     `- digest=${result.digest}`,
     '',
-    '| source_path | ingested | failed | duration_ms |',
-    '|-------------|----------|--------|-------------|',
+    '| source_path | ingested | failed | skipped | duration_ms |',
+    '|-------------|----------|--------|---------|-------------|',
     sourceRows,
     '',
     '| stage | status | processed | failed | checkpoint_id | source_path |',
     '|-------|--------|-----------|--------|---------------|-------------|',
     stageRows.length > 0 ? stageRows : '| stage=n/a | status=n/a | processed=0 | failed=0 | checkpoint_id=`n/a` | source_path=`n/a` |',
+    '',
+    '### ingest_excludes (P1-E audit)',
+    '',
+    excludeRows,
     '',
   ].join('\n');
 }
@@ -160,7 +182,7 @@ async function ensureLogFile(): Promise<void> {
       '| Field | Value |',
       '|-------|-------|',
       '| **Status** | Active |',
-      '| **Schema** | `run_id`, `source_path`, `ingested`, `failed` |',
+      '| **Schema** | `run_id`, `source_path`, `ingested`, `failed`, `skipped` |',
       '',
       '---',
       '',
@@ -172,11 +194,12 @@ async function ensureLogFile(): Promise<void> {
 export async function runOrgMemorySync(): Promise<RunResult> {
   const runId = randomUUID();
   const startedAt = new Date().toISOString();
+  const excludedPaths: string[] = [];
 
   const sources: SourceResult[] = [];
   const stageResults: PipelineStageResult[] = [];
   for (const source of SOURCES) {
-    const result = await ingestSource(source);
+    const result = await ingestSource(source, excludedPaths);
     stageResults.push(...result.stageResults);
     sources.push(result.sourceResult);
   }
@@ -184,6 +207,7 @@ export async function runOrgMemorySync(): Promise<RunResult> {
   const endedAt = new Date().toISOString();
   const totalIngested = sources.reduce((sum, source) => sum + source.ingested, 0);
   const totalFailed = sources.reduce((sum, source) => sum + source.failed, 0);
+  const totalSkipped = sources.reduce((sum, source) => sum + (source.skipped ?? 0), 0);
   const digest = buildDigest(runId, sources);
 
   const runResult = assertIngestionRun({
@@ -192,10 +216,13 @@ export async function runOrgMemorySync(): Promise<RunResult> {
     endedAt,
     totalIngested,
     totalFailed,
+    totalSkipped,
     digest,
     sources,
     stageResults,
-  });
+  }) as RunResult;
+
+  runResult.excludedPaths = excludedPaths;
 
   await ensureLogFile();
   const runBlock = renderRunBlock(runResult);
