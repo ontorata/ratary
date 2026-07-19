@@ -396,6 +396,29 @@ COMPRESSION_SCHEDULER=local
 
 CLI: `npm run compress:memories` (dry-run) · `compress:memories:execute`
 
+### Canonical entity resolution
+
+Deterministic symbol grounding (ADR-068): codenames, tags, and keywords resolve
+to owner-scoped canonical entities via exact normalized/alias matching — no
+fuzzy matching, no embeddings, no LLM. Runs as an async stewardship stage,
+never on the write hot path.
+
+```env
+ENTITY_RESOLUTION_ENABLED=true
+ENTITY_STORE_PROVIDER=sql
+```
+
+CLI: `npm run resolve:entities` (dry-run) · `resolve:entities:execute`
+
+With the flag on, retrieval gains an `entity` candidate source (memories
+mentioning entities resolved from the query). Guarantees:
+
+- **Flag-off byte-parity** — with `ENTITY_RESOLUTION_ENABLED=false`, retrieval
+  output is byte-identical whether or not entity data exists.
+- **Immutable entity ids** — renames/alias corrections never re-key mentions.
+- **Versioned evidence** — every resolution records `resolverVersion`, the
+  matching `rule`, and the matched symbol, so results stay replayable.
+
 ---
 
 ## 9. Platform infrastructure
