@@ -6,8 +6,21 @@ import { precisionSearchQueryExtensions } from './precision-search.js';
 export { MEMORY_LEVELS, DEFAULT_MEMORY_LEVEL } from './memory-level.js';
 export type { MemoryLevel } from './memory-level.js';
 
-export const MEMORY_LIFECYCLE_STATES = ['active', 'stale', 'candidate_compress'] as const;
+// 'stale' and 'candidate_compress' are legacy compression-track values (ADR-023);
+// the decay track (PI-A) uses active → dormant → fading → archived.
+export const MEMORY_LIFECYCLE_STATES = [
+  'active',
+  'dormant',
+  'fading',
+  'archived',
+  'stale',
+  'candidate_compress',
+] as const;
 export type MemoryLifecycleState = (typeof MEMORY_LIFECYCLE_STATES)[number];
+
+/** Decay lifecycle progression (PI-A). PURGED is intentionally absent — archive is the only prune. */
+export const DECAY_LIFECYCLE_ORDER = ['active', 'dormant', 'fading', 'archived'] as const;
+export type DecayLifecycleState = (typeof DECAY_LIFECYCLE_ORDER)[number];
 
 export const memoryRowSchema = z.object({
   id: z.string().uuid(),
