@@ -116,6 +116,27 @@ Details: [GUIDE — ChatGPT](../docs/GUIDE.md#6-chatgpt) · [CONFIGURATION — T
 
 ---
 
+## Error contract (`{error, retryable}`)
+
+Tool failures never surface as MCP protocol errors. Any handler exception — and any invalid/missing argument — returns a structured tool result (`isError: true`) whose text is parseable JSON:
+
+```json
+{ "error": "<message>", "retryable": false }
+```
+
+`retryable` is a **client-behavior hint**, not a statement about the current implementation:
+
+- **`retryable: true`** — idempotent reads (`search_memory`, `get_memory*`, `get_context`, `build_prompt`, `list_*`, `traverse_relations`, `get_capabilities`, `negotiate_capabilities`, `get_compression_status`, `sync_pull`, `sync_status`) failing transiently. Retry with a short bounded backoff (2–3 attempts).
+- **`retryable: false`** — all mutations (`save_memory`, `update_memory`, `delete_memory`, `link_memories`, `toggle_favorite`, `archive_memory`, `register_agent`, `submit_signal`, `sync_push`) plus `run_stewardship` (one run may partially succeed across sub-stages; automatic retry risks double maintenance). Also every deterministic failure (validation, not-found, auth) on any tool — retrying identical input cannot succeed.
+
+Client guidance:
+
+1. **Never blind-retry a write on an ambiguous timeout** — a silent success followed by a retry creates duplicates. Continue the turn and reconcile on the next `search_memory`/recall. Client-supplied idempotency markers are a planned follow-up (Idempotent Write Semantics).
+2. **Treat memory as best-effort context, not a hard dependency.** If a call fails, proceed with the context you already have and try again next turn. A missed write is recoverable; a crashed agent turn is not.
+3. Classification source of truth: [`src/transport/mcp/mcp-tool-retry-classification.ts`](../src/transport/mcp/mcp-tool-retry-classification.ts) · contract regression suite: `tests/mcp-error-contract/`.
+
+---
+
 ## Directory listings (Phase 31L)
 
 Submit **Ratary Memory MCP** to public directories using the copy-paste pack in **[MCP/submission/](submission/README.md)**.

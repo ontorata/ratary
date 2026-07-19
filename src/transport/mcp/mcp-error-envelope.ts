@@ -30,7 +30,10 @@ export function computeRetryable(toolName: McpToolName, statusCode: number): boo
   return isRetryableTool(toolName);
 }
 
-export function toMcpToolErrorEnvelope(toolName: McpToolName, error: unknown): McpToolErrorEnvelope {
+export function toMcpToolErrorEnvelope(
+  toolName: McpToolName,
+  error: unknown,
+): McpToolErrorEnvelope {
   const payload = toTransportError(error);
   return {
     error: payload.message,

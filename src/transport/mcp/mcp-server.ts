@@ -2,10 +2,7 @@ import { McpServer, type ToolCallback } from '@modelcontextprotocol/sdk/server/m
 import type { ZodRawShapeCompat } from '@modelcontextprotocol/sdk/server/zod-compat.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { McpToolName } from '../../capabilities/mcp-tool-names.js';
-import {
-  applyPreHandlerErrorContract,
-  registerContractTool,
-} from './mcp-tool-registration.js';
+import { applyPreHandlerErrorContract, registerContractTool } from './mcp-tool-registration.js';
 import { z } from 'zod';
 import { getD1Client } from '../../db/index.js';
 import { MemoryRepository } from '../../repositories/memory.repository.js';
