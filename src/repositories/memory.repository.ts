@@ -228,6 +228,15 @@ export class MemoryRepository implements IMemoryRepository {
   ): Promise<Memory | null> {
     return this.writer.setLifecycleState(id, ownerId, state, workspaceId);
   }
+
+  applyDecayResult(
+    id: string,
+    ownerId: string,
+    data: { score: number; signalsJson: string; computedAt: string; lifecycleState: string },
+    workspaceId?: string,
+  ): Promise<void> {
+    return this.writer.applyDecayResult(id, ownerId, data, workspaceId);
+  }
 }
 
 export { RETRIEVAL_MEMORY_SELECT, MEMORY_SELECT } from './memory-sql.constants.js';

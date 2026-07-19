@@ -65,6 +65,12 @@ export interface IMemoryRelationRepository {
   ): Promise<MemoryRelation>;
 
   /**
+   * Relation degree per memory id (source or target edges), owner-scoped.
+   * Used by the decay-scoring stewardship stage (PI-A) for the connectivity signal.
+   */
+  countDegreeByOwner(ownerId: string): Promise<Map<string, number>>;
+
+  /**
    * Upsert an inferred relation — never overwrites manual edges.
    */
   upsertInferred(data: {

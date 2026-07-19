@@ -404,4 +404,30 @@ export class MemoryWriterSql implements IMemoryWriter {
       updatedAt,
     };
   }
+
+  async applyDecayResult(
+    id: string,
+    ownerId: string,
+    data: { score: number; signalsJson: string; computedAt: string; lifecycleState: string },
+    workspaceId?: string,
+  ): Promise<void> {
+    const conditions = ['id = ?', 'owner_id = ?'];
+    const params: unknown[] = [
+      data.score,
+      data.signalsJson,
+      data.computedAt,
+      data.lifecycleState,
+      id,
+      ownerId,
+    ];
+    appendWorkspaceFilter(conditions, params, workspaceId);
+
+    // updated_at intentionally untouched (see IMemoryWriter.applyDecayResult).
+    await this.db.execute(
+      `UPDATE memories
+       SET decay_score = ?, decay_signals = ?, decay_computed_at = ?, lifecycle_state = ?
+       WHERE ${conditions.join(' AND ')}`,
+      params,
+    );
+  }
 }
