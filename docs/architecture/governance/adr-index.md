@@ -47,6 +47,7 @@ RFC = proposal only. Accepted RFC → new ADR (e.g. RFC-001 → ADR-015).
 | ADR-013 | Security compliance | Proposed | SOC 2 framework |
 | **ADR-014** | **Provider independence** | **Accepted** | Business → Interface → Adapter → SDK; no provider `if` in domain |
 | ADR-066 | Memory decay & lifecycle scoring | Accepted | Weighted decay signals · stewardship stage #10 · archive-only prune · retention grace period · `DECAY_SCORING_ENABLED=false` default with flag-off retrieval non-regression contract (`docs/scoring.md`) |
+| ADR-067 | Idempotent write semantics | Accepted | Opt-in `request_id` on creates (`save_memory`, `sync_push`) · `memory_write_intents` ledger with claim-first PK synchronization · canonical resource id allocated once per `(owner_id, request_id)` · replay returns success with `duplicate`/`replayed` · TTL is cleanup only — idempotency is guaranteed while the intent record exists |
 
 ---
 

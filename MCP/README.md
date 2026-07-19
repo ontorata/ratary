@@ -131,9 +131,21 @@ Tool failures never surface as MCP protocol errors. Any handler exception — an
 
 Client guidance:
 
-1. **Never blind-retry a write on an ambiguous timeout** — a silent success followed by a retry creates duplicates. Continue the turn and reconcile on the next `search_memory`/recall. Client-supplied idempotency markers are a planned follow-up (Idempotent Write Semantics).
+1. **Never blind-retry a write on an ambiguous timeout** — a silent success followed by a retry creates duplicates. Either pass a `request_id` (below) so the retry is safe, or continue the turn and reconcile on the next `search_memory`/recall.
 2. **Treat memory as best-effort context, not a hard dependency.** If a call fails, proceed with the context you already have and try again next turn. A missed write is recoverable; a crashed agent turn is not.
 3. Classification source of truth: [`src/transport/mcp/mcp-tool-retry-classification.ts`](../src/transport/mcp/mcp-tool-retry-classification.ts) · contract regression suite: `tests/mcp-error-contract/`.
+
+## Idempotent creates (`request_id`)
+
+`save_memory` accepts an optional `request_id` (UUID, same style as `submit_signal`'s `signal_id`). Generate one per logical create and reuse it on every retry of that create:
+
+- First call with a given `request_id` creates the memory normally.
+- Any retry with the same `request_id` — including after an ambiguous timeout — returns the **original memory** as a success, enriched with `"duplicate": true, "replayed": true`. No second row is ever created, even if the first attempt crashed mid-write.
+- `sync_push` create items get the same protection automatically, keyed by the item's `memory_id` — re-pushing a batch replays instead of duplicating.
+
+**Idempotency is guaranteed while the intent record exists.** Intent records are pruned after `WRITE_INTENT_TTL_DAYS` (default 30 days) as a cleanup policy — a retry arriving after that window may create a duplicate. Without a `request_id`, behavior is unchanged: identical saves create distinct memories.
+
+Design: ADR-067 · contract suite: `tests/idempotent-writes/`.
 
 ---
 
