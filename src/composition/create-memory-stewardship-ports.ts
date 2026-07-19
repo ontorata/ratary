@@ -18,6 +18,8 @@ import { EmbeddingAuditTask } from '../memory/stewardship/tasks/embedding-audit.
 import { IndexRepairTask } from '../memory/stewardship/tasks/index-repair.task.js';
 import { RankingRefreshTask } from '../memory/stewardship/tasks/ranking-refresh.task.js';
 import { RetrievalOptimizationTask } from '../memory/stewardship/tasks/retrieval-optimization.task.js';
+import { DecayScoringTask } from '../memory/stewardship/tasks/decay-scoring.task.js';
+import { parseDecayWeights } from '../memory/decay/index.js';
 import { LocalStewardshipScheduler } from '../jobs/local-stewardship-scheduler.js';
 import type { IMemoryStewardshipOrchestrator } from '../memory/stewardship/imemory-stewardship-orchestrator.interface.js';
 import type { IStewardshipRunStore } from '../memory/stewardship/istewardship-run-store.interface.js';
@@ -64,6 +66,13 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
       new IndexRepairTask(searchGraph.orchestrator, searchGraph.enabled),
       new RankingRefreshTask(learning.orchestrator, learning.enabled),
       new RetrievalOptimizationTask(repository, env.RETRIEVAL_POLICY_VERSION),
+      new DecayScoringTask(repository, repository, relationRepository, {
+        enabled: env.DECAY_SCORING_ENABLED,
+        halfLifeDays: env.DECAY_HALF_LIFE_DAYS,
+        archiveFloor: env.DECAY_ARCHIVE_FLOOR,
+        retentionDays: env.DECAY_RETENTION_DAYS,
+        weights: parseDecayWeights(env.DECAY_WEIGHTS),
+      }),
     ],
     { runStore },
   );

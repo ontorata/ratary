@@ -14,6 +14,7 @@ export const STEWARDSHIP_STAGE_ORDER = [
   'index-repair',
   'ranking-refresh',
   'retrieval-optimization',
+  'decay-scoring',
 ] as const;
 
 export type StewardshipStage = (typeof STEWARDSHIP_STAGE_ORDER)[number];
