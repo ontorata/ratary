@@ -1,5 +1,8 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer, type ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { ZodRawShapeCompat } from '@modelcontextprotocol/sdk/server/zod-compat.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import type { McpToolName } from '../../capabilities/mcp-tool-names.js';
+import { applyPreHandlerErrorContract, registerContractTool } from './mcp-tool-registration.js';
 import { z } from 'zod';
 import { getD1Client } from '../../db/index.js';
 import { MemoryRepository } from '../../repositories/memory.repository.js';
@@ -66,7 +69,18 @@ function createMcpServer(
     version: '1.0.0',
   });
 
-  server.tool(
+  // PI-B error contract: every registration goes through the wrapper so tool
+  // failures return {error, retryable}; pre-handler (zod/unknown-tool)
+  // failures are enveloped by the createToolError override.
+  applyPreHandlerErrorContract(server);
+  const tool = <Args extends ZodRawShapeCompat>(
+    name: McpToolName,
+    description: string,
+    shape: Args,
+    handler: ToolCallback<Args>,
+  ): void => registerContractTool(server, name, description, shape, handler);
+
+  tool(
     'save_memory',
     'Save a new coding memory/knowledge entry',
     {
@@ -101,7 +115,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'update_memory',
     'Update an existing memory by ID',
     {
@@ -134,7 +148,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'delete_memory',
     'Delete a memory by ID',
     {
@@ -148,7 +162,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'get_memory',
     'Get a memory by ID',
     {
@@ -162,7 +176,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'get_memory_by_codename',
     'Get a memory by codename (e.g. AUTH-0001)',
     {
@@ -178,7 +192,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'search_memory',
     'Search memories by keyword, tag, or project with relevance ranking',
     {
@@ -222,7 +236,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'get_memory_by_path',
     'Read a memory by vault source_path (Phase 6.6, gated)',
     {
@@ -240,21 +254,21 @@ function createMcpServer(
     },
   );
 
-  server.tool('list_projects', 'List all unique project names', {}, async () => {
+  tool('list_projects', 'List all unique project names', {}, async () => {
     const projects = await handlers.memory.listProjects.handle(mcpCtx(), {});
     return {
       content: [{ type: 'text', text: JSON.stringify({ projects }, null, 2) }],
     };
   });
 
-  server.tool('list_tags', 'List all unique tags', {}, async () => {
+  tool('list_tags', 'List all unique tags', {}, async () => {
     const tags = await handlers.memory.listTags.handle(mcpCtx(), {});
     return {
       content: [{ type: 'text', text: JSON.stringify({ tags }, null, 2) }],
     };
   });
 
-  server.tool(
+  tool(
     'link_memories',
     'Create a relation between two memories',
     {
@@ -277,7 +291,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'list_relations',
     'List relations for a memory',
     {
@@ -291,7 +305,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'toggle_favorite',
     'Toggle favorite status of a memory',
     {
@@ -305,7 +319,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'archive_memory',
     'Archive a memory (soft delete)',
     {
@@ -319,7 +333,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'get_context',
     'Retrieve, rank, and build token-safe markdown context from memories',
     {
@@ -362,7 +376,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'build_prompt',
     'Build full system and user prompts for an external LLM from ranked memory context',
     {
@@ -407,14 +421,14 @@ function createMcpServer(
     },
   );
 
-  server.tool('get_graph_capabilities', 'Discover graph traversal capabilities', {}, async () => {
+  tool('get_graph_capabilities', 'Discover graph traversal capabilities', {}, async () => {
     const capabilities = await handlers.graph.getCapabilities.handle(mcpCtx(), {});
     return {
       content: [{ type: 'text', text: JSON.stringify({ capabilities }, null, 2) }],
     };
   });
 
-  server.tool(
+  tool(
     'get_capabilities',
     'Discover Ratary deployment capabilities, limits, and MCP tool registry',
     {},
@@ -426,7 +440,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'negotiate_capabilities',
     'Bidirectional capability negotiation handshake — declare required features and receive matched deployment matrix',
     {
@@ -473,7 +487,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'run_stewardship',
     'Run the memory stewardship maintenance pipeline (dry-run by default)',
     {
@@ -496,7 +510,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'get_compression_status',
     'Report semantic compression status and pending duplicate clusters for the MCP owner',
     {
@@ -520,13 +534,15 @@ function createMcpServer(
         type: 'text' as const,
         text: JSON.stringify({
           error: 'MULTI_CLIENT_SYNC_ENABLED=false — enable multi-client sync to use sync_* tools',
+          // Deterministic configuration error — PI-B contract (retry cannot succeed).
+          retryable: false,
         }),
       },
     ],
     isError: true,
   };
 
-  server.tool(
+  tool(
     'sync_status',
     'Multi-client sync status for a platform (ADR-042)',
     {
@@ -541,7 +557,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'sync_pull',
     'Pull memory changes since cursor for a client platform',
     {
@@ -557,7 +573,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'sync_push',
     'Push memory changes from a client platform',
     {
@@ -602,7 +618,7 @@ function createMcpServer(
     },
   );
 
-  server.tool('list_workspaces', 'List workspaces for the MCP owner', {}, async () => {
+  tool('list_workspaces', 'List workspaces for the MCP owner', {}, async () => {
     const scope = await mcpScope();
     await ensureDefaultWorkspace(sql, scope.ownerId);
     const workspaces = await listWorkspacesByOwner(sql, scope.ownerId);
@@ -611,14 +627,14 @@ function createMcpServer(
     };
   });
 
-  server.tool('list_agents', 'List agents registered in the MCP workspace', {}, async () => {
+  tool('list_agents', 'List agents registered in the MCP workspace', {}, async () => {
     const agents = await agentIdentity.listByWorkspace(await mcpScope());
     return {
       content: [{ type: 'text', text: JSON.stringify({ agents }, null, 2) }],
     };
   });
 
-  server.tool(
+  tool(
     'register_agent',
     'Register an agent identity in the MCP workspace',
     {
@@ -640,7 +656,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'traverse_relations',
     'Traverse memory relations via bidirectional BFS from a seed memory',
     {
@@ -679,7 +695,7 @@ function createMcpServer(
     },
   );
 
-  server.tool(
+  tool(
     'submit_signal',
     'Submit memory quality feedback or inspection outcome signals (Phase 8.5 / 8.8)',
     {
@@ -711,6 +727,8 @@ function createMcpServer(
                 accepted: false,
                 duplicate: false,
                 error: 'SIGNAL_INGEST_ENABLED=false — enable signal ingest to use submit_signal',
+                // Deterministic configuration error — PI-B contract (retry cannot succeed).
+                retryable: false,
               }),
             },
           ],

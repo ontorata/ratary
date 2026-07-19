@@ -182,6 +182,16 @@ Never commit or share `.env`.
 | Claude pending approval | Run `claude` in repo → approve |
 | ChatGPT | No local stdio — see [ChatGPT setup](#6-chatgpt) (Actions, Remote MCP, OAuth) |
 
+### MCP tool errors — `{error, retryable}` contract
+
+A failing MCP tool never crashes the transport. The tool result carries `isError: true` with parseable JSON text: `{"error": "<message>", "retryable": <bool>}`.
+
+- `retryable: true` → idempotent read failed transiently; retry with short bounded backoff (2–3 attempts).
+- `retryable: false` → mutation, `run_stewardship`, or a deterministic failure (validation / not-found / auth). Do **not** blind-retry — for writes, continue the turn and reconcile on the next recall.
+- Treat memory as best-effort context: a missed write is recoverable, a crashed agent turn is not.
+
+Full contract + per-tool classification: [MCP/README.md — Error contract](../MCP/README.md#error-contract-error-retryable).
+
 ---
 
 ## 6. ChatGPT
