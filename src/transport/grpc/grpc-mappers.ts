@@ -24,9 +24,12 @@ export interface ProtoMemory {
   level: string;
   created_at: string;
   updated_at: string;
+  // PI-C (ADR-067): set only on idempotent-create replays.
+  duplicate: boolean;
+  replayed: boolean;
 }
 
-export function toProtoMemory(memory: Memory): ProtoMemory {
+export function toProtoMemory(memory: Memory & { duplicate?: true; replayed?: true }): ProtoMemory {
   return {
     id: memory.id,
     codename: memory.codename ?? '',
@@ -48,6 +51,8 @@ export function toProtoMemory(memory: Memory): ProtoMemory {
     level: memory.level,
     created_at: memory.createdAt,
     updated_at: memory.updatedAt,
+    duplicate: memory.duplicate ?? false,
+    replayed: memory.replayed ?? false,
   };
 }
 

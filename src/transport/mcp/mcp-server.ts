@@ -91,6 +91,13 @@ function createMcpServer(
       tags: z.array(z.string()).optional().describe('Tags for categorization'),
       favorite: z.boolean().optional().describe('Mark as favorite'),
       metadata: metadataSchema.optional().describe('Knowledge metadata'),
+      request_id: z
+        .string()
+        .uuid()
+        .optional()
+        .describe(
+          'Optional idempotency key (ADR-067) — retrying with the same request_id replays the original result instead of creating a duplicate',
+        ),
     },
     async (params) => {
       const meta = params.metadata ?? {};
@@ -101,6 +108,7 @@ function createMcpServer(
         summary: params.summary ?? '',
         tags: params.tags ?? [],
         favorite: params.favorite ?? false,
+        ...(params.request_id ? { request_id: params.request_id } : {}),
         category: meta.category,
         memoryType: meta.memoryType,
         keywords: meta.keywords,

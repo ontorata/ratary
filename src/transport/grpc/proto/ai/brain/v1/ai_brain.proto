@@ -29,6 +29,9 @@ message Memory {
   string level = 18;
   string created_at = 19;
   string updated_at = 20;
+  // PI-C (ADR-067): set only on idempotent-create replays.
+  bool duplicate = 21;
+  bool replayed = 22;
 }
 
 // ---------------------------------------------------------------------------
@@ -49,6 +52,9 @@ message CreateMemoryRequest {
   string language = 11;
   string notes = 12;
   string level = 13;
+  // PI-C (ADR-067): optional idempotency key — same request_id replays the
+  // original create instead of duplicating.
+  string request_id = 14;
 }
 
 message GetMemoryRequest {
