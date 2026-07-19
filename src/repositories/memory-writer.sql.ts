@@ -412,11 +412,16 @@ export class MemoryWriterSql implements IMemoryWriter {
     workspaceId?: string,
   ): Promise<void> {
     const conditions = ['id = ?', 'owner_id = ?'];
+    // Lifecycle ARCHIVED must also set the `archived` column so the memory
+    // actually leaves default retrieval/list paths (reversible archive, D2).
+    // Never clears `archived` — unarchiving is a user action, not decay's.
+    const archiveFlag = data.lifecycleState === 'archived' ? 1 : 0;
     const params: unknown[] = [
       data.score,
       data.signalsJson,
       data.computedAt,
       data.lifecycleState,
+      archiveFlag,
       id,
       ownerId,
     ];
@@ -425,7 +430,8 @@ export class MemoryWriterSql implements IMemoryWriter {
     // updated_at intentionally untouched (see IMemoryWriter.applyDecayResult).
     await this.db.execute(
       `UPDATE memories
-       SET decay_score = ?, decay_signals = ?, decay_computed_at = ?, lifecycle_state = ?
+       SET decay_score = ?, decay_signals = ?, decay_computed_at = ?, lifecycle_state = ?,
+           archived = CASE WHEN ? = 1 THEN 1 ELSE archived END
        WHERE ${conditions.join(' AND ')}`,
       params,
     );

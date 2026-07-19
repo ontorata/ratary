@@ -84,9 +84,12 @@ Notes:
   within it are never demoted at all.
 - Transitions happen only during the stewardship stage; recomputation is
   bidirectional, so a reactivated memory promotes back toward `ACTIVE`.
-- **There is no delete path.** `ARCHIVED` uses the existing reversible archive.
-  A future purge policy, if ever adopted, is a separate maintenance policy
-  with its own ADR — never part of decay.
+- **There is no delete path.** `ARCHIVED` uses the existing reversible archive:
+  the transition also sets the `archived` flag, so the memory leaves default
+  retrieval and list paths but remains recoverable (unarchiving is a user
+  action; decay never clears the flag). A future purge policy, if ever
+  adopted, is a separate maintenance policy with its own ADR — never part of
+  decay.
 
 ## Configuration
 
