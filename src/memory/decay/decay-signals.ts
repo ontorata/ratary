@@ -89,10 +89,10 @@ export function computeDecaySignals(
     halfLifeFactor(daysBetween(input.updatedAt, now), config.halfLifeDays),
   );
 
-  const accessRecency =
-    input.lastAccessed == null
-      ? 0
-      : halfLifeFactor(daysBetween(input.lastAccessed, now), config.halfLifeDays);
+  // Storing counts as the first activity: a never-recalled memory decays from
+  // its last content change instead of collapsing straight to the floor.
+  const lastActivity = input.lastAccessed ?? input.updatedAt;
+  const accessRecency = halfLifeFactor(daysBetween(lastActivity, now), config.halfLifeDays);
   const recency = Math.max(floor, accessRecency);
 
   const reactivationBase = clamp01(

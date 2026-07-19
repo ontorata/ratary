@@ -47,10 +47,18 @@ describe('computeDecaySignals', () => {
     expect(signals.relevance).toBe(DEFAULT_SIGNAL_FLOOR);
   });
 
-  it('never-accessed memory has floored recency and reactivation', () => {
-    const signals = computeDecaySignals(input(), CONFIG, NOW, false);
-    expect(signals.recency).toBe(DEFAULT_SIGNAL_FLOOR);
-    expect(signals.reactivation).toBe(DEFAULT_SIGNAL_FLOOR);
+  it('never-accessed memory falls back to updatedAt for recency (store = first activity)', () => {
+    const fresh = computeDecaySignals(input(), CONFIG, NOW, false);
+    expect(fresh.recency).toBeCloseTo(1, 5);
+    expect(fresh.reactivation).toBe(DEFAULT_SIGNAL_FLOOR);
+
+    const old = computeDecaySignals(
+      input({ updatedAt: '2025-01-01T00:00:00.000Z' }),
+      CONFIG,
+      NOW,
+      false,
+    );
+    expect(old.recency).toBe(DEFAULT_SIGNAL_FLOOR);
   });
 
   it('recent frequent access raises reactivation', () => {

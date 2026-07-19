@@ -61,6 +61,13 @@ export function nextLifecycleState(
 ): DecayLifecycleState {
   if (ctx.isProtected) return 'active';
 
+  // The retention window doubles as a grace period: a memory is never
+  // demoted while inside it, so newly stored or recently recalled memories
+  // stay ACTIVE regardless of how the multiplicative score starts out.
+  if (isWithinRetentionWindow(ctx.createdAt, ctx.lastAccessed, config.retentionDays, ctx.now)) {
+    return 'active';
+  }
+
   const dormantBelow = config.dormantBelow ?? DEFAULT_DORMANT_BELOW;
   const fadingBelow = config.fadingBelow ?? DEFAULT_FADING_BELOW;
 
@@ -68,9 +75,7 @@ export function nextLifecycleState(
   if (score >= fadingBelow) return 'dormant';
   if (score >= config.archiveFloor) return 'fading';
 
-  // Below the archive floor: archive only when every gate condition holds.
-  const archivable =
-    ctx.relationDegree === 0 &&
-    !isWithinRetentionWindow(ctx.createdAt, ctx.lastAccessed, config.retentionDays, ctx.now);
-  return archivable ? 'archived' : 'fading';
+  // Below the archive floor: archive only when every gate condition holds
+  // (outside retention is already guaranteed by the grace check above).
+  return ctx.relationDegree === 0 ? 'archived' : 'fading';
 }

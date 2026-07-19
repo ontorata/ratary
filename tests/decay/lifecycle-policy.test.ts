@@ -61,10 +61,13 @@ describe('nextLifecycleState', () => {
     expect(nextLifecycleState(0.01, CONFIG, ctx({ relationDegree: 2 }))).toBe('fading');
   });
 
-  it('does not archive inside the retention window (recent handoff survives)', () => {
+  it('retention window is a grace period: recent memory stays active even with low score', () => {
     expect(
       nextLifecycleState(0.01, CONFIG, ctx({ createdAt: '2026-07-10T00:00:00.000Z' })),
-    ).toBe('fading');
+    ).toBe('active');
+    expect(
+      nextLifecycleState(0.01, CONFIG, ctx({ lastAccessed: '2026-07-10T00:00:00.000Z' })),
+    ).toBe('active');
   });
 
   it('does not archive a protected memory even below the floor', () => {
