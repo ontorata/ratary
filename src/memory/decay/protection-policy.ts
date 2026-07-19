@@ -10,12 +10,7 @@
  * and only survive through the criteria above or the retention window.
  */
 
-export const GOVERNANCE_PROTECTED_TAGS = [
-  'governance',
-  'adr',
-  'architecture',
-  'baseline',
-] as const;
+export const GOVERNANCE_PROTECTED_TAGS = ['governance', 'adr', 'architecture', 'baseline'] as const;
 
 export const CORE_IMPORTANCE_THRESHOLD = 90;
 

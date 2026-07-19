@@ -1,19 +1,11 @@
-export {
-  DECAY_SIGNAL_NAMES,
-  DEFAULT_SIGNAL_FLOOR,
-  computeDecaySignals,
-} from './decay-signals.js';
+export { DECAY_SIGNAL_NAMES, DEFAULT_SIGNAL_FLOOR, computeDecaySignals } from './decay-signals.js';
 export type {
   DecaySignalName,
   DecaySignals,
   DecaySignalInput,
   DecaySignalConfig,
 } from './decay-signals.js';
-export {
-  DEFAULT_DECAY_WEIGHTS,
-  parseDecayWeights,
-  combineSignals,
-} from './decay-score.js';
+export { DEFAULT_DECAY_WEIGHTS, parseDecayWeights, combineSignals } from './decay-score.js';
 export type { DecayWeights } from './decay-score.js';
 export {
   GOVERNANCE_PROTECTED_TAGS,

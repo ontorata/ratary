@@ -79,10 +79,8 @@ export function computeDecaySignals(
   isProtected: boolean,
 ): DecaySignals {
   const floor = config.signalFloor ?? DEFAULT_SIGNAL_FLOOR;
-  const connectivitySaturation =
-    config.connectivitySaturation ?? DEFAULT_CONNECTIVITY_SATURATION;
-  const reactivationSaturation =
-    config.reactivationSaturation ?? DEFAULT_REACTIVATION_SATURATION;
+  const connectivitySaturation = config.connectivitySaturation ?? DEFAULT_CONNECTIVITY_SATURATION;
+  const reactivationSaturation = config.reactivationSaturation ?? DEFAULT_REACTIVATION_SATURATION;
 
   const relevance = Math.max(
     floor,
@@ -102,9 +100,7 @@ export function computeDecaySignals(
 
   const connectivity = Math.max(
     floor,
-    clamp01(
-      Math.log1p(Math.max(0, input.relationDegree)) / Math.log1p(connectivitySaturation),
-    ),
+    clamp01(Math.log1p(Math.max(0, input.relationDegree)) / Math.log1p(connectivitySaturation)),
   );
 
   const importance = Math.max(floor, clamp01(input.importance / 100));
