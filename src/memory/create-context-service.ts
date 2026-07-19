@@ -10,7 +10,9 @@ import type { IMemoryAccessAuditor } from '../ports/audit/imemory-access-auditor
 import { ContextService } from './context.service.js';
 import { VectorRetrievalCandidateSource } from './vector-retrieval-candidate-source.js';
 import { CompositeRetrievalCandidateSource } from './composite-retrieval-candidate-source.js';
+import { EntityRetrievalCandidateSource } from './entity-retrieval-candidate-source.js';
 import { GraphRetrievalCandidateSource } from '../graph/graph-retrieval-candidate-source.js';
+import { createEntityResolutionPorts } from '../composition/create-entity-resolution-ports.js';
 import { getEnv } from '../config/index.js';
 import { createLexicalRetrievalSource } from '../infrastructure/composition/create-lexical-retrieval-source.js';
 import { createGraphProvider } from '../infrastructure/composition/create-graph-provider.js';
@@ -67,8 +69,13 @@ function buildCompositeCandidateSource(
 ): IRetrievalCandidateSource | undefined {
   const useVector = env.HYBRID_RETRIEVAL && platform?.embeddingProvider && platform?.vectorStore;
   const useGraph = env.GRAPH_RETRIEVAL && platform?.sql;
+  // Phase 35 (ADR-068 D5/E4): entity leg exists only behind the flag (I0).
+  const entityPorts =
+    env.ENTITY_RESOLUTION_ENABLED && platform?.sql
+      ? createEntityResolutionPorts(platform.sql, env)
+      : ({ enabled: false } as const);
 
-  if (!useVector && !useGraph && env.SEARCH_PROVIDER === 'sql') {
+  if (!useVector && !useGraph && !entityPorts.enabled && env.SEARCH_PROVIDER === 'sql') {
     return undefined;
   }
 
@@ -108,6 +115,17 @@ function buildCompositeCandidateSource(
           maxNeighbors: env.GRAPH_MAX_NEIGHBORS,
         },
         vectorSeedSource,
+      ),
+    });
+  }
+
+  if (entityPorts.enabled) {
+    registered.push({
+      role: 'entity',
+      source: new EntityRetrievalCandidateSource(
+        entityPorts.resolver,
+        entityPorts.mentionStore,
+        repository,
       ),
     });
   }

@@ -84,7 +84,12 @@ describe('knowledge store boundary', () => {
       previous: base.snapshot,
     });
 
-    expect(replayA.snapshot.records).toEqual(replayB.snapshot.records);
+    // Wall-clock `createdAt`/`updatedAt` may differ by 1ms across calls; replay
+    // stability is about identity + status + counts, not absolute timestamps.
+    const withoutClock = <T extends { createdAt?: string; updatedAt?: string }>(rows: T[]) =>
+      rows.map(({ createdAt: _c, updatedAt: _u, ...rest }) => rest);
+
+    expect(withoutClock(replayA.snapshot.records)).toEqual(withoutClock(replayB.snapshot.records));
     expect(replayA.snapshot.embeddings).toEqual(replayB.snapshot.embeddings);
   });
 

@@ -67,6 +67,8 @@
     "learning:run:execute": "tsx scripts/run-learning.ts --execute",
     "infer:relations": "tsx scripts/infer-relations.ts",
     "infer:relations:execute": "tsx scripts/infer-relations.ts --execute",
+    "resolve:entities": "tsx scripts/resolve-entities.ts",
+    "resolve:entities:execute": "tsx scripts/resolve-entities.ts --execute",
     "inspection:mine": "tsx scripts/run-inspection-miner.ts",
     "inspection:mine:execute": "tsx scripts/run-inspection-miner.ts --execute",
     "evolution:history": "tsx scripts/evolution-history.ts",

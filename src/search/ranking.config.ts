@@ -46,18 +46,22 @@ export const RRF_CONFIG = {
     sql: 50,
     vector: 50,
     graph: 50,
+    entity: 30,
   },
   /** Per-source caps when sql, vector, and graph are all active (ADR-006 Appendix B). */
   SOURCE_CAPS_WITH_GRAPH_VECTOR: {
     sql: 40,
     vector: 40,
     graph: 30,
+    entity: 20,
   },
   /** Per-source weights for weighted RRF - higher = more influence */
   SOURCE_WEIGHTS: {
     sql: 1.0,
     vector: 1.0,
     graph: 1.0,
+    // Fixed constant (ADR-068 D5) — never learned.
+    entity: 1.0,
   },
 } as const;
 

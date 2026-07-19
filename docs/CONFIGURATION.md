@@ -554,6 +554,18 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 ---
 
+### Canonical entity resolution
+
+**What it does:** Deterministic symbol grounding (ADR-068) — codenames/tags/keywords resolve to owner-scoped canonical entities via exact normalized/alias matching; adds a flag-gated `entity` retrieval candidate source.
+
+| Key variables | `ENTITY_RESOLUTION_ENABLED`, `ENTITY_STORE_PROVIDER` (`sql` required when enabled) |
+
+**Benefits:** Shared referents across memories; entity-aware retrieval; fully deterministic and replayable (no fuzzy matching, no embeddings, no LLM).  
+**Before enabling:** Registry quality depends on codename/tag hygiene; run `npm run resolve:entities` dry-run first.  
+**Effects:** Stewardship stage `entity-resolution` populates the registry and mention edges; retrieval gains an `entity` RRF role. With the flag off, retrieval is byte-identical to pre-feature behavior.
+
+---
+
 ## Tier 4 — Transport & protocols
 
 ### gRPC

@@ -1038,6 +1038,77 @@ export async function migrateIdempotentWritesPhase1(client: ISqlDatabase): Promi
   }
 }
 
+/**
+ * Phase 35 — canonical entity resolution (ADR-068 D1).
+ *
+ * Additive-only: three new tables, no changes to `memories` or
+ * `memory_relations`. Entity nodes live outside the memory↔memory relation
+ * contract (owner decision E5).
+ *
+ * Invariant I1: `canonical_entities.id` is permanent — metadata updates
+ * (canonical_name, aliases, confidence) never re-key, so `entity_mentions`
+ * rows stay valid across renames.
+ */
+const ENTITY_RESOLUTION_SQL = `
+CREATE TABLE IF NOT EXISTS canonical_entities (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  canonical_name TEXT NOT NULL,
+  normalized_name TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  confidence REAL NOT NULL DEFAULT 1.0,
+  source_type TEXT NOT NULL DEFAULT 'inferred',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_canonical_entities_owner_name_kind
+  ON canonical_entities(owner_id, normalized_name, kind);
+
+CREATE TABLE IF NOT EXISTS entity_aliases (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  alias TEXT NOT NULL,
+  normalized_alias TEXT NOT NULL,
+  source_type TEXT NOT NULL DEFAULT 'inferred',
+  created_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_entity_aliases_owner_alias
+  ON entity_aliases(owner_id, normalized_alias);
+
+CREATE INDEX IF NOT EXISTS idx_entity_aliases_entity
+  ON entity_aliases(entity_id);
+
+CREATE TABLE IF NOT EXISTS entity_mentions (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  memory_id TEXT NOT NULL,
+  entity_id TEXT NOT NULL,
+  field TEXT NOT NULL,
+  confidence REAL NOT NULL,
+  evidence TEXT NOT NULL DEFAULT '{}',
+  source_type TEXT NOT NULL DEFAULT 'inferred',
+  created_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_entity_mentions_owner_memory_entity_field
+  ON entity_mentions(owner_id, memory_id, entity_id, field);
+
+CREATE INDEX IF NOT EXISTS idx_entity_mentions_owner_entity
+  ON entity_mentions(owner_id, entity_id);
+
+CREATE INDEX IF NOT EXISTS idx_entity_mentions_owner_memory
+  ON entity_mentions(owner_id, memory_id);
+`;
+
+export async function migrateEntityResolutionPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(ENTITY_RESOLUTION_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Extension track 8.6 — learning events + policy snapshots (ADR-057). */
 export async function migrateExtensionTracksPhase2(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(LEARNING_TABLES_SQL)) {
@@ -1237,6 +1308,7 @@ export async function runSchemaMigrations(
   await migratePrecisionSearchPhase1(client, dialect);
   await migrateMemoryDecayPhase1(client, dialect);
   await migrateIdempotentWritesPhase1(client);
+  await migrateEntityResolutionPhase1(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {
