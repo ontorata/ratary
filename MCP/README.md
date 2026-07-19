@@ -14,11 +14,11 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 
 ## Where is the server code?
 
-| Mode | Location | When to use |
-|------|----------|-------------|
+| Mode                       | Location                                                                                                            | When to use                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | **Full server (28 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; any `SQL_PROVIDER` (D1, Postgres, Supabase, MariaDB, …) |
-| **npm proxy (6 tools)** | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`) | Connect to hosted REST API with `RATARY_API_KEY` |
-| **Remote HTTPS** | [`src/transport/mcp/remote/`](../src/transport/mcp/remote/) | `REMOTE_MCP_ENABLED=true` on Vercel deploy |
+| **npm proxy (6 tools)**    | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`)                                            | Connect to hosted REST API with `RATARY_API_KEY`                    |
+| **Remote HTTPS**           | [`src/transport/mcp/remote/`](../src/transport/mcp/remote/)                                                         | `REMOTE_MCP_ENABLED=true` on Vercel deploy                          |
 
 Tool registry SSOT: [`src/capabilities/mcp-tool-names.ts`](../src/capabilities/mcp-tool-names.ts)
 
@@ -100,19 +100,19 @@ Details: [GUIDE — ChatGPT](../docs/GUIDE.md#6-chatgpt) · [CONFIGURATION — T
 
 ## Tools (full server — 28)
 
-| Tool | Purpose |
-|------|---------|
-| `save_memory`, `update_memory`, `delete_memory` | CRUD |
-| `get_memory`, `get_memory_by_codename`, `get_memory_by_path`, `search_memory` | Read & search (precision modes when `PRECISION_SEARCH_ENABLED=true`) |
-| `get_context`, `build_prompt` | Token-efficient context (~85% savings default) |
-| `list_projects`, `list_tags` | Navigation |
-| `link_memories`, `list_relations`, `traverse_relations`, `get_graph_capabilities` | Knowledge graph |
-| `list_workspaces`, `list_agents`, `register_agent` | Multi-AI workspace |
-| `get_capabilities`, `negotiate_capabilities` | Agent discovery |
-| `submit_signal` | Quality feedback (ranking adaptation) |
-| `run_stewardship`, `get_compression_status` | Maintenance |
-| `sync_pull`, `sync_push`, `sync_status` | Multi-client sync (opt-in) |
-| `toggle_favorite`, `archive_memory` | Lifecycle |
+| Tool                                                                              | Purpose                                                              |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `save_memory`, `update_memory`, `delete_memory`                                   | CRUD                                                                 |
+| `get_memory`, `get_memory_by_codename`, `get_memory_by_path`, `search_memory`     | Read & search (precision modes when `PRECISION_SEARCH_ENABLED=true`) |
+| `get_context`, `build_prompt`                                                     | Token-efficient context (~85% savings default)                       |
+| `list_projects`, `list_tags`                                                      | Navigation                                                           |
+| `link_memories`, `list_relations`, `traverse_relations`, `get_graph_capabilities` | Knowledge graph                                                      |
+| `list_workspaces`, `list_agents`, `register_agent`                                | Multi-AI workspace                                                   |
+| `get_capabilities`, `negotiate_capabilities`                                      | Agent discovery                                                      |
+| `submit_signal`                                                                   | Quality feedback (ranking adaptation)                                |
+| `run_stewardship`, `get_compression_status`                                       | Maintenance                                                          |
+| `sync_pull`, `sync_push`, `sync_status`                                           | Multi-client sync (opt-in)                                           |
+| `toggle_favorite`, `archive_memory`                                               | Lifecycle                                                            |
 
 ---
 
@@ -131,9 +131,21 @@ Tool failures never surface as MCP protocol errors. Any handler exception — an
 
 Client guidance:
 
-1. **Never blind-retry a write on an ambiguous timeout** — a silent success followed by a retry creates duplicates. Continue the turn and reconcile on the next `search_memory`/recall. Client-supplied idempotency markers are a planned follow-up (Idempotent Write Semantics).
+1. **Never blind-retry a write on an ambiguous timeout** — a silent success followed by a retry creates duplicates. Either pass a `request_id` (below) so the retry is safe, or continue the turn and reconcile on the next `search_memory`/recall.
 2. **Treat memory as best-effort context, not a hard dependency.** If a call fails, proceed with the context you already have and try again next turn. A missed write is recoverable; a crashed agent turn is not.
 3. Classification source of truth: [`src/transport/mcp/mcp-tool-retry-classification.ts`](../src/transport/mcp/mcp-tool-retry-classification.ts) · contract regression suite: `tests/mcp-error-contract/`.
+
+## Idempotent creates (`request_id`)
+
+`save_memory` accepts an optional `request_id` (UUID, same style as `submit_signal`'s `signal_id`). Generate one per logical create and reuse it on every retry of that create:
+
+- First call with a given `request_id` creates the memory normally.
+- Any retry with the same `request_id` — including after an ambiguous timeout — returns the **original memory** as a success, enriched with `"duplicate": true, "replayed": true`. No second row is ever created, even if the first attempt crashed mid-write.
+- `sync_push` create items get the same protection automatically, keyed by the item's `memory_id` — re-pushing a batch replays instead of duplicating.
+
+**Idempotency is guaranteed while the intent record exists.** Completed intent records are pruned after `WRITE_INTENT_TTL_DAYS` (default 30 days) as a cleanup policy — a retry arriving after that window may create a duplicate. Cleanup never deletes an unresolved (claimed-without-result) intent; those are kept and surfaced in stewardship findings. Without a `request_id`, behavior is unchanged: identical saves create distinct memories.
+
+Design: ADR-067 · contract suite: `tests/idempotent-writes/`.
 
 ---
 
@@ -141,32 +153,32 @@ Client guidance:
 
 Submit **Ratary Memory MCP** to public directories using the copy-paste pack in **[MCP/submission/](submission/README.md)**.
 
-| Pack file | Directory |
-|-----------|-----------|
-| [submission/mcpservers-org.md](submission/mcpservers-org.md) | [mcpservers.org/submit](https://mcpservers.org/submit) — **Memory** category |
-| [submission/official-registry.server.json](submission/official-registry.server.json) | [Official MCP Registry](https://registry.modelcontextprotocol.io/) |
-| [submission/awesome-mcp-servers-entry.md](submission/awesome-mcp-servers-entry.md) | awesome-mcp-servers GitHub PRs |
-| [submission/cursor-marketplace.md](submission/cursor-marketplace.md) | Cursor plugin marketplace |
-| [submission/claude-marketplace.md](submission/claude-marketplace.md) | Claude Code plugin marketplace |
-| [submission/directory-status.md](submission/directory-status.md) | Operator tracking (Ready → Submitted → Listed) |
+| Pack file                                                                            | Directory                                                                    |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| [submission/mcpservers-org.md](submission/mcpservers-org.md)                         | [mcpservers.org/submit](https://mcpservers.org/submit) — **Memory** category |
+| [submission/official-registry.server.json](submission/official-registry.server.json) | [Official MCP Registry](https://registry.modelcontextprotocol.io/)           |
+| [submission/awesome-mcp-servers-entry.md](submission/awesome-mcp-servers-entry.md)   | awesome-mcp-servers GitHub PRs                                               |
+| [submission/cursor-marketplace.md](submission/cursor-marketplace.md)                 | Cursor plugin marketplace                                                    |
+| [submission/claude-marketplace.md](submission/claude-marketplace.md)                 | Claude Code plugin marketplace                                               |
+| [submission/directory-status.md](submission/directory-status.md)                     | Operator tracking (Ready → Submitted → Listed)                               |
 
 ### mcpservers.org (quick copy)
 
-| Field | Value |
-|-------|-------|
-| **Server name** | Ratary |
+| Field                 | Value                                                                                                                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Server name**       | Ratary                                                                                                                                                                                                                                      |
 | **Short description** | Persistent coding memory for AI assistants — save, search, hybrid retrieval, knowledge graph, token-efficient context. MCP stdio (28 tools), npm proxy, or remote Streamable HTTP. Self-host on D1, Postgres, Supabase, MariaDB, or Docker. |
-| **Link** | `https://github.com/ontorata/ratary/tree/main/MCP` |
-| **Category** | Memory |
-| **Contact** | hello@ontorata.com |
+| **Link**              | `https://github.com/ontorata/ratary/tree/main/MCP`                                                                                                                                                                                          |
+| **Category**          | Memory                                                                                                                                                                                                                                      |
+| **Contact**           | hello@ontorata.com                                                                                                                                                                                                                          |
 
 ### Harness marketplace manifests
 
-| Path | Purpose |
-|------|---------|
+| Path                                                                                          | Purpose                                      |
+| --------------------------------------------------------------------------------------------- | -------------------------------------------- |
 | [harness/marketplace/ratary-marketplace.json](../harness/marketplace/ratary-marketplace.json) | Claude Code `/plugin marketplace add` source |
-| [harness/claude-code/plugin.json](../harness/claude-code/plugin.json) | Plugin metadata stub |
-| [harness/marketplace/README.md](../harness/marketplace/README.md) | Publish instructions |
+| [harness/claude-code/plugin.json](../harness/claude-code/plugin.json)                         | Plugin metadata stub                         |
+| [harness/marketplace/README.md](../harness/marketplace/README.md)                             | Publish instructions                         |
 
 ### Metadata SSOT
 
@@ -178,14 +190,14 @@ Repo-local metadata for tooling: [server.json](server.json) (stdio + npm + remot
 
 ## Docs
 
-| Doc | Purpose |
-|-----|---------|
+| Doc                                                 | Purpose                                              |
+| --------------------------------------------------- | ---------------------------------------------------- |
 | [docs/install/README.md](../docs/install/README.md) | Per-harness installation (Cursor, Claude, remote, …) |
-| [MCP/submission/README.md](submission/README.md) | Directory listing submission pack (31L) |
-| [docs/GUIDE.md](../docs/GUIDE.md) | Setup & usage |
-| [docs/DOCKER.md](../docs/DOCKER.md) | Container self-host |
-| [docs/README.md](../docs/README.md) | Human docs index |
-| [docs/examples/](../docs/examples/) | MCP configs, IDE templates, SDK patterns |
+| [MCP/submission/README.md](submission/README.md)    | Directory listing submission pack (31L)              |
+| [docs/GUIDE.md](../docs/GUIDE.md)                   | Setup & usage                                        |
+| [docs/DOCKER.md](../docs/DOCKER.md)                 | Container self-host                                  |
+| [docs/README.md](../docs/README.md)                 | Human docs index                                     |
+| [docs/examples/](../docs/examples/)                 | MCP configs, IDE templates, SDK patterns             |
 
 ## License
 

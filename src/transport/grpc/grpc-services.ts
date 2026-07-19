@@ -26,6 +26,7 @@ interface CreateMemoryRequest {
   language: string;
   notes: string;
   level: string;
+  request_id: string;
 }
 
 interface GetMemoryRequest {
@@ -123,6 +124,7 @@ export function createGrpcServiceImplementations(handlers: TransportHandlers): {
           language: emptyToUndefined(req.language),
           notes: emptyToUndefined(req.notes),
           level: coerceLevels([req.level])?.[0],
+          request_id: emptyToUndefined(req.request_id),
         })
         .then((memoryEntity) => callback(null, toProtoMemory(memoryEntity)))
         .catch((error: unknown) => callback(toGrpcError(error)));

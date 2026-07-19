@@ -187,7 +187,13 @@ Never commit or share `.env`.
 A failing MCP tool never crashes the transport. The tool result carries `isError: true` with parseable JSON text: `{"error": "<message>", "retryable": <bool>}`.
 
 - `retryable: true` → idempotent read failed transiently; retry with short bounded backoff (2–3 attempts).
-- `retryable: false` → mutation, `run_stewardship`, or a deterministic failure (validation / not-found / auth). Do **not** blind-retry — for writes, continue the turn and reconcile on the next recall.
+- `retryable: false` → mutation, `run_stewardship`, or a deterministic failure (validation / not-found / auth). Do **not** blind-retry — for writes, pass a `request_id` (below) or continue the turn and reconcile on the next recall.
+
+### Idempotent creates — `request_id` (ADR-067)
+
+`save_memory` accepts an optional `request_id` (UUID). Retrying a create with the same `request_id` replays the original result as a success (`duplicate: true, replayed: true`) instead of creating a duplicate — even if the first attempt failed ambiguously mid-write. `sync_push` create items are protected the same way, keyed by the item's `memory_id`.
+
+**Idempotency is guaranteed while the intent record exists.** Records are pruned after `WRITE_INTENT_TTL_DAYS` (default 30 days, cleanup policy only). Without a `request_id`, behavior is unchanged.
 - Treat memory as best-effort context: a missed write is recoverable, a crashed agent turn is not.
 
 Full contract + per-tool classification: [MCP/README.md — Error contract](../MCP/README.md#error-contract-error-retryable).

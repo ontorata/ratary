@@ -156,13 +156,17 @@ export class ClientSyncService implements IClientSyncService {
       if (!change.data?.title || !change.data.content) {
         throw new SyncConflictError('Create change requires title and content');
       }
-      await memoryService.createMemory(scope, {
+      // PI-C (ADR-067): the client-supplied memoryId keys the create, so a
+      // re-pushed batch replays the original result instead of duplicating.
+      const requestId = change.memoryId?.trim();
+      await memoryService.createMemoryIdempotent(scope, {
         title: change.data.title,
         project: change.data.project ?? '',
         content: change.data.content,
         summary: change.data.summary ?? '',
         tags: change.data.tags ?? [],
         favorite: change.data.favorite ?? false,
+        ...(requestId ? { request_id: `sync-create:${requestId}` } : {}),
       });
       return;
     }
