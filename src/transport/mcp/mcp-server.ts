@@ -534,6 +534,8 @@ function createMcpServer(
         type: 'text' as const,
         text: JSON.stringify({
           error: 'MULTI_CLIENT_SYNC_ENABLED=false — enable multi-client sync to use sync_* tools',
+          // Deterministic configuration error — PI-B contract (retry cannot succeed).
+          retryable: false,
         }),
       },
     ],
@@ -725,6 +727,8 @@ function createMcpServer(
                 accepted: false,
                 duplicate: false,
                 error: 'SIGNAL_INGEST_ENABLED=false — enable signal ingest to use submit_signal',
+                // Deterministic configuration error — PI-B contract (retry cannot succeed).
+                retryable: false,
               }),
             },
           ],

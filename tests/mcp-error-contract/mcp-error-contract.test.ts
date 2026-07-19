@@ -249,10 +249,20 @@ describe('MCP error contract — success paths untouched (PI-B non-regression)',
     }
   });
 
-  it('sync tools keep their documented disabled payload when sync is off', async () => {
+  it('feature-disabled payloads (sync off, signals off) also carry retryable:false', async () => {
     const ctx: TransportContext = { source: 'mcp', ownerId: 'owner-contract' } as TransportContext;
+    const disabledSignalsHandlers = new Proxy(
+      {},
+      {
+        get: (_target, prop) => {
+          if (prop === 'capabilities') return createCapabilitiesHandlers({ env: getEnv() });
+          if (prop === 'signals') return undefined; // SIGNAL_INGEST_ENABLED=false
+          return new Proxy({}, { get: () => ({ handle: async () => Promise.reject(INJECTED) }) });
+        },
+      },
+    ) as TransportHandlers;
     const server = createMcpServer(
-      buildFailingHandlers({ allow: true }),
+      disabledSignalsHandlers,
       { getTransportContext: () => ctx, resolveMemoryScope: async () => Promise.reject(INJECTED) },
       failingAgentIdentity,
       failingSql,
@@ -260,12 +270,21 @@ describe('MCP error contract — success paths untouched (PI-B non-regression)',
     );
     const client = await connectClient(server);
 
-    const result = await client.callTool({ name: 'sync_status', arguments: { platform_id: 'cursor' } });
-    const { isError, parsed } = probe(result);
-    expect(isError).toBe(true);
-    expect(String(parsed?.error)).toContain('MULTI_CLIENT_SYNC_ENABLED=false');
-    // Disabled payload is a configuration notice, not a thrown failure —
-    // shape is unchanged from pre-PI-B (no retryable field).
-    expect(parsed && 'retryable' in parsed).toBe(false);
+    const sync = probe(
+      await client.callTool({ name: 'sync_status', arguments: { platform_id: 'cursor' } }),
+    );
+    expect(sync.isError).toBe(true);
+    expect(String(sync.parsed?.error)).toContain('MULTI_CLIENT_SYNC_ENABLED=false');
+    expect(sync.parsed?.retryable).toBe(false);
+
+    const signal = probe(
+      await client.callTool({
+        name: 'submit_signal',
+        arguments: { type: 'explicit_feedback', memory_id: UUID },
+      }),
+    );
+    expect(signal.isError).toBe(true);
+    expect(String(signal.parsed?.error)).toContain('SIGNAL_INGEST_ENABLED=false');
+    expect(signal.parsed?.retryable).toBe(false);
   });
 });
