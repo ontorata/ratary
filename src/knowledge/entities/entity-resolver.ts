@@ -72,9 +72,7 @@ export class EntityResolver implements IEntityResolver {
     }
 
     const byName = await this.registry.findByNormalizedName(ownerId, normalized);
-    const byAlias = byName
-      ? null
-      : await this.registry.findByNormalizedAlias(ownerId, normalized);
+    const byAlias = byName ? null : await this.registry.findByNormalizedAlias(ownerId, normalized);
 
     const match = applyResolutionRules(input.symbol, {
       byNormalizedName: (n) => (n === normalized ? (byName ?? undefined) : undefined),

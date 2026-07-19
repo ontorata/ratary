@@ -12,10 +12,7 @@ import type {
   RetrievalFilters,
 } from '../repositories/memory.repository.interface.js';
 import type { IRetrievalCandidateSource } from './retrieval-candidate-source.interface.js';
-import type {
-  IEntityResolver,
-  SymbolInput,
-} from '../ports/entities/ientity-resolver.port.js';
+import type { IEntityResolver, SymbolInput } from '../ports/entities/ientity-resolver.port.js';
 import type { IEntityMentionStore } from '../ports/entities/ientity-mention-store.port.js';
 
 export class EntityRetrievalCandidateSource implements IRetrievalCandidateSource {

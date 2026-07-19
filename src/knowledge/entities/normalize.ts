@@ -7,10 +7,5 @@
  * and the resolver, so lookups and storage can never disagree.
  */
 export function normalizeSymbol(input: string): string {
-  return input
-    .normalize('NFKC')
-    .toLowerCase()
-    .replace(/[-_]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return input.normalize('NFKC').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
