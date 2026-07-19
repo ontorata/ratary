@@ -286,6 +286,15 @@ const envSchema = z
     // record exists (C5). Expired intents are pruned by stewardship.
     WRITE_INTENT_TTL_DAYS: z.coerce.number().positive().default(30),
 
+    // Canonical entity resolution (Phase 35 / ADR-068) — deterministic symbol
+    // grounding. Flag-off invariant I0: retrieval is byte-identical whether or
+    // not entity data exists. Enabling is an explicit owner decision.
+    ENTITY_RESOLUTION_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    ENTITY_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+
     // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
     GRPC_ENABLED: z
       .enum(['true', 'false'])
@@ -492,6 +501,14 @@ const envSchema = z
       .default('false'),
   })
   .superRefine((env, ctx) => {
+    if (env.ENTITY_RESOLUTION_ENABLED && env.ENTITY_STORE_PROVIDER === 'none') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['ENTITY_STORE_PROVIDER'],
+        message: 'ENTITY_STORE_PROVIDER must be "sql" when ENTITY_RESOLUTION_ENABLED=true',
+      });
+    }
+
     if (env.NODE_ENV === 'production' && !env.AUTH_SECRET) {
       ctx.addIssue({
         code: 'custom',
