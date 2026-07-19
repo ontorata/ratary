@@ -39,6 +39,9 @@ export interface IWriteIntentStore {
   /** Mark the resource creation as finished. Observability only. */
   markCompleted(ownerId: string, requestId: string): Promise<void>;
 
-  /** TTL cleanup (C5) — deletes intents created before the cutoff; returns count. */
-  deleteExpired(olderThanIso: string): Promise<number>;
+  /** TTL cleanup (C5) — deletes the owner's intents created before the cutoff; returns count. */
+  deleteExpired(ownerId: string, olderThanIso: string): Promise<number>;
+
+  /** Dry-run counterpart of deleteExpired. */
+  countExpired(ownerId: string, olderThanIso: string): Promise<number>;
 }

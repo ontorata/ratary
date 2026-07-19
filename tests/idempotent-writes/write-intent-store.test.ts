@@ -101,13 +101,16 @@ describe('SqlWriteIntentStore', () => {
       resourceId: 'mem-1',
     });
     // Cutoff in the past keeps the fresh row.
-    const removedNone = await store.deleteExpired(new Date(Date.now() - 60_000).toISOString());
-    expect(removedNone).toBe(0);
+    const past = new Date(Date.now() - 60_000).toISOString();
+    expect(await store.countExpired(OWNER, past)).toBe(0);
+    expect(await store.deleteExpired(OWNER, past)).toBe(0);
     expect(await store.getByRequestId(OWNER, 'req-fresh')).not.toBeNull();
 
-    // Cutoff in the future removes it.
-    const removed = await store.deleteExpired(new Date(Date.now() + 60_000).toISOString());
-    expect(removed).toBe(1);
+    // Cutoff in the future removes it — but only for the scoped owner.
+    const future = new Date(Date.now() + 60_000).toISOString();
+    expect(await store.countExpired(OWNER, future)).toBe(1);
+    expect(await store.deleteExpired('other-owner', future)).toBe(0);
+    expect(await store.deleteExpired(OWNER, future)).toBe(1);
     expect(await store.getByRequestId(OWNER, 'req-fresh')).toBeNull();
   });
 });

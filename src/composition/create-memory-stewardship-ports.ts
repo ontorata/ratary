@@ -19,6 +19,8 @@ import { IndexRepairTask } from '../memory/stewardship/tasks/index-repair.task.j
 import { RankingRefreshTask } from '../memory/stewardship/tasks/ranking-refresh.task.js';
 import { RetrievalOptimizationTask } from '../memory/stewardship/tasks/retrieval-optimization.task.js';
 import { DecayScoringTask } from '../memory/stewardship/tasks/decay-scoring.task.js';
+import { WriteIntentCleanupTask } from '../memory/stewardship/tasks/write-intent-cleanup.task.js';
+import { SqlWriteIntentStore } from '../infrastructure/write-intents/sql-write-intent-store.js';
 import { parseDecayWeights } from '../memory/decay/index.js';
 import { LocalStewardshipScheduler } from '../jobs/local-stewardship-scheduler.js';
 import type { IMemoryStewardshipOrchestrator } from '../memory/stewardship/imemory-stewardship-orchestrator.interface.js';
@@ -60,6 +62,7 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
   const orchestrator = new MemoryStewardshipOrchestrator(
     [
       new MetadataAuditTask(repository),
+      new WriteIntentCleanupTask(new SqlWriteIntentStore(sql), env.WRITE_INTENT_TTL_DAYS),
       new ConsolidationTask(consolidator),
       new GraphRepairTask(relationInference.orchestrator, relationInference.enabled),
       new EmbeddingAuditTask(repository),

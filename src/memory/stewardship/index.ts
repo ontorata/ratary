@@ -28,3 +28,4 @@ export { RankingRefreshTask } from './tasks/ranking-refresh.task.js';
 export { EmbeddingAuditTask } from './tasks/embedding-audit.task.js';
 export { RetrievalOptimizationTask } from './tasks/retrieval-optimization.task.js';
 export { DecayScoringTask, type DecayScoringTaskConfig } from './tasks/decay-scoring.task.js';
+export { WriteIntentCleanupTask } from './tasks/write-intent-cleanup.task.js';

@@ -74,12 +74,20 @@ export class SqlWriteIntentStore implements IWriteIntentStore {
     );
   }
 
-  async deleteExpired(olderThanIso: string): Promise<number> {
+  async deleteExpired(ownerId: string, olderThanIso: string): Promise<number> {
     const result = await this.db.execute(
-      `DELETE FROM memory_write_intents WHERE created_at < ?`,
-      [olderThanIso],
+      `DELETE FROM memory_write_intents WHERE owner_id = ? AND created_at < ?`,
+      [ownerId, olderThanIso],
     );
     return result.meta?.changes ?? 0;
+  }
+
+  async countExpired(ownerId: string, olderThanIso: string): Promise<number> {
+    const rows = await this.db.query<{ n: number }>(
+      `SELECT COUNT(*) as n FROM memory_write_intents WHERE owner_id = ? AND created_at < ?`,
+      [ownerId, olderThanIso],
+    );
+    return rows[0]?.n ?? 0;
   }
 }
 
