@@ -19,6 +19,8 @@ import { IndexRepairTask } from '../memory/stewardship/tasks/index-repair.task.j
 import { RankingRefreshTask } from '../memory/stewardship/tasks/ranking-refresh.task.js';
 import { RetrievalOptimizationTask } from '../memory/stewardship/tasks/retrieval-optimization.task.js';
 import { DecayScoringTask } from '../memory/stewardship/tasks/decay-scoring.task.js';
+import { EntityResolutionTask } from '../memory/stewardship/tasks/entity-resolution.task.js';
+import { createEntityResolutionPorts } from './create-entity-resolution-ports.js';
 import { WriteIntentCleanupTask } from '../memory/stewardship/tasks/write-intent-cleanup.task.js';
 import { SqlWriteIntentStore } from '../infrastructure/write-intents/sql-write-intent-store.js';
 import { parseDecayWeights } from '../memory/decay/index.js';
@@ -80,6 +82,7 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
         retentionDays: env.DECAY_RETENTION_DAYS,
         weights: parseDecayWeights(env.DECAY_WEIGHTS),
       }),
+      new EntityResolutionTask(repository, createEntityResolutionPorts(sql, env)),
     ],
     { runStore },
   );
