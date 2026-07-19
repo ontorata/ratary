@@ -132,6 +132,23 @@ describe('MemoryService idempotent create (PI-C)', () => {
     expect(await countMemories()).toBe(1);
   });
 
+  it('replay under a different workspace scope still resolves to the original memory (Bugbot regression)', async () => {
+    // Ledger key is (owner_id, request_id) — a retry arriving with a different
+    // workspace filter must replay, not enter crash recovery and hit the
+    // memories.id PK.
+    const first = await service.createMemoryIdempotent(SCOPE, input({ request_id: REQUEST_ID }));
+
+    const retryScope = { ownerId: OWNER, workspaceId: 'ws-different' };
+    const retry = await service.createMemoryIdempotent(
+      retryScope,
+      input({ request_id: REQUEST_ID }),
+    );
+
+    expect(retry.replayed).toBe(true);
+    expect(retry.memory.id).toBe(first.memory.id);
+    expect(await countMemories()).toBe(1);
+  });
+
   it('same request_id under different owners creates independent memories', async () => {
     const other = { ownerId: 'owner-other' };
     const a = await service.createMemoryIdempotent(SCOPE, input({ request_id: REQUEST_ID }));

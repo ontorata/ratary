@@ -123,12 +123,12 @@ export class MemoryService {
 
     // Invariant: existing.resourceId is the canonical id allocated exactly
     // once for this (ownerId, requestId) — retries never allocate a new one.
+    // Replay lookup is deliberately owner-scoped WITHOUT a workspace filter:
+    // the ledger key is (owner_id, request_id), so a retry arriving under a
+    // different workspace scope must still resolve to the original memory
+    // instead of entering crash recovery and failing on the memories.id PK.
     const existingId = claim.existing.resourceId;
-    const found = await this.repository.findById(
-      existingId,
-      scope.ownerId,
-      workspaceIdFromScope(scope),
-    );
+    const found = await this.repository.findById(existingId, scope.ownerId);
     if (found) {
       return { memory: found, replayed: true };
     }
@@ -152,7 +152,8 @@ export class MemoryService {
     } catch (error) {
       // memories.id PK backstop: a concurrent resumer of the same request
       // already created the row — return it as the canonical result.
-      const winner = await this.repository.findById(id, scope.ownerId, workspaceIdFromScope(scope));
+      // Owner-scoped lookup, no workspace filter (see createMemoryIdempotent).
+      const winner = await this.repository.findById(id, scope.ownerId);
       if (winner) {
         return winner;
       }
