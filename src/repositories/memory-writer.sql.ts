@@ -404,4 +404,36 @@ export class MemoryWriterSql implements IMemoryWriter {
       updatedAt,
     };
   }
+
+  async applyDecayResult(
+    id: string,
+    ownerId: string,
+    data: { score: number; signalsJson: string; computedAt: string; lifecycleState: string },
+    workspaceId?: string,
+  ): Promise<void> {
+    const conditions = ['id = ?', 'owner_id = ?'];
+    // Lifecycle ARCHIVED must also set the `archived` column so the memory
+    // actually leaves default retrieval/list paths (reversible archive, D2).
+    // Never clears `archived` — unarchiving is a user action, not decay's.
+    const archiveFlag = data.lifecycleState === 'archived' ? 1 : 0;
+    const params: unknown[] = [
+      data.score,
+      data.signalsJson,
+      data.computedAt,
+      data.lifecycleState,
+      archiveFlag,
+      id,
+      ownerId,
+    ];
+    appendWorkspaceFilter(conditions, params, workspaceId);
+
+    // updated_at intentionally untouched (see IMemoryWriter.applyDecayResult).
+    await this.db.execute(
+      `UPDATE memories
+       SET decay_score = ?, decay_signals = ?, decay_computed_at = ?, lifecycle_state = ?,
+           archived = CASE WHEN ? = 1 THEN 1 ELSE archived END
+       WHERE ${conditions.join(' AND ')}`,
+      params,
+    );
+  }
 }

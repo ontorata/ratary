@@ -133,6 +133,18 @@ export class MemoryRelationRepository implements IMemoryRelationRepository {
     return rows.map(rowToRelation);
   }
 
+  async countDegreeByOwner(ownerId: string): Promise<Map<string, number>> {
+    const rows = await this.db.query<{ memory_id: string; degree: number }>(
+      `SELECT memory_id, COUNT(*) as degree FROM (
+         SELECT source_memory_id AS memory_id FROM memory_relations WHERE owner_id = ?
+         UNION ALL
+         SELECT target_memory_id AS memory_id FROM memory_relations WHERE owner_id = ?
+       ) GROUP BY memory_id`,
+      [ownerId, ownerId],
+    );
+    return new Map(rows.map((row) => [row.memory_id, Number(row.degree)]));
+  }
+
   async exists(
     sourceMemoryId: string,
     targetMemoryId: string,

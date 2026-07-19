@@ -73,6 +73,21 @@ Artifacts (maintainer `.ai/` workspace): `operational-usage-log.md`, `operationa
 
 ---
 
+## Memory decay stage (PI-A — disabled by default)
+
+Stewardship stage #10 (`decay-scoring`) ships **flag-off** (`DECAY_SCORING_ENABLED=false`)
+and must stay off during the P1-E operational window. Validation expectations:
+
+- With the flag off (default): `run_stewardship` reports the stage as `skipped`
+  and no retrieval/ranking behavior changes — the checks above must pass unchanged.
+- With the flag on (post-freeze, owner decision): run `run_stewardship` in
+  dry-run first and review the `decay-scoring` findings (intended transitions)
+  before applying.
+
+Model and worked numbers: [scoring.md](scoring.md). Unit suite: `npx vitest run tests/decay`.
+
+---
+
 ## Package builds (optional)
 
 ```bash

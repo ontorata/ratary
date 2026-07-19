@@ -125,6 +125,21 @@ export interface IMemoryWriter {
     state: string,
     workspaceId?: string,
   ): Promise<Memory | null>;
+  /**
+   * Persist a decay stewardship result (PI-A). Deliberately does NOT touch
+   * `updated_at` — a maintenance pass must not reset the relevance signal.
+   */
+  applyDecayResult(
+    id: string,
+    ownerId: string,
+    data: {
+      score: number;
+      signalsJson: string;
+      computedAt: string;
+      lifecycleState: string;
+    },
+    workspaceId?: string,
+  ): Promise<void>;
 }
 
 /**

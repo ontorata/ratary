@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import type { MemoryLifecycleState } from '../types/memory.js';
+import { MEMORY_LIFECYCLE_STATES, type MemoryLifecycleState } from '../types/memory.js';
 
 export function generateId(): string {
   return randomUUID();
@@ -99,10 +99,9 @@ export function rowToMemory(row: {
 
 function parseLifecycleState(value: string | null | undefined): MemoryLifecycleState | null {
   if (value == null || value === '') return null;
-  if (value === 'active' || value === 'stale' || value === 'candidate_compress') {
-    return value;
-  }
-  return null;
+  return (MEMORY_LIFECYCLE_STATES as readonly string[]).includes(value)
+    ? (value as MemoryLifecycleState)
+    : null;
 }
 
 export function tagsToJson(tags: string[]): string {

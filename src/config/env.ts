@@ -265,6 +265,22 @@ const envSchema = z
     MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER: z.enum(['memory', 'sql']).default('memory'),
     MEMORY_STEWARDSHIP_SCHEDULER: z.enum(['none', 'local']).default('none'),
 
+    // Memory decay & lifecycle scoring (PI-A / P2-A) — stewardship stage #10.
+    // Foundation ships flag-off during the P1-E operational window; enabling it
+    // is an explicit post-freeze owner decision (D1).
+    DECAY_SCORING_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    DECAY_HALF_LIFE_DAYS: z.coerce.number().positive().default(30),
+    DECAY_ARCHIVE_FLOOR: z.coerce.number().min(0).max(1).default(0.05),
+    DECAY_RETENTION_DAYS: z.coerce.number().positive().default(90),
+    // Per-signal weight exponents, CSV `signal:weight`; unknown signals rejected
+    // by the combiner at composition time. Signals are the data contract (D5).
+    DECAY_WEIGHTS: z
+      .string()
+      .default('relevance:1,recency:1,reactivation:1,connectivity:1,importance:1'),
+
     // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
     GRPC_ENABLED: z
       .enum(['true', 'false'])

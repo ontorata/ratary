@@ -46,6 +46,7 @@ RFC = proposal only. Accepted RFC → new ADR (e.g. RFC-001 → ADR-015).
 | ADR-012 | Tenant isolation | Accepted | Mandatory `owner_id` on all data paths |
 | ADR-013 | Security compliance | Proposed | SOC 2 framework |
 | **ADR-014** | **Provider independence** | **Accepted** | Business → Interface → Adapter → SDK; no provider `if` in domain |
+| ADR-066 | Memory decay & lifecycle scoring | Accepted | Weighted decay signals · stewardship stage #10 · archive-only prune · retention grace period · `DECAY_SCORING_ENABLED=false` default with flag-off retrieval non-regression contract (`docs/scoring.md`) |
 
 ---
 

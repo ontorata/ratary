@@ -27,3 +27,4 @@ export { IndexRepairTask } from './tasks/index-repair.task.js';
 export { RankingRefreshTask } from './tasks/ranking-refresh.task.js';
 export { EmbeddingAuditTask } from './tasks/embedding-audit.task.js';
 export { RetrievalOptimizationTask } from './tasks/retrieval-optimization.task.js';
+export { DecayScoringTask, type DecayScoringTaskConfig } from './tasks/decay-scoring.task.js';
