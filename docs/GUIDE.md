@@ -419,6 +419,26 @@ mentioning entities resolved from the query). Guarantees:
 - **Versioned evidence** — every resolution records `resolverVersion`, the
   matching `rule`, and the matched symbol, so results stay replayable.
 
+### Decision provenance
+
+Auditable why/effect chains over decision memories (ADR-069). Extends relation
+types with `motivated_by`, `caused_by`, `resulted_in`, and `supersedes`. Query
+via `IProvenanceQuery` (`whyChain` / `effectChain`) when the flag is on.
+
+```env
+DECISION_PROVENANCE_ENABLED=true
+```
+
+Guarantees:
+
+- **Flag-off byte-parity** — with `DECISION_PROVENANCE_ENABLED=false`, retrieval
+  is unchanged whether or not provenance-typed relations exist.
+- **Append-only history** — `supersedes` never deletes prior edges or memories.
+- **Versioned evidence** — every provenance edge carries `provenanceVersion` +
+  `rule` (`supersedes` also requires `conflictKind`).
+- **No auto-causation** — stewardship stage `provenance-candidates` may suggest
+  `caused_by` from existing `depends_on` edges as findings only.
+
 ---
 
 ## 9. Platform infrastructure

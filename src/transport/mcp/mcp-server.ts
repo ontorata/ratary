@@ -282,7 +282,7 @@ function createMcpServer(
     {
       sourceId: z.string().uuid(),
       targetId: z.string().uuid(),
-      relation: z.enum(['related', 'depends_on', 'parent', 'child', 'duplicate', 'reference']),
+      relation: z.enum(RELATION_TYPES),
     },
     async (params) => {
       const relation = await handlers.relations.create.handle(mcpCtx(), {

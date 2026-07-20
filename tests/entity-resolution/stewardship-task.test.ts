@@ -59,8 +59,14 @@ describe('EntityResolutionTask (ADR-068 D4)', () => {
     db?.close();
   });
 
-  it('entity-resolution is the last stewardship stage', () => {
-    expect(STEWARDSHIP_STAGE_ORDER[STEWARDSHIP_STAGE_ORDER.length - 1]).toBe('entity-resolution');
+  it('entity-resolution precedes provenance-candidates in the stage order', () => {
+    expect(STEWARDSHIP_STAGE_ORDER).toContain('entity-resolution');
+    expect(STEWARDSHIP_STAGE_ORDER[STEWARDSHIP_STAGE_ORDER.length - 1]).toBe(
+      'provenance-candidates',
+    );
+    expect(STEWARDSHIP_STAGE_ORDER.indexOf('entity-resolution')).toBeLessThan(
+      STEWARDSHIP_STAGE_ORDER.indexOf('provenance-candidates'),
+    );
   });
 
   it('flag off ⇒ skipped with the conventional finding', async () => {

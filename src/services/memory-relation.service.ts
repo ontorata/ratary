@@ -4,6 +4,7 @@ import type { CreateRelationInput, MemoryRelation } from '../types/knowledge.js'
 import type { MemoryScope } from '../types/memory.js';
 import { NotFoundError, ValidationError } from '../types/errors.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
+import { enforceProvenanceMetadata, isProvenanceRelationType } from '../types/provenance.js';
 
 export class MemoryRelationService {
   constructor(
@@ -55,7 +56,22 @@ export class MemoryRelationService {
       throw new ValidationError('Relation already exists');
     }
 
-    return this.relationRepository.createFromInput(sourceMemoryId, scope.ownerId, input, createdBy);
+    let metadata = input.metadata ?? {};
+    if (isProvenanceRelationType(input.relation)) {
+      try {
+        metadata = enforceProvenanceMetadata(input.relation, metadata);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'invalid provenance metadata';
+        throw new ValidationError(message);
+      }
+    }
+
+    return this.relationRepository.createFromInput(
+      sourceMemoryId,
+      scope.ownerId,
+      { ...input, metadata },
+      createdBy,
+    );
   }
 
   async deleteRelation(scope: MemoryScope, memoryId: string, relationId: string): Promise<void> {

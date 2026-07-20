@@ -566,6 +566,18 @@ Enable **one track at a time** in staging. Keep defaults for regression baseline
 
 ---
 
+### Decision provenance
+
+**What it does:** Auditable decision why/effect chains (ADR-069) — additive provenance relation types on `memory_relations`, directed why/effect walks, flag-gated query composition, findings-only candidates from `depends_on`.
+
+| Key variables | `DECISION_PROVENANCE_ENABLED` |
+
+**Benefits:** Explainable “why we chose X” chains without counterfactual inference; supersession history preserved.  
+**Before enabling:** Author provenance edges via relation APIs; review stewardship `provenance-candidates` findings before any future accept path.  
+**Effects:** When on, `createProvenancePorts` exposes `whyChain`/`effectChain`; stewardship stage `provenance-candidates` emits findings only (never auto-writes `caused_by`). Flag off: retrieval byte-identical whether provenance rows exist.
+
+---
+
 ## Tier 4 — Transport & protocols
 
 ### gRPC

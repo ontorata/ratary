@@ -85,3 +85,9 @@ export type {
   IEntityMentionStore,
   UpsertEntityMentionInput,
 } from './entities/ientity-mention-store.port.js';
+
+export type {
+  IProvenanceQuery,
+  ChainWalkOptions,
+  ProvenanceChainStep,
+} from './provenance/iprovenance-query.port.js';

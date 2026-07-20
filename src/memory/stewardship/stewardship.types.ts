@@ -16,6 +16,7 @@ export const STEWARDSHIP_STAGE_ORDER = [
   'retrieval-optimization',
   'decay-scoring',
   'entity-resolution',
+  'provenance-candidates',
 ] as const;
 
 export type StewardshipStage = (typeof STEWARDSHIP_STAGE_ORDER)[number];
