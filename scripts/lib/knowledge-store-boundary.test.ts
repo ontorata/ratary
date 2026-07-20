@@ -74,23 +74,23 @@ describe('knowledge store boundary', () => {
   });
 
   it('keeps replay output stable for same input and snapshot state', () => {
+    const clock = () => FIXED_TIME;
     const base = persistKnowledgeArtifacts([document('v1', 'digest-v1')], [embedding('v1', 'emb-v1')], {
       previous: createEmptySnapshot(),
+      now: clock,
     });
     const replayA = persistKnowledgeArtifacts([document('v1', 'digest-v1')], [embedding('v1', 'emb-v1')], {
       previous: base.snapshot,
+      now: clock,
     });
     const replayB = persistKnowledgeArtifacts([document('v1', 'digest-v1')], [embedding('v1', 'emb-v1')], {
       previous: base.snapshot,
+      now: clock,
     });
 
-    // Wall-clock `createdAt`/`updatedAt` may differ by 1ms across calls; replay
-    // stability is about identity + status + counts, not absolute timestamps.
-    const withoutClock = <T extends { createdAt?: string; updatedAt?: string }>(rows: T[]) =>
-      rows.map(({ createdAt: _c, updatedAt: _u, ...rest }) => rest);
-
-    expect(withoutClock(replayA.snapshot.records)).toEqual(withoutClock(replayB.snapshot.records));
+    expect(replayA.snapshot.records).toEqual(replayB.snapshot.records);
     expect(replayA.snapshot.embeddings).toEqual(replayB.snapshot.embeddings);
+    expect(replayA.snapshot.indexEvents).toEqual(replayB.snapshot.indexEvents);
   });
 
   it('updates index events only after versions are available', () => {

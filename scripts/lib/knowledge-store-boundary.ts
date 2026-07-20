@@ -17,6 +17,8 @@ export type KnowledgeStoreSnapshot = {
 export type PersistOptions = {
   previous?: KnowledgeStoreSnapshot;
   failBeforeMarkAvailable?: boolean;
+  /** Injectable clock for deterministic replay / tests. Defaults to wall clock. */
+  now?: () => string;
 };
 
 export type PersistResult = {
@@ -41,8 +43,8 @@ function indexEventIdFor(versionId: string): string {
   return `idx-${shortHash(versionId)}`;
 }
 
-function now(): string {
-  return new Date().toISOString();
+function resolveNow(now?: () => string): string {
+  return now?.() ?? new Date().toISOString();
 }
 
 export function createEmptySnapshot(): KnowledgeStoreSnapshot {
@@ -55,6 +57,7 @@ export function persistKnowledgeArtifacts(
   options?: PersistOptions,
 ): PersistResult {
   const previous = options?.previous ?? createEmptySnapshot();
+  const clock = () => resolveNow(options?.now);
   const recordMap = new Map(previous.records.map((record) => [record.versionId, record] as const));
   const embeddingMap = new Map(previous.embeddings.map((record) => [record.embeddingId, record] as const));
   const indexEventMap = new Map(previous.indexEvents.map((event) => [event.eventId, event] as const));
@@ -74,8 +77,8 @@ export function persistKnowledgeArtifacts(
           version: document.version,
           status: 'pending',
           embeddingCount: 0,
-          createdAt: now(),
-          updatedAt: now(),
+          createdAt: clock(),
+          updatedAt: clock(),
         }),
       );
     }
@@ -110,7 +113,7 @@ export function persistKnowledgeArtifacts(
       status,
       embeddingCount,
       recoveryToken,
-      updatedAt: now(),
+      updatedAt: clock(),
     });
     recordMap.set(record.versionId, updated);
 
@@ -125,7 +128,7 @@ export function persistKnowledgeArtifacts(
           documentId: record.documentId,
           organizationId: record.organizationId,
           status: 'pending',
-          createdAt: now(),
+          createdAt: clock(),
         }),
       );
       continue;
@@ -155,7 +158,7 @@ export function recoverPendingVersions(snapshot: KnowledgeStoreSnapshot): Knowle
           ...record,
           status: 'available',
           recoveryToken: undefined,
-          updatedAt: now(),
+          updatedAt: resolveNow(),
         })
       : record,
   );
@@ -171,7 +174,7 @@ export function recoverPendingVersions(snapshot: KnowledgeStoreSnapshot): Knowle
         documentId: record.documentId,
         organizationId: record.organizationId,
         status: 'pending',
-        createdAt: now(),
+        createdAt: resolveNow(),
       }),
     );
   }
@@ -197,7 +200,7 @@ export function applyIndexUpdateBoundaryWithOptions(
       ? IndexUpdateEventSchema.parse({
           ...event,
           status: failVersionIds.has(event.versionId) ? 'failed' : 'completed',
-          completedAt: failVersionIds.has(event.versionId) ? undefined : now(),
+          completedAt: failVersionIds.has(event.versionId) ? undefined : resolveNow(),
           error: failVersionIds.has(event.versionId) ? 'index update failed, recovery required' : undefined,
         })
       : event,
