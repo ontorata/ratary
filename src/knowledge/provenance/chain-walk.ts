@@ -83,6 +83,9 @@ function walkOutgoing(
       if (results.length >= budget) break;
       const neighborId = edge.targetMemoryId;
       if (visited.has(neighborId)) continue;
+      if (!isProvenanceRelationType(edge.relation) || !allowed.has(edge.relation)) {
+        continue;
+      }
 
       visited.add(neighborId);
       results.push({

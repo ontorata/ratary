@@ -21,6 +21,8 @@ import { RetrievalOptimizationTask } from '../memory/stewardship/tasks/retrieval
 import { DecayScoringTask } from '../memory/stewardship/tasks/decay-scoring.task.js';
 import { EntityResolutionTask } from '../memory/stewardship/tasks/entity-resolution.task.js';
 import { createEntityResolutionPorts } from './create-entity-resolution-ports.js';
+import { ProvenanceCandidatesTask } from '../memory/stewardship/tasks/provenance-candidates.task.js';
+import { createProvenancePorts } from './create-provenance-ports.js';
 import { WriteIntentCleanupTask } from '../memory/stewardship/tasks/write-intent-cleanup.task.js';
 import { SqlWriteIntentStore } from '../infrastructure/write-intents/sql-write-intent-store.js';
 import { parseDecayWeights } from '../memory/decay/index.js';
@@ -83,6 +85,7 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
         weights: parseDecayWeights(env.DECAY_WEIGHTS),
       }),
       new EntityResolutionTask(repository, createEntityResolutionPorts(sql, env)),
+      new ProvenanceCandidatesTask(sql, createProvenancePorts(sql, env)),
     ],
     { runStore },
   );
