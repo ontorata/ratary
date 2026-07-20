@@ -4,10 +4,7 @@ import type { CreateRelationInput, MemoryRelation } from '../types/knowledge.js'
 import type { MemoryScope } from '../types/memory.js';
 import { NotFoundError, ValidationError } from '../types/errors.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
-import {
-  enforceProvenanceMetadata,
-  isProvenanceRelationType,
-} from '../types/provenance.js';
+import { enforceProvenanceMetadata, isProvenanceRelationType } from '../types/provenance.js';
 
 export class MemoryRelationService {
   constructor(

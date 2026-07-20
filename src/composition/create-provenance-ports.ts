@@ -7,9 +7,7 @@ import type { ISqlDatabase } from '../ports/sql/isql-database.port.js';
 import type { IProvenanceQuery } from '../ports/provenance/iprovenance-query.port.js';
 import { SqlProvenanceQuery } from '../infrastructure/provenance/sql-provenance-query.js';
 
-export type ProvenancePorts =
-  | { enabled: false }
-  | { enabled: true; query: IProvenanceQuery };
+export type ProvenancePorts = { enabled: false } | { enabled: true; query: IProvenanceQuery };
 
 export function createProvenancePorts(sql: ISqlDatabase, env: Env): ProvenancePorts {
   if (!env.DECISION_PROVENANCE_ENABLED) {

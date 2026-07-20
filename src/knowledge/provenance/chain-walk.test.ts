@@ -1,16 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import {
-  walkEffectChain,
-  walkWhyChain,
-  type ProvenanceWalkEdge,
-} from './chain-walk.js';
+import { walkEffectChain, walkWhyChain, type ProvenanceWalkEdge } from './chain-walk.js';
 
-function edge(
-  id: string,
-  source: string,
-  target: string,
-  relation: string,
-): ProvenanceWalkEdge {
+function edge(id: string, source: string, target: string, relation: string): ProvenanceWalkEdge {
   return { id, sourceMemoryId: source, targetMemoryId: target, relation };
 }
 
@@ -47,10 +38,7 @@ describe('walkWhyChain (ADR-069 D5)', () => {
       edge('c', 'm3', 'm4', 'caused_by'),
     ];
     expect(walkWhyChain(edges, 'm1', { maxDepth: 1 }).map((s) => s.memoryId)).toEqual(['m2']);
-    expect(walkWhyChain(edges, 'm1', { budget: 2 }).map((s) => s.memoryId)).toEqual([
-      'm2',
-      'm3',
-    ]);
+    expect(walkWhyChain(edges, 'm1', { budget: 2 }).map((s) => s.memoryId)).toEqual(['m2', 'm3']);
   });
 
   it('does not mutate input edges', () => {

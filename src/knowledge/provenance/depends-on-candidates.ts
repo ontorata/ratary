@@ -2,10 +2,7 @@
  * Phase 36 / ADR-069 T6 — findings-only candidates from existing depends_on edges.
  * Correlation ≠ causation: never auto-writes caused_by (v1).
  */
-import {
-  PROVENANCE_VERSION,
-  type ProvenanceEvidence,
-} from '../../types/provenance.js';
+import { PROVENANCE_VERSION, type ProvenanceEvidence } from '../../types/provenance.js';
 
 export interface DependsOnEdgeInput {
   id: string;

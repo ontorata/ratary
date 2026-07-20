@@ -68,10 +68,12 @@ export class ProvenanceCandidatesTask implements IMaintenanceTask {
         `depends_on scanned: ${rows.length}`,
         `provenance candidates (caused_by suggestions): ${candidates.length}`,
         'v1 findings-only — no caused_by writes (correlation ≠ causation)',
-        ...candidates.slice(0, 20).map(
-          (c) =>
-            `candidate ${c.sourceMemoryId} -[caused_by]-> ${c.targetMemoryId} (from ${c.dependsOnRelationId})`,
-        ),
+        ...candidates
+          .slice(0, 20)
+          .map(
+            (c) =>
+              `candidate ${c.sourceMemoryId} -[caused_by]-> ${c.targetMemoryId} (from ${c.dependsOnRelationId})`,
+          ),
       ],
     };
   }
