@@ -32,6 +32,11 @@ export const RELATION_TYPES = [
   'duplicate',
   'consolidates',
   'reference',
+  // Phase 36 / ADR-069 — decision provenance (additive)
+  'motivated_by',
+  'caused_by',
+  'resulted_in',
+  'supersedes',
 ] as const;
 
 export const SOURCE_TYPES = ['manual', 'inferred', 'import', 'api', 'mcp'] as const;

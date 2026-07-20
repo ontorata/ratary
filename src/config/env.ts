@@ -295,6 +295,13 @@ const envSchema = z
       .default('false'),
     ENTITY_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
 
+    // Decision provenance (Phase 36 / ADR-069) — auditable why/effect chains.
+    // Flag-off invariant I0: retrieval byte-identical whether provenance edges exist.
+    DECISION_PROVENANCE_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+
     // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
     GRPC_ENABLED: z
       .enum(['true', 'false'])
