@@ -192,9 +192,11 @@ describe('RecallPolicy (wave 3)', () => {
     });
 
     it('freshnessPolicy max_age:h filters by hours', async () => {
-      const policy = new RecallPolicy();
-      const twoHoursAgo = new Date(Date.now() - 2 * 3_600_000).toISOString();
-      const oneHourAgo = new Date(Date.now() - 3_600_000).toISOString();
+      // Freeze evaluation clock — wall-clock Date.now() races at the exact age boundary.
+      const now = Date.parse('2026-07-08T12:00:00.000Z');
+      const policy = new RecallPolicy(() => now);
+      const twoHoursAgo = new Date(now - 2 * 3_600_000).toISOString();
+      const oneHourAgo = new Date(now - 3_600_000).toISOString();
       const candidates = [
         makeCandidate('recent', { updatedAt: oneHourAgo }),
         makeCandidate('stale', { updatedAt: twoHoursAgo }),
@@ -209,9 +211,11 @@ describe('RecallPolicy (wave 3)', () => {
     });
 
     it('freshnessPolicy max_age:d filters by days', async () => {
-      const policy = new RecallPolicy();
-      const twoDaysAgo = new Date(Date.now() - 2 * 86_400_000).toISOString();
-      const yesterday = new Date(Date.now() - 86_400_000).toISOString();
+      // Freeze evaluation clock — wall-clock Date.now() races at the exact age boundary.
+      const now = Date.parse('2026-07-08T12:00:00.000Z');
+      const policy = new RecallPolicy(() => now);
+      const twoDaysAgo = new Date(now - 2 * 86_400_000).toISOString();
+      const yesterday = new Date(now - 86_400_000).toISOString();
       const candidates = [
         makeCandidate('recent', { updatedAt: yesterday }),
         makeCandidate('stale', { updatedAt: twoDaysAgo }),
