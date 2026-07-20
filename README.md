@@ -192,9 +192,9 @@ Throughout this README, **Ratary MCP** means the official memory MCP implementat
                                │
          ┌─────────────────────┴─────────────────────┐
          ▼                     ▼                     ▼
-   Ontorata MCP         Ontorata Studio          Ontory
-   ontorata/ontorata-mcp ontorata/Ontorata-Studio  ontorata/ontory
-   ecosystem product     ecosystem product         runtime kernel (separate)
+   Ontorata MCP         Ontorata Studio          Ontory Runtime
+   ontorata/ontorata-mcp ontorata/Ontorata-Studio  ontorata/ontory-runtime
+   ecosystem product     ecosystem product         (ADR-2119; was ontorata/ontory)
 ```
 
 **Infrastructure** (ships from `ontorata/ratary` — server plus client packages):
@@ -212,7 +212,7 @@ Throughout this README, **Ratary MCP** means the official memory MCP implementat
 |---------|------------|------|
 | **Ontorata MCP** | [ontorata/ontorata-mcp](https://github.com/ontorata/ontorata-mcp) | Ecosystem MCP gateway — Ratary MCP plus additional Ontorata tools. |
 | **Ontorata Studio** | [ontorata/Ontorata-Studio](https://github.com/ontorata/Ontorata-Studio) | Operator UI — uses `@ratary/sdk` only. |
-| **Ontory** | [ontorata/ontory](https://github.com/ontorata/ontory) | AI runtime kernel — provider execution on Ratary memory substrate. |
+| **Ontory** | [ontorata/ontory-runtime](https://github.com/ontorata/ontory-runtime) | Ontory Runtime — AI orchestration (ADR-2119). Legacy URL `ontorata/ontory` redirects. |
 
 Ratary Server **does not depend** on ecosystem product repositories.
 
