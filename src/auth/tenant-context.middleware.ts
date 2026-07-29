@@ -52,6 +52,7 @@ export function isTenantContextExemptPath(url: string, method: string): boolean 
 
   const path = pathOnly(url);
   if (path.startsWith('/api/v1/auth/')) return true;
+  if (path.startsWith('/api/v1/desktop-objects')) return true;
   if (path === '/api/v1/workspaces' && (method === 'GET' || method === 'POST')) return true;
 
   return false;

@@ -86,6 +86,7 @@ import { createAiBrainPlatformController } from '../../controllers/ai-brain-plat
 import { createGlobalIntelligencePorts } from '../../composition/create-global-intelligence-ports.js';
 import { createGlobalIntelligenceController } from '../../controllers/global-intelligence.controller.js';
 import { createCompressionAdminController } from '../../controllers/compression-admin.controller.js';
+import { createDesktopObjectController } from '../../controllers/desktop-object.controller.js';
 import { EmbeddingJobRunner } from '../../embedding/embedding-job.runner.js';
 
 export interface AppDependencies {
@@ -422,6 +423,7 @@ export async function buildApp(options?: {
     aiBrainPlatform: aiBrainPlatformController,
     globalIntelligence: globalIntelligenceController,
     compressionAdmin: compressionAdminController,
+    desktopObjects: createDesktopObjectController(platform.objectStorage),
   };
 
   await fastify.register(
