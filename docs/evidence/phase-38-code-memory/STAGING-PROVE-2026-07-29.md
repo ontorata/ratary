@@ -38,9 +38,20 @@
 | runId | `c6afdd89-1708-4dcc-8f73-1b877a50381f` |
 | getById round-trip | PASS |
 
-## Remaining (Owner-gated)
+## E — Staging D1 (completed)
 
-- **E** — Staging D1 migrate + `index:code:execute` on fixture  
-- **F** — Production enable (only after E Accept)
+See [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md).
 
-Do **not** run execute against production D1 from laptop `.env`.
+| Field | Value |
+|-------|--------|
+| D1 | `ratary-staging` (`72947c9f…`) |
+| filesScanned / nodes / edges | 2 / 8 / 13 |
+| runId | `53db0bbe-5bfc-44b5-a492-4d3d31bdfd73` |
+| getNode + traverse (staging ports) | PASS |
+| prod `ai-cloud` fixture rows | 0 |
+
+## Owner decision
+
+**Accept E** · **Hold** (F deferred) — 2026-07-29. See [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md).
+
+Do **not** run execute against production D1 from laptop `.env`. Do **not** set production `CODE_MEMORY_ENABLED=true` while on Hold.

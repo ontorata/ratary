@@ -1,8 +1,10 @@
 # Phase 38 / ADR-070 — Code Memory Ops Pack
 
-**Status:** Staging prove pack (flag-on path without production enable)  
+**Status:** Staging prove pack — **E Accepted** · **Hold** (F deferred; prod flag OFF)  
 **Date:** 2026-07-29  
-**Authority:** ADR-070 C5 · CONFIGURATION Code Memory · ARCH-0248 dry-run  
+**Authority:** ADR-070 C5 · CONFIGURATION Code Memory · ARCH-0248 · ARCH-0251 · ARCH-0252 · Owner Accept E + Hold  
+
+
 
 ## Hard rules
 
@@ -22,8 +24,8 @@
 | B | Fixture dry-run flag **off** | No |
 | C | Fixture dry-run flag **on** (`CODE_MEMORY_ENABLED=true` · `CODE_STORE_PROVIDER=sql`) | No |
 | D | In-memory execute prove (`npm run prove:code-memory`) | Memory only |
-| E | Staging D1 execute (Owner) | Yes — staging only |
-| F | Production enable | **Blocked** until E Accept |
+| E | Staging D1 execute (Owner) | Yes — staging only · **DONE** 2026-07-29 |
+| F | Production enable | **Hold** — E Accepted; Owner deferred F (2026-07-29) |
 
 ### A–C (CLI)
 
@@ -50,27 +52,20 @@ npm run prove:code-memory
 
 Asserts: extract → upsert nodes/edges → `runId` set → `getById` round-trip. Uses **in-memory** ports (does not touch D1).
 
-### E — staging D1 (Owner-gated)
+### E — staging D1 (Owner-gated) — **DONE**
 
-1. Provision / select **staging** Cloudflare D1 (separate from prod `D1_DATABASE_ID`).
-2. Set in a **staging-only** env file (never commit):
+Evidence: [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md)
 
-```env
-SQL_PROVIDER=d1
-CODE_MEMORY_ENABLED=true
-CODE_STORE_PROVIDER=sql
-D1_DATABASE_ID=<staging-id>
-# …account + token…
-```
+1. Provisioned Cloudflare D1 **`ratary-staging`** (separate from prod `ai-cloud`).
+2. Staging-only env: `.env.staging` (gitignored) + shell `D1_DATABASE_ID` override before process start.
+3. `npm run db:migrate` against staging — OK.
+4. `npm run index:code:execute` on fixture — runId `53db0bbe-…` · 2/8/13 · status `completed`.
+5. Port-level `getNode` + `traverse` against staging D1 — PASS (hosted prod MCP not used).
+6. Prod isolation: zero `fixture/phase38` nodes on `ai-cloud`.
 
-3. `npm run db:migrate` against staging.
-4. `npm run index:code:execute -- --owner=<uuid> --repository=fixture/phase38 --root=docs/evidence/phase-38-code-memory/fixture`
-5. MCP/REST: `traverse_code` / `get_code_node` against staging API with flag on.
-6. Record evidence under `docs/evidence/phase-38-code-memory/`.
+### F — production (**Hold**)
 
-### F — production
-
-Only after Owner Accept of E. Set Vercel/production:
+Owner **Accepted E** then chose **Hold** (2026-07-29). Do not enable until Owner re-opens F. When re-opened, set Vercel/production:
 
 - `CODE_MEMORY_ENABLED=true`
 - `CODE_STORE_PROVIDER=sql`
@@ -86,4 +81,5 @@ Set `CODE_MEMORY_ENABLED=false` (and optionally `CODE_STORE_PROVIDER=none`). Tab
 |------|------|
 | [DRY-RUN-2026-07-29.md](./DRY-RUN-2026-07-29.md) | Full-repo dry-run |
 | [STAGING-PROVE-2026-07-29.md](./STAGING-PROVE-2026-07-29.md) | Fixture B–D results |
+| [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md) | Staging D1 E execute + traverse |
 | [OPS-PACK.md](./OPS-PACK.md) | This pack |
