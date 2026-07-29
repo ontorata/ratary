@@ -32,6 +32,13 @@ export interface LoginAccountInput {
   clientIp?: string;
 }
 
+/** Gateway-only reissue — no password; subject must match registered account. */
+export interface ReissueSessionInput {
+  ownerId: string;
+  identityId: string;
+  email: string;
+}
+
 export interface AccountAuthResult {
   accessToken: string;
   expiresIn: number;
@@ -163,6 +170,37 @@ export class AccountService {
       ownerId: account!.ownerId,
       email: account!.email,
       displayName: account!.displayName,
+      organizationId: workspace.organizationId,
+      workspaceId: workspace.id,
+    });
+  }
+
+  /**
+   * Issue a fresh studio access JWT for an authenticated Gateway refresh session.
+   * Does not accept or store passwords — Auth Gateway must already hold a valid Refresh Session.
+   */
+  async reissueSession(input: ReissueSessionInput): Promise<AccountAuthResult> {
+    const email = input.email.trim().toLowerCase();
+    const account = await this.accounts.findByEmail(email);
+    if (
+      !account ||
+      account.ownerId !== input.ownerId ||
+      account.identityId !== input.identityId
+    ) {
+      throw new UnauthorizedError('Subject mismatch for reissue');
+    }
+
+    const identity = await this.identities.findById(account.identityId);
+    if (!identity || !identity.active) {
+      throw new ForbiddenError('Account is disabled');
+    }
+
+    const { workspace } = await ensureDefaultWorkspace(this.db, account.ownerId);
+    return this.issueSession({
+      identityId: account.identityId,
+      ownerId: account.ownerId,
+      email: account.email,
+      displayName: account.displayName,
       organizationId: workspace.organizationId,
       workspaceId: workspace.id,
     });

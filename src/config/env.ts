@@ -369,6 +369,11 @@ const envSchema = z
       .enum(['true', 'false'])
       .transform((v) => v === 'true')
       .optional(),
+    /**
+     * Shared secret for Auth Gateway `POST /api/v1/auth/token/reissue`.
+     * Empty = reissue endpoint disabled (503).
+     */
+    AUTH_GATEWAY_REISSUE_SECRET: z.string().optional().default(''),
 
     // Federation layer (Phase 14) — ADR-029; cross-node knowledge exchange, default off
     FEDERATION_ENABLED: z
