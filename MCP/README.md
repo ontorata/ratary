@@ -8,7 +8,7 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 
 **Ecosystem:** Built by [Ontorata](https://ontorata.com). This doc covers **Ratary Memory MCP** (id **`ratary`**). **[Ontorata MCP](https://github.com/ontorata/ontorata-mcp)** and **[Ontorata Studio](https://github.com/ontorata/Ontorata-Studio)** are separate repos.
 
-**npm:** Hosted REST proxy — [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) ([`@ratary` org](https://www.npmjs.com/org/ratary)). Full stdio (28 tools) requires cloning this repo.
+**npm:** Hosted REST proxy — [`@ratary/mcp-server`](https://www.npmjs.com/package/@ratary/mcp-server) ([`@ratary` org](https://www.npmjs.com/org/ratary)). Full stdio (30 tools) requires cloning this repo.
 
 ---
 
@@ -16,7 +16,7 @@ Persistent **coding memory** for AI assistants — save, search, build token-eff
 
 | Mode                       | Location                                                                                                            | When to use                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| **Full server (28 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; any `SQL_PROVIDER` (D1, Postgres, Supabase, MariaDB, …) |
+| **Full server (30 tools)** | [`src/mcp/stdio.ts`](../src/mcp/stdio.ts) → [`src/transport/mcp/mcp-server.ts`](../src/transport/mcp/mcp-server.ts) | Clone repo; any `SQL_PROVIDER` (D1, Postgres, Supabase, MariaDB, …) |
 | **npm proxy (6 tools)**    | [`packages/mcp-server/`](../packages/mcp-server/) (`@ratary/mcp-server`)                                            | Connect to hosted REST API with `RATARY_API_KEY`                    |
 | **Remote HTTPS**           | [`src/transport/mcp/remote/`](../src/transport/mcp/remote/)                                                         | `REMOTE_MCP_ENABLED=true` on Vercel deploy                          |
 
@@ -167,7 +167,7 @@ Submit **Ratary Memory MCP** to public directories using the copy-paste pack in 
 | Field                 | Value                                                                                                                                                                                                                                       |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Server name**       | Ratary                                                                                                                                                                                                                                      |
-| **Short description** | Persistent coding memory for AI assistants — save, search, hybrid retrieval, knowledge graph, token-efficient context. MCP stdio (28 tools), npm proxy, or remote Streamable HTTP. Self-host on D1, Postgres, Supabase, MariaDB, or Docker. |
+| **Short description** | Persistent coding memory for AI assistants — save, search, hybrid retrieval, knowledge graph, token-efficient context. MCP stdio (30 tools), npm proxy, or remote Streamable HTTP. Self-host on D1, Postgres, Supabase, MariaDB, or Docker. |
 | **Link**              | `https://github.com/ontorata/ratary/tree/main/MCP`                                                                                                                                                                                          |
 | **Category**          | Memory                                                                                                                                                                                                                                      |
 | **Contact**           | hello@ontorata.com                                                                                                                                                                                                                          |

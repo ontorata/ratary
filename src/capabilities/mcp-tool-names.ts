@@ -17,6 +17,8 @@ export const MCP_TOOL_NAMES = [
   'archive_memory',
   'get_graph_capabilities',
   'traverse_relations',
+  'traverse_code',
+  'get_code_node',
   'list_workspaces',
   'list_agents',
   'register_agent',

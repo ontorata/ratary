@@ -16,6 +16,6 @@ Set `RATARY_API_KEY` (`aic_...`) from [Ratary Studio](https://studio.ontorata.co
 
 Default REST base: `https://ratary.ontorata.com`.
 
-## Full stdio (28 tools)
+## Full stdio (30 tools)
 
 Clone [ontorata/ratary](https://github.com/ontorata/ratary), configure SQL provider, run `npm run setup` — see [docs/install/cursor.md](../../docs/install/cursor.md).

@@ -365,6 +365,39 @@ export const MCP_SERVER_CARD_TOOLS: ServerCardToolDef[] = [
       },
     },
   ),
+  readOnly(
+    'traverse_code',
+    'Traverse the Code Memory graph (Phase 38 / ADR-070). Empty when CODE_MEMORY_ENABLED=false.',
+    {
+      type: 'object',
+      properties: {
+        codeNodeId: { type: 'string', format: 'uuid', description: 'Seed code node UUID' },
+        stableKey: { type: 'string', description: 'Seed by stable key (repo:/file:/…)' },
+        depth: { type: 'integer', minimum: 1, maximum: 5, description: 'BFS depth' },
+        direction: {
+          type: 'string',
+          enum: ['outgoing', 'incoming', 'both'],
+          description: 'Edge direction filter',
+        },
+        seed: {
+          type: 'object',
+          description: 'Alternative seed: repository, path, symbol',
+          properties: {
+            repository: { type: 'string' },
+            path: { type: 'string' },
+            symbol: { type: 'string' },
+          },
+        },
+      },
+    },
+  ),
+  readOnly('get_code_node', 'Fetch a single Code Memory node by id (Phase 38 / ADR-070).', {
+    type: 'object',
+    properties: {
+      id: { type: 'string', format: 'uuid', description: 'Code node UUID' },
+    },
+    required: ['id'],
+  }),
   readOnly('list_workspaces', 'List workspaces owned by the authenticated identity.', {
     type: 'object',
     properties: {},
