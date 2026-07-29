@@ -30,7 +30,7 @@ Adopt the **SOC 2 Trust Services Criteria** as Ratary's **internal security and 
 | Control register | **Private** `.ai/compliance/` = source of truth · **Public** `docs/security/CONTROL-SUMMARY.md` = status only (no hosts, IPs, paths, secrets) |
 | Certification | **Deferred** — build program now; Type I only after readiness + business need; Type II after 6–12 months evidence |
 
-Availability (backup verification, DR, RTO/RPO, failover, SLA) is **explicitly deferred** to a future ADR after the platform stabilizes.
+Availability (backup verification, DR, RTO/RPO, failover, SLA) was deferred from this ADR and is now covered by **[ADR-015 — Availability](./ADR-015-AVAILABILITY.md)** (program only; not an SLA).
 
 ## Alternatives considered
 

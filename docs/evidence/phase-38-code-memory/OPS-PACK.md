@@ -1,15 +1,13 @@
 # Phase 38 / ADR-070 — Code Memory Ops Pack
 
-**Status:** Staging prove pack — **E Accepted** · **Hold** (F deferred; prod flag OFF)  
+**Status:** Staging **E Accepted** · Production **F Complete** (fixture-first)  
 **Date:** 2026-07-29  
-**Authority:** ADR-070 C5 · CONFIGURATION Code Memory · ARCH-0248 · ARCH-0251 · ARCH-0252 · Owner Accept E + Hold  
-
-
+**Authority:** ADR-070 C5 · CONFIGURATION Code Memory · ARCH-0248 · ARCH-0251–0253 · Owner Accept F  
 
 ## Hard rules
 
-1. **Production `CODE_MEMORY_ENABLED` stays `false`** until Owner Accept of a live staging prove on a **dedicated** staging D1 (not prod).
-2. Do **not** run `npm run index:code:execute` against production D1 from laptop `.env` without an explicit staging database id.
+1. Production flag is **on** after F ([PROD-F-2026-07-29.md](./PROD-F-2026-07-29.md)). Full-monorepo index still requires Owner-agreed repo set.
+2. Prefer process-env override for CLI `index:code:execute`; confirm `D1_DATABASE_ID` prefix before writes (`1d01e219` prod · `72947c9f` staging).
 3. Indexer is CLI-only — never on `save_memory`.
 
 ## Fixture
@@ -25,7 +23,7 @@
 | C | Fixture dry-run flag **on** (`CODE_MEMORY_ENABLED=true` · `CODE_STORE_PROVIDER=sql`) | No |
 | D | In-memory execute prove (`npm run prove:code-memory`) | Memory only |
 | E | Staging D1 execute (Owner) | Yes — staging only · **DONE** 2026-07-29 |
-| F | Production enable | **Hold** — E Accepted; Owner deferred F (2026-07-29) |
+| F | Production enable | **DONE** — [PROD-F-2026-07-29.md](./PROD-F-2026-07-29.md) |
 
 ### A–C (CLI)
 
@@ -63,17 +61,12 @@ Evidence: [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md)
 5. Port-level `getNode` + `traverse` against staging D1 — PASS (hosted prod MCP not used).
 6. Prod isolation: zero `fixture/phase38` nodes on `ai-cloud`.
 
-### F — production (**Hold**)
+### F — production (**DONE**)
 
-Owner **Accepted E** then chose **Hold** (2026-07-29). Do not enable until Owner re-opens F.
+Evidence: [PROD-F-2026-07-29.md](./PROD-F-2026-07-29.md) · checklist history: [F-READINESS-HOLD.md](./F-READINESS-HOLD.md)
 
-Readiness (not Accept): [F-READINESS-HOLD.md](./F-READINESS-HOLD.md)
-
-When re-opened, set Vercel/production:
-
-- `CODE_MEMORY_ENABLED=true`
-- `CODE_STORE_PROVIDER=sql`
-- Migrate prod · execute index on agreed repo set · monitor
+- Vercel: `CODE_MEMORY_ENABLED=true` · `CODE_STORE_PROVIDER=sql`
+- Prod migrate + fixture execute · hosted REST traverse PASS
 
 ## Rollback
 
@@ -86,5 +79,7 @@ Set `CODE_MEMORY_ENABLED=false` (and optionally `CODE_STORE_PROVIDER=none`). Tab
 | [DRY-RUN-2026-07-29.md](./DRY-RUN-2026-07-29.md) | Full-repo dry-run |
 | [STAGING-PROVE-2026-07-29.md](./STAGING-PROVE-2026-07-29.md) | Fixture B–D results |
 | [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md) | Staging D1 E execute + traverse |
-| [F-READINESS-HOLD.md](./F-READINESS-HOLD.md) | F checklist while Hold |
+| [F-READINESS-HOLD.md](./F-READINESS-HOLD.md) | F checklist (complete) |
+| [PROD-F-2026-07-29.md](./PROD-F-2026-07-29.md) | Production enable F |
+| [DOCKER-GPU-SMOKE-SKIPPED-2026-07-29.md](./DOCKER-GPU-SMOKE-SKIPPED-2026-07-29.md) | Optional C skipped |
 | [OPS-PACK.md](./OPS-PACK.md) | This pack |

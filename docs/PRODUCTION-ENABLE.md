@@ -46,6 +46,15 @@ vercel link
 
 After enabling universal fabric: run `npm run db:migrate` against production DB (provenance table).
 
+## Optional — Code Memory (Phase 38 / ADR-070)
+
+| Variable | Example |
+|----------|---------|
+| `CODE_MEMORY_ENABLED` | `true` |
+| `CODE_STORE_PROVIDER` | `sql` |
+
+After enabling: ensure production D1 migrations include `code_*` tables; first index should be a small agreed set (see `docs/evidence/phase-38-code-memory/`).
+
 ## Run
 
 ```powershell

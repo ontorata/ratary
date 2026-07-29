@@ -1,34 +1,26 @@
-# Phase 38 F — Production enable readiness (Hold)
+# Phase 38 F — Production enable readiness
 
 **Date:** 2026-07-29  
-**Status:** **Hold** — readiness only; **do not enable** until Owner re-opens F  
-**Authority:** ARCH-0253 Accept E + Hold · [OPS-PACK.md](./OPS-PACK.md)
+**Status:** **Complete** — Owner re-opened F; see [PROD-F-2026-07-29.md](./PROD-F-2026-07-29.md)  
+**Authority:** ARCH-0253 Hold lifted by Owner · production enable executed  
 
-## Binding
+## Binding (post-F)
 
 | Item | State |
 |------|--------|
 | E | Accepted on `ratary-staging` |
-| F | **Hold** |
-| Prod `CODE_MEMORY_ENABLED` | **false** |
-| This doc | Checklist / runbook — not an Accept of F |
+| F | **Complete** (fixture-first production enable) |
+| Prod / Vercel `CODE_MEMORY_ENABLED` | **true** |
+| First index | `fixture/phase38` only |
 
-## Preconditions (when Owner re-opens F)
+## Historical Hold checklist (all done)
 
-1. [ ] Owner explicit Accept of F (not implied by this file)
-2. [ ] Prod D1 `ai-cloud` migrated (`npm run db:migrate` with **prod** env only after Accept)
-3. [ ] Vercel / production env:
-   - `CODE_MEMORY_ENABLED=true`
-   - `CODE_STORE_PROVIDER=sql`
-4. [ ] Agreed repo set for first index (start small; not full monorepo day-1)
-5. [ ] Rollback plan rehearsed: set flag `false` (I0: unused on recall)
-6. [ ] Monitor: index run status · table growth · MCP `traverse_code` smoke on **staging API or canary** first if available
-
-## Explicitly out of scope while Hold
-
-- Do **not** set production flag from laptop `.env`
-- Do **not** `index:code:execute` against `ai-cloud`
-- Do **not** claim Phase 38 production-ready
+1. [x] Owner explicit Accept of F  
+2. [x] Prod D1 `ai-cloud` migrated  
+3. [x] Vercel: `CODE_MEMORY_ENABLED=true` · `CODE_STORE_PROVIDER=sql`  
+4. [x] Agreed repo set = fixture  
+5. [x] Rollback plan known (flag off)  
+6. [x] Hosted REST `traverse` smoke PASS  
 
 ## Rollback
 
