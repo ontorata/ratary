@@ -37,15 +37,15 @@ Phase 4 evidence package (if applicable): `.ai/reviews/YYYY-MM-<slug>/`
 - [ ] Protocol flow followed: Planning → Implementation → Validation → Evidence → Review → Commit
 - [ ] `npm run ci:governance` pass (required for code changes): ⬜ / ✅ / N/A docs-only
 
-**Forbidden:** code merged without `.ai/` or `docs/` evidence when behavior changes (see `ci:docs-impact`).
+**Forbidden:** code merged without docs-ai knowledge sync and/or public `docs/` operator updates when behavior changes (see `ci:docs-impact`).
 
 ## Ontorata Definition of Done
 
-> **No PR is complete until `.ai` and `docs` are synchronized.**
+> **No PR is complete until knowledge (docs-ai) and public operator docs are synchronized when they apply.**
 
 > **Implementation is incomplete until documentation is synchronized.**
 
-See [docs/architecture/governance/definition-of-done.md](docs/architecture/governance/definition-of-done.md)
+See [docs/architecture/governance/definition-of-done.md](docs/architecture/governance/definition-of-done.md) (stub → docs-ai)
 
 ### Mandatory flow
 

@@ -1,70 +1,7 @@
-# Phases 32–34 (implemented)
+﻿# Moved — PHASES-32-34.md
 
-**Status:** ✅ Code merged main @ `28e6719` (PR #30) · gates PASS (2026-07-06)  
-**Governance:** `.ai/phases/32-*` … `34-*` COMPLETION.md
+Canonical location: **docs-ai** `products/ratary/roadmap/PHASES-32-34.md`
 
-All three phases ship **default OFF** — enable via env only.
+https://github.com/ontorata/docs-ai
 
----
-
-## Phase 32 — Universal memory fabric
-
-| | |
-|---|---|
-| **Flag** | `UNIVERSAL_MEMORY_FABRIC_ENABLED=true` (+ `KNOWLEDGE_FABRIC_ENABLED`, `FEDERATION_ENABLED`) |
-| **Orchestrator** | `src/knowledge-fabric-platform/services/universal-memory-fabric-orchestrator.ts` |
-| **Provenance** | `knowledge_fabric_provenance` table — run `npm run db:migrate` |
-| **REST** | `POST /knowledge-fabric/sync/peer/:peerId` · `GET /knowledge-fabric/provenance` |
-
----
-
-## Phase 33 — Neptune full graph traversal
-
-| | |
-|---|---|
-| **Flag** | `GRAPH_PROVIDER=neptune` + `NEPTUNE_ENDPOINT` |
-| **Client** | `src/infrastructure/graph/neptune/neptune-gremlin-client.ts` (HTTP Gremlin) |
-| **Provider** | `src/infrastructure/graph/neptune/neptune-graph-provider.ts` |
-
-Neptune SigV4 IAM auth: use HTTPS endpoint; full IAM signing not bundled — document in ops runbook when cluster requires it.
-
----
-
-## Phase 34 — Enterprise connectors
-
-| Connector | Required env |
-|-----------|----------------|
-| **SharePoint** | `SHAREPOINT_TENANT_ID`, `SHAREPOINT_CLIENT_ID`, `SHAREPOINT_CLIENT_SECRET`, `SHAREPOINT_SITE_ID` |
-| **Teams** | Graph creds above + `TEAMS_TEAM_ID`, `TEAMS_CHANNEL_ID` |
-| **Also live** | Notion, Confluence, Google Drive (Phase 29+) |
-
-Smoke:
-
-```powershell
-npx tsx scripts/test-connector-sync.ts --connector sharepoint --url https://ratary.ontorata.com --dry-run
-npx tsx scripts/test-connector-sync.ts --connector teams --url https://ratary.ontorata.com --dry-run
-```
-
----
-
-## What is still open (ops — not code phases)
-
-| Item | Status | Action |
-|------|--------|--------|
-| Notion on Vercel prod | ✅ | Verified `supportsKnowledgeFabric: true` |
-| Universal fabric flags on Vercel | ✅ | `UNIVERSAL_MEMORY_FABRIC_ENABLED`, `FEDERATION_*` set |
-| D1 provenance migration | ✅ | `npm run db:migrate` (2026-07-18) |
-| Confluence/Drive/SharePoint/Teams creds in Vercel prod | ⏳ | Owner secrets → `vercel-production-env.ps1` |
-| Universal fabric federation peers | ⏳ | Configure `FEDERATION_PEERS_JSON` when peer nodes exist |
-| SDK codegen CI on GitHub | ✅ | Workflow + `verify-generated-sdks.mjs` |
-| ChatGPT OAuth IdP | ⏳ | Deploy Keycloak — `auth.ontorata.com` currently Vercel (404) |
-| MCP directory PRs | ⏳ | See [directory-status.md](../MCP/submission/directory-status.md) |
-| Glama ownership claim | ⏳ | Login as `lutfi04` |
-| Smithery API key | ⏳ | Rotate leaked key |
-| Neptune production smoke | ⏳ | Requires AWS Neptune cluster |
-
-**No proposed or deferred code phases** remain in the 32–34 track.
-
----
-
-*Index: [README roadmap](../README.md#roadmap)*
+Operator docs (GUIDE, CONFIGURATION, install, ...) remain in this ``docs/`` tree.

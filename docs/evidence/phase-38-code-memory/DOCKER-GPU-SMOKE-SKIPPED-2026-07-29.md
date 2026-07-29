@@ -1,13 +1,7 @@
-# Optional C — Docker GPU smoke (skipped)
+﻿# Moved — phase-38-code-memory/DOCKER-GPU-SMOKE-SKIPPED-2026-07-29.md
 
-**Date:** 2026-07-29  
-**Status:** **Skipped — not required**  
-**Owner:** Explicit “Tidak wajib” for Docker GPU smoke  
+Canonical evidence: **docs-ai** `products/ratary/evidence/phase-38-code-memory/DOCKER-GPU-SMOKE-SKIPPED-2026-07-29.md`
 
-## Decision
+https://github.com/ontorata/docs-ai
 
-Do **not** run `ontory-model/deploy/frontier-gpu` Docker GPU smoke as part of this close-out. Frontier GPU hosts remain **out of scope** for ADR-013 / ADR-015 system boundary.
-
-## Non-claim
-
-No CUDA/Docker readiness is asserted from this note.
+**Exception:** ``phase-38-code-memory/fixture/`` remains in this repo for CLI/prove scripts.

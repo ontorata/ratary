@@ -1,3 +1,7 @@
-# Open phases (32–34)
+﻿# Moved — PHASES-OPEN.md
 
-**Moved →** [PHASES-32-34.md](PHASES-32-34.md) (implemented, gates PASS 2026-07-06).
+Canonical location: **docs-ai** `products/ratary/roadmap/PHASES-OPEN.md`
+
+https://github.com/ontorata/docs-ai
+
+Operator docs (GUIDE, CONFIGURATION, install, ...) remain in this ``docs/`` tree.

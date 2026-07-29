@@ -6,9 +6,11 @@
 
 ## Knowledge OS (internal)
 
-**Canonical internal knowledge** (phases, ADR rationale, compliance, roadmaps, reviews) lives in the private repo **[ontorata/docs-ai](https://github.com/ontorata/docs-ai)** → product path `products/ratary/`.
+**Canonical internal knowledge** (phases, ADR rationale, compliance, roadmaps, reviews, evidence markdown) lives in the private repo **[ontorata/docs-ai](https://github.com/ontorata/docs-ai)** → product path `products/ratary/`.
 
-Start there: `INDEX.md` · `NOW.md` · `MAP.md`. This `docs/` tree remains the **public / operator** surface for Ratary.
+Start there: `INDEX.md` · `NOW.md` · `MAP.md` · `SEARCH.md` · philosophy `governance/PRODUCT-VS-KNOWLEDGE-OS.md`.
+
+This `docs/` tree is the **public / operator** surface. Paths such as `architecture/governance/`, `PHASES-*.md`, `ARCHITECTURE.md`, `CROSS-PHASE-DEBT.md`, `security/CONTROL-SUMMARY.md`, and most `evidence/**/*.md` are **stubs** pointing at docs-ai. **Keep** `evidence/phase-38-code-memory/fixture/` here (CLI / prove scripts).
 
 ---
 
@@ -18,19 +20,19 @@ Start there: `INDEX.md` · `NOW.md` · `MAP.md`. This `docs/` tree remains the *
 |----------|----------|
 | How do I use `@ratary/sdk`, CLI, or npm MCP without cloning the server? | **[packages/README.md](../packages/README.md)** |
 | How do I sync Notion or Confluence into Ratary? | **[GUIDE.md — Knowledge fabric](GUIDE.md#12-knowledge-fabric-live-connectors)** |
-| Phases 32–34 (universal fabric, Neptune, SharePoint/Teams)? | **[PHASES-32-34.md](PHASES-32-34.md)** |
+| Phases 32–34 (universal fabric, Neptune, SharePoint/Teams)? | **docs-ai** `products/ratary/roadmap/PHASES-32-34.md` · stub [PHASES-32-34.md](PHASES-32-34.md) |
 | How do I enable knowledge fabric on production? | **[PRODUCTION-ENABLE.md](PRODUCTION-ENABLE.md)** |
 | ChatGPT MCP OAuth (DCR IdP)? | **[MCP-CHATGPT-OAUTH.md](MCP-CHATGPT-OAUTH.md)** |
 | OpenAPI SDK codegen CI? | **[SDK-CODEGEN-CI.md](SDK-CODEGEN-CI.md)** |
 | Which enterprise modules exist and how do I turn them on? | **[ENTERPRISE-MODULES.md](ENTERPRISE-MODULES.md)** |
-| What cross-phase debt is closed vs open? | **[CROSS-PHASE-DEBT.md](CROSS-PHASE-DEBT.md)** *(maintainer register)* |
+| What cross-phase debt is closed vs open? | **docs-ai** `products/ratary/roadmap/CROSS-PHASE-DEBT.md` · stub [CROSS-PHASE-DEBT.md](CROSS-PHASE-DEBT.md) |
 | What admin / operator APIs does the SDK expose? | **[packages/README.md](../packages/README.md)** · `@ratary/*@1.1.0` on [npm](https://www.npmjs.com/org/ratary) |
 | How do I install Ratary in my IDE / harness? | **[install/README.md](install/README.md)** |
 | How do I run Ratary in Docker? | **[DOCKER.md](DOCKER.md)** |
 | How do I install and use Ratary daily? | **[GUIDE.md](GUIDE.md)** |
 | What does each `.env` variable do? | **[CONFIGURATION.md](CONFIGURATION.md)** |
-| What is Ratary architecturally? | [ARCHITECTURE.md](ARCHITECTURE.md) |
-| Engineering governance & ADRs? | **[architecture/governance/README.md](architecture/governance/README.md)** |
+| What is Ratary architecturally? | **docs-ai** `products/ratary/roadmap/ARCHITECTURE.md` · stub [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Engineering governance & ADRs? | **docs-ai** `products/ratary/public-docs/architecture/governance/` · stub [architecture/governance/README.md](architecture/governance/README.md) |
 | Copy MCP / IDE config | [examples/](examples/) |
 | Enterprise authorization (OPA/Rego) | [policies/](policies/) |
 | Ratary MCP tools & transport | [../MCP/README.md](../MCP/README.md) |

@@ -400,6 +400,14 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 
 *Where do I read next?*
 
+### Engineering knowledge (internal)
+
+Architecture, ADRs, roadmap, phases, design history, and reviews live in the Ontorata **Knowledge OS**:
+
+**https://github.com/ontorata/docs-ai** → `products/ratary/`
+
+### Operator / developer guides (this repository)
+
 **Ratary Server** (`ontorata/ratary` — this repository):
 
 | | |
@@ -437,6 +445,8 @@ For category positioning, see **[What Ratary is not](#what-ratary-is-not)**.
 ## Roadmap
 
 *What is shipping when?*
+
+**Canonical roadmap / phase history:** [ontorata/docs-ai](https://github.com/ontorata/docs-ai) → `products/ratary/roadmap/` · `products/ratary/phases/`
 
 Organized by direction — not sprints. Phases **1–31** are implemented in code (gates PASS); platform modules stay **opt-in via env** unless noted.
 

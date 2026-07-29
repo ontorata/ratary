@@ -53,7 +53,7 @@ After enabling universal fabric: run `npm run db:migrate` against production DB 
 | `CODE_MEMORY_ENABLED` | `true` |
 | `CODE_STORE_PROVIDER` | `sql` |
 
-After enabling: ensure production D1 migrations include `code_*` tables; first index should be a small agreed set (see `docs/evidence/phase-38-code-memory/`).
+After enabling: ensure production D1 migrations include `code_*` tables; first index should be a small agreed set (evidence markdown: **docs-ai** `products/ratary/evidence/phase-38-code-memory/`; local fixture + ops pointer: `docs/evidence/phase-38-code-memory/`).
 
 ## Run
 
@@ -72,7 +72,7 @@ npx tsx scripts/test-connector-sync.ts --connector sharepoint --url https://rata
 npx tsx scripts/test-connector-sync.ts --connector teams --url https://ratary.ontorata.com --dry-run
 ```
 
-Phases reference: [PHASES-32-34.md](PHASES-32-34.md)
+Phases reference: **docs-ai** `products/ratary/roadmap/PHASES-32-34.md` · stub [PHASES-32-34.md](PHASES-32-34.md)
 
 ---
 

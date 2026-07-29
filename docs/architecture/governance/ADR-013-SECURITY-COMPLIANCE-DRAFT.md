@@ -1,5 +1,10 @@
-# ADR-013 — Security Compliance (SOC 2 framework) — DRAFT (historical)
+﻿# Moved — ADR-013-SECURITY-COMPLIANCE-DRAFT.md
 
-**Status:** Superseded by [ADR-013-SECURITY-COMPLIANCE.md](./ADR-013-SECURITY-COMPLIANCE.md) (Accepted 2026-07-29)  
+Canonical location in **docs-ai** (Knowledge OS):
 
-Retained for history. Do not use for implementation.
+- `products/ratary/public-docs/architecture/governance/ADR-013-SECURITY-COMPLIANCE-DRAFT.md`
+- ADRs also under ``decisions/ADR/`` when applicable
+
+https://github.com/ontorata/docs-ai
+
+Do not edit this stub — edit docs-ai.

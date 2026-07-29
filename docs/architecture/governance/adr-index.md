@@ -1,89 +1,10 @@
-# Architecture Decision Records — Public Index
+﻿# Moved — adr-index.md
 
-**Canonical:** `.ai/core/adr/` · **RFC:** `.ai/core/rfc/` · **Standards:** `.ai/core/standards/`  
-**Change gating:** `.ai/core/governance/CHANGE-GATING.md`  
-**Last updated:** 2026-07-07
+Canonical location in **docs-ai** (Knowledge OS):
 
----
+- `products/ratary/public-docs/architecture/governance/adr-index.md`
+- ADRs also under ``decisions/ADR/`` when applicable
 
-## Governance chain
+https://github.com/ontorata/docs-ai
 
-```
-Constitution → ADR → RFC → Blueprint → Standards → Implementation
-```
-
-RFC = proposal only. Accepted RFC → new ADR (e.g. RFC-001 → ADR-015).
-
----
-
-**Last updated:** 2026-07-08 (P0-B Wave 1 — identity foundation ADRs)
-
----
-
-## Identity Foundation ADRs (P0-A — canonical in `.ai/core/architecture/`)
-
-| ADR      | Title                                                                        | Status   | Summary                                                |
-| -------- | ---------------------------------------------------------------------------- | -------- | ------------------------------------------------------ |
-| ADR-0001 | [Identity Boundary](.ai/core/architecture/ADR-0001-identity-boundary.md)     | Accepted | Auth · owner · org/workspace · bootstrap vs data-plane |
-| ADR-0002 | [Tenant Isolation](.ai/core/architecture/ADR-0002-tenant-isolation.md)       | Accepted | Organization tenant boundary · Org A ≠ Org B           |
-| ADR-0003 | [Authorization Model](.ai/core/architecture/ADR-0003-authorization-model.md) | Accepted | Permission contract · authorization-boundary           |
-| ADR-0004 | [Transport Parity](.ai/core/architecture/ADR-0004-transport-parity.md)       | Accepted | REST ↔ MCP remote · transport ≠ permission             |
-
-**Enforcement:** `npm run ci:adr-impact` · [ARCHITECTURE-CHANGE-MAP.md](.ai/core/governance/ARCHITECTURE-CHANGE-MAP.md)
-
----
-
-## Cross-product ADRs
-
-| ADR         | Title                            | Status       | Summary                                                                                                                                                                                                                                                                                                                                                                                        |
-| ----------- | -------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ADR-006     | Native Auth Gateway              | Accepted     | Auth gateway → Ratary; OIDC federation                                                                                                                                                                                                                                                                                                                                                         |
-| ADR-007     | Ratary / Ontory boundary         | Accepted     | Brain vs execution runtime (Amendment A 2026-07-20); contract path not shared SQL; opaque org identity to Ontory; registry = Ontory model catalog not org SoR; RuntimeMemory ephemeral                                                                                                                                                                                                          |
-| ADR-008     | AI data governance               | Accepted     | Tenant data; opt-in training; deletion                                                                                                                                                                                                                                                                                                                                                         |
-| ADR-009     | Model lifecycle                  | Accepted     | Dataset → RC → prod → monitoring                                                                                                                                                                                                                                                                                                                                                               |
-| ADR-010     | Observability                    | Accepted     | OTel → Collector → any backend                                                                                                                                                                                                                                                                                                                                                                 |
-| ADR-011     | AI evaluation                    | Accepted     | Scoring, human review, training gates                                                                                                                                                                                                                                                                                                                                                          |
-| ADR-012     | Tenant isolation                 | Accepted     | Mandatory `owner_id` on all data paths                                                                                                                                                                                                                                                                                                                                                         |
-| **ADR-013** | **Security compliance**          | **Accepted** | SOC 2 Security TSC as **internal** framework only — [ADR-013-SECURITY-COMPLIANCE.md](./ADR-013-SECURITY-COMPLIANCE.md) · public [CONTROL-SUMMARY.md](../../security/CONTROL-SUMMARY.md) · **not certified** · Owner Accept 2026-07-29 |
-| **ADR-014** | **Provider independence**        | **Accepted** | Business → Interface → Adapter → SDK; no provider `if` in domain                                                                                                                                                                                                                                                                                                                               |
-| **ADR-015** | **Availability**                 | **Accepted** | Internal Availability program (RTO/RPO targets · backup/DR posture) — [ADR-015-AVAILABILITY.md](./ADR-015-AVAILABILITY.md) · **not** an SLA · Type II Availability deferred · Owner Accept 2026-07-29 |
-| ADR-066     | Memory decay & lifecycle scoring | Accepted     | Weighted decay signals · stewardship stage #10 · archive-only prune · retention grace period · `DECAY_SCORING_ENABLED=false` default with flag-off retrieval non-regression contract (`docs/scoring.md`)                                                                                                                                                                                       |
-| ADR-067     | Idempotent write semantics       | Accepted     | Opt-in `request_id` on creates (`save_memory`, `sync_push`) · `memory_write_intents` ledger with claim-first PK synchronization · canonical resource id allocated once per `(owner_id, request_id)` · replay returns success with `duplicate`/`replayed` · TTL is cleanup only — idempotency is guaranteed while the intent record exists · cleanup never deletes unresolved `claimed` intents |
-| ADR-068     | Canonical entity resolution      | Accepted     | Owner-scoped entity registry + alias index · deterministic symbol resolution (exact/alias match only, no fuzzy/embedding/LLM) · async stewardship stage — never on the write hot path · flag-gated `entity` retrieval role · `ENTITY_RESOLUTION_ENABLED=false` default with flag-off byte-parity contract · entity ids immutable · versioned resolution evidence                              |
-| ADR-069     | Decision-provenance memory       | Accepted     | Additive provenance relation types (`motivated_by`, `caused_by`, `resulted_in`, `supersedes`) on `memory_relations` · why/effect chain query port · `DECISION_PROVENANCE_ENABLED=false` default with flag-off byte-parity · append-only supersedes · versioned edge evidence · findings-only `depends_on` candidates (no auto-causation)                                                          |
-| **ADR-070** | **Unified Code Memory Model**    | **Accepted** | Third graph plane for code structure (`CODE_NODE_KINDS` / `CODE_EDGE_TYPES`) · bridges to memories & entities via controlled stewardship only · separate `traverse_code` API · async deterministic indexer (Tree-sitter/SCIP; not `save_memory` hot path) · TS/JS then Python · default flag off in config · Phase **38** · Owner Accept C1–C7 · **E+F done 2026-07-29** (staging prove + prod fixture enable; Vercel flag ON) · source ARCH-0234 · full text private `.ai/core/adr/` |
-
----
-
-## RFCs (proposals)
-
-| RFC     | Title            | Status |
-| ------- | ---------------- | ------ |
-| RFC-001 | Agent Runtime v2 | Draft  |
-
----
-
-## Standards layer
-
-Technical conventions (not policies): REST error format, logging, telemetry, testing, TypeScript boundaries — `.ai/core/standards/`.
-
----
-
-## AI governance
-
-Lifecycle rules for prompts, memory, agents, models, tools, eval — `.ai/core/governance/AI-GOVERNANCE.md`.
-
----
-
-## Studio ADRs (in git)
-
-`Ontorata-Studio/docs/architecture/adr/` — ADR-001 through ADR-005.
-
----
-
-## How to propose change
-
-1. Significant / unclear? → RFC in `.ai/core/rfc/`
-2. Architecture review
-3. Accepted → ADR
-4. Follow [CHANGE-GATING.md](.ai/core/governance/CHANGE-GATING.md)
+Do not edit this stub — edit docs-ai.
