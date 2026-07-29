@@ -168,8 +168,8 @@ Commands: [GUIDE — Optional commands](GUIDE.md#8-optional-commands).
 | `CODE_STORE_PROVIDER` | `none` | Must be `sql` when enabled |
 
 **Benefits:** Deterministic code graph for agent navigation; stewardship bridges to memories via validated `source_path`.  
-**Before enabling:** Run migrations; index with `npm run index:code` (dry-run) then `:execute`; keep off in production without an ops pack.  
-**Effects:** Tables may exist while the flag is off (I0: unused on recall). Indexer is async CLI only — never on `save_memory`. Bridge job: `npm run bridge:code-documented-by`.
+**Before enabling:** Follow [Phase 38 Ops Pack](../evidence/phase-38-code-memory/OPS-PACK.md) — dry-run → in-memory prove → staging D1 execute → Owner Accept before production.  
+**Effects:** Tables may exist while the flag is off (I0: unused on recall). Indexer is async CLI only — never on `save_memory`. Bridge job: `npm run bridge:code-documented-by`. Safe prove: `npm run prove:code-memory`.
 
 Commands: [GUIDE — Optional commands](GUIDE.md#8-optional-commands).
 

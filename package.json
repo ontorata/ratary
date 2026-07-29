@@ -88,6 +88,7 @@
     "steward:memories:execute": "tsx scripts/steward-memories.ts --execute",
     "index:code": "tsx scripts/index-code.ts",
     "index:code:execute": "tsx scripts/index-code.ts --execute",
+    "prove:code-memory": "tsx scripts/prove-code-memory-staging.ts",
     "bridge:code-documented-by": "tsx scripts/bridge-code-documented-by.ts",
     "bridge:code-documented-by:execute": "tsx scripts/bridge-code-documented-by.ts --execute",
     "benchmark:context-tokens": "tsx scripts/benchmark-context-tokens.ts",

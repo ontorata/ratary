@@ -370,6 +370,7 @@ See [CONFIGURATION → Code Memory](CONFIGURATION.md#code-memory-phase-38--adr-0
 ```bash
 npm run index:code -- --owner=<uuid> --repository=org/repo --root=.
 npm run index:code:execute -- --owner=<uuid> --repository=org/repo --root=.
+npm run prove:code-memory   # in-memory execute prove (no D1) — see docs/evidence/phase-38-code-memory/OPS-PACK.md
 npm run bridge:code-documented-by -- --owner=<uuid> --repository=org/repo
 ```
 
