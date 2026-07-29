@@ -6,7 +6,7 @@ import type {
 import type { DuckDbAnalyticsStoreConfig, DuckDbExecutor } from './duckdb-executor.interface.js';
 
 /**
- * DuckDB analytics store — dev/staging reference for IAnalyticsStore (ADR-013).
+ * DuckDB analytics store — dev/staging reference for IAnalyticsStore.
  */
 export class DuckDbAnalyticsStore implements IAnalyticsStore {
   constructor(
