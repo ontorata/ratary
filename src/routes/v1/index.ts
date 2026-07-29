@@ -26,8 +26,10 @@ import type { AiBrainPlatformController } from '../../controllers/ai-brain-platf
 import type { GlobalIntelligenceController } from '../../controllers/global-intelligence.controller.js';
 import type { CompressionAdminController } from '../../controllers/compression-admin.controller.js';
 import type { InspectionLedgerController } from '../../controllers/inspection-ledger.controller.js';
+import type { DesktopObjectController } from '../../controllers/desktop-object.controller.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from '../index.js';
 import { authRoutes } from './auth.routes.js';
+import { desktopObjectRoutes } from './desktop-object.routes.js';
 import { knowledgeRoutes } from './knowledge.routes.js';
 import { contextRoutes } from './context.routes.js';
 import { graphRoutes } from './graph.routes.js';
@@ -81,6 +83,7 @@ export async function registerV1Routes(
     globalIntelligence?: GlobalIntelligenceController;
     compressionAdmin: CompressionAdminController;
     inspectionLedger?: InspectionLedgerController;
+    desktopObjects?: DesktopObjectController;
   },
 ): Promise<void> {
   await healthRoutes(fastify, controllers.health);
@@ -139,4 +142,7 @@ export async function registerV1Routes(
   await memoryRoutes(fastify, controllers.memory, controllers.relations);
   await backupRoutes(fastify, controllers.backup);
   await authRoutes(fastify, controllers.auth);
+  if (controllers.desktopObjects) {
+    await desktopObjectRoutes(fastify, controllers.desktopObjects);
+  }
 }
