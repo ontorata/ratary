@@ -64,7 +64,7 @@ export async function bridgeCodeDocumentedBy(
     }
 
     const fileKey = `file:${options.repository}:${path}`;
-    let codeNode = await options.ports.nodes.getByStableKey(options.ownerId, fileKey);
+    const codeNode = await options.ports.nodes.getByStableKey(options.ownerId, fileKey);
     if (!codeNode) {
       // Accept repo-relative paths already prefixed, or bare paths.
       skipped += 1;

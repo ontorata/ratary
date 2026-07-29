@@ -4,7 +4,10 @@ import type { IScopeResolver } from '../scope/iscope-resolver.interface.js';
 import type { TraverseGraphBody } from '../types/graph.js';
 import type { CodeNode, TraverseCodeBody } from '../types/code-memory.js';
 import { buildTransportContextFromRestRequest } from '../transport/shared/resolve-transport-scope.js';
-import { createGraphHandlers, type GraphHandlers } from '../transport/shared/handlers/graph.handlers.js';
+import {
+  createGraphHandlers,
+  type GraphHandlers,
+} from '../transport/shared/handlers/graph.handlers.js';
 
 export class GraphController {
   constructor(private readonly handlers: GraphHandlers) {}

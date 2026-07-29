@@ -16,15 +16,7 @@ import {
 import { stableCodeId } from './stable-code-id.js';
 
 const SOURCE_EXT = new Set(['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs']);
-const SKIP_DIRS = new Set([
-  'node_modules',
-  'dist',
-  'coverage',
-  '.git',
-  '.next',
-  '.turbo',
-  'build',
-]);
+const SKIP_DIRS = new Set(['node_modules', 'dist', 'coverage', '.git', '.next', '.turbo', 'build']);
 
 export interface ExtractCodeGraphInput {
   ownerId: string;
@@ -120,12 +112,7 @@ export function extractTsJsCodeGraph(input: ExtractCodeGraphInput): ExtractCodeG
     return node;
   };
 
-  const pushEdge = (
-    type: CodeEdge['type'],
-    fromId: string,
-    toId: string,
-    rule: string,
-  ): void => {
+  const pushEdge = (type: CodeEdge['type'], fromId: string, toId: string, rule: string): void => {
     const natural = `${type}:${fromId}:${toId}`;
     const id = stableCodeId(input.ownerId, `edge:${natural}`);
     if (edges.some((e) => e.id === id)) return;
@@ -181,7 +168,11 @@ export function extractTsJsCodeGraph(input: ExtractCodeGraphInput): ExtractCodeG
 
     const sf = ts.createSourceFile(rel, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
     const visit = (node: ts.Node, parentSymbolKey: string | null): void => {
-      if (ts.isImportDeclaration(node) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
+      if (
+        ts.isImportDeclaration(node) &&
+        node.moduleSpecifier &&
+        ts.isStringLiteral(node.moduleSpecifier)
+      ) {
         const spec = node.moduleSpecifier.text;
         const importKey = `import:${input.repository}:${rel}->${spec}`;
         const importNode = pushNode({

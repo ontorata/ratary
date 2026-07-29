@@ -13,10 +13,7 @@ import { getEnv } from '../config/index.js';
 import { NotFoundError } from '../types/errors.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
 import { createCodeMemoryPorts } from '../composition/create-code-memory-ports.js';
-import {
-  CodeMemoryService,
-  createCodeMemoryService,
-} from './code-memory.service.js';
+import { CodeMemoryService, createCodeMemoryService } from './code-memory.service.js';
 
 export interface GraphServiceConfig {
   maxDepth: number;

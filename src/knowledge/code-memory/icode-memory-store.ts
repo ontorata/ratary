@@ -29,7 +29,11 @@ export interface ICodeEdgeStore {
 
 export interface ICodeBridgeStore {
   upsertBridge(bridge: CodeBridge): Promise<void>;
-  listByCodeNode(ownerId: string, codeNodeId: string, types?: CodeBridgeType[]): Promise<CodeBridge[]>;
+  listByCodeNode(
+    ownerId: string,
+    codeNodeId: string,
+    types?: CodeBridgeType[],
+  ): Promise<CodeBridge[]>;
 }
 
 export type CodeMemoryPorts =
