@@ -1,4 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import { timingSafeEqual } from 'node:crypto';
 import type { IdentityService } from '../auth/identity.service.js';
 import type { ClientService } from '../auth/client.service.js';
 import type { AccountService } from '../auth/account.service.js';
@@ -8,6 +9,7 @@ import type {
   CreateIdentityBody,
   UpdateClientBody,
 } from '../auth/auth.types.js';
+import { getEnv } from '../config/index.js';
 import { sendSuccess } from '../utils/response.js';
 import { AppError } from '../types/errors.js';
 
@@ -240,6 +242,52 @@ export class AuthController {
         email: body.email ?? '',
         password: body.password ?? '',
         clientIp: request.ip,
+      });
+      sendSuccess(reply, result);
+    } catch (error) {
+      this.handleError(error, reply);
+    }
+  }
+
+  /**
+   * Auth Gateway only — `X-Internal-Secret` must match `AUTH_GATEWAY_REISSUE_SECRET`.
+   */
+  async reissueToken(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+      if (!this.accountService) {
+        reply.status(404).send({
+          success: false,
+          error: { code: 'NOT_FOUND', message: 'Native auth is not enabled' },
+        });
+        return;
+      }
+
+      const expected = getEnv().AUTH_GATEWAY_REISSUE_SECRET ?? '';
+      if (!expected) {
+        reply.status(503).send({
+          success: false,
+          error: { code: 'REISSUE_DISABLED', message: 'Gateway reissue is not configured' },
+        });
+        return;
+      }
+
+      const header = request.headers['x-internal-secret'];
+      const got = typeof header === 'string' ? header : Array.isArray(header) ? header[0] : '';
+      const a = Buffer.from(got ?? '', 'utf8');
+      const b = Buffer.from(expected, 'utf8');
+      if (a.length !== b.length || !timingSafeEqual(a, b)) {
+        reply.status(401).send({
+          success: false,
+          error: { code: 'UNAUTHORIZED', message: 'Invalid gateway secret' },
+        });
+        return;
+      }
+
+      const body = request.body as { ownerId?: string; identityId?: string; email?: string };
+      const result = await this.accountService.reissueSession({
+        ownerId: body.ownerId ?? '',
+        identityId: body.identityId ?? '',
+        email: body.email ?? '',
       });
       sendSuccess(reply, result);
     } catch (error) {

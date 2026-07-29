@@ -29,6 +29,7 @@ function isPublicPath(url: string): boolean {
   if (path === '/api/v1/auth/bootstrap') return true;
   if (path === '/api/v1/auth/register') return true;
   if (path === '/api/v1/auth/login') return true;
+  if (path === '/api/v1/auth/token/reissue') return true;
   if (path === '/api/v1/capabilities' || path === '/api/v1/capabilities/negotiate') return true;
   if (path.startsWith('/api/v1/ecosystem/')) return true;
   if (path.startsWith('/api/v1/infrastructure/marketplace')) return true;

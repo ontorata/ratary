@@ -36,6 +36,12 @@ const loginBodySchema = z.object({
   password: z.string().min(1).max(200),
 });
 
+const reissueBodySchema = z.object({
+  ownerId: z.string().uuid(),
+  identityId: z.string().uuid(),
+  email: z.string().email().max(254),
+});
+
 function validateBody<T extends z.ZodType>(schema: T) {
   return async (request: { body: unknown }): Promise<void> => {
     const result = schema.safeParse(request.body);
@@ -185,6 +191,19 @@ export async function authRoutes(
         schema: { tags: ['Auth'], summary: 'Login native account' },
       },
       controller.login.bind(controller),
+    );
+
+    fastify.post(
+      '/auth/token/reissue',
+      {
+        config: { rateLimit: NATIVE_AUTH_RATE_LIMITS.login },
+        preValidation: [validateBody(reissueBodySchema)],
+        schema: {
+          tags: ['Auth'],
+          summary: 'Reissue studio access JWT for Auth Gateway Device Flow refresh (service secret)',
+        },
+      },
+      controller.reissueToken.bind(controller),
     );
   }
 }
