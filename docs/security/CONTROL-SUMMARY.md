@@ -6,16 +6,20 @@
 
 This page is a **status summary only**. Detailed control language, host names, log paths, IPs, and secret-handling procedures are **not** published here. Internal source of truth: private compliance register (Owner).
 
+## Program v1
+
+Core artifacts (control register, evidence index, ISP, IR, access review, vendor register, risk register) are **in place**. Ongoing evidence is **event-driven** (not document-volume driven).
+
 ## Trust Services Criteria — Security (v1)
 
 | Family | Theme | Status | Evidence |
 |--------|-------|--------|----------|
-| CC1–CC2 | Policies / communication | In progress | Internal ISP |
-| CC3 | Risk assessment | In progress | Internal risk register |
-| CC6 | Logical access / encryption / secrets | Partially implemented | Identity ADRs · production auth baseline · TLS |
-| CC7 | Monitoring / incident response | In progress | Internal IR plan · ops harden evidence |
+| CC1–CC2 | Policies / communication | Implemented (program) | Internal ISP |
+| CC3 | Risk assessment | Implemented (program) | Internal risk register |
+| CC6 | Logical access / encryption / secrets | Partially implemented | Identity ADRs · auth baseline · TLS · **Q3 access review completed** |
+| CC7 | Monitoring / incident response | Implemented (program) | Internal IR plan · ops harden evidence |
 | CC8 | Change management | Partially implemented | GitHub PR · CI · ADR gating |
-| CC9 | Vendor management | In progress | Internal vendor review |
+| CC9 | Vendor management | Implemented (program) | Internal vendor review |
 
 ## System boundary (high level)
 
