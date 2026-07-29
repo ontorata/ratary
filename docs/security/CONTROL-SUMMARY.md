@@ -3,7 +3,7 @@
 **ADR:** [ADR-013](../architecture/governance/ADR-013-SECURITY-COMPLIANCE.md) — **Accepted** (program only)  
 **Updated:** 2026-07-29  
 **Certification:** Not claimed. No Type I/II attestation is implied.  
-**Availability:** Internal program — [ADR-015](../architecture/governance/ADR-015-AVAILABILITY.md) (not an SLA).
+**Availability:** Internal program — [ADR-015](../architecture/governance/ADR-015-AVAILABILITY.md) (not an SLA). Status: [STATUS-2026-07-29.md](../evidence/adr-015-availability/STATUS-2026-07-29.md).
 
 This page is a **status summary only**. Detailed control language, host names, log paths, IPs, and secret-handling procedures are **not** published here. Internal source of truth: private compliance register (Owner).
 

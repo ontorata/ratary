@@ -42,11 +42,13 @@ Adopt an **internal Availability program** for the same system boundary as ADR-0
 ## Program sequence
 
 ```text
-Accepted → document backup sources · define restore owners
-  → event-driven restore evidence
+Accepted → document backup sources · define restore owners   ✅ 2026-07-29
+  → event-driven restore evidence                            ⬜ AVL-05 open
   → quarterly lightweight check when platform stable
   → only then consider Availability criteria in a future audit scope
 ```
+
+Private SoT: `.ai/compliance/availability-*.md` · Public status: [STATUS-2026-07-29.md](../../evidence/adr-015-availability/STATUS-2026-07-29.md)
 
 ## Related
 
