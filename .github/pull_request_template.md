@@ -45,7 +45,7 @@ Phase 4 evidence package (if applicable): `.ai/reviews/YYYY-MM-<slug>/`
 
 > **Implementation is incomplete until documentation is synchronized.**
 
-See [docs/architecture/governance/definition-of-done.md](docs/architecture/governance/definition-of-done.md) (stub → docs-ai)
+See https://github.com/ontorata/docs-ai → `products/ratary/public-docs/architecture/governance/definition-of-done.md`
 
 ### Mandatory flow
 

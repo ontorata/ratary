@@ -294,7 +294,7 @@ This diagram shows the **logical internal architecture** of Ratary — how memor
 
 **Search** browses. **Retrieval** injects context. **Embedding** enriches asynchronously — never on the CRUD hot path.
 
-Details: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**
+Details: **[docs-ai](https://github.com/ontorata/docs-ai)** → `products/ratary/roadmap/ARCHITECTURE.md`
 
 For **repository and product relationships** (SDK, CLI, Ratary MCP, Ontorata ecosystem repos), see **[Ecosystem](#ecosystem)** — a separate diagram, same platform, different perspective.
 
@@ -358,7 +358,7 @@ OpenTelemetry, Prometheus metrics, SLO dashboards, and cost visibility for produ
 OpenAPI, npm **`@ratary/sdk@1.1.0`** · **`@ratary/cli@1.1.0`** · **`@ratary/mcp-server@1.1.3`** — and one-command IDE setup (`npm run setup`).
 
 ### Knowledge fabric (opt-in)
-Ingest from external systems of record — **Notion** (live on [hosted prod](https://ratary.ontorata.com)), **Confluence**, **Google Drive**, **SharePoint**, and **Teams** connectors (code complete · enable per connector via env). Webhook HMAC, incremental sync, provenance on memories. Flags: `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guides: [Knowledge fabric](docs/GUIDE.md#12-knowledge-fabric-live-connectors) · [Production enable](docs/PRODUCTION-ENABLE.md) · [Phases 32–34](docs/PHASES-32-34.md).
+Ingest from external systems of record — **Notion** (live on [hosted prod](https://ratary.ontorata.com)), **Confluence**, **Google Drive**, **SharePoint**, and **Teams** connectors (code complete · enable per connector via env). Webhook HMAC, incremental sync, provenance on memories. Flags: `KNOWLEDGE_FABRIC_ENABLED` + `CONNECTOR_SYNC_ENABLED`. Guides: [Knowledge fabric](docs/GUIDE.md#12-knowledge-fabric-live-connectors) · [Production enable](docs/PRODUCTION-ENABLE.md) · Phases 32–34 in [docs-ai](https://github.com/ontorata/docs-ai).
 
 ---
 
@@ -417,19 +417,17 @@ Architecture, ADRs, roadmap, phases, design history, and reviews live in the Ont
 | [docs/DOCKER.md](docs/DOCKER.md) | Container & Compose self-host |
 | [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | Environment variables — what each flag does |
 | [docs/examples/](docs/examples/) | MCP and IDE config templates |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | System design and boundaries |
 | [MCP/README.md](MCP/README.md) | Ratary MCP — stdio and `@ratary/mcp-server` |
 | [packages/README.md](packages/README.md) | npm packages — install, env, publish |
 | [.env.example](.env.example) | Env template — meanings in [docs/CONFIGURATION.md](docs/CONFIGURATION.md) |
 | [docs/PRODUCTION-ENABLE.md](docs/PRODUCTION-ENABLE.md) | Hosted deploy — knowledge fabric on Vercel |
 | [docs/OPS-PRODUCTION-VERIFY.md](docs/OPS-PRODUCTION-VERIFY.md) | Production ops checklist — `npm run ops:verify-production` |
 | [docs/MCP-CHATGPT-OAUTH.md](docs/MCP-CHATGPT-OAUTH.md) | ChatGPT MCP OAuth + Keycloak IdP runbook |
-| [docs/PHASES-32-34.md](docs/PHASES-32-34.md) | Universal fabric · Neptune · enterprise connectors |
 | [MCP/submission/directory-status.md](MCP/submission/directory-status.md) | MCP directory listing status |
 | [docs/ENTERPRISE-MODULES.md](docs/ENTERPRISE-MODULES.md) | Enterprise flags (opt-in) |
 | [CHANGELOG.md](CHANGELOG.md) | Release notes and version map |
-| [docs/RATARY-VALIDATION-RUNBOOK.md](docs/RATARY-VALIDATION-RUNBOOK.md) | Maintainer validation — `npm run ci:ratary-validation` |
 | [SECURITY.md](SECURITY.md) | Vulnerability reporting |
+| [ontorata/docs-ai](https://github.com/ontorata/docs-ai) | Architecture · ADR · phases · evidence (Knowledge OS) |
 
 **Canonical hosted API:** `https://ratary.ontorata.com` (self-host uses your own base URL).
 

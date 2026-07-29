@@ -4,13 +4,15 @@
 
 **Ontorata:** [ontorata.com](https://ontorata.com) · [hello@ontorata.com](mailto:hello@ontorata.com)
 
-## Knowledge OS (internal)
+## Engineering knowledge
 
-**Canonical internal knowledge** (phases, ADR rationale, compliance, roadmaps, reviews, evidence markdown) lives in the private repo **[ontorata/docs-ai](https://github.com/ontorata/docs-ai)** → product path `products/ratary/`.
+Architecture, ADRs, phases, evidence narratives, and roadmaps live in the private Knowledge OS:
 
-Start there: `INDEX.md` · `NOW.md` · `MAP.md` · `SEARCH.md` · philosophy `governance/PRODUCT-VS-KNOWLEDGE-OS.md`.
+**https://github.com/ontorata/docs-ai** → `products/ratary/`
 
-This `docs/` tree is the **public / operator** surface. Paths such as `architecture/governance/`, `PHASES-*.md`, `ARCHITECTURE.md`, `CROSS-PHASE-DEBT.md`, `security/CONTROL-SUMMARY.md`, and most `evidence/**/*.md` are **stubs** pointing at docs-ai. **Keep** `evidence/phase-38-code-memory/fixture/` here (CLI / prove scripts).
+Start: `INDEX.md` · `NOW.md` · `MAP.md` · `SEARCH.md` · `governance/PRODUCT-VS-KNOWLEDGE-OS.md`
+
+This `docs/` tree is the **operator / product** surface only (guides, config, install, examples). Do not add MOVED stubs or parallel knowledge trees here.
 
 ---
 
@@ -20,24 +22,21 @@ This `docs/` tree is the **public / operator** surface. Paths such as `architect
 |----------|----------|
 | How do I use `@ratary/sdk`, CLI, or npm MCP without cloning the server? | **[packages/README.md](../packages/README.md)** |
 | How do I sync Notion or Confluence into Ratary? | **[GUIDE.md — Knowledge fabric](GUIDE.md#12-knowledge-fabric-live-connectors)** |
-| Phases 32–34 (universal fabric, Neptune, SharePoint/Teams)? | **docs-ai** `products/ratary/roadmap/PHASES-32-34.md` · stub [PHASES-32-34.md](PHASES-32-34.md) |
 | How do I enable knowledge fabric on production? | **[PRODUCTION-ENABLE.md](PRODUCTION-ENABLE.md)** |
 | ChatGPT MCP OAuth (DCR IdP)? | **[MCP-CHATGPT-OAUTH.md](MCP-CHATGPT-OAUTH.md)** |
 | OpenAPI SDK codegen CI? | **[SDK-CODEGEN-CI.md](SDK-CODEGEN-CI.md)** |
 | Which enterprise modules exist and how do I turn them on? | **[ENTERPRISE-MODULES.md](ENTERPRISE-MODULES.md)** |
-| What cross-phase debt is closed vs open? | **docs-ai** `products/ratary/roadmap/CROSS-PHASE-DEBT.md` · stub [CROSS-PHASE-DEBT.md](CROSS-PHASE-DEBT.md) |
 | What admin / operator APIs does the SDK expose? | **[packages/README.md](../packages/README.md)** · `@ratary/*@1.1.0` on [npm](https://www.npmjs.com/org/ratary) |
 | How do I install Ratary in my IDE / harness? | **[install/README.md](install/README.md)** |
 | How do I run Ratary in Docker? | **[DOCKER.md](DOCKER.md)** |
 | How do I install and use Ratary daily? | **[GUIDE.md](GUIDE.md)** |
 | What does each `.env` variable do? | **[CONFIGURATION.md](CONFIGURATION.md)** |
-| What is Ratary architecturally? | **docs-ai** `products/ratary/roadmap/ARCHITECTURE.md` · stub [ARCHITECTURE.md](ARCHITECTURE.md) |
-| Engineering governance & ADRs? | **docs-ai** `products/ratary/public-docs/architecture/governance/` · stub [architecture/governance/README.md](architecture/governance/README.md) |
 | Copy MCP / IDE config | [examples/](examples/) |
 | Enterprise authorization (OPA/Rego) | [policies/](policies/) |
 | Ratary MCP tools & transport | [../MCP/README.md](../MCP/README.md) |
 | Grafana / Prometheus setup | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
 | Product overview & quick start | [../README.md](../README.md) |
+| Architecture / ADR / phases / evidence | **docs-ai** (link above) |
 
 **Template vs docs:**
 
@@ -46,43 +45,4 @@ This `docs/` tree is the **public / operator** surface. Paths such as `architect
 | [../.env.example](../.env.example) | Tiered variable template — **stop at Tier 1** on first install |
 | [CONFIGURATION.md](CONFIGURATION.md) | Variable **meaning & when to enable** (human reference) |
 
----
-
-## Start here
-
-| Document | Purpose |
-|----------|---------|
-| [../README.md](../README.md) | Product vision, quick start, capabilities |
-| [GUIDE.md](GUIDE.md) | Setup, daily usage, MCP, troubleshooting |
-| [CONFIGURATION.md](CONFIGURATION.md) | Environment variable reference by tier |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Human-readable system summary |
-
----
-
-## Reference & templates
-
-| Document | Purpose |
-|----------|---------|
-| [../.env.example](../.env.example) | Env template — copy to `.env` |
-| [examples/](examples/) | MCP and IDE config **templates** |
-| [policies/](policies/) | **Authorization** policy samples (OPA/Rego) — not env |
-| [../packages/README.md](../packages/README.md) | npm `@ratary/*` — install, env, publish |
-| [../SDK/](../SDK/) | Minimal `@ratary/sdk` example scripts |
-| [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) | Metrics & dashboards |
-| [../infrastructure/marketplace/catalog.json](../infrastructure/marketplace/catalog.json) | Plugin catalog (when `PLUGIN_MARKETPLACE_ENABLED`) |
-
----
-
-## Suggested reading order
-
-1. [../README.md](../README.md) — what Ratary is and quick start  
-2. [GUIDE — Setup](GUIDE.md#1-setup) — install and wire MCP  
-3. [`.env.example`](../.env.example) sections 1–2 + [CONFIGURATION — SQL table](CONFIGURATION.md#sql-metadata-store-choose-one)  
-4. [GUIDE — Daily usage](GUIDE.md#2-daily-usage-just-chat) — daily usage  
-5. [ARCHITECTURE.md](ARCHITECTURE.md) — when you need structural context  
-
-**Community:** GitHub Issues = bugs · Discussions = questions · [SECURITY.md](../SECURITY.md) = vulnerabilities · [hello@ontorata.com](mailto:hello@ontorata.com) = commercial
-
----
-
-*Human documentation index · [ontorata/ratary](https://github.com/ontorata/ratary)*
+**Code Memory fixture (scripts):** `evidence/phase-38-code-memory/fixture/` — keep in this repo for CLI / prove.

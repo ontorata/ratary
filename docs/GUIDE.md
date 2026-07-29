@@ -2,7 +2,7 @@
 
 One guide for **setup, daily use, and Ratary MCP** (Cursor, Claude Code, Roo, Cline, Gemini CLI, and more).
 
-**Related docs:** [README.md](README.md) (doc index) · [CONFIGURATION.md](CONFIGURATION.md) (env vars) · [ARCHITECTURE.md](ARCHITECTURE.md) · [examples/](examples/) · [policies/](policies/)
+**Related docs:** [README.md](README.md) (doc index) · [CONFIGURATION.md](CONFIGURATION.md) (env vars) · [examples/](examples/) · [policies/](policies/) · architecture in [docs-ai](https://github.com/ontorata/docs-ai)
 
 Quick path: `npm run setup` in this repo. Per-harness install: **[install/README.md](install/README.md)**.
 
@@ -370,7 +370,7 @@ See [CONFIGURATION → Code Memory](CONFIGURATION.md#code-memory-phase-38--adr-0
 ```bash
 npm run index:code -- --owner=<uuid> --repository=org/repo --root=.
 npm run index:code:execute -- --owner=<uuid> --repository=org/repo --root=.
-npm run prove:code-memory   # in-memory execute prove (no D1) — see docs/evidence/phase-38-code-memory/OPS-PACK.md
+npm run prove:code-memory   # in-memory execute prove (no D1) — fixture under docs/evidence/phase-38-code-memory/fixture/
 npm run bridge:code-documented-by -- --owner=<uuid> --repository=org/repo
 ```
 
@@ -657,7 +657,7 @@ See [CONFIGURATION → Federation](CONFIGURATION.md#federation) and workspace va
 | Need | Document |
 |------|----------|
 | Documentation index | [README.md](README.md) |
-| Architecture overview | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Architecture overview | [docs-ai](https://github.com/ontorata/docs-ai) → `products/ratary/` |
 | Environment reference | [CONFIGURATION.md](CONFIGURATION.md) |
 | Contributing | [../README.md#contributing](../README.md#contributing) |
 
