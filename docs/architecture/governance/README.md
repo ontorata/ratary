@@ -8,6 +8,8 @@ Public engineering governance for the Ontorata ecosystem (Ratary repo).
 | [definition-of-done.md](./definition-of-done.md) | PR rule — `.ai` + `docs` sync · UI/UX checklist |
 | [GOVERNANCE-STATUS.md](./GOVERNANCE-STATUS.md) | Maturity + change gating |
 | [adr-index.md](./adr-index.md) | ADR 006–014 + RFC index |
+| [ADR-013 Security compliance](./ADR-013-SECURITY-COMPLIANCE.md) | SOC 2 Security program (Accepted · not certified) |
+| [../../security/CONTROL-SUMMARY.md](../../security/CONTROL-SUMMARY.md) | Public control status summary |
 
 ## Canonical vs public
 
