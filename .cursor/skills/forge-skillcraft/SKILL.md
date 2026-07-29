@@ -1,4 +1,4 @@
----
+﻿---
 name: forge-skillcraft
 description: >-
   Author new Forge or project skills following Cursor SKILL.md conventions.
@@ -11,7 +11,7 @@ description: >-
 ## Location
 
 - Project skills: `.cursor/skills/{name}/SKILL.md`
-- Register stage in `.ai/phases/07.1-agent-forge/manifest.json` if pipeline stage
+- Register stage in `docs-ai/cross-cutting/agent-forge/manifest.json` if pipeline stage
 - Never write to `~/.cursor/skills-cursor/` (Cursor internal)
 
 ## SKILL.md frontmatter
@@ -26,8 +26,8 @@ description: >-
 
 ## Quality bar
 
-- Under 150 lines; link to `.ai/` for depth
-- Unique to Ratary — no copy-paste from external skill packs
+- Under 150 lines; link to docs-ai for depth
+- Unique to Ratary â€” no copy-paste from external skill packs
 - Reference existing prompts by path, don't duplicate
 - Include verify/stop conditions
 

@@ -4,6 +4,12 @@
 
 **Ontorata:** [ontorata.com](https://ontorata.com) · [hello@ontorata.com](mailto:hello@ontorata.com)
 
+## Knowledge OS (internal)
+
+**Canonical internal knowledge** (phases, ADR rationale, compliance, roadmaps, reviews) lives in the private repo **[ontorata/docs-ai](https://github.com/ontorata/docs-ai)** → product path `products/ratary/`.
+
+Start there: `INDEX.md` · `NOW.md` · `MAP.md`. This `docs/` tree remains the **public / operator** surface for Ratary.
+
 ---
 
 ## Documentation map (which file answers what)

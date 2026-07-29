@@ -1,4 +1,4 @@
----
+﻿---
 name: forge-remember
 description: >-
   Session end handoff via MCP save_memory. Use before closing chat or after
@@ -20,7 +20,7 @@ Include:
 Tags: `["handoff", "ratary"]` (+ feature slug if any)  
 Project: `ratary`
 
-When inspect blockers were **resolved** in the session, optionally emit MCP `submit_signal` with `type: inspection_outcome` (severity ≥ major, `resolved: true`, `diffScope.paths`) so Phase 8.8 ledger can learn — see [08.8-inspection-pattern-ledger](../../.ai/phases/08.8-inspection-pattern-ledger/README.md).
+When inspect blockers were **resolved** in the session, optionally emit MCP `submit_signal` with `type: inspection_outcome` (severity â‰¥ major, `resolved: true`, `diffScope.paths`) so Phase 8.8 ledger can learn â€” see [08.8-inspection-pattern-ledger](../../docs-ai/products/ratary/phases/08.8-inspection-pattern-ledger/README.md).
 
 ## Without MCP
 
@@ -30,7 +30,7 @@ Write equivalent summary in chat; suggest user run setup if MCP missing.
 
 Reference paths:
 
-- `.ai/designs/drafts/{slug}.md`
-- `.ai/designs/drafts/{slug}-plan.md`
+- `docs-ai/designs/drafts/{slug}.md`
+- `docs-ai/designs/drafts/{slug}-plan.md`
 
-Prompt cross-ref: `.ai/workflow/prompts/documentation/session-handoff.md`
+Prompt cross-ref: `docs-ai/cross-cutting/agent-forge/workflow/prompts/documentation/session-handoff.md`

@@ -1,4 +1,4 @@
----
+﻿---
 name: forge-prove
 description: >-
   Evidence-first verification during implementation: failing test, minimal fix,
@@ -10,11 +10,11 @@ description: >-
 
 ## Cycle
 
-1. **Red** — write or extend a test that fails for the right reason
-2. **Witness** — run test; confirm failure message matches intent
-3. **Green** — minimal production code to pass
-4. **Witness** — full relevant suite passes
-5. **Refactor** — only with green tests; no scope expansion
+1. **Red** â€” write or extend a test that fails for the right reason
+2. **Witness** â€” run test; confirm failure message matches intent
+3. **Green** â€” minimal production code to pass
+4. **Witness** â€” full relevant suite passes
+5. **Refactor** â€” only with green tests; no scope expansion
 
 ## Anti-patterns (reject)
 
@@ -32,8 +32,8 @@ npm test   # before task complete
 
 ## Prompt cross-ref
 
-`.ai/workflow/prompts/testing/unit-test-design.md`
+`docs-ai/cross-cutting/agent-forge/workflow/prompts/testing/unit-test-design.md`
 
 ## When to skip
 
-Docs-only or comment-only — run lint/typecheck instead.
+Docs-only or comment-only â€” run lint/typecheck instead.

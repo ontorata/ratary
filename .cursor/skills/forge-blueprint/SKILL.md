@@ -1,4 +1,4 @@
----
+﻿---
 name: forge-blueprint
 description: >-
   Break approved design into small tasks with file paths, verification steps,
@@ -10,22 +10,22 @@ description: >-
 
 ## Task sizing
 
-Each task: **2–5 minutes** of focused agent work — one logical commit worth.
+Each task: **2â€“5 minutes** of focused agent work â€” one logical commit worth.
 
 ## Plan file
 
-Write `.ai/designs/drafts/{slug}-plan.md`:
+Write `docs-ai/designs/drafts/{slug}-plan.md`:
 
 ```markdown
 # Blueprint: {slug}
 
-## Task 1 — {title}
+## Task 1 â€” {title}
 - **Files:** `path/to/file.ts`, ...
 - **Do:** (specific change)
 - **Verify:** `npm test -- path/to/test.ts`
 - **Done when:** (observable criterion)
 
-## Task 2 — ...
+## Task 2 â€” ...
 ```
 
 ## Requirements
@@ -37,7 +37,7 @@ Write `.ai/designs/drafts/{slug}-plan.md`:
 
 ## Prompt cross-ref
 
-`.ai/workflow/prompts/planning/work-breakdown.md`
+`docs-ai/cross-cutting/agent-forge/workflow/prompts/planning/work-breakdown.md`
 
 ## Gate
 

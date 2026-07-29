@@ -7,13 +7,13 @@ alwaysApply: true
 
 Before **any** design, code, test, or review work:
 
-1. Identify pipeline stage from [.ai/phases/07.1-agent-forge/PIPELINE.md](../.ai/phases/07.1-agent-forge/PIPELINE.md)
-2. **Read and follow** the matching skill in `.cursor/skills/forge-*/SKILL.md`
+1. Identify pipeline stage from docs-ai agent-forge workflows / product phase README under [docs-ai](../../docs-ai/INDEX.md) · [NOW.md](../../docs-ai/NOW.md)
+2. **Read and follow** the matching skill in `.cursor/skills/forge-*/SKILL.md` (skills remain in the Ratary Cursor workspace)
 3. Run **Recall** at session start (`forge-recall`) and **Remember** at session end (`forge-remember`) when MCP is available
 4. Do not skip **Intent → Isolate → Blueprint** for non-trivial features (multi-file or structural)
 5. On failure, switch to `forge-diagnose` before guessing fixes
 
-Authority: `.ai/` > Agent Forge > ad-hoc prompts.  
-Legacy prompts: reference by ID from [.ai/workflow/prompts/PROMPT-LIBRARY.md](../.ai/workflow/prompts/PROMPT-LIBRARY.md) — do not duplicate their text in chat.
+Authority: **docs-ai Knowledge OS** > Agent Forge > ad-hoc prompts.  
+Legacy prompt IDs: search docs-ai `designs/` / `governance/` — do not duplicate long prompt text in chat.
 
-Constitution: no agent runtime code in `src/` — Forge is workflow law only.
+Constitution: no agent runtime code in Ratary `src/` — Forge is workflow law only.

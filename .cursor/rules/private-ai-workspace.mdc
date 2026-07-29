@@ -1,26 +1,22 @@
 ---
-description: .ai/ is confidential private engineering workspace — never publish without explicit owner instruction
+description: docs-ai is Ontorata Knowledge OS — private knowledge SoT (not product .ai/)
 alwaysApply: true
 ---
 
-# Private `.ai/` Workspace Governance
+# Knowledge OS Governance (docs-ai)
 
-`.ai/` is Ontorata's **private engineering workspace**. It is **not** part of the public repository surface.
+Ontorata’s **knowledge** source of truth is the private GitHub repo **`ontorata/docs-ai`** (local: `D:\Apps\docs-ai`).
 
 ## Rules
 
-1. **Never** add, move, or commit `.ai/` contents to Git without **explicit owner instruction**.
-2. **Never** copy ADRs, rationale, prompts, research, handoffs, or internal notes from `.ai/` into README, `docs/`, Wiki, or any public documentation unless **explicitly requested**.
-3. Treat `.ai/` as **confidential architecture knowledge** owned by Ontorata.
-4. Public repositories contain only: **implementation**, **public contracts**, and **documentation intentionally released**.
-5. If a change risks exposing `.ai/` content, **stop and ask for confirmation** before proceeding.
+1. **Write knowledge** (phases, ADR, reviews, designs, compliance detail) into **docs-ai**, not into product-local `.ai/` folders.
+2. Product repos keep **implementation** + thin `docs/README.md` pointers to docs-ai.
+3. **Never** commit secrets into docs-ai.
+4. Public product `docs/` may still hold released contracts; prefer linking to docs-ai for internal rationale.
+5. Ratary handoffs should cite `docs-ai/...` paths when referring to durable documents.
 
-## Public vs private
+## Retired concept
 
-| Private (`.ai/`) | Public (repo) |
-|------------------|---------------|
-| ADR drafts, governance, handoffs | Code, public API schemas |
-| Architecture rationale, research | Released docs only |
-| Session notes, verification reports | README when owner approves |
+The product-local folder name **`.ai/`** is **deprecated**. Use docs-ai taxonomy (`products/`, `decisions/`, `cross-cutting/`, …).
 
-Repository implementation wins for **code**; `.ai/` wins for **internal governance** until owner authorizes publication.
+Legacy `.ai/` trees may exist only as `MOVED.md` stubs during cutover.

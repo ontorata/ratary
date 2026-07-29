@@ -1,41 +1,41 @@
 ---
-description: Ratary organizational memory — MCP recall; repository remains source of truth
+description: Ratary organizational memory — MCP recall; docs-ai remains knowledge SoT
 alwaysApply: true
 ---
 
 # Ratary — Organizational Memory
 
-**Arsitektur:** [.ai/sync/README.md](../.ai/sync/README.md) · [.ai/INDEX.md](../.ai/INDEX.md)
+**Arsitektur:** [docs-ai/cross-cutting/ratary-sync](../../docs-ai/cross-cutting/ratary-sync/README.md) · [docs-ai/INDEX.md](../../docs-ai/INDEX.md)
 
 ## Three layers
 
 | Layer | Role |
 |-------|------|
-| **Repository + `.ai/`** | Source of truth — Git · PR · ADR files |
-| **Ratary (MCP)** | Semantic organizational memory — active recall |
-| **Cursor** | Execution — implement · sync docs · validate |
+| **docs-ai Knowledge OS** | Source of truth — phases · ADR · decisions (Git) |
+| **Ratary (MCP)** | Semantic organizational memory — active recall · links to docs-ai |
+| **Cursor** | Execution — implement · sync docs-ai · validate |
 
 ## Session start (when MCP available)
 
-> Recover Ontorata context using Ratary **first**. Validate against repository source of truth.
+> Recover Ontorata context using Ratary **first**. Validate against docs-ai Knowledge OS.
 
-1. `search_memory` — project `ontorata` / `ratary` · tags `handoff` · `phase-4`
+1. `search_memory` — project `ontorata` / `ratary` · tags `handoff`
 2. `get_memory_by_codename` if user mentions codename
-3. Validate against `.ai/` files and code — **repository wins on conflict**
-4. Fallback if MCP down: `.ai/sessions/CURRENT.md` (audit trail only)
+3. Validate against **docs-ai** files and product code — **docs-ai wins on knowledge; code repo wins on implementation**
+4. Fallback if MCP down: [sessions/CURRENT.md](../../docs-ai/cross-cutting/sessions/CURRENT.md)
 
 ## Session end
 
-1. `save_memory` — primary handoff (tags: `handoff`, project name)
-2. Update `.ai/sessions/CURRENT.md` — audit trail
-3. Sync config: `.ai/sync/ratary-sync-config.yaml`
+1. `save_memory` — primary handoff (tags: `handoff`, project name) · include `docs-ai/...` path when relevant
+2. Update docs-ai session audit if needed
+3. Sync config lives under docs-ai `cross-cutting/ratary-sync/`
 
 ## Rules
 
-- **Jangan** anggap Ratary menggantikan file ADR/docs di repo
+- **Jangan** anggap Ratary menggantikan file di docs-ai
 - **Jangan** minta API key di Cursor — MCP sudah akses D1
 - **Pakai MCP tools** — bukan REST curl untuk memory
-- Bootstrap laptop baru: clone → `.ai/` → env → **baru** Ratary
+- Bootstrap laptop baru: clone product repos + **docs-ai** → env → **baru** Ratary
 
 ## Phase 4
 

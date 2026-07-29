@@ -1,4 +1,4 @@
----
+﻿---
 name: forge-isolate
 description: >-
   Create isolated git worktree and branch after design approval; verify clean
@@ -10,7 +10,7 @@ description: >-
 
 ## Steps
 
-1. Confirm design draft exists in `.ai/designs/drafts/{slug}.md`
+1. Confirm design draft exists in `docs-ai/designs/drafts/{slug}.md`
 2. Create branch: `forge/{slug}` from updated `main`
 3. Optional worktree (parallel work):
 
@@ -19,7 +19,7 @@ git worktree add ../ratary-{slug} -b forge/{slug}
 cd ../ratary-{slug} && npm install
 ```
 
-4. Run baseline: `npm test` — record pass count; **stop if red** on main-equivalent baseline
+4. Run baseline: `npm test` â€” record pass count; **stop if red** on main-equivalent baseline
 5. Report: branch path, worktree path (if any), test count
 
 ## Rules
