@@ -33,10 +33,13 @@ export async function desktopObjectRoutes(
     controller.put.bind(controller),
   );
 
+  // Fastify auto-registers HEAD for every GET — disable it so our explicit
+  // HEAD can avoid downloading the body while answering Content-Length.
   fastify.get(
     '/desktop-objects/*',
     {
       ...opts,
+      exposeHeadRoute: false,
       schema: {
         ...opts.schema,
         summary: 'Download a desktop workspace object',
