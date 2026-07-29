@@ -12,6 +12,11 @@ import { DEFAULT_GRAPH_MAX_DEPTH_MVP } from '../graph/graph.config.js';
 import { getEnv } from '../config/index.js';
 import { NotFoundError } from '../types/errors.js';
 import { workspaceIdFromScope } from '../repositories/repository-scope.js';
+import { createCodeMemoryPorts } from '../composition/create-code-memory-ports.js';
+import {
+  CodeMemoryService,
+  createCodeMemoryService,
+} from './code-memory.service.js';
 
 export interface GraphServiceConfig {
   maxDepth: number;
@@ -39,6 +44,12 @@ export interface TraverseGraphResult {
 
 export interface GraphCapabilitiesResponse extends GraphCapabilities {
   graphRetrievalEnabled: boolean;
+  supportsCodeGraph: boolean;
+  codeTraversalEnabled: boolean;
+  maxCodeTraversalDepth: number;
+  maxCodeNeighborsPerRequest: number;
+  codeNodeKinds: readonly string[];
+  codeEdgeTypes: readonly string[];
 }
 
 export class GraphService {
@@ -46,13 +57,20 @@ export class GraphService {
     private readonly graphProvider: IGraphProvider,
     private readonly memoryReader: IMemoryReader,
     private readonly config: GraphServiceConfig,
+    private readonly codeMemory: CodeMemoryService = createCodeMemoryService({ enabled: false }),
   ) {}
 
   getCapabilities(): GraphCapabilitiesResponse {
+    const code = this.codeMemory.capabilitiesExtra();
     return {
       ...this.graphProvider.getCapabilities(),
       graphRetrievalEnabled: this.config.graphRetrievalEnabled,
+      ...code,
     };
+  }
+
+  getCodeMemory(): CodeMemoryService {
+    return this.codeMemory;
   }
 
   async traverseRelations(
@@ -131,10 +149,16 @@ export class GraphService {
 
 export function createGraphService(db: ISqlDatabase, memoryReader: IMemoryReader): GraphService {
   const env = getEnv();
+  const codePorts = createCodeMemoryPorts(db, env);
 
-  return new GraphService(new D1GraphAdapter(db), memoryReader, {
-    maxDepth: env.GRAPH_MAX_DEPTH,
-    maxNeighbors: env.GRAPH_MAX_NEIGHBORS,
-    graphRetrievalEnabled: env.GRAPH_RETRIEVAL,
-  });
+  return new GraphService(
+    new D1GraphAdapter(db),
+    memoryReader,
+    {
+      maxDepth: env.GRAPH_MAX_DEPTH,
+      maxNeighbors: env.GRAPH_MAX_NEIGHBORS,
+      graphRetrievalEnabled: env.GRAPH_RETRIEVAL,
+    },
+    createCodeMemoryService(codePorts),
+  );
 }

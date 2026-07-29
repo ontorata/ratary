@@ -30,6 +30,11 @@ import type { IAgentIdentity } from '../../agent/iagent-identity.interface.js';
 import { AGENT_TYPES } from '../../agent/agent.types.js';
 import { ensureDefaultWorkspace, listWorkspacesByOwner } from '../../scope/workspace-store.js';
 import { memoryTypeSchema, categorySchema, RELATION_TYPES } from '../../types/knowledge.js';
+import {
+  CODE_EDGE_TYPES,
+  CODE_NODE_KINDS,
+  traverseCodeBodySchema,
+} from '../../types/code-memory.js';
 import type { ISqlDatabase } from '../../ports/sql/isql-database.port.js';
 import { MEMORY_LEVELS } from '../../types/memory-level.js';
 import { resolveIncludeSummaryOnly } from '../../mcp/context-tool-params.js';
@@ -699,6 +704,47 @@ function createMcpServer(
             ),
           },
         ],
+      };
+    },
+  );
+
+  tool(
+    'traverse_code',
+    'Traverse Code Memory graph (Phase 38 / ADR-070). Flag-gated; empty when CODE_MEMORY_ENABLED=false.',
+    {
+      codeNodeId: z.string().uuid().optional(),
+      stableKey: z.string().optional(),
+      depth: z.number().int().min(1).max(5).optional(),
+      kinds: z.array(z.enum(CODE_NODE_KINDS)).optional(),
+      types: z.array(z.enum(CODE_EDGE_TYPES)).optional(),
+      direction: z.enum(['outgoing', 'incoming', 'both']).optional(),
+      seed: z
+        .object({
+          repository: z.string().optional(),
+          path: z.string().optional(),
+          symbol: z.string().optional(),
+        })
+        .optional(),
+    },
+    async (params) => {
+      const body = traverseCodeBodySchema.parse(params);
+      const result = await handlers.graph.traverseCode.handle(mcpCtx(), body);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    },
+  );
+
+  tool(
+    'get_code_node',
+    'Fetch a single Code Memory node by id (Phase 38 / ADR-070)',
+    {
+      id: z.string().uuid().describe('Code node UUID'),
+    },
+    async (params) => {
+      const node = await handlers.graph.getCodeNode.handle(mcpCtx(), { id: params.id });
+      return {
+        content: [{ type: 'text', text: JSON.stringify({ node }, null, 2) }],
       };
     },
   );

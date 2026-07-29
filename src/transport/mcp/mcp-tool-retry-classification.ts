@@ -43,6 +43,8 @@ export const MCP_TOOL_RETRYABLE = {
   list_relations: true,
   get_graph_capabilities: true,
   traverse_relations: true,
+  traverse_code: true,
+  get_code_node: true,
   list_workspaces: true,
   list_agents: true,
   get_capabilities: true,

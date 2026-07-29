@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import type { GraphController } from '../../controllers/graph.controller.js';
 import { traverseGraphBodySchema } from '../../types/graph.js';
+import { traverseCodeBodySchema } from '../../types/code-memory.js';
 import { ValidationError } from '../../types/errors.js';
 
 function validateBody<T extends z.ZodType>(schema: T) {
@@ -39,5 +40,28 @@ export async function graphRoutes(
       },
     },
     controller.traverse.bind(controller),
+  );
+
+  fastify.post(
+    '/graph/code/traverse',
+    {
+      preValidation: [validateBody(traverseCodeBodySchema)],
+      schema: {
+        tags: ['Knowledge Graph'],
+        summary: 'BFS traversal on Code Memory plane (Phase 38 / ADR-070)',
+      },
+    },
+    controller.traverseCode.bind(controller),
+  );
+
+  fastify.get(
+    '/graph/code/nodes/:id',
+    {
+      schema: {
+        tags: ['Knowledge Graph'],
+        summary: 'Get a Code Memory node by id',
+      },
+    },
+    controller.getCodeNode.bind(controller),
   );
 }

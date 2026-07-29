@@ -158,6 +158,23 @@ Commands: [GUIDE — Optional commands](GUIDE.md#8-optional-commands).
 
 ---
 
+### Code Memory (Phase 38 / ADR-070)
+
+**What it does:** Third graph plane for repositories, files, and symbols (`code_nodes` / `code_edges`). Separate from memory relations and entity resolution. Traversal via MCP `traverse_code` / `get_code_node` and REST `POST /api/v1/graph/code/traverse`.
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CODE_MEMORY_ENABLED` | `false` | Enable Code Memory reads/writes |
+| `CODE_STORE_PROVIDER` | `none` | Must be `sql` when enabled |
+
+**Benefits:** Deterministic code graph for agent navigation; stewardship bridges to memories via validated `source_path`.  
+**Before enabling:** Run migrations; index with `npm run index:code` (dry-run) then `:execute`; keep off in production without an ops pack.  
+**Effects:** Tables may exist while the flag is off (I0: unused on recall). Indexer is async CLI only — never on `save_memory`. Bridge job: `npm run bridge:code-documented-by`.
+
+Commands: [GUIDE — Optional commands](GUIDE.md#8-optional-commands).
+
+---
+
 ### Embeddings
 
 **What it does:** Generates vector representations of memory content for similarity search. Runs **asynchronously** — never on the CRUD hot path.

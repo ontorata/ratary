@@ -1109,6 +1109,82 @@ export async function migrateEntityResolutionPhase1(client: ISqlDatabase): Promi
   }
 }
 
+/**
+ * Phase 38 — Unified Code Memory (ADR-070).
+ * Third graph plane. Tables may exist while CODE_MEMORY_ENABLED=false (I0: unused on read).
+ */
+const CODE_MEMORY_SQL = `
+CREATE TABLE IF NOT EXISTS code_nodes (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  repo_id TEXT,
+  stable_key TEXT NOT NULL,
+  display_name TEXT NOT NULL,
+  language TEXT,
+  source_range TEXT,
+  content_hash TEXT,
+  indexer_version TEXT NOT NULL,
+  indexed_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_code_nodes_owner_stable
+  ON code_nodes(owner_id, stable_key);
+
+CREATE INDEX IF NOT EXISTS idx_code_nodes_owner_repo
+  ON code_nodes(owner_id, repo_id);
+
+CREATE TABLE IF NOT EXISTS code_edges (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  type TEXT NOT NULL,
+  from_id TEXT NOT NULL,
+  to_id TEXT NOT NULL,
+  evidence_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_code_edges_natural
+  ON code_edges(owner_id, type, from_id, to_id);
+
+CREATE INDEX IF NOT EXISTS idx_code_edges_from
+  ON code_edges(owner_id, from_id);
+
+CREATE INDEX IF NOT EXISTS idx_code_edges_to
+  ON code_edges(owner_id, to_id);
+
+CREATE TABLE IF NOT EXISTS code_bridges (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  type TEXT NOT NULL,
+  code_node_id TEXT NOT NULL,
+  target_id TEXT NOT NULL,
+  target_plane TEXT NOT NULL,
+  evidence_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_code_bridges_natural
+  ON code_bridges(owner_id, type, code_node_id, target_id);
+
+CREATE TABLE IF NOT EXISTS code_index_runs (
+  id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  repo_fingerprint TEXT NOT NULL,
+  git_commit TEXT,
+  indexer_version TEXT NOT NULL,
+  status TEXT NOT NULL,
+  stats_json TEXT,
+  created_at TEXT NOT NULL
+);
+`;
+
+export async function migrateCodeMemoryPhase1(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(CODE_MEMORY_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Extension track 8.6 — learning events + policy snapshots (ADR-057). */
 export async function migrateExtensionTracksPhase2(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(LEARNING_TABLES_SQL)) {
@@ -1309,6 +1385,7 @@ export async function runSchemaMigrations(
   await migrateMemoryDecayPhase1(client, dialect);
   await migrateIdempotentWritesPhase1(client);
   await migrateEntityResolutionPhase1(client);
+  await migrateCodeMemoryPhase1(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

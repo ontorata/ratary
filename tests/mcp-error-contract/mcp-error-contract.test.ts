@@ -1,6 +1,6 @@
 /**
  * PI-B owner gate — transport-level regression suite for the MCP error
- * contract. Drives the REAL createMcpServer (all 28 registrations, wrapper,
+ * contract. Drives the REAL createMcpServer (all tool registrations, wrapper,
  * createToolError override) over the SDK's in-memory transport and asserts,
  * for EVERY tool in MCP_TOOL_NAMES:
  *
@@ -50,6 +50,8 @@ const VALID_ARGS: Record<McpToolName, Record<string, unknown>> = {
   archive_memory: { id: UUID },
   get_graph_capabilities: {},
   traverse_relations: { memoryId: UUID },
+  traverse_code: { codeNodeId: UUID },
+  get_code_node: { id: UUID },
   list_workspaces: {},
   list_agents: {},
   register_agent: { name: 'agent-x' },

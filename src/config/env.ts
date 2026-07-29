@@ -302,6 +302,14 @@ const envSchema = z
       .transform((v) => v === 'true')
       .default('false'),
 
+    // Unified Code Memory (Phase 38 / ADR-070) — third graph plane.
+    // Flag-off invariant I0: recall/MCP/REST byte-identical without code graph.
+    CODE_MEMORY_ENABLED: z
+      .enum(['true', 'false'])
+      .transform((v) => v === 'true')
+      .default('false'),
+    CODE_STORE_PROVIDER: z.enum(['none', 'sql']).default('none'),
+
     // Transport & connectivity (Phase 10.5E) — gRPC opt-in, ADR-027
     GRPC_ENABLED: z
       .enum(['true', 'false'])
@@ -513,6 +521,13 @@ const envSchema = z
         code: 'custom',
         path: ['ENTITY_STORE_PROVIDER'],
         message: 'ENTITY_STORE_PROVIDER must be "sql" when ENTITY_RESOLUTION_ENABLED=true',
+      });
+    }
+    if (env.CODE_MEMORY_ENABLED && env.CODE_STORE_PROVIDER === 'none') {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['CODE_STORE_PROVIDER'],
+        message: 'CODE_STORE_PROVIDER must be "sql" when CODE_MEMORY_ENABLED=true',
       });
     }
 

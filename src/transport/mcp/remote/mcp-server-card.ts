@@ -24,7 +24,7 @@ export function buildMcpServerCard(options: McpServerCardOptions = {}): Record<s
       title: 'Ratary Memory MCP',
       version,
       description:
-        'Persistent coding memory for AI assistants — hybrid search, knowledge graph, token-efficient context. 28 tools. MIT.',
+        'Persistent coding memory for AI assistants — hybrid search, knowledge graph, token-efficient context. 30 tools. MIT.',
       homepage: 'https://github.com/ontorata/ratary/tree/main/MCP',
       repository: 'https://github.com/ontorata/ratary',
       license: 'MIT',

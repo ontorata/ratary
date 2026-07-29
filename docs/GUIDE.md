@@ -299,7 +299,7 @@ Use forward slashes in paths. Examples: [examples/mcp/](examples/mcp/).
 }
 ```
 
-npm proxy exposes **6 tools**; full stdio server in-repo exposes **28 tools**.
+npm proxy exposes **6 tools**; full stdio server in-repo exposes **30 tools**.
 
 ### Verify
 
@@ -362,6 +362,18 @@ See [CONFIGURATION → Hybrid retrieval](CONFIGURATION.md#hybrid-retrieval) and 
 Graph exploration without retrieval flags: MCP `get_graph_capabilities`, `traverse_relations`; REST `GET /api/v1/graph/capabilities`, `POST /api/v1/graph/traverse`.
 
 **Dense graph tuning:** lower `RETRIEVAL_RELATION_NEIGHBOR_CAP` (default 5 → 3) if context feels noisy.
+
+### Code Memory (Phase 38)
+
+See [CONFIGURATION → Code Memory](CONFIGURATION.md#code-memory-phase-38--adr-070). Default off (`CODE_MEMORY_ENABLED=false`).
+
+```bash
+npm run index:code -- --owner=<uuid> --repository=org/repo --root=.
+npm run index:code:execute -- --owner=<uuid> --repository=org/repo --root=.
+npm run bridge:code-documented-by -- --owner=<uuid> --repository=org/repo
+```
+
+MCP: `traverse_code`, `get_code_node`. REST: `POST /api/v1/graph/code/traverse`, `GET /api/v1/graph/code/nodes/:id`.
 
 ### Protocol streaming
 
