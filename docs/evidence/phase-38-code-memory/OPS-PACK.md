@@ -65,7 +65,11 @@ Evidence: [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md)
 
 ### F — production (**Hold**)
 
-Owner **Accepted E** then chose **Hold** (2026-07-29). Do not enable until Owner re-opens F. When re-opened, set Vercel/production:
+Owner **Accepted E** then chose **Hold** (2026-07-29). Do not enable until Owner re-opens F.
+
+Readiness (not Accept): [F-READINESS-HOLD.md](./F-READINESS-HOLD.md)
+
+When re-opened, set Vercel/production:
 
 - `CODE_MEMORY_ENABLED=true`
 - `CODE_STORE_PROVIDER=sql`
@@ -82,4 +86,5 @@ Set `CODE_MEMORY_ENABLED=false` (and optionally `CODE_STORE_PROVIDER=none`). Tab
 | [DRY-RUN-2026-07-29.md](./DRY-RUN-2026-07-29.md) | Full-repo dry-run |
 | [STAGING-PROVE-2026-07-29.md](./STAGING-PROVE-2026-07-29.md) | Fixture B–D results |
 | [STAGING-D1-E-2026-07-29.md](./STAGING-D1-E-2026-07-29.md) | Staging D1 E execute + traverse |
+| [F-READINESS-HOLD.md](./F-READINESS-HOLD.md) | F checklist while Hold |
 | [OPS-PACK.md](./OPS-PACK.md) | This pack |
