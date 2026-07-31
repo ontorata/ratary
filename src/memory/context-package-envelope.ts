@@ -17,7 +17,9 @@ export type ContextPackageEnvelope = Readonly<{
   query: string;
 }>;
 
-export function deriveContextConfidence(memories: readonly ScoredMemory[]): ContextPackageConfidence {
+export function deriveContextConfidence(
+  memories: readonly ScoredMemory[],
+): ContextPackageConfidence {
   if (memories.length === 0) return 'low';
   const top = memories[0]?.relevanceScore ?? 0;
   if (top >= 0.7) return 'high';

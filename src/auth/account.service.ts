@@ -182,11 +182,7 @@ export class AccountService {
   async reissueSession(input: ReissueSessionInput): Promise<AccountAuthResult> {
     const email = input.email.trim().toLowerCase();
     const account = await this.accounts.findByEmail(email);
-    if (
-      !account ||
-      account.ownerId !== input.ownerId ||
-      account.identityId !== input.identityId
-    ) {
+    if (!account || account.ownerId !== input.ownerId || account.identityId !== input.identityId) {
       throw new UnauthorizedError('Subject mismatch for reissue');
     }
 
