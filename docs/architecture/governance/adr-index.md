@@ -6,6 +6,7 @@
 |----------|--------------|
 | ADR-1010 Context Manager Architecture | `architecture/acos/ADR-1010-context-manager-architecture.md` |
 | ADR-1011 Context Assembly Strategy | `architecture/acos/ADR-1011-context-assembly-strategy.md` |
+| ADR-1012 Context Versioning Model | `architecture/acos/ADR-1012-context-versioning-model.md` |
 | Wire evidence (Context Package envelope) | `products/ratary/evidence/ADR-1011-CONTEXT-PACKAGE-WIRE-2026-07-31.md` |
 
 Operator summary in this repo: [docs/CONTEXT-PACKAGE.md](../../CONTEXT-PACKAGE.md).
