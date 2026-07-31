@@ -12,6 +12,7 @@ package ratary_sdk
 
 import (
 	"encoding/json"
+	"time"
 )
 
 // checks if the BuildContextResponse type satisfies the MappedNullable interface at compile time
@@ -21,7 +22,17 @@ var _ MappedNullable = &BuildContextResponse{}
 type BuildContextResponse struct {
 	Context *string `json:"context,omitempty"`
 	Prompt *string `json:"prompt,omitempty"`
+	System *string `json:"system,omitempty"`
+	User *string `json:"user,omitempty"`
 	MemoryCount *int32 `json:"memoryCount,omitempty"`
+	// ADR-1011 Ratary-issued Context Package id
+	PackageId *string `json:"packageId,omitempty"`
+	OwnerId *string `json:"ownerId,omitempty"`
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	Confidence *string `json:"confidence,omitempty"`
+	UpdateMechanism *string `json:"updateMechanism,omitempty"`
+	SourceLabels []string `json:"sourceLabels,omitempty"`
+	Query *string `json:"query,omitempty"`
 }
 
 // NewBuildContextResponse instantiates a new BuildContextResponse object
@@ -105,6 +116,70 @@ func (o *BuildContextResponse) SetPrompt(v string) {
 	o.Prompt = &v
 }
 
+// GetSystem returns the System field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetSystem() string {
+	if o == nil || IsNil(o.System) {
+		var ret string
+		return ret
+	}
+	return *o.System
+}
+
+// GetSystemOk returns a tuple with the System field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetSystemOk() (*string, bool) {
+	if o == nil || IsNil(o.System) {
+		return nil, false
+	}
+	return o.System, true
+}
+
+// HasSystem returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasSystem() bool {
+	if o != nil && !IsNil(o.System) {
+		return true
+	}
+
+	return false
+}
+
+// SetSystem gets a reference to the given string and assigns it to the System field.
+func (o *BuildContextResponse) SetSystem(v string) {
+	o.System = &v
+}
+
+// GetUser returns the User field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetUser() string {
+	if o == nil || IsNil(o.User) {
+		var ret string
+		return ret
+	}
+	return *o.User
+}
+
+// GetUserOk returns a tuple with the User field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetUserOk() (*string, bool) {
+	if o == nil || IsNil(o.User) {
+		return nil, false
+	}
+	return o.User, true
+}
+
+// HasUser returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasUser() bool {
+	if o != nil && !IsNil(o.User) {
+		return true
+	}
+
+	return false
+}
+
+// SetUser gets a reference to the given string and assigns it to the User field.
+func (o *BuildContextResponse) SetUser(v string) {
+	o.User = &v
+}
+
 // GetMemoryCount returns the MemoryCount field value if set, zero value otherwise.
 func (o *BuildContextResponse) GetMemoryCount() int32 {
 	if o == nil || IsNil(o.MemoryCount) {
@@ -137,6 +212,230 @@ func (o *BuildContextResponse) SetMemoryCount(v int32) {
 	o.MemoryCount = &v
 }
 
+// GetPackageId returns the PackageId field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetPackageId() string {
+	if o == nil || IsNil(o.PackageId) {
+		var ret string
+		return ret
+	}
+	return *o.PackageId
+}
+
+// GetPackageIdOk returns a tuple with the PackageId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetPackageIdOk() (*string, bool) {
+	if o == nil || IsNil(o.PackageId) {
+		return nil, false
+	}
+	return o.PackageId, true
+}
+
+// HasPackageId returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasPackageId() bool {
+	if o != nil && !IsNil(o.PackageId) {
+		return true
+	}
+
+	return false
+}
+
+// SetPackageId gets a reference to the given string and assigns it to the PackageId field.
+func (o *BuildContextResponse) SetPackageId(v string) {
+	o.PackageId = &v
+}
+
+// GetOwnerId returns the OwnerId field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetOwnerId() string {
+	if o == nil || IsNil(o.OwnerId) {
+		var ret string
+		return ret
+	}
+	return *o.OwnerId
+}
+
+// GetOwnerIdOk returns a tuple with the OwnerId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetOwnerIdOk() (*string, bool) {
+	if o == nil || IsNil(o.OwnerId) {
+		return nil, false
+	}
+	return o.OwnerId, true
+}
+
+// HasOwnerId returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasOwnerId() bool {
+	if o != nil && !IsNil(o.OwnerId) {
+		return true
+	}
+
+	return false
+}
+
+// SetOwnerId gets a reference to the given string and assigns it to the OwnerId field.
+func (o *BuildContextResponse) SetOwnerId(v string) {
+	o.OwnerId = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetCreatedAt() time.Time {
+	if o == nil || IsNil(o.CreatedAt) {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || IsNil(o.CreatedAt) {
+		return nil, false
+	}
+	return o.CreatedAt, true
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasCreatedAt() bool {
+	if o != nil && !IsNil(o.CreatedAt) {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *BuildContextResponse) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
+}
+
+// GetConfidence returns the Confidence field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetConfidence() string {
+	if o == nil || IsNil(o.Confidence) {
+		var ret string
+		return ret
+	}
+	return *o.Confidence
+}
+
+// GetConfidenceOk returns a tuple with the Confidence field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetConfidenceOk() (*string, bool) {
+	if o == nil || IsNil(o.Confidence) {
+		return nil, false
+	}
+	return o.Confidence, true
+}
+
+// HasConfidence returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasConfidence() bool {
+	if o != nil && !IsNil(o.Confidence) {
+		return true
+	}
+
+	return false
+}
+
+// SetConfidence gets a reference to the given string and assigns it to the Confidence field.
+func (o *BuildContextResponse) SetConfidence(v string) {
+	o.Confidence = &v
+}
+
+// GetUpdateMechanism returns the UpdateMechanism field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetUpdateMechanism() string {
+	if o == nil || IsNil(o.UpdateMechanism) {
+		var ret string
+		return ret
+	}
+	return *o.UpdateMechanism
+}
+
+// GetUpdateMechanismOk returns a tuple with the UpdateMechanism field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetUpdateMechanismOk() (*string, bool) {
+	if o == nil || IsNil(o.UpdateMechanism) {
+		return nil, false
+	}
+	return o.UpdateMechanism, true
+}
+
+// HasUpdateMechanism returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasUpdateMechanism() bool {
+	if o != nil && !IsNil(o.UpdateMechanism) {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdateMechanism gets a reference to the given string and assigns it to the UpdateMechanism field.
+func (o *BuildContextResponse) SetUpdateMechanism(v string) {
+	o.UpdateMechanism = &v
+}
+
+// GetSourceLabels returns the SourceLabels field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetSourceLabels() []string {
+	if o == nil || IsNil(o.SourceLabels) {
+		var ret []string
+		return ret
+	}
+	return o.SourceLabels
+}
+
+// GetSourceLabelsOk returns a tuple with the SourceLabels field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetSourceLabelsOk() ([]string, bool) {
+	if o == nil || IsNil(o.SourceLabels) {
+		return nil, false
+	}
+	return o.SourceLabels, true
+}
+
+// HasSourceLabels returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasSourceLabels() bool {
+	if o != nil && !IsNil(o.SourceLabels) {
+		return true
+	}
+
+	return false
+}
+
+// SetSourceLabels gets a reference to the given []string and assigns it to the SourceLabels field.
+func (o *BuildContextResponse) SetSourceLabels(v []string) {
+	o.SourceLabels = v
+}
+
+// GetQuery returns the Query field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetQuery() string {
+	if o == nil || IsNil(o.Query) {
+		var ret string
+		return ret
+	}
+	return *o.Query
+}
+
+// GetQueryOk returns a tuple with the Query field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetQueryOk() (*string, bool) {
+	if o == nil || IsNil(o.Query) {
+		return nil, false
+	}
+	return o.Query, true
+}
+
+// HasQuery returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasQuery() bool {
+	if o != nil && !IsNil(o.Query) {
+		return true
+	}
+
+	return false
+}
+
+// SetQuery gets a reference to the given string and assigns it to the Query field.
+func (o *BuildContextResponse) SetQuery(v string) {
+	o.Query = &v
+}
+
 func (o BuildContextResponse) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -153,8 +452,35 @@ func (o BuildContextResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Prompt) {
 		toSerialize["prompt"] = o.Prompt
 	}
+	if !IsNil(o.System) {
+		toSerialize["system"] = o.System
+	}
+	if !IsNil(o.User) {
+		toSerialize["user"] = o.User
+	}
 	if !IsNil(o.MemoryCount) {
 		toSerialize["memoryCount"] = o.MemoryCount
+	}
+	if !IsNil(o.PackageId) {
+		toSerialize["packageId"] = o.PackageId
+	}
+	if !IsNil(o.OwnerId) {
+		toSerialize["ownerId"] = o.OwnerId
+	}
+	if !IsNil(o.CreatedAt) {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if !IsNil(o.Confidence) {
+		toSerialize["confidence"] = o.Confidence
+	}
+	if !IsNil(o.UpdateMechanism) {
+		toSerialize["updateMechanism"] = o.UpdateMechanism
+	}
+	if !IsNil(o.SourceLabels) {
+		toSerialize["sourceLabels"] = o.SourceLabels
+	}
+	if !IsNil(o.Query) {
+		toSerialize["query"] = o.Query
 	}
 	return toSerialize, nil
 }

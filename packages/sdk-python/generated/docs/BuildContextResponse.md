@@ -7,7 +7,16 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **context** | **str** |  | [optional] 
 **prompt** | **str** |  | [optional] 
+**system** | **str** |  | [optional] 
+**user** | **str** |  | [optional] 
 **memory_count** | **int** |  | [optional] 
+**package_id** | **str** | ADR-1011 Ratary-issued Context Package id | [optional] 
+**owner_id** | **str** |  | [optional] 
+**created_at** | **datetime** |  | [optional] 
+**confidence** | **str** |  | [optional] 
+**update_mechanism** | **str** |  | [optional] 
+**source_labels** | **List[str]** |  | [optional] 
+**query** | **str** |  | [optional] 
 
 ## Example
 

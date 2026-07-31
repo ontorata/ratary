@@ -35,17 +35,128 @@ namespace ratary_sdk.Model
         /// </summary>
         /// <param name="context">context</param>
         /// <param name="prompt">prompt</param>
+        /// <param name="system">system</param>
+        /// <param name="user">user</param>
         /// <param name="memoryCount">memoryCount</param>
+        /// <param name="packageId">ADR-1011 Ratary-issued Context Package id</param>
+        /// <param name="ownerId">ownerId</param>
+        /// <param name="createdAt">createdAt</param>
+        /// <param name="confidence">confidence</param>
+        /// <param name="updateMechanism">updateMechanism</param>
+        /// <param name="sourceLabels">sourceLabels</param>
+        /// <param name="query">query</param>
         [JsonConstructor]
-        public BuildContextResponse(Option<string?> context = default, Option<string?> prompt = default, Option<int?> memoryCount = default)
+        public BuildContextResponse(Option<string?> context = default, Option<string?> prompt = default, Option<string?> @system = default, Option<string?> user = default, Option<int?> memoryCount = default, Option<string?> packageId = default, Option<string?> ownerId = default, Option<DateTime?> createdAt = default, Option<ConfidenceEnum?> confidence = default, Option<string?> updateMechanism = default, Option<List<string>?> sourceLabels = default, Option<string?> query = default)
         {
             ContextOption = context;
             PromptOption = prompt;
+            SystemOption = @system;
+            UserOption = user;
             MemoryCountOption = memoryCount;
+            PackageIdOption = packageId;
+            OwnerIdOption = ownerId;
+            CreatedAtOption = createdAt;
+            ConfidenceOption = confidence;
+            UpdateMechanismOption = updateMechanism;
+            SourceLabelsOption = sourceLabels;
+            QueryOption = query;
             OnCreated();
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Defines Confidence
+        /// </summary>
+        public enum ConfidenceEnum
+        {
+            /// <summary>
+            /// Enum High for value: high
+            /// </summary>
+            High = 1,
+
+            /// <summary>
+            /// Enum Medium for value: medium
+            /// </summary>
+            Medium = 2,
+
+            /// <summary>
+            /// Enum Low for value: low
+            /// </summary>
+            Low = 3
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ConfidenceEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static ConfidenceEnum ConfidenceEnumFromString(string value)
+        {
+            if (value.Equals("high"))
+                return ConfidenceEnum.High;
+
+            if (value.Equals("medium"))
+                return ConfidenceEnum.Medium;
+
+            if (value.Equals("low"))
+                return ConfidenceEnum.Low;
+
+            throw new NotImplementedException($"Could not convert value to type ConfidenceEnum: '{value}'");
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ConfidenceEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static ConfidenceEnum? ConfidenceEnumFromStringOrDefault(string value)
+        {
+            if (value.Equals("high"))
+                return ConfidenceEnum.High;
+
+            if (value.Equals("medium"))
+                return ConfidenceEnum.Medium;
+
+            if (value.Equals("low"))
+                return ConfidenceEnum.Low;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="ConfidenceEnum"/> to the json value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string ConfidenceEnumToJsonValue(ConfidenceEnum? value)
+        {
+            if (value == ConfidenceEnum.High)
+                return "high";
+
+            if (value == ConfidenceEnum.Medium)
+                return "medium";
+
+            if (value == ConfidenceEnum.Low)
+                return "low";
+
+            throw new NotImplementedException($"Value could not be handled: '{value}'");
+        }
+
+        /// <summary>
+        /// Used to track the state of Confidence
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ConfidenceEnum?> ConfidenceOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Confidence
+        /// </summary>
+        [JsonPropertyName("confidence")]
+        public ConfidenceEnum? Confidence { get { return this.ConfidenceOption.Value; } set { this.ConfidenceOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Context
@@ -74,6 +185,32 @@ namespace ratary_sdk.Model
         public string? Prompt { get { return this.PromptOption.Value; } set { this.PromptOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of System
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> SystemOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets System
+        /// </summary>
+        [JsonPropertyName("system")]
+        public string? System { get { return this.SystemOption.Value; } set { this.SystemOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of User
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UserOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets User
+        /// </summary>
+        [JsonPropertyName("user")]
+        public string? User { get { return this.UserOption.Value; } set { this.UserOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of MemoryCount
         /// </summary>
         [JsonIgnore]
@@ -87,6 +224,85 @@ namespace ratary_sdk.Model
         public int? MemoryCount { get { return this.MemoryCountOption.Value; } set { this.MemoryCountOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of PackageId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> PackageIdOption { get; private set; }
+
+        /// <summary>
+        /// ADR-1011 Ratary-issued Context Package id
+        /// </summary>
+        /// <value>ADR-1011 Ratary-issued Context Package id</value>
+        [JsonPropertyName("packageId")]
+        public string? PackageId { get { return this.PackageIdOption.Value; } set { this.PackageIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of OwnerId
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> OwnerIdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets OwnerId
+        /// </summary>
+        [JsonPropertyName("ownerId")]
+        public string? OwnerId { get { return this.OwnerIdOption.Value; } set { this.OwnerIdOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of CreatedAt
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<DateTime?> CreatedAtOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets CreatedAt
+        /// </summary>
+        [JsonPropertyName("createdAt")]
+        public DateTime? CreatedAt { get { return this.CreatedAtOption.Value; } set { this.CreatedAtOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of UpdateMechanism
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> UpdateMechanismOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets UpdateMechanism
+        /// </summary>
+        [JsonPropertyName("updateMechanism")]
+        public string? UpdateMechanism { get { return this.UpdateMechanismOption.Value; } set { this.UpdateMechanismOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of SourceLabels
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<List<string>?> SourceLabelsOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets SourceLabels
+        /// </summary>
+        [JsonPropertyName("sourceLabels")]
+        public List<string>? SourceLabels { get { return this.SourceLabelsOption.Value; } set { this.SourceLabelsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of Query
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> QueryOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Query
+        /// </summary>
+        [JsonPropertyName("query")]
+        public string? Query { get { return this.QueryOption.Value; } set { this.QueryOption = new(value); } }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -96,7 +312,16 @@ namespace ratary_sdk.Model
             sb.Append("class BuildContextResponse {\n");
             sb.Append("  Context: ").Append(Context).Append("\n");
             sb.Append("  Prompt: ").Append(Prompt).Append("\n");
+            sb.Append("  System: ").Append(System).Append("\n");
+            sb.Append("  User: ").Append(User).Append("\n");
             sb.Append("  MemoryCount: ").Append(MemoryCount).Append("\n");
+            sb.Append("  PackageId: ").Append(PackageId).Append("\n");
+            sb.Append("  OwnerId: ").Append(OwnerId).Append("\n");
+            sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
+            sb.Append("  Confidence: ").Append(Confidence).Append("\n");
+            sb.Append("  UpdateMechanism: ").Append(UpdateMechanism).Append("\n");
+            sb.Append("  SourceLabels: ").Append(SourceLabels).Append("\n");
+            sb.Append("  Query: ").Append(Query).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -118,6 +343,11 @@ namespace ratary_sdk.Model
     public class BuildContextResponseJsonConverter : JsonConverter<BuildContextResponse>
     {
         /// <summary>
+        /// The format to use to serialize CreatedAt
+        /// </summary>
+        public static string CreatedAtFormat { get; set; } = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+
+        /// <summary>
         /// Deserializes json to <see cref="BuildContextResponse" />
         /// </summary>
         /// <param name="utf8JsonReader"></param>
@@ -136,7 +366,16 @@ namespace ratary_sdk.Model
 
             Option<string?> context = default;
             Option<string?> prompt = default;
+            Option<string?> varSystem = default;
+            Option<string?> user = default;
             Option<int?> memoryCount = default;
+            Option<string?> packageId = default;
+            Option<string?> ownerId = default;
+            Option<DateTime?> createdAt = default;
+            Option<BuildContextResponse.ConfidenceEnum?> confidence = default;
+            Option<string?> updateMechanism = default;
+            Option<List<string>?> sourceLabels = default;
+            Option<string?> query = default;
 
             while (utf8JsonReader.Read())
             {
@@ -159,8 +398,37 @@ namespace ratary_sdk.Model
                         case "prompt":
                             prompt = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
+                        case "system":
+                            varSystem = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "user":
+                            user = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
                         case "memoryCount":
                             memoryCount = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                            break;
+                        case "packageId":
+                            packageId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "ownerId":
+                            ownerId = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "createdAt":
+                            createdAt = new Option<DateTime?>(JsonSerializer.Deserialize<DateTime>(ref utf8JsonReader, jsonSerializerOptions));
+                            break;
+                        case "confidence":
+                            string? confidenceRawValue = utf8JsonReader.GetString();
+                            if (confidenceRawValue != null)
+                                confidence = new Option<BuildContextResponse.ConfidenceEnum?>(BuildContextResponse.ConfidenceEnumFromStringOrDefault(confidenceRawValue));
+                            break;
+                        case "updateMechanism":
+                            updateMechanism = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "sourceLabels":
+                            sourceLabels = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
+                            break;
+                        case "query":
+                            query = new Option<string?>(utf8JsonReader.GetString()!);
                             break;
                         default:
                             break;
@@ -174,10 +442,37 @@ namespace ratary_sdk.Model
             if (prompt.IsSet && prompt.Value == null)
                 throw new ArgumentNullException(nameof(prompt), "Property is not nullable for class BuildContextResponse.");
 
+            if (varSystem.IsSet && varSystem.Value == null)
+                throw new ArgumentNullException(nameof(varSystem), "Property is not nullable for class BuildContextResponse.");
+
+            if (user.IsSet && user.Value == null)
+                throw new ArgumentNullException(nameof(user), "Property is not nullable for class BuildContextResponse.");
+
             if (memoryCount.IsSet && memoryCount.Value == null)
                 throw new ArgumentNullException(nameof(memoryCount), "Property is not nullable for class BuildContextResponse.");
 
-            return new BuildContextResponse(context, prompt, memoryCount);
+            if (packageId.IsSet && packageId.Value == null)
+                throw new ArgumentNullException(nameof(packageId), "Property is not nullable for class BuildContextResponse.");
+
+            if (ownerId.IsSet && ownerId.Value == null)
+                throw new ArgumentNullException(nameof(ownerId), "Property is not nullable for class BuildContextResponse.");
+
+            if (createdAt.IsSet && createdAt.Value == null)
+                throw new ArgumentNullException(nameof(createdAt), "Property is not nullable for class BuildContextResponse.");
+
+            if (confidence.IsSet && confidence.Value == null)
+                throw new ArgumentNullException(nameof(confidence), "Property is not nullable for class BuildContextResponse.");
+
+            if (updateMechanism.IsSet && updateMechanism.Value == null)
+                throw new ArgumentNullException(nameof(updateMechanism), "Property is not nullable for class BuildContextResponse.");
+
+            if (sourceLabels.IsSet && sourceLabels.Value == null)
+                throw new ArgumentNullException(nameof(sourceLabels), "Property is not nullable for class BuildContextResponse.");
+
+            if (query.IsSet && query.Value == null)
+                throw new ArgumentNullException(nameof(query), "Property is not nullable for class BuildContextResponse.");
+
+            return new BuildContextResponse(context, prompt, varSystem, user, memoryCount, packageId, ownerId, createdAt, confidence, updateMechanism, sourceLabels, query);
         }
 
         /// <summary>
@@ -210,14 +505,63 @@ namespace ratary_sdk.Model
             if (buildContextResponse.PromptOption.IsSet && buildContextResponse.Prompt == null)
                 throw new ArgumentNullException(nameof(buildContextResponse.Prompt), "Property is required for class BuildContextResponse.");
 
+            if (buildContextResponse.SystemOption.IsSet && buildContextResponse.System == null)
+                throw new ArgumentNullException(nameof(buildContextResponse.System), "Property is required for class BuildContextResponse.");
+
+            if (buildContextResponse.UserOption.IsSet && buildContextResponse.User == null)
+                throw new ArgumentNullException(nameof(buildContextResponse.User), "Property is required for class BuildContextResponse.");
+
+            if (buildContextResponse.PackageIdOption.IsSet && buildContextResponse.PackageId == null)
+                throw new ArgumentNullException(nameof(buildContextResponse.PackageId), "Property is required for class BuildContextResponse.");
+
+            if (buildContextResponse.OwnerIdOption.IsSet && buildContextResponse.OwnerId == null)
+                throw new ArgumentNullException(nameof(buildContextResponse.OwnerId), "Property is required for class BuildContextResponse.");
+
+            if (buildContextResponse.UpdateMechanismOption.IsSet && buildContextResponse.UpdateMechanism == null)
+                throw new ArgumentNullException(nameof(buildContextResponse.UpdateMechanism), "Property is required for class BuildContextResponse.");
+
+            if (buildContextResponse.SourceLabelsOption.IsSet && buildContextResponse.SourceLabels == null)
+                throw new ArgumentNullException(nameof(buildContextResponse.SourceLabels), "Property is required for class BuildContextResponse.");
+
+            if (buildContextResponse.QueryOption.IsSet && buildContextResponse.Query == null)
+                throw new ArgumentNullException(nameof(buildContextResponse.Query), "Property is required for class BuildContextResponse.");
+
             if (buildContextResponse.ContextOption.IsSet)
                 writer.WriteString("context", buildContextResponse.Context);
 
             if (buildContextResponse.PromptOption.IsSet)
                 writer.WriteString("prompt", buildContextResponse.Prompt);
 
+            if (buildContextResponse.SystemOption.IsSet)
+                writer.WriteString("system", buildContextResponse.System);
+
+            if (buildContextResponse.UserOption.IsSet)
+                writer.WriteString("user", buildContextResponse.User);
+
             if (buildContextResponse.MemoryCountOption.IsSet)
                 writer.WriteNumber("memoryCount", buildContextResponse.MemoryCountOption.Value!.Value);
+
+            if (buildContextResponse.PackageIdOption.IsSet)
+                writer.WriteString("packageId", buildContextResponse.PackageId);
+
+            if (buildContextResponse.OwnerIdOption.IsSet)
+                writer.WriteString("ownerId", buildContextResponse.OwnerId);
+
+            if (buildContextResponse.CreatedAtOption.IsSet)
+                writer.WriteString("createdAt", buildContextResponse.CreatedAtOption.Value!.Value.ToString(CreatedAtFormat));
+
+            var confidenceRawValue = BuildContextResponse.ConfidenceEnumToJsonValue(buildContextResponse.ConfidenceOption.Value!.Value);
+            writer.WriteString("confidence", confidenceRawValue);
+            if (buildContextResponse.UpdateMechanismOption.IsSet)
+                writer.WriteString("updateMechanism", buildContextResponse.UpdateMechanism);
+
+            if (buildContextResponse.SourceLabelsOption.IsSet)
+            {
+                writer.WritePropertyName("sourceLabels");
+                JsonSerializer.Serialize(writer, buildContextResponse.SourceLabels, jsonSerializerOptions);
+            }
+            if (buildContextResponse.QueryOption.IsSet)
+                writer.WriteString("query", buildContextResponse.Query);
         }
     }
 }

@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { DesktopObjectController } from '../../controllers/desktop-object.controller.js';
 import type { IObjectStorage } from '../../ports/storage/iobject-storage.port.js';
 import { desktopObjectRoutes } from './desktop-object.routes.js';

@@ -20,7 +20,10 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,10 +63,109 @@ public class BuildContextResponse {
   @javax.annotation.Nullable
   private String prompt;
 
+  public static final String SERIALIZED_NAME_SYSTEM = "system";
+  @SerializedName(SERIALIZED_NAME_SYSTEM)
+  @javax.annotation.Nullable
+  private String system;
+
+  public static final String SERIALIZED_NAME_USER = "user";
+  @SerializedName(SERIALIZED_NAME_USER)
+  @javax.annotation.Nullable
+  private String user;
+
   public static final String SERIALIZED_NAME_MEMORY_COUNT = "memoryCount";
   @SerializedName(SERIALIZED_NAME_MEMORY_COUNT)
   @javax.annotation.Nullable
   private Integer memoryCount;
+
+  public static final String SERIALIZED_NAME_PACKAGE_ID = "packageId";
+  @SerializedName(SERIALIZED_NAME_PACKAGE_ID)
+  @javax.annotation.Nullable
+  private String packageId;
+
+  public static final String SERIALIZED_NAME_OWNER_ID = "ownerId";
+  @SerializedName(SERIALIZED_NAME_OWNER_ID)
+  @javax.annotation.Nullable
+  private String ownerId;
+
+  public static final String SERIALIZED_NAME_CREATED_AT = "createdAt";
+  @SerializedName(SERIALIZED_NAME_CREATED_AT)
+  @javax.annotation.Nullable
+  private OffsetDateTime createdAt;
+
+  /**
+   * Gets or Sets confidence
+   */
+  @JsonAdapter(ConfidenceEnum.Adapter.class)
+  public enum ConfidenceEnum {
+    HIGH("high"),
+    
+    MEDIUM("medium"),
+    
+    LOW("low");
+
+    private String value;
+
+    ConfidenceEnum(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    public static ConfidenceEnum fromValue(String value) {
+      for (ConfidenceEnum b : ConfidenceEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+
+    public static class Adapter extends TypeAdapter<ConfidenceEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final ConfidenceEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public ConfidenceEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return ConfidenceEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      ConfidenceEnum.fromValue(value);
+    }
+  }
+
+  public static final String SERIALIZED_NAME_CONFIDENCE = "confidence";
+  @SerializedName(SERIALIZED_NAME_CONFIDENCE)
+  @javax.annotation.Nullable
+  private ConfidenceEnum confidence;
+
+  public static final String SERIALIZED_NAME_UPDATE_MECHANISM = "updateMechanism";
+  @SerializedName(SERIALIZED_NAME_UPDATE_MECHANISM)
+  @javax.annotation.Nullable
+  private String updateMechanism;
+
+  public static final String SERIALIZED_NAME_SOURCE_LABELS = "sourceLabels";
+  @SerializedName(SERIALIZED_NAME_SOURCE_LABELS)
+  @javax.annotation.Nullable
+  private List<String> sourceLabels = new ArrayList<>();
+
+  public static final String SERIALIZED_NAME_QUERY = "query";
+  @SerializedName(SERIALIZED_NAME_QUERY)
+  @javax.annotation.Nullable
+  private String query;
 
   public BuildContextResponse() {
   }
@@ -106,6 +208,44 @@ public class BuildContextResponse {
   }
 
 
+  public BuildContextResponse system(@javax.annotation.Nullable String system) {
+    this.system = system;
+    return this;
+  }
+
+  /**
+   * Get system
+   * @return system
+   */
+  @javax.annotation.Nullable
+  public String getSystem() {
+    return system;
+  }
+
+  public void setSystem(@javax.annotation.Nullable String system) {
+    this.system = system;
+  }
+
+
+  public BuildContextResponse user(@javax.annotation.Nullable String user) {
+    this.user = user;
+    return this;
+  }
+
+  /**
+   * Get user
+   * @return user
+   */
+  @javax.annotation.Nullable
+  public String getUser() {
+    return user;
+  }
+
+  public void setUser(@javax.annotation.Nullable String user) {
+    this.user = user;
+  }
+
+
   public BuildContextResponse memoryCount(@javax.annotation.Nullable Integer memoryCount) {
     this.memoryCount = memoryCount;
     return this;
@@ -125,6 +265,147 @@ public class BuildContextResponse {
   }
 
 
+  public BuildContextResponse packageId(@javax.annotation.Nullable String packageId) {
+    this.packageId = packageId;
+    return this;
+  }
+
+  /**
+   * ADR-1011 Ratary-issued Context Package id
+   * @return packageId
+   */
+  @javax.annotation.Nullable
+  public String getPackageId() {
+    return packageId;
+  }
+
+  public void setPackageId(@javax.annotation.Nullable String packageId) {
+    this.packageId = packageId;
+  }
+
+
+  public BuildContextResponse ownerId(@javax.annotation.Nullable String ownerId) {
+    this.ownerId = ownerId;
+    return this;
+  }
+
+  /**
+   * Get ownerId
+   * @return ownerId
+   */
+  @javax.annotation.Nullable
+  public String getOwnerId() {
+    return ownerId;
+  }
+
+  public void setOwnerId(@javax.annotation.Nullable String ownerId) {
+    this.ownerId = ownerId;
+  }
+
+
+  public BuildContextResponse createdAt(@javax.annotation.Nullable OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  /**
+   * Get createdAt
+   * @return createdAt
+   */
+  @javax.annotation.Nullable
+  public OffsetDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(@javax.annotation.Nullable OffsetDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+
+  public BuildContextResponse confidence(@javax.annotation.Nullable ConfidenceEnum confidence) {
+    this.confidence = confidence;
+    return this;
+  }
+
+  /**
+   * Get confidence
+   * @return confidence
+   */
+  @javax.annotation.Nullable
+  public ConfidenceEnum getConfidence() {
+    return confidence;
+  }
+
+  public void setConfidence(@javax.annotation.Nullable ConfidenceEnum confidence) {
+    this.confidence = confidence;
+  }
+
+
+  public BuildContextResponse updateMechanism(@javax.annotation.Nullable String updateMechanism) {
+    this.updateMechanism = updateMechanism;
+    return this;
+  }
+
+  /**
+   * Get updateMechanism
+   * @return updateMechanism
+   */
+  @javax.annotation.Nullable
+  public String getUpdateMechanism() {
+    return updateMechanism;
+  }
+
+  public void setUpdateMechanism(@javax.annotation.Nullable String updateMechanism) {
+    this.updateMechanism = updateMechanism;
+  }
+
+
+  public BuildContextResponse sourceLabels(@javax.annotation.Nullable List<String> sourceLabels) {
+    this.sourceLabels = sourceLabels;
+    return this;
+  }
+
+  public BuildContextResponse addSourceLabelsItem(String sourceLabelsItem) {
+    if (this.sourceLabels == null) {
+      this.sourceLabels = new ArrayList<>();
+    }
+    this.sourceLabels.add(sourceLabelsItem);
+    return this;
+  }
+
+  /**
+   * Get sourceLabels
+   * @return sourceLabels
+   */
+  @javax.annotation.Nullable
+  public List<String> getSourceLabels() {
+    return sourceLabels;
+  }
+
+  public void setSourceLabels(@javax.annotation.Nullable List<String> sourceLabels) {
+    this.sourceLabels = sourceLabels;
+  }
+
+
+  public BuildContextResponse query(@javax.annotation.Nullable String query) {
+    this.query = query;
+    return this;
+  }
+
+  /**
+   * Get query
+   * @return query
+   */
+  @javax.annotation.Nullable
+  public String getQuery() {
+    return query;
+  }
+
+  public void setQuery(@javax.annotation.Nullable String query) {
+    this.query = query;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -137,12 +418,21 @@ public class BuildContextResponse {
     BuildContextResponse buildContextResponse = (BuildContextResponse) o;
     return Objects.equals(this.context, buildContextResponse.context) &&
         Objects.equals(this.prompt, buildContextResponse.prompt) &&
-        Objects.equals(this.memoryCount, buildContextResponse.memoryCount);
+        Objects.equals(this.system, buildContextResponse.system) &&
+        Objects.equals(this.user, buildContextResponse.user) &&
+        Objects.equals(this.memoryCount, buildContextResponse.memoryCount) &&
+        Objects.equals(this.packageId, buildContextResponse.packageId) &&
+        Objects.equals(this.ownerId, buildContextResponse.ownerId) &&
+        Objects.equals(this.createdAt, buildContextResponse.createdAt) &&
+        Objects.equals(this.confidence, buildContextResponse.confidence) &&
+        Objects.equals(this.updateMechanism, buildContextResponse.updateMechanism) &&
+        Objects.equals(this.sourceLabels, buildContextResponse.sourceLabels) &&
+        Objects.equals(this.query, buildContextResponse.query);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(context, prompt, memoryCount);
+    return Objects.hash(context, prompt, system, user, memoryCount, packageId, ownerId, createdAt, confidence, updateMechanism, sourceLabels, query);
   }
 
   @Override
@@ -151,7 +441,16 @@ public class BuildContextResponse {
     sb.append("class BuildContextResponse {\n");
     sb.append("    context: ").append(toIndentedString(context)).append("\n");
     sb.append("    prompt: ").append(toIndentedString(prompt)).append("\n");
+    sb.append("    system: ").append(toIndentedString(system)).append("\n");
+    sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    memoryCount: ").append(toIndentedString(memoryCount)).append("\n");
+    sb.append("    packageId: ").append(toIndentedString(packageId)).append("\n");
+    sb.append("    ownerId: ").append(toIndentedString(ownerId)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    confidence: ").append(toIndentedString(confidence)).append("\n");
+    sb.append("    updateMechanism: ").append(toIndentedString(updateMechanism)).append("\n");
+    sb.append("    sourceLabels: ").append(toIndentedString(sourceLabels)).append("\n");
+    sb.append("    query: ").append(toIndentedString(query)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -170,7 +469,7 @@ public class BuildContextResponse {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("context", "prompt", "memoryCount"));
+    openapiFields = new HashSet<String>(Arrays.asList("context", "prompt", "system", "user", "memoryCount", "packageId", "ownerId", "createdAt", "confidence", "updateMechanism", "sourceLabels", "query"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -202,6 +501,35 @@ public class BuildContextResponse {
       }
       if ((jsonObj.get("prompt") != null && !jsonObj.get("prompt").isJsonNull()) && !jsonObj.get("prompt").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `prompt` to be a primitive type in the JSON string but got `%s`", jsonObj.get("prompt").toString()));
+      }
+      if ((jsonObj.get("system") != null && !jsonObj.get("system").isJsonNull()) && !jsonObj.get("system").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `system` to be a primitive type in the JSON string but got `%s`", jsonObj.get("system").toString()));
+      }
+      if ((jsonObj.get("user") != null && !jsonObj.get("user").isJsonNull()) && !jsonObj.get("user").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `user` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user").toString()));
+      }
+      if ((jsonObj.get("packageId") != null && !jsonObj.get("packageId").isJsonNull()) && !jsonObj.get("packageId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `packageId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("packageId").toString()));
+      }
+      if ((jsonObj.get("ownerId") != null && !jsonObj.get("ownerId").isJsonNull()) && !jsonObj.get("ownerId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `ownerId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("ownerId").toString()));
+      }
+      if ((jsonObj.get("confidence") != null && !jsonObj.get("confidence").isJsonNull()) && !jsonObj.get("confidence").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `confidence` to be a primitive type in the JSON string but got `%s`", jsonObj.get("confidence").toString()));
+      }
+      // validate the optional field `confidence`
+      if (jsonObj.get("confidence") != null && !jsonObj.get("confidence").isJsonNull()) {
+        ConfidenceEnum.validateJsonElement(jsonObj.get("confidence"));
+      }
+      if ((jsonObj.get("updateMechanism") != null && !jsonObj.get("updateMechanism").isJsonNull()) && !jsonObj.get("updateMechanism").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `updateMechanism` to be a primitive type in the JSON string but got `%s`", jsonObj.get("updateMechanism").toString()));
+      }
+      // ensure the optional json data is an array if present
+      if (jsonObj.get("sourceLabels") != null && !jsonObj.get("sourceLabels").isJsonNull() && !jsonObj.get("sourceLabels").isJsonArray()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `sourceLabels` to be an array in the JSON string but got `%s`", jsonObj.get("sourceLabels").toString()));
+      }
+      if ((jsonObj.get("query") != null && !jsonObj.get("query").isJsonNull()) && !jsonObj.get("query").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `query` to be a primitive type in the JSON string but got `%s`", jsonObj.get("query").toString()));
       }
   }
 

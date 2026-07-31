@@ -349,8 +349,34 @@ components:
           type: string
         prompt:
           type: string
+        system:
+          type: string
+        user:
+          type: string
         memoryCount:
           type: integer
+        packageId:
+          description: ADR-1011 Ratary-issued Context Package id
+          type: string
+        ownerId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        confidence:
+          enum:
+          - high
+          - medium
+          - low
+          type: string
+        updateMechanism:
+          type: string
+        sourceLabels:
+          items:
+            type: string
+          type: array
+        query:
+          type: string
       type: object
     ClientCapabilityRequest:
       example:

@@ -17,7 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,8 +30,27 @@ class BuildContextResponse(BaseModel):
     """ # noqa: E501
     context: Optional[StrictStr] = None
     prompt: Optional[StrictStr] = None
+    system: Optional[StrictStr] = None
+    user: Optional[StrictStr] = None
     memory_count: Optional[StrictInt] = Field(default=None, alias="memoryCount")
-    __properties: ClassVar[List[str]] = ["context", "prompt", "memoryCount"]
+    package_id: Optional[StrictStr] = Field(default=None, description="ADR-1011 Ratary-issued Context Package id", alias="packageId")
+    owner_id: Optional[StrictStr] = Field(default=None, alias="ownerId")
+    created_at: Optional[datetime] = Field(default=None, alias="createdAt")
+    confidence: Optional[StrictStr] = None
+    update_mechanism: Optional[StrictStr] = Field(default=None, alias="updateMechanism")
+    source_labels: Optional[List[StrictStr]] = Field(default=None, alias="sourceLabels")
+    query: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["context", "prompt", "system", "user", "memoryCount", "packageId", "ownerId", "createdAt", "confidence", "updateMechanism", "sourceLabels", "query"]
+
+    @field_validator('confidence')
+    def confidence_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['high', 'medium', 'low']):
+            raise ValueError("must be one of enum values ('high', 'medium', 'low')")
+        return value
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -85,7 +105,16 @@ class BuildContextResponse(BaseModel):
         _obj = cls.model_validate({
             "context": obj.get("context"),
             "prompt": obj.get("prompt"),
-            "memoryCount": obj.get("memoryCount")
+            "system": obj.get("system"),
+            "user": obj.get("user"),
+            "memoryCount": obj.get("memoryCount"),
+            "packageId": obj.get("packageId"),
+            "ownerId": obj.get("ownerId"),
+            "createdAt": obj.get("createdAt"),
+            "confidence": obj.get("confidence"),
+            "updateMechanism": obj.get("updateMechanism"),
+            "sourceLabels": obj.get("sourceLabels"),
+            "query": obj.get("query")
         })
         return _obj
 
