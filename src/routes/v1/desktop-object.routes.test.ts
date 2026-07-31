@@ -22,7 +22,7 @@ describe('desktopObjectRoutes', () => {
     };
 
     const app = Fastify();
-    app.decorateRequest('user', null);
+    app.decorateRequest('user', undefined);
     app.addHook('onRequest', async (req) => {
       (req as { user?: { ownerId: string } }).user = { ownerId: 'owner-1' };
     });
