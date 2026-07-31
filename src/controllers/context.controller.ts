@@ -17,6 +17,13 @@ export class ContextController {
     const result = await this.handlers.buildPrompt.handle(ctx, body);
 
     reply.send({
+      packageId: result.packageId,
+      ownerId: result.ownerId,
+      createdAt: result.createdAt,
+      confidence: result.confidence,
+      updateMechanism: result.updateMechanism,
+      sourceLabels: result.sourceLabels,
+      query: result.query,
       context: result.context,
       system: result.system,
       user: result.user,
