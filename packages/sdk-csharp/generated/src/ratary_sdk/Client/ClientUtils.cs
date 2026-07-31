@@ -138,6 +138,8 @@ namespace ratary_sdk.Client
                 return boolean
                     ? "true"
                     : "false";
+            if (obj is BuildContextResponse.ConfidenceEnum buildContextResponseConfidenceEnum)
+                return BuildContextResponse.ConfidenceEnumToJsonValue(buildContextResponseConfidenceEnum);
             if (obj is Memory.LifecycleStateEnum memoryLifecycleStateEnum)
                 return Memory.LifecycleStateEnumToJsonValue(memoryLifecycleStateEnum);
             if (obj is ICollection collection)

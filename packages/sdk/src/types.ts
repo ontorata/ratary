@@ -55,6 +55,16 @@ export interface BuildContextResult {
   context: string;
   prompt?: string;
   memoryCount?: number;
+  /** ADR-1011 Context Package envelope (additive). */
+  packageId?: string;
+  ownerId?: string;
+  createdAt?: string;
+  confidence?: 'high' | 'medium' | 'low' | number;
+  updateMechanism?: string;
+  sourceLabels?: readonly string[];
+  query?: string;
+  system?: string;
+  user?: string;
   [key: string]: unknown;
 }
 

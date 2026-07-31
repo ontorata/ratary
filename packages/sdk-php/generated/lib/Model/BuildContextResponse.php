@@ -59,7 +59,16 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $openAPITypes = [
         'context' => 'string',
         'prompt' => 'string',
-        'memory_count' => 'int'
+        'system' => 'string',
+        'user' => 'string',
+        'memory_count' => 'int',
+        'package_id' => 'string',
+        'owner_id' => 'string',
+        'created_at' => '\DateTime',
+        'confidence' => 'string',
+        'update_mechanism' => 'string',
+        'source_labels' => 'string[]',
+        'query' => 'string'
     ];
 
     /**
@@ -72,7 +81,16 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $openAPIFormats = [
         'context' => null,
         'prompt' => null,
-        'memory_count' => null
+        'system' => null,
+        'user' => null,
+        'memory_count' => null,
+        'package_id' => null,
+        'owner_id' => null,
+        'created_at' => 'date-time',
+        'confidence' => null,
+        'update_mechanism' => null,
+        'source_labels' => null,
+        'query' => null
     ];
 
     /**
@@ -83,7 +101,16 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static array $openAPINullables = [
         'context' => false,
         'prompt' => false,
-        'memory_count' => false
+        'system' => false,
+        'user' => false,
+        'memory_count' => false,
+        'package_id' => false,
+        'owner_id' => false,
+        'created_at' => false,
+        'confidence' => false,
+        'update_mechanism' => false,
+        'source_labels' => false,
+        'query' => false
     ];
 
     /**
@@ -174,7 +201,16 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $attributeMap = [
         'context' => 'context',
         'prompt' => 'prompt',
-        'memory_count' => 'memoryCount'
+        'system' => 'system',
+        'user' => 'user',
+        'memory_count' => 'memoryCount',
+        'package_id' => 'packageId',
+        'owner_id' => 'ownerId',
+        'created_at' => 'createdAt',
+        'confidence' => 'confidence',
+        'update_mechanism' => 'updateMechanism',
+        'source_labels' => 'sourceLabels',
+        'query' => 'query'
     ];
 
     /**
@@ -185,7 +221,16 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $setters = [
         'context' => 'setContext',
         'prompt' => 'setPrompt',
-        'memory_count' => 'setMemoryCount'
+        'system' => 'setSystem',
+        'user' => 'setUser',
+        'memory_count' => 'setMemoryCount',
+        'package_id' => 'setPackageId',
+        'owner_id' => 'setOwnerId',
+        'created_at' => 'setCreatedAt',
+        'confidence' => 'setConfidence',
+        'update_mechanism' => 'setUpdateMechanism',
+        'source_labels' => 'setSourceLabels',
+        'query' => 'setQuery'
     ];
 
     /**
@@ -196,7 +241,16 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     protected static $getters = [
         'context' => 'getContext',
         'prompt' => 'getPrompt',
-        'memory_count' => 'getMemoryCount'
+        'system' => 'getSystem',
+        'user' => 'getUser',
+        'memory_count' => 'getMemoryCount',
+        'package_id' => 'getPackageId',
+        'owner_id' => 'getOwnerId',
+        'created_at' => 'getCreatedAt',
+        'confidence' => 'getConfidence',
+        'update_mechanism' => 'getUpdateMechanism',
+        'source_labels' => 'getSourceLabels',
+        'query' => 'getQuery'
     ];
 
     /**
@@ -240,6 +294,23 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         return self::$openAPIModelName;
     }
 
+    public const CONFIDENCE_HIGH = 'high';
+    public const CONFIDENCE_MEDIUM = 'medium';
+    public const CONFIDENCE_LOW = 'low';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getConfidenceAllowableValues()
+    {
+        return [
+            self::CONFIDENCE_HIGH,
+            self::CONFIDENCE_MEDIUM,
+            self::CONFIDENCE_LOW,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -258,7 +329,16 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     {
         $this->setIfExists('context', $data ?? [], null);
         $this->setIfExists('prompt', $data ?? [], null);
+        $this->setIfExists('system', $data ?? [], null);
+        $this->setIfExists('user', $data ?? [], null);
         $this->setIfExists('memory_count', $data ?? [], null);
+        $this->setIfExists('package_id', $data ?? [], null);
+        $this->setIfExists('owner_id', $data ?? [], null);
+        $this->setIfExists('created_at', $data ?? [], null);
+        $this->setIfExists('confidence', $data ?? [], null);
+        $this->setIfExists('update_mechanism', $data ?? [], null);
+        $this->setIfExists('source_labels', $data ?? [], null);
+        $this->setIfExists('query', $data ?? [], null);
     }
 
     /**
@@ -287,6 +367,15 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     public function listInvalidProperties()
     {
         $invalidProperties = [];
+
+        $allowedValues = $this->getConfidenceAllowableValues();
+        if (!is_null($this->container['confidence']) && !in_array($this->container['confidence'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'confidence', must be one of '%s'",
+                $this->container['confidence'],
+                implode("', '", $allowedValues)
+            );
+        }
 
         return $invalidProperties;
     }
@@ -358,6 +447,60 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     }
 
     /**
+     * Gets system
+     *
+     * @return string|null
+     */
+    public function getSystem()
+    {
+        return $this->container['system'];
+    }
+
+    /**
+     * Sets system
+     *
+     * @param string|null $system system
+     *
+     * @return self
+     */
+    public function setSystem($system)
+    {
+        if (is_null($system)) {
+            throw new \InvalidArgumentException('non-nullable system cannot be null');
+        }
+        $this->container['system'] = $system;
+
+        return $this;
+    }
+
+    /**
+     * Gets user
+     *
+     * @return string|null
+     */
+    public function getUser()
+    {
+        return $this->container['user'];
+    }
+
+    /**
+     * Sets user
+     *
+     * @param string|null $user user
+     *
+     * @return self
+     */
+    public function setUser($user)
+    {
+        if (is_null($user)) {
+            throw new \InvalidArgumentException('non-nullable user cannot be null');
+        }
+        $this->container['user'] = $user;
+
+        return $this;
+    }
+
+    /**
      * Gets memory_count
      *
      * @return int|null
@@ -380,6 +523,205 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
             throw new \InvalidArgumentException('non-nullable memory_count cannot be null');
         }
         $this->container['memory_count'] = $memory_count;
+
+        return $this;
+    }
+
+    /**
+     * Gets package_id
+     *
+     * @return string|null
+     */
+    public function getPackageId()
+    {
+        return $this->container['package_id'];
+    }
+
+    /**
+     * Sets package_id
+     *
+     * @param string|null $package_id ADR-1011 Ratary-issued Context Package id
+     *
+     * @return self
+     */
+    public function setPackageId($package_id)
+    {
+        if (is_null($package_id)) {
+            throw new \InvalidArgumentException('non-nullable package_id cannot be null');
+        }
+        $this->container['package_id'] = $package_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets owner_id
+     *
+     * @return string|null
+     */
+    public function getOwnerId()
+    {
+        return $this->container['owner_id'];
+    }
+
+    /**
+     * Sets owner_id
+     *
+     * @param string|null $owner_id owner_id
+     *
+     * @return self
+     */
+    public function setOwnerId($owner_id)
+    {
+        if (is_null($owner_id)) {
+            throw new \InvalidArgumentException('non-nullable owner_id cannot be null');
+        }
+        $this->container['owner_id'] = $owner_id;
+
+        return $this;
+    }
+
+    /**
+     * Gets created_at
+     *
+     * @return \DateTime|null
+     */
+    public function getCreatedAt()
+    {
+        return $this->container['created_at'];
+    }
+
+    /**
+     * Sets created_at
+     *
+     * @param \DateTime|null $created_at created_at
+     *
+     * @return self
+     */
+    public function setCreatedAt($created_at)
+    {
+        if (is_null($created_at)) {
+            throw new \InvalidArgumentException('non-nullable created_at cannot be null');
+        }
+        $this->container['created_at'] = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets confidence
+     *
+     * @return string|null
+     */
+    public function getConfidence()
+    {
+        return $this->container['confidence'];
+    }
+
+    /**
+     * Sets confidence
+     *
+     * @param string|null $confidence confidence
+     *
+     * @return self
+     */
+    public function setConfidence($confidence)
+    {
+        if (is_null($confidence)) {
+            throw new \InvalidArgumentException('non-nullable confidence cannot be null');
+        }
+        $allowedValues = $this->getConfidenceAllowableValues();
+        if (!in_array($confidence, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'confidence', must be one of '%s'",
+                    $confidence,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['confidence'] = $confidence;
+
+        return $this;
+    }
+
+    /**
+     * Gets update_mechanism
+     *
+     * @return string|null
+     */
+    public function getUpdateMechanism()
+    {
+        return $this->container['update_mechanism'];
+    }
+
+    /**
+     * Sets update_mechanism
+     *
+     * @param string|null $update_mechanism update_mechanism
+     *
+     * @return self
+     */
+    public function setUpdateMechanism($update_mechanism)
+    {
+        if (is_null($update_mechanism)) {
+            throw new \InvalidArgumentException('non-nullable update_mechanism cannot be null');
+        }
+        $this->container['update_mechanism'] = $update_mechanism;
+
+        return $this;
+    }
+
+    /**
+     * Gets source_labels
+     *
+     * @return string[]|null
+     */
+    public function getSourceLabels()
+    {
+        return $this->container['source_labels'];
+    }
+
+    /**
+     * Sets source_labels
+     *
+     * @param string[]|null $source_labels source_labels
+     *
+     * @return self
+     */
+    public function setSourceLabels($source_labels)
+    {
+        if (is_null($source_labels)) {
+            throw new \InvalidArgumentException('non-nullable source_labels cannot be null');
+        }
+        $this->container['source_labels'] = $source_labels;
+
+        return $this;
+    }
+
+    /**
+     * Gets query
+     *
+     * @return string|null
+     */
+    public function getQuery()
+    {
+        return $this->container['query'];
+    }
+
+    /**
+     * Sets query
+     *
+     * @param string|null $query query
+     *
+     * @return self
+     */
+    public function setQuery($query)
+    {
+        if (is_null($query)) {
+            throw new \InvalidArgumentException('non-nullable query cannot be null');
+        }
+        $this->container['query'] = $query;
 
         return $this;
     }

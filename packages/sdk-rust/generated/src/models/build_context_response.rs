@@ -17,8 +17,27 @@ pub struct BuildContextResponse {
     pub context: Option<String>,
     #[serde(rename = "prompt", skip_serializing_if = "Option::is_none")]
     pub prompt: Option<String>,
+    #[serde(rename = "system", skip_serializing_if = "Option::is_none")]
+    pub system: Option<String>,
+    #[serde(rename = "user", skip_serializing_if = "Option::is_none")]
+    pub user: Option<String>,
     #[serde(rename = "memoryCount", skip_serializing_if = "Option::is_none")]
     pub memory_count: Option<i32>,
+    /// ADR-1011 Ratary-issued Context Package id
+    #[serde(rename = "packageId", skip_serializing_if = "Option::is_none")]
+    pub package_id: Option<String>,
+    #[serde(rename = "ownerId", skip_serializing_if = "Option::is_none")]
+    pub owner_id: Option<String>,
+    #[serde(rename = "createdAt", skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<chrono::DateTime<chrono::FixedOffset>>,
+    #[serde(rename = "confidence", skip_serializing_if = "Option::is_none")]
+    pub confidence: Option<Confidence>,
+    #[serde(rename = "updateMechanism", skip_serializing_if = "Option::is_none")]
+    pub update_mechanism: Option<String>,
+    #[serde(rename = "sourceLabels", skip_serializing_if = "Option::is_none")]
+    pub source_labels: Option<Vec<String>>,
+    #[serde(rename = "query", skip_serializing_if = "Option::is_none")]
+    pub query: Option<String>,
 }
 
 impl BuildContextResponse {
@@ -26,8 +45,33 @@ impl BuildContextResponse {
         BuildContextResponse {
             context: None,
             prompt: None,
+            system: None,
+            user: None,
             memory_count: None,
+            package_id: None,
+            owner_id: None,
+            created_at: None,
+            confidence: None,
+            update_mechanism: None,
+            source_labels: None,
+            query: None,
         }
+    }
+}
+/// 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum Confidence {
+    #[serde(rename = "high")]
+    High,
+    #[serde(rename = "medium")]
+    Medium,
+    #[serde(rename = "low")]
+    Low,
+}
+
+impl Default for Confidence {
+    fn default() -> Confidence {
+        Self::High
     }
 }
 

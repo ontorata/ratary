@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { DesktopObjectController } from '../../controllers/desktop-object.controller.js';
 import type { IObjectStorage } from '../../ports/storage/iobject-storage.port.js';
 import { desktopObjectRoutes } from './desktop-object.routes.js';
@@ -22,7 +22,7 @@ describe('desktopObjectRoutes', () => {
     };
 
     const app = Fastify();
-    app.decorateRequest('user', null);
+    app.decorateRequest('user', undefined);
     app.addHook('onRequest', async (req) => {
       (req as { user?: { ownerId: string } }).user = { ownerId: 'owner-1' };
     });

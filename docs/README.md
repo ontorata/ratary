@@ -36,6 +36,7 @@ This `docs/` tree is the **operator / product** surface only (guides, config, in
 | Ratary MCP tools & transport | [../MCP/README.md](../MCP/README.md) |
 | Grafana / Prometheus setup | [../observability/EXTERNAL-STACK.md](../observability/EXTERNAL-STACK.md) |
 | Product overview & quick start | [../README.md](../README.md) |
+| Context Package fields on `POST /context` (ADR-1011)? | **[CONTEXT-PACKAGE.md](CONTEXT-PACKAGE.md)** |
 | Architecture / ADR / phases / evidence | **docs-ai** (link above) |
 
 **Template vs docs:**

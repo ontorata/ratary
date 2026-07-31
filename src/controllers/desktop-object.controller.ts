@@ -89,6 +89,8 @@ export class DesktopObjectController {
   }
 }
 
-export function createDesktopObjectController(objectStorage: IObjectStorage): DesktopObjectController {
+export function createDesktopObjectController(
+  objectStorage: IObjectStorage,
+): DesktopObjectController {
   return new DesktopObjectController(objectStorage);
 }

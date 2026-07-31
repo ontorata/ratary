@@ -200,7 +200,8 @@ export async function authRoutes(
         preValidation: [validateBody(reissueBodySchema)],
         schema: {
           tags: ['Auth'],
-          summary: 'Reissue studio access JWT for Auth Gateway Device Flow refresh (service secret)',
+          summary:
+            'Reissue studio access JWT for Auth Gateway Device Flow refresh (service secret)',
         },
       },
       controller.reissueToken.bind(controller),

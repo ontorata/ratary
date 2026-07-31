@@ -67,7 +67,16 @@
         "properties": {
           "context": { "type": "string" },
           "prompt": { "type": "string" },
-          "memoryCount": { "type": "integer" }
+          "system": { "type": "string" },
+          "user": { "type": "string" },
+          "memoryCount": { "type": "integer" },
+          "packageId": { "type": "string", "description": "ADR-1011 Ratary-issued Context Package id" },
+          "ownerId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "updateMechanism": { "type": "string" },
+          "sourceLabels": { "type": "array", "items": { "type": "string" } },
+          "query": { "type": "string" }
         }
       },
       "ClientCapabilityRequest": {

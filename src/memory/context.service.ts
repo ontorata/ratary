@@ -20,6 +20,10 @@ import { expandWithRelationNeighbors } from './retrieval-policy/relation-context
 import type { RetrievalDeploymentCapabilities } from './retrieval-policy/retrieval-budget.js';
 import type { IMemoryRelationRepository } from '../repositories/memory-relation.repository.interface.js';
 import type { RankingPolicySnapshot } from '../learning/learning.types.js';
+import {
+  createContextPackageEnvelope,
+  type ContextPackageEnvelope,
+} from './context-package-envelope.js';
 
 export interface BuildContextRequest {
   projectId?: string;
@@ -32,7 +36,7 @@ export interface BuildContextRequest {
   auditIpAddress?: string;
 }
 
-export interface BuildContextResult {
+export interface BuildContextResult extends ContextPackageEnvelope {
   context: string;
   memories: ScoredMemory[];
   totalCandidates: number;
@@ -160,6 +164,11 @@ export class ContextService {
     }
 
     return {
+      ...createContextPackageEnvelope({
+        scope,
+        query: request.query ?? '',
+        memories: selected,
+      }),
       context,
       memories: selected,
       totalCandidates: candidates.length,
@@ -171,7 +180,10 @@ export class ContextService {
     scope: MemoryScope,
     request: BuildContextRequest & { task: string; systemRole?: string },
   ): Promise<BuildPromptResult> {
-    const built = await this.buildContext(scope, request);
+    const built = await this.buildContext(scope, {
+      ...request,
+      query: request.query ?? request.task,
+    });
     const prompt = this.promptBuilder.build({
       systemRole: request.systemRole,
       contextBlock: built.context,
