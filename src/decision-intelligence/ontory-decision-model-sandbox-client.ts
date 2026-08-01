@@ -30,8 +30,7 @@ export function isOntorySandboxBridgeEnabled(): boolean {
 }
 
 export function resolveOntorySandboxBridgeConfig():
-  | Readonly<{ baseUrl: string; token: string }>
-  | undefined {
+  Readonly<{ baseUrl: string; token: string }> | undefined {
   if (!isOntorySandboxBridgeEnabled()) return undefined;
   const baseUrl = process.env.ONTORY_RUNTIME_URL?.trim().replace(/\/+$/, '');
   const token = process.env.ONTORY_DECISION_MODEL_SANDBOX_TOKEN?.trim();

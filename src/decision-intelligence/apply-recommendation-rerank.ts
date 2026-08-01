@@ -8,7 +8,10 @@ import {
   resolveOntorySandboxBridgeConfig,
 } from './ontory-decision-model-sandbox-client.js';
 import type { RecommendationCard } from './recommendation.mapper.js';
-import { rerankRecommendationCards, type RerankedRecommendationCard } from './rerank-recommendation-cards.js';
+import {
+  rerankRecommendationCards,
+  type RerankedRecommendationCard,
+} from './rerank-recommendation-cards.js';
 import type { SandboxOutcome } from './decision-model-catalog.types.js';
 
 export type RecommendationRerankMetadata = Readonly<{
