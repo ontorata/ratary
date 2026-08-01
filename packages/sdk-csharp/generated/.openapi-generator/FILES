@@ -38,6 +38,7 @@ docs/models/PolicyDenialEvent.md
 docs/models/PolicyDenialSummary.md
 docs/models/PolicyDenialSummaryByPoint.md
 docs/models/RecommendationCard.md
+docs/models/RecommendationRerankMetadata.md
 docs/models/RecordDecisionProvenance201Response.md
 docs/models/UpdateMemoryRequest.md
 docs/scripts/git_push.ps1
@@ -105,6 +106,7 @@ src/ratary_sdk/Model/PolicyDenialEvent.cs
 src/ratary_sdk/Model/PolicyDenialSummary.cs
 src/ratary_sdk/Model/PolicyDenialSummaryByPoint.cs
 src/ratary_sdk/Model/RecommendationCard.cs
+src/ratary_sdk/Model/RecommendationRerankMetadata.cs
 src/ratary_sdk/Model/RecordDecisionProvenance201Response.cs
 src/ratary_sdk/Model/UpdateMemoryRequest.cs
 src/ratary_sdk/README.md

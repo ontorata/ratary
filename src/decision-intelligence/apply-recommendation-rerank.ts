@@ -1,7 +1,7 @@
 import {
   DECISION_MODEL_CATALOG_MIRROR,
-  type DecisionModelCatalogEntry,
 } from './decision-model-catalog.js';
+import type { DecisionModelCatalogEntry } from './decision-model-catalog.types.js';
 import { buildRecommendationSandboxFeatures } from './build-recommendation-sandbox-features.js';
 import {
   callOntoryDecisionModelSandbox,

@@ -38,6 +38,7 @@ docs/PolicyDenialEvent.md
 docs/PolicyDenialSummary.md
 docs/PolicyDenialSummaryByPoint.md
 docs/RecommendationCard.md
+docs/RecommendationRerankMetadata.md
 docs/RecordDecisionProvenance201Response.md
 docs/SearchApi.md
 docs/UpdateMemoryRequest.md
@@ -86,6 +87,7 @@ ratary_sdk/models/policy_denial_event.py
 ratary_sdk/models/policy_denial_summary.py
 ratary_sdk/models/policy_denial_summary_by_point.py
 ratary_sdk/models/recommendation_card.py
+ratary_sdk/models/recommendation_rerank_metadata.py
 ratary_sdk/models/record_decision_provenance201_response.py
 ratary_sdk/models/update_memory_request.py
 ratary_sdk/py.typed

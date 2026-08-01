@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **TraceId** | **string** |  | 
 **Cards** | [**[]RecommendationCard**](RecommendationCard.md) |  | 
 **Advisory** | **bool** |  | 
+**Rerank** | Pointer to [**RecommendationRerankMetadata**](RecommendationRerankMetadata.md) |  | [optional] 
 
 ## Methods
 
@@ -86,6 +87,31 @@ and a boolean to check if the value has been set.
 
 SetAdvisory sets Advisory field to given value.
 
+
+### GetRerank
+
+`func (o *FetchRecommendationsResponse) GetRerank() RecommendationRerankMetadata`
+
+GetRerank returns the Rerank field if non-nil, zero value otherwise.
+
+### GetRerankOk
+
+`func (o *FetchRecommendationsResponse) GetRerankOk() (*RecommendationRerankMetadata, bool)`
+
+GetRerankOk returns a tuple with the Rerank field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRerank
+
+`func (o *FetchRecommendationsResponse) SetRerank(v RecommendationRerankMetadata)`
+
+SetRerank sets Rerank field to given value.
+
+### HasRerank
+
+`func (o *FetchRecommendationsResponse) HasRerank() bool`
+
+HasRerank returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **trace_id** | **str** |  | 
 **cards** | [**List[RecommendationCard]**](RecommendationCard.md) |  | 
 **advisory** | **bool** |  | 
+**rerank** | [**RecommendationRerankMetadata**](RecommendationRerankMetadata.md) |  | [optional] 
 
 ## Example
 

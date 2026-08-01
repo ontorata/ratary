@@ -3,7 +3,7 @@ info:
   description: Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec
     at GET /docs/json.
   title: Ratary API — SDK v1 surface
-  version: 1.2.2
+  version: 1.2.3
 servers:
 - url: http://localhost:9876/api/v1
 security:
@@ -1020,6 +1020,7 @@ components:
         memoryId: memoryId
         sourceReference: sourceReference
         confidence: 0.8008281904610115
+        computedScore: 6.027456183070403
         evidenceRefs:
         - evidenceRefs
         - evidenceRefs
@@ -1037,6 +1038,9 @@ components:
           type: string
         confidence:
           type: number
+        computedScore:
+          description: PI-P6-D1.1 sandbox score when re-rank applied
+          type: number
         evidenceRefs:
           items:
             type: string
@@ -1051,16 +1055,53 @@ components:
       - sourceReference
       - title
       type: object
+    RecommendationRerankMetadata:
+      example:
+        applied: true
+        decisionModelId: decisionModelId
+        decisionModelVersion: decisionModelVersion
+        sandboxOutcome: ok
+        pluginDigestPrefix: pluginDigestPrefix
+        reason: reason
+      properties:
+        applied:
+          type: boolean
+        decisionModelId:
+          type: string
+        decisionModelVersion:
+          type: string
+        sandboxOutcome:
+          enum:
+          - ok
+          - timeout
+          - error
+          - denied
+          - disabled
+          type: string
+        pluginDigestPrefix:
+          type: string
+        reason:
+          type: string
+      required:
+      - applied
+      type: object
     FetchRecommendationsRequest:
       example:
         query: query
         limit: 0
+        decisionModelId: decisionModelId
+        decisionModelVersion: decisionModelVersion
       properties:
         query:
           type: string
         limit:
           maximum: 10
           type: integer
+        decisionModelId:
+          description: Optional PI-P6-D1.1 computed model for re-rank
+          type: string
+        decisionModelVersion:
+          type: string
       required:
       - query
       type: object
@@ -1074,6 +1115,7 @@ components:
           memoryId: memoryId
           sourceReference: sourceReference
           confidence: 0.8008281904610115
+          computedScore: 6.027456183070403
           evidenceRefs:
           - evidenceRefs
           - evidenceRefs
@@ -1084,11 +1126,19 @@ components:
           memoryId: memoryId
           sourceReference: sourceReference
           confidence: 0.8008281904610115
+          computedScore: 6.027456183070403
           evidenceRefs:
           - evidenceRefs
           - evidenceRefs
           reason: reason
         advisory: true
+        rerank:
+          applied: true
+          decisionModelId: decisionModelId
+          decisionModelVersion: decisionModelVersion
+          sandboxOutcome: ok
+          pluginDigestPrefix: pluginDigestPrefix
+          reason: reason
       properties:
         traceId:
           type: string
@@ -1098,6 +1148,8 @@ components:
           type: array
         advisory:
           type: boolean
+        rerank:
+          $ref: "#/components/schemas/RecommendationRerankMetadata"
       required:
       - advisory
       - cards

@@ -6,6 +6,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Query** | **string** |  | 
 **Limit** | Pointer to **int32** |  | [optional] 
+**DecisionModelId** | Pointer to **string** | Optional PI-P6-D1.1 computed model for re-rank | [optional] 
+**DecisionModelVersion** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -70,6 +72,56 @@ SetLimit sets Limit field to given value.
 `func (o *FetchRecommendationsRequest) HasLimit() bool`
 
 HasLimit returns a boolean if a field has been set.
+
+### GetDecisionModelId
+
+`func (o *FetchRecommendationsRequest) GetDecisionModelId() string`
+
+GetDecisionModelId returns the DecisionModelId field if non-nil, zero value otherwise.
+
+### GetDecisionModelIdOk
+
+`func (o *FetchRecommendationsRequest) GetDecisionModelIdOk() (*string, bool)`
+
+GetDecisionModelIdOk returns a tuple with the DecisionModelId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDecisionModelId
+
+`func (o *FetchRecommendationsRequest) SetDecisionModelId(v string)`
+
+SetDecisionModelId sets DecisionModelId field to given value.
+
+### HasDecisionModelId
+
+`func (o *FetchRecommendationsRequest) HasDecisionModelId() bool`
+
+HasDecisionModelId returns a boolean if a field has been set.
+
+### GetDecisionModelVersion
+
+`func (o *FetchRecommendationsRequest) GetDecisionModelVersion() string`
+
+GetDecisionModelVersion returns the DecisionModelVersion field if non-nil, zero value otherwise.
+
+### GetDecisionModelVersionOk
+
+`func (o *FetchRecommendationsRequest) GetDecisionModelVersionOk() (*string, bool)`
+
+GetDecisionModelVersionOk returns a tuple with the DecisionModelVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDecisionModelVersion
+
+`func (o *FetchRecommendationsRequest) SetDecisionModelVersion(v string)`
+
+SetDecisionModelVersion sets DecisionModelVersion field to given value.
+
+### HasDecisionModelVersion
+
+`func (o *FetchRecommendationsRequest) HasDecisionModelVersion() bool`
+
+HasDecisionModelVersion returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

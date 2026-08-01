@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **memory_id** | **str** |  | [optional] 
 **source_reference** | **str** |  | 
 **confidence** | **float** |  | [optional] 
+**computed_score** | **float** | PI-P6-D1.1 sandbox score when re-rank applied | [optional] 
 **evidence_refs** | **List[str]** |  | 
 **reason** | **str** |  | 
 

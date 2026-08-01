@@ -7,6 +7,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **query** | **str** |  | 
 **limit** | **int** |  | [optional] 
+**decision_model_id** | **str** | Optional PI-P6-D1.1 computed model for re-rank | [optional] 
+**decision_model_version** | **str** |  | [optional] 
 
 ## Example
 

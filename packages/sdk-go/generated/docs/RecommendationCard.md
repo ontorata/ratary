@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **MemoryId** | Pointer to **string** |  | [optional] 
 **SourceReference** | **string** |  | 
 **Confidence** | Pointer to **float32** |  | [optional] 
+**ComputedScore** | Pointer to **float32** | PI-P6-D1.1 sandbox score when re-rank applied | [optional] 
 **EvidenceRefs** | **[]string** |  | 
 **Reason** | **string** |  | 
 
@@ -161,6 +162,31 @@ SetConfidence sets Confidence field to given value.
 `func (o *RecommendationCard) HasConfidence() bool`
 
 HasConfidence returns a boolean if a field has been set.
+
+### GetComputedScore
+
+`func (o *RecommendationCard) GetComputedScore() float32`
+
+GetComputedScore returns the ComputedScore field if non-nil, zero value otherwise.
+
+### GetComputedScoreOk
+
+`func (o *RecommendationCard) GetComputedScoreOk() (*float32, bool)`
+
+GetComputedScoreOk returns a tuple with the ComputedScore field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetComputedScore
+
+`func (o *RecommendationCard) SetComputedScore(v float32)`
+
+SetComputedScore sets ComputedScore field to given value.
+
+### HasComputedScore
+
+`func (o *RecommendationCard) HasComputedScore() bool`
+
+HasComputedScore returns a boolean if a field has been set.
 
 ### GetEvidenceRefs
 
