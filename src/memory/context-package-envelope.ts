@@ -9,7 +9,8 @@ export const CONTEXT_PACKAGE_UPDATE_MECHANISM = 'ratary-buildContext-v1' as cons
 /** ADR-1010 / ADR-1011 additive envelope on buildContext results.
  * ADR-1012: `packageId` is the sole version identity; envelope is immutable once minted.
  * ADR-1013: minted packages behave as `active`; retire/archive wire deferred.
- * ADR-1014: do not reuse this envelope across responses; remint every success. */
+ * ADR-1014: do not reuse this envelope across responses; remint every success.
+ * ADR-1016: `confidence` via interim model `heuristic-top-relevance-v1` (advisory). */
 export type ContextPackageEnvelope = Readonly<{
   packageId: string;
   ownerId: string;
@@ -20,6 +21,7 @@ export type ContextPackageEnvelope = Readonly<{
   query: string;
 }>;
 
+/** ADR-1016 interim model `heuristic-top-relevance-v1`. */
 export function deriveContextConfidence(
   memories: readonly ScoredMemory[],
 ): ContextPackageConfidence {
