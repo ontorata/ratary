@@ -37,4 +37,37 @@ export async function governanceRoutes(
     },
     controller.getStewardshipRun.bind(controller),
   );
+
+  fastify.get(
+    '/governance/exceptions',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'List governance exception requests for authenticated owner (ADR-1029)',
+      },
+    },
+    controller.listGovernanceExceptions.bind(controller),
+  );
+
+  fastify.get(
+    '/governance/exceptions/:exceptionId',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'Governance exception request detail',
+      },
+    },
+    controller.getGovernanceException.bind(controller),
+  );
+
+  fastify.post(
+    '/governance/exceptions',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'Create Owner-initiated governance exception request (pending — no auto-approve)',
+      },
+    },
+    controller.createGovernanceExceptionRequest.bind(controller),
+  );
 }

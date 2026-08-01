@@ -317,7 +317,10 @@ export async function buildApp(options?: {
   const learningPorts = createLearningPorts(platform.sql, env);
   const inspectionLedgerPorts = createInspectionLedgerPorts(platform.sql, env);
   const memoryStewardshipPorts = createMemoryStewardshipPorts(platform.sql, env);
-  const governanceController = createGovernanceController(memoryStewardshipPorts.runStore);
+  const governanceController = createGovernanceController({
+    runStore: memoryStewardshipPorts.runStore,
+    exceptionStore: memoryStewardshipPorts.exceptionStore,
+  });
   const signalPorts = createSignalIngestPorts(platform.sql, env, {
     eventBus: platform.eventBus,
     learningPorts,

@@ -11,6 +11,8 @@ import { createLearningPorts } from './create-learning-ports.js';
 import { MemoryStewardshipOrchestrator } from '../memory/stewardship/memory-stewardship-orchestrator.js';
 import { InMemoryStewardshipRunStore } from '../memory/stewardship/in-memory-stewardship-run-store.js';
 import { SqlStewardshipRunStore } from '../infrastructure/stewardship/sql-stewardship-run-store.js';
+import { InMemoryGovernanceExceptionStore } from '../memory/governance/in-memory-governance-exception-store.js';
+import { SqlGovernanceExceptionStore } from '../infrastructure/governance/sql-governance-exception-store.js';
 import { MetadataAuditTask } from '../memory/stewardship/tasks/metadata-audit.task.js';
 import { ConsolidationTask } from '../memory/stewardship/tasks/consolidation.task.js';
 import { GraphRepairTask } from '../memory/stewardship/tasks/graph-repair.task.js';
@@ -29,12 +31,14 @@ import { parseDecayWeights } from '../memory/decay/index.js';
 import { LocalStewardshipScheduler } from '../jobs/local-stewardship-scheduler.js';
 import type { IMemoryStewardshipOrchestrator } from '../memory/stewardship/imemory-stewardship-orchestrator.interface.js';
 import type { IStewardshipRunStore } from '../memory/stewardship/istewardship-run-store.interface.js';
+import type { IGovernanceExceptionStore } from '../memory/governance/igovernance-exception-store.interface.js';
 import type { IStewardshipScheduler } from '../ports/stewardship/istewardship-scheduler.port.js';
 
 export interface MemoryStewardshipPorts {
   enabled: boolean;
   orchestrator: IMemoryStewardshipOrchestrator;
   runStore: IStewardshipRunStore;
+  exceptionStore: IGovernanceExceptionStore;
   scheduler?: IStewardshipScheduler;
 }
 
@@ -58,6 +62,11 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
     env.MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER === 'sql'
       ? new SqlStewardshipRunStore(sql)
       : new InMemoryStewardshipRunStore();
+
+  const exceptionStore =
+    env.MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER === 'sql'
+      ? new SqlGovernanceExceptionStore(sql)
+      : new InMemoryGovernanceExceptionStore();
 
   const relationInference = createRelationInferencePorts(sql, env);
   const searchGraph = createSearchGraphPorts(sql, env);
@@ -95,5 +104,5 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
       ? new LocalStewardshipScheduler(orchestrator)
       : undefined;
 
-  return { enabled: env.MEMORY_STEWARDSHIP_ENABLED, orchestrator, runStore, scheduler };
+  return { enabled: env.MEMORY_STEWARDSHIP_ENABLED, orchestrator, runStore, exceptionStore, scheduler };
 }
