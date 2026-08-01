@@ -11,6 +11,10 @@ import { createLearningPorts } from './create-learning-ports.js';
 import { MemoryStewardshipOrchestrator } from '../memory/stewardship/memory-stewardship-orchestrator.js';
 import { InMemoryStewardshipRunStore } from '../memory/stewardship/in-memory-stewardship-run-store.js';
 import { SqlStewardshipRunStore } from '../infrastructure/stewardship/sql-stewardship-run-store.js';
+import { InMemoryGovernanceExceptionStore } from '../memory/governance/in-memory-governance-exception-store.js';
+import { SqlGovernanceExceptionStore } from '../infrastructure/governance/sql-governance-exception-store.js';
+import { InMemoryPolicyDenialStore } from '../memory/governance/in-memory-policy-denial-store.js';
+import { SqlPolicyDenialStore } from '../infrastructure/governance/sql-policy-denial-store.js';
 import { MetadataAuditTask } from '../memory/stewardship/tasks/metadata-audit.task.js';
 import { ConsolidationTask } from '../memory/stewardship/tasks/consolidation.task.js';
 import { GraphRepairTask } from '../memory/stewardship/tasks/graph-repair.task.js';
@@ -29,13 +33,34 @@ import { parseDecayWeights } from '../memory/decay/index.js';
 import { LocalStewardshipScheduler } from '../jobs/local-stewardship-scheduler.js';
 import type { IMemoryStewardshipOrchestrator } from '../memory/stewardship/imemory-stewardship-orchestrator.interface.js';
 import type { IStewardshipRunStore } from '../memory/stewardship/istewardship-run-store.interface.js';
+import type { IGovernanceExceptionStore } from '../memory/governance/igovernance-exception-store.interface.js';
+import type { IPolicyDenialStore } from '../memory/governance/ipolicy-denial-store.interface.js';
 import type { IStewardshipScheduler } from '../ports/stewardship/istewardship-scheduler.port.js';
 
 export interface MemoryStewardshipPorts {
   enabled: boolean;
   orchestrator: IMemoryStewardshipOrchestrator;
   runStore: IStewardshipRunStore;
+  exceptionStore: IGovernanceExceptionStore;
+  denialStore: IPolicyDenialStore;
   scheduler?: IStewardshipScheduler;
+}
+
+export interface GovernanceStores {
+  runStore: IStewardshipRunStore;
+  exceptionStore: IGovernanceExceptionStore;
+  denialStore: IPolicyDenialStore;
+}
+
+export function createGovernanceStores(sql: ISqlDatabase, env: Env): GovernanceStores {
+  const useSql = env.MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER === 'sql';
+  return {
+    runStore: useSql ? new SqlStewardshipRunStore(sql) : new InMemoryStewardshipRunStore(),
+    exceptionStore: useSql
+      ? new SqlGovernanceExceptionStore(sql)
+      : new InMemoryGovernanceExceptionStore(),
+    denialStore: useSql ? new SqlPolicyDenialStore(sql) : new InMemoryPolicyDenialStore(),
+  };
 }
 
 /**
@@ -43,7 +68,11 @@ export interface MemoryStewardshipPorts {
  * Wires deterministic maintenance tasks in fixed stage order. Gated by
  * `MEMORY_STEWARDSHIP_ENABLED`; callers decide whether to invoke it.
  */
-export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): MemoryStewardshipPorts {
+export function createMemoryStewardshipPorts(
+  sql: ISqlDatabase,
+  env: Env,
+  governanceStores?: GovernanceStores,
+): MemoryStewardshipPorts {
   const repository = new MemoryRepository(sql);
   const relationRepository = new MemoryRelationRepository(sql);
   const compressionPolicy = env.COMPRESSION_ENABLED ? new RuleBasedCompressionPolicy() : undefined;
@@ -54,10 +83,10 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
     summarizer,
   });
 
-  const runStore =
-    env.MEMORY_STEWARDSHIP_RUN_STORE_PROVIDER === 'sql'
-      ? new SqlStewardshipRunStore(sql)
-      : new InMemoryStewardshipRunStore();
+  const stores = governanceStores ?? createGovernanceStores(sql, env);
+  const runStore = stores.runStore;
+  const exceptionStore = stores.exceptionStore;
+  const denialStore = stores.denialStore;
 
   const relationInference = createRelationInferencePorts(sql, env);
   const searchGraph = createSearchGraphPorts(sql, env);
@@ -95,5 +124,12 @@ export function createMemoryStewardshipPorts(sql: ISqlDatabase, env: Env): Memor
       ? new LocalStewardshipScheduler(orchestrator)
       : undefined;
 
-  return { enabled: env.MEMORY_STEWARDSHIP_ENABLED, orchestrator, runStore, scheduler };
+  return {
+    enabled: env.MEMORY_STEWARDSHIP_ENABLED,
+    orchestrator,
+    runStore,
+    exceptionStore,
+    denialStore,
+    scheduler,
+  };
 }

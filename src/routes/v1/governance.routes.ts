@@ -37,4 +37,59 @@ export async function governanceRoutes(
     },
     controller.getStewardshipRun.bind(controller),
   );
+
+  fastify.get(
+    '/governance/exceptions',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'List governance exception requests for authenticated owner (ADR-1029)',
+      },
+    },
+    controller.listGovernanceExceptions.bind(controller),
+  );
+
+  fastify.get(
+    '/governance/exceptions/:exceptionId',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'Governance exception request detail',
+      },
+    },
+    controller.getGovernanceException.bind(controller),
+  );
+
+  fastify.post(
+    '/governance/exceptions',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'Create Owner-initiated governance exception request (pending — no auto-approve)',
+      },
+    },
+    controller.createGovernanceExceptionRequest.bind(controller),
+  );
+
+  fastify.get(
+    '/governance/denials',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'List policy denial events (PI-1027-C / ADR-1028 D4)',
+      },
+    },
+    controller.listPolicyDenials.bind(controller),
+  );
+
+  fastify.get(
+    '/governance/denials/summary',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'Aggregated policy denial counts by evaluation point',
+      },
+    },
+    controller.getPolicyDenialSummary.bind(controller),
+  );
 }

@@ -1318,6 +1318,51 @@ export async function migrateExtensionTracksPhase8(client: ISqlDatabase): Promis
   }
 }
 
+/** Extension track 9 — governance exception requests (PI-1027-B / ADR-1029). */
+const GOVERNANCE_EXCEPTIONS_SQL = `
+CREATE TABLE IF NOT EXISTS governance_exceptions (
+  exception_id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  exception_class TEXT NOT NULL,
+  rationale TEXT NOT NULL,
+  status TEXT NOT NULL,
+  requested_by TEXT NOT NULL,
+  requested_at TEXT NOT NULL,
+  expires_at TEXT,
+  audit_json TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_governance_exceptions_owner ON governance_exceptions(owner_id, requested_at DESC);
+`;
+
+export async function migrateExtensionTracksPhase9(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(GOVERNANCE_EXCEPTIONS_SQL)) {
+    await client.execute(sql);
+  }
+}
+
+/** Extension track 10 — policy denial events (PI-1027-C / ADR-1028 D4). */
+const POLICY_DENIAL_EVENTS_SQL = `
+CREATE TABLE IF NOT EXISTS policy_denial_events (
+  denial_id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  point TEXT NOT NULL,
+  policy_module_id TEXT,
+  reason_code TEXT NOT NULL,
+  occurred_at TEXT NOT NULL,
+  memory_id TEXT,
+  resource TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_policy_denial_owner ON policy_denial_events(owner_id, occurred_at DESC);
+`;
+
+export async function migrateExtensionTracksPhase10(client: ISqlDatabase): Promise<void> {
+  for (const sql of splitStatements(POLICY_DENIAL_EVENTS_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 const PRECISION_SEARCH_MEMORY_COLUMNS: Array<{ name: string; ddl: string }> = [
   { name: 'aliases', ddl: "ALTER TABLE memories ADD COLUMN aliases TEXT NOT NULL DEFAULT '[]'" },
   { name: 'source_path', ddl: 'ALTER TABLE memories ADD COLUMN source_path TEXT' },
@@ -1401,6 +1446,8 @@ export async function runSchemaMigrations(
   await migrateExtensionTracksPhase6(client);
   await migrateExtensionTracksPhase7(client);
   await migrateExtensionTracksPhase8(client);
+  await migrateExtensionTracksPhase9(client);
+  await migrateExtensionTracksPhase10(client);
   await migratePrecisionSearchPhase1(client, dialect);
   await migrateMemoryDecayPhase1(client, dialect);
   await migrateIdempotentWritesPhase1(client);

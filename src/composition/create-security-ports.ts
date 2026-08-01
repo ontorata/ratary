@@ -17,6 +17,7 @@ import type { IIdentityFederation } from '../security/ports/iidentity-federation
 import type { IIdpConnectorRegistry } from '../security/ports/iidp-connector.port.js';
 import type { IComplianceAuditor } from '../security/ports/icompliance-auditor.port.js';
 import type { ITenantHierarchy } from '../security/ports/itenant-hierarchy.port.js';
+import type { IPolicyDenialStore } from '../memory/governance/ipolicy-denial-store.interface.js';
 import { createPolicyMiddleware } from '../security/middleware/policy.middleware.js';
 import { createQuotaMiddleware } from '../security/middleware/quota.middleware.js';
 
@@ -36,7 +37,11 @@ export interface SecurityPorts {
  * Composition root for Phase 17 enterprise security (ADR-032).
  * Gated by ENTERPRISE_SECURITY_V2 — default off preserves Phase 10 behavior.
  */
-export function createSecurityPorts(sql: ISqlDatabase, env: Env): SecurityPorts {
+export function createSecurityPorts(
+  sql: ISqlDatabase,
+  env: Env,
+  options?: { policyDenialStore?: IPolicyDenialStore },
+): SecurityPorts {
   const complianceAuditor = new InMemoryComplianceAuditor();
   const idpRegistry = new StaticIdpConnectorRegistry(env);
 
@@ -58,6 +63,7 @@ export function createSecurityPorts(sql: ISqlDatabase, env: Env): SecurityPorts 
         policyEngine,
         tenantHierarchy,
         complianceAuditor,
+        policyDenialStore: options?.policyDenialStore,
       }),
       quotaMiddleware: createQuotaMiddleware(quotaEnforcer),
     };
@@ -80,6 +86,7 @@ export function createSecurityPorts(sql: ISqlDatabase, env: Env): SecurityPorts 
       policyEngine,
       tenantHierarchy,
       complianceAuditor,
+      policyDenialStore: options?.policyDenialStore,
     }),
     quotaMiddleware: createQuotaMiddleware(quotaEnforcer),
   };
