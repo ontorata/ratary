@@ -3,7 +3,7 @@
   "info": {
     "title": "Ratary API — SDK v1 surface",
     "description": "Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.",
-    "version": "1.2.2"
+    "version": "1.2.3"
   },
   "servers": [{ "url": "http://localhost:9876/api/v1" }],
   "security": [{ "BearerAuth": [] }, { "ApiKeyAuth": [] }],
@@ -253,7 +253,23 @@
           "memoryId": { "type": "string" },
           "sourceReference": { "type": "string" },
           "confidence": { "type": "number" },
+          "computedScore": { "type": "number", "description": "PI-P6-D1.1 sandbox score when re-rank applied" },
           "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+          "reason": { "type": "string" }
+        }
+      },
+      "RecommendationRerankMetadata": {
+        "type": "object",
+        "required": ["applied"],
+        "properties": {
+          "applied": { "type": "boolean" },
+          "decisionModelId": { "type": "string" },
+          "decisionModelVersion": { "type": "string" },
+          "sandboxOutcome": {
+            "type": "string",
+            "enum": ["ok", "timeout", "error", "denied", "disabled"]
+          },
+          "pluginDigestPrefix": { "type": "string" },
           "reason": { "type": "string" }
         }
       },
@@ -262,7 +278,9 @@
         "required": ["query"],
         "properties": {
           "query": { "type": "string" },
-          "limit": { "type": "integer", "maximum": 10 }
+          "limit": { "type": "integer", "maximum": 10 },
+          "decisionModelId": { "type": "string", "description": "Optional PI-P6-D1.1 computed model for re-rank" },
+          "decisionModelVersion": { "type": "string" }
         }
       },
       "FetchRecommendationsResponse": {
@@ -274,7 +292,8 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/RecommendationCard" }
           },
-          "advisory": { "type": "boolean", "enum": [true] }
+          "advisory": { "type": "boolean", "enum": [true] },
+          "rerank": { "$ref": "#/components/schemas/RecommendationRerankMetadata" }
         }
       },
       "CreateDecisionProvenanceRequest": {
