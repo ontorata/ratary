@@ -18,6 +18,8 @@
 | ADR-1026 Memory Policy Update Mechanism | `architecture/acos/ADR-1026-memory-policy-update-mechanism.md` |
 | ADR-1028 Memory Policy Enforcement | `architecture/acos/ADR-1028-memory-policy-enforcement.md` |
 | ADR-1029 Memory Governance Exceptions | `architecture/acos/ADR-1029-memory-governance-exceptions.md` |
+| ADR-1030 Agent Runtime Architecture | `architecture/acos/ADR-1030-agent-runtime-architecture.md` |
+| ADR-1032 Tool Execution Governance | `architecture/acos/ADR-1032-tool-execution-governance.md` |
 | Wire evidence (Context Package envelope) | `products/ratary/evidence/ADR-1011-CONTEXT-PACKAGE-WIRE-2026-07-31.md` |
 
 Operator summary in this repo: [docs/CONTEXT-PACKAGE.md](../../CONTEXT-PACKAGE.md).
