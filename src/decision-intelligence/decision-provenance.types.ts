@@ -10,6 +10,8 @@ export const DecisionProvenanceRecordSchema = z.object({
   rationale: z.string().optional(),
   sourceMemoryIds: z.array(z.string().min(1)),
   recordedAt: z.string().datetime(),
+  decisionModelId: z.string().min(1).optional(),
+  decisionModelVersion: z.string().min(1).optional(),
 });
 
 export type DecisionProvenanceRecord = z.infer<typeof DecisionProvenanceRecordSchema>;
@@ -21,6 +23,8 @@ export const CreateDecisionProvenanceBodySchema = z
     verdict: z.enum(['accepted', 'rejected']),
     rationale: z.string().max(4000).optional(),
     sourceMemoryIds: z.array(z.string().min(1)).default([]),
+    decisionModelId: z.string().min(1).optional(),
+    decisionModelVersion: z.string().min(1).optional(),
   })
   .strict();
 
@@ -43,5 +47,7 @@ export function buildDecisionProvenanceRecord(
     rationale: body.rationale,
     sourceMemoryIds: body.sourceMemoryIds,
     recordedAt: new Date().toISOString(),
+    decisionModelId: body.decisionModelId,
+    decisionModelVersion: body.decisionModelVersion,
   });
 }
