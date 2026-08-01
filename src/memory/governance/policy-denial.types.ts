@@ -45,7 +45,10 @@ export type PolicyDenialSummary = Readonly<{
   total: number;
 }>;
 
-export function resolvePolicyDenialPoint(path: string, action: 'read' | 'write' | 'admin'): PolicyDenialPoint {
+export function resolvePolicyDenialPoint(
+  path: string,
+  action: 'read' | 'write' | 'admin',
+): PolicyDenialPoint {
   const normalized = path.toLowerCase();
   if (normalized.includes('stewardship') || normalized.includes('steward')) {
     return 'stewardship';

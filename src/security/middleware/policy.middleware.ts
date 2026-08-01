@@ -4,7 +4,10 @@ import type { IPolicyEngine } from '../ports/ipolicy-engine.port.js';
 import type { ITenantHierarchy } from '../ports/itenant-hierarchy.port.js';
 import type { IComplianceAuditor } from '../ports/icompliance-auditor.port.js';
 import type { IPolicyDenialStore } from '../../memory/governance/ipolicy-denial-store.interface.js';
-import { buildPolicyDenialEvent, resolvePolicyDenialPoint } from '../../memory/governance/policy-denial.types.js';
+import {
+  buildPolicyDenialEvent,
+  resolvePolicyDenialPoint,
+} from '../../memory/governance/policy-denial.types.js';
 import { buildTransportContextFromRestRequest } from '../../transport/shared/resolve-transport-scope.js';
 
 function isPublicPath(url: string): boolean {

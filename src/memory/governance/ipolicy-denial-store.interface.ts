@@ -1,4 +1,8 @@
-import type { PolicyDenialEvent, PolicyDenialPoint, PolicyDenialSummary } from './policy-denial.types.js';
+import type {
+  PolicyDenialEvent,
+  PolicyDenialPoint,
+  PolicyDenialSummary,
+} from './policy-denial.types.js';
 
 export interface IPolicyDenialStore {
   append(event: PolicyDenialEvent): Promise<void>;

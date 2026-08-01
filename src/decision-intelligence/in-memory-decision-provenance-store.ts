@@ -16,7 +16,10 @@ export class InMemoryDecisionProvenanceStore implements IDecisionProvenanceStore
 
   constructor(private readonly cap: number = DEFAULT_CAP) {}
 
-  async append(ownerId: string, body: CreateDecisionProvenanceBody): Promise<DecisionProvenanceRecord> {
+  async append(
+    ownerId: string,
+    body: CreateDecisionProvenanceBody,
+  ): Promise<DecisionProvenanceRecord> {
     const record = buildDecisionProvenanceRecord(ownerId, body);
     const history = this.records.get(ownerId) ?? [];
     history.unshift(record);

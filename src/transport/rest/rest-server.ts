@@ -32,7 +32,10 @@ import { createInspectionLedgerController } from '../../controllers/inspection-l
 import { createGovernanceController } from '../../controllers/governance.controller.js';
 import { createDecisionsController } from '../../controllers/decisions.controller.js';
 import { InMemoryDecisionProvenanceStore } from '../../decision-intelligence/in-memory-decision-provenance-store.js';
-import { createMemoryStewardshipPorts, createGovernanceStores } from '../../composition/create-memory-stewardship-ports.js';
+import {
+  createMemoryStewardshipPorts,
+  createGovernanceStores,
+} from '../../composition/create-memory-stewardship-ports.js';
 import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
 import { createEventPipelinePorts } from '../../composition/create-event-pipeline-ports.js';
 import { createEvolutionController } from '../../controllers/evolution.controller.js';
