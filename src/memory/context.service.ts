@@ -7,7 +7,17 @@ import type { IRetrievalCandidateSource } from './retrieval-candidate-source.int
 import { Ranker, type ScoredMemory } from './ranker.js';
 import { ContextBuilder, type ContextBuildOptions } from './context-builder.js';
 import { PromptBuilder } from './prompt-builder.js';
-import { DEFAULT_RETRIEVAL_RANK_LIMIT, MAX_CONTEXT_MAX_CHARS } from './context.config.js';
+import {
+  DEFAULT_RETRIEVAL_RANK_LIMIT,
+  MAX_CONTEXT_MAX_CHARS,
+  DEFAULT_RETRIEVAL_MEMO_MAX_ENTRIES,
+  DEFAULT_RETRIEVAL_MEMO_TTL_MS,
+} from './context.config.js';
+import {
+  RetrievalMemoCache,
+  buildRetrievalMemoKey,
+  type RetrievalMemoStatus,
+} from './retrieval-memo-cache.js';
 import type { IMemoryAccessAuditor } from '../ports/audit/imemory-access-auditor.port.js';
 import type { MemoryLevel } from '../types/memory-level.js';
 import type {
@@ -22,8 +32,15 @@ import type { IMemoryRelationRepository } from '../repositories/memory-relation.
 import type { RankingPolicySnapshot } from '../learning/learning.types.js';
 import {
   createContextPackageEnvelope,
+  canTransitionContextPackageLifecycle,
   type ContextPackageEnvelope,
+  type ContextPackageLifecycleState,
 } from './context-package-envelope.js';
+import type {
+  ContextPackageLifecycleRecord,
+  IContextPackageLifecycleStore,
+} from '../ports/context/icontext-package-lifecycle-store.port.js';
+import { ConflictError, NotFoundError } from '../types/errors.js';
 
 export interface BuildContextRequest {
   projectId?: string;
@@ -41,6 +58,8 @@ export interface BuildContextResult extends ContextPackageEnvelope {
   memories: ScoredMemory[];
   totalCandidates: number;
   retrievalPlan?: RetrievalPlan;
+  /** ADR-1018 — ranked-candidate memo status (envelope always reminted). */
+  retrievalMemo?: RetrievalMemoStatus;
 }
 
 export interface BuildPromptResult extends BuildContextResult {
@@ -54,6 +73,9 @@ export interface ContextServiceDeps {
   rankingSnapshotLoader?: (scope: MemoryScope) => Promise<RankingPolicySnapshot | null>;
   relationRepository?: IMemoryRelationRepository;
   relationNeighborCap?: number;
+  lifecycleStore?: IContextPackageLifecycleStore;
+  /** Process-local ranked memo; pass `null` to disable. */
+  retrievalMemoCache?: RetrievalMemoCache | null;
 }
 
 export class ContextService {
@@ -68,6 +90,8 @@ export class ContextService {
   ) => Promise<RankingPolicySnapshot | null>;
   private readonly relationRepository?: IMemoryRelationRepository;
   private readonly relationNeighborCap: number;
+  private readonly lifecycleStore?: IContextPackageLifecycleStore;
+  private readonly retrievalMemoCache: RetrievalMemoCache | null;
 
   constructor(
     private readonly repository: IMemoryRepository,
@@ -88,31 +112,63 @@ export class ContextService {
     this.rankingSnapshotLoader = deps.rankingSnapshotLoader;
     this.relationRepository = deps.relationRepository;
     this.relationNeighborCap = deps.relationNeighborCap ?? 5;
+    this.lifecycleStore = deps.lifecycleStore;
+    this.retrievalMemoCache =
+      deps.retrievalMemoCache === null
+        ? null
+        : (deps.retrievalMemoCache ??
+          new RetrievalMemoCache(DEFAULT_RETRIEVAL_MEMO_TTL_MS, DEFAULT_RETRIEVAL_MEMO_MAX_ENTRIES));
   }
 
   async buildContext(
     scope: MemoryScope,
     request: BuildContextRequest,
   ): Promise<BuildContextResult> {
-    const candidates = await this.retriever.retrieve({
-      scope,
-      projectId: request.projectId,
-      query: request.query,
-      tags: request.tags,
-      levels: request.levels,
-      limit: request.limit,
-    });
-
     const rankingSnapshot = this.rankingSnapshotLoader
       ? await this.rankingSnapshotLoader(scope)
       : undefined;
 
-    const ranked = this.ranker.rank(
-      candidates,
-      { q: request.query, tag: request.tags?.[0] },
-      request.limit ?? DEFAULT_RETRIEVAL_RANK_LIMIT,
-      rankingSnapshot ?? undefined,
-    );
+    const rankLimit = request.limit ?? DEFAULT_RETRIEVAL_RANK_LIMIT;
+    const memoKey = buildRetrievalMemoKey({
+      ownerId: scope.ownerId,
+      workspaceId: scope.workspaceId,
+      projectId: request.projectId,
+      query: request.query,
+      tags: request.tags,
+      levels: request.levels,
+      limit: rankLimit,
+      rankingSnapshotVersion: rankingSnapshot?.version ?? null,
+    });
+
+    let ranked: ScoredMemory[];
+    let totalCandidates: number;
+    let retrievalMemo: RetrievalMemoStatus = 'bypass';
+
+    const memoHit = this.retrievalMemoCache?.get(memoKey) ?? null;
+    if (memoHit) {
+      ranked = [...memoHit.ranked];
+      totalCandidates = memoHit.totalCandidates;
+      retrievalMemo = 'hit';
+    } else {
+      const candidates = await this.retriever.retrieve({
+        scope,
+        projectId: request.projectId,
+        query: request.query,
+        tags: request.tags,
+        levels: request.levels,
+        limit: request.limit,
+      });
+
+      ranked = this.ranker.rank(
+        candidates,
+        { q: request.query, tag: request.tags?.[0] },
+        rankLimit,
+        rankingSnapshot ?? undefined,
+      );
+      totalCandidates = candidates.length;
+      retrievalMemo = this.retrievalMemoCache ? 'miss' : 'bypass';
+      this.retrievalMemoCache?.set(memoKey, ranked, totalCandidates);
+    }
 
     const hints = buildAdaptiveRetrievalHints(ranked);
     const plan = this.retrievalPolicy.resolve(request, ranked.length, this.deployment, hints);
@@ -163,17 +219,88 @@ export class ContextService {
       );
     }
 
+    const envelope = createContextPackageEnvelope({
+      scope,
+      query: request.query ?? '',
+      memories: selected,
+    });
+
+    if (this.lifecycleStore) {
+      await this.lifecycleStore.insertActive({
+        packageId: envelope.packageId,
+        ownerId: envelope.ownerId,
+        createdAt: envelope.createdAt,
+      });
+    }
+
     return {
-      ...createContextPackageEnvelope({
-        scope,
-        query: request.query ?? '',
-        memories: selected,
-      }),
+      ...envelope,
       context,
       memories: selected,
-      totalCandidates: candidates.length,
+      totalCandidates,
       retrievalPlan: plan,
+      retrievalMemo,
     };
+  }
+
+  async getPackageLifecycle(
+    scope: MemoryScope,
+    packageId: string,
+  ): Promise<ContextPackageLifecycleRecord> {
+    const store = this.requireLifecycleStore();
+    const record = await store.get(scope.ownerId, packageId);
+    if (!record) {
+      throw new NotFoundError('ContextPackage', packageId);
+    }
+    return record;
+  }
+
+  async retirePackage(
+    scope: MemoryScope,
+    packageId: string,
+  ): Promise<ContextPackageLifecycleRecord> {
+    return this.transitionPackage(scope, packageId, 'retired');
+  }
+
+  async archivePackage(
+    scope: MemoryScope,
+    packageId: string,
+  ): Promise<ContextPackageLifecycleRecord> {
+    return this.transitionPackage(scope, packageId, 'archived');
+  }
+
+  private async transitionPackage(
+    scope: MemoryScope,
+    packageId: string,
+    to: ContextPackageLifecycleState,
+  ): Promise<ContextPackageLifecycleRecord> {
+    const store = this.requireLifecycleStore();
+    const current = await store.get(scope.ownerId, packageId);
+    if (!current) {
+      throw new NotFoundError('ContextPackage', packageId);
+    }
+    if (!canTransitionContextPackageLifecycle(current.lifecycleState, to)) {
+      throw new ConflictError(
+        `Invalid Context Package lifecycle transition: ${current.lifecycleState} → ${to}`,
+      );
+    }
+    const updatedAt = new Date().toISOString();
+    const ok = await store.updateState(scope.ownerId, packageId, to, updatedAt);
+    if (!ok) {
+      throw new NotFoundError('ContextPackage', packageId);
+    }
+    return {
+      ...current,
+      lifecycleState: to,
+      updatedAt,
+    };
+  }
+
+  private requireLifecycleStore(): IContextPackageLifecycleStore {
+    if (!this.lifecycleStore) {
+      throw new ConflictError('Context Package lifecycle store is not configured');
+    }
+    return this.lifecycleStore;
   }
 
   async buildPrompt(

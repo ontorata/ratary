@@ -4,6 +4,7 @@ import type {
   BuildPromptResult,
   ContextService,
 } from '../../../memory/context.service.js';
+import type { ContextPackageLifecycleRecord } from '../../../ports/context/icontext-package-lifecycle-store.port.js';
 import type { BuildContextBody } from '../../../types/context.js';
 import type { IScopeResolver } from '../../../scope/iscope-resolver.interface.js';
 import { PERMISSIONS } from '../../../auth/permission-context.js';
@@ -30,24 +31,29 @@ export interface ContextHandlers {
   buildContext: IApplicationHandler<BuildContextRequest, BuildContextResult>;
   buildPrompt: IApplicationHandler<BuildContextBody, BuildPromptResult>;
   streamContext: IApplicationHandler<ContextStreamInput, void>;
+  getPackageLifecycle: IApplicationHandler<{ packageId: string }, ContextPackageLifecycleRecord>;
+  retirePackage: IApplicationHandler<{ packageId: string }, ContextPackageLifecycleRecord>;
+  archivePackage: IApplicationHandler<{ packageId: string }, ContextPackageLifecycleRecord>;
 }
 
 export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers {
-  const scope = (ctx: TransportContext) =>
+  const scopeRead = (ctx: TransportContext) =>
     resolveHandlerScope(ctx, deps.scopeResolver, PERMISSIONS.MEMORY_READ);
+  const scopeWrite = (ctx: TransportContext) =>
+    resolveHandlerScope(ctx, deps.scopeResolver, PERMISSIONS.MEMORY_WRITE);
   const streamSource = deps.streamSource ?? new DefaultContextStreamSource(deps.contextService);
 
   return {
     buildContext: {
       handle: async (ctx, request) =>
-        deps.contextService.buildContext(await scope(ctx), {
+        deps.contextService.buildContext(await scopeRead(ctx), {
           ...request,
           ...buildContextAuditFields(ctx),
         }),
     },
     buildPrompt: {
       handle: async (ctx, body) =>
-        deps.contextService.buildPrompt(await scope(ctx), {
+        deps.contextService.buildPrompt(await scopeRead(ctx), {
           projectId: body.projectId,
           query: body.query,
           tags: body.tags,
@@ -62,7 +68,7 @@ export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers
     streamContext: {
       handle: async (ctx, input) => {
         const { publisher, ...request } = input;
-        const resolvedScope = await scope(ctx);
+        const resolvedScope = await scopeRead(ctx);
         const auditedRequest = { ...request, ...buildContextAuditFields(ctx) };
         try {
           for await (const chunk of streamSource.stream(auditedRequest, resolvedScope)) {
@@ -74,6 +80,18 @@ export function createContextHandlers(deps: ContextHandlerDeps): ContextHandlers
           throw error;
         }
       },
+    },
+    getPackageLifecycle: {
+      handle: async (ctx, input) =>
+        deps.contextService.getPackageLifecycle(await scopeRead(ctx), input.packageId),
+    },
+    retirePackage: {
+      handle: async (ctx, input) =>
+        deps.contextService.retirePackage(await scopeWrite(ctx), input.packageId),
+    },
+    archivePackage: {
+      handle: async (ctx, input) =>
+        deps.contextService.archivePackage(await scopeWrite(ctx), input.packageId),
     },
   };
 }

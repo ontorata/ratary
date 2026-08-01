@@ -19,6 +19,7 @@ import { createGraphProvider } from '../infrastructure/composition/create-graph-
 import { createProgressiveRetrievalPorts } from '../composition/create-progressive-retrieval-ports.js';
 import { createLearningPorts } from '../composition/create-learning-ports.js';
 import { MemoryRelationRepository } from '../repositories/memory-relation.repository.js';
+import { SqlContextPackageLifecycleStore } from '../infrastructure/context/sql-context-package-lifecycle-store.js';
 
 export interface ContextServicePlatformDeps {
   embeddingProvider?: IEmbeddingProvider;
@@ -49,6 +50,9 @@ export function createContextService(
       ? createLearningPorts(platform.sql, env)
       : undefined;
   const relationRepository = platform?.sql ? new MemoryRelationRepository(platform.sql) : undefined;
+  const lifecycleStore = platform?.sql
+    ? new SqlContextPackageLifecycleStore(platform.sql)
+    : undefined;
 
   return new ContextService(repository, candidateSource, platform?.memoryAccessAuditor, {
     retrievalPolicy: progressive.policy,
@@ -59,6 +63,7 @@ export function createContextService(
         : undefined,
     relationRepository,
     relationNeighborCap: env.RETRIEVAL_RELATION_NEIGHBOR_CAP,
+    lifecycleStore,
   });
 }
 

@@ -12,17 +12,19 @@ Successful context assembly responses include a Ratary-issued **Context Package*
 | `packageId` | UUID — version identity (ADR-1012); remint every success |
 | `ownerId` | Scope owner |
 | `createdAt` | ISO-8601 mint time |
-| `confidence` | `high` \| `medium` \| `low` — `heuristic-top-relevance-v1` (ADR-1016); advisory |
+| `confidence` | `high` \| `medium` \| `low` — advisory (ADR-1016) |
+| `confidenceModel` | `confidence-product-v1` (default mint) · heuristic retained as alternate id |
 | `updateMechanism` | `ratary-buildContext-v1` — refresh/propagate = **remint** (ADR-1017/1019) |
+| `lifecycleState` | `active` \| `retired` \| `archived` — mint is always `active` (ADR-1013) |
 | `sourceLabels` | Rank-order memory codenames/titles |
 | `query` | Effective query (or task when query omitted) |
 
 | Topic | Rule |
 |-------|------|
-| Lifecycle (1013) | `active`→`retired`→`archived` vocabulary; wire FSM deferred |
+| Lifecycle (1013) | Registry + `GET/retire/archive` under `/context/packages/:packageId` **Landed** |
 | Caching (1014) | No package reuse; optional Ratary retrieval cache only |
 | Staleness (1017) | New turn → remint; ≠ ADR-066 memory decay |
-| Retrieval opt (1018) | Optimizations inside Ratary only |
+| Retrieval opt (1018) | Process-local ranked memo; package always reminted; `retrievalMemo` on response |
 | Update prop (1019) | Pull/remint; no push invalidation bus in v1 |
 
 OpenAPI: `BuildContextResponse` in `packages/openapi/ratary-v1.openapi.json`.

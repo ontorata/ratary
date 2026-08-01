@@ -1185,6 +1185,28 @@ export async function migrateCodeMemoryPhase1(client: ISqlDatabase): Promise<voi
   }
 }
 
+/** ADR-1013 — Context Package lifecycle eligibility registry (immutable package bodies). */
+const CONTEXT_PACKAGES_SQL = `
+CREATE TABLE IF NOT EXISTS context_packages (
+  package_id TEXT PRIMARY KEY,
+  owner_id TEXT NOT NULL,
+  lifecycle_state TEXT NOT NULL DEFAULT 'active',
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_context_packages_owner_state
+  ON context_packages(owner_id, lifecycle_state);
+`;
+
+export async function migrateContextPackageLifecyclePhase1(
+  client: ISqlDatabase,
+): Promise<void> {
+  for (const sql of splitStatements(CONTEXT_PACKAGES_SQL)) {
+    await client.execute(sql);
+  }
+}
+
 /** Extension track 8.6 — learning events + policy snapshots (ADR-057). */
 export async function migrateExtensionTracksPhase2(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(LEARNING_TABLES_SQL)) {
@@ -1386,6 +1408,7 @@ export async function runSchemaMigrations(
   await migrateIdempotentWritesPhase1(client);
   await migrateEntityResolutionPhase1(client);
   await migrateCodeMemoryPhase1(client);
+  await migrateContextPackageLifecyclePhase1(client);
 }
 
 export async function runMigrations(client: D1Client = getD1Client()): Promise<void> {

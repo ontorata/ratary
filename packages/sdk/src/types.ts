@@ -60,7 +60,11 @@ export interface BuildContextResult {
   ownerId?: string;
   createdAt?: string;
   confidence?: 'high' | 'medium' | 'low' | number;
+  /** ADR-1016 model id (`confidence-product-v1` default). */
+  confidenceModel?: 'heuristic-top-relevance-v1' | 'confidence-product-v1' | string;
   updateMechanism?: string;
+  /** ADR-1013 — mint is `active`; retire/archive transition APIs deferred. */
+  lifecycleState?: 'active' | 'retired' | 'archived';
   sourceLabels?: readonly string[];
   query?: string;
   system?: string;

@@ -8,6 +8,10 @@ import {
   type ContextHandlers,
 } from '../transport/shared/handlers/create-transport-handlers.js';
 
+function packageIdParam(request: FastifyRequest): string {
+  return (request.params as { packageId: string }).packageId;
+}
+
 export class ContextController {
   constructor(private readonly handlers: ContextHandlers) {}
 
@@ -21,7 +25,9 @@ export class ContextController {
       ownerId: result.ownerId,
       createdAt: result.createdAt,
       confidence: result.confidence,
+      confidenceModel: result.confidenceModel,
       updateMechanism: result.updateMechanism,
+      lifecycleState: result.lifecycleState,
       sourceLabels: result.sourceLabels,
       query: result.query,
       context: result.context,
@@ -37,7 +43,32 @@ export class ContextController {
       })),
       totalCandidates: result.totalCandidates,
       retrievalPlan: result.retrievalPlan,
+      retrievalMemo: result.retrievalMemo,
     });
+  }
+
+  async getPackageLifecycle(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const ctx = buildTransportContextFromRestRequest(request);
+    const record = await this.handlers.getPackageLifecycle.handle(ctx, {
+      packageId: packageIdParam(request),
+    });
+    reply.send(record);
+  }
+
+  async retirePackage(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const ctx = buildTransportContextFromRestRequest(request);
+    const record = await this.handlers.retirePackage.handle(ctx, {
+      packageId: packageIdParam(request),
+    });
+    reply.send(record);
+  }
+
+  async archivePackage(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const ctx = buildTransportContextFromRestRequest(request);
+    const record = await this.handlers.archivePackage.handle(ctx, {
+      packageId: packageIdParam(request),
+    });
+    reply.send(record);
   }
 }
 
