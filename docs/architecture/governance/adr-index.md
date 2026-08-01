@@ -39,6 +39,7 @@
 | ADR-1058 ACOS Performance Optimization | `architecture/acos/ADR-1058-acos-performance-optimization.md` |
 | Wire evidence (Context Package envelope) | `products/ratary/evidence/ADR-1011-CONTEXT-PACKAGE-WIRE-2026-07-31.md` |
 | Area 3 Memory Governance land | `products/ratary/evidence/AREA-3-MEMORY-GOVERNANCE-ATTEST-2026-08-01.md` · code `src/memory/governance/` |
+| PI-1027-A Governance REST (Studio dashboard) | `products/ratary/evidence/PI-1027-A-MEMORY-GOVERNANCE-DASHBOARD-2026-08-01.md` · [PI-1027-GOVERNANCE-REST.md](../../PI-1027-GOVERNANCE-REST.md) |
 | Area 5 Decision Intelligence bridge | `products/ratary/evidence/AREA-5-HORIZON-BRIDGE-ATTEST-2026-08-01.md` · code `src/decision-intelligence/horizon/` |
 | Area 6 Cross-cutting ops bridge | `products/ratary/evidence/AREA-6-OPS-BRIDGE-ATTEST-2026-08-01.md` · code `src/cross-cutting/horizon/` |
 
