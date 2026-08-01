@@ -79,7 +79,8 @@ export const AREA5_HORIZON_MODULES: readonly Area5HorizonModuleRef[] = [
     livingAdr: 'ADR-1046',
     ownerRepo: 'ontory-runtime',
     modulePath: 'src/agent/decision-model/decision-model-policy.port.ts',
-    notes: 'PI-P6-D0 declarative profiles; PI-P6-D1 Node worker sandbox at src/agent/decision-model/node-worker-decision-model-sandbox.ts.',
+    notes:
+      'PI-P6-D0 declarative profiles; PI-P6-D1 Node worker sandbox at src/agent/decision-model/node-worker-decision-model-sandbox.ts.',
   },
 ] as const;
 
