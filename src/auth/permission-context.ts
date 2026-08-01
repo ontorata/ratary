@@ -50,7 +50,6 @@ function isMemoryReadPath(path: string): boolean {
   if (path === '/api/v1/search') return true;
   if (path.startsWith('/api/v1/memory')) return true;
   if (path === '/api/v1/projects' || path === '/api/v1/tags') return true;
-  if (path.startsWith('/api/v1/governance/')) return true;
   return false;
 }
 
