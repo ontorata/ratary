@@ -1,6 +1,6 @@
 # PI-1027 — Governance REST API
 
-**Status:** PI-1027-A Live · PI-1027-B exception requests (2026-08-01)  
+**Status:** PI-1027-A Live · PI-1027-B exception requests (2026-08-01) · PI-P6-D0 decision models (2026-08-01)  
 **ADR:** docs-ai `architecture/acos/ADR-1027-memory-governance-dashboard.md` · ADR-1029  
 **Evidence:** docs-ai `products/ratary/evidence/PI-1027-A-MEMORY-GOVERNANCE-DASHBOARD-2026-08-01.md`
 
@@ -17,11 +17,12 @@ Tenant-scoped endpoints (`memory.read` for GET; create exception uses authentica
 | GET | `/api/v1/governance/denials?limit=&since=` | Policy denial events (PI-1027-C) |
 | GET | `/api/v1/governance/denials/summary?since=` | Denial counts by point |
 | POST | `/api/v1/decisions/recommendations` | Advisory cards from recall trace (PI-P6-B) |
-| POST | `/api/v1/decisions/provenance` | Decision Accept/Reject record (flag-gated) |
+| GET | `/api/v1/decisions/models` | Owner-authorized declarative decision model catalog (PI-P6-D0) |
+| POST | `/api/v1/decisions/provenance` | Decision Accept/Reject record (flag-gated; optional `decisionModelId` / `decisionModelVersion`) |
 
 **Code:** `src/controllers/governance.controller.ts` · `src/routes/v1/governance.routes.ts` · `src/controllers/decisions.controller.ts` · `src/routes/v1/decisions.routes.ts`
 
-**OpenAPI:** `packages/openapi/ratary-v1.openapi.json` v1.2.0 — `@ratary/sdk` `governance` + `decisions` APIs
+**OpenAPI:** `packages/openapi/ratary-v1.openapi.json` v1.2.1 — `@ratary/sdk` `governance` + `decisions` APIs (`listModels`, `recordProvenance`)
 
 **Non-goals:** policy mutation · stewardship execute from REST · bypass tenancy · auto-approve exceptions.
 

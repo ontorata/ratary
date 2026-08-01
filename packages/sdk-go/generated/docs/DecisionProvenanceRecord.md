@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **Verdict** | **string** |  | 
 **Rationale** | Pointer to **string** |  | [optional] 
 **SourceMemoryIds** | **[]string** |  | 
+**DecisionModelId** | Pointer to **string** |  | [optional] 
+**DecisionModelVersion** | Pointer to **string** |  | [optional] 
 **RecordedAt** | **time.Time** |  | 
 
 ## Methods
@@ -181,6 +183,56 @@ and a boolean to check if the value has been set.
 
 SetSourceMemoryIds sets SourceMemoryIds field to given value.
 
+
+### GetDecisionModelId
+
+`func (o *DecisionProvenanceRecord) GetDecisionModelId() string`
+
+GetDecisionModelId returns the DecisionModelId field if non-nil, zero value otherwise.
+
+### GetDecisionModelIdOk
+
+`func (o *DecisionProvenanceRecord) GetDecisionModelIdOk() (*string, bool)`
+
+GetDecisionModelIdOk returns a tuple with the DecisionModelId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDecisionModelId
+
+`func (o *DecisionProvenanceRecord) SetDecisionModelId(v string)`
+
+SetDecisionModelId sets DecisionModelId field to given value.
+
+### HasDecisionModelId
+
+`func (o *DecisionProvenanceRecord) HasDecisionModelId() bool`
+
+HasDecisionModelId returns a boolean if a field has been set.
+
+### GetDecisionModelVersion
+
+`func (o *DecisionProvenanceRecord) GetDecisionModelVersion() string`
+
+GetDecisionModelVersion returns the DecisionModelVersion field if non-nil, zero value otherwise.
+
+### GetDecisionModelVersionOk
+
+`func (o *DecisionProvenanceRecord) GetDecisionModelVersionOk() (*string, bool)`
+
+GetDecisionModelVersionOk returns a tuple with the DecisionModelVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDecisionModelVersion
+
+`func (o *DecisionProvenanceRecord) SetDecisionModelVersion(v string)`
+
+SetDecisionModelVersion sets DecisionModelVersion field to given value.
+
+### HasDecisionModelVersion
+
+`func (o *DecisionProvenanceRecord) HasDecisionModelVersion() bool`
+
+HasDecisionModelVersion returns a boolean if a field has been set.
 
 ### GetRecordedAt
 

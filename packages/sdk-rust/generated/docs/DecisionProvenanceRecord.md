@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **verdict** | **Verdict** |  (enum: accepted, rejected) | 
 **rationale** | Option<**String**> |  | [optional]
 **source_memory_ids** | **Vec<String>** |  | 
+**decision_model_id** | Option<**String**> |  | [optional]
+**decision_model_version** | Option<**String**> |  | [optional]
 **recorded_at** | **chrono::DateTime<chrono::FixedOffset>** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

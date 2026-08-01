@@ -78,8 +78,8 @@ export const AREA5_HORIZON_MODULES: readonly Area5HorizonModuleRef[] = [
     title: 'Custom Decision Model Plugin',
     livingAdr: 'ADR-1046',
     ownerRepo: 'ontory-runtime',
-    modulePath: 'src/agent/policy/policy.port.ts',
-    notes: 'Deferred v1; if ever, policy-gated like tools (ADR-1032 / 2112).',
+    modulePath: 'src/agent/decision-model/decision-model-policy.port.ts',
+    notes: 'PI-P6-D0 declarative profiles; policy-gated like tools (ADR-1032 / 2112).',
   },
 ] as const;
 

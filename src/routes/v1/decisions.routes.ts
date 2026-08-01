@@ -5,6 +5,17 @@ export async function decisionsRoutes(
   fastify: FastifyInstance,
   controller: DecisionsController,
 ): Promise<void> {
+  fastify.get(
+    '/decisions/models',
+    {
+      schema: {
+        tags: ['Decision Intelligence'],
+        summary: 'List authorized declarative decision models (PI-P6-D0 / ADR-1046)',
+      },
+    },
+    controller.listDecisionModels.bind(controller),
+  );
+
   fastify.post(
     '/decisions/recommendations',
     {

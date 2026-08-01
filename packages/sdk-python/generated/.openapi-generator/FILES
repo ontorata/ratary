@@ -17,6 +17,8 @@ docs/CreateGovernanceExceptionRequest.md
 docs/CreateGovernanceExceptionRequest201Response.md
 docs/CreateMemoryRequest.md
 docs/DecisionIntelligenceApi.md
+docs/DecisionModelCatalogEntry.md
+docs/DecisionModelCatalogResponse.md
 docs/DecisionProvenanceRecord.md
 docs/EcosystemApi.md
 docs/FederationApi.md
@@ -67,6 +69,8 @@ ratary_sdk/models/create_decision_provenance_request.py
 ratary_sdk/models/create_governance_exception_request.py
 ratary_sdk/models/create_governance_exception_request201_response.py
 ratary_sdk/models/create_memory_request.py
+ratary_sdk/models/decision_model_catalog_entry.py
+ratary_sdk/models/decision_model_catalog_response.py
 ratary_sdk/models/decision_provenance_record.py
 ratary_sdk/models/fetch_recommendations_request.py
 ratary_sdk/models/fetch_recommendations_response.py

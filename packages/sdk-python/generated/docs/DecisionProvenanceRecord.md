@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **verdict** | **str** |  | 
 **rationale** | **str** |  | [optional] 
 **source_memory_ids** | **List[str]** |  | 
+**decision_model_id** | **str** |  | [optional] 
+**decision_model_version** | **str** |  | [optional] 
 **recorded_at** | **datetime** |  | 
 
 ## Example

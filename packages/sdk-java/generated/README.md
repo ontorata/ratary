@@ -1,7 +1,7 @@
 # openapi-java-client
 
 Ratary API — SDK v1 surface
-- API version: 1.2.0
+- API version: 1.2.1
   - Generator version: 7.23.0
 
 Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.
@@ -40,7 +40,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools</groupId>
   <artifactId>openapi-java-client</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -56,7 +56,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools:openapi-java-client:1.2.0"
+     implementation "org.openapitools:openapi-java-client:1.2.1"
   }
 ```
 
@@ -70,7 +70,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-java-client-1.2.0.jar`
+* `target/openapi-java-client-1.2.1.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -119,6 +119,7 @@ Class | Method | HTTP request | Description
 *ContextApi* | [**getContextPackageLifecycle**](docs/ContextApi.md#getContextPackageLifecycle) | **GET** /context/packages/{packageId} | Get Context Package lifecycle state (ADR-1013)
 *ContextApi* | [**retireContextPackage**](docs/ContextApi.md#retireContextPackage) | **POST** /context/packages/{packageId}/retire | Retire Context Package (active → retired)
 *DecisionIntelligenceApi* | [**fetchRecommendations**](docs/DecisionIntelligenceApi.md#fetchRecommendations) | **POST** /decisions/recommendations | Advisory recommendation cards from recall trace (PI-P6-B / ADR-1042)
+*DecisionIntelligenceApi* | [**listDecisionModels**](docs/DecisionIntelligenceApi.md#listDecisionModels) | **GET** /decisions/models | List owner-authorized declarative decision models (PI-P6-D0)
 *DecisionIntelligenceApi* | [**recordDecisionProvenance**](docs/DecisionIntelligenceApi.md#recordDecisionProvenance) | **POST** /decisions/provenance | Record human Accept/Reject provenance (ADR-069, flag-gated)
 *EcosystemApi* | [**getEcosystemClient**](docs/EcosystemApi.md#getEcosystemClient) | **GET** /ecosystem/clients/{type} | 
 *EcosystemApi* | [**listEcosystemClients**](docs/EcosystemApi.md#listEcosystemClients) | **GET** /ecosystem/clients | 
@@ -153,6 +154,8 @@ Class | Method | HTTP request | Description
  - [CreateGovernanceExceptionRequest](docs/CreateGovernanceExceptionRequest.md)
  - [CreateGovernanceExceptionRequest201Response](docs/CreateGovernanceExceptionRequest201Response.md)
  - [CreateMemoryRequest](docs/CreateMemoryRequest.md)
+ - [DecisionModelCatalogEntry](docs/DecisionModelCatalogEntry.md)
+ - [DecisionModelCatalogResponse](docs/DecisionModelCatalogResponse.md)
  - [DecisionProvenanceRecord](docs/DecisionProvenanceRecord.md)
  - [FetchRecommendationsRequest](docs/FetchRecommendationsRequest.md)
  - [FetchRecommendationsResponse](docs/FetchRecommendationsResponse.md)

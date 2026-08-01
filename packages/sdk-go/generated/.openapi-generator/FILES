@@ -27,6 +27,8 @@ docs/CreateGovernanceExceptionRequest.md
 docs/CreateGovernanceExceptionRequest201Response.md
 docs/CreateMemoryRequest.md
 docs/DecisionIntelligenceAPI.md
+docs/DecisionModelCatalogEntry.md
+docs/DecisionModelCatalogResponse.md
 docs/DecisionProvenanceRecord.md
 docs/EcosystemAPI.md
 docs/FederationAPI.md
@@ -62,6 +64,8 @@ model_create_decision_provenance_request.go
 model_create_governance_exception_request.go
 model_create_governance_exception_request_201_response.go
 model_create_memory_request.go
+model_decision_model_catalog_entry.go
+model_decision_model_catalog_response.go
 model_decision_provenance_record.go
 model_fetch_recommendations_request.go
 model_fetch_recommendations_response.go

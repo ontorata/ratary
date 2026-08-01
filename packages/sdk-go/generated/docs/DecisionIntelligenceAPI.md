@@ -5,6 +5,7 @@ All URIs are relative to *http://localhost:9876/api/v1*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**FetchRecommendations**](DecisionIntelligenceAPI.md#FetchRecommendations) | **Post** /decisions/recommendations | Advisory recommendation cards from recall trace (PI-P6-B / ADR-1042)
+[**ListDecisionModels**](DecisionIntelligenceAPI.md#ListDecisionModels) | **Get** /decisions/models | List owner-authorized declarative decision models (PI-P6-D0)
 [**RecordDecisionProvenance**](DecisionIntelligenceAPI.md#RecordDecisionProvenance) | **Post** /decisions/provenance | Record human Accept/Reject provenance (ADR-069, flag-gated)
 
 
@@ -66,6 +67,65 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ListDecisionModels
+
+> DecisionModelCatalogResponse ListDecisionModels(ctx).Execute()
+
+List owner-authorized declarative decision models (PI-P6-D0)
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.DecisionIntelligenceAPI.ListDecisionModels(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `DecisionIntelligenceAPI.ListDecisionModels``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListDecisionModels`: DecisionModelCatalogResponse
+	fmt.Fprintf(os.Stdout, "Response from `DecisionIntelligenceAPI.ListDecisionModels`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListDecisionModelsRequest struct via the builder pattern
+
+
+### Return type
+
+[**DecisionModelCatalogResponse**](DecisionModelCatalogResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth), [BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

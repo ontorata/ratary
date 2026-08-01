@@ -12,6 +12,8 @@
 |**verdict** | [**VerdictEnum**](#VerdictEnum) |  |  |
 |**rationale** | **String** |  |  [optional] |
 |**sourceMemoryIds** | **List&lt;String&gt;** |  |  [optional] |
+|**decisionModelId** | **String** |  |  [optional] |
+|**decisionModelVersion** | **String** |  |  [optional] |
 
 
 

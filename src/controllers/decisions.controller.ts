@@ -9,6 +9,10 @@ import {
   type CreateDecisionProvenanceBody,
 } from '../decision-intelligence/decision-provenance.types.js';
 import type { IDecisionProvenanceStore } from '../decision-intelligence/in-memory-decision-provenance-store.js';
+import {
+  getDecisionModelAllowlistFromEnv,
+  listAuthorizedDecisionModels,
+} from '../decision-intelligence/decision-model-catalog.js';
 import { ValidationError } from '../types/errors.js';
 import { buildTransportContextFromRestRequest } from '../transport/shared/resolve-transport-scope.js';
 
@@ -69,6 +73,12 @@ export function createDecisionsController(deps: DecisionsControllerDeps) {
       const body: CreateDecisionProvenanceBody = parseCreateDecisionProvenanceBody(request.body);
       const record = await deps.provenanceStore.append(ownerId, body);
       reply.status(201).send({ record });
+    },
+
+    async listDecisionModels(_request: FastifyRequest, reply: FastifyReply): Promise<void> {
+      const allowlist = getDecisionModelAllowlistFromEnv();
+      const models = listAuthorizedDecisionModels(allowlist);
+      reply.send({ models });
     },
   };
 }

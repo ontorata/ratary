@@ -194,6 +194,22 @@ export interface CreateDecisionProvenanceInput {
   verdict: 'accepted' | 'rejected';
   rationale?: string;
   sourceMemoryIds?: string[];
+  decisionModelId?: string;
+  decisionModelVersion?: string;
+}
+
+export interface DecisionModelCatalogEntry {
+  id: string;
+  version: string;
+  displayName: string;
+  description?: string;
+  stability: 'experimental' | 'stable' | 'deprecated';
+  executionProfileName: string;
+  capabilities: string[];
+}
+
+export interface DecisionModelCatalogResponse {
+  models: DecisionModelCatalogEntry[];
 }
 
 export interface DecisionProvenanceRecord {
@@ -204,5 +220,7 @@ export interface DecisionProvenanceRecord {
   verdict: 'accepted' | 'rejected';
   rationale?: string;
   sourceMemoryIds: string[];
+  decisionModelId?: string;
+  decisionModelVersion?: string;
   recordedAt: string;
 }

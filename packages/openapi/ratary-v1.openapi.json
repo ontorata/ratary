@@ -3,7 +3,7 @@
   "info": {
     "title": "Ratary API — SDK v1 surface",
     "description": "Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.",
-    "version": "1.2.0"
+    "version": "1.2.1"
   },
   "servers": [{ "url": "http://localhost:9876/api/v1" }],
   "security": [{ "BearerAuth": [] }, { "ApiKeyAuth": [] }],
@@ -285,7 +285,39 @@
           "packageId": { "type": "string" },
           "verdict": { "type": "string", "enum": ["accepted", "rejected"] },
           "rationale": { "type": "string", "maxLength": 4000 },
-          "sourceMemoryIds": { "type": "array", "items": { "type": "string" } }
+          "sourceMemoryIds": { "type": "array", "items": { "type": "string" } },
+          "decisionModelId": { "type": "string" },
+          "decisionModelVersion": { "type": "string" }
+        }
+      },
+      "DecisionModelCatalogEntry": {
+        "type": "object",
+        "required": [
+          "id",
+          "version",
+          "displayName",
+          "stability",
+          "executionProfileName",
+          "capabilities"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "version": { "type": "string" },
+          "displayName": { "type": "string" },
+          "description": { "type": "string" },
+          "stability": { "type": "string", "enum": ["experimental", "stable", "deprecated"] },
+          "executionProfileName": { "type": "string" },
+          "capabilities": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "DecisionModelCatalogResponse": {
+        "type": "object",
+        "required": ["models"],
+        "properties": {
+          "models": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DecisionModelCatalogEntry" }
+          }
         }
       },
       "DecisionProvenanceRecord": {
@@ -299,6 +331,8 @@
           "verdict": { "type": "string", "enum": ["accepted", "rejected"] },
           "rationale": { "type": "string" },
           "sourceMemoryIds": { "type": "array", "items": { "type": "string" } },
+          "decisionModelId": { "type": "string" },
+          "decisionModelVersion": { "type": "string" },
           "recordedAt": { "type": "string", "format": "date-time" }
         }
       }
@@ -655,6 +689,24 @@
               }
             }
           }
+        }
+      }
+    },
+    "/decisions/models": {
+      "get": {
+        "operationId": "listDecisionModels",
+        "tags": ["Decision Intelligence"],
+        "summary": "List owner-authorized declarative decision models (PI-P6-D0)",
+        "responses": {
+          "200": {
+            "description": "Authorized decision model catalog",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DecisionModelCatalogResponse" }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" }
         }
       }
     },
