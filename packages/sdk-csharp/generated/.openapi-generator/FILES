@@ -24,6 +24,7 @@ docs/models/CreateGovernanceExceptionRequest201Response.md
 docs/models/CreateMemoryRequest.md
 docs/models/DecisionModelCatalogEntry.md
 docs/models/DecisionModelCatalogResponse.md
+docs/models/DecisionModelComputedPluginSummary.md
 docs/models/DecisionProvenanceRecord.md
 docs/models/FetchRecommendationsRequest.md
 docs/models/FetchRecommendationsResponse.md
@@ -90,6 +91,7 @@ src/ratary_sdk/Model/CreateGovernanceExceptionRequest201Response.cs
 src/ratary_sdk/Model/CreateMemoryRequest.cs
 src/ratary_sdk/Model/DecisionModelCatalogEntry.cs
 src/ratary_sdk/Model/DecisionModelCatalogResponse.cs
+src/ratary_sdk/Model/DecisionModelComputedPluginSummary.cs
 src/ratary_sdk/Model/DecisionProvenanceRecord.cs
 src/ratary_sdk/Model/FetchRecommendationsRequest.cs
 src/ratary_sdk/Model/FetchRecommendationsResponse.cs

@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **source_memory_ids** | Option<**Vec<String>**> |  | [optional]
 **decision_model_id** | Option<**String**> |  | [optional]
 **decision_model_version** | Option<**String**> |  | [optional]
+**decision_model_plugin_digest** | Option<**String**> |  | [optional]
+**sandbox_outcome** | Option<**SandboxOutcome**> |  (enum: ok, timeout, error, denied, disabled) | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

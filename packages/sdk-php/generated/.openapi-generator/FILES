@@ -25,6 +25,7 @@ docs/Model/CreateGovernanceExceptionRequest201Response.md
 docs/Model/CreateMemoryRequest.md
 docs/Model/DecisionModelCatalogEntry.md
 docs/Model/DecisionModelCatalogResponse.md
+docs/Model/DecisionModelComputedPluginSummary.md
 docs/Model/DecisionProvenanceRecord.md
 docs/Model/FetchRecommendationsRequest.md
 docs/Model/FetchRecommendationsResponse.md
@@ -67,6 +68,7 @@ lib/Model/CreateGovernanceExceptionRequest201Response.php
 lib/Model/CreateMemoryRequest.php
 lib/Model/DecisionModelCatalogEntry.php
 lib/Model/DecisionModelCatalogResponse.php
+lib/Model/DecisionModelComputedPluginSummary.php
 lib/Model/DecisionProvenanceRecord.php
 lib/Model/FetchRecommendationsRequest.php
 lib/Model/FetchRecommendationsResponse.php

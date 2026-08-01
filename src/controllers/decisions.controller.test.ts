@@ -55,7 +55,7 @@ describe('DecisionsController PI-P6-D0', () => {
     expect(body.models[0]?.id).toBe('ontorata-internal-v1');
   });
 
-  it('recordDecisionProvenance stores decisionModel fields', async () => {
+  it('recordDecisionProvenance stores decisionModel and sandbox audit fields', async () => {
     const store = new InMemoryDecisionProvenanceStore();
     const controller = createDecisionsController({
       repository: {} as never,
@@ -69,14 +69,19 @@ describe('DecisionsController PI-P6-D0', () => {
         body: {
           briefId: 'b1',
           verdict: 'accepted',
-          decisionModelId: 'ontorata-internal-v1',
+          decisionModelId: 'ontorata-computed-scorer-v1',
           decisionModelVersion: '1.0.0',
+          decisionModelPluginDigest: 'sha256:995fec358de55',
+          sandboxOutcome: 'ok',
         },
       } as never,
       reply as never,
     );
     expect(reply.statusCode).toBe(201);
-    const body = reply.payload as { record: { decisionModelId?: string } };
-    expect(body.record.decisionModelId).toBe('ontorata-internal-v1');
+    const body = reply.payload as {
+      record: { decisionModelId?: string; sandboxOutcome?: string };
+    };
+    expect(body.record.decisionModelId).toBe('ontorata-computed-scorer-v1');
+    expect(body.record.sandboxOutcome).toBe('ok');
   });
 });

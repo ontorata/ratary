@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **ExecutionProfileName** | **string** |  | 
 **Capabilities** | **List&lt;string&gt;** |  | 
 **Description** | **string** |  | [optional] 
+**ComputedPlugin** | [**DecisionModelComputedPluginSummary**](DecisionModelComputedPluginSummary.md) |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **source_memory_ids** | **List[str]** |  | [optional] 
 **decision_model_id** | **str** |  | [optional] 
 **decision_model_version** | **str** |  | [optional] 
+**decision_model_plugin_digest** | **str** |  | [optional] 
+**sandbox_outcome** | **str** |  | [optional] 
 
 ## Example
 

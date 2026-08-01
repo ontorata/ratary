@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **SourceMemoryIds** | Pointer to **[]string** |  | [optional] 
 **DecisionModelId** | Pointer to **string** |  | [optional] 
 **DecisionModelVersion** | Pointer to **string** |  | [optional] 
+**DecisionModelPluginDigest** | Pointer to **string** |  | [optional] 
+**SandboxOutcome** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -195,6 +197,56 @@ SetDecisionModelVersion sets DecisionModelVersion field to given value.
 `func (o *CreateDecisionProvenanceRequest) HasDecisionModelVersion() bool`
 
 HasDecisionModelVersion returns a boolean if a field has been set.
+
+### GetDecisionModelPluginDigest
+
+`func (o *CreateDecisionProvenanceRequest) GetDecisionModelPluginDigest() string`
+
+GetDecisionModelPluginDigest returns the DecisionModelPluginDigest field if non-nil, zero value otherwise.
+
+### GetDecisionModelPluginDigestOk
+
+`func (o *CreateDecisionProvenanceRequest) GetDecisionModelPluginDigestOk() (*string, bool)`
+
+GetDecisionModelPluginDigestOk returns a tuple with the DecisionModelPluginDigest field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDecisionModelPluginDigest
+
+`func (o *CreateDecisionProvenanceRequest) SetDecisionModelPluginDigest(v string)`
+
+SetDecisionModelPluginDigest sets DecisionModelPluginDigest field to given value.
+
+### HasDecisionModelPluginDigest
+
+`func (o *CreateDecisionProvenanceRequest) HasDecisionModelPluginDigest() bool`
+
+HasDecisionModelPluginDigest returns a boolean if a field has been set.
+
+### GetSandboxOutcome
+
+`func (o *CreateDecisionProvenanceRequest) GetSandboxOutcome() string`
+
+GetSandboxOutcome returns the SandboxOutcome field if non-nil, zero value otherwise.
+
+### GetSandboxOutcomeOk
+
+`func (o *CreateDecisionProvenanceRequest) GetSandboxOutcomeOk() (*string, bool)`
+
+GetSandboxOutcomeOk returns a tuple with the SandboxOutcome field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSandboxOutcome
+
+`func (o *CreateDecisionProvenanceRequest) SetSandboxOutcome(v string)`
+
+SetSandboxOutcome sets SandboxOutcome field to given value.
+
+### HasSandboxOutcome
+
+`func (o *CreateDecisionProvenanceRequest) HasSandboxOutcome() bool`
+
+HasSandboxOutcome returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

@@ -196,6 +196,13 @@ export interface CreateDecisionProvenanceInput {
   sourceMemoryIds?: string[];
   decisionModelId?: string;
   decisionModelVersion?: string;
+  decisionModelPluginDigest?: string;
+  sandboxOutcome?: 'ok' | 'timeout' | 'error' | 'denied' | 'disabled';
+}
+
+export interface DecisionModelComputedPluginSummary {
+  kind: 'worker';
+  artifactDigestPrefix: string;
 }
 
 export interface DecisionModelCatalogEntry {
@@ -206,6 +213,7 @@ export interface DecisionModelCatalogEntry {
   stability: 'experimental' | 'stable' | 'deprecated';
   executionProfileName: string;
   capabilities: string[];
+  computedPlugin?: DecisionModelComputedPluginSummary;
 }
 
 export interface DecisionModelCatalogResponse {
@@ -222,5 +230,7 @@ export interface DecisionProvenanceRecord {
   sourceMemoryIds: string[];
   decisionModelId?: string;
   decisionModelVersion?: string;
+  decisionModelPluginDigest?: string;
+  sandboxOutcome?: 'ok' | 'timeout' | 'error' | 'denied' | 'disabled';
   recordedAt: string;
 }

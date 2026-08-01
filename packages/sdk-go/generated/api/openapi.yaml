@@ -3,7 +3,7 @@ info:
   description: Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec
     at GET /docs/json.
   title: Ratary API — SDK v1 surface
-  version: 1.2.1
+  version: 1.2.2
 servers:
 - url: http://localhost:9876/api/v1
 security:
@@ -1053,6 +1053,8 @@ components:
         - sourceMemoryIds
         decisionModelId: decisionModelId
         decisionModelVersion: decisionModelVersion
+        decisionModelPluginDigest: decisionModelPluginDigest
+        sandboxOutcome: ok
       properties:
         briefId:
           type: string
@@ -1074,9 +1076,34 @@ components:
           type: string
         decisionModelVersion:
           type: string
+        decisionModelPluginDigest:
+          type: string
+        sandboxOutcome:
+          enum:
+          - ok
+          - timeout
+          - error
+          - denied
+          - disabled
+          type: string
       required:
       - briefId
       - verdict
+      type: object
+    DecisionModelComputedPluginSummary:
+      example:
+        kind: worker
+        artifactDigestPrefix: artifactDigestPrefix
+      properties:
+        kind:
+          enum:
+          - worker
+          type: string
+        artifactDigestPrefix:
+          type: string
+      required:
+      - artifactDigestPrefix
+      - kind
       type: object
     DecisionModelCatalogEntry:
       example:
@@ -1089,6 +1116,9 @@ components:
         capabilities:
         - capabilities
         - capabilities
+        computedPlugin:
+          kind: worker
+          artifactDigestPrefix: artifactDigestPrefix
       properties:
         id:
           type: string
@@ -1110,6 +1140,8 @@ components:
           items:
             type: string
           type: array
+        computedPlugin:
+          $ref: "#/components/schemas/DecisionModelComputedPluginSummary"
       required:
       - capabilities
       - displayName
@@ -1130,6 +1162,9 @@ components:
           capabilities:
           - capabilities
           - capabilities
+          computedPlugin:
+            kind: worker
+            artifactDigestPrefix: artifactDigestPrefix
         - id: id
           version: version
           displayName: displayName
@@ -1139,6 +1174,9 @@ components:
           capabilities:
           - capabilities
           - capabilities
+          computedPlugin:
+            kind: worker
+            artifactDigestPrefix: artifactDigestPrefix
       properties:
         models:
           items:
@@ -1160,6 +1198,8 @@ components:
         - sourceMemoryIds
         decisionModelId: decisionModelId
         decisionModelVersion: decisionModelVersion
+        decisionModelPluginDigest: decisionModelPluginDigest
+        sandboxOutcome: ok
         recordedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         recordId:
@@ -1184,6 +1224,16 @@ components:
         decisionModelId:
           type: string
         decisionModelVersion:
+          type: string
+        decisionModelPluginDigest:
+          type: string
+        sandboxOutcome:
+          enum:
+          - ok
+          - timeout
+          - error
+          - denied
+          - disabled
           type: string
         recordedAt:
           format: date-time
@@ -1315,6 +1365,8 @@ components:
           - sourceMemoryIds
           decisionModelId: decisionModelId
           decisionModelVersion: decisionModelVersion
+          decisionModelPluginDigest: decisionModelPluginDigest
+          sandboxOutcome: ok
           recordedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         record:

@@ -13,6 +13,8 @@ Name | Type | Description | Notes
 **source_memory_ids** | **string[]** |  |
 **decision_model_id** | **string** |  | [optional]
 **decision_model_version** | **string** |  | [optional]
+**decision_model_plugin_digest** | **string** |  | [optional]
+**sandbox_outcome** | **string** |  | [optional]
 **recorded_at** | **\DateTime** |  |
 
 [[Back to Model list]](../../README.md#models) [[Back to API list]](../../README.md#endpoints) [[Back to README]](../../README.md)
