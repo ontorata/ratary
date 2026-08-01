@@ -9,6 +9,8 @@ Name | Type | Description | Notes
 **Verdict** | **string** |  | 
 **Rationale** | Pointer to **string** |  | [optional] 
 **SourceMemoryIds** | Pointer to **[]string** |  | [optional] 
+**DecisionModelId** | Pointer to **string** |  | [optional] 
+**DecisionModelVersion** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
@@ -143,6 +145,56 @@ SetSourceMemoryIds sets SourceMemoryIds field to given value.
 `func (o *CreateDecisionProvenanceRequest) HasSourceMemoryIds() bool`
 
 HasSourceMemoryIds returns a boolean if a field has been set.
+
+### GetDecisionModelId
+
+`func (o *CreateDecisionProvenanceRequest) GetDecisionModelId() string`
+
+GetDecisionModelId returns the DecisionModelId field if non-nil, zero value otherwise.
+
+### GetDecisionModelIdOk
+
+`func (o *CreateDecisionProvenanceRequest) GetDecisionModelIdOk() (*string, bool)`
+
+GetDecisionModelIdOk returns a tuple with the DecisionModelId field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDecisionModelId
+
+`func (o *CreateDecisionProvenanceRequest) SetDecisionModelId(v string)`
+
+SetDecisionModelId sets DecisionModelId field to given value.
+
+### HasDecisionModelId
+
+`func (o *CreateDecisionProvenanceRequest) HasDecisionModelId() bool`
+
+HasDecisionModelId returns a boolean if a field has been set.
+
+### GetDecisionModelVersion
+
+`func (o *CreateDecisionProvenanceRequest) GetDecisionModelVersion() string`
+
+GetDecisionModelVersion returns the DecisionModelVersion field if non-nil, zero value otherwise.
+
+### GetDecisionModelVersionOk
+
+`func (o *CreateDecisionProvenanceRequest) GetDecisionModelVersionOk() (*string, bool)`
+
+GetDecisionModelVersionOk returns a tuple with the DecisionModelVersion field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDecisionModelVersion
+
+`func (o *CreateDecisionProvenanceRequest) SetDecisionModelVersion(v string)`
+
+SetDecisionModelVersion sets DecisionModelVersion field to given value.
+
+### HasDecisionModelVersion
+
+`func (o *CreateDecisionProvenanceRequest) HasDecisionModelVersion() bool`
+
+HasDecisionModelVersion returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

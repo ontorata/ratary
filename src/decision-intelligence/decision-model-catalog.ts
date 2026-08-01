@@ -18,7 +18,12 @@ export const DECISION_MODEL_CATALOG_MIRROR: readonly DecisionModelCatalogEntry[]
 
 export function parseDecisionModelAllowlist(raw: string | undefined): readonly string[] {
   if (!raw?.trim()) return [];
-  return Object.freeze(raw.split(',').map((item) => item.trim()).filter(Boolean));
+  return Object.freeze(
+    raw
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean),
+  );
 }
 
 export function listAuthorizedDecisionModels(

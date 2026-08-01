@@ -9,6 +9,8 @@ Name | Type | Description | Notes
 **verdict** | **Verdict** |  (enum: accepted, rejected) | 
 **rationale** | Option<**String**> |  | [optional]
 **source_memory_ids** | Option<**Vec<String>**> |  | [optional]
+**decision_model_id** | Option<**String**> |  | [optional]
+**decision_model_version** | Option<**String**> |  | [optional]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

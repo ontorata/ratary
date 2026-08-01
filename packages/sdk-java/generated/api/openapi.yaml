@@ -3,7 +3,7 @@ info:
   description: Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec
     at GET /docs/json.
   title: Ratary API — SDK v1 surface
-  version: 1.2.0
+  version: 1.2.1
 servers:
 - url: http://localhost:9876/api/v1
 security:
@@ -473,6 +473,23 @@ paths:
       summary: Aggregated denial counts by evaluation point
       tags:
       - Governance
+      x-accepts:
+      - application/json
+  /decisions/models:
+    get:
+      operationId: listDecisionModels
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DecisionModelCatalogResponse"
+          description: Authorized decision model catalog
+        "401":
+          description: Unauthorized
+      summary: List owner-authorized declarative decision models (PI-P6-D0)
+      tags:
+      - Decision Intelligence
       x-accepts:
       - application/json
   /decisions/recommendations:
@@ -1095,6 +1112,8 @@ components:
         sourceMemoryIds:
         - sourceMemoryIds
         - sourceMemoryIds
+        decisionModelId: decisionModelId
+        decisionModelVersion: decisionModelVersion
       properties:
         briefId:
           type: string
@@ -1112,9 +1131,82 @@ components:
           items:
             type: string
           type: array
+        decisionModelId:
+          type: string
+        decisionModelVersion:
+          type: string
       required:
       - briefId
       - verdict
+      type: object
+    DecisionModelCatalogEntry:
+      example:
+        id: id
+        version: version
+        displayName: displayName
+        description: description
+        stability: experimental
+        executionProfileName: executionProfileName
+        capabilities:
+        - capabilities
+        - capabilities
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+        displayName:
+          type: string
+        description:
+          type: string
+        stability:
+          enum:
+          - experimental
+          - stable
+          - deprecated
+          type: string
+        executionProfileName:
+          type: string
+        capabilities:
+          items:
+            type: string
+          type: array
+      required:
+      - capabilities
+      - displayName
+      - executionProfileName
+      - id
+      - stability
+      - version
+      type: object
+    DecisionModelCatalogResponse:
+      example:
+        models:
+        - id: id
+          version: version
+          displayName: displayName
+          description: description
+          stability: experimental
+          executionProfileName: executionProfileName
+          capabilities:
+          - capabilities
+          - capabilities
+        - id: id
+          version: version
+          displayName: displayName
+          description: description
+          stability: experimental
+          executionProfileName: executionProfileName
+          capabilities:
+          - capabilities
+          - capabilities
+      properties:
+        models:
+          items:
+            $ref: "#/components/schemas/DecisionModelCatalogEntry"
+          type: array
+      required:
+      - models
       type: object
     DecisionProvenanceRecord:
       example:
@@ -1127,6 +1219,8 @@ components:
         sourceMemoryIds:
         - sourceMemoryIds
         - sourceMemoryIds
+        decisionModelId: decisionModelId
+        decisionModelVersion: decisionModelVersion
         recordedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         recordId:
@@ -1148,6 +1242,10 @@ components:
           items:
             type: string
           type: array
+        decisionModelId:
+          type: string
+        decisionModelVersion:
+          type: string
         recordedAt:
           format: date-time
           type: string
@@ -1276,6 +1374,8 @@ components:
           sourceMemoryIds:
           - sourceMemoryIds
           - sourceMemoryIds
+          decisionModelId: decisionModelId
+          decisionModelVersion: decisionModelVersion
           recordedAt: 2000-01-23T04:56:07.000+00:00
       properties:
         record:
