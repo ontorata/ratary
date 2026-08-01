@@ -62,6 +62,7 @@ export class SqlPolicyDenialStore implements IPolicyDenialStore {
   }
 
   async list(ownerId: string, limit = 100, since?: string): Promise<PolicyDenialEvent[]> {
+    const effectiveLimit = Math.min(limit, this.cap);
     const rows = since
       ? await this.sql.query<DenialRow>(
           `SELECT denial_id, owner_id, point, policy_module_id, reason_code, occurred_at, memory_id, resource
@@ -69,7 +70,7 @@ export class SqlPolicyDenialStore implements IPolicyDenialStore {
            WHERE owner_id = ? AND occurred_at >= ?
            ORDER BY occurred_at DESC
            LIMIT ?`,
-          [ownerId, since, limit],
+          [ownerId, since, effectiveLimit],
         )
       : await this.sql.query<DenialRow>(
           `SELECT denial_id, owner_id, point, policy_module_id, reason_code, occurred_at, memory_id, resource
@@ -77,7 +78,7 @@ export class SqlPolicyDenialStore implements IPolicyDenialStore {
            WHERE owner_id = ?
            ORDER BY occurred_at DESC
            LIMIT ?`,
-          [ownerId, limit],
+          [ownerId, effectiveLimit],
         );
     return rows.map(rowToEvent);
   }
