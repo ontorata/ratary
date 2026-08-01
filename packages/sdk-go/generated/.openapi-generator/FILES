@@ -78,6 +78,4 @@ model_recommendation_card.go
 model_record_decision_provenance_201_response.go
 model_update_memory_request.go
 response.go
-test/api_decision_intelligence_test.go
-test/api_governance_test.go
 utils.go
