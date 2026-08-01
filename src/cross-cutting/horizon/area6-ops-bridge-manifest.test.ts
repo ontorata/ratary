@@ -29,8 +29,6 @@ describe('Area 6 Horizon ops bridge manifest (ADR-1050/1051/1056/1058)', () => {
     expect(joined).toMatch(/megamonitor|NOC/);
     expect(joined).toMatch(/monorepo CI/);
     expect(joined).toMatch(/1053/);
-    expect(getArea6OpsBridgeManifest().partialElsewhere.some((p) => p.includes('1053'))).toBe(
-      true,
-    );
+    expect(getArea6OpsBridgeManifest().partialElsewhere.some((p) => p.includes('1053'))).toBe(true);
   });
 });
