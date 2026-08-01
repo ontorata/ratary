@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
+import { SandboxOutcomeSchema } from './decision-model-catalog.types.js';
 
 export const DecisionProvenanceRecordSchema = z.object({
   recordId: z.string().min(1),
@@ -12,6 +13,8 @@ export const DecisionProvenanceRecordSchema = z.object({
   recordedAt: z.string().datetime(),
   decisionModelId: z.string().min(1).optional(),
   decisionModelVersion: z.string().min(1).optional(),
+  decisionModelPluginDigest: z.string().min(1).optional(),
+  sandboxOutcome: SandboxOutcomeSchema.optional(),
 });
 
 export type DecisionProvenanceRecord = z.infer<typeof DecisionProvenanceRecordSchema>;
@@ -25,6 +28,8 @@ export const CreateDecisionProvenanceBodySchema = z
     sourceMemoryIds: z.array(z.string().min(1)).default([]),
     decisionModelId: z.string().min(1).optional(),
     decisionModelVersion: z.string().min(1).optional(),
+    decisionModelPluginDigest: z.string().min(1).optional(),
+    sandboxOutcome: SandboxOutcomeSchema.optional(),
   })
   .strict();
 
@@ -49,5 +54,7 @@ export function buildDecisionProvenanceRecord(
     recordedAt: new Date().toISOString(),
     decisionModelId: body.decisionModelId,
     decisionModelVersion: body.decisionModelVersion,
+    decisionModelPluginDigest: body.decisionModelPluginDigest,
+    sandboxOutcome: body.sandboxOutcome,
   });
 }

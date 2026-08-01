@@ -21,6 +21,7 @@ docs/CreateMemoryRequest.md
 docs/DecisionIntelligenceApi.md
 docs/DecisionModelCatalogEntry.md
 docs/DecisionModelCatalogResponse.md
+docs/DecisionModelComputedPluginSummary.md
 docs/DecisionProvenanceRecord.md
 docs/EcosystemApi.md
 docs/FederationApi.md
@@ -91,6 +92,7 @@ src/main/java/org/openapitools/client/model/CreateGovernanceExceptionRequest201R
 src/main/java/org/openapitools/client/model/CreateMemoryRequest.java
 src/main/java/org/openapitools/client/model/DecisionModelCatalogEntry.java
 src/main/java/org/openapitools/client/model/DecisionModelCatalogResponse.java
+src/main/java/org/openapitools/client/model/DecisionModelComputedPluginSummary.java
 src/main/java/org/openapitools/client/model/DecisionProvenanceRecord.java
 src/main/java/org/openapitools/client/model/FetchRecommendationsRequest.java
 src/main/java/org/openapitools/client/model/FetchRecommendationsResponse.java

@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **stability** | **str** |  | 
 **execution_profile_name** | **str** |  | 
 **capabilities** | **List[str]** |  | 
+**computed_plugin** | [**DecisionModelComputedPluginSummary**](DecisionModelComputedPluginSummary.md) |  | [optional] 
 
 ## Example
 

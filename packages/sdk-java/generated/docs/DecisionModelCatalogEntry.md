@@ -14,6 +14,7 @@
 |**stability** | [**StabilityEnum**](#StabilityEnum) |  |  |
 |**executionProfileName** | **String** |  |  |
 |**capabilities** | **List&lt;String&gt;** |  |  |
+|**computedPlugin** | [**DecisionModelComputedPluginSummary**](DecisionModelComputedPluginSummary.md) |  |  [optional] |
 
 
 

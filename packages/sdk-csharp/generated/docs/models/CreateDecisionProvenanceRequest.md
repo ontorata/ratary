@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **SourceMemoryIds** | **List&lt;string&gt;** |  | [optional] 
 **DecisionModelId** | **string** |  | [optional] 
 **DecisionModelVersion** | **string** |  | [optional] 
+**DecisionModelPluginDigest** | **string** |  | [optional] 
+**SandboxOutcome** | **string** |  | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

@@ -24,6 +24,8 @@ pub mod decision_model_catalog_entry;
 pub use self::decision_model_catalog_entry::DecisionModelCatalogEntry;
 pub mod decision_model_catalog_response;
 pub use self::decision_model_catalog_response::DecisionModelCatalogResponse;
+pub mod decision_model_computed_plugin_summary;
+pub use self::decision_model_computed_plugin_summary::DecisionModelComputedPluginSummary;
 pub mod decision_provenance_record;
 pub use self::decision_provenance_record::DecisionProvenanceRecord;
 pub mod fetch_recommendations_request;

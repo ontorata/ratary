@@ -1,6 +1,6 @@
 {
   "name": "@ratary/sdk",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "TypeScript client for Ratary REST API",
   "type": "module",
   "main": "./dist/index.js",

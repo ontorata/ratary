@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **Stability** | **string** |  | 
 **ExecutionProfileName** | **string** |  | 
 **Capabilities** | **[]string** |  | 
+**ComputedPlugin** | Pointer to [**DecisionModelComputedPluginSummary**](DecisionModelComputedPluginSummary.md) |  | [optional] 
 
 ## Methods
 
@@ -175,6 +176,31 @@ and a boolean to check if the value has been set.
 
 SetCapabilities sets Capabilities field to given value.
 
+
+### GetComputedPlugin
+
+`func (o *DecisionModelCatalogEntry) GetComputedPlugin() DecisionModelComputedPluginSummary`
+
+GetComputedPlugin returns the ComputedPlugin field if non-nil, zero value otherwise.
+
+### GetComputedPluginOk
+
+`func (o *DecisionModelCatalogEntry) GetComputedPluginOk() (*DecisionModelComputedPluginSummary, bool)`
+
+GetComputedPluginOk returns a tuple with the ComputedPlugin field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetComputedPlugin
+
+`func (o *DecisionModelCatalogEntry) SetComputedPlugin(v DecisionModelComputedPluginSummary)`
+
+SetComputedPlugin sets ComputedPlugin field to given value.
+
+### HasComputedPlugin
+
+`func (o *DecisionModelCatalogEntry) HasComputedPlugin() bool`
+
+HasComputedPlugin returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
