@@ -13,6 +13,7 @@
 | ADR-1017 Context Staleness Detection | `architecture/acos/ADR-1017-context-staleness-detection.md` |
 | ADR-1018 Context Retrieval Optimization | `architecture/acos/ADR-1018-context-retrieval-optimization.md` |
 | ADR-1019 Context Update Propagation | `architecture/acos/ADR-1019-context-update-propagation.md` |
+| ADR-1020 Memory Governance Architecture | `architecture/acos/ADR-1020-memory-governance-architecture.md` |
 | Wire evidence (Context Package envelope) | `products/ratary/evidence/ADR-1011-CONTEXT-PACKAGE-WIRE-2026-07-31.md` |
 
 Operator summary in this repo: [docs/CONTEXT-PACKAGE.md](../../CONTEXT-PACKAGE.md).
