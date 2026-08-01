@@ -3,6 +3,7 @@ import { createGovernanceController } from './governance.controller.js';
 import { getMemoryGovernanceManifest } from '../memory/governance/index.js';
 import { InMemoryStewardshipRunStore } from '../memory/stewardship/in-memory-stewardship-run-store.js';
 import { InMemoryGovernanceExceptionStore } from '../memory/governance/in-memory-governance-exception-store.js';
+import { InMemoryPolicyDenialStore } from '../memory/governance/in-memory-policy-denial-store.js';
 import type { StewardshipRunReport } from '../memory/stewardship/imemory-stewardship-orchestrator.interface.js';
 
 function mockReply() {
@@ -25,6 +26,7 @@ function createController() {
   return createGovernanceController({
     runStore: new InMemoryStewardshipRunStore(),
     exceptionStore: new InMemoryGovernanceExceptionStore(),
+    denialStore: new InMemoryPolicyDenialStore(),
   });
 }
 
@@ -57,6 +59,7 @@ describe('GovernanceController', () => {
     const controller = createGovernanceController({
       runStore,
       exceptionStore: new InMemoryGovernanceExceptionStore(),
+      denialStore: new InMemoryPolicyDenialStore(),
     });
     const reply = mockReply();
     await controller.listStewardshipRuns(
@@ -76,6 +79,7 @@ describe('GovernanceController', () => {
     const controller = createGovernanceController({
       runStore,
       exceptionStore: new InMemoryGovernanceExceptionStore(),
+      denialStore: new InMemoryPolicyDenialStore(),
     });
     const reply = mockReply();
     await controller.getStewardshipRun(
@@ -94,6 +98,7 @@ describe('GovernanceController', () => {
     const controller = createGovernanceController({
       runStore,
       exceptionStore: new InMemoryGovernanceExceptionStore(),
+      denialStore: new InMemoryPolicyDenialStore(),
     });
     await expect(
       controller.getStewardshipRun(
@@ -141,6 +146,7 @@ describe('GovernanceController', () => {
     const controller = createGovernanceController({
       runStore: new InMemoryStewardshipRunStore(),
       exceptionStore,
+      denialStore: new InMemoryPolicyDenialStore(),
     });
     const reply = mockReply();
     await controller.listGovernanceExceptions(
@@ -165,6 +171,7 @@ describe('GovernanceController', () => {
     const controller = createGovernanceController({
       runStore: new InMemoryStewardshipRunStore(),
       exceptionStore,
+      denialStore: new InMemoryPolicyDenialStore(),
     });
     await expect(
       controller.getGovernanceException(

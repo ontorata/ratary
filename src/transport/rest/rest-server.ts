@@ -30,7 +30,9 @@ import { createLearningPorts } from '../../composition/create-learning-ports.js'
 import { createInspectionLedgerPorts } from '../../composition/create-inspection-ledger-ports.js';
 import { createInspectionLedgerController } from '../../controllers/inspection-ledger.controller.js';
 import { createGovernanceController } from '../../controllers/governance.controller.js';
-import { createMemoryStewardshipPorts } from '../../composition/create-memory-stewardship-ports.js';
+import { createDecisionsController } from '../../controllers/decisions.controller.js';
+import { InMemoryDecisionProvenanceStore } from '../../decision-intelligence/in-memory-decision-provenance-store.js';
+import { createMemoryStewardshipPorts, createGovernanceStores } from '../../composition/create-memory-stewardship-ports.js';
 import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
 import { createEventPipelinePorts } from '../../composition/create-event-pipeline-ports.js';
 import { createEvolutionController } from '../../controllers/evolution.controller.js';
@@ -161,7 +163,10 @@ export async function buildApp(options?: {
   const infrastructurePorts = await createInfrastructurePlatformPorts(platform.sql, env);
   const searchGraphPorts = createSearchGraphPorts(platform.sql, env);
   const authLayer = createAuthLayer(platform.sql);
-  const securityPorts = createSecurityPorts(platform.sql, env);
+  const governanceStores = createGovernanceStores(platform.sql, env);
+  const securityPorts = createSecurityPorts(platform.sql, env, {
+    policyDenialStore: governanceStores.denialStore,
+  });
 
   if (!options?.skipAuth) {
     fastify.addHook('onRequest', authLayer.authenticate);
@@ -316,10 +321,18 @@ export async function buildApp(options?: {
   );
   const learningPorts = createLearningPorts(platform.sql, env);
   const inspectionLedgerPorts = createInspectionLedgerPorts(platform.sql, env);
-  const memoryStewardshipPorts = createMemoryStewardshipPorts(platform.sql, env);
+  const memoryStewardshipPorts = createMemoryStewardshipPorts(platform.sql, env, governanceStores);
   const governanceController = createGovernanceController({
     runStore: memoryStewardshipPorts.runStore,
     exceptionStore: memoryStewardshipPorts.exceptionStore,
+    denialStore: memoryStewardshipPorts.denialStore,
+  });
+  const decisionsController = createDecisionsController({
+    repository,
+    env,
+    provenanceStore: env.DECISION_PROVENANCE_ENABLED
+      ? new InMemoryDecisionProvenanceStore()
+      : undefined,
   });
   const signalPorts = createSignalIngestPorts(platform.sql, env, {
     eventBus: platform.eventBus,
@@ -431,6 +444,7 @@ export async function buildApp(options?: {
     globalIntelligence: globalIntelligenceController,
     compressionAdmin: compressionAdminController,
     governance: governanceController,
+    decisions: decisionsController,
     desktopObjects: createDesktopObjectController(platform.objectStorage),
   };
 

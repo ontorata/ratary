@@ -70,4 +70,26 @@ export async function governanceRoutes(
     },
     controller.createGovernanceExceptionRequest.bind(controller),
   );
+
+  fastify.get(
+    '/governance/denials',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'List policy denial events (PI-1027-C / ADR-1028 D4)',
+      },
+    },
+    controller.listPolicyDenials.bind(controller),
+  );
+
+  fastify.get(
+    '/governance/denials/summary',
+    {
+      schema: {
+        tags: ['Governance'],
+        summary: 'Aggregated policy denial counts by evaluation point',
+      },
+    },
+    controller.getPolicyDenialSummary.bind(controller),
+  );
 }

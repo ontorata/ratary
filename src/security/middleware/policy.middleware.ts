@@ -3,6 +3,8 @@ import { PolicyDeniedError } from '../../types/errors.js';
 import type { IPolicyEngine } from '../ports/ipolicy-engine.port.js';
 import type { ITenantHierarchy } from '../ports/itenant-hierarchy.port.js';
 import type { IComplianceAuditor } from '../ports/icompliance-auditor.port.js';
+import type { IPolicyDenialStore } from '../../memory/governance/ipolicy-denial-store.interface.js';
+import { buildPolicyDenialEvent, resolvePolicyDenialPoint } from '../../memory/governance/policy-denial.types.js';
 import { buildTransportContextFromRestRequest } from '../../transport/shared/resolve-transport-scope.js';
 
 function isPublicPath(url: string): boolean {
@@ -25,6 +27,7 @@ export interface PolicyMiddlewareDeps {
   policyEngine: IPolicyEngine;
   tenantHierarchy: ITenantHierarchy;
   complianceAuditor?: IComplianceAuditor;
+  policyDenialStore?: IPolicyDenialStore;
 }
 
 export function createPolicyMiddleware(deps: PolicyMiddlewareDeps) {
@@ -62,17 +65,34 @@ export function createPolicyMiddleware(deps: PolicyMiddlewareDeps) {
     });
 
     if (!result.allowed) {
+      const pathOnly = request.url.split('?')[0] ?? request.url;
+      const action = resolveAction(request.method);
       await deps.complianceAuditor?.record({
         eventType: 'policy.denied',
         actorId: request.user.identityId,
         organizationId,
         workspaceId,
         resource: request.url,
-        action: resolveAction(request.method),
+        action,
         outcome: 'deny',
         metadata: { reason: result.reason, policyId: result.policyId },
         timestamp: new Date().toISOString(),
       });
+      if (deps.policyDenialStore) {
+        try {
+          await deps.policyDenialStore.append(
+            buildPolicyDenialEvent({
+              ownerId: request.user.ownerId,
+              point: resolvePolicyDenialPoint(pathOnly, action),
+              reasonCode: result.reason ?? 'POLICY_DENIED',
+              policyModuleId: result.policyId,
+              resource: pathOnly,
+            }),
+          );
+        } catch {
+          // Best-effort — denial analytics must not block enforcement
+        }
+      }
       throw new PolicyDeniedError(result.reason ?? 'Policy denied');
     }
 
