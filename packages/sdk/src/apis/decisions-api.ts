@@ -1,6 +1,7 @@
 import type { IApiClient } from '../ports/iapi-client.js';
 import type {
   CreateDecisionProvenanceInput,
+  DecisionModelCatalogResponse,
   DecisionProvenanceRecord,
   FetchRecommendationsInput,
   FetchRecommendationsResult,
@@ -8,6 +9,13 @@ import type {
 
 export class DecisionsApi {
   constructor(private readonly client: IApiClient) {}
+
+  async listModels(): Promise<DecisionModelCatalogResponse> {
+    return this.client.request({
+      method: 'GET',
+      path: '/decisions/models',
+    });
+  }
 
   async fetchRecommendations(
     input: FetchRecommendationsInput,
