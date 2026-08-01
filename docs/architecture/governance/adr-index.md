@@ -39,8 +39,10 @@
 | ADR-1058 ACOS Performance Optimization | `architecture/acos/ADR-1058-acos-performance-optimization.md` |
 | Wire evidence (Context Package envelope) | `products/ratary/evidence/ADR-1011-CONTEXT-PACKAGE-WIRE-2026-07-31.md` |
 | Area 3 Memory Governance land | `products/ratary/evidence/AREA-3-MEMORY-GOVERNANCE-ATTEST-2026-08-01.md` · code `src/memory/governance/` |
+| Area 5 Decision Intelligence bridge | `products/ratary/evidence/AREA-5-HORIZON-BRIDGE-ATTEST-2026-08-01.md` · code `src/decision-intelligence/horizon/` |
 
 Operator summary in this repo: [docs/CONTEXT-PACKAGE.md](../../CONTEXT-PACKAGE.md).  
-Area 3: evaluation-point registry `src/memory/governance/` (≠ security `IPolicyEngine`).
+Area 3: evaluation-point registry `src/memory/governance/` (≠ security `IPolicyEngine`).  
+Area 5: composed Layer 4 bridge `src/decision-intelligence/horizon/` (≠ DI kernel).
 
 > Prettier-only edits under `src/auth/` in the ADR-1011 PR are non-behavioral (format:check hygiene). Architecture substance for that change set is ADR-1011.
