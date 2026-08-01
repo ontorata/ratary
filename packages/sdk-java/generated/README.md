@@ -1,7 +1,7 @@
 # openapi-java-client
 
 Ratary API — SDK v1 surface
-- API version: 1.1.0
+- API version: 1.2.0
   - Generator version: 7.23.0
 
 Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.
@@ -40,7 +40,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools</groupId>
   <artifactId>openapi-java-client</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -56,7 +56,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools:openapi-java-client:1.1.0"
+     implementation "org.openapitools:openapi-java-client:1.2.0"
   }
 ```
 
@@ -70,7 +70,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-java-client-1.1.0.jar`
+* `target/openapi-java-client-1.2.0.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -118,9 +118,19 @@ Class | Method | HTTP request | Description
 *ContextApi* | [**buildContext**](docs/ContextApi.md#buildContext) | **POST** /context | 
 *ContextApi* | [**getContextPackageLifecycle**](docs/ContextApi.md#getContextPackageLifecycle) | **GET** /context/packages/{packageId} | Get Context Package lifecycle state (ADR-1013)
 *ContextApi* | [**retireContextPackage**](docs/ContextApi.md#retireContextPackage) | **POST** /context/packages/{packageId}/retire | Retire Context Package (active → retired)
+*DecisionIntelligenceApi* | [**fetchRecommendations**](docs/DecisionIntelligenceApi.md#fetchRecommendations) | **POST** /decisions/recommendations | Advisory recommendation cards from recall trace (PI-P6-B / ADR-1042)
+*DecisionIntelligenceApi* | [**recordDecisionProvenance**](docs/DecisionIntelligenceApi.md#recordDecisionProvenance) | **POST** /decisions/provenance | Record human Accept/Reject provenance (ADR-069, flag-gated)
 *EcosystemApi* | [**getEcosystemClient**](docs/EcosystemApi.md#getEcosystemClient) | **GET** /ecosystem/clients/{type} | 
 *EcosystemApi* | [**listEcosystemClients**](docs/EcosystemApi.md#listEcosystemClients) | **GET** /ecosystem/clients | 
 *FederationApi* | [**listFederationPeers**](docs/FederationApi.md#listFederationPeers) | **GET** /federation/peers | 
+*GovernanceApi* | [**createGovernanceExceptionRequest**](docs/GovernanceApi.md#createGovernanceExceptionRequest) | **POST** /governance/exceptions | Create exception request (pending — no auto-approve)
+*GovernanceApi* | [**getGovernanceException**](docs/GovernanceApi.md#getGovernanceException) | **GET** /governance/exceptions/{exceptionId} | Governance exception request detail
+*GovernanceApi* | [**getGovernanceManifest**](docs/GovernanceApi.md#getGovernanceManifest) | **GET** /governance/manifest | Memory governance manifest (ADR-1020 / ADR-1021)
+*GovernanceApi* | [**getPolicyDenialSummary**](docs/GovernanceApi.md#getPolicyDenialSummary) | **GET** /governance/denials/summary | Aggregated denial counts by evaluation point
+*GovernanceApi* | [**getStewardshipRun**](docs/GovernanceApi.md#getStewardshipRun) | **GET** /governance/stewardship/runs/{runId} | Stewardship run detail
+*GovernanceApi* | [**listGovernanceExceptions**](docs/GovernanceApi.md#listGovernanceExceptions) | **GET** /governance/exceptions | List governance exception requests (PI-1027-B / ADR-1029)
+*GovernanceApi* | [**listPolicyDenials**](docs/GovernanceApi.md#listPolicyDenials) | **GET** /governance/denials | List policy denial events (PI-1027-C / ADR-1028 D4)
+*GovernanceApi* | [**listStewardshipRuns**](docs/GovernanceApi.md#listStewardshipRuns) | **GET** /governance/stewardship/runs | List stewardship run history for authenticated owner
 *HealthApi* | [**getHealth**](docs/HealthApi.md#getHealth) | **GET** /health | 
 *MemoryApi* | [**createMemory**](docs/MemoryApi.md#createMemory) | **POST** /memory | 
 *MemoryApi* | [**deleteMemory**](docs/MemoryApi.md#deleteMemory) | **DELETE** /memory/{id} | 
@@ -139,8 +149,24 @@ Class | Method | HTTP request | Description
  - [ClientCapabilityRequest](docs/ClientCapabilityRequest.md)
  - [ClientCapabilityRequestClientInfo](docs/ClientCapabilityRequestClientInfo.md)
  - [ContextPackageLifecycle](docs/ContextPackageLifecycle.md)
+ - [CreateDecisionProvenanceRequest](docs/CreateDecisionProvenanceRequest.md)
+ - [CreateGovernanceExceptionRequest](docs/CreateGovernanceExceptionRequest.md)
+ - [CreateGovernanceExceptionRequest201Response](docs/CreateGovernanceExceptionRequest201Response.md)
  - [CreateMemoryRequest](docs/CreateMemoryRequest.md)
+ - [DecisionProvenanceRecord](docs/DecisionProvenanceRecord.md)
+ - [FetchRecommendationsRequest](docs/FetchRecommendationsRequest.md)
+ - [FetchRecommendationsResponse](docs/FetchRecommendationsResponse.md)
+ - [GetPolicyDenialSummary200Response](docs/GetPolicyDenialSummary200Response.md)
+ - [GovernanceExceptionRecord](docs/GovernanceExceptionRecord.md)
+ - [GovernanceExceptionRecordAuditLogInner](docs/GovernanceExceptionRecordAuditLogInner.md)
+ - [ListGovernanceExceptions200Response](docs/ListGovernanceExceptions200Response.md)
+ - [ListPolicyDenials200Response](docs/ListPolicyDenials200Response.md)
  - [Memory](docs/Memory.md)
+ - [PolicyDenialEvent](docs/PolicyDenialEvent.md)
+ - [PolicyDenialSummary](docs/PolicyDenialSummary.md)
+ - [PolicyDenialSummaryByPoint](docs/PolicyDenialSummaryByPoint.md)
+ - [RecommendationCard](docs/RecommendationCard.md)
+ - [RecordDecisionProvenance201Response](docs/RecordDecisionProvenance201Response.md)
  - [UpdateMemoryRequest](docs/UpdateMemoryRequest.md)
 
 

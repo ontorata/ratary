@@ -113,8 +113,10 @@ impl From<&str> for ContentType {
 
 pub mod capabilities_api;
 pub mod context_api;
+pub mod decision_intelligence_api;
 pub mod ecosystem_api;
 pub mod federation_api;
+pub mod governance_api;
 pub mod health_api;
 pub mod memory_api;
 pub mod search_api;
