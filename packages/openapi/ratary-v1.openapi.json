@@ -3,7 +3,7 @@
   "info": {
     "title": "Ratary API — SDK v1 surface",
     "description": "Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "servers": [{ "url": "http://localhost:9876/api/v1" }],
   "security": [{ "BearerAuth": [] }, { "ApiKeyAuth": [] }],
@@ -157,6 +157,150 @@
           "negotiateUrl",
           "timestamp"
         ]
+      },
+      "GovernanceExceptionRecord": {
+        "type": "object",
+        "required": [
+          "exceptionId",
+          "ownerId",
+          "exceptionClass",
+          "rationale",
+          "status",
+          "requestedBy",
+          "requestedAt",
+          "auditLog"
+        ],
+        "properties": {
+          "exceptionId": { "type": "string" },
+          "ownerId": { "type": "string" },
+          "exceptionClass": {
+            "type": "string",
+            "enum": ["decay_protection", "feature_flag_off", "ops_maintenance"]
+          },
+          "rationale": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "approved", "rejected", "expired"]
+          },
+          "requestedBy": { "type": "string" },
+          "requestedAt": { "type": "string", "format": "date-time" },
+          "expiresAt": { "type": "string", "format": "date-time" },
+          "auditLog": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "at": { "type": "string", "format": "date-time" },
+                "action": { "type": "string" },
+                "actor": { "type": "string" },
+                "note": { "type": "string" }
+              },
+              "required": ["at", "action"]
+            }
+          }
+        }
+      },
+      "CreateGovernanceExceptionRequest": {
+        "type": "object",
+        "required": ["exceptionClass", "rationale"],
+        "properties": {
+          "exceptionClass": {
+            "type": "string",
+            "enum": ["decay_protection", "feature_flag_off", "ops_maintenance"]
+          },
+          "rationale": { "type": "string", "maxLength": 4000 },
+          "expiresAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PolicyDenialEvent": {
+        "type": "object",
+        "required": ["denialId", "ownerId", "point", "reasonCode", "occurredAt"],
+        "properties": {
+          "denialId": { "type": "string" },
+          "ownerId": { "type": "string" },
+          "point": { "type": "string", "enum": ["write", "recall", "stewardship"] },
+          "policyModuleId": { "type": "string" },
+          "reasonCode": { "type": "string" },
+          "occurredAt": { "type": "string", "format": "date-time" },
+          "memoryId": { "type": "string" },
+          "resource": { "type": "string" }
+        }
+      },
+      "PolicyDenialSummary": {
+        "type": "object",
+        "required": ["since", "byPoint", "total"],
+        "properties": {
+          "since": { "type": "string", "format": "date-time" },
+          "byPoint": {
+            "type": "object",
+            "properties": {
+              "write": { "type": "integer" },
+              "recall": { "type": "integer" },
+              "stewardship": { "type": "integer" }
+            },
+            "required": ["write", "recall", "stewardship"]
+          },
+          "total": { "type": "integer" }
+        }
+      },
+      "RecommendationCard": {
+        "type": "object",
+        "required": ["cardId", "title", "advisory", "sourceReference", "evidenceRefs", "reason"],
+        "properties": {
+          "cardId": { "type": "string" },
+          "title": { "type": "string" },
+          "advisory": { "type": "boolean", "enum": [true] },
+          "memoryId": { "type": "string" },
+          "sourceReference": { "type": "string" },
+          "confidence": { "type": "number" },
+          "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+          "reason": { "type": "string" }
+        }
+      },
+      "FetchRecommendationsRequest": {
+        "type": "object",
+        "required": ["query"],
+        "properties": {
+          "query": { "type": "string" },
+          "limit": { "type": "integer", "maximum": 10 }
+        }
+      },
+      "FetchRecommendationsResponse": {
+        "type": "object",
+        "required": ["traceId", "cards", "advisory"],
+        "properties": {
+          "traceId": { "type": "string" },
+          "cards": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/RecommendationCard" }
+          },
+          "advisory": { "type": "boolean", "enum": [true] }
+        }
+      },
+      "CreateDecisionProvenanceRequest": {
+        "type": "object",
+        "required": ["briefId", "verdict"],
+        "properties": {
+          "briefId": { "type": "string" },
+          "packageId": { "type": "string" },
+          "verdict": { "type": "string", "enum": ["accepted", "rejected"] },
+          "rationale": { "type": "string", "maxLength": 4000 },
+          "sourceMemoryIds": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "DecisionProvenanceRecord": {
+        "type": "object",
+        "required": ["recordId", "ownerId", "briefId", "verdict", "sourceMemoryIds", "recordedAt"],
+        "properties": {
+          "recordId": { "type": "string" },
+          "ownerId": { "type": "string" },
+          "briefId": { "type": "string" },
+          "packageId": { "type": "string" },
+          "verdict": { "type": "string", "enum": ["accepted", "rejected"] },
+          "rationale": { "type": "string" },
+          "sourceMemoryIds": { "type": "array", "items": { "type": "string" } },
+          "recordedAt": { "type": "string", "format": "date-time" }
+        }
       }
     }
   },
@@ -350,6 +494,224 @@
               "application/json": { "schema": { "$ref": "#/components/schemas/ContextPackageLifecycle" } }
             }
           }
+        }
+      }
+    },
+    "/governance/manifest": {
+      "get": {
+        "operationId": "getGovernanceManifest",
+        "tags": ["Governance"],
+        "summary": "Memory governance manifest (ADR-1020 / ADR-1021)",
+        "responses": { "200": { "description": "Governance manifest registry" } }
+      }
+    },
+    "/governance/stewardship/runs": {
+      "get": {
+        "operationId": "listStewardshipRuns",
+        "tags": ["Governance"],
+        "summary": "List stewardship run history for authenticated owner",
+        "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Stewardship runs" } }
+      }
+    },
+    "/governance/stewardship/runs/{runId}": {
+      "get": {
+        "operationId": "getStewardshipRun",
+        "tags": ["Governance"],
+        "summary": "Stewardship run detail",
+        "parameters": [
+          { "name": "runId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Stewardship run" } }
+      }
+    },
+    "/governance/exceptions": {
+      "get": {
+        "operationId": "listGovernanceExceptions",
+        "tags": ["Governance"],
+        "summary": "List governance exception requests (PI-1027-B / ADR-1029)",
+        "parameters": [{ "name": "limit", "in": "query", "schema": { "type": "integer" } }],
+        "responses": {
+          "200": {
+            "description": "Exception list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exceptions": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/GovernanceExceptionRecord" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createGovernanceExceptionRequest",
+        "tags": ["Governance"],
+        "summary": "Create exception request (pending — no auto-approve)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateGovernanceExceptionRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created exception request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exception": { "$ref": "#/components/schemas/GovernanceExceptionRecord" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/exceptions/{exceptionId}": {
+      "get": {
+        "operationId": "getGovernanceException",
+        "tags": ["Governance"],
+        "summary": "Governance exception request detail",
+        "parameters": [
+          { "name": "exceptionId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exception detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "exception": { "$ref": "#/components/schemas/GovernanceExceptionRecord" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/denials": {
+      "get": {
+        "operationId": "listPolicyDenials",
+        "tags": ["Governance"],
+        "summary": "List policy denial events (PI-1027-C / ADR-1028 D4)",
+        "parameters": [
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          { "name": "since", "in": "query", "schema": { "type": "string", "format": "date-time" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Denial events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "denials": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/PolicyDenialEvent" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/governance/denials/summary": {
+      "get": {
+        "operationId": "getPolicyDenialSummary",
+        "tags": ["Governance"],
+        "summary": "Aggregated denial counts by evaluation point",
+        "parameters": [
+          { "name": "since", "in": "query", "schema": { "type": "string", "format": "date-time" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Denial summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "summary": { "$ref": "#/components/schemas/PolicyDenialSummary" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decisions/recommendations": {
+      "post": {
+        "operationId": "fetchRecommendations",
+        "tags": ["Decision Intelligence"],
+        "summary": "Advisory recommendation cards from recall trace (PI-P6-B / ADR-1042)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FetchRecommendationsRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Advisory cards",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FetchRecommendationsResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decisions/provenance": {
+      "post": {
+        "operationId": "recordDecisionProvenance",
+        "tags": ["Decision Intelligence"],
+        "summary": "Record human Accept/Reject provenance (ADR-069, flag-gated)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateDecisionProvenanceRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Provenance record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "record": { "$ref": "#/components/schemas/DecisionProvenanceRecord" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Decision provenance disabled" },
+          "503": { "description": "Provenance store unavailable" }
         }
       }
     },

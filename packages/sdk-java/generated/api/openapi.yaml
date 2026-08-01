@@ -3,7 +3,7 @@ info:
   description: Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec
     at GET /docs/json.
   title: Ratary API — SDK v1 surface
-  version: 1.1.0
+  version: 1.2.0
 servers:
 - url: http://localhost:9876/api/v1
 security:
@@ -302,6 +302,225 @@ paths:
       summary: Archive Context Package (active|retired → archived)
       tags:
       - Context
+      x-accepts:
+      - application/json
+  /governance/manifest:
+    get:
+      operationId: getGovernanceManifest
+      responses:
+        "200":
+          description: Governance manifest registry
+      summary: Memory governance manifest (ADR-1020 / ADR-1021)
+      tags:
+      - Governance
+      x-accepts:
+      - application/json
+  /governance/stewardship/runs:
+    get:
+      operationId: listStewardshipRuns
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: Stewardship runs
+      summary: List stewardship run history for authenticated owner
+      tags:
+      - Governance
+      x-accepts:
+      - application/json
+  /governance/stewardship/runs/{runId}:
+    get:
+      operationId: getStewardshipRun
+      parameters:
+      - explode: false
+        in: path
+        name: runId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Stewardship run
+      summary: Stewardship run detail
+      tags:
+      - Governance
+      x-accepts:
+      - application/json
+  /governance/exceptions:
+    get:
+      operationId: listGovernanceExceptions
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listGovernanceExceptions_200_response"
+          description: Exception list
+      summary: List governance exception requests (PI-1027-B / ADR-1029)
+      tags:
+      - Governance
+      x-accepts:
+      - application/json
+    post:
+      operationId: createGovernanceExceptionRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGovernanceExceptionRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/createGovernanceExceptionRequest_201_response"
+          description: Created exception request
+      summary: Create exception request (pending — no auto-approve)
+      tags:
+      - Governance
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /governance/exceptions/{exceptionId}:
+    get:
+      operationId: getGovernanceException
+      parameters:
+      - explode: false
+        in: path
+        name: exceptionId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/createGovernanceExceptionRequest_201_response"
+          description: Exception detail
+      summary: Governance exception request detail
+      tags:
+      - Governance
+      x-accepts:
+      - application/json
+  /governance/denials:
+    get:
+      operationId: listPolicyDenials
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: since
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/listPolicyDenials_200_response"
+          description: Denial events
+      summary: List policy denial events (PI-1027-C / ADR-1028 D4)
+      tags:
+      - Governance
+      x-accepts:
+      - application/json
+  /governance/denials/summary:
+    get:
+      operationId: getPolicyDenialSummary
+      parameters:
+      - explode: true
+        in: query
+        name: since
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getPolicyDenialSummary_200_response"
+          description: Denial summary
+      summary: Aggregated denial counts by evaluation point
+      tags:
+      - Governance
+      x-accepts:
+      - application/json
+  /decisions/recommendations:
+    post:
+      operationId: fetchRecommendations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FetchRecommendationsRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FetchRecommendationsResponse"
+          description: Advisory cards
+      summary: Advisory recommendation cards from recall trace (PI-P6-B / ADR-1042)
+      tags:
+      - Decision Intelligence
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /decisions/provenance:
+    post:
+      operationId: recordDecisionProvenance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDecisionProvenanceRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/recordDecisionProvenance_201_response"
+          description: Provenance record
+        "404":
+          description: Decision provenance disabled
+        "503":
+          description: Provenance store unavailable
+      summary: "Record human Accept/Reject provenance (ADR-069, flag-gated)"
+      tags:
+      - Decision Intelligence
+      x-content-type: application/json
       x-accepts:
       - application/json
   /federation/peers:
@@ -633,6 +852,435 @@ components:
       - supportedProtocolVersions
       - timestamp
       type: object
+    GovernanceExceptionRecord:
+      example:
+        exceptionId: exceptionId
+        ownerId: ownerId
+        exceptionClass: decay_protection
+        rationale: rationale
+        status: pending
+        requestedBy: requestedBy
+        requestedAt: 2000-01-23T04:56:07.000+00:00
+        expiresAt: 2000-01-23T04:56:07.000+00:00
+        auditLog:
+        - at: 2000-01-23T04:56:07.000+00:00
+          action: action
+          actor: actor
+          note: note
+        - at: 2000-01-23T04:56:07.000+00:00
+          action: action
+          actor: actor
+          note: note
+      properties:
+        exceptionId:
+          type: string
+        ownerId:
+          type: string
+        exceptionClass:
+          enum:
+          - decay_protection
+          - feature_flag_off
+          - ops_maintenance
+          type: string
+        rationale:
+          type: string
+        status:
+          enum:
+          - pending
+          - approved
+          - rejected
+          - expired
+          type: string
+        requestedBy:
+          type: string
+        requestedAt:
+          format: date-time
+          type: string
+        expiresAt:
+          format: date-time
+          type: string
+        auditLog:
+          items:
+            $ref: "#/components/schemas/GovernanceExceptionRecord_auditLog_inner"
+          type: array
+      required:
+      - auditLog
+      - exceptionClass
+      - exceptionId
+      - ownerId
+      - rationale
+      - requestedAt
+      - requestedBy
+      - status
+      type: object
+    CreateGovernanceExceptionRequest:
+      example:
+        exceptionClass: decay_protection
+        rationale: rationale
+        expiresAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        exceptionClass:
+          enum:
+          - decay_protection
+          - feature_flag_off
+          - ops_maintenance
+          type: string
+        rationale:
+          maxLength: 4000
+          type: string
+        expiresAt:
+          format: date-time
+          type: string
+      required:
+      - exceptionClass
+      - rationale
+      type: object
+    PolicyDenialEvent:
+      example:
+        denialId: denialId
+        ownerId: ownerId
+        point: write
+        policyModuleId: policyModuleId
+        reasonCode: reasonCode
+        occurredAt: 2000-01-23T04:56:07.000+00:00
+        memoryId: memoryId
+        resource: resource
+      properties:
+        denialId:
+          type: string
+        ownerId:
+          type: string
+        point:
+          enum:
+          - write
+          - recall
+          - stewardship
+          type: string
+        policyModuleId:
+          type: string
+        reasonCode:
+          type: string
+        occurredAt:
+          format: date-time
+          type: string
+        memoryId:
+          type: string
+        resource:
+          type: string
+      required:
+      - denialId
+      - occurredAt
+      - ownerId
+      - point
+      - reasonCode
+      type: object
+    PolicyDenialSummary:
+      example:
+        since: 2000-01-23T04:56:07.000+00:00
+        byPoint:
+          write: 0
+          recall: 6
+          stewardship: 1
+        total: 5
+      properties:
+        since:
+          format: date-time
+          type: string
+        byPoint:
+          $ref: "#/components/schemas/PolicyDenialSummary_byPoint"
+        total:
+          type: integer
+      required:
+      - byPoint
+      - since
+      - total
+      type: object
+    RecommendationCard:
+      example:
+        cardId: cardId
+        title: title
+        advisory: true
+        memoryId: memoryId
+        sourceReference: sourceReference
+        confidence: 0.8008281904610115
+        evidenceRefs:
+        - evidenceRefs
+        - evidenceRefs
+        reason: reason
+      properties:
+        cardId:
+          type: string
+        title:
+          type: string
+        advisory:
+          type: boolean
+        memoryId:
+          type: string
+        sourceReference:
+          type: string
+        confidence:
+          type: number
+        evidenceRefs:
+          items:
+            type: string
+          type: array
+        reason:
+          type: string
+      required:
+      - advisory
+      - cardId
+      - evidenceRefs
+      - reason
+      - sourceReference
+      - title
+      type: object
+    FetchRecommendationsRequest:
+      example:
+        query: query
+        limit: 0
+      properties:
+        query:
+          type: string
+        limit:
+          maximum: 10
+          type: integer
+      required:
+      - query
+      type: object
+    FetchRecommendationsResponse:
+      example:
+        traceId: traceId
+        cards:
+        - cardId: cardId
+          title: title
+          advisory: true
+          memoryId: memoryId
+          sourceReference: sourceReference
+          confidence: 0.8008281904610115
+          evidenceRefs:
+          - evidenceRefs
+          - evidenceRefs
+          reason: reason
+        - cardId: cardId
+          title: title
+          advisory: true
+          memoryId: memoryId
+          sourceReference: sourceReference
+          confidence: 0.8008281904610115
+          evidenceRefs:
+          - evidenceRefs
+          - evidenceRefs
+          reason: reason
+        advisory: true
+      properties:
+        traceId:
+          type: string
+        cards:
+          items:
+            $ref: "#/components/schemas/RecommendationCard"
+          type: array
+        advisory:
+          type: boolean
+      required:
+      - advisory
+      - cards
+      - traceId
+      type: object
+    CreateDecisionProvenanceRequest:
+      example:
+        briefId: briefId
+        packageId: packageId
+        verdict: accepted
+        rationale: rationale
+        sourceMemoryIds:
+        - sourceMemoryIds
+        - sourceMemoryIds
+      properties:
+        briefId:
+          type: string
+        packageId:
+          type: string
+        verdict:
+          enum:
+          - accepted
+          - rejected
+          type: string
+        rationale:
+          maxLength: 4000
+          type: string
+        sourceMemoryIds:
+          items:
+            type: string
+          type: array
+      required:
+      - briefId
+      - verdict
+      type: object
+    DecisionProvenanceRecord:
+      example:
+        recordId: recordId
+        ownerId: ownerId
+        briefId: briefId
+        packageId: packageId
+        verdict: accepted
+        rationale: rationale
+        sourceMemoryIds:
+        - sourceMemoryIds
+        - sourceMemoryIds
+        recordedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        recordId:
+          type: string
+        ownerId:
+          type: string
+        briefId:
+          type: string
+        packageId:
+          type: string
+        verdict:
+          enum:
+          - accepted
+          - rejected
+          type: string
+        rationale:
+          type: string
+        sourceMemoryIds:
+          items:
+            type: string
+          type: array
+        recordedAt:
+          format: date-time
+          type: string
+      required:
+      - briefId
+      - ownerId
+      - recordId
+      - recordedAt
+      - sourceMemoryIds
+      - verdict
+      type: object
+    listGovernanceExceptions_200_response:
+      example:
+        exceptions:
+        - exceptionId: exceptionId
+          ownerId: ownerId
+          exceptionClass: decay_protection
+          rationale: rationale
+          status: pending
+          requestedBy: requestedBy
+          requestedAt: 2000-01-23T04:56:07.000+00:00
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          auditLog:
+          - at: 2000-01-23T04:56:07.000+00:00
+            action: action
+            actor: actor
+            note: note
+          - at: 2000-01-23T04:56:07.000+00:00
+            action: action
+            actor: actor
+            note: note
+        - exceptionId: exceptionId
+          ownerId: ownerId
+          exceptionClass: decay_protection
+          rationale: rationale
+          status: pending
+          requestedBy: requestedBy
+          requestedAt: 2000-01-23T04:56:07.000+00:00
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          auditLog:
+          - at: 2000-01-23T04:56:07.000+00:00
+            action: action
+            actor: actor
+            note: note
+          - at: 2000-01-23T04:56:07.000+00:00
+            action: action
+            actor: actor
+            note: note
+      properties:
+        exceptions:
+          items:
+            $ref: "#/components/schemas/GovernanceExceptionRecord"
+          type: array
+      type: object
+    createGovernanceExceptionRequest_201_response:
+      example:
+        exception:
+          exceptionId: exceptionId
+          ownerId: ownerId
+          exceptionClass: decay_protection
+          rationale: rationale
+          status: pending
+          requestedBy: requestedBy
+          requestedAt: 2000-01-23T04:56:07.000+00:00
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          auditLog:
+          - at: 2000-01-23T04:56:07.000+00:00
+            action: action
+            actor: actor
+            note: note
+          - at: 2000-01-23T04:56:07.000+00:00
+            action: action
+            actor: actor
+            note: note
+      properties:
+        exception:
+          $ref: "#/components/schemas/GovernanceExceptionRecord"
+      type: object
+    listPolicyDenials_200_response:
+      example:
+        denials:
+        - denialId: denialId
+          ownerId: ownerId
+          point: write
+          policyModuleId: policyModuleId
+          reasonCode: reasonCode
+          occurredAt: 2000-01-23T04:56:07.000+00:00
+          memoryId: memoryId
+          resource: resource
+        - denialId: denialId
+          ownerId: ownerId
+          point: write
+          policyModuleId: policyModuleId
+          reasonCode: reasonCode
+          occurredAt: 2000-01-23T04:56:07.000+00:00
+          memoryId: memoryId
+          resource: resource
+      properties:
+        denials:
+          items:
+            $ref: "#/components/schemas/PolicyDenialEvent"
+          type: array
+      type: object
+    getPolicyDenialSummary_200_response:
+      example:
+        summary:
+          since: 2000-01-23T04:56:07.000+00:00
+          byPoint:
+            write: 0
+            recall: 6
+            stewardship: 1
+          total: 5
+      properties:
+        summary:
+          $ref: "#/components/schemas/PolicyDenialSummary"
+      type: object
+    recordDecisionProvenance_201_response:
+      example:
+        record:
+          recordId: recordId
+          ownerId: ownerId
+          briefId: briefId
+          packageId: packageId
+          verdict: accepted
+          rationale: rationale
+          sourceMemoryIds:
+          - sourceMemoryIds
+          - sourceMemoryIds
+          recordedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        record:
+          $ref: "#/components/schemas/DecisionProvenanceRecord"
+      type: object
     ClientCapabilityRequest_clientInfo:
       example:
         name: name
@@ -645,6 +1293,43 @@ components:
       required:
       - name
       - version
+      type: object
+    GovernanceExceptionRecord_auditLog_inner:
+      example:
+        at: 2000-01-23T04:56:07.000+00:00
+        action: action
+        actor: actor
+        note: note
+      properties:
+        at:
+          format: date-time
+          type: string
+        action:
+          type: string
+        actor:
+          type: string
+        note:
+          type: string
+      required:
+      - action
+      - at
+      type: object
+    PolicyDenialSummary_byPoint:
+      example:
+        write: 0
+        recall: 6
+        stewardship: 1
+      properties:
+        write:
+          type: integer
+        recall:
+          type: integer
+        stewardship:
+          type: integer
+      required:
+      - recall
+      - stewardship
+      - write
       type: object
   securitySchemes:
     BearerAuth:

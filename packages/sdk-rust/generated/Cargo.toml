@@ -1,6 +1,6 @@
 [package]
 name = "ratary_sdk"
-version = "1.1.0"
+version = "1.2.0"
 authors = ["OpenAPI Generator team and contributors"]
 description = "Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json."
 # Override this license by providing a License Object in the OpenAPI.

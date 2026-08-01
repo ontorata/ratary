@@ -19,7 +19,9 @@ Tenant-scoped endpoints (`memory.read` for GET; create exception uses authentica
 | POST | `/api/v1/decisions/recommendations` | Advisory cards from recall trace (PI-P6-B) |
 | POST | `/api/v1/decisions/provenance` | Decision Accept/Reject record (flag-gated) |
 
-**Code:** `src/controllers/governance.controller.ts` · `src/routes/v1/governance.routes.ts`
+**Code:** `src/controllers/governance.controller.ts` · `src/routes/v1/governance.routes.ts` · `src/controllers/decisions.controller.ts` · `src/routes/v1/decisions.routes.ts`
+
+**OpenAPI:** `packages/openapi/ratary-v1.openapi.json` v1.2.0 — `@ratary/sdk` `governance` + `decisions` APIs
 
 **Non-goals:** policy mutation · stewardship execute from REST · bypass tenancy · auto-approve exceptions.
 
