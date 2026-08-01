@@ -5,4 +5,5 @@ export interface IStewardshipRunStore {
   save(report: StewardshipRunReport): Promise<void>;
   list(ownerId: string, limit?: number): Promise<StewardshipRunReport[]>;
   latest(ownerId: string): Promise<StewardshipRunReport | null>;
+  getByRunId(ownerId: string, runId: string): Promise<StewardshipRunReport | null>;
 }

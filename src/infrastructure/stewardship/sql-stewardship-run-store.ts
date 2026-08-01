@@ -58,4 +58,17 @@ export class SqlStewardshipRunStore implements IStewardshipRunStore {
     const rows = await this.list(ownerId, 1);
     return rows[0] ?? null;
   }
+
+  async getByRunId(ownerId: string, runId: string): Promise<StewardshipRunReport | null> {
+    const rows = await this.sql.query<RunRow>(
+      `SELECT run_id, owner_id, project_id, dry_run, started_at, finished_at, duration_ms, report_json, had_errors
+       FROM stewardship_runs
+       WHERE owner_id = ? AND run_id = ?
+       LIMIT 1`,
+      [ownerId, runId],
+    );
+    const row = rows[0];
+    if (!row) return null;
+    return JSON.parse(row.report_json) as StewardshipRunReport;
+  }
 }

@@ -25,4 +25,8 @@ export class InMemoryStewardshipRunStore implements IStewardshipRunStore {
   async latest(ownerId: string): Promise<StewardshipRunReport | null> {
     return this.runs.get(ownerId)?.[0] ?? null;
   }
+
+  async getByRunId(ownerId: string, runId: string): Promise<StewardshipRunReport | null> {
+    return (this.runs.get(ownerId) ?? []).find((run) => run.runId === runId) ?? null;
+  }
 }

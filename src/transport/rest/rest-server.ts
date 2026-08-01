@@ -29,6 +29,8 @@ import { createSignalIngestPorts } from '../../composition/create-signal-ingest-
 import { createLearningPorts } from '../../composition/create-learning-ports.js';
 import { createInspectionLedgerPorts } from '../../composition/create-inspection-ledger-ports.js';
 import { createInspectionLedgerController } from '../../controllers/inspection-ledger.controller.js';
+import { createGovernanceController } from '../../controllers/governance.controller.js';
+import { createMemoryStewardshipPorts } from '../../composition/create-memory-stewardship-ports.js';
 import { createMemoryEvolutionPorts } from '../../composition/create-memory-evolution-ports.js';
 import { createEventPipelinePorts } from '../../composition/create-event-pipeline-ports.js';
 import { createEvolutionController } from '../../controllers/evolution.controller.js';
@@ -314,6 +316,8 @@ export async function buildApp(options?: {
   );
   const learningPorts = createLearningPorts(platform.sql, env);
   const inspectionLedgerPorts = createInspectionLedgerPorts(platform.sql, env);
+  const memoryStewardshipPorts = createMemoryStewardshipPorts(platform.sql, env);
+  const governanceController = createGovernanceController(memoryStewardshipPorts.runStore);
   const signalPorts = createSignalIngestPorts(platform.sql, env, {
     eventBus: platform.eventBus,
     learningPorts,
@@ -423,6 +427,7 @@ export async function buildApp(options?: {
     aiBrainPlatform: aiBrainPlatformController,
     globalIntelligence: globalIntelligenceController,
     compressionAdmin: compressionAdminController,
+    governance: governanceController,
     desktopObjects: createDesktopObjectController(platform.objectStorage),
   };
 

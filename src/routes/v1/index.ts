@@ -26,6 +26,7 @@ import type { AiBrainPlatformController } from '../../controllers/ai-brain-platf
 import type { GlobalIntelligenceController } from '../../controllers/global-intelligence.controller.js';
 import type { CompressionAdminController } from '../../controllers/compression-admin.controller.js';
 import type { InspectionLedgerController } from '../../controllers/inspection-ledger.controller.js';
+import type { GovernanceController } from '../../controllers/governance.controller.js';
 import type { DesktopObjectController } from '../../controllers/desktop-object.controller.js';
 import { healthRoutes, memoryRoutes, backupRoutes } from '../index.js';
 import { authRoutes } from './auth.routes.js';
@@ -52,6 +53,7 @@ import { aiBrainPlatformRoutes } from './ai-brain-platform.routes.js';
 import { globalIntelligenceRoutes } from './global-intelligence.routes.js';
 import { adminCompressionRoutes } from './admin-compression.routes.js';
 import { inspectionLedgerRoutes } from './inspection-ledger.routes.js';
+import { governanceRoutes } from './governance.routes.js';
 
 export async function registerV1Routes(
   fastify: FastifyInstance,
@@ -83,6 +85,7 @@ export async function registerV1Routes(
     globalIntelligence?: GlobalIntelligenceController;
     compressionAdmin: CompressionAdminController;
     inspectionLedger?: InspectionLedgerController;
+    governance: GovernanceController;
     desktopObjects?: DesktopObjectController;
   },
 ): Promise<void> {
@@ -102,6 +105,7 @@ export async function registerV1Routes(
   if (controllers.inspectionLedger) {
     await inspectionLedgerRoutes(fastify, controllers.inspectionLedger);
   }
+  await governanceRoutes(fastify, controllers.governance);
   if (controllers.evolution) {
     await evolutionRoutes(fastify, controllers.evolution);
   }
