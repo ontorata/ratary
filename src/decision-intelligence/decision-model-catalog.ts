@@ -24,7 +24,7 @@ const COMPUTED_CATALOG_ENTRY: DecisionModelCatalogEntry = {
   capabilities: ['strategic-reasoning', 'decision-support', 'computed-scoring'],
   computedPlugin: {
     kind: 'worker',
-    artifactDigestPrefix: '995fec358de55',
+    artifactDigestPrefix: '97212904c798',
   },
 };
 

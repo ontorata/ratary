@@ -13,7 +13,7 @@ describe('decision-model-catalog mirror', () => {
   it('includes computed scorer with computedPlugin summary', () => {
     const computed = DECISION_MODEL_CATALOG_MIRROR.find((m) => m.id === 'ontorata-computed-scorer-v1');
     expect(computed?.computedPlugin?.kind).toBe('worker');
-    expect(computed?.computedPlugin?.artifactDigestPrefix).toBe('995fec358de55');
+    expect(computed?.computedPlugin?.artifactDigestPrefix).toBe('97212904c798');
   });
 
   it('filters by allowlist with default deny', () => {

@@ -71,7 +71,7 @@ describe('DecisionsController PI-P6-D0', () => {
           verdict: 'accepted',
           decisionModelId: 'ontorata-computed-scorer-v1',
           decisionModelVersion: '1.0.0',
-          decisionModelPluginDigest: 'sha256:995fec358de55',
+          decisionModelPluginDigest: 'sha256:97212904c798',
           sandboxOutcome: 'ok',
         },
       } as never,
