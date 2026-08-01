@@ -23,7 +23,6 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 ratary_sdk.sln
 src/ratary_sdk.Test/Api/DependencyInjectionTests.cs
-src/ratary_sdk.Test/Model/ContextPackageLifecycleTests.cs
 src/ratary_sdk.Test/README.md
 src/ratary_sdk.Test/ratary_sdk.Test.csproj
 src/ratary_sdk/Api/CapabilitiesApi.cs

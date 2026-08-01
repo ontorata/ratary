@@ -45,4 +45,3 @@ lib/Model/ModelInterface.php
 lib/Model/UpdateMemoryRequest.php
 lib/ObjectSerializer.php
 phpunit.xml.dist
-test/Model/ContextPackageLifecycleTest.php

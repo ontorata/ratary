@@ -66,4 +66,3 @@ src/main/java/org/openapitools/client/model/ContextPackageLifecycle.java
 src/main/java/org/openapitools/client/model/CreateMemoryRequest.java
 src/main/java/org/openapitools/client/model/Memory.java
 src/main/java/org/openapitools/client/model/UpdateMemoryRequest.java
-src/test/java/org/openapitools/client/model/ContextPackageLifecycleTest.java
