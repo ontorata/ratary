@@ -14,9 +14,12 @@ Name | Type | Description | Notes
 **owner_id** | **str** |  | [optional] 
 **created_at** | **datetime** |  | [optional] 
 **confidence** | **str** |  | [optional] 
+**confidence_model** | **str** | ADR-1016 confidence derivation model id | [optional] 
 **update_mechanism** | **str** |  | [optional] 
+**lifecycle_state** | **str** | ADR-1013 usage eligibility; mint is always active | [optional] 
 **source_labels** | **List[str]** |  | [optional] 
 **query** | **str** |  | [optional] 
+**retrieval_memo** | **str** | ADR-1018 ranked-candidate memo status; package envelope always reminted | [optional] 
 
 ## Example
 

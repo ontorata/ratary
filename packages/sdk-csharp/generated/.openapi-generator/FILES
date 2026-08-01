@@ -15,6 +15,7 @@ docs/models/CapabilityMatchGroups.md
 docs/models/CapabilityNegotiationResult.md
 docs/models/ClientCapabilityRequest.md
 docs/models/ClientCapabilityRequestClientInfo.md
+docs/models/ContextPackageLifecycle.md
 docs/models/CreateMemoryRequest.md
 docs/models/Memory.md
 docs/models/UpdateMemoryRequest.md
@@ -62,6 +63,7 @@ src/ratary_sdk/Model/CapabilityMatchGroups.cs
 src/ratary_sdk/Model/CapabilityNegotiationResult.cs
 src/ratary_sdk/Model/ClientCapabilityRequest.cs
 src/ratary_sdk/Model/ClientCapabilityRequestClientInfo.cs
+src/ratary_sdk/Model/ContextPackageLifecycle.cs
 src/ratary_sdk/Model/CreateMemoryRequest.cs
 src/ratary_sdk/Model/Memory.cs
 src/ratary_sdk/Model/UpdateMemoryRequest.cs

@@ -74,9 +74,35 @@
           "ownerId": { "type": "string" },
           "createdAt": { "type": "string", "format": "date-time" },
           "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "confidenceModel": {
+            "type": "string",
+            "enum": ["heuristic-top-relevance-v1", "confidence-product-v1"],
+            "description": "ADR-1016 confidence derivation model id"
+          },
           "updateMechanism": { "type": "string" },
+          "lifecycleState": {
+            "type": "string",
+            "enum": ["active", "retired", "archived"],
+            "description": "ADR-1013 usage eligibility; mint is always active"
+          },
           "sourceLabels": { "type": "array", "items": { "type": "string" } },
-          "query": { "type": "string" }
+          "query": { "type": "string" },
+          "retrievalMemo": {
+            "type": "string",
+            "enum": ["hit", "miss", "bypass"],
+            "description": "ADR-1018 ranked-candidate memo status; package envelope always reminted"
+          }
+        }
+      },
+      "ContextPackageLifecycle": {
+        "type": "object",
+        "required": ["packageId", "ownerId", "lifecycleState", "createdAt", "updatedAt"],
+        "properties": {
+          "packageId": { "type": "string" },
+          "ownerId": { "type": "string" },
+          "lifecycleState": { "type": "string", "enum": ["active", "retired", "archived"] },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         }
       },
       "ClientCapabilityRequest": {
@@ -271,6 +297,60 @@
           }
         },
         "responses": { "200": { "description": "Context bundle" } }
+      }
+    },
+    "/context/packages/{packageId}": {
+      "get": {
+        "operationId": "getContextPackageLifecycle",
+        "tags": ["Context"],
+        "summary": "Get Context Package lifecycle state (ADR-1013)",
+        "parameters": [
+          { "name": "packageId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lifecycle record",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ContextPackageLifecycle" } }
+            }
+          }
+        }
+      }
+    },
+    "/context/packages/{packageId}/retire": {
+      "post": {
+        "operationId": "retireContextPackage",
+        "tags": ["Context"],
+        "summary": "Retire Context Package (active → retired)",
+        "parameters": [
+          { "name": "packageId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated lifecycle record",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ContextPackageLifecycle" } }
+            }
+          }
+        }
+      }
+    },
+    "/context/packages/{packageId}/archive": {
+      "post": {
+        "operationId": "archiveContextPackage",
+        "tags": ["Context"],
+        "summary": "Archive Context Package (active|retired → archived)",
+        "parameters": [
+          { "name": "packageId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated lifecycle record",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ContextPackageLifecycle" } }
+            }
+          }
+        }
       }
     },
     "/federation/peers": {

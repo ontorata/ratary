@@ -16,6 +16,7 @@ docs/Model/CapabilityMatchGroups.md
 docs/Model/CapabilityNegotiationResult.md
 docs/Model/ClientCapabilityRequest.md
 docs/Model/ClientCapabilityRequestClientInfo.md
+docs/Model/ContextPackageLifecycle.md
 docs/Model/CreateMemoryRequest.md
 docs/Model/Memory.md
 docs/Model/UpdateMemoryRequest.md
@@ -37,6 +38,7 @@ lib/Model/CapabilityMatchGroups.php
 lib/Model/CapabilityNegotiationResult.php
 lib/Model/ClientCapabilityRequest.php
 lib/Model/ClientCapabilityRequestClientInfo.php
+lib/Model/ContextPackageLifecycle.php
 lib/Model/CreateMemoryRequest.php
 lib/Model/Memory.php
 lib/Model/ModelInterface.php

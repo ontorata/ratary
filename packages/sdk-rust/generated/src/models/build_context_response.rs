@@ -32,12 +32,21 @@ pub struct BuildContextResponse {
     pub created_at: Option<chrono::DateTime<chrono::FixedOffset>>,
     #[serde(rename = "confidence", skip_serializing_if = "Option::is_none")]
     pub confidence: Option<Confidence>,
+    /// ADR-1016 confidence derivation model id
+    #[serde(rename = "confidenceModel", skip_serializing_if = "Option::is_none")]
+    pub confidence_model: Option<ConfidenceModel>,
     #[serde(rename = "updateMechanism", skip_serializing_if = "Option::is_none")]
     pub update_mechanism: Option<String>,
+    /// ADR-1013 usage eligibility; mint is always active
+    #[serde(rename = "lifecycleState", skip_serializing_if = "Option::is_none")]
+    pub lifecycle_state: Option<LifecycleState>,
     #[serde(rename = "sourceLabels", skip_serializing_if = "Option::is_none")]
     pub source_labels: Option<Vec<String>>,
     #[serde(rename = "query", skip_serializing_if = "Option::is_none")]
     pub query: Option<String>,
+    /// ADR-1018 ranked-candidate memo status; package envelope always reminted
+    #[serde(rename = "retrievalMemo", skip_serializing_if = "Option::is_none")]
+    pub retrieval_memo: Option<RetrievalMemo>,
 }
 
 impl BuildContextResponse {
@@ -52,9 +61,12 @@ impl BuildContextResponse {
             owner_id: None,
             created_at: None,
             confidence: None,
+            confidence_model: None,
             update_mechanism: None,
+            lifecycle_state: None,
             source_labels: None,
             query: None,
+            retrieval_memo: None,
         }
     }
 }
@@ -72,6 +84,52 @@ pub enum Confidence {
 impl Default for Confidence {
     fn default() -> Confidence {
         Self::High
+    }
+}
+/// ADR-1016 confidence derivation model id
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum ConfidenceModel {
+    #[serde(rename = "heuristic-top-relevance-v1")]
+    HeuristicTopRelevanceV1,
+    #[serde(rename = "confidence-product-v1")]
+    ConfidenceProductV1,
+}
+
+impl Default for ConfidenceModel {
+    fn default() -> ConfidenceModel {
+        Self::HeuristicTopRelevanceV1
+    }
+}
+/// ADR-1013 usage eligibility; mint is always active
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum LifecycleState {
+    #[serde(rename = "active")]
+    Active,
+    #[serde(rename = "retired")]
+    Retired,
+    #[serde(rename = "archived")]
+    Archived,
+}
+
+impl Default for LifecycleState {
+    fn default() -> LifecycleState {
+        Self::Active
+    }
+}
+/// ADR-1018 ranked-candidate memo status; package envelope always reminted
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum RetrievalMemo {
+    #[serde(rename = "hit")]
+    Hit,
+    #[serde(rename = "miss")]
+    Miss,
+    #[serde(rename = "bypass")]
+    Bypass,
+}
+
+impl Default for RetrievalMemo {
+    fn default() -> RetrievalMemo {
+        Self::Hit
     }
 }
 

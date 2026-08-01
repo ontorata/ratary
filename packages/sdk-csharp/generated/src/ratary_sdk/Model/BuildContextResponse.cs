@@ -42,11 +42,14 @@ namespace ratary_sdk.Model
         /// <param name="ownerId">ownerId</param>
         /// <param name="createdAt">createdAt</param>
         /// <param name="confidence">confidence</param>
+        /// <param name="confidenceModel">ADR-1016 confidence derivation model id</param>
         /// <param name="updateMechanism">updateMechanism</param>
+        /// <param name="lifecycleState">ADR-1013 usage eligibility; mint is always active</param>
         /// <param name="sourceLabels">sourceLabels</param>
         /// <param name="query">query</param>
+        /// <param name="retrievalMemo">ADR-1018 ranked-candidate memo status; package envelope always reminted</param>
         [JsonConstructor]
-        public BuildContextResponse(Option<string?> context = default, Option<string?> prompt = default, Option<string?> @system = default, Option<string?> user = default, Option<int?> memoryCount = default, Option<string?> packageId = default, Option<string?> ownerId = default, Option<DateTime?> createdAt = default, Option<ConfidenceEnum?> confidence = default, Option<string?> updateMechanism = default, Option<List<string>?> sourceLabels = default, Option<string?> query = default)
+        public BuildContextResponse(Option<string?> context = default, Option<string?> prompt = default, Option<string?> @system = default, Option<string?> user = default, Option<int?> memoryCount = default, Option<string?> packageId = default, Option<string?> ownerId = default, Option<DateTime?> createdAt = default, Option<ConfidenceEnum?> confidence = default, Option<ConfidenceModelEnum?> confidenceModel = default, Option<string?> updateMechanism = default, Option<LifecycleStateEnum?> lifecycleState = default, Option<List<string>?> sourceLabels = default, Option<string?> query = default, Option<RetrievalMemoEnum?> retrievalMemo = default)
         {
             ContextOption = context;
             PromptOption = prompt;
@@ -57,9 +60,12 @@ namespace ratary_sdk.Model
             OwnerIdOption = ownerId;
             CreatedAtOption = createdAt;
             ConfidenceOption = confidence;
+            ConfidenceModelOption = confidenceModel;
             UpdateMechanismOption = updateMechanism;
+            LifecycleStateOption = lifecycleState;
             SourceLabelsOption = sourceLabels;
             QueryOption = query;
+            RetrievalMemoOption = retrievalMemo;
             OnCreated();
         }
 
@@ -157,6 +163,277 @@ namespace ratary_sdk.Model
         /// </summary>
         [JsonPropertyName("confidence")]
         public ConfidenceEnum? Confidence { get { return this.ConfidenceOption.Value; } set { this.ConfidenceOption = new(value); } }
+
+        /// <summary>
+        /// ADR-1016 confidence derivation model id
+        /// </summary>
+        /// <value>ADR-1016 confidence derivation model id</value>
+        public enum ConfidenceModelEnum
+        {
+            /// <summary>
+            /// Enum HeuristicTopRelevanceV1 for value: heuristic-top-relevance-v1
+            /// </summary>
+            HeuristicTopRelevanceV1 = 1,
+
+            /// <summary>
+            /// Enum ConfidenceProductV1 for value: confidence-product-v1
+            /// </summary>
+            ConfidenceProductV1 = 2
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ConfidenceModelEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static ConfidenceModelEnum ConfidenceModelEnumFromString(string value)
+        {
+            if (value.Equals("heuristic-top-relevance-v1"))
+                return ConfidenceModelEnum.HeuristicTopRelevanceV1;
+
+            if (value.Equals("confidence-product-v1"))
+                return ConfidenceModelEnum.ConfidenceProductV1;
+
+            throw new NotImplementedException($"Could not convert value to type ConfidenceModelEnum: '{value}'");
+        }
+
+        /// <summary>
+        /// Returns a <see cref="ConfidenceModelEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static ConfidenceModelEnum? ConfidenceModelEnumFromStringOrDefault(string value)
+        {
+            if (value.Equals("heuristic-top-relevance-v1"))
+                return ConfidenceModelEnum.HeuristicTopRelevanceV1;
+
+            if (value.Equals("confidence-product-v1"))
+                return ConfidenceModelEnum.ConfidenceProductV1;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="ConfidenceModelEnum"/> to the json value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string ConfidenceModelEnumToJsonValue(ConfidenceModelEnum? value)
+        {
+            if (value == ConfidenceModelEnum.HeuristicTopRelevanceV1)
+                return "heuristic-top-relevance-v1";
+
+            if (value == ConfidenceModelEnum.ConfidenceProductV1)
+                return "confidence-product-v1";
+
+            throw new NotImplementedException($"Value could not be handled: '{value}'");
+        }
+
+        /// <summary>
+        /// Used to track the state of ConfidenceModel
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<ConfidenceModelEnum?> ConfidenceModelOption { get; private set; }
+
+        /// <summary>
+        /// ADR-1016 confidence derivation model id
+        /// </summary>
+        /// <value>ADR-1016 confidence derivation model id</value>
+        [JsonPropertyName("confidenceModel")]
+        public ConfidenceModelEnum? ConfidenceModel { get { return this.ConfidenceModelOption.Value; } set { this.ConfidenceModelOption = new(value); } }
+
+        /// <summary>
+        /// ADR-1013 usage eligibility; mint is always active
+        /// </summary>
+        /// <value>ADR-1013 usage eligibility; mint is always active</value>
+        public enum LifecycleStateEnum
+        {
+            /// <summary>
+            /// Enum Active for value: active
+            /// </summary>
+            Active = 1,
+
+            /// <summary>
+            /// Enum Retired for value: retired
+            /// </summary>
+            Retired = 2,
+
+            /// <summary>
+            /// Enum Archived for value: archived
+            /// </summary>
+            Archived = 3
+        }
+
+        /// <summary>
+        /// Returns a <see cref="LifecycleStateEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static LifecycleStateEnum LifecycleStateEnumFromString(string value)
+        {
+            if (value.Equals("active"))
+                return LifecycleStateEnum.Active;
+
+            if (value.Equals("retired"))
+                return LifecycleStateEnum.Retired;
+
+            if (value.Equals("archived"))
+                return LifecycleStateEnum.Archived;
+
+            throw new NotImplementedException($"Could not convert value to type LifecycleStateEnum: '{value}'");
+        }
+
+        /// <summary>
+        /// Returns a <see cref="LifecycleStateEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static LifecycleStateEnum? LifecycleStateEnumFromStringOrDefault(string value)
+        {
+            if (value.Equals("active"))
+                return LifecycleStateEnum.Active;
+
+            if (value.Equals("retired"))
+                return LifecycleStateEnum.Retired;
+
+            if (value.Equals("archived"))
+                return LifecycleStateEnum.Archived;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="LifecycleStateEnum"/> to the json value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string LifecycleStateEnumToJsonValue(LifecycleStateEnum? value)
+        {
+            if (value == LifecycleStateEnum.Active)
+                return "active";
+
+            if (value == LifecycleStateEnum.Retired)
+                return "retired";
+
+            if (value == LifecycleStateEnum.Archived)
+                return "archived";
+
+            throw new NotImplementedException($"Value could not be handled: '{value}'");
+        }
+
+        /// <summary>
+        /// Used to track the state of LifecycleState
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<LifecycleStateEnum?> LifecycleStateOption { get; private set; }
+
+        /// <summary>
+        /// ADR-1013 usage eligibility; mint is always active
+        /// </summary>
+        /// <value>ADR-1013 usage eligibility; mint is always active</value>
+        [JsonPropertyName("lifecycleState")]
+        public LifecycleStateEnum? LifecycleState { get { return this.LifecycleStateOption.Value; } set { this.LifecycleStateOption = new(value); } }
+
+        /// <summary>
+        /// ADR-1018 ranked-candidate memo status; package envelope always reminted
+        /// </summary>
+        /// <value>ADR-1018 ranked-candidate memo status; package envelope always reminted</value>
+        public enum RetrievalMemoEnum
+        {
+            /// <summary>
+            /// Enum Hit for value: hit
+            /// </summary>
+            Hit = 1,
+
+            /// <summary>
+            /// Enum Miss for value: miss
+            /// </summary>
+            Miss = 2,
+
+            /// <summary>
+            /// Enum Bypass for value: bypass
+            /// </summary>
+            Bypass = 3
+        }
+
+        /// <summary>
+        /// Returns a <see cref="RetrievalMemoEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static RetrievalMemoEnum RetrievalMemoEnumFromString(string value)
+        {
+            if (value.Equals("hit"))
+                return RetrievalMemoEnum.Hit;
+
+            if (value.Equals("miss"))
+                return RetrievalMemoEnum.Miss;
+
+            if (value.Equals("bypass"))
+                return RetrievalMemoEnum.Bypass;
+
+            throw new NotImplementedException($"Could not convert value to type RetrievalMemoEnum: '{value}'");
+        }
+
+        /// <summary>
+        /// Returns a <see cref="RetrievalMemoEnum"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static RetrievalMemoEnum? RetrievalMemoEnumFromStringOrDefault(string value)
+        {
+            if (value.Equals("hit"))
+                return RetrievalMemoEnum.Hit;
+
+            if (value.Equals("miss"))
+                return RetrievalMemoEnum.Miss;
+
+            if (value.Equals("bypass"))
+                return RetrievalMemoEnum.Bypass;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="RetrievalMemoEnum"/> to the json value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static string RetrievalMemoEnumToJsonValue(RetrievalMemoEnum? value)
+        {
+            if (value == RetrievalMemoEnum.Hit)
+                return "hit";
+
+            if (value == RetrievalMemoEnum.Miss)
+                return "miss";
+
+            if (value == RetrievalMemoEnum.Bypass)
+                return "bypass";
+
+            throw new NotImplementedException($"Value could not be handled: '{value}'");
+        }
+
+        /// <summary>
+        /// Used to track the state of RetrievalMemo
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<RetrievalMemoEnum?> RetrievalMemoOption { get; private set; }
+
+        /// <summary>
+        /// ADR-1018 ranked-candidate memo status; package envelope always reminted
+        /// </summary>
+        /// <value>ADR-1018 ranked-candidate memo status; package envelope always reminted</value>
+        [JsonPropertyName("retrievalMemo")]
+        public RetrievalMemoEnum? RetrievalMemo { get { return this.RetrievalMemoOption.Value; } set { this.RetrievalMemoOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Context
@@ -319,9 +596,12 @@ namespace ratary_sdk.Model
             sb.Append("  OwnerId: ").Append(OwnerId).Append("\n");
             sb.Append("  CreatedAt: ").Append(CreatedAt).Append("\n");
             sb.Append("  Confidence: ").Append(Confidence).Append("\n");
+            sb.Append("  ConfidenceModel: ").Append(ConfidenceModel).Append("\n");
             sb.Append("  UpdateMechanism: ").Append(UpdateMechanism).Append("\n");
+            sb.Append("  LifecycleState: ").Append(LifecycleState).Append("\n");
             sb.Append("  SourceLabels: ").Append(SourceLabels).Append("\n");
             sb.Append("  Query: ").Append(Query).Append("\n");
+            sb.Append("  RetrievalMemo: ").Append(RetrievalMemo).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -373,9 +653,12 @@ namespace ratary_sdk.Model
             Option<string?> ownerId = default;
             Option<DateTime?> createdAt = default;
             Option<BuildContextResponse.ConfidenceEnum?> confidence = default;
+            Option<BuildContextResponse.ConfidenceModelEnum?> confidenceModel = default;
             Option<string?> updateMechanism = default;
+            Option<BuildContextResponse.LifecycleStateEnum?> lifecycleState = default;
             Option<List<string>?> sourceLabels = default;
             Option<string?> query = default;
+            Option<BuildContextResponse.RetrievalMemoEnum?> retrievalMemo = default;
 
             while (utf8JsonReader.Read())
             {
@@ -421,14 +704,29 @@ namespace ratary_sdk.Model
                             if (confidenceRawValue != null)
                                 confidence = new Option<BuildContextResponse.ConfidenceEnum?>(BuildContextResponse.ConfidenceEnumFromStringOrDefault(confidenceRawValue));
                             break;
+                        case "confidenceModel":
+                            string? confidenceModelRawValue = utf8JsonReader.GetString();
+                            if (confidenceModelRawValue != null)
+                                confidenceModel = new Option<BuildContextResponse.ConfidenceModelEnum?>(BuildContextResponse.ConfidenceModelEnumFromStringOrDefault(confidenceModelRawValue));
+                            break;
                         case "updateMechanism":
                             updateMechanism = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "lifecycleState":
+                            string? lifecycleStateRawValue = utf8JsonReader.GetString();
+                            if (lifecycleStateRawValue != null)
+                                lifecycleState = new Option<BuildContextResponse.LifecycleStateEnum?>(BuildContextResponse.LifecycleStateEnumFromStringOrDefault(lifecycleStateRawValue));
                             break;
                         case "sourceLabels":
                             sourceLabels = new Option<List<string>?>(JsonSerializer.Deserialize<List<string>>(ref utf8JsonReader, jsonSerializerOptions)!);
                             break;
                         case "query":
                             query = new Option<string?>(utf8JsonReader.GetString()!);
+                            break;
+                        case "retrievalMemo":
+                            string? retrievalMemoRawValue = utf8JsonReader.GetString();
+                            if (retrievalMemoRawValue != null)
+                                retrievalMemo = new Option<BuildContextResponse.RetrievalMemoEnum?>(BuildContextResponse.RetrievalMemoEnumFromStringOrDefault(retrievalMemoRawValue));
                             break;
                         default:
                             break;
@@ -463,8 +761,14 @@ namespace ratary_sdk.Model
             if (confidence.IsSet && confidence.Value == null)
                 throw new ArgumentNullException(nameof(confidence), "Property is not nullable for class BuildContextResponse.");
 
+            if (confidenceModel.IsSet && confidenceModel.Value == null)
+                throw new ArgumentNullException(nameof(confidenceModel), "Property is not nullable for class BuildContextResponse.");
+
             if (updateMechanism.IsSet && updateMechanism.Value == null)
                 throw new ArgumentNullException(nameof(updateMechanism), "Property is not nullable for class BuildContextResponse.");
+
+            if (lifecycleState.IsSet && lifecycleState.Value == null)
+                throw new ArgumentNullException(nameof(lifecycleState), "Property is not nullable for class BuildContextResponse.");
 
             if (sourceLabels.IsSet && sourceLabels.Value == null)
                 throw new ArgumentNullException(nameof(sourceLabels), "Property is not nullable for class BuildContextResponse.");
@@ -472,7 +776,10 @@ namespace ratary_sdk.Model
             if (query.IsSet && query.Value == null)
                 throw new ArgumentNullException(nameof(query), "Property is not nullable for class BuildContextResponse.");
 
-            return new BuildContextResponse(context, prompt, varSystem, user, memoryCount, packageId, ownerId, createdAt, confidence, updateMechanism, sourceLabels, query);
+            if (retrievalMemo.IsSet && retrievalMemo.Value == null)
+                throw new ArgumentNullException(nameof(retrievalMemo), "Property is not nullable for class BuildContextResponse.");
+
+            return new BuildContextResponse(context, prompt, varSystem, user, memoryCount, packageId, ownerId, createdAt, confidence, confidenceModel, updateMechanism, lifecycleState, sourceLabels, query, retrievalMemo);
         }
 
         /// <summary>
@@ -552,9 +859,13 @@ namespace ratary_sdk.Model
 
             var confidenceRawValue = BuildContextResponse.ConfidenceEnumToJsonValue(buildContextResponse.ConfidenceOption.Value!.Value);
             writer.WriteString("confidence", confidenceRawValue);
+            var confidenceModelRawValue = BuildContextResponse.ConfidenceModelEnumToJsonValue(buildContextResponse.ConfidenceModelOption.Value!.Value);
+            writer.WriteString("confidenceModel", confidenceModelRawValue);
             if (buildContextResponse.UpdateMechanismOption.IsSet)
                 writer.WriteString("updateMechanism", buildContextResponse.UpdateMechanism);
 
+            var lifecycleStateRawValue = BuildContextResponse.LifecycleStateEnumToJsonValue(buildContextResponse.LifecycleStateOption.Value!.Value);
+            writer.WriteString("lifecycleState", lifecycleStateRawValue);
             if (buildContextResponse.SourceLabelsOption.IsSet)
             {
                 writer.WritePropertyName("sourceLabels");
@@ -562,6 +873,9 @@ namespace ratary_sdk.Model
             }
             if (buildContextResponse.QueryOption.IsSet)
                 writer.WriteString("query", buildContextResponse.Query);
+
+            var retrievalMemoRawValue = BuildContextResponse.RetrievalMemoEnumToJsonValue(buildContextResponse.RetrievalMemoOption.Value!.Value);
+            writer.WriteString("retrievalMemo", retrievalMemoRawValue);
         }
     }
 }

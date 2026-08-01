@@ -29,4 +29,37 @@ export async function contextRoutes(
     },
     controller.buildContext.bind(controller),
   );
+
+  fastify.get(
+    '/context/packages/:packageId',
+    {
+      schema: {
+        tags: ['Memory Intelligence'],
+        summary: 'Get Context Package lifecycle state (ADR-1013)',
+      },
+    },
+    controller.getPackageLifecycle.bind(controller),
+  );
+
+  fastify.post(
+    '/context/packages/:packageId/retire',
+    {
+      schema: {
+        tags: ['Memory Intelligence'],
+        summary: 'Retire a Context Package (active → retired)',
+      },
+    },
+    controller.retirePackage.bind(controller),
+  );
+
+  fastify.post(
+    '/context/packages/:packageId/archive',
+    {
+      schema: {
+        tags: ['Memory Intelligence'],
+        summary: 'Archive a Context Package (active|retired → archived)',
+      },
+    },
+    controller.archivePackage.bind(controller),
+  );
 }

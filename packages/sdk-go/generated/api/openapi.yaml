@@ -207,6 +207,69 @@ paths:
           description: Context bundle
       tags:
       - Context
+  /context/packages/{packageId}:
+    get:
+      operationId: getContextPackageLifecycle
+      parameters:
+      - explode: false
+        in: path
+        name: packageId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContextPackageLifecycle"
+          description: Lifecycle record
+      summary: Get Context Package lifecycle state (ADR-1013)
+      tags:
+      - Context
+  /context/packages/{packageId}/retire:
+    post:
+      operationId: retireContextPackage
+      parameters:
+      - explode: false
+        in: path
+        name: packageId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContextPackageLifecycle"
+          description: Updated lifecycle record
+      summary: Retire Context Package (active → retired)
+      tags:
+      - Context
+  /context/packages/{packageId}/archive:
+    post:
+      operationId: archiveContextPackage
+      parameters:
+      - explode: false
+        in: path
+        name: packageId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContextPackageLifecycle"
+          description: Updated lifecycle record
+      summary: Archive Context Package (active|retired → archived)
+      tags:
+      - Context
   /federation/peers:
     get:
       operationId: listFederationPeers
@@ -339,7 +402,20 @@ components:
           - medium
           - low
           type: string
+        confidenceModel:
+          description: ADR-1016 confidence derivation model id
+          enum:
+          - heuristic-top-relevance-v1
+          - confidence-product-v1
+          type: string
         updateMechanism:
+          type: string
+        lifecycleState:
+          description: ADR-1013 usage eligibility; mint is always active
+          enum:
+          - active
+          - retired
+          - archived
           type: string
         sourceLabels:
           items:
@@ -347,6 +423,45 @@ components:
           type: array
         query:
           type: string
+        retrievalMemo:
+          description: ADR-1018 ranked-candidate memo status; package envelope always
+            reminted
+          enum:
+          - hit
+          - miss
+          - bypass
+          type: string
+      type: object
+    ContextPackageLifecycle:
+      example:
+        packageId: packageId
+        ownerId: ownerId
+        lifecycleState: active
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        packageId:
+          type: string
+        ownerId:
+          type: string
+        lifecycleState:
+          enum:
+          - active
+          - retired
+          - archived
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+      - createdAt
+      - lifecycleState
+      - ownerId
+      - packageId
+      - updatedAt
       type: object
     ClientCapabilityRequest:
       example:

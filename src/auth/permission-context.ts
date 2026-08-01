@@ -67,6 +67,7 @@ export function isDataPlanePath(url: string, method: string): boolean {
   if (isPublicOrAuthPath(path)) return false;
   if (isTenantContextExemptPath(url, method)) return false;
   if (path === '/api/v1/context' && method === 'POST') return true;
+  if (path.startsWith('/api/v1/context/packages/')) return true;
   if (method === 'GET' || method === 'HEAD') return isMemoryReadPath(path);
   return isMemoryWritePath(path, method);
 }
@@ -87,6 +88,12 @@ export function resolveRequiredPermission(method: string, url: string): Permissi
 
   if (path === '/api/v1/context' && method === 'POST') {
     return PERMISSIONS.MEMORY_READ;
+  }
+  if (path.startsWith('/api/v1/context/packages/') && method === 'GET') {
+    return PERMISSIONS.MEMORY_READ;
+  }
+  if (path.startsWith('/api/v1/context/packages/') && method === 'POST') {
+    return PERMISSIONS.MEMORY_WRITE;
   }
 
   if ((method === 'GET' || method === 'HEAD') && isMemoryReadPath(path)) {

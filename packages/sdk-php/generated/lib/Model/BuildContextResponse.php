@@ -66,9 +66,12 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         'owner_id' => 'string',
         'created_at' => '\DateTime',
         'confidence' => 'string',
+        'confidence_model' => 'string',
         'update_mechanism' => 'string',
+        'lifecycle_state' => 'string',
         'source_labels' => 'string[]',
-        'query' => 'string'
+        'query' => 'string',
+        'retrieval_memo' => 'string'
     ];
 
     /**
@@ -88,9 +91,12 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         'owner_id' => null,
         'created_at' => 'date-time',
         'confidence' => null,
+        'confidence_model' => null,
         'update_mechanism' => null,
+        'lifecycle_state' => null,
         'source_labels' => null,
-        'query' => null
+        'query' => null,
+        'retrieval_memo' => null
     ];
 
     /**
@@ -108,9 +114,12 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         'owner_id' => false,
         'created_at' => false,
         'confidence' => false,
+        'confidence_model' => false,
         'update_mechanism' => false,
+        'lifecycle_state' => false,
         'source_labels' => false,
-        'query' => false
+        'query' => false,
+        'retrieval_memo' => false
     ];
 
     /**
@@ -208,9 +217,12 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         'owner_id' => 'ownerId',
         'created_at' => 'createdAt',
         'confidence' => 'confidence',
+        'confidence_model' => 'confidenceModel',
         'update_mechanism' => 'updateMechanism',
+        'lifecycle_state' => 'lifecycleState',
         'source_labels' => 'sourceLabels',
-        'query' => 'query'
+        'query' => 'query',
+        'retrieval_memo' => 'retrievalMemo'
     ];
 
     /**
@@ -228,9 +240,12 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         'owner_id' => 'setOwnerId',
         'created_at' => 'setCreatedAt',
         'confidence' => 'setConfidence',
+        'confidence_model' => 'setConfidenceModel',
         'update_mechanism' => 'setUpdateMechanism',
+        'lifecycle_state' => 'setLifecycleState',
         'source_labels' => 'setSourceLabels',
-        'query' => 'setQuery'
+        'query' => 'setQuery',
+        'retrieval_memo' => 'setRetrievalMemo'
     ];
 
     /**
@@ -248,9 +263,12 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         'owner_id' => 'getOwnerId',
         'created_at' => 'getCreatedAt',
         'confidence' => 'getConfidence',
+        'confidence_model' => 'getConfidenceModel',
         'update_mechanism' => 'getUpdateMechanism',
+        'lifecycle_state' => 'getLifecycleState',
         'source_labels' => 'getSourceLabels',
-        'query' => 'getQuery'
+        'query' => 'getQuery',
+        'retrieval_memo' => 'getRetrievalMemo'
     ];
 
     /**
@@ -297,6 +315,14 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     public const CONFIDENCE_HIGH = 'high';
     public const CONFIDENCE_MEDIUM = 'medium';
     public const CONFIDENCE_LOW = 'low';
+    public const CONFIDENCE_MODEL_HEURISTIC_TOP_RELEVANCE_V1 = 'heuristic-top-relevance-v1';
+    public const CONFIDENCE_MODEL_CONFIDENCE_PRODUCT_V1 = 'confidence-product-v1';
+    public const LIFECYCLE_STATE_ACTIVE = 'active';
+    public const LIFECYCLE_STATE_RETIRED = 'retired';
+    public const LIFECYCLE_STATE_ARCHIVED = 'archived';
+    public const RETRIEVAL_MEMO_HIT = 'hit';
+    public const RETRIEVAL_MEMO_MISS = 'miss';
+    public const RETRIEVAL_MEMO_BYPASS = 'bypass';
 
     /**
      * Gets allowable values of the enum
@@ -309,6 +335,47 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
             self::CONFIDENCE_HIGH,
             self::CONFIDENCE_MEDIUM,
             self::CONFIDENCE_LOW,
+        ];
+    }
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getConfidenceModelAllowableValues()
+    {
+        return [
+            self::CONFIDENCE_MODEL_HEURISTIC_TOP_RELEVANCE_V1,
+            self::CONFIDENCE_MODEL_CONFIDENCE_PRODUCT_V1,
+        ];
+    }
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getLifecycleStateAllowableValues()
+    {
+        return [
+            self::LIFECYCLE_STATE_ACTIVE,
+            self::LIFECYCLE_STATE_RETIRED,
+            self::LIFECYCLE_STATE_ARCHIVED,
+        ];
+    }
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getRetrievalMemoAllowableValues()
+    {
+        return [
+            self::RETRIEVAL_MEMO_HIT,
+            self::RETRIEVAL_MEMO_MISS,
+            self::RETRIEVAL_MEMO_BYPASS,
         ];
     }
 
@@ -336,9 +403,12 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         $this->setIfExists('owner_id', $data ?? [], null);
         $this->setIfExists('created_at', $data ?? [], null);
         $this->setIfExists('confidence', $data ?? [], null);
+        $this->setIfExists('confidence_model', $data ?? [], null);
         $this->setIfExists('update_mechanism', $data ?? [], null);
+        $this->setIfExists('lifecycle_state', $data ?? [], null);
         $this->setIfExists('source_labels', $data ?? [], null);
         $this->setIfExists('query', $data ?? [], null);
+        $this->setIfExists('retrieval_memo', $data ?? [], null);
     }
 
     /**
@@ -373,6 +443,33 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
             $invalidProperties[] = sprintf(
                 "invalid value '%s' for 'confidence', must be one of '%s'",
                 $this->container['confidence'],
+                implode("', '", $allowedValues)
+            );
+        }
+
+        $allowedValues = $this->getConfidenceModelAllowableValues();
+        if (!is_null($this->container['confidence_model']) && !in_array($this->container['confidence_model'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'confidence_model', must be one of '%s'",
+                $this->container['confidence_model'],
+                implode("', '", $allowedValues)
+            );
+        }
+
+        $allowedValues = $this->getLifecycleStateAllowableValues();
+        if (!is_null($this->container['lifecycle_state']) && !in_array($this->container['lifecycle_state'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'lifecycle_state', must be one of '%s'",
+                $this->container['lifecycle_state'],
+                implode("', '", $allowedValues)
+            );
+        }
+
+        $allowedValues = $this->getRetrievalMemoAllowableValues();
+        if (!is_null($this->container['retrieval_memo']) && !in_array($this->container['retrieval_memo'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'retrieval_memo', must be one of '%s'",
+                $this->container['retrieval_memo'],
                 implode("', '", $allowedValues)
             );
         }
@@ -646,6 +743,43 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     }
 
     /**
+     * Gets confidence_model
+     *
+     * @return string|null
+     */
+    public function getConfidenceModel()
+    {
+        return $this->container['confidence_model'];
+    }
+
+    /**
+     * Sets confidence_model
+     *
+     * @param string|null $confidence_model ADR-1016 confidence derivation model id
+     *
+     * @return self
+     */
+    public function setConfidenceModel($confidence_model)
+    {
+        if (is_null($confidence_model)) {
+            throw new \InvalidArgumentException('non-nullable confidence_model cannot be null');
+        }
+        $allowedValues = $this->getConfidenceModelAllowableValues();
+        if (!in_array($confidence_model, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'confidence_model', must be one of '%s'",
+                    $confidence_model,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['confidence_model'] = $confidence_model;
+
+        return $this;
+    }
+
+    /**
      * Gets update_mechanism
      *
      * @return string|null
@@ -668,6 +802,43 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
             throw new \InvalidArgumentException('non-nullable update_mechanism cannot be null');
         }
         $this->container['update_mechanism'] = $update_mechanism;
+
+        return $this;
+    }
+
+    /**
+     * Gets lifecycle_state
+     *
+     * @return string|null
+     */
+    public function getLifecycleState()
+    {
+        return $this->container['lifecycle_state'];
+    }
+
+    /**
+     * Sets lifecycle_state
+     *
+     * @param string|null $lifecycle_state ADR-1013 usage eligibility; mint is always active
+     *
+     * @return self
+     */
+    public function setLifecycleState($lifecycle_state)
+    {
+        if (is_null($lifecycle_state)) {
+            throw new \InvalidArgumentException('non-nullable lifecycle_state cannot be null');
+        }
+        $allowedValues = $this->getLifecycleStateAllowableValues();
+        if (!in_array($lifecycle_state, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'lifecycle_state', must be one of '%s'",
+                    $lifecycle_state,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['lifecycle_state'] = $lifecycle_state;
 
         return $this;
     }
@@ -722,6 +893,43 @@ class BuildContextResponse implements ModelInterface, ArrayAccess, \JsonSerializ
             throw new \InvalidArgumentException('non-nullable query cannot be null');
         }
         $this->container['query'] = $query;
+
+        return $this;
+    }
+
+    /**
+     * Gets retrieval_memo
+     *
+     * @return string|null
+     */
+    public function getRetrievalMemo()
+    {
+        return $this->container['retrieval_memo'];
+    }
+
+    /**
+     * Sets retrieval_memo
+     *
+     * @param string|null $retrieval_memo ADR-1018 ranked-candidate memo status; package envelope always reminted
+     *
+     * @return self
+     */
+    public function setRetrievalMemo($retrieval_memo)
+    {
+        if (is_null($retrieval_memo)) {
+            throw new \InvalidArgumentException('non-nullable retrieval_memo cannot be null');
+        }
+        $allowedValues = $this->getRetrievalMemoAllowableValues();
+        if (!in_array($retrieval_memo, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'retrieval_memo', must be one of '%s'",
+                    $retrieval_memo,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['retrieval_memo'] = $retrieval_memo;
 
         return $this;
     }

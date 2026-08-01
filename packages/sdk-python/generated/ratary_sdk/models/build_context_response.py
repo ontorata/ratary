@@ -37,10 +37,13 @@ class BuildContextResponse(BaseModel):
     owner_id: Optional[StrictStr] = Field(default=None, alias="ownerId")
     created_at: Optional[datetime] = Field(default=None, alias="createdAt")
     confidence: Optional[StrictStr] = None
+    confidence_model: Optional[StrictStr] = Field(default=None, description="ADR-1016 confidence derivation model id", alias="confidenceModel")
     update_mechanism: Optional[StrictStr] = Field(default=None, alias="updateMechanism")
+    lifecycle_state: Optional[StrictStr] = Field(default=None, description="ADR-1013 usage eligibility; mint is always active", alias="lifecycleState")
     source_labels: Optional[List[StrictStr]] = Field(default=None, alias="sourceLabels")
     query: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["context", "prompt", "system", "user", "memoryCount", "packageId", "ownerId", "createdAt", "confidence", "updateMechanism", "sourceLabels", "query"]
+    retrieval_memo: Optional[StrictStr] = Field(default=None, description="ADR-1018 ranked-candidate memo status; package envelope always reminted", alias="retrievalMemo")
+    __properties: ClassVar[List[str]] = ["context", "prompt", "system", "user", "memoryCount", "packageId", "ownerId", "createdAt", "confidence", "confidenceModel", "updateMechanism", "lifecycleState", "sourceLabels", "query", "retrievalMemo"]
 
     @field_validator('confidence')
     def confidence_validate_enum(cls, value):
@@ -50,6 +53,36 @@ class BuildContextResponse(BaseModel):
 
         if value not in set(['high', 'medium', 'low']):
             raise ValueError("must be one of enum values ('high', 'medium', 'low')")
+        return value
+
+    @field_validator('confidence_model')
+    def confidence_model_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['heuristic-top-relevance-v1', 'confidence-product-v1']):
+            raise ValueError("must be one of enum values ('heuristic-top-relevance-v1', 'confidence-product-v1')")
+        return value
+
+    @field_validator('lifecycle_state')
+    def lifecycle_state_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['active', 'retired', 'archived']):
+            raise ValueError("must be one of enum values ('active', 'retired', 'archived')")
+        return value
+
+    @field_validator('retrieval_memo')
+    def retrieval_memo_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['hit', 'miss', 'bypass']):
+            raise ValueError("must be one of enum values ('hit', 'miss', 'bypass')")
         return value
 
     model_config = ConfigDict(
@@ -112,9 +145,12 @@ class BuildContextResponse(BaseModel):
             "ownerId": obj.get("ownerId"),
             "createdAt": obj.get("createdAt"),
             "confidence": obj.get("confidence"),
+            "confidenceModel": obj.get("confidenceModel"),
             "updateMechanism": obj.get("updateMechanism"),
+            "lifecycleState": obj.get("lifecycleState"),
             "sourceLabels": obj.get("sourceLabels"),
-            "query": obj.get("query")
+            "query": obj.get("query"),
+            "retrievalMemo": obj.get("retrievalMemo")
         })
         return _obj
 

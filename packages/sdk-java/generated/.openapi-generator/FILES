@@ -13,6 +13,7 @@ docs/CapabilityNegotiationResult.md
 docs/ClientCapabilityRequest.md
 docs/ClientCapabilityRequestClientInfo.md
 docs/ContextApi.md
+docs/ContextPackageLifecycle.md
 docs/CreateMemoryRequest.md
 docs/EcosystemApi.md
 docs/FederationApi.md
@@ -61,6 +62,7 @@ src/main/java/org/openapitools/client/model/CapabilityMatchGroups.java
 src/main/java/org/openapitools/client/model/CapabilityNegotiationResult.java
 src/main/java/org/openapitools/client/model/ClientCapabilityRequest.java
 src/main/java/org/openapitools/client/model/ClientCapabilityRequestClientInfo.java
+src/main/java/org/openapitools/client/model/ContextPackageLifecycle.java
 src/main/java/org/openapitools/client/model/CreateMemoryRequest.java
 src/main/java/org/openapitools/client/model/Memory.java
 src/main/java/org/openapitools/client/model/UpdateMemoryRequest.java
