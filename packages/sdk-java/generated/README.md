@@ -1,7 +1,7 @@
 # openapi-java-client
 
 Ratary API — SDK v1 surface
-- API version: 1.2.2
+- API version: 1.2.3
   - Generator version: 7.23.0
 
 Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.
@@ -40,7 +40,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools</groupId>
   <artifactId>openapi-java-client</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -56,7 +56,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools:openapi-java-client:1.2.2"
+     implementation "org.openapitools:openapi-java-client:1.2.3"
   }
 ```
 
@@ -70,7 +70,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-java-client-1.2.2.jar`
+* `target/openapi-java-client-1.2.3.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -170,6 +170,7 @@ Class | Method | HTTP request | Description
  - [PolicyDenialSummary](docs/PolicyDenialSummary.md)
  - [PolicyDenialSummaryByPoint](docs/PolicyDenialSummaryByPoint.md)
  - [RecommendationCard](docs/RecommendationCard.md)
+ - [RecommendationRerankMetadata](docs/RecommendationRerankMetadata.md)
  - [RecordDecisionProvenance201Response](docs/RecordDecisionProvenance201Response.md)
  - [UpdateMemoryRequest](docs/UpdateMemoryRequest.md)
 

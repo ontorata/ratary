@@ -39,6 +39,7 @@ docs/Model/PolicyDenialEvent.md
 docs/Model/PolicyDenialSummary.md
 docs/Model/PolicyDenialSummaryByPoint.md
 docs/Model/RecommendationCard.md
+docs/Model/RecommendationRerankMetadata.md
 docs/Model/RecordDecisionProvenance201Response.md
 docs/Model/UpdateMemoryRequest.md
 git_push.sh
@@ -83,6 +84,7 @@ lib/Model/PolicyDenialEvent.php
 lib/Model/PolicyDenialSummary.php
 lib/Model/PolicyDenialSummaryByPoint.php
 lib/Model/RecommendationCard.php
+lib/Model/RecommendationRerankMetadata.php
 lib/Model/RecordDecisionProvenance201Response.php
 lib/Model/UpdateMemoryRequest.php
 lib/ObjectSerializer.php

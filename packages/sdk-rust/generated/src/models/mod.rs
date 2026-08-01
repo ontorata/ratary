@@ -52,6 +52,8 @@ pub mod policy_denial_summary_by_point;
 pub use self::policy_denial_summary_by_point::PolicyDenialSummaryByPoint;
 pub mod recommendation_card;
 pub use self::recommendation_card::RecommendationCard;
+pub mod recommendation_rerank_metadata;
+pub use self::recommendation_rerank_metadata::RecommendationRerankMetadata;
 pub mod record_decision_provenance_201_response;
 pub use self::record_decision_provenance_201_response::RecordDecisionProvenance201Response;
 pub mod update_memory_request;

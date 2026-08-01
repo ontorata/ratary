@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **memory_id** | **string** |  | [optional]
 **source_reference** | **string** |  |
 **confidence** | **float** |  | [optional]
+**computed_score** | **float** | PI-P6-D1.1 sandbox score when re-rank applied | [optional]
 **evidence_refs** | **string[]** |  |
 **reason** | **string** |  |
 

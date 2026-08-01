@@ -48,6 +48,7 @@ docs/PolicyDenialEvent.md
 docs/PolicyDenialSummary.md
 docs/PolicyDenialSummaryByPoint.md
 docs/RecommendationCard.md
+docs/RecommendationRerankMetadata.md
 docs/RecordDecisionProvenance201Response.md
 docs/SearchAPI.md
 docs/UpdateMemoryRequest.md
@@ -81,6 +82,7 @@ model_policy_denial_event.go
 model_policy_denial_summary.go
 model_policy_denial_summary_by_point.go
 model_recommendation_card.go
+model_recommendation_rerank_metadata.go
 model_record_decision_provenance_201_response.go
 model_update_memory_request.go
 response.go

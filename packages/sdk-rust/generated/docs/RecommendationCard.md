@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **memory_id** | Option<**String**> |  | [optional]
 **source_reference** | **String** |  | 
 **confidence** | Option<**f64**> |  | [optional]
+**computed_score** | Option<**f64**> | PI-P6-D1.1 sandbox score when re-rank applied | [optional]
 **evidence_refs** | **Vec<String>** |  | 
 **reason** | **String** |  | 
 

@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **Reason** | **string** |  | 
 **MemoryId** | **string** |  | [optional] 
 **Confidence** | **decimal** |  | [optional] 
+**ComputedScore** | **decimal** | PI-P6-D1.1 sandbox score when re-rank applied | [optional] 
 
 [[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
 

@@ -40,6 +40,7 @@ docs/PolicyDenialEvent.md
 docs/PolicyDenialSummary.md
 docs/PolicyDenialSummaryByPoint.md
 docs/RecommendationCard.md
+docs/RecommendationRerankMetadata.md
 docs/RecordDecisionProvenance201Response.md
 docs/SearchApi.md
 docs/UpdateMemoryRequest.md
@@ -106,5 +107,6 @@ src/main/java/org/openapitools/client/model/PolicyDenialEvent.java
 src/main/java/org/openapitools/client/model/PolicyDenialSummary.java
 src/main/java/org/openapitools/client/model/PolicyDenialSummaryByPoint.java
 src/main/java/org/openapitools/client/model/RecommendationCard.java
+src/main/java/org/openapitools/client/model/RecommendationRerankMetadata.java
 src/main/java/org/openapitools/client/model/RecordDecisionProvenance201Response.java
 src/main/java/org/openapitools/client/model/UpdateMemoryRequest.java

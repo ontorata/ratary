@@ -10,5 +10,6 @@ When adding or changing a declarative or computed profile in Ontory:
 2. Copy public catalog fields to Ratary `DECISION_MODEL_CATALOG_MIRROR` (include `computedPlugin.artifactDigestPrefix` for computed models).
 3. Enable via deployment env `DECISION_MODEL_ALLOWLIST` (comma-separated model ids).
 4. For computed models, enable sandbox on Ontory VPS: `DECISION_MODEL_SANDBOX_ENABLED=true` (execution stays Ontory; Ratary only mirrors catalog metadata).
+5. **PI-P6-D1.1 re-rank:** On Ratary set `ONTORY_SANDBOX_BRIDGE_ENABLED=true`, `ONTORY_RUNTIME_URL` (Ontory VPS), and matching `ONTORY_DECISION_MODEL_SANDBOX_TOKEN` on both Ratary and Ontory.
 
 No cross-repo import at runtime in v1.

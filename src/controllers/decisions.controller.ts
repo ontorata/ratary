@@ -4,6 +4,7 @@ import type { Env } from '../config/env.js';
 import type { IMemoryRepository } from '../repositories/memory.repository.interface.js';
 import { createRecallService } from '../composition/create-recall-service.js';
 import { mapRecallResultToRecommendationCards } from '../decision-intelligence/recommendation.mapper.js';
+import { applyRecommendationRerank } from '../decision-intelligence/apply-recommendation-rerank.js';
 import {
   parseCreateDecisionProvenanceBody,
   type CreateDecisionProvenanceBody,
@@ -27,10 +28,22 @@ export function createDecisionsController(deps: DecisionsControllerDeps) {
 
   return {
     async fetchRecommendations(
-      request: FastifyRequest<{ Body: { query?: string; limit?: number } }>,
+      request: FastifyRequest<{
+        Body: {
+          query?: string;
+          limit?: number;
+          decisionModelId?: string;
+          decisionModelVersion?: string;
+        };
+      }>,
       reply: FastifyReply,
     ): Promise<void> {
-      const body = request.body as { query?: string; limit?: number };
+      const body = request.body as {
+        query?: string;
+        limit?: number;
+        decisionModelId?: string;
+        decisionModelVersion?: string;
+      };
       const query = body.query?.trim();
       if (!query) {
         throw new ValidationError('query is required');
@@ -49,10 +62,21 @@ export function createDecisionsController(deps: DecisionsControllerDeps) {
         limit,
       });
 
+      const initialCards = mapRecallResultToRecommendationCards(result);
+      const allowlist = getDecisionModelAllowlistFromEnv();
+      const { cards, rerank } = await applyRecommendationRerank({
+        cards: initialCards,
+        traceId: result.traceId,
+        decisionModelId: body.decisionModelId,
+        decisionModelVersion: body.decisionModelVersion,
+        allowlist,
+      });
+
       reply.send({
         traceId: result.traceId,
-        cards: mapRecallResultToRecommendationCards(result),
+        cards,
         advisory: true as const,
+        ...(rerank ? { rerank } : {}),
       });
     },
 
