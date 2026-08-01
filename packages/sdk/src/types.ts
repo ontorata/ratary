@@ -117,3 +117,92 @@ export interface FederationPeer {
   displayName?: string;
   [key: string]: unknown;
 }
+
+export type GovernanceExceptionClass = 'decay_protection' | 'feature_flag_off' | 'ops_maintenance';
+
+export type GovernanceExceptionStatus = 'pending' | 'approved' | 'rejected' | 'expired';
+
+export interface GovernanceExceptionAuditEntry {
+  at: string;
+  action: string;
+  actor?: string;
+  note?: string;
+}
+
+export interface GovernanceExceptionRecord {
+  exceptionId: string;
+  ownerId: string;
+  exceptionClass: GovernanceExceptionClass;
+  rationale: string;
+  status: GovernanceExceptionStatus;
+  requestedBy: string;
+  requestedAt: string;
+  expiresAt?: string;
+  auditLog: GovernanceExceptionAuditEntry[];
+}
+
+export interface CreateGovernanceExceptionInput {
+  exceptionClass: GovernanceExceptionClass;
+  rationale: string;
+  expiresAt?: string;
+}
+
+export type PolicyDenialPoint = 'write' | 'recall' | 'stewardship';
+
+export interface PolicyDenialEvent {
+  denialId: string;
+  ownerId: string;
+  point: PolicyDenialPoint;
+  policyModuleId?: string;
+  reasonCode: string;
+  occurredAt: string;
+  memoryId?: string;
+  resource?: string;
+}
+
+export interface PolicyDenialSummary {
+  since: string;
+  byPoint: Record<PolicyDenialPoint, number>;
+  total: number;
+}
+
+export interface RecommendationCard {
+  cardId: string;
+  title: string;
+  advisory: true;
+  memoryId?: string;
+  sourceReference: string;
+  confidence?: number;
+  evidenceRefs: string[];
+  reason: string;
+}
+
+export interface FetchRecommendationsInput {
+  query: string;
+  limit?: number;
+}
+
+export interface FetchRecommendationsResult {
+  traceId: string;
+  cards: RecommendationCard[];
+  advisory: true;
+}
+
+export interface CreateDecisionProvenanceInput {
+  briefId: string;
+  packageId?: string;
+  verdict: 'accepted' | 'rejected';
+  rationale?: string;
+  sourceMemoryIds?: string[];
+}
+
+export interface DecisionProvenanceRecord {
+  recordId: string;
+  ownerId: string;
+  briefId: string;
+  packageId?: string;
+  verdict: 'accepted' | 'rejected';
+  rationale?: string;
+  sourceMemoryIds: string[];
+  recordedAt: string;
+}

@@ -1,8 +1,10 @@
 import { AdminClient } from './admin/index.js';
 import { CapabilitiesApi } from './apis/capabilities-api.js';
 import { ContextApi } from './apis/context-api.js';
+import { DecisionsApi } from './apis/decisions-api.js';
 import { EcosystemApi } from './apis/ecosystem-api.js';
 import { FederationApi } from './apis/federation-api.js';
+import { GovernanceApi } from './apis/governance-api.js';
 import { MemoryApi } from './apis/memory-api.js';
 import type { RestTransportConfig } from './ports/iapi-client.js';
 import { RestTransport } from './transports/rest-transport.js';
@@ -17,6 +19,8 @@ export class AiBrainClient {
   readonly context: ContextApi;
   readonly capabilities: CapabilitiesApi;
   readonly ecosystem: EcosystemApi;
+  readonly governance: GovernanceApi;
+  readonly decisions: DecisionsApi;
   /** Phase 28 — admin REST surfaces (cloud, observability, infrastructure, platform, fabric, federation). */
   readonly admin: AdminClient;
   /** @deprecated Use admin.federation */
@@ -33,6 +37,8 @@ export class AiBrainClient {
     this.context = new ContextApi(this.transport);
     this.capabilities = new CapabilitiesApi(this.transport);
     this.ecosystem = new EcosystemApi(this.transport);
+    this.governance = new GovernanceApi(this.transport);
+    this.decisions = new DecisionsApi(this.transport);
     this.admin = new AdminClient(this.transport);
     if (options.federation) {
       this.federation = new FederationApi(this.transport);
