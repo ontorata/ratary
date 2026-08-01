@@ -15,6 +15,9 @@
 | ADR-1019 Context Update Propagation | `architecture/acos/ADR-1019-context-update-propagation.md` |
 | ADR-1020 Memory Governance Architecture | `architecture/acos/ADR-1020-memory-governance-architecture.md` |
 | ADR-1021 Memory Policy Engine | `architecture/acos/ADR-1021-memory-policy-engine.md` |
+| ADR-1026 Memory Policy Update Mechanism | `architecture/acos/ADR-1026-memory-policy-update-mechanism.md` |
+| ADR-1028 Memory Policy Enforcement | `architecture/acos/ADR-1028-memory-policy-enforcement.md` |
+| ADR-1029 Memory Governance Exceptions | `architecture/acos/ADR-1029-memory-governance-exceptions.md` |
 | Wire evidence (Context Package envelope) | `products/ratary/evidence/ADR-1011-CONTEXT-PACKAGE-WIRE-2026-07-31.md` |
 
 Operator summary in this repo: [docs/CONTEXT-PACKAGE.md](../../CONTEXT-PACKAGE.md).
