@@ -19,6 +19,7 @@ from ratary_sdk.models.capability_match_groups import CapabilityMatchGroups
 from ratary_sdk.models.capability_negotiation_result import CapabilityNegotiationResult
 from ratary_sdk.models.client_capability_request import ClientCapabilityRequest
 from ratary_sdk.models.client_capability_request_client_info import ClientCapabilityRequestClientInfo
+from ratary_sdk.models.context_package_lifecycle import ContextPackageLifecycle
 from ratary_sdk.models.create_memory_request import CreateMemoryRequest
 from ratary_sdk.models.memory import Memory
 from ratary_sdk.models.update_memory_request import UpdateMemoryRequest

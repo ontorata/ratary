@@ -40,6 +40,7 @@ __all__ = [
     "CapabilityNegotiationResult",
     "ClientCapabilityRequest",
     "ClientCapabilityRequestClientInfo",
+    "ContextPackageLifecycle",
     "CreateMemoryRequest",
     "Memory",
     "UpdateMemoryRequest",
@@ -72,6 +73,7 @@ from ratary_sdk.models.capability_match_groups import CapabilityMatchGroups as C
 from ratary_sdk.models.capability_negotiation_result import CapabilityNegotiationResult as CapabilityNegotiationResult
 from ratary_sdk.models.client_capability_request import ClientCapabilityRequest as ClientCapabilityRequest
 from ratary_sdk.models.client_capability_request_client_info import ClientCapabilityRequestClientInfo as ClientCapabilityRequestClientInfo
+from ratary_sdk.models.context_package_lifecycle import ContextPackageLifecycle as ContextPackageLifecycle
 from ratary_sdk.models.create_memory_request import CreateMemoryRequest as CreateMemoryRequest
 from ratary_sdk.models.memory import Memory as Memory
 from ratary_sdk.models.update_memory_request import UpdateMemoryRequest as UpdateMemoryRequest

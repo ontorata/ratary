@@ -152,10 +152,126 @@ public class BuildContextResponse {
   @javax.annotation.Nullable
   private ConfidenceEnum confidence;
 
+  /**
+   * ADR-1016 confidence derivation model id
+   */
+  @JsonAdapter(ConfidenceModelEnum.Adapter.class)
+  public enum ConfidenceModelEnum {
+    HEURISTIC_TOP_RELEVANCE_V1("heuristic-top-relevance-v1"),
+    
+    CONFIDENCE_PRODUCT_V1("confidence-product-v1");
+
+    private String value;
+
+    ConfidenceModelEnum(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    public static ConfidenceModelEnum fromValue(String value) {
+      for (ConfidenceModelEnum b : ConfidenceModelEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+
+    public static class Adapter extends TypeAdapter<ConfidenceModelEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final ConfidenceModelEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public ConfidenceModelEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return ConfidenceModelEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      ConfidenceModelEnum.fromValue(value);
+    }
+  }
+
+  public static final String SERIALIZED_NAME_CONFIDENCE_MODEL = "confidenceModel";
+  @SerializedName(SERIALIZED_NAME_CONFIDENCE_MODEL)
+  @javax.annotation.Nullable
+  private ConfidenceModelEnum confidenceModel;
+
   public static final String SERIALIZED_NAME_UPDATE_MECHANISM = "updateMechanism";
   @SerializedName(SERIALIZED_NAME_UPDATE_MECHANISM)
   @javax.annotation.Nullable
   private String updateMechanism;
+
+  /**
+   * ADR-1013 usage eligibility; mint is always active
+   */
+  @JsonAdapter(LifecycleStateEnum.Adapter.class)
+  public enum LifecycleStateEnum {
+    ACTIVE("active"),
+    
+    RETIRED("retired"),
+    
+    ARCHIVED("archived");
+
+    private String value;
+
+    LifecycleStateEnum(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    public static LifecycleStateEnum fromValue(String value) {
+      for (LifecycleStateEnum b : LifecycleStateEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+
+    public static class Adapter extends TypeAdapter<LifecycleStateEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final LifecycleStateEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public LifecycleStateEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return LifecycleStateEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      LifecycleStateEnum.fromValue(value);
+    }
+  }
+
+  public static final String SERIALIZED_NAME_LIFECYCLE_STATE = "lifecycleState";
+  @SerializedName(SERIALIZED_NAME_LIFECYCLE_STATE)
+  @javax.annotation.Nullable
+  private LifecycleStateEnum lifecycleState;
 
   public static final String SERIALIZED_NAME_SOURCE_LABELS = "sourceLabels";
   @SerializedName(SERIALIZED_NAME_SOURCE_LABELS)
@@ -166,6 +282,65 @@ public class BuildContextResponse {
   @SerializedName(SERIALIZED_NAME_QUERY)
   @javax.annotation.Nullable
   private String query;
+
+  /**
+   * ADR-1018 ranked-candidate memo status; package envelope always reminted
+   */
+  @JsonAdapter(RetrievalMemoEnum.Adapter.class)
+  public enum RetrievalMemoEnum {
+    HIT("hit"),
+    
+    MISS("miss"),
+    
+    BYPASS("bypass");
+
+    private String value;
+
+    RetrievalMemoEnum(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    public static RetrievalMemoEnum fromValue(String value) {
+      for (RetrievalMemoEnum b : RetrievalMemoEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+
+    public static class Adapter extends TypeAdapter<RetrievalMemoEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final RetrievalMemoEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public RetrievalMemoEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return RetrievalMemoEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      RetrievalMemoEnum.fromValue(value);
+    }
+  }
+
+  public static final String SERIALIZED_NAME_RETRIEVAL_MEMO = "retrievalMemo";
+  @SerializedName(SERIALIZED_NAME_RETRIEVAL_MEMO)
+  @javax.annotation.Nullable
+  private RetrievalMemoEnum retrievalMemo;
 
   public BuildContextResponse() {
   }
@@ -341,6 +516,25 @@ public class BuildContextResponse {
   }
 
 
+  public BuildContextResponse confidenceModel(@javax.annotation.Nullable ConfidenceModelEnum confidenceModel) {
+    this.confidenceModel = confidenceModel;
+    return this;
+  }
+
+  /**
+   * ADR-1016 confidence derivation model id
+   * @return confidenceModel
+   */
+  @javax.annotation.Nullable
+  public ConfidenceModelEnum getConfidenceModel() {
+    return confidenceModel;
+  }
+
+  public void setConfidenceModel(@javax.annotation.Nullable ConfidenceModelEnum confidenceModel) {
+    this.confidenceModel = confidenceModel;
+  }
+
+
   public BuildContextResponse updateMechanism(@javax.annotation.Nullable String updateMechanism) {
     this.updateMechanism = updateMechanism;
     return this;
@@ -357,6 +551,25 @@ public class BuildContextResponse {
 
   public void setUpdateMechanism(@javax.annotation.Nullable String updateMechanism) {
     this.updateMechanism = updateMechanism;
+  }
+
+
+  public BuildContextResponse lifecycleState(@javax.annotation.Nullable LifecycleStateEnum lifecycleState) {
+    this.lifecycleState = lifecycleState;
+    return this;
+  }
+
+  /**
+   * ADR-1013 usage eligibility; mint is always active
+   * @return lifecycleState
+   */
+  @javax.annotation.Nullable
+  public LifecycleStateEnum getLifecycleState() {
+    return lifecycleState;
+  }
+
+  public void setLifecycleState(@javax.annotation.Nullable LifecycleStateEnum lifecycleState) {
+    this.lifecycleState = lifecycleState;
   }
 
 
@@ -406,6 +619,25 @@ public class BuildContextResponse {
   }
 
 
+  public BuildContextResponse retrievalMemo(@javax.annotation.Nullable RetrievalMemoEnum retrievalMemo) {
+    this.retrievalMemo = retrievalMemo;
+    return this;
+  }
+
+  /**
+   * ADR-1018 ranked-candidate memo status; package envelope always reminted
+   * @return retrievalMemo
+   */
+  @javax.annotation.Nullable
+  public RetrievalMemoEnum getRetrievalMemo() {
+    return retrievalMemo;
+  }
+
+  public void setRetrievalMemo(@javax.annotation.Nullable RetrievalMemoEnum retrievalMemo) {
+    this.retrievalMemo = retrievalMemo;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -425,14 +657,17 @@ public class BuildContextResponse {
         Objects.equals(this.ownerId, buildContextResponse.ownerId) &&
         Objects.equals(this.createdAt, buildContextResponse.createdAt) &&
         Objects.equals(this.confidence, buildContextResponse.confidence) &&
+        Objects.equals(this.confidenceModel, buildContextResponse.confidenceModel) &&
         Objects.equals(this.updateMechanism, buildContextResponse.updateMechanism) &&
+        Objects.equals(this.lifecycleState, buildContextResponse.lifecycleState) &&
         Objects.equals(this.sourceLabels, buildContextResponse.sourceLabels) &&
-        Objects.equals(this.query, buildContextResponse.query);
+        Objects.equals(this.query, buildContextResponse.query) &&
+        Objects.equals(this.retrievalMemo, buildContextResponse.retrievalMemo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(context, prompt, system, user, memoryCount, packageId, ownerId, createdAt, confidence, updateMechanism, sourceLabels, query);
+    return Objects.hash(context, prompt, system, user, memoryCount, packageId, ownerId, createdAt, confidence, confidenceModel, updateMechanism, lifecycleState, sourceLabels, query, retrievalMemo);
   }
 
   @Override
@@ -448,9 +683,12 @@ public class BuildContextResponse {
     sb.append("    ownerId: ").append(toIndentedString(ownerId)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    confidence: ").append(toIndentedString(confidence)).append("\n");
+    sb.append("    confidenceModel: ").append(toIndentedString(confidenceModel)).append("\n");
     sb.append("    updateMechanism: ").append(toIndentedString(updateMechanism)).append("\n");
+    sb.append("    lifecycleState: ").append(toIndentedString(lifecycleState)).append("\n");
     sb.append("    sourceLabels: ").append(toIndentedString(sourceLabels)).append("\n");
     sb.append("    query: ").append(toIndentedString(query)).append("\n");
+    sb.append("    retrievalMemo: ").append(toIndentedString(retrievalMemo)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -469,7 +707,7 @@ public class BuildContextResponse {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("context", "prompt", "system", "user", "memoryCount", "packageId", "ownerId", "createdAt", "confidence", "updateMechanism", "sourceLabels", "query"));
+    openapiFields = new HashSet<String>(Arrays.asList("context", "prompt", "system", "user", "memoryCount", "packageId", "ownerId", "createdAt", "confidence", "confidenceModel", "updateMechanism", "lifecycleState", "sourceLabels", "query", "retrievalMemo"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -521,8 +759,22 @@ public class BuildContextResponse {
       if (jsonObj.get("confidence") != null && !jsonObj.get("confidence").isJsonNull()) {
         ConfidenceEnum.validateJsonElement(jsonObj.get("confidence"));
       }
+      if ((jsonObj.get("confidenceModel") != null && !jsonObj.get("confidenceModel").isJsonNull()) && !jsonObj.get("confidenceModel").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `confidenceModel` to be a primitive type in the JSON string but got `%s`", jsonObj.get("confidenceModel").toString()));
+      }
+      // validate the optional field `confidenceModel`
+      if (jsonObj.get("confidenceModel") != null && !jsonObj.get("confidenceModel").isJsonNull()) {
+        ConfidenceModelEnum.validateJsonElement(jsonObj.get("confidenceModel"));
+      }
       if ((jsonObj.get("updateMechanism") != null && !jsonObj.get("updateMechanism").isJsonNull()) && !jsonObj.get("updateMechanism").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `updateMechanism` to be a primitive type in the JSON string but got `%s`", jsonObj.get("updateMechanism").toString()));
+      }
+      if ((jsonObj.get("lifecycleState") != null && !jsonObj.get("lifecycleState").isJsonNull()) && !jsonObj.get("lifecycleState").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `lifecycleState` to be a primitive type in the JSON string but got `%s`", jsonObj.get("lifecycleState").toString()));
+      }
+      // validate the optional field `lifecycleState`
+      if (jsonObj.get("lifecycleState") != null && !jsonObj.get("lifecycleState").isJsonNull()) {
+        LifecycleStateEnum.validateJsonElement(jsonObj.get("lifecycleState"));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("sourceLabels") != null && !jsonObj.get("sourceLabels").isJsonNull() && !jsonObj.get("sourceLabels").isJsonArray()) {
@@ -530,6 +782,13 @@ public class BuildContextResponse {
       }
       if ((jsonObj.get("query") != null && !jsonObj.get("query").isJsonNull()) && !jsonObj.get("query").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `query` to be a primitive type in the JSON string but got `%s`", jsonObj.get("query").toString()));
+      }
+      if ((jsonObj.get("retrievalMemo") != null && !jsonObj.get("retrievalMemo").isJsonNull()) && !jsonObj.get("retrievalMemo").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `retrievalMemo` to be a primitive type in the JSON string but got `%s`", jsonObj.get("retrievalMemo").toString()));
+      }
+      // validate the optional field `retrievalMemo`
+      if (jsonObj.get("retrievalMemo") != null && !jsonObj.get("retrievalMemo").isJsonNull()) {
+        RetrievalMemoEnum.validateJsonElement(jsonObj.get("retrievalMemo"));
       }
   }
 

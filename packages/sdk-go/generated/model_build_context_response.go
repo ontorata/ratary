@@ -30,9 +30,15 @@ type BuildContextResponse struct {
 	OwnerId *string `json:"ownerId,omitempty"`
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	Confidence *string `json:"confidence,omitempty"`
+	// ADR-1016 confidence derivation model id
+	ConfidenceModel *string `json:"confidenceModel,omitempty"`
 	UpdateMechanism *string `json:"updateMechanism,omitempty"`
+	// ADR-1013 usage eligibility; mint is always active
+	LifecycleState *string `json:"lifecycleState,omitempty"`
 	SourceLabels []string `json:"sourceLabels,omitempty"`
 	Query *string `json:"query,omitempty"`
+	// ADR-1018 ranked-candidate memo status; package envelope always reminted
+	RetrievalMemo *string `json:"retrievalMemo,omitempty"`
 }
 
 // NewBuildContextResponse instantiates a new BuildContextResponse object
@@ -340,6 +346,38 @@ func (o *BuildContextResponse) SetConfidence(v string) {
 	o.Confidence = &v
 }
 
+// GetConfidenceModel returns the ConfidenceModel field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetConfidenceModel() string {
+	if o == nil || IsNil(o.ConfidenceModel) {
+		var ret string
+		return ret
+	}
+	return *o.ConfidenceModel
+}
+
+// GetConfidenceModelOk returns a tuple with the ConfidenceModel field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetConfidenceModelOk() (*string, bool) {
+	if o == nil || IsNil(o.ConfidenceModel) {
+		return nil, false
+	}
+	return o.ConfidenceModel, true
+}
+
+// HasConfidenceModel returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasConfidenceModel() bool {
+	if o != nil && !IsNil(o.ConfidenceModel) {
+		return true
+	}
+
+	return false
+}
+
+// SetConfidenceModel gets a reference to the given string and assigns it to the ConfidenceModel field.
+func (o *BuildContextResponse) SetConfidenceModel(v string) {
+	o.ConfidenceModel = &v
+}
+
 // GetUpdateMechanism returns the UpdateMechanism field value if set, zero value otherwise.
 func (o *BuildContextResponse) GetUpdateMechanism() string {
 	if o == nil || IsNil(o.UpdateMechanism) {
@@ -370,6 +408,38 @@ func (o *BuildContextResponse) HasUpdateMechanism() bool {
 // SetUpdateMechanism gets a reference to the given string and assigns it to the UpdateMechanism field.
 func (o *BuildContextResponse) SetUpdateMechanism(v string) {
 	o.UpdateMechanism = &v
+}
+
+// GetLifecycleState returns the LifecycleState field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetLifecycleState() string {
+	if o == nil || IsNil(o.LifecycleState) {
+		var ret string
+		return ret
+	}
+	return *o.LifecycleState
+}
+
+// GetLifecycleStateOk returns a tuple with the LifecycleState field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetLifecycleStateOk() (*string, bool) {
+	if o == nil || IsNil(o.LifecycleState) {
+		return nil, false
+	}
+	return o.LifecycleState, true
+}
+
+// HasLifecycleState returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasLifecycleState() bool {
+	if o != nil && !IsNil(o.LifecycleState) {
+		return true
+	}
+
+	return false
+}
+
+// SetLifecycleState gets a reference to the given string and assigns it to the LifecycleState field.
+func (o *BuildContextResponse) SetLifecycleState(v string) {
+	o.LifecycleState = &v
 }
 
 // GetSourceLabels returns the SourceLabels field value if set, zero value otherwise.
@@ -436,6 +506,38 @@ func (o *BuildContextResponse) SetQuery(v string) {
 	o.Query = &v
 }
 
+// GetRetrievalMemo returns the RetrievalMemo field value if set, zero value otherwise.
+func (o *BuildContextResponse) GetRetrievalMemo() string {
+	if o == nil || IsNil(o.RetrievalMemo) {
+		var ret string
+		return ret
+	}
+	return *o.RetrievalMemo
+}
+
+// GetRetrievalMemoOk returns a tuple with the RetrievalMemo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *BuildContextResponse) GetRetrievalMemoOk() (*string, bool) {
+	if o == nil || IsNil(o.RetrievalMemo) {
+		return nil, false
+	}
+	return o.RetrievalMemo, true
+}
+
+// HasRetrievalMemo returns a boolean if a field has been set.
+func (o *BuildContextResponse) HasRetrievalMemo() bool {
+	if o != nil && !IsNil(o.RetrievalMemo) {
+		return true
+	}
+
+	return false
+}
+
+// SetRetrievalMemo gets a reference to the given string and assigns it to the RetrievalMemo field.
+func (o *BuildContextResponse) SetRetrievalMemo(v string) {
+	o.RetrievalMemo = &v
+}
+
 func (o BuildContextResponse) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -473,14 +575,23 @@ func (o BuildContextResponse) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Confidence) {
 		toSerialize["confidence"] = o.Confidence
 	}
+	if !IsNil(o.ConfidenceModel) {
+		toSerialize["confidenceModel"] = o.ConfidenceModel
+	}
 	if !IsNil(o.UpdateMechanism) {
 		toSerialize["updateMechanism"] = o.UpdateMechanism
+	}
+	if !IsNil(o.LifecycleState) {
+		toSerialize["lifecycleState"] = o.LifecycleState
 	}
 	if !IsNil(o.SourceLabels) {
 		toSerialize["sourceLabels"] = o.SourceLabels
 	}
 	if !IsNil(o.Query) {
 		toSerialize["query"] = o.Query
+	}
+	if !IsNil(o.RetrievalMemo) {
+		toSerialize["retrievalMemo"] = o.RetrievalMemo
 	}
 	return toSerialize, nil
 }

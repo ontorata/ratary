@@ -10,11 +10,7 @@ export type ContextPackageLifecycleRecord = Readonly<{
 
 /** ADR-1013 — usage-eligibility SoR for minted Context Packages (payload remains immutable). */
 export interface IContextPackageLifecycleStore {
-  insertActive(input: {
-    packageId: string;
-    ownerId: string;
-    createdAt: string;
-  }): Promise<void>;
+  insertActive(input: { packageId: string; ownerId: string; createdAt: string }): Promise<void>;
 
   get(ownerId: string, packageId: string): Promise<ContextPackageLifecycleRecord | null>;
 

@@ -1199,9 +1199,7 @@ CREATE INDEX IF NOT EXISTS idx_context_packages_owner_state
   ON context_packages(owner_id, lifecycle_state);
 `;
 
-export async function migrateContextPackageLifecyclePhase1(
-  client: ISqlDatabase,
-): Promise<void> {
+export async function migrateContextPackageLifecyclePhase1(client: ISqlDatabase): Promise<void> {
   for (const sql of splitStatements(CONTEXT_PACKAGES_SQL)) {
     await client.execute(sql);
   }

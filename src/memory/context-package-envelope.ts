@@ -15,8 +15,7 @@ export const CONTEXT_PACKAGE_LIFECYCLE_STATES = [
 
 export const CONTEXT_PACKAGE_UPDATE_MECHANISM = 'ratary-buildContext-v1' as const;
 
-export const CONTEXT_PACKAGE_CONFIDENCE_MODEL_HEURISTIC =
-  'heuristic-top-relevance-v1' as const;
+export const CONTEXT_PACKAGE_CONFIDENCE_MODEL_HEURISTIC = 'heuristic-top-relevance-v1' as const;
 export const CONTEXT_PACKAGE_CONFIDENCE_MODEL_PRODUCT = 'confidence-product-v1' as const;
 
 export type ContextPackageConfidenceModel =
@@ -152,8 +151,7 @@ export function createContextPackageEnvelope(input: {
   confidenceModel?: ContextPackageConfidenceModel;
 }): ContextPackageEnvelope {
   const now = input.now ?? (() => new Date());
-  const confidenceModel =
-    input.confidenceModel ?? CONTEXT_PACKAGE_CONFIDENCE_MODEL_PRODUCT;
+  const confidenceModel = input.confidenceModel ?? CONTEXT_PACKAGE_CONFIDENCE_MODEL_PRODUCT;
   const confidence =
     confidenceModel === CONTEXT_PACKAGE_CONFIDENCE_MODEL_HEURISTIC
       ? deriveContextConfidenceHeuristic(input.memories)

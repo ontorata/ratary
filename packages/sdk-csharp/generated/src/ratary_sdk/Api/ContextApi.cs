@@ -38,6 +38,29 @@ namespace ratary_sdk.Api
         ContextApiEvents Events { get; }
 
         /// <summary>
+        /// Archive Context Package (active|retired → archived)
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArchiveContextPackageApiResponse"/>&gt;</returns>
+        Task<IArchiveContextPackageApiResponse> ArchiveContextPackageAsync(string packageId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Archive Context Package (active|retired → archived)
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArchiveContextPackageApiResponse"/>?&gt;</returns>
+        Task<IArchiveContextPackageApiResponse?> ArchiveContextPackageOrDefaultAsync(string packageId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <remarks>
@@ -59,6 +82,64 @@ namespace ratary_sdk.Api
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns><see cref="Task"/>&lt;<see cref="IBuildContextApiResponse"/>?&gt;</returns>
         Task<IBuildContextApiResponse?> BuildContextOrDefaultAsync(BuildContextRequest buildContextRequest, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get Context Package lifecycle state (ADR-1013)
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IGetContextPackageLifecycleApiResponse"/>&gt;</returns>
+        Task<IGetContextPackageLifecycleApiResponse> GetContextPackageLifecycleAsync(string packageId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Get Context Package lifecycle state (ADR-1013)
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IGetContextPackageLifecycleApiResponse"/>?&gt;</returns>
+        Task<IGetContextPackageLifecycleApiResponse?> GetContextPackageLifecycleOrDefaultAsync(string packageId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retire Context Package (active → retired)
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IRetireContextPackageApiResponse"/>&gt;</returns>
+        Task<IRetireContextPackageApiResponse> RetireContextPackageAsync(string packageId, System.Threading.CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retire Context Package (active → retired)
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IRetireContextPackageApiResponse"/>?&gt;</returns>
+        Task<IRetireContextPackageApiResponse?> RetireContextPackageOrDefaultAsync(string packageId, System.Threading.CancellationToken cancellationToken = default);
+    }
+
+    /// <summary>
+    /// The <see cref="IArchiveContextPackageApiResponse"/>
+    /// </summary>
+    public interface IArchiveContextPackageApiResponse : ratary_sdk.Client.IApiResponse, IOk<ratary_sdk.Model.ContextPackageLifecycle?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
     }
 
     /// <summary>
@@ -74,10 +155,54 @@ namespace ratary_sdk.Api
     }
 
     /// <summary>
+    /// The <see cref="IGetContextPackageLifecycleApiResponse"/>
+    /// </summary>
+    public interface IGetContextPackageLifecycleApiResponse : ratary_sdk.Client.IApiResponse, IOk<ratary_sdk.Model.ContextPackageLifecycle?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+    }
+
+    /// <summary>
+    /// The <see cref="IRetireContextPackageApiResponse"/>
+    /// </summary>
+    public interface IRetireContextPackageApiResponse : ratary_sdk.Client.IApiResponse, IOk<ratary_sdk.Model.ContextPackageLifecycle?>
+    {
+        /// <summary>
+        /// Returns true if the response is 200 Ok
+        /// </summary>
+        /// <returns></returns>
+        bool IsOk { get; }
+    }
+
+    /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
     public class ContextApiEvents
     {
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnArchiveContextPackage;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorArchiveContextPackage;
+
+        internal void ExecuteOnArchiveContextPackage(ContextApi.ArchiveContextPackageApiResponse apiResponse)
+        {
+            OnArchiveContextPackage?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorArchiveContextPackage(Exception exception)
+        {
+            OnErrorArchiveContextPackage?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
         /// <summary>
         /// The event raised after the server response
         /// </summary>
@@ -96,6 +221,46 @@ namespace ratary_sdk.Api
         internal void ExecuteOnErrorBuildContext(Exception exception)
         {
             OnErrorBuildContext?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnGetContextPackageLifecycle;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorGetContextPackageLifecycle;
+
+        internal void ExecuteOnGetContextPackageLifecycle(ContextApi.GetContextPackageLifecycleApiResponse apiResponse)
+        {
+            OnGetContextPackageLifecycle?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorGetContextPackageLifecycle(Exception exception)
+        {
+            OnErrorGetContextPackageLifecycle?.Invoke(this, new ExceptionEventArgs(exception));
+        }
+
+        /// <summary>
+        /// The event raised after the server response
+        /// </summary>
+        public event EventHandler<ApiResponseEventArgs>? OnRetireContextPackage;
+
+        /// <summary>
+        /// The event raised after an error querying the server
+        /// </summary>
+        public event EventHandler<ExceptionEventArgs>? OnErrorRetireContextPackage;
+
+        internal void ExecuteOnRetireContextPackage(ContextApi.RetireContextPackageApiResponse apiResponse)
+        {
+            OnRetireContextPackage?.Invoke(this, new ApiResponseEventArgs(apiResponse));
+        }
+
+        internal void ExecuteOnErrorRetireContextPackage(Exception exception)
+        {
+            OnErrorRetireContextPackage?.Invoke(this, new ExceptionEventArgs(exception));
         }
     }
 
@@ -151,6 +316,263 @@ namespace ratary_sdk.Api
             Events = contextApiEvents;
             ApiKeyProvider = apiKeyProvider;
             BearerTokenProvider = bearerTokenProvider;
+        }
+
+        partial void FormatArchiveContextPackage(ref string packageId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="packageId"></param>
+        /// <returns></returns>
+        private void ValidateArchiveContextPackage(string packageId)
+        {
+            if (packageId == null)
+                throw new ArgumentNullException(nameof(packageId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="packageId"></param>
+        private void AfterArchiveContextPackageDefaultImplementation(IArchiveContextPackageApiResponse apiResponseLocalVar, string packageId)
+        {
+            bool suppressDefaultLog = false;
+            AfterArchiveContextPackage(ref suppressDefaultLog, apiResponseLocalVar, packageId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="packageId"></param>
+        partial void AfterArchiveContextPackage(ref bool suppressDefaultLog, IArchiveContextPackageApiResponse apiResponseLocalVar, string packageId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="packageId"></param>
+        private void OnErrorArchiveContextPackageDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string packageId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorArchiveContextPackage(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, packageId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="packageId"></param>
+        partial void OnErrorArchiveContextPackage(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string packageId);
+
+        /// <summary>
+        /// Archive Context Package (active|retired → archived) 
+        /// </summary>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArchiveContextPackageApiResponse"/>&gt;</returns>
+        public async Task<IArchiveContextPackageApiResponse?> ArchiveContextPackageOrDefaultAsync(string packageId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ArchiveContextPackageAsync(packageId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Archive Context Package (active|retired → archived) 
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IArchiveContextPackageApiResponse"/>&gt;</returns>
+        public async Task<IArchiveContextPackageApiResponse> ArchiveContextPackageAsync(string packageId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateArchiveContextPackage(packageId);
+
+                FormatArchiveContextPackage(ref packageId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/context/packages/{packageId}/archive"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath.TrimEnd('/'), "/context/packages/{packageId}/archive");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BpackageId%7D", Uri.EscapeDataString(packageId.ToString()));
+
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
+                    ApiKeyToken apiKeyTokenLocalVar1 = (ApiKeyToken) await ApiKeyProvider.GetAsync("X-API-Key", cancellationToken).ConfigureAwait(false);
+                    tokenBaseLocalVars.Add(apiKeyTokenLocalVar1);
+                    apiKeyTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar);
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar2 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar2);
+
+                    bearerTokenLocalVar2.UseInHeader(httpRequestMessageLocalVar, "");
+
+                    string[] acceptLocalVars = new string[] {
+                        "application/json"
+                    };
+
+                    IEnumerable<MediaTypeWithQualityHeaderValue> acceptHeaderValuesLocalVar = ClientUtils.SelectHeaderAcceptArray(acceptLocalVars);
+
+                    foreach (var acceptLocalVar in acceptHeaderValuesLocalVar)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(acceptLocalVar);
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        ILogger<ArchiveContextPackageApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<ArchiveContextPackageApiResponse>();
+                        ArchiveContextPackageApiResponse apiResponseLocalVar;
+
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/context/packages/{packageId}/archive", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
+
+                        AfterArchiveContextPackageDefaultImplementation(apiResponseLocalVar, packageId);
+
+                        Events.ExecuteOnArchiveContextPackage(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorArchiveContextPackageDefaultImplementation(e, "/context/packages/{packageId}/archive", uriBuilderLocalVar.Path, packageId);
+                Events.ExecuteOnErrorArchiveContextPackage(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ArchiveContextPackageApiResponse"/>
+        /// </summary>
+        public partial class ArchiveContextPackageApiResponse : ratary_sdk.Client.ApiResponse, IArchiveContextPackageApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<ArchiveContextPackageApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="ArchiveContextPackageApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ArchiveContextPackageApiResponse(ILogger<ArchiveContextPackageApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="ArchiveContextPackageApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public ArchiveContextPackageApiResponse(ILogger<ArchiveContextPackageApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public ratary_sdk.Model.ContextPackageLifecycle? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<ratary_sdk.Model.ContextPackageLifecycle>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out ratary_sdk.Model.ContextPackageLifecycle? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
         }
 
         partial void FormatBuildContext(BuildContextRequest buildContextRequest);
@@ -369,6 +791,520 @@ namespace ratary_sdk.Api
             /// </summary>
             /// <returns></returns>
             public bool IsOk => 200 == (int)StatusCode;
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatGetContextPackageLifecycle(ref string packageId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="packageId"></param>
+        /// <returns></returns>
+        private void ValidateGetContextPackageLifecycle(string packageId)
+        {
+            if (packageId == null)
+                throw new ArgumentNullException(nameof(packageId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="packageId"></param>
+        private void AfterGetContextPackageLifecycleDefaultImplementation(IGetContextPackageLifecycleApiResponse apiResponseLocalVar, string packageId)
+        {
+            bool suppressDefaultLog = false;
+            AfterGetContextPackageLifecycle(ref suppressDefaultLog, apiResponseLocalVar, packageId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="packageId"></param>
+        partial void AfterGetContextPackageLifecycle(ref bool suppressDefaultLog, IGetContextPackageLifecycleApiResponse apiResponseLocalVar, string packageId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="packageId"></param>
+        private void OnErrorGetContextPackageLifecycleDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string packageId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorGetContextPackageLifecycle(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, packageId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="packageId"></param>
+        partial void OnErrorGetContextPackageLifecycle(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string packageId);
+
+        /// <summary>
+        /// Get Context Package lifecycle state (ADR-1013) 
+        /// </summary>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IGetContextPackageLifecycleApiResponse"/>&gt;</returns>
+        public async Task<IGetContextPackageLifecycleApiResponse?> GetContextPackageLifecycleOrDefaultAsync(string packageId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await GetContextPackageLifecycleAsync(packageId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get Context Package lifecycle state (ADR-1013) 
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IGetContextPackageLifecycleApiResponse"/>&gt;</returns>
+        public async Task<IGetContextPackageLifecycleApiResponse> GetContextPackageLifecycleAsync(string packageId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateGetContextPackageLifecycle(packageId);
+
+                FormatGetContextPackageLifecycle(ref packageId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/context/packages/{packageId}"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath.TrimEnd('/'), "/context/packages/{packageId}");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BpackageId%7D", Uri.EscapeDataString(packageId.ToString()));
+
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
+                    ApiKeyToken apiKeyTokenLocalVar1 = (ApiKeyToken) await ApiKeyProvider.GetAsync("X-API-Key", cancellationToken).ConfigureAwait(false);
+                    tokenBaseLocalVars.Add(apiKeyTokenLocalVar1);
+                    apiKeyTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar);
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar2 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar2);
+
+                    bearerTokenLocalVar2.UseInHeader(httpRequestMessageLocalVar, "");
+
+                    string[] acceptLocalVars = new string[] {
+                        "application/json"
+                    };
+
+                    IEnumerable<MediaTypeWithQualityHeaderValue> acceptHeaderValuesLocalVar = ClientUtils.SelectHeaderAcceptArray(acceptLocalVars);
+
+                    foreach (var acceptLocalVar in acceptHeaderValuesLocalVar)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(acceptLocalVar);
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Get;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        ILogger<GetContextPackageLifecycleApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<GetContextPackageLifecycleApiResponse>();
+                        GetContextPackageLifecycleApiResponse apiResponseLocalVar;
+
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/context/packages/{packageId}", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
+
+                        AfterGetContextPackageLifecycleDefaultImplementation(apiResponseLocalVar, packageId);
+
+                        Events.ExecuteOnGetContextPackageLifecycle(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorGetContextPackageLifecycleDefaultImplementation(e, "/context/packages/{packageId}", uriBuilderLocalVar.Path, packageId);
+                Events.ExecuteOnErrorGetContextPackageLifecycle(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="GetContextPackageLifecycleApiResponse"/>
+        /// </summary>
+        public partial class GetContextPackageLifecycleApiResponse : ratary_sdk.Client.ApiResponse, IGetContextPackageLifecycleApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<GetContextPackageLifecycleApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="GetContextPackageLifecycleApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public GetContextPackageLifecycleApiResponse(ILogger<GetContextPackageLifecycleApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="GetContextPackageLifecycleApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public GetContextPackageLifecycleApiResponse(ILogger<GetContextPackageLifecycleApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public ratary_sdk.Model.ContextPackageLifecycle? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<ratary_sdk.Model.ContextPackageLifecycle>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out ratary_sdk.Model.ContextPackageLifecycle? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
+
+            private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
+            {
+                bool suppressDefaultLog = false;
+                OnDeserializationError(ref suppressDefaultLog, exception, httpStatusCode);
+                if (!suppressDefaultLog)
+                    Logger.LogError(exception, "An error occurred while deserializing the {code} response.", httpStatusCode);
+            }
+
+            partial void OnDeserializationError(ref bool suppressDefaultLog, Exception exception, HttpStatusCode httpStatusCode);
+        }
+
+        partial void FormatRetireContextPackage(ref string packageId);
+
+        /// <summary>
+        /// Validates the request parameters
+        /// </summary>
+        /// <param name="packageId"></param>
+        /// <returns></returns>
+        private void ValidateRetireContextPackage(string packageId)
+        {
+            if (packageId == null)
+                throw new ArgumentNullException(nameof(packageId));
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="packageId"></param>
+        private void AfterRetireContextPackageDefaultImplementation(IRetireContextPackageApiResponse apiResponseLocalVar, string packageId)
+        {
+            bool suppressDefaultLog = false;
+            AfterRetireContextPackage(ref suppressDefaultLog, apiResponseLocalVar, packageId);
+            if (!suppressDefaultLog)
+                Logger.LogInformation("{0,-9} | {1} | {2}", (apiResponseLocalVar.DownloadedAt - apiResponseLocalVar.RequestedAt).TotalSeconds, apiResponseLocalVar.StatusCode, apiResponseLocalVar.Path);
+        }
+
+        /// <summary>
+        /// Processes the server response
+        /// </summary>
+        /// <param name="suppressDefaultLog"></param>
+        /// <param name="apiResponseLocalVar"></param>
+        /// <param name="packageId"></param>
+        partial void AfterRetireContextPackage(ref bool suppressDefaultLog, IRetireContextPackageApiResponse apiResponseLocalVar, string packageId);
+
+        /// <summary>
+        /// Logs exceptions that occur while retrieving the server response
+        /// </summary>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="packageId"></param>
+        private void OnErrorRetireContextPackageDefaultImplementation(Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string packageId)
+        {
+            bool suppressDefaultLogLocalVar = false;
+            OnErrorRetireContextPackage(ref suppressDefaultLogLocalVar, exceptionLocalVar, pathFormatLocalVar, pathLocalVar, packageId);
+            if (!suppressDefaultLogLocalVar)
+                Logger.LogError(exceptionLocalVar, "An error occurred while sending the request to the server.");
+        }
+
+        /// <summary>
+        /// A partial method that gives developers a way to provide customized exception handling
+        /// </summary>
+        /// <param name="suppressDefaultLogLocalVar"></param>
+        /// <param name="exceptionLocalVar"></param>
+        /// <param name="pathFormatLocalVar"></param>
+        /// <param name="pathLocalVar"></param>
+        /// <param name="packageId"></param>
+        partial void OnErrorRetireContextPackage(ref bool suppressDefaultLogLocalVar, Exception exceptionLocalVar, string pathFormatLocalVar, string pathLocalVar, string packageId);
+
+        /// <summary>
+        /// Retire Context Package (active → retired) 
+        /// </summary>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IRetireContextPackageApiResponse"/>&gt;</returns>
+        public async Task<IRetireContextPackageApiResponse?> RetireContextPackageOrDefaultAsync(string packageId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await RetireContextPackageAsync(packageId, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Retire Context Package (active → retired) 
+        /// </summary>
+        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <param name="packageId"></param>
+        /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
+        /// <returns><see cref="Task"/>&lt;<see cref="IRetireContextPackageApiResponse"/>&gt;</returns>
+        public async Task<IRetireContextPackageApiResponse> RetireContextPackageAsync(string packageId, System.Threading.CancellationToken cancellationToken = default)
+        {
+            UriBuilder uriBuilderLocalVar = new UriBuilder();
+
+            try
+            {
+                ValidateRetireContextPackage(packageId);
+
+                FormatRetireContextPackage(ref packageId);
+
+                using (HttpRequestMessage httpRequestMessageLocalVar = new HttpRequestMessage())
+                {
+                    uriBuilderLocalVar.Host = HttpClient.BaseAddress!.Host;
+                    uriBuilderLocalVar.Port = HttpClient.BaseAddress.Port;
+                    uriBuilderLocalVar.Scheme = HttpClient.BaseAddress.Scheme;
+                    uriBuilderLocalVar.Path = HttpClient.BaseAddress.AbsolutePath == "/"
+                        ? "/context/packages/{packageId}/retire"
+                        : string.Concat(HttpClient.BaseAddress.AbsolutePath.TrimEnd('/'), "/context/packages/{packageId}/retire");
+                    uriBuilderLocalVar.Path = uriBuilderLocalVar.Path.Replace("%7BpackageId%7D", Uri.EscapeDataString(packageId.ToString()));
+
+                    List<TokenBase> tokenBaseLocalVars = new List<TokenBase>();
+                    ApiKeyToken apiKeyTokenLocalVar1 = (ApiKeyToken) await ApiKeyProvider.GetAsync("X-API-Key", cancellationToken).ConfigureAwait(false);
+                    tokenBaseLocalVars.Add(apiKeyTokenLocalVar1);
+                    apiKeyTokenLocalVar1.UseInHeader(httpRequestMessageLocalVar);
+
+                    httpRequestMessageLocalVar.RequestUri = uriBuilderLocalVar.Uri;
+
+                    BearerToken bearerTokenLocalVar2 = (BearerToken) await BearerTokenProvider.GetAsync(cancellation: cancellationToken).ConfigureAwait(false);
+
+                    tokenBaseLocalVars.Add(bearerTokenLocalVar2);
+
+                    bearerTokenLocalVar2.UseInHeader(httpRequestMessageLocalVar, "");
+
+                    string[] acceptLocalVars = new string[] {
+                        "application/json"
+                    };
+
+                    IEnumerable<MediaTypeWithQualityHeaderValue> acceptHeaderValuesLocalVar = ClientUtils.SelectHeaderAcceptArray(acceptLocalVars);
+
+                    foreach (var acceptLocalVar in acceptHeaderValuesLocalVar)
+                        httpRequestMessageLocalVar.Headers.Accept.Add(acceptLocalVar);
+
+                    httpRequestMessageLocalVar.Method = HttpMethod.Post;
+
+                    DateTime requestedAtLocalVar = DateTime.UtcNow;
+
+                    using (HttpResponseMessage httpResponseMessageLocalVar = await HttpClient.SendAsync(httpRequestMessageLocalVar, cancellationToken).ConfigureAwait(false))
+                    {
+                        ILogger<RetireContextPackageApiResponse> apiResponseLoggerLocalVar = LoggerFactory.CreateLogger<RetireContextPackageApiResponse>();
+                        RetireContextPackageApiResponse apiResponseLocalVar;
+
+                        switch ((int)httpResponseMessageLocalVar.StatusCode) {
+                            default: {
+                                string responseContentLocalVar = await httpResponseMessageLocalVar.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+                                apiResponseLocalVar = new(apiResponseLoggerLocalVar, httpRequestMessageLocalVar, httpResponseMessageLocalVar, responseContentLocalVar, "/context/packages/{packageId}/retire", requestedAtLocalVar, _jsonSerializerOptions);
+
+                                break;
+                            }
+                        }
+
+                        AfterRetireContextPackageDefaultImplementation(apiResponseLocalVar, packageId);
+
+                        Events.ExecuteOnRetireContextPackage(apiResponseLocalVar);
+
+                        if (apiResponseLocalVar.StatusCode == (HttpStatusCode) 429)
+                            foreach(TokenBase tokenBaseLocalVar in tokenBaseLocalVars)
+                                tokenBaseLocalVar.BeginRateLimit();
+
+                        return apiResponseLocalVar;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                OnErrorRetireContextPackageDefaultImplementation(e, "/context/packages/{packageId}/retire", uriBuilderLocalVar.Path, packageId);
+                Events.ExecuteOnErrorRetireContextPackage(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="RetireContextPackageApiResponse"/>
+        /// </summary>
+        public partial class RetireContextPackageApiResponse : ratary_sdk.Client.ApiResponse, IRetireContextPackageApiResponse
+        {
+            /// <summary>
+            /// The logger
+            /// </summary>
+            public ILogger<RetireContextPackageApiResponse> Logger { get; }
+
+            /// <summary>
+            /// The <see cref="RetireContextPackageApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="rawContent"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public RetireContextPackageApiResponse(ILogger<RetireContextPackageApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, string rawContent, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, rawContent, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            /// <summary>
+            /// The <see cref="RetireContextPackageApiResponse"/>
+            /// </summary>
+            /// <param name="logger"></param>
+            /// <param name="httpRequestMessage"></param>
+            /// <param name="httpResponseMessage"></param>
+            /// <param name="contentStream"></param>
+            /// <param name="path"></param>
+            /// <param name="requestedAt"></param>
+            /// <param name="jsonSerializerOptions"></param>
+            public RetireContextPackageApiResponse(ILogger<RetireContextPackageApiResponse> logger, System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage, System.IO.Stream contentStream, string path, DateTime requestedAt, System.Text.Json.JsonSerializerOptions jsonSerializerOptions) : base(httpRequestMessage, httpResponseMessage, contentStream, path, requestedAt, jsonSerializerOptions)
+            {
+                Logger = logger;
+                OnCreated(httpRequestMessage, httpResponseMessage);
+            }
+
+            partial void OnCreated(global::System.Net.Http.HttpRequestMessage httpRequestMessage, System.Net.Http.HttpResponseMessage httpResponseMessage);
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public bool IsOk => 200 == (int)StatusCode;
+
+            /// <summary>
+            /// Deserializes the response if the response is 200 Ok
+            /// </summary>
+            /// <returns></returns>
+            public ratary_sdk.Model.ContextPackageLifecycle? Ok()
+            {
+                // This logic may be modified with the AsModel.mustache template
+                return IsOk
+                    ? System.Text.Json.JsonSerializer.Deserialize<ratary_sdk.Model.ContextPackageLifecycle>(RawContent, _jsonSerializerOptions)
+                    : null;
+            }
+
+            /// <summary>
+            /// Returns true if the response is 200 Ok and the deserialized response is not null
+            /// </summary>
+            /// <param name="result"></param>
+            /// <returns></returns>
+            public bool TryOk([NotNullWhen(true)]out ratary_sdk.Model.ContextPackageLifecycle? result)
+            {
+                result = null;
+
+                try
+                {
+                    result = Ok();
+                } catch (Exception e)
+                {
+                    OnDeserializationErrorDefaultImplementation(e, (HttpStatusCode)200);
+                }
+
+                return result != null;
+            }
 
             private void OnDeserializationErrorDefaultImplementation(Exception exception, HttpStatusCode httpStatusCode)
             {

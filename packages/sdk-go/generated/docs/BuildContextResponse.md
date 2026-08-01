@@ -13,9 +13,12 @@ Name | Type | Description | Notes
 **OwnerId** | Pointer to **string** |  | [optional] 
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Confidence** | Pointer to **string** |  | [optional] 
+**ConfidenceModel** | Pointer to **string** | ADR-1016 confidence derivation model id | [optional] 
 **UpdateMechanism** | Pointer to **string** |  | [optional] 
+**LifecycleState** | Pointer to **string** | ADR-1013 usage eligibility; mint is always active | [optional] 
 **SourceLabels** | Pointer to **[]string** |  | [optional] 
 **Query** | Pointer to **string** |  | [optional] 
+**RetrievalMemo** | Pointer to **string** | ADR-1018 ranked-candidate memo status; package envelope always reminted | [optional] 
 
 ## Methods
 
@@ -261,6 +264,31 @@ SetConfidence sets Confidence field to given value.
 
 HasConfidence returns a boolean if a field has been set.
 
+### GetConfidenceModel
+
+`func (o *BuildContextResponse) GetConfidenceModel() string`
+
+GetConfidenceModel returns the ConfidenceModel field if non-nil, zero value otherwise.
+
+### GetConfidenceModelOk
+
+`func (o *BuildContextResponse) GetConfidenceModelOk() (*string, bool)`
+
+GetConfidenceModelOk returns a tuple with the ConfidenceModel field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetConfidenceModel
+
+`func (o *BuildContextResponse) SetConfidenceModel(v string)`
+
+SetConfidenceModel sets ConfidenceModel field to given value.
+
+### HasConfidenceModel
+
+`func (o *BuildContextResponse) HasConfidenceModel() bool`
+
+HasConfidenceModel returns a boolean if a field has been set.
+
 ### GetUpdateMechanism
 
 `func (o *BuildContextResponse) GetUpdateMechanism() string`
@@ -285,6 +313,31 @@ SetUpdateMechanism sets UpdateMechanism field to given value.
 `func (o *BuildContextResponse) HasUpdateMechanism() bool`
 
 HasUpdateMechanism returns a boolean if a field has been set.
+
+### GetLifecycleState
+
+`func (o *BuildContextResponse) GetLifecycleState() string`
+
+GetLifecycleState returns the LifecycleState field if non-nil, zero value otherwise.
+
+### GetLifecycleStateOk
+
+`func (o *BuildContextResponse) GetLifecycleStateOk() (*string, bool)`
+
+GetLifecycleStateOk returns a tuple with the LifecycleState field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLifecycleState
+
+`func (o *BuildContextResponse) SetLifecycleState(v string)`
+
+SetLifecycleState sets LifecycleState field to given value.
+
+### HasLifecycleState
+
+`func (o *BuildContextResponse) HasLifecycleState() bool`
+
+HasLifecycleState returns a boolean if a field has been set.
 
 ### GetSourceLabels
 
@@ -335,6 +388,31 @@ SetQuery sets Query field to given value.
 `func (o *BuildContextResponse) HasQuery() bool`
 
 HasQuery returns a boolean if a field has been set.
+
+### GetRetrievalMemo
+
+`func (o *BuildContextResponse) GetRetrievalMemo() string`
+
+GetRetrievalMemo returns the RetrievalMemo field if non-nil, zero value otherwise.
+
+### GetRetrievalMemoOk
+
+`func (o *BuildContextResponse) GetRetrievalMemoOk() (*string, bool)`
+
+GetRetrievalMemoOk returns a tuple with the RetrievalMemo field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetRetrievalMemo
+
+`func (o *BuildContextResponse) SetRetrievalMemo(v string)`
+
+SetRetrievalMemo sets RetrievalMemo field to given value.
+
+### HasRetrievalMemo
+
+`func (o *BuildContextResponse) HasRetrievalMemo() bool`
+
+HasRetrievalMemo returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

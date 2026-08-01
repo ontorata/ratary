@@ -15,6 +15,13 @@ use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
 
+/// struct for typed errors of method [`archive_context_package`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ArchiveContextPackageError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`build_context`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -22,6 +29,67 @@ pub enum BuildContextError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`get_context_package_lifecycle`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetContextPackageLifecycleError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`retire_context_package`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RetireContextPackageError {
+    UnknownValue(serde_json::Value),
+}
+
+
+pub async fn archive_context_package(configuration: &configuration::Configuration, package_id: &str) -> Result<models::ContextPackageLifecycle, Error<ArchiveContextPackageError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_package_id = package_id;
+
+    let uri_str = format!("{}/context/packages/{packageId}/archive", configuration.base_path, packageId=crate::apis::urlencode(p_path_package_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref apikey) = configuration.api_key {
+        let key = apikey.key.clone();
+        let value = match apikey.prefix {
+            Some(ref prefix) => format!("{} {}", prefix, key),
+            None => key,
+        };
+        req_builder = req_builder.header("X-API-Key", value);
+    };
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ContextPackageLifecycle`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ContextPackageLifecycle`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ArchiveContextPackageError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
 
 pub async fn build_context(configuration: &configuration::Configuration, build_context_request: models::BuildContextRequest) -> Result<(), Error<BuildContextError>> {
     // add a prefix to parameters to efficiently prevent name collisions
@@ -56,6 +124,100 @@ pub async fn build_context(configuration: &configuration::Configuration, build_c
     } else {
         let content = resp.text().await?;
         let entity: Option<BuildContextError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+pub async fn get_context_package_lifecycle(configuration: &configuration::Configuration, package_id: &str) -> Result<models::ContextPackageLifecycle, Error<GetContextPackageLifecycleError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_package_id = package_id;
+
+    let uri_str = format!("{}/context/packages/{packageId}", configuration.base_path, packageId=crate::apis::urlencode(p_path_package_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref apikey) = configuration.api_key {
+        let key = apikey.key.clone();
+        let value = match apikey.prefix {
+            Some(ref prefix) => format!("{} {}", prefix, key),
+            None => key,
+        };
+        req_builder = req_builder.header("X-API-Key", value);
+    };
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ContextPackageLifecycle`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ContextPackageLifecycle`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<GetContextPackageLifecycleError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+pub async fn retire_context_package(configuration: &configuration::Configuration, package_id: &str) -> Result<models::ContextPackageLifecycle, Error<RetireContextPackageError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_package_id = package_id;
+
+    let uri_str = format!("{}/context/packages/{packageId}/retire", configuration.base_path, packageId=crate::apis::urlencode(p_path_package_id));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref apikey) = configuration.api_key {
+        let key = apikey.key.clone();
+        let value = match apikey.prefix {
+            Some(ref prefix) => format!("{} {}", prefix, key),
+            None => key,
+        };
+        req_builder = req_builder.header("X-API-Key", value);
+    };
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ContextPackageLifecycle`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ContextPackageLifecycle`")))),
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RetireContextPackageError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }

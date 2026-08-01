@@ -10,6 +10,8 @@ pub mod client_capability_request;
 pub use self::client_capability_request::ClientCapabilityRequest;
 pub mod client_capability_request_client_info;
 pub use self::client_capability_request_client_info::ClientCapabilityRequestClientInfo;
+pub mod context_package_lifecycle;
+pub use self::context_package_lifecycle::ContextPackageLifecycle;
 pub mod create_memory_request;
 pub use self::create_memory_request::CreateMemoryRequest;
 pub mod memory;

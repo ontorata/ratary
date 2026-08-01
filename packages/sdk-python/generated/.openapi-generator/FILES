@@ -11,6 +11,7 @@ docs/CapabilityNegotiationResult.md
 docs/ClientCapabilityRequest.md
 docs/ClientCapabilityRequestClientInfo.md
 docs/ContextApi.md
+docs/ContextPackageLifecycle.md
 docs/CreateMemoryRequest.md
 docs/EcosystemApi.md
 docs/FederationApi.md
@@ -41,6 +42,7 @@ ratary_sdk/models/capability_match_groups.py
 ratary_sdk/models/capability_negotiation_result.py
 ratary_sdk/models/client_capability_request.py
 ratary_sdk/models/client_capability_request_client_info.py
+ratary_sdk/models/context_package_lifecycle.py
 ratary_sdk/models/create_memory_request.py
 ratary_sdk/models/memory.py
 ratary_sdk/models/update_memory_request.py
@@ -51,4 +53,5 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_context_package_lifecycle.py
 tox.ini

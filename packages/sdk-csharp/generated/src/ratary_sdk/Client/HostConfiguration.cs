@@ -49,6 +49,7 @@ namespace ratary_sdk.Client
             _jsonOptions.Converters.Add(new CapabilityNegotiationResultJsonConverter());
             _jsonOptions.Converters.Add(new ClientCapabilityRequestJsonConverter());
             _jsonOptions.Converters.Add(new ClientCapabilityRequestClientInfoJsonConverter());
+            _jsonOptions.Converters.Add(new ContextPackageLifecycleJsonConverter());
             _jsonOptions.Converters.Add(new CreateMemoryRequestJsonConverter());
             _jsonOptions.Converters.Add(new MemoryJsonConverter());
             _jsonOptions.Converters.Add(new UpdateMemoryRequestJsonConverter());

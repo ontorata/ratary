@@ -117,7 +117,10 @@ export class ContextService {
       deps.retrievalMemoCache === null
         ? null
         : (deps.retrievalMemoCache ??
-          new RetrievalMemoCache(DEFAULT_RETRIEVAL_MEMO_TTL_MS, DEFAULT_RETRIEVAL_MEMO_MAX_ENTRIES));
+          new RetrievalMemoCache(
+            DEFAULT_RETRIEVAL_MEMO_TTL_MS,
+            DEFAULT_RETRIEVAL_MEMO_MAX_ENTRIES,
+          ));
   }
 
   async buildContext(

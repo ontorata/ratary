@@ -140,6 +140,14 @@ namespace ratary_sdk.Client
                     : "false";
             if (obj is BuildContextResponse.ConfidenceEnum buildContextResponseConfidenceEnum)
                 return BuildContextResponse.ConfidenceEnumToJsonValue(buildContextResponseConfidenceEnum);
+            if (obj is BuildContextResponse.ConfidenceModelEnum buildContextResponseConfidenceModelEnum)
+                return BuildContextResponse.ConfidenceModelEnumToJsonValue(buildContextResponseConfidenceModelEnum);
+            if (obj is BuildContextResponse.LifecycleStateEnum buildContextResponseLifecycleStateEnum)
+                return BuildContextResponse.LifecycleStateEnumToJsonValue(buildContextResponseLifecycleStateEnum);
+            if (obj is BuildContextResponse.RetrievalMemoEnum buildContextResponseRetrievalMemoEnum)
+                return BuildContextResponse.RetrievalMemoEnumToJsonValue(buildContextResponseRetrievalMemoEnum);
+            if (obj is ContextPackageLifecycle.LifecycleStateEnum contextPackageLifecycleLifecycleStateEnum)
+                return ContextPackageLifecycle.LifecycleStateEnumToJsonValue(contextPackageLifecycleLifecycleStateEnum);
             if (obj is Memory.LifecycleStateEnum memoryLifecycleStateEnum)
                 return Memory.LifecycleStateEnumToJsonValue(memoryLifecycleStateEnum);
             if (obj is ICollection collection)

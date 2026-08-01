@@ -71,7 +71,10 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CapabilitiesApi* | [**getCapabilities**](docs/Api/CapabilitiesApi.md#getcapabilities) | **GET** /capabilities | 
 *CapabilitiesApi* | [**negotiateCapabilities**](docs/Api/CapabilitiesApi.md#negotiatecapabilities) | **POST** /capabilities/negotiate | 
+*ContextApi* | [**archiveContextPackage**](docs/Api/ContextApi.md#archivecontextpackage) | **POST** /context/packages/{packageId}/archive | Archive Context Package (active|retired → archived)
 *ContextApi* | [**buildContext**](docs/Api/ContextApi.md#buildcontext) | **POST** /context | 
+*ContextApi* | [**getContextPackageLifecycle**](docs/Api/ContextApi.md#getcontextpackagelifecycle) | **GET** /context/packages/{packageId} | Get Context Package lifecycle state (ADR-1013)
+*ContextApi* | [**retireContextPackage**](docs/Api/ContextApi.md#retirecontextpackage) | **POST** /context/packages/{packageId}/retire | Retire Context Package (active → retired)
 *EcosystemApi* | [**getEcosystemClient**](docs/Api/EcosystemApi.md#getecosystemclient) | **GET** /ecosystem/clients/{type} | 
 *EcosystemApi* | [**listEcosystemClients**](docs/Api/EcosystemApi.md#listecosystemclients) | **GET** /ecosystem/clients | 
 *FederationApi* | [**listFederationPeers**](docs/Api/FederationApi.md#listfederationpeers) | **GET** /federation/peers | 
@@ -91,6 +94,7 @@ Class | Method | HTTP request | Description
 - [CapabilityNegotiationResult](docs/Model/CapabilityNegotiationResult.md)
 - [ClientCapabilityRequest](docs/Model/ClientCapabilityRequest.md)
 - [ClientCapabilityRequestClientInfo](docs/Model/ClientCapabilityRequestClientInfo.md)
+- [ContextPackageLifecycle](docs/Model/ContextPackageLifecycle.md)
 - [CreateMemoryRequest](docs/Model/CreateMemoryRequest.md)
 - [Memory](docs/Model/Memory.md)
 - [UpdateMemoryRequest](docs/Model/UpdateMemoryRequest.md)
