@@ -80,6 +80,8 @@
     "trace:org-memory-handoff": "tsx scripts/forge/remember-org-memory.ts",
     "metrics:org-memory": "tsx scripts/metrics/org-memory-usage.ts",
     "metrics:operational-proof": "tsx scripts/metrics/operational-proof.ts",
+    "metrics:production": "tsx scripts/metrics/production-metrics.ts",
+    "ci:production-metrics-check": "node scripts/ci/production-metrics-check.mjs",
     "trace:dogfood-session": "tsx scripts/trace-dogfood-session.ts",
     "checkpoint:operational-proof": "tsx scripts/checkpoint-operational-proof.ts",
     "ci:operational-proof-acceptance": "node scripts/ci/operational-proof-acceptance-check.mjs",
