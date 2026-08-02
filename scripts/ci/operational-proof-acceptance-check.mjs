@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import { readFileSync, statSync } from 'node:fs';
+import { orgMemoryReviewsPath } from '../lib/org-memory-paths.mjs';
 
-const INGESTION_LOG = '.ai/reviews/org-memory-dogfood/ingestion-log.md';
-const USAGE_LOG = '.ai/reviews/org-memory-dogfood/operational-usage-log.md';
-const METRICS_JSON = '.ai/reviews/org-memory-dogfood/operational-metrics.json';
-const CHECKPOINTS = '.ai/reviews/org-memory-dogfood/operational-checkpoints.md';
-const ACCEPTANCE = '.ai/reviews/org-memory-dogfood/P1-E-ACCEPTANCE.md';
-const RUNWAY = '.ai/reviews/org-memory-dogfood/OPERATIONAL-RUNWAY.md';
+const INGESTION_LOG = orgMemoryReviewsPath('ingestion-log.md');
+const USAGE_LOG = orgMemoryReviewsPath('operational-usage-log.md');
+const METRICS_JSON = orgMemoryReviewsPath('operational-metrics.json');
+const CHECKPOINTS = orgMemoryReviewsPath('operational-checkpoints.md');
+const ACCEPTANCE = orgMemoryReviewsPath('P1-E-ACCEPTANCE.md');
+const RUNWAY = orgMemoryReviewsPath('OPERATIONAL-RUNWAY.md');
 
 function fail(message) {
   console.error(`\n❌ OPERATIONAL PROOF ACCEPTANCE CHECK FAILED\n\n${message}\n`);

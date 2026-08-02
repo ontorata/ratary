@@ -8,27 +8,24 @@ import {
   ensureOperationalUsageLog,
   operationalUsageLogPath,
 } from '../lib/operational-usage-log.js';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from '../lib/org-memory-paths.js';
 
 export const OPERATIONAL_METRICS_SCHEMA_VERSION = '1.0';
 
-function repoRoot(): string {
-  return resolve(process.cwd());
-}
-
 function ingestionLogPath(): string {
-  return resolve(repoRoot(), '.ai/reviews/org-memory-dogfood/ingestion-log.md');
+  return orgMemoryReviewsPath('ingestion-log.md');
 }
 
 function recallLogPath(): string {
-  return resolve(repoRoot(), '.ai/reviews/org-memory-dogfood/recall-log.md');
+  return orgMemoryReviewsPath('recall-log.md');
 }
 
 function metricsMarkdownPath(): string {
-  return resolve(repoRoot(), '.ai/reviews/org-memory-dogfood/operational-metrics.md');
+  return orgMemoryReviewsPath('operational-metrics.md');
 }
 
 function metricsJsonPath(): string {
-  return resolve(repoRoot(), '.ai/reviews/org-memory-dogfood/operational-metrics.json');
+  return orgMemoryReviewsPath('operational-metrics.json');
 }
 
 type ParsedBlock = {
@@ -137,7 +134,7 @@ function renderMetricsBlock(snapshot: OperationalMetricsSnapshot): string {
 
 async function ensureMetricsMarkdown(): Promise<void> {
   const metricsPath = metricsMarkdownPath();
-  await mkdir(resolve(repoRoot(), '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
   try {
     await stat(metricsPath);
   } catch {

@@ -1,6 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
 import type { ICandidateProvider } from '../src/memory/recall/candidate-provider.port.js';
 import {
   CandidateSetSchema,
@@ -11,6 +10,7 @@ import {
 import { RecallPolicy } from '../src/memory/recall/recall-policy.js';
 import { RecallService } from '../src/memory/recall/recall-service.js';
 import { formatScriptError } from './lib/cli-error.js';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from './lib/org-memory-paths.js';
 
 type FixtureCandidate = RecallCandidate & {
   title?: string;
@@ -58,12 +58,8 @@ type QueryEval = {
   contextPackagePresent: boolean;
 };
 
-const REPO_ROOT = resolve(process.cwd());
-const FIXTURE_PATH = resolve(
-  REPO_ROOT,
-  '.ai/reviews/org-memory-dogfood/fixtures/recall-intelligence-fixture.json',
-);
-const LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/recall-intelligence-log.md');
+const FIXTURE_PATH = orgMemoryReviewsPath('fixtures/recall-intelligence-fixture.json');
+const LOG_PATH = orgMemoryReviewsPath('recall-intelligence-log.md');
 const FIXED_NOW = Date.parse('2026-07-08T12:00:00.000Z');
 
 function hashList(ids: string[]): string {
@@ -108,7 +104,7 @@ class FixtureCandidateProvider implements ICandidateProvider {
 }
 
 async function ensureLogHeader(): Promise<void> {
-  await mkdir(resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
   try {
     await readFile(LOG_PATH, 'utf-8');
   } catch {

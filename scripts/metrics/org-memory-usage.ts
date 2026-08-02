@@ -1,17 +1,13 @@
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
 import { formatScriptError } from '../lib/cli-error.js';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from '../lib/org-memory-paths.js';
 
-const REPO_ROOT = resolve(process.cwd());
-const INGESTION_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/ingestion-log.md');
-const RECALL_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/recall-log.md');
-const EVIDENCE_TRACE_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/evidence-trace.md');
-const MCP_TRACE_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/mcp-interaction-log.md');
-const METRICS_PATH = resolve(
-  REPO_ROOT,
-  '.ai/reviews/org-memory-dogfood/internal-usage-metrics.md',
-);
+const INGESTION_LOG_PATH = orgMemoryReviewsPath('ingestion-log.md');
+const RECALL_LOG_PATH = orgMemoryReviewsPath('recall-log.md');
+const EVIDENCE_TRACE_PATH = orgMemoryReviewsPath('evidence-trace.md');
+const MCP_TRACE_PATH = orgMemoryReviewsPath('mcp-interaction-log.md');
+const METRICS_PATH = orgMemoryReviewsPath('internal-usage-metrics.md');
 
 type ParsedBlock = {
   runId: string;
@@ -35,12 +31,67 @@ function extractNumber(body: string, key: string): number {
   return match ? Number(match[1]) : 0;
 }
 
+function extractIsoTimestamp(body: string, key: string): string | undefined {
+  const re = new RegExp(`- ${key}:\\s*(\\S+)`);
+  return body.match(re)?.[1];
+}
+
 function unique(values: string[]): string[] {
   return Array.from(new Set(values));
 }
 
+function computeP1BMetrics(ingestionBody: string): {
+  ingestionCoveragePct: number;
+  deduplicationRatio: number;
+  normalizationSuccessRate: number;
+  ingestToRecallReadyLatencyMs: number;
+} {
+  const ingested = extractNumber(ingestionBody, 'ingested');
+  const failed = extractNumber(ingestionBody, 'failed');
+  const skipped = extractNumber(ingestionBody, 'skipped');
+
+  const attempted = ingested + failed + skipped;
+  const ingestionCoveragePct =
+    attempted > 0 ? Number(((ingested / attempted) * 100).toFixed(2)) : 100;
+
+  const deduplicationRatio =
+    ingested + skipped > 0 ? Number((skipped / (ingested + skipped)).toFixed(4)) : 0;
+
+  const normalizerRows = [
+    ...ingestionBody.matchAll(
+      /\| stage=normalizer \| status=(\w+) \| processed=(\d+) \| failed=(\d+)/g,
+    ),
+  ];
+  const normalizerProcessed = normalizerRows.reduce((sum, row) => sum + Number(row[2]), 0);
+  const normalizerFailed = normalizerRows.reduce((sum, row) => sum + Number(row[3]), 0);
+  const normalizationDenominator = normalizerProcessed + normalizerFailed;
+  const normalizationSuccessRate =
+    normalizationDenominator > 0
+      ? Number(((normalizerProcessed / normalizationDenominator) * 100).toFixed(2))
+      : ingested > 0 && failed === 0
+        ? 100
+        : 0;
+
+  const startedAt = extractIsoTimestamp(ingestionBody, 'started_at');
+  const endedAt = extractIsoTimestamp(ingestionBody, 'ended_at');
+  let ingestToRecallReadyLatencyMs = 0;
+  if (startedAt && endedAt) {
+    ingestToRecallReadyLatencyMs = Math.max(
+      0,
+      Date.parse(endedAt) - Date.parse(startedAt),
+    );
+  }
+
+  return {
+    ingestionCoveragePct,
+    deduplicationRatio,
+    normalizationSuccessRate,
+    ingestToRecallReadyLatencyMs,
+  };
+}
+
 async function ensureMetricsFile(): Promise<void> {
-  await mkdir(resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
   try {
     await stat(METRICS_PATH);
   } catch {
@@ -50,7 +101,7 @@ async function ensureMetricsFile(): Promise<void> {
       '| Field | Value |',
       '|-------|-------|',
       '| **Status** | Active |',
-      '| **Schema** | `metrics_run_id`, `ingestion_count`, `recall_count`, `successful_recall`, `failed_recall`, `average_latency`, `evidence_generated`, `duplicate_memory`, `orphan_memory`, `organization_count` |',
+      '| **Schema** | `metrics_run_id`, `ingestion_count`, `recall_count`, `successful_recall`, `failed_recall`, `average_latency`, `evidence_generated`, `duplicate_memory`, `orphan_memory`, `organization_count`, `ingestion_coverage_pct`, `deduplication_ratio`, `normalization_success_rate`, `ingest_to_recall_ready_latency_ms` |',
       '',
       '---',
       '',
@@ -73,6 +124,8 @@ async function main(): Promise<void> {
   const evidence = latestBlock(evidenceTrace, /## run_id=([a-f0-9-]+)/g);
   const session = latestBlock(mcpTrace, /## session_id=([a-f0-9-]+)/g);
 
+  const p1b = computeP1BMetrics(ingestion.body);
+
   const ingestionCount = extractNumber(ingestion.body, 'ingested');
   const recallCount = extractNumber(recall.body, 'query_count');
   const successfulRecall = extractNumber(recall.body, 'successful_recalls');
@@ -91,7 +144,7 @@ async function main(): Promise<void> {
   const fixtureIds = [...evidence.body.matchAll(/\((evidence-[a-z0-9-]+)\)/g)].map((m) => m[1]);
   const uniqueFixtureIds = unique(fixtureIds);
   const orphanMemory = Math.max(0, uniqueFixtureIds.length - uniqueEvidenceIds.length) + missingSources;
-  const organizationCount = 1; // P1-A dogfood scope: Ontorata single organization
+  const organizationCount = 1;
 
   const block = [
     `## metrics_run_id=${metricsRunId}`,
@@ -112,6 +165,10 @@ async function main(): Promise<void> {
     `- orphan_memory=${orphanMemory}`,
     `- organization_count=${organizationCount}`,
     `- drift_incidents=${missingSources}`,
+    `- ingestion_coverage_pct=${p1b.ingestionCoveragePct}`,
+    `- deduplication_ratio=${p1b.deduplicationRatio}`,
+    `- normalization_success_rate=${p1b.normalizationSuccessRate}`,
+    `- ingest_to_recall_ready_latency_ms=${p1b.ingestToRecallReadyLatencyMs}`,
     '',
     '| Metric | Value |',
     '|--------|-------|',
@@ -126,6 +183,10 @@ async function main(): Promise<void> {
     `| orphan_memory | ${orphanMemory} |`,
     `| organization_count | ${organizationCount} |`,
     `| drift_incidents | ${missingSources} |`,
+    `| ingestion_coverage_pct | ${p1b.ingestionCoveragePct} |`,
+    `| deduplication_ratio | ${p1b.deduplicationRatio} |`,
+    `| normalization_success_rate | ${p1b.normalizationSuccessRate} |`,
+    `| ingest_to_recall_ready_latency_ms | ${p1b.ingestToRecallReadyLatencyMs} |`,
     '',
   ].join('\n');
 
@@ -144,6 +205,10 @@ async function main(): Promise<void> {
   console.log(`orphan_memory=${orphanMemory}`);
   console.log(`organization_count=${organizationCount}`);
   console.log(`pass_rate=${passRate}`);
+  console.log(`ingestion_coverage_pct=${p1b.ingestionCoveragePct}`);
+  console.log(`deduplication_ratio=${p1b.deduplicationRatio}`);
+  console.log(`normalization_success_rate=${p1b.normalizationSuccessRate}`);
+  console.log(`ingest_to_recall_ready_latency_ms=${p1b.ingestToRecallReadyLatencyMs}`);
 }
 
 main().catch((error: unknown) => {

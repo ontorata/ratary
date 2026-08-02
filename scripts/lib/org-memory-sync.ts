@@ -10,15 +10,15 @@ import {
 } from './knowledge-ingestion-contracts.js';
 import { orchestratePipeline, type RawSourceFile } from './knowledge-ingestion-pipeline.js';
 import { shouldExcludeIngestFile } from './org-memory-sync-excludes.js';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot, repoRoot, usesKnowledgeOsLayout } from './org-memory-paths.js';
 
-const REPO_ROOT = resolve(process.cwd());
-const INGEST_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/ingestion-log.md');
+const INGEST_LOG_PATH = orgMemoryReviewsPath('ingestion-log.md');
 
 type RunResult = IngestionRun & {
   excludedPaths: string[];
 };
 
-const SOURCES: SourceDefinition[] = [
+const LEGACY_SOURCES: SourceDefinition[] = [
   { sourcePath: '.ai/core/', mode: 'directory' },
   { sourcePath: 'docs/architecture/', mode: 'directory' },
   { sourcePath: '.ai/core/architecture/ADR-*.md', mode: 'adr-glob' },
@@ -27,8 +27,26 @@ const SOURCES: SourceDefinition[] = [
   { sourcePath: '.ai/sessions/CURRENT.md', mode: 'file' },
 ];
 
+function knowledgeOsSources(): SourceDefinition[] {
+  return [
+    { sourcePath: '../docs-ai/architecture/', mode: 'directory' },
+    { sourcePath: '../docs-ai/governance/', mode: 'directory' },
+    { sourcePath: '../docs-ai/decisions/', mode: 'directory' },
+    { sourcePath: '../docs-ai/products/', mode: 'directory' },
+    { sourcePath: '../docs-ai/reviews/', mode: 'directory' },
+    { sourcePath: '../docs-ai/cross-cutting/', mode: 'directory' },
+    { sourcePath: '../docs-ai/cross-cutting/sessions/CURRENT.md', mode: 'file' },
+    { sourcePath: 'docs/architecture/', mode: 'directory' },
+    { sourcePath: '../docs-ai/architecture/identity-and-kernel/ADR-*.md', mode: 'adr-glob' },
+  ];
+}
+
+const SOURCES: SourceDefinition[] = usesKnowledgeOsLayout()
+  ? knowledgeOsSources()
+  : LEGACY_SOURCES;
+
 async function listFilesRecursive(directoryPath: string): Promise<string[]> {
-  const absolutePath = resolve(REPO_ROOT, directoryPath);
+  const absolutePath = resolve(repoRoot(), directoryPath);
   const entries = await readdir(absolutePath, { withFileTypes: true });
   const output: string[] = [];
 
@@ -57,8 +75,8 @@ async function resolveSourceFiles(source: SourceDefinition): Promise<string[]> {
   }
 
   if (source.mode === 'adr-glob') {
-    const dir = '.ai/core/architecture';
-    const files = await listFilesRecursive(dir);
+    const base = source.sourcePath.replace(/\/ADR-\*\.md$/i, '');
+    const files = await listFilesRecursive(base);
     return files.filter((file) => /\/ADR-.*\.md$/i.test(`/${file}`));
   }
 
@@ -85,7 +103,7 @@ async function ingestSource(
     }
 
     try {
-      const absolute = resolve(REPO_ROOT, file);
+      const absolute = resolve(repoRoot(), file);
       const fileStat = await stat(absolute);
       if (!fileStat.isFile()) continue;
       const content = await readFile(absolute, 'utf-8');
@@ -171,7 +189,7 @@ function renderRunBlock(result: RunResult): string {
 }
 
 async function ensureLogFile(): Promise<void> {
-  await mkdir(resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
 
   try {
     await stat(INGEST_LOG_PATH);

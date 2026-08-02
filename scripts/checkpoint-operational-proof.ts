@@ -1,11 +1,10 @@
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
 import { formatScriptError } from './lib/cli-error.js';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from './lib/org-memory-paths.js';
 import { writeOperationalMetrics } from './metrics/operational-proof.js';
 
-const REPO_ROOT = resolve(process.cwd());
-const CHECKPOINT_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/operational-checkpoints.md');
+const CHECKPOINT_PATH = orgMemoryReviewsPath('operational-checkpoints.md');
 
 function isoWeek(date: Date): string {
   const target = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -17,7 +16,7 @@ function isoWeek(date: Date): string {
 }
 
 async function ensureCheckpointFile(): Promise<void> {
-  await mkdir(resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
   try {
     await stat(CHECKPOINT_PATH);
   } catch {

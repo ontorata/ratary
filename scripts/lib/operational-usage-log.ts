@@ -1,15 +1,11 @@
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { resolve } from 'node:path';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from './org-memory-paths.js';
 
 export const OPERATIONAL_USAGE_LOG_SCHEMA_VERSION = '1.0';
 
-function repoRoot(): string {
-  return resolve(process.cwd());
-}
-
 export function operationalUsageLogPath(): string {
-  return resolve(repoRoot(), '.ai/reviews/org-memory-dogfood/operational-usage-log.md');
+  return orgMemoryReviewsPath('operational-usage-log.md');
 }
 
 export type DogfoodSessionEntry = {
@@ -49,7 +45,7 @@ function renderSessionBlock(entry: DogfoodSessionEntry): string {
 
 export async function ensureOperationalUsageLog(): Promise<void> {
   const logPath = operationalUsageLogPath();
-  await mkdir(resolve(repoRoot(), '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
   try {
     await stat(logPath);
   } catch {

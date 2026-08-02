@@ -1,13 +1,12 @@
 import { randomUUID } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
 import { formatScriptError } from '../lib/cli-error.js';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from '../lib/org-memory-paths.js';
 import { resolveContextPackage } from '../lib/knowledge-context-consumer.js';
 import { createEmbeddingJobIdentity, orchestratePipeline, type RawSourceFile } from '../lib/knowledge-ingestion-pipeline.js';
 import { buildIndexRecoveryQueue } from '../lib/knowledge-store-boundary.js';
 
-const REPO_ROOT = resolve(process.cwd());
-const PROOF_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/WAVE-5-END-TO-END-PROOF.md');
+const PROOF_PATH = orgMemoryReviewsPath('WAVE-5-END-TO-END-PROOF.md');
 
 function now(): string {
   return new Date().toISOString();
@@ -150,7 +149,7 @@ async function main(): Promise<void> {
     '',
   ].join('\n');
 
-  await mkdir(resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
   await writeFile(PROOF_PATH, content, 'utf-8');
 
   console.log(`execution_id=${executionId}`);

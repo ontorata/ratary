@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
 import { formatScriptError } from './lib/cli-error.js';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from './lib/org-memory-paths.js';
 
 type FixtureCorpus = {
   id: string;
@@ -34,14 +34,10 @@ type QueryResult = {
   missingEvidenceIds: string[];
 };
 
-const REPO_ROOT = resolve(process.cwd());
-const FIXTURE_PATH = resolve(
-  REPO_ROOT,
-  '.ai/reviews/org-memory-dogfood/fixtures/recall-fixture.json',
-);
-const INGEST_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/ingestion-log.md');
-const RECALL_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/recall-log.md');
-const EVIDENCE_TRACE_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/evidence-trace.md');
+const FIXTURE_PATH = orgMemoryReviewsPath('fixtures/recall-fixture.json');
+const INGEST_LOG_PATH = orgMemoryReviewsPath('ingestion-log.md');
+const RECALL_LOG_PATH = orgMemoryReviewsPath('recall-log.md');
+const EVIDENCE_TRACE_PATH = orgMemoryReviewsPath('evidence-trace.md');
 
 function tokenize(value: string): string[] {
   return value
@@ -94,7 +90,7 @@ function extractLatestIngestionRunId(logContent: string): string {
 }
 
 async function ensureLogHeaders(): Promise<void> {
-  await mkdir(resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
 
   try {
     await stat(RECALL_LOG_PATH);
