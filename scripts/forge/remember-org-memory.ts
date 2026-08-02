@@ -1,12 +1,11 @@
 import { randomUUID } from 'node:crypto';
 import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { orgMemoryReviewsPath, orgMemoryReviewsRoot } from '../lib/org-memory-paths.js';
 import { formatScriptError } from '../lib/cli-error.js';
 
-const REPO_ROOT = resolve(process.cwd());
-const MCP_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/mcp-interaction-log.md');
-const INGEST_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/ingestion-log.md');
-const RECALL_LOG_PATH = resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood/recall-log.md');
+const MCP_LOG_PATH = orgMemoryReviewsPath('mcp-interaction-log.md');
+const INGEST_LOG_PATH = orgMemoryReviewsPath('ingestion-log.md');
+const RECALL_LOG_PATH = orgMemoryReviewsPath('recall-log.md');
 
 type HandoffEntry = {
   sessionId: string;
@@ -41,7 +40,7 @@ async function loadLatestRunIds(): Promise<{ ingestionRunId: string; recallRunId
 }
 
 async function ensureLogFile(): Promise<void> {
-  await mkdir(resolve(REPO_ROOT, '.ai/reviews/org-memory-dogfood'), { recursive: true });
+  await mkdir(orgMemoryReviewsRoot(), { recursive: true });
 
   try {
     await stat(MCP_LOG_PATH);

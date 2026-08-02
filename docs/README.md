@@ -38,6 +38,7 @@ This `docs/` tree is the **operator / product** surface only (guides, config, in
 | Product overview & quick start | [../README.md](../README.md) |
 | Context Package fields on `POST /context` (ADR-1011)? | **[CONTEXT-PACKAGE.md](CONTEXT-PACKAGE.md)** |
 | Architecture / ADR / phases / evidence | **docs-ai** (link above) |
+| Org memory ingestion (P1-B) scripts & paths | **[ORG-MEMORY-INGESTION.md](ORG-MEMORY-INGESTION.md)** |
 
 **Template vs docs:**
 

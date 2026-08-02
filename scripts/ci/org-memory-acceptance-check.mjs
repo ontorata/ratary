@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
+import { orgMemoryReviewsPath } from '../lib/org-memory-paths.mjs';
 
-const ACCEPTANCE_MANIFEST = '.ai/reviews/org-memory-dogfood/P1-A-ACCEPTANCE.md';
+const ACCEPTANCE_MANIFEST = orgMemoryReviewsPath('P1-A-ACCEPTANCE.md');
 
 function fail(message) {
   console.error(`\n❌ ORG MEMORY ACCEPTANCE CHECK FAILED\n\n${message}\n`);

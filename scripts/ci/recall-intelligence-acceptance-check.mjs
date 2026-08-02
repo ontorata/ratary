@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import { readFileSync } from 'node:fs';
+import { orgMemoryReviewsPath } from '../lib/org-memory-paths.mjs';
 
-const ACCEPTANCE_MANIFEST = '.ai/reviews/org-memory-dogfood/P1-C-ACCEPTANCE.md';
-const EVAL_LOG = '.ai/reviews/org-memory-dogfood/recall-intelligence-log.md';
+const ACCEPTANCE_MANIFEST = orgMemoryReviewsPath('P1-C-ACCEPTANCE.md');
+const EVAL_LOG = orgMemoryReviewsPath('recall-intelligence-log.md');
 
 function fail(message) {
   console.error(`\n❌ RECALL INTELLIGENCE ACCEPTANCE CHECK FAILED\n\n${message}\n`);
