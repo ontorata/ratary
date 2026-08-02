@@ -3,5 +3,6 @@ compatibility_date = "2024-01-01"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "ratary"
-database_id = "YOUR_D1_DATABASE_ID"
+# Production Ratary org-memory D1 (Cloudflare console name: ai-cloud)
+database_name = "ai-cloud"
+database_id = "1d01e219-826a-4b01-bba6-cc5f7dc3cf1d"
