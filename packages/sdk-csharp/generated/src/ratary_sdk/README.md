@@ -108,7 +108,7 @@ namespace YourProject
 
 ## Api Information
 - appName: Ratary API — SDK v1 surface
-- appVersion: 1.2.3
+- appVersion: 1.2.4
 - appDescription: Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec at GET /docs/json.
 
 ## Build

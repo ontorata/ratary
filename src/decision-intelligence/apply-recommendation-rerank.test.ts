@@ -24,6 +24,8 @@ function card(id: string, confidence?: number): RecommendationCard {
   };
 }
 
+import { parseDecisionModelAllowlist } from './decision-model-catalog.js';
+
 describe('applyRecommendationRerank PI-P6-D1.1', () => {
   const prevBridge = process.env.ONTORY_SANDBOX_BRIDGE_ENABLED;
 
@@ -38,7 +40,7 @@ describe('applyRecommendationRerank PI-P6-D1.1', () => {
     const result = await applyRecommendationRerank({
       cards,
       traceId: 't1',
-      allowlist: ['ontorata-computed-scorer-v1'],
+      allowlist: parseDecisionModelAllowlist('ontorata-computed-scorer-v1'),
     });
     expect(result.cards).toEqual(cards);
     expect(result.rerank).toBeUndefined();
@@ -51,7 +53,7 @@ describe('applyRecommendationRerank PI-P6-D1.1', () => {
       traceId: 't1',
       decisionModelId: 'ontorata-internal-v1',
       decisionModelVersion: '1.0.0',
-      allowlist: ['ontorata-internal-v1'],
+      allowlist: parseDecisionModelAllowlist('ontorata-internal-v1'),
     });
     expect(result.rerank?.applied).toBe(false);
     expect(result.rerank?.reason).toBe('declarative_only');
@@ -79,7 +81,7 @@ describe('applyRecommendationRerank PI-P6-D1.1', () => {
       traceId: 't1',
       decisionModelId: 'ontorata-computed-scorer-v1',
       decisionModelVersion: '1.0.0',
-      allowlist: ['ontorata-computed-scorer-v1'],
+      allowlist: parseDecisionModelAllowlist('ontorata-computed-scorer-v1'),
     });
 
     expect(result.rerank?.applied).toBe(true);

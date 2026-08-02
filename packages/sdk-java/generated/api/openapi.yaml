@@ -3,7 +3,7 @@ info:
   description: Curated OpenAPI SSOT for @ratary/sdk generation (Phase 16). Full spec
     at GET /docs/json.
   title: Ratary API — SDK v1 surface
-  version: 1.2.3
+  version: 1.2.4
 servers:
 - url: http://localhost:9876/api/v1
 security:
