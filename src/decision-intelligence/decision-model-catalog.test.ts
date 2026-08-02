@@ -34,7 +34,9 @@ describe('decision-model-catalog mirror', () => {
 
   it('findAuthorizedCatalogEntry rejects unpinned version when only pin authorized', () => {
     const rules = parseDecisionModelAllowlist('ontorata-computed-scorer-v1@1.1.0');
-    expect(findAuthorizedCatalogEntry(rules, 'ontorata-computed-scorer-v1', '1.0.0')).toBeUndefined();
+    expect(
+      findAuthorizedCatalogEntry(rules, 'ontorata-computed-scorer-v1', '1.0.0'),
+    ).toBeUndefined();
     expect(findAuthorizedCatalogEntry(rules, 'ontorata-computed-scorer-v1', '1.1.0')?.version).toBe(
       '1.1.0',
     );
