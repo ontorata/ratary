@@ -1,5 +1,5 @@
-import { DECISION_MODEL_CATALOG_MIRROR } from './decision-model-catalog.js';
-import type { DecisionModelCatalogEntry } from './decision-model-catalog.types.js';
+import { findAuthorizedCatalogEntry } from './decision-model-catalog.js';
+import type { DecisionModelAllowlistRule } from './decision-model-catalog.js';
 import { buildRecommendationSandboxFeatures } from './build-recommendation-sandbox-features.js';
 import {
   callOntoryDecisionModelSandbox,
@@ -21,19 +21,6 @@ export type RecommendationRerankMetadata = Readonly<{
   reason?: string;
 }>;
 
-function findAuthorizedCatalogEntry(
-  allowlist: readonly string[],
-  decisionModelId: string,
-  decisionModelVersion?: string,
-): DecisionModelCatalogEntry | undefined {
-  if (!allowlist.includes(decisionModelId)) return undefined;
-  return DECISION_MODEL_CATALOG_MIRROR.find(
-    (entry) =>
-      entry.id === decisionModelId &&
-      (decisionModelVersion === undefined || entry.version === decisionModelVersion),
-  );
-}
-
 function digestPrefix(pluginDigest?: string): string | undefined {
   if (!pluginDigest) return undefined;
   const normalized = pluginDigest.replace(/^sha256:/, '');
@@ -45,7 +32,7 @@ export async function applyRecommendationRerank(input: {
   traceId: string;
   decisionModelId?: string;
   decisionModelVersion?: string;
-  allowlist: readonly string[];
+  allowlist: readonly DecisionModelAllowlistRule[];
 }): Promise<{
   cards: RerankedRecommendationCard[];
   rerank?: RecommendationRerankMetadata;
